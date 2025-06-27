@@ -32,7 +32,7 @@ import {
     useGetIngestionLogs,
     useGetIngestionLogsList,
     useGetKnowledgeStatus,
-    useGetMultipleFileIngestion,
+    useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
     useListIngestedResources,
@@ -1237,7 +1237,7 @@ describe('queries', () => {
     })
 
     describe('useUpdateAllIngestedResourcesStatus', () => {
-        it('should return correct data on success', async () => {
+        it('should ruseGetMultipleFileIngestionSnippetsss', async () => {
             updateAllIngestedResourcesStatus.mockReturnValue(
                 Promise.resolve(null),
             )
@@ -1378,6 +1378,21 @@ describe('queries', () => {
             },
         ]
 
+        const mockArticleData = [
+            {
+                id: 201,
+                title: 'Article for file1',
+            },
+            {
+                id: 202,
+                title: 'Article for file2',
+            },
+            {
+                id: 203,
+                title: 'Article for file3',
+            },
+        ]
+
         beforeEach(() => {
             mockUseHelpCenterApi.mockReturnValue({
                 client: {} as HelpCenterClient,
@@ -1409,9 +1424,15 @@ describe('queries', () => {
                     config: {} as any,
                 })
 
+            // Mock getFileIngestionArticleTitlesAndStatus for each file
+            getFileIngestionArticleTitlesAndStatus
+                .mockResolvedValueOnce([mockArticleData[0]])
+                .mockResolvedValueOnce([mockArticleData[1]])
+                .mockResolvedValueOnce([mockArticleData[2]])
+
             const { result } = renderHook(
                 () =>
-                    useGetMultipleFileIngestion(helpCenterIds, {
+                    useGetMultipleFileIngestionSnippets(helpCenterIds, {
                         ids: fileIds,
                     }),
                 { wrapper },
@@ -1423,15 +1444,21 @@ describe('queries', () => {
 
             expect(result.current.ingestedFiles).toHaveLength(3)
             expect(result.current.ingestedFiles[0]).toEqual({
-                ...mockFileData[0],
+                ...mockArticleData[0],
+                ingestionId: mockFileData[0].id,
+                ingestionStatus: mockFileData[0].status,
                 helpCenterId: helpCenterIds[0],
             })
             expect(result.current.ingestedFiles[1]).toEqual({
-                ...mockFileData[1],
+                ...mockArticleData[1],
+                ingestionId: mockFileData[1].id,
+                ingestionStatus: mockFileData[1].status,
                 helpCenterId: helpCenterIds[1],
             })
             expect(result.current.ingestedFiles[2]).toEqual({
-                ...mockFileData[2],
+                ...mockArticleData[2],
+                ingestionId: mockFileData[2].id,
+                ingestionStatus: mockFileData[2].status,
                 helpCenterId: helpCenterIds[2],
             })
 
@@ -1480,8 +1507,13 @@ describe('queries', () => {
                     config: {} as any,
                 })
 
+            // Mock getFileIngestionArticleTitlesAndStatus for the third file only
+            getFileIngestionArticleTitlesAndStatus.mockResolvedValueOnce([
+                mockArticleData[2],
+            ])
+
             const { result } = renderHook(
-                () => useGetMultipleFileIngestion(helpCenterIds),
+                () => useGetMultipleFileIngestionSnippets(helpCenterIds),
                 { wrapper },
             )
 
@@ -1489,7 +1521,9 @@ describe('queries', () => {
 
             expect(result.current.ingestedFiles).toHaveLength(1)
             expect(result.current.ingestedFiles[0]).toEqual({
-                ...mockFileData[2],
+                ...mockArticleData[2],
+                ingestionId: mockFileData[2].id,
+                ingestionStatus: mockFileData[2].status,
                 helpCenterId: helpCenterIds[2],
             })
         })
@@ -1500,9 +1534,12 @@ describe('queries', () => {
                 isReady: false,
             })
 
-            renderHook(() => useGetMultipleFileIngestion(helpCenterIds), {
-                wrapper,
-            })
+            renderHook(
+                () => useGetMultipleFileIngestionSnippets(helpCenterIds),
+                {
+                    wrapper,
+                },
+            )
 
             expect(getFileIngestion).not.toHaveBeenCalled()
         })
@@ -1516,7 +1553,7 @@ describe('queries', () => {
                 config: {} as any,
             })
 
-            renderHook(() => useGetMultipleFileIngestion([0, -1, 3]), {
+            renderHook(() => useGetMultipleFileIngestionSnippets([0, -1, 3]), {
                 wrapper,
             })
 
@@ -1536,7 +1573,10 @@ describe('queries', () => {
             })
 
             renderHook(
-                () => useGetMultipleFileIngestion([5], { ids: [10, 20] }),
+                () =>
+                    useGetMultipleFileIngestionSnippets([5], {
+                        ids: [10, 20],
+                    }),
                 { wrapper },
             )
 

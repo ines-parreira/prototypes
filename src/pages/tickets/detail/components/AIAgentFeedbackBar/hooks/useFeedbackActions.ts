@@ -89,15 +89,28 @@ export const useFeedbackActions = ({
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET: {
-                    const sourceItem = [
-                        ...sourceItems,
-                        ...storeWebsiteQuestions,
-                    ]?.find((a) => a.id.toString() === choice.value)
+                    const sourceItem = sourceItems.find(
+                        (a) => a.id.toString() === choice.value,
+                    )
                     if (!sourceItem) return null
                     return {
                         resourceType:
                             AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                         resourceId: sourceItem.id.toString(),
+                        resourceSetId:
+                            storeConfiguration?.snippetHelpCenterId?.toString(),
+                        resourceLocale: null,
+                    }
+                }
+                case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET: {
+                    const storeWebsiteQuestion = storeWebsiteQuestions.find(
+                        (a) => a.id.toString() === choice.value,
+                    )
+                    if (!storeWebsiteQuestion) return null
+                    return {
+                        resourceType:
+                            AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                        resourceId: storeWebsiteQuestion.id.toString(),
                         resourceSetId:
                             storeConfiguration?.snippetHelpCenterId?.toString(),
                         resourceLocale: null,

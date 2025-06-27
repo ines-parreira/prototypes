@@ -653,7 +653,7 @@ describe('useFeedbackActions', () => {
             )
         })
 
-        it('should use storeWebsiteQuestions for EXTERNAL_SNIPPET', async () => {
+        it('should use storeWebsiteQuestions for STORE_WEBSITE_QUESTION_SNIPPET', async () => {
             const upsertFeedbackMock = jest.fn().mockResolvedValue({})
             const setLoadingMutationsMock = jest.fn()
 
@@ -665,7 +665,7 @@ describe('useFeedbackActions', () => {
                 },
                 label: 'Store Website Question',
                 value: 'website-question-1',
-                type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
             }
 
             const mockData = {
@@ -703,7 +703,7 @@ describe('useFeedbackActions', () => {
                     suggestedResources: [
                         {
                             parsedResource: {
-                                resourceType: 'EXTERNAL_SNIPPET',
+                                resourceType: 'STORE_WEBSITE_QUESTION_SNIPPET',
                                 resourceId: 'website-question-1',
                                 resourceSetId: '101',
                             },
@@ -742,8 +742,654 @@ describe('useFeedbackActions', () => {
                 expect.objectContaining({
                     feedbackToUpsert: [
                         expect.objectContaining({
-                            feedbackValue:
-                                expect.stringContaining('EXTERNAL_SNIPPET'),
+                            feedbackValue: expect.stringContaining(
+                                'STORE_WEBSITE_QUESTION_SNIPPET',
+                            ),
+                        }),
+                    ],
+                }),
+            )
+        })
+
+        it('should handle setLoadingMutations filter logic with existing mutations', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            const setLoadingMutationsMock = jest.fn()
+
+            // Setup a scenario to test the filter logic in finally block
+            const { mockChoice, mockData } = setupTest(
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+            )
+
+            const { result } = renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+            await result.current.onSubmitMissingKnowledge([mockChoice])
+
+            // Verify setLoadingMutations was called twice
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+
+            // Check that the first call adds a mutation
+            expect(setLoadingMutationsMock).toHaveBeenNthCalledWith(
+                1,
+                expect.any(Function),
+            )
+
+            // Simulate the first call and verify it adds to existing mutations
+            const firstCall = setLoadingMutationsMock.mock.calls[0][0]
+            const resultAfterFirstCall = firstCall(['existing-id'])
+            expect(resultAfterFirstCall).toHaveLength(2)
+            expect(resultAfterFirstCall[0]).toBe('existing-id')
+            expect(typeof resultAfterFirstCall[1]).toBe('string') // new UUID
+
+            // Check that the second call removes the specific mutation
+            expect(setLoadingMutationsMock).toHaveBeenNthCalledWith(
+                2,
+                expect.any(Function),
+            )
+
+            // Simulate the second call and verify it filters out the specific ID
+            const secondCall = setLoadingMutationsMock.mock.calls[1][0]
+            const mockUuid = resultAfterFirstCall[1]
+            const resultAfterSecondCall = secondCall([
+                'existing-id',
+                mockUuid,
+                'another-id',
+            ])
+            expect(resultAfterSecondCall).toEqual(['existing-id', 'another-id'])
+        })
+
+        it('should handle macro with undefined id', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            const setLoadingMutationsMock = jest.fn()
+
+            const choice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
+                label: 'Macro with undefined ID',
+                value: 'macro-undefined',
+                type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+            }
+
+            const mockData = {
+                feedback: {
+                    executions: [{ executionId: mockExecId }],
+                    accountId: 1,
+                    objectType: 'TICKET',
+                    objectId: String(mockTicketId),
+                } as MockFeedback,
+                storeConfiguration: {
+                    helpCenterId: 456,
+                    guidanceHelpCenterId: 789,
+                    snippetHelpCenterId: 101,
+                    trialModeActivatedDatetime: null,
+                    previewModeActivatedDatetime: null,
+                    storeName: 'Test Store',
+                    shopType: 'test',
+                } as MockStoreConfig,
+                actions: [] as any[],
+                guidanceArticles: [] as any[],
+                articles: [] as any[],
+                sourceItems: [] as any[],
+                macros: [
+                    {
+                        id: undefined, // Macro with undefined id
+                        name: 'Macro with undefined ID',
+                    },
+                ] as any[],
+                ingestedFiles: [] as any[],
+                storeWebsiteQuestions: [] as any[],
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: null,
+                    suggestedResources: [
+                        {
+                            parsedResource: {
+                                resourceType: 'MACRO',
+                                resourceId: 'macro-undefined',
+                                resourceSetId: '',
+                            },
+                            feedback: {
+                                executionId: mockExecId,
+                            },
+                            executionId: mockExecId,
+                            metadata: {},
+                        },
+                    ],
+                } as any,
+            }
+
+            const { result } = renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+            await result.current.onSubmitMissingKnowledge([choice])
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            feedbackValue: null, // Should be null since macro with undefined id won't be found
+                        }),
+                    ],
+                }),
+            )
+        })
+
+        it('should handle empty sourceItems array', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            const setLoadingMutationsMock = jest.fn()
+
+            const choice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
+                label: 'External Snippet',
+                value: 'snippet-1',
+                type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+            }
+
+            const mockData = {
+                feedback: {
+                    executions: [{ executionId: mockExecId }],
+                    accountId: 1,
+                    objectType: 'TICKET',
+                    objectId: String(mockTicketId),
+                } as MockFeedback,
+                storeConfiguration: {
+                    helpCenterId: 456,
+                    guidanceHelpCenterId: 789,
+                    snippetHelpCenterId: 101,
+                    trialModeActivatedDatetime: null,
+                    previewModeActivatedDatetime: null,
+                    storeName: 'Test Store',
+                    shopType: 'test',
+                } as MockStoreConfig,
+                actions: [] as any[],
+                guidanceArticles: [] as any[],
+                articles: [] as any[],
+                sourceItems: undefined, // Undefined sourceItems to test optional chaining
+                macros: [] as any[],
+                ingestedFiles: [] as any[],
+                storeWebsiteQuestions: [] as any[],
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: null,
+                    suggestedResources: [
+                        {
+                            parsedResource: {
+                                resourceType: 'EXTERNAL_SNIPPET',
+                                resourceId: 'snippet-1',
+                                resourceSetId: '101',
+                            },
+                            feedback: {
+                                executionId: mockExecId,
+                            },
+                            executionId: mockExecId,
+                            metadata: {},
+                        },
+                    ],
+                } as any,
+            }
+
+            const { result } = renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+            await result.current.onSubmitMissingKnowledge([choice])
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).not.toHaveBeenCalled()
+        })
+
+        it('should handle undefined ingestedFiles array', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            const setLoadingMutationsMock = jest.fn()
+
+            const choice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
+                label: 'File Snippet',
+                value: 'file-1',
+                type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+            }
+
+            const mockData = {
+                feedback: {
+                    executions: [{ executionId: mockExecId }],
+                    accountId: 1,
+                    objectType: 'TICKET',
+                    objectId: String(mockTicketId),
+                } as MockFeedback,
+                storeConfiguration: {
+                    helpCenterId: 456,
+                    guidanceHelpCenterId: 789,
+                    snippetHelpCenterId: 101,
+                    trialModeActivatedDatetime: null,
+                    previewModeActivatedDatetime: null,
+                    storeName: 'Test Store',
+                    shopType: 'test',
+                } as MockStoreConfig,
+                actions: [] as any[],
+                guidanceArticles: [] as any[],
+                articles: [] as any[],
+                sourceItems: [] as any[],
+                macros: [] as any[],
+                ingestedFiles: undefined, // Undefined ingestedFiles to test optional chaining
+                storeWebsiteQuestions: [] as any[],
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: null,
+                    suggestedResources: [
+                        {
+                            parsedResource: {
+                                resourceType: 'FILE_EXTERNAL_SNIPPET',
+                                resourceId: 'file-1',
+                                resourceSetId: '101',
+                            },
+                            feedback: {
+                                executionId: mockExecId,
+                            },
+                            executionId: mockExecId,
+                            metadata: {},
+                        },
+                    ],
+                } as any,
+            }
+
+            const { result } = renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+            await result.current.onSubmitMissingKnowledge([choice])
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            feedbackValue: null, // Should be null since ingestedFiles is undefined
+                        }),
+                    ],
+                }),
+            )
+        })
+
+        it('should test getSuggestedResourceFeedbackValue function with different choice types', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            const setLoadingMutationsMock = jest.fn()
+
+            // Test multiple choices in one call to exercise the function more thoroughly
+            const choices: ChoiceOption[] = [
+                {
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Article Title',
+                        content: 'Article Content',
+                    },
+                    label: 'Test Article',
+                    value: 'article-1',
+                    type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                },
+                {
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Guidance Title',
+                        content: 'Guidance Content',
+                    },
+                    label: 'Test Guidance',
+                    value: 'guidance-1',
+                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                },
+                {
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Action Title',
+                        content: 'Action Content',
+                    },
+                    label: 'Test Action',
+                    value: 'action-1',
+                    type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                },
+            ]
+
+            const mockData = {
+                feedback: {
+                    executions: [{ executionId: mockExecId }],
+                    accountId: 1,
+                    objectType: 'TICKET',
+                    objectId: String(mockTicketId),
+                } as MockFeedback,
+                storeConfiguration: {
+                    helpCenterId: 456,
+                    guidanceHelpCenterId: 789,
+                    snippetHelpCenterId: 101,
+                    trialModeActivatedDatetime: null,
+                    previewModeActivatedDatetime: null,
+                    storeName: 'Test Store',
+                    shopType: 'test',
+                } as MockStoreConfig,
+                actions: [{ id: 'action-1', name: 'Test Action' }] as any[],
+                guidanceArticles: [
+                    {
+                        id: 'guidance-1',
+                        locale: 'en-US',
+                        title: 'Test Guidance',
+                    },
+                ] as any[],
+                articles: [
+                    {
+                        id: 'article-1',
+                        translation: {
+                            locale: 'en-US',
+                            title: 'Test Article',
+                        },
+                    },
+                ] as any[],
+                sourceItems: [] as any[],
+                macros: [] as any[],
+                ingestedFiles: [] as any[],
+                storeWebsiteQuestions: [] as any[],
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: null,
+                    suggestedResources: choices.map((choice) => ({
+                        parsedResource: {
+                            resourceType: choice.type,
+                            resourceId: choice.value,
+                            resourceSetId:
+                                choice.type === 'ARTICLE'
+                                    ? '456'
+                                    : choice.type === 'GUIDANCE'
+                                      ? '789'
+                                      : '',
+                        },
+                        feedback: {
+                            executionId: mockExecId,
+                        },
+                        executionId: mockExecId,
+                        metadata: {},
+                    })),
+                } as any,
+            }
+
+            const { result } = renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+            await result.current.onSubmitMissingKnowledge(choices)
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: expect.arrayContaining([
+                        expect.objectContaining({
+                            feedbackValue: expect.stringContaining('ARTICLE'),
+                        }),
+                        expect.objectContaining({
+                            feedbackValue: expect.stringContaining('GUIDANCE'),
+                        }),
+                        expect.objectContaining({
+                            feedbackValue: expect.stringContaining('ACTION'),
+                        }),
+                    ]),
+                }),
+            )
+        })
+
+        it('should handle missing storeWebsiteQuestion scenario', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            const setLoadingMutationsMock = jest.fn()
+
+            const choice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
+                label: 'Store Website Question',
+                value: 'website-question-1',
+                type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+            }
+
+            const mockData = {
+                feedback: {
+                    executions: [{ executionId: mockExecId }],
+                    accountId: 1,
+                    objectType: 'TICKET',
+                    objectId: String(mockTicketId),
+                } as MockFeedback,
+                storeConfiguration: {
+                    helpCenterId: 456,
+                    guidanceHelpCenterId: 789,
+                    snippetHelpCenterId: 101,
+                    trialModeActivatedDatetime: null,
+                    previewModeActivatedDatetime: null,
+                    storeName: 'Test Store',
+                    shopType: 'test',
+                } as MockStoreConfig,
+                actions: [] as any[],
+                guidanceArticles: [] as any[],
+                articles: [] as any[],
+                sourceItems: [] as any[],
+                macros: [] as any[],
+                ingestedFiles: [] as any[],
+                storeWebsiteQuestions: [], // Empty storeWebsiteQuestions to simulate missing resource
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: null,
+                    suggestedResources: [
+                        {
+                            parsedResource: {
+                                resourceType: 'STORE_WEBSITE_QUESTION_SNIPPET',
+                                resourceId: 'website-question-1',
+                                resourceSetId: '101',
+                            },
+                            feedback: {
+                                executionId: mockExecId,
+                            },
+                            executionId: mockExecId,
+                            metadata: {},
+                        },
+                    ],
+                } as any,
+            }
+
+            const { result } = renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+            await result.current.onSubmitMissingKnowledge([choice])
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            feedbackValue: null, // Should be null when resource not found
+                        }),
+                    ],
+                }),
+            )
+        })
+
+        it('should handle storeConfiguration undefined', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            const setLoadingMutationsMock = jest.fn()
+
+            const choice: ChoiceOption = {
+                meta: {
+                    url: 'https://example.com',
+                    title: 'Example Title',
+                    content: 'Example Content',
+                },
+                label: 'Store Website Question',
+                value: 'website-question-1',
+                type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+            }
+
+            const mockData = {
+                feedback: {
+                    executions: [{ executionId: mockExecId }],
+                    accountId: 1,
+                    objectType: 'TICKET',
+                    objectId: String(mockTicketId),
+                } as MockFeedback,
+                storeConfiguration: undefined,
+                actions: [] as any[],
+                guidanceArticles: [] as any[],
+                articles: [] as any[],
+                sourceItems: [] as any[],
+                macros: [] as any[],
+                ingestedFiles: [] as any[],
+                storeWebsiteQuestions: [
+                    {
+                        id: 'website-question-1',
+                        helpCenterId: 101,
+                        url: 'https://store.example.com/faq',
+                    },
+                ] as any[],
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: null,
+                    suggestedResources: [
+                        {
+                            parsedResource: {
+                                resourceType: 'STORE_WEBSITE_QUESTION_SNIPPET',
+                                resourceId: 'website-question-1',
+                                resourceSetId: '101',
+                            },
+                            feedback: {
+                                executionId: mockExecId,
+                            },
+                            executionId: mockExecId,
+                            metadata: {},
+                        },
+                    ],
+                } as any,
+            }
+
+            const { result } = renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+            await result.current.onSubmitMissingKnowledge([choice])
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            feedbackValue: expect.stringContaining(
+                                'STORE_WEBSITE_QUESTION_SNIPPET',
+                            ), // Should still work but with undefined resourceSetId
                         }),
                     ],
                 }),

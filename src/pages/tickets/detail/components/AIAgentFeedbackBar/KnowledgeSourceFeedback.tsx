@@ -106,7 +106,8 @@ const KnowledgeSourceFeedback = ({
                     >
                         <KnowledgeSourceIcon
                             type={mapToKnowledgeSourceType(
-                                resource.resource.resourceType,
+                                resource.resource
+                                    .resourceType as AiAgentKnowledgeResourceTypeEnum,
                             )}
                         />
                         <span>

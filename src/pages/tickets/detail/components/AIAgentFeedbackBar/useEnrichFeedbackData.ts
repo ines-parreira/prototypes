@@ -6,7 +6,7 @@ import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import {
-    useGetMultipleFileIngestion,
+    useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
@@ -39,9 +39,10 @@ const knowledgeResourceOrder = [
     AiAgentKnowledgeResourceTypeEnum.ACTION,
     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
     AiAgentKnowledgeResourceTypeEnum.MACRO,
+    AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+    AiAgentKnowledgeResourceTypeEnum.ORDER,
     AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
     AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
-    AiAgentKnowledgeResourceTypeEnum.ORDER,
 ]
 
 /**
@@ -240,7 +241,9 @@ export const getResourceMetadata = (
             ReturnType<typeof useMultiplePublicResources>['sourceItems']
         >
         ingestedFiles: NonNullable<
-            ReturnType<typeof useGetMultipleFileIngestion>['ingestedFiles']
+            ReturnType<
+                typeof useGetMultipleFileIngestionSnippets
+            >['ingestedFiles']
         >
         macros: NonNullable<ReturnType<typeof useMacroResources>['macros']>
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
@@ -310,13 +313,21 @@ export const getResourceMetadata = (
             const snippet = sourceItems.find(
                 (snippet) => snippet.id === idAsNumber,
             )
+
             if (snippet) {
                 return {
-                    title: snippet.url ?? '',
-                    content: snippet.url ?? '',
-                    url: snippet.url ?? '',
+                    title: snippet.title,
+                    content: snippet.title,
+                    url:
+                        aiAgentRoutes?.urlArticlesDetail(
+                            snippet.ingestionId,
+                            parseInt(id),
+                        ) ?? '',
                 }
             }
+            return emptyMetadata
+        }
+        case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET: {
             const storeWebsiteQuestion = storeWebsiteQuestions.find(
                 (question) => question.article_id === idAsNumber,
             )
@@ -324,26 +335,27 @@ export const getResourceMetadata = (
                 return {
                     title: storeWebsiteQuestion.title,
                     content: storeWebsiteQuestion.title,
-                    url: aiAgentRoutes?.pagesContentDetail(
-                        storeWebsiteQuestion.id,
-                    ),
+                    url:
+                        aiAgentRoutes?.pagesContentDetail(
+                            storeWebsiteQuestion.id,
+                        ) ?? '',
                 }
             }
-
             return emptyMetadata
         }
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
             const fileSnippet = ingestedFiles
-                .filter((file) => file.status === 'SUCCESSFUL')
+                .filter((file) => file.ingestionStatus === 'SUCCESSFUL')
                 .find((fileSnippet) => fileSnippet.id === idAsNumber)
             return fileSnippet
                 ? {
-                      title: fileSnippet.filename,
-                      content: fileSnippet.filename ?? '',
+                      title: fileSnippet.title,
+                      content: fileSnippet.title,
                       url:
-                          fileSnippet.google_storage_url ||
-                          aiAgentRoutes?.knowledge ||
-                          '',
+                          aiAgentRoutes?.fileArticlesDetail(
+                              fileSnippet.ingestionId,
+                              parseInt(id),
+                          ) ?? '',
                   }
                 : emptyMetadata
         }
@@ -380,6 +392,45 @@ export const getResourceMetadata = (
     }
 }
 
+const getResourceType = (
+    resourceId: string,
+    type: AiAgentKnowledgeResourceTypeEnum,
+    {
+        storeWebsiteQuestions,
+        ingestedFiles,
+    }: {
+        ingestedFiles: NonNullable<
+            ReturnType<
+                typeof useGetMultipleFileIngestionSnippets
+            >['ingestedFiles']
+        >
+        storeWebsiteQuestions: NonNullable<
+            ReturnType<
+                typeof useMultipleStoreWebsiteQuestions
+            >['storeWebsiteQuestions']
+        >
+    },
+) => {
+    if (type === AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET) {
+        const storeWebsiteQuestion = storeWebsiteQuestions.find(
+            (question) =>
+                question.article_id.toString() === resourceId.toString(),
+        )
+        if (storeWebsiteQuestion) {
+            return AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET
+        }
+
+        const fileSnippet = ingestedFiles
+            .filter((file) => file.ingestionStatus === 'SUCCESSFUL')
+            .find((fileSnippet) => fileSnippet.id === parseInt(resourceId))
+
+        if (fileSnippet) {
+            return AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET
+        }
+    }
+    return type
+}
+
 /**
  * Merges all fetched resources into final enriched data structure
  */
@@ -406,7 +457,9 @@ const useProcessResources = (
             ReturnType<typeof useMultiplePublicResources>['sourceItems']
         >
         ingestedFiles: NonNullable<
-            ReturnType<typeof useGetMultipleFileIngestion>['ingestedFiles']
+            ReturnType<
+                typeof useGetMultipleFileIngestionSnippets
+            >['ingestedFiles']
         >
         macros: NonNullable<ReturnType<typeof useMacroResources>['macros']>
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
@@ -433,6 +486,16 @@ const useProcessResources = (
 
         executions.forEach((execution) => {
             execution.resources.forEach((resource) => {
+                const type = getResourceType(
+                    resource.resourceId,
+                    resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                    {
+                        storeWebsiteQuestions,
+                        ingestedFiles,
+                    },
+                )
+
+                resource.resourceType = type as typeof resource.resourceType
                 let metadata = getResourceMetadata(
                     {
                         id: resource.resourceId,
@@ -465,7 +528,7 @@ const useProcessResources = (
                               feedbackType: resource.feedback.feedbackType,
                           }
                         : undefined,
-                    metadata: metadata,
+                    metadata,
                 })
             })
 
@@ -507,7 +570,7 @@ const useProcessResources = (
                                 executionId: execution.executionId,
                                 feedback: feedback,
                                 parsedResource,
-                                metadata: metadata,
+                                metadata,
                             })
                         } catch (err) {
                             console.error(
@@ -625,7 +688,7 @@ export const useGetResourceData = ({
 
     // Fetch file snippets from multiple help centers
     const { ingestedFiles, isLoading: isIngesting } =
-        useGetMultipleFileIngestion(
+        useGetMultipleFileIngestionSnippets(
             snippetHelpCenterIds,
             {}, // No specific file IDs needed
             {

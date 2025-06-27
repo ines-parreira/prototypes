@@ -70,15 +70,41 @@ const enrichedDataMock = {
     articles: [
         { id: 4, translation: { title: 'Article Test' }, helpCenterId: 1 },
     ],
-    sourceItems: [{ id: 5, url: 'Source Item Test', helpCenterId: 3 }],
-    ingestedFiles: [{ id: 6, filename: 'Ingested File Test', helpCenterId: 3 }],
+    sourceItems: [
+        {
+            ingestionId: 1,
+            ingestionStatus: 'SUCCESSFUL',
+            id: 5,
+            url: 'Source Item Test',
+            helpCenterId: 3,
+        },
+    ],
+    ingestedFiles: [
+        {
+            ingestionId: 2,
+            ingestionStatus: 'SUCCESSFUL',
+            id: 6,
+            filename: 'Ingested File Test',
+            helpCenterId: 3,
+        },
+    ],
     macros: [
         { id: 1, name: 'Macro Test' },
         { id: 12, name: 'Macro Test 2' },
     ],
     storeWebsiteQuestions: [
-        { id: 8, title: 'Store Website Question Test', helpCenterId: 3 },
-        { id: 9, title: 'Store Website Question Test 2', helpCenterId: 3 },
+        {
+            id: 8,
+            article_id: 1,
+            title: 'Store Website Question Test',
+            helpCenterId: 3,
+        },
+        {
+            id: 9,
+            article_id: 2,
+            title: 'Store Website Question Test 2',
+            helpCenterId: 3,
+        },
     ],
 } as any
 
@@ -91,7 +117,7 @@ const createResource = (
     resource: {
         id: `id_${id}`,
         resourceId: id,
-        resourceType: type,
+        resourceType: type as any,
         resourceSetId: 'set1',
         resourceLocale: 'en-US',
         resourceTitle: `${type} Title`,

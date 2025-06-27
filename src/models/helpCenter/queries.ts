@@ -7,6 +7,7 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query'
 
+import { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import { MutationOverrides } from 'types/query'
 
@@ -833,10 +834,18 @@ export const useGetFileIngestion = (
 /**
  * Hook to fetch ingested files from multiple help centers in parallel
  */
-export const useGetMultipleFileIngestion = (
+export const useGetMultipleFileIngestionSnippets = (
     helpCenterIds: number[],
     fileParams?: { ids?: number[] },
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getFileIngestion>>>,
+    overrides?: UseQueryOptions<
+        Array<
+            BaseArticle & {
+                helpCenterId: number
+                ingestionId: number
+                ingestionStatus: 'FAILED' | 'PENDING' | 'SUCCESSFUL'
+            }
+        >
+    >,
 ) => {
     const { client: helpCenterClient } = useHelpCenterApi()
 
@@ -855,10 +864,40 @@ export const useGetMultipleFileIngestion = (
                 fileParams?.ids ? { ids: fileParams.ids } : undefined,
             ),
             queryFn: async () => {
-                const result = await getFileIngestion(helpCenterClient, {
-                    help_center_id: helpCenterId,
-                    ...(fileParams?.ids ? { ids: fileParams.ids } : {}),
-                })
+                const ingestionResult = await getFileIngestion(
+                    helpCenterClient,
+                    {
+                        help_center_id: helpCenterId,
+                        ...(fileParams?.ids ? { ids: fileParams.ids } : {}),
+                    },
+                )
+
+                const result = (
+                    await Promise.all(
+                        ingestionResult?.data?.map(async (ingestion) => {
+                            const articleResult =
+                                await getFileIngestionArticleTitlesAndStatus(
+                                    helpCenterClient,
+                                    {
+                                        help_center_id: helpCenterId,
+                                        file_ingestion_id: ingestion.id,
+                                    },
+                                )
+
+                            return (articleResult as BaseArticle[])?.map(
+                                (article) => ({
+                                    ingestionId: ingestion.id,
+                                    ingestionStatus: ingestion.status,
+                                    ...article,
+                                    helpCenterId,
+                                }),
+                            )
+                        }) ?? [],
+                    )
+                ).reduce((acc, curr) => {
+                    acc.push(...curr)
+                    return acc
+                }, [])
                 return result
             },
             ...overrides,
@@ -878,14 +917,10 @@ export const useGetMultipleFileIngestion = (
 
     // Combine all ingested files and add helpCenterId to each
     const ingestedFiles = useMemo(() => {
-        return queries.flatMap((query, index) => {
-            const helpCenterId = helpCenterIds[index]
-            return (query.data?.data || []).map((file) => ({
-                ...file,
-                helpCenterId,
-            }))
+        return queries.flatMap((query) => {
+            return query.data ?? []
         })
-    }, [queries, helpCenterIds])
+    }, [queries])
 
     return {
         queries,

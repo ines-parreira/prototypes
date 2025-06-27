@@ -18,6 +18,10 @@ const getArticleIngestionLogsSpy = jest.spyOn(
     resources,
     'getArticleIngestionLogs',
 )
+const getArticleIngestionArticleTitlesAndStatusSpy = jest.spyOn(
+    resources,
+    'getArticleIngestionArticleTitlesAndStatus',
+)
 const reportErrorSpy = jest.spyOn(errors, 'reportError')
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
@@ -37,6 +41,12 @@ const articleIngestionLogDtoFixture = (
         ...overrides,
     } as Components.Schemas.ArticleIngestionLogDto
 }
+
+const baseArticleFixture = (overrides?: any) => ({
+    id: 1,
+    title: 'Test Article',
+    ...overrides,
+})
 
 const queryClient = mockQueryClient()
 const HELP_CENTER_ID_1 = 101
@@ -90,6 +100,19 @@ describe('useMultiplePublicResources', () => {
 
             return Promise.reject(new Error('Invalid help center ID'))
         })
+
+        // Setup mock implementation for getArticleIngestionArticleTitlesAndStatus
+        getArticleIngestionArticleTitlesAndStatusSpy.mockImplementation(
+            (_, args) => {
+                const ingestionId = args.article_ingestion_id
+                return Promise.resolve([
+                    baseArticleFixture({
+                        id: ingestionId,
+                        title: `Article for ingestion ${ingestionId}`,
+                    }),
+                ] as any)
+            },
+        )
     })
 
     it('should handle loading state correctly', async () => {
@@ -140,27 +163,27 @@ describe('useMultiplePublicResources', () => {
         // Check that data is transformed correctly
         expect(result.current.sourceItems).toHaveLength(4)
 
-        // Verify sorting and mapping
+        // Verify the data structure matches what the function returns
         const items = result.current.sourceItems
-        expect(items.some((item) => item.id === HELP_CENTER_ID_1_LOG_1)).toBe(
-            true,
-        )
-        expect(items.some((item) => item.id === HELP_CENTER_ID_1_LOG_2)).toBe(
-            true,
-        )
-        expect(items.some((item) => item.id === HELP_CENTER_ID_2_LOG_1)).toBe(
-            true,
-        )
-        expect(items.some((item) => item.id === HELP_CENTER_ID_2_LOG_2)).toBe(
-            true,
-        )
+        expect(
+            items.some((item) => item?.ingestionId === HELP_CENTER_ID_1_LOG_1),
+        ).toBe(true)
+        expect(
+            items.some((item) => item?.ingestionId === HELP_CENTER_ID_1_LOG_2),
+        ).toBe(true)
+        expect(
+            items.some((item) => item?.ingestionId === HELP_CENTER_ID_2_LOG_1),
+        ).toBe(true)
+        expect(
+            items.some((item) => item?.ingestionId === HELP_CENTER_ID_2_LOG_2),
+        ).toBe(true)
 
         // Check that helpCenterId is added to each item
         expect(
-            items.filter((item) => item.helpCenterId === HELP_CENTER_ID_1),
+            items.filter((item) => item?.helpCenterId === HELP_CENTER_ID_1),
         ).toHaveLength(2)
         expect(
-            items.filter((item) => item.helpCenterId === HELP_CENTER_ID_2),
+            items.filter((item) => item?.helpCenterId === HELP_CENTER_ID_2),
         ).toHaveLength(2)
     })
 

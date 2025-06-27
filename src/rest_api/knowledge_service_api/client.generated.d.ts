@@ -114,6 +114,7 @@ declare namespace Components {
                         | 'MACRO'
                         | 'EXTERNAL_SNIPPET'
                         | 'FILE_EXTERNAL_SNIPPET'
+                        | 'STORE_WEBSITE_QUESTION_SNIPPET'
                     /**
                      * Resource set ID
                      */

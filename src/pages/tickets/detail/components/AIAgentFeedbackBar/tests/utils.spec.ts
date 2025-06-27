@@ -90,6 +90,11 @@ describe('mapToKnowledgeSourceType', () => {
         expect(
             mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.ORDER),
         ).toBe('order')
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+            ),
+        ).toBe('website')
     })
 })
 

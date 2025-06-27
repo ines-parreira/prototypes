@@ -191,77 +191,95 @@ const MissingKnowledgeSelect = ({
                     value: macro.id?.toString(),
                     type: AiAgentKnowledgeResourceTypeEnum.MACRO,
                 })),
-            // EXTERNAL WEBSITE LINKS
-            ...enrichedData.sourceItems
-                .filter((snippet) => {
-                    return !knowledgeResources?.find(
-                        (resource) =>
-                            resource.resource.resourceId ===
-                                snippet.id.toString() &&
-                            resource.resource.resourceType ===
-                                AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
-                    )
-                })
-                .map((snippet) => ({
-                    meta: getResourceMetadata(
-                        {
-                            id: snippet.id.toString(),
-                            type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
-                        },
-                        shopName,
-                        resourcesData,
-                    ),
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${snippet.url}`,
-                    value: snippet.id.toString(),
-                    type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
-                    hide:
-                        snippet.helpCenterId !== snippetHelpCenterId ||
-                        snippet.status !== 'done',
-                })),
-            //EXTERNAL FILES
-            ...enrichedData.ingestedFiles
-                .filter((file) => {
-                    return !knowledgeResources?.find(
-                        (resource) =>
-                            resource.resource.resourceId ===
-                                file.id.toString() &&
-                            resource.resource.resourceType ===
-                                AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
-                    )
-                })
-                .map((snippet) => ({
-                    meta: getResourceMetadata(
-                        {
-                            id: snippet.id.toString(),
-                            type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
-                        },
-                        shopName,
-                        resourcesData,
-                    ),
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${snippet.filename}`,
-                    value: snippet.id.toString(),
-                    type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
-                    hide:
-                        snippet.helpCenterId !== snippetHelpCenterId ||
-                        snippet.status !== 'SUCCESSFUL',
-                })),
             ...enrichedData.storeWebsiteQuestions
                 .filter((question) => {
                     return !knowledgeResources?.find(
                         (resource) =>
                             resource.resource.resourceId ===
-                                question.id.toString() &&
+                                question.article_id.toString() &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                    )
+                })
+                .map((question) => ({
+                    meta: getResourceMetadata(
+                        {
+                            id: question.article_id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                        },
+                        shopName,
+                        resourcesData,
+                    ),
+                    resource: question,
+                    label: `${SIMPLIFIED_RESOURCE_LABELS.store_website}${question.title}`,
+                    value: question.id.toString(),
+                    type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                    hide: question.helpCenterId !== snippetHelpCenterId,
+                })),
+            // EXTERNAL WEBSITE LINKS
+            ...enrichedData.sourceItems
+                .filter((snippet) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            snippet?.id ===
+                                parseInt(resource.resource.resourceId) &&
                             resource.resource.resourceType ===
                                 AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                     )
                 })
-                .map((question) => ({
-                    resource: question,
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.store_website}${question.title}`,
-                    value: question.id.toString(),
-                    type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
-                    hide: question.helpCenterId !== snippetHelpCenterId,
-                })),
+                .map((snippet) => {
+                    const meta = getResourceMetadata(
+                        {
+                            id: snippet.id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                            title: snippet.title,
+                        },
+                        shopName,
+                        resourcesData,
+                    )
+
+                    return {
+                        meta,
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${meta.title}`,
+                        value: snippet.id.toString(),
+                        type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                        hide:
+                            snippet.helpCenterId !== snippetHelpCenterId ||
+                            snippet.ingestionStatus !== 'SUCCESSFUL',
+                    }
+                }),
+            //EXTERNAL FILES
+            ...enrichedData.ingestedFiles
+                .filter((file) => {
+                    return !knowledgeResources?.find(
+                        (resource) =>
+                            file.id ===
+                                parseInt(resource.resource.resourceId) &&
+                            resource.resource.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+                    )
+                })
+                .map((snippet) => {
+                    const meta = getResourceMetadata(
+                        {
+                            id: snippet.id.toString(),
+                            type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+                            title: snippet.title,
+                        },
+                        shopName,
+                        resourcesData,
+                    )
+
+                    return {
+                        meta,
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${meta.title}`,
+                        value: snippet.id.toString(),
+                        type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+                        hide:
+                            snippet.helpCenterId !== snippetHelpCenterId ||
+                            snippet.ingestionStatus !== 'SUCCESSFUL',
+                    }
+                }),
         ] as ChoiceOption[]
     }, [
         enrichedData,

@@ -95,5 +95,7 @@ export const SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP: Record<
     [AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET]: 'link',
     [AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET]:
         'external_snippet',
+    [AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET]:
+        'website',
     [AiAgentKnowledgeResourceTypeEnum.GUIDANCE]: 'guidance',
 }

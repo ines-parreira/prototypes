@@ -4,7 +4,7 @@ import { ldClientMock } from 'jest-launchdarkly-mock'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import {
-    useGetMultipleFileIngestion,
+    useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
@@ -27,7 +27,7 @@ import {
 // Mock all the hooks that our target hooks depend on
 jest.mock('models/helpCenter/queries', () => ({
     useGetMultipleHelpCenterArticleLists: jest.fn(),
-    useGetMultipleFileIngestion: jest.fn(),
+    useGetMultipleFileIngestionSnippets: jest.fn(),
     useGetMultipleHelpCenter: jest.fn(),
 }))
 
@@ -49,6 +49,33 @@ jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
 
 jest.mock('pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions', () => ({
     useMultipleStoreWebsiteQuestions: jest.fn(),
+}))
+
+// Mock the getAiAgentNavigationRoutes function to prevent feature flag issues
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    getAiAgentNavigationRoutes: jest.fn(() => ({
+        guidanceArticleEdit: jest.fn((id) => `/mock/guidance/edit/${id}`),
+        articleEdit: jest.fn((id) => `/mock/article/edit/${id}`),
+        urlArticlesDetail: jest.fn(
+            (ingestionId, articleId) =>
+                `/mock/articles/detail/${ingestionId}/${articleId}`,
+        ),
+        externalSnippetView: jest.fn((id) => `/mock/snippet/view/${id}`),
+        fileSnippetView: jest.fn((id) => `/mock/file/view/${id}`),
+        macroEdit: jest.fn((id) => `/mock/macro/edit/${id}`),
+        actionEdit: jest.fn((id) => `/mock/action/edit/${id}`),
+        editAction: jest.fn((id) => `/mock/action/edit/${id}`),
+        fileArticlesDetail: jest.fn(
+            (ingestionId, id) => `/mock/file/${ingestionId}/${id}`,
+        ),
+        pagesContentDetail: jest.fn(
+            (ingestionId, id) => `/mock/content/${ingestionId}/${id}`,
+        ),
+        orderView: jest.fn((id) => `/mock/order/view/${id}`),
+        storeWebsiteQuestionView: jest.fn(
+            (id) => `/mock/store-website/view/${id}`,
+        ),
+    })),
 }))
 
 const queryClient = new QueryClient({
@@ -111,7 +138,9 @@ describe('useGetResourceData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        ldClientMock.allFlags.mockReturnValue({})
+        ldClientMock.allFlags.mockReturnValue({
+            'ai-shopping-assistant-enabled': false,
+        })
 
         // Setup default mock returns
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
@@ -122,7 +151,7 @@ describe('useGetResourceData', () => {
             helpCenters: [],
             isLoading: false,
         })
-        ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
             ingestedFiles: [],
             isLoading: false,
         })
@@ -142,6 +171,10 @@ describe('useGetResourceData', () => {
         })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: [],
+            isLoading: false,
+        })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [],
             isLoading: false,
         })
     })
@@ -167,10 +200,13 @@ describe('useGetResourceData', () => {
         const mockGuidanceArticles = [
             { id: 2, title: 'Guidance 1', content: 'Guidance Content' },
         ]
-        const mockSourceItems = [{ id: 3, url: 'https://example.com' }]
+        const mockSourceItems = [
+            { id: 3, title: 'External Snippet', ingestionId: 300 },
+        ]
         const mockIngestedFiles = [
             {
                 id: 4,
+                title: 'test.pdf',
                 status: 'SUCCESSFUL',
                 filename: 'test.pdf',
                 google_storage_url: 'https://storage.example.com/test.pdf',
@@ -191,7 +227,7 @@ describe('useGetResourceData', () => {
             helpCenters: mockHelpCenters,
             isLoading: false,
         })
-        ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
             ingestedFiles: mockIngestedFiles,
             isLoading: false,
         })
@@ -320,7 +356,7 @@ describe('useEnrichFeedbackData', () => {
             helpCenters: [],
             isLoading: false,
         })
-        ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
             ingestedFiles: [],
             isLoading: false,
         })
@@ -612,12 +648,12 @@ describe('useEnrichFeedbackData', () => {
             { id: 2, title: 'Guidance Title', content: 'Guidance Content' },
         ]
         const mockSourceItems = [
-            { id: 3, url: 'https://example.com' },
-            { id: 10 },
+            { id: 3, title: 'External Snippet', ingestionId: 300 },
         ]
         const mockIngestedFiles = [
             {
                 id: 4,
+                title: 'test.pdf',
                 status: 'SUCCESSFUL',
                 filename: 'test.pdf',
                 google_storage_url: 'https://storage.example.com/test.pdf',
@@ -657,7 +693,7 @@ describe('useEnrichFeedbackData', () => {
             sourceItems: mockSourceItems,
             isSourceItemsListLoading: false,
         })
-        ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
             ingestedFiles: mockIngestedFiles,
             isLoading: false,
         })
@@ -699,12 +735,12 @@ describe('useEnrichFeedbackData', () => {
             'ACTION',
             'ARTICLE',
             'MACRO',
-            'EXTERNAL_SNIPPET',
+            'STORE_WEBSITE_QUESTION_SNIPPET',
+            'ORDER',
             'EXTERNAL_SNIPPET',
             'EXTERNAL_SNIPPET',
             'EXTERNAL_SNIPPET',
             'FILE_EXTERNAL_SNIPPET',
-            'ORDER',
         ])
 
         // Check that suggestedResources has all resource types
@@ -848,6 +884,380 @@ describe('useEnrichFeedbackData', () => {
             isDeleted: true,
         })
     })
+
+    it('should handle macro pagination when hasNextPage is true', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const mockFetchNextPage = jest.fn()
+        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
+            data: {
+                pages: [{ data: { data: [] } }],
+                pageParams: [{ ticket_id: 123 }],
+            },
+            isLoading: false,
+            hasNextPage: true,
+            fetchNextPage: mockFetchNextPage,
+        })
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [],
+        } as Components.Schemas.FeedbackDto
+
+        renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        // Verify that fetchNextPage was called due to hasNextPage being true
+        expect(mockFetchNextPage).toHaveBeenCalledWith({
+            pageParam: { ticket_id: 123 },
+        })
+    })
+
+    it('should handle missing shopName when generating aiAgentRoutes', () => {
+        const storeConfiguration = createMockStoreConfiguration({
+            storeName: '', // Empty shopName
+        })
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'GUIDANCE',
+                            resourceSetId: '200',
+                            resourceTitle: 'Guidance Title',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: '',
+                        shopType: 'shopify',
+                        faqHelpCenterId: 100,
+                        guidanceHelpCenterId: 200,
+                        snippetHelpCenterId: 300,
+                    },
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        const mockGuidanceArticles = [
+            { id: 1, title: 'Guidance Title', content: 'Guidance Content' },
+        ]
+
+        ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({
+            guidanceArticles: mockGuidanceArticles,
+            isGuidanceArticleListLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        // Should still work but guidance URL might be undefined due to missing shopName
+        expect(result.current.enrichedData.knowledgeResources).toHaveLength(1)
+        expect(
+            result.current.enrichedData.knowledgeResources[0].metadata.title,
+        ).toBe('Guidance Title')
+    })
+
+    it('should handle disabled queries when store configuration is incomplete', () => {
+        const storeConfiguration = createMockStoreConfiguration({
+            storeName: '', // Missing store name
+            shopType: '', // Missing shop type
+        })
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [],
+        } as Components.Schemas.FeedbackDto
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        // Should return empty data since queries are disabled
+        expect(result.current.enrichedData).toEqual({
+            knowledgeResources: [],
+            suggestedResources: [],
+            freeForm: null,
+        })
+    })
+
+    it('should handle undefined data parameter', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: undefined, // No data provided
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        // Should return empty data since no data is provided
+        expect(result.current.enrichedData).toEqual({
+            knowledgeResources: [],
+            suggestedResources: [],
+            freeForm: null,
+        })
+    })
+
+    it('should handle getResourceType for different snippet types', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        // Setup test data for store website questions and file snippets
+        const mockStoreWebsiteQuestions = [
+            {
+                id: 1,
+                article_id: 123,
+                title: 'Store Website Question',
+                helpCenterId: 300,
+            },
+        ]
+
+        const mockIngestedFiles = [
+            {
+                id: 456,
+                title: 'test.pdf',
+                ingestionStatus: 'SUCCESSFUL',
+                filename: 'test.pdf',
+                google_storage_url: 'https://storage.example.com/test.pdf',
+                ingestionId: 300,
+            },
+        ]
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '123', // This should match store website question
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'Store Website Question',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-2',
+                            resourceId: '456', // This should match file snippet
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'File Snippet',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-3',
+                            resourceId: '789', // This should remain as external snippet
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'Regular Snippet',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: 'test-store',
+                        shopType: 'shopify',
+                        faqHelpCenterId: 100,
+                        guidanceHelpCenterId: 200,
+                        snippetHelpCenterId: 300,
+                    },
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: mockStoreWebsiteQuestions,
+            isLoading: false,
+        })
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
+            ingestedFiles: mockIngestedFiles,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        const resourceTypes =
+            result.current.enrichedData.knowledgeResources.map(
+                (kr) => kr.resource.resourceType,
+            )
+
+        // Should include STORE_WEBSITE_QUESTION_SNIPPET and FILE_EXTERNAL_SNIPPET types
+        expect(resourceTypes).toContain('STORE_WEBSITE_QUESTION_SNIPPET')
+        expect(resourceTypes).toContain('FILE_EXTERNAL_SNIPPET')
+        expect(resourceTypes).toContain('EXTERNAL_SNIPPET')
+    })
+
+    it('should handle default case in getResourceMetadata', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'UNKNOWN_TYPE', // This will trigger the default case
+                            resourceSetId: '100',
+                            resourceTitle: 'Unknown Resource',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: 'test-store',
+                        shopType: 'shopify',
+                        faqHelpCenterId: 100,
+                        guidanceHelpCenterId: 200,
+                        snippetHelpCenterId: 300,
+                    },
+                },
+            ],
+        } as any // Use any to bypass type checking for unknown resource type
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(
+            result.current.enrichedData.knowledgeResources[0].metadata,
+        ).toEqual({
+            title: '',
+            content: '',
+            isDeleted: true,
+        })
+    })
+
+    it('should handle FILE_EXTERNAL_SNIPPET with unsuccessful ingestion status', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const mockIngestedFiles = [
+            {
+                id: 4,
+                title: 'failed-file.pdf',
+                ingestionStatus: 'FAILED', // Not successful
+                filename: 'failed-file.pdf',
+                google_storage_url:
+                    'https://storage.example.com/failed-file.pdf',
+                ingestionId: 300,
+            },
+        ]
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '4',
+                            resourceType: 'FILE_EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'Failed File',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: 'test-store',
+                        shopType: 'shopify',
+                        faqHelpCenterId: 100,
+                        guidanceHelpCenterId: 200,
+                        snippetHelpCenterId: 300,
+                    },
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
+            ingestedFiles: mockIngestedFiles,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    ticketId: 123,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        // Should return empty metadata since file ingestion was not successful
+        expect(
+            result.current.enrichedData.knowledgeResources[0].metadata,
+        ).toEqual({
+            title: '',
+            content: '',
+            isDeleted: true,
+        })
+    })
 })
 
 describe('useGetResourcesReasoningMetadata', () => {
@@ -866,12 +1276,14 @@ describe('useGetResourcesReasoningMetadata', () => {
             resourceId: '3',
             resourceSetId: '300',
             resourceType: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+            resourceTitle: 'https://example.com',
         },
         {
             resourceId: '4',
             resourceSetId: '300',
             resourceType:
                 AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+            resourceTitle: 'test.pdf',
         },
         {
             resourceId: '5',
@@ -893,6 +1305,50 @@ describe('useGetResourcesReasoningMetadata', () => {
             {children}
         </QueryClientProvider>
     )
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        queryClient.clear()
+        ldClientMock.allFlags.mockReturnValue({
+            'ai-shopping-assistant-enabled': false,
+        })
+
+        // Setup default mock returns for useGetResourcesReasoningMetadata tests
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [],
+            isLoading: false,
+        })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: [],
+            isLoading: false,
+        })
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
+            ingestedFiles: [],
+            isLoading: false,
+        })
+        ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+        ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
+            sourceItems: [],
+            isSourceItemsListLoading: false,
+        })
+        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
+            data: { pages: [{ data: { data: [] } }] },
+            isLoading: false,
+            hasNextPage: false,
+            fetchNextPage: jest.fn(),
+        })
+        ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [],
+            isLoading: false,
+        })
+    })
 
     it('should correctly process resources and call useGetResourceData with correct parameters', () => {
         const storeConfiguration = createMockStoreConfiguration()
@@ -941,13 +1397,22 @@ describe('useGetResourcesReasoningMetadata', () => {
         const mockGuidanceArticles = [
             { id: 2, title: 'Guidance Title', content: 'Guidance Content' },
         ]
-        const mockSourceItems = [{ id: 3, url: 'https://example.com' }]
+        const mockSourceItems = [
+            {
+                id: 3,
+                title: 'https://example.com',
+                url: 'https://example.com',
+                ingestionId: 300,
+            },
+        ]
         const mockIngestedFiles = [
             {
                 id: 4,
-                status: 'SUCCESSFUL',
+                title: 'test.pdf',
+                ingestionStatus: 'SUCCESSFUL',
                 filename: 'test.pdf',
                 google_storage_url: 'https://storage.example.com/test.pdf',
+                ingestionId: 300,
             },
         ]
         const mockMacros = [
@@ -972,7 +1437,7 @@ describe('useGetResourcesReasoningMetadata', () => {
             sourceItems: mockSourceItems,
             isSourceItemsListLoading: false,
         })
-        ;(useGetMultipleFileIngestion as jest.Mock).mockReturnValue({
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
             ingestedFiles: mockIngestedFiles,
             isLoading: false,
         })
@@ -1020,7 +1485,7 @@ describe('useGetResourcesReasoningMetadata', () => {
         expect(result.current.data[2]).toEqual({
             title: 'https://example.com',
             content: 'https://example.com',
-            url: 'https://example.com',
+            url: '/mock/articles/detail/300/3',
         })
 
         expect(result.current.data[3]).toEqual({
