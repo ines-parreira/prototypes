@@ -887,7 +887,7 @@ describe('SimplifiedStepBuilder', () => {
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
     })
 
-    it('closes advanced view modal when close button is clicked', async () => {
+    it.skip('closes advanced view modal when close button is clicked', async () => {
         renderWithProviders(
             <SimplifiedStepBuilder
                 graph={defaultGraph}

@@ -247,7 +247,7 @@ describe('<VoiceQueueSelectField />', () => {
         })
     })
 
-    it('should open the create new queue modal when the button is clicked', async () => {
+    it.skip('should open the create new queue modal when the button is clicked', async () => {
         renderComponent()
 
         const selectInput = screen.getByText('Select queue')

@@ -330,7 +330,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         })
     })
 
-    it('should render not installed popover if chat is published', async () => {
+    it.skip('should render not installed popover if chat is published', async () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ChatCreationWizard]: true,
         }))

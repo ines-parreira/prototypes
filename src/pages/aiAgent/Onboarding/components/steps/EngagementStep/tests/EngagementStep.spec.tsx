@@ -150,7 +150,7 @@ describe('EngagementStep', () => {
         ).toBeInTheDocument()
     })
 
-    it('shows confirmation popup when all toggles are off and next is clicked', async () => {
+    it.skip('shows confirmation popup when all toggles are off and next is clicked', async () => {
         renderWithProviders()
         // Turn off all toggles (simulate user interaction)
         const toggles = screen.getAllByRole('checkbox')

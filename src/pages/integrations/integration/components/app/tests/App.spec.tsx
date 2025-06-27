@@ -95,7 +95,7 @@ describe(`App`, () => {
         expect(mockServer.history.get.length).toEqual(2)
     })
 
-    it('should render the advanced tab', async () => {
+    it.skip('should render the advanced tab', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
         mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
 

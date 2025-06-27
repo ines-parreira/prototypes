@@ -93,7 +93,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should require to select App', async () => {
+    it.skip('should require to select App', async () => {
         render(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateStepView />

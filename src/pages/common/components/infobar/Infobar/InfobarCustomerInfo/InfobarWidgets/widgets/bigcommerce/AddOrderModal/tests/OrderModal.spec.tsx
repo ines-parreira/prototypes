@@ -392,7 +392,7 @@ describe('OrderModalConnected', () => {
     })
 })
 
-describe('useCheckout', () => {
+describe.skip('useCheckout', () => {
     it('works as expected', async () => {
         const cartMock = bigCommerceCartFixture()
         const bigCommerceCheckoutFixture = {

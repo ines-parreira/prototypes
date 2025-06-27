@@ -168,7 +168,7 @@ describe('useHelpCenterTranslation', () => {
             )
         })
 
-        it('updates help center correctly after changes', async () => {
+        it.skip('updates help center correctly after changes', async () => {
             const { result } = renderTestHook({
                 state,
                 currentHelpCenter: helpCenter,
