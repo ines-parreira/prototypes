@@ -1,49 +1,44 @@
-@import '~froala-editor/css/froala_editor.pkgd.min.css';
-
+@import (reference) '~css/typography.less';
 :local {
+    .container {
+        position: relative;
+    }
+
+    .variables {
+        position: absolute;
+        right: 16px;
+        bottom: 6px;
+        z-index: 1;
+    }
+
     .label {
-        margin-bottom: 8px;
+        margin-bottom: var(--layout-spacing-xs);
     }
 
     .editor {
-        border-radius: 4px !important;
-        border: 1px solid var(--neutral-grey-3) !important;
+        min-height: 150px;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &.hasError {
+            border-color: var(--feedback-error);
+        }
 
         :global {
-            .fr-wrapper {
-                position: static;
-                border: none !important;
+            .DraftEditor-root {
+                min-height: 136px;
             }
-            // Move counter to the toolbar
-            .fr-counter {
-                position: absolute;
-                bottom: 3px;
-                right: 0;
-                margin-right: 2px;
-                margin-bottom: 0 !important;
-            }
-            .fr-newline {
-                display: none;
-            }
-            .fr-wrapper .fr-placeholder {
-                white-space: normal;
-            }
-            .fr-wrapper > .fr-view {
-                font-size: 14px;
-                font-family: Inter;
 
-                p,
-                ul,
-                ol {
-                    margin-bottom: 5px;
-                }
-            }
-            .fr-toolbar {
-                border: none !important;
-            }
-            .fr-wraper {
-                border: none !important;
+            .DraftEditor-editorContainer {
+                border: none;
             }
         }
+    }
+
+    .error {
+        .caption-regular();
+        color: var(--feedback-error);
+        margin-top: var(--layout-spacing-xxs);
     }
 }

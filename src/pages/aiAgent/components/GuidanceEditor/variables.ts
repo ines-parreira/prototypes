@@ -113,8 +113,4 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
     },
 ]
 
-export const GUIDANCE_EDITOR_DEFAULT_MAX_CHARS = 5000
-export const GUIDANCE_EDITOR_DEFAULT_HEIGHT = 320
 export const GUIDANCE_EDITOR_DEFAULT_LABEL = 'Instructions'
-export const GUIDANCE_EDITOR_DEFAULT_PLACEHOLDER =
-    'e.g. If no order data is found for a customer asking a question about their order, you will ask the customer to confirm their order number and the email address.'

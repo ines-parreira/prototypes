@@ -56,18 +56,10 @@ jest.mock('pages/aiAgent/components/GuidanceEditor/GuidanceEditor', () => ({
     GuidanceEditor: (props: any) => (
         <textarea
             data-testid="editor"
-            value={props.value}
-            onChange={(e) => props.onChange(e.target.value)}
-        />
-    ),
-}))
-
-jest.mock('pages/aiAgent/components/GuidanceEditor/NewGuidanceEditor', () => ({
-    NewGuidanceEditor: (props: any) => (
-        <textarea
-            data-testid="new-editor"
-            value={props.value}
-            onChange={(e) => props.handleUpdateContent(e.target.value)}
+            value={props.content}
+            onChange={(e) => {
+                props.handleUpdateContent(e.target.value)
+            }}
         />
     ),
 }))

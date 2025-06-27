@@ -4,20 +4,12 @@ import _isEqual from 'lodash/isEqual'
 
 import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { HelpCenter, LocalArticleTranslation } from 'models/helpCenter/types'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
-import { NewGuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/NewGuidanceEditor'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
-import {
-    GUIDANCE_EDITOR_DEFAULT_HEIGHT,
-    GUIDANCE_EDITOR_DEFAULT_LABEL,
-    GUIDANCE_EDITOR_DEFAULT_MAX_CHARS,
-    GUIDANCE_EDITOR_DEFAULT_PLACEHOLDER,
-} from 'pages/aiAgent/components/GuidanceEditor/variables'
+import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
@@ -61,11 +53,6 @@ export const ManageGuidanceForm = ({
     helpCenter,
     guidance,
 }: ManageGuidanceFormProps) => {
-    const isGuidanceTaggingSystemEnabled = useFlag(
-        FeatureFlagKey.AIAgentGuidanceTaggingSystem,
-        false,
-    )
-
     const { openPreview, closeModal, selectedResource } =
         useKnowledgeSourceSideBar()
     const {
@@ -346,30 +333,19 @@ export const ManageGuidanceForm = ({
                     value={formState.name}
                     maxLength={135}
                 />
-                {isGuidanceTaggingSystemEnabled ? (
-                    <div>
-                        <NewGuidanceEditor
-                            content={formState.content}
-                            handleUpdateContent={onContentChange}
-                            label={GUIDANCE_EDITOR_DEFAULT_LABEL}
-                            shopName={shopName}
-                            availableActions={guidanceActions}
-                        />
-                        <Caption isValid>
-                            Provide instructions on how AI Agent should handle
-                            this situation.
-                        </Caption>
-                    </div>
-                ) : (
+                <div>
                     <GuidanceEditor
-                        onChange={onContentChange}
+                        content={formState.content}
+                        handleUpdateContent={onContentChange}
                         label={GUIDANCE_EDITOR_DEFAULT_LABEL}
-                        value={formState.content}
-                        placeholder={GUIDANCE_EDITOR_DEFAULT_PLACEHOLDER}
-                        maxChars={GUIDANCE_EDITOR_DEFAULT_MAX_CHARS}
-                        height={GUIDANCE_EDITOR_DEFAULT_HEIGHT}
+                        shopName={shopName}
+                        availableActions={guidanceActions}
                     />
-                )}
+                    <Caption isValid>
+                        Provide instructions on how AI Agent should handle this
+                        situation.
+                    </Caption>
+                </div>
             </Drawer.Content>
             <Drawer.Footer className={css.footer}>
                 <Button isDisabled={isSubmitDisabled} onClick={handleSubmit}>

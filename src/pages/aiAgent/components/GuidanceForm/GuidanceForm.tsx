@@ -10,12 +10,7 @@ import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {
-    GUIDANCE_EDITOR_DEFAULT_HEIGHT,
-    GUIDANCE_EDITOR_DEFAULT_LABEL,
-    GUIDANCE_EDITOR_DEFAULT_MAX_CHARS,
-    GUIDANCE_EDITOR_DEFAULT_PLACEHOLDER,
-} from 'pages/aiAgent/components/GuidanceEditor/variables'
+import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -34,7 +29,6 @@ import { NotificationStatus } from 'state/notifications/types'
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { GuidanceFormFields } from '../../types'
 import { GuidanceEditor } from '../GuidanceEditor/GuidanceEditor'
-import { NewGuidanceEditor } from '../GuidanceEditor/NewGuidanceEditor'
 
 import css from './GuidanceForm.less'
 
@@ -67,10 +61,6 @@ export const GuidanceForm = ({
     helpCenterId,
     availableActions,
 }: Props) => {
-    const isGuidanceTaggingSystemEnabled = useFlag(
-        FeatureFlagKey.AIAgentGuidanceTaggingSystem,
-        false,
-    )
     const areActionsInGuidanceEnabled = useFlag<boolean>(
         FeatureFlagKey.AiAgentVariablesAndActionsInGuidance,
         false,
@@ -243,30 +233,19 @@ export const GuidanceForm = ({
                         value={formState.name}
                         maxLength={135}
                     />
-                    {isGuidanceTaggingSystemEnabled ? (
-                        <div className={css.editorContainer}>
-                            <NewGuidanceEditor
-                                content={formState.content}
-                                handleUpdateContent={onContentChange}
-                                label={GUIDANCE_EDITOR_DEFAULT_LABEL}
-                                shopName={shopName}
-                                availableActions={availableActions}
-                            />
-                            <Caption isValid>
-                                Provide instructions on how AI Agent should
-                                handle this situation.
-                            </Caption>
-                        </div>
-                    ) : (
+                    <div className={css.editorContainer}>
                         <GuidanceEditor
-                            onChange={onContentChange}
+                            content={formState.content}
+                            handleUpdateContent={onContentChange}
                             label={GUIDANCE_EDITOR_DEFAULT_LABEL}
-                            value={formState.content}
-                            placeholder={GUIDANCE_EDITOR_DEFAULT_PLACEHOLDER}
-                            maxChars={GUIDANCE_EDITOR_DEFAULT_MAX_CHARS}
-                            height={GUIDANCE_EDITOR_DEFAULT_HEIGHT}
+                            shopName={shopName}
+                            availableActions={availableActions}
                         />
-                    )}
+                        <Caption isValid>
+                            Provide instructions on how AI Agent should handle
+                            this situation.
+                        </Caption>
+                    </div>
 
                     <ToggleField
                         value={formState.isVisible}
@@ -346,44 +325,34 @@ export const GuidanceForm = ({
                     </p>
                     <p>
                         Instructions can be context specific, for example:{' '}
-                        {isGuidanceTaggingSystemEnabled ? (
-                            <i>
-                                <ToolbarProvider
-                                    guidanceVariables={[
-                                        {
-                                            name: 'shopify',
-                                            variables: [
-                                                {
-                                                    name: 'Shipping address - Country',
-                                                    value: 'customer.country',
-                                                    category: 'customer',
-                                                },
-                                            ],
-                                        },
-                                    ]}
-                                >
-                                    <b>
-                                        “If{' '}
-                                        <GuidanceVariableTag value="customer.country">
-                                            <span className={css.variable}>
-                                                Shipping address - Country
-                                            </span>
-                                        </GuidanceVariableTag>{' '}
-                                        is from Canada or Australia, let them
-                                        know that prices may differ slightly due
-                                        to currency conversion.”
-                                    </b>
-                                </ToolbarProvider>
-                            </i>
-                        ) : (
-                            <i>
+                        <i>
+                            <ToolbarProvider
+                                guidanceVariables={[
+                                    {
+                                        name: 'shopify',
+                                        variables: [
+                                            {
+                                                name: 'Shipping address - Country',
+                                                value: 'customer.country',
+                                                category: 'customer',
+                                            },
+                                        ],
+                                    },
+                                ]}
+                            >
                                 <b>
-                                    “For pricing questions, you will point
-                                    customers to our pricing page:
-                                    https://example.com/pricing”
+                                    “If{' '}
+                                    <GuidanceVariableTag value="customer.country">
+                                        <span className={css.variable}>
+                                            Shipping address - Country
+                                        </span>
+                                    </GuidanceVariableTag>{' '}
+                                    is from Canada or Australia, let them know
+                                    that prices may differ slightly due to
+                                    currency conversion.”
                                 </b>
-                            </i>
-                        )}
+                            </ToolbarProvider>
+                        </i>
                     </p>
                     <p>
                         Instructions can also be general:{' '}

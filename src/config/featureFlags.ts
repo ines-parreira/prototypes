@@ -13,7 +13,6 @@ export enum FeatureFlagKey {
     AiAgentChat = 'ai-agent-for-chat',
     AiAgentFilesAndUrlsKnowledgeVisibilityButton = 'ai-agent-files-and-urls-knowledge-visibility-button',
     AiAgentCustomLanguage = 'ai-agent-custom-language',
-    AIAgentGuidanceTaggingSystem = 'ai-agent-guidance-tagging-system',
     AiAgentKnowledgeTab = 'ai-agent-knowledge-tab',
     AiAgentNewActivationXp = 'ai-agent-new-activation-xp',
     AiAgentOnboardingMLPreview = 'linear.task_MARCVT-3628.ml-preview',

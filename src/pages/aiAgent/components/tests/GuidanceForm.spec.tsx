@@ -5,7 +5,6 @@ import { fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { mockStore } from 'utils/testing'
 
 import { GuidanceForm } from '../GuidanceForm/GuidanceForm'
@@ -43,8 +42,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     }),
 }))
 
-const mockUseFlag = jest.requireMock('core/flags').useFlag as jest.Mock<boolean>
-
 describe('GuidanceForm', () => {
     const defaultProps = {
         shopName: 'test-shop',
@@ -64,9 +61,7 @@ describe('GuidanceForm', () => {
         )
     }
 
-    it('renders NewGuidanceEditor when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
-
+    it('renders GuidanceEditor', () => {
         const { container } = renderWithProvider(
             <GuidanceForm {...defaultProps} />,
         )
@@ -74,26 +69,9 @@ describe('GuidanceForm', () => {
         expect(
             container.querySelector('.rich-textarea-wrapper'),
         ).toBeInTheDocument()
-        expect(container.querySelector('textarea')).not.toBeInTheDocument()
     })
 
-    it('renders GuidanceEditor when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { container } = renderWithProvider(
-            <GuidanceForm {...defaultProps} />,
-        )
-
-        expect(
-            container.querySelector('.rich-textarea-wrapper'),
-        ).not.toBeInTheDocument()
-
-        expect(container.querySelector('textarea')).toBeInTheDocument()
-    })
-
-    it('passes correct props to NewGuidanceEditor when enabled', () => {
-        mockUseFlag.mockReturnValue(true)
-
+    it('passes correct props to GuidanceEditor', () => {
         const { container } = renderWithProvider(
             <GuidanceForm
                 {...defaultProps}
@@ -114,17 +92,7 @@ describe('GuidanceForm', () => {
         expect(editorContent?.textContent).toBe('Test Content')
     })
 
-    it('verifies feature flag is checked with correct key', () => {
-        renderWithProvider(<GuidanceForm {...defaultProps} />)
-
-        expect(mockUseFlag).toHaveBeenCalledWith(
-            FeatureFlagKey.AIAgentGuidanceTaggingSystem,
-            false,
-        )
-    })
-
-    it('submits the form with correct values when using NewGuidanceEditor', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('submits the form with correct values when using GuidanceEditor', () => {
         const onSubmit = jest.fn()
 
         const { getByLabelText, getByText } = renderWithProvider(
@@ -155,8 +123,6 @@ describe('GuidanceForm', () => {
     })
 
     it('handles visibility toggle correctly', () => {
-        mockUseFlag.mockReturnValue(true)
-
         const { getByLabelText } = renderWithProvider(
             <GuidanceForm
                 {...defaultProps}

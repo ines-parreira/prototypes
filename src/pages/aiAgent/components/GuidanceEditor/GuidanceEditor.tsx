@@ -1,88 +1,104 @@
+import React, { useMemo } from 'react'
+
+import { EditorState } from 'draft-js'
+
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import { FROALA_KEY } from 'config'
-import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
+import { UploadType } from 'common/types'
+import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
+import RichField from 'pages/common/forms/RichField/RichField'
+import { convertToHTML } from 'utils/editor'
+
+import { guidanceVariables } from './variables'
 
 import css from './GuidanceEditor.less'
 
-const ALLOWED_HTML_TAGS = [
-    'p',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'ul',
-    'ol',
-    'li',
-    'strong',
-    'em',
-    'u',
-    's',
-    'a',
-] as const
-
-// cf https://froala.com/wysiwyg-editor/docs/options
-const config = {
-    key: FROALA_KEY,
-    attribution: false, // Remove copyrights
-    htmlAllowedTags: ALLOWED_HTML_TAGS,
-    toolbarSticky: false,
-    typingTimer: 150, // allows updating the model much faster
-    toolbarBottom: true,
-    quickInsertEnabled: false,
-    toolbarButtons: [
-        'bold',
-        'italic',
-        'underline',
-        'insertLink',
-        'formatUL',
-        'formatOLSimple',
-        'charCounter',
-    ],
+type GuidanceEditorProps = {
+    content: string
+    shopName: string
+    availableActions: GuidanceAction[]
+    handleUpdateContent: (content: string) => void
+    onBlur?: () => void
+    label?: string
 }
 
-const TOOLBAR_HEIGHT = 48
+const textLimit = 5000
+const toolbarActions = [
+    ActionName.Bold,
+    ActionName.Italic,
+    ActionName.Underline,
+    ActionName.Link,
+    ActionName.Emoji,
+    ActionName.GuidanceVariable,
+    ActionName.GuidanceAction,
+    ActionName.BulletedList,
+    ActionName.OrderedList,
+]
 
-type Props = {
-    onChange: (value: string) => void
-    placeholder?: string
-    maxChars?: number
-    value: string
-    height?: number
-    label: string
-}
-
-export const GuidanceEditor = ({
-    placeholder,
-    onChange,
-    value,
+export function GuidanceEditor({
+    content,
+    shopName,
+    availableActions,
+    handleUpdateContent,
+    onBlur,
     label,
-    maxChars,
-    height,
-}: Props) => {
+}: GuidanceEditorProps) {
+    const richFieldValue = useMemo(
+        () => ({
+            html: content,
+            text: content,
+        }),
+        [content],
+    )
+
+    const handleChange = (editorState: EditorState) => {
+        const currentContent = editorState.getCurrentContent()
+        const text = currentContent.getPlainText()
+
+        if (text === content) return
+        const convertedHTML = convertToHTML(currentContent)
+
+        if (convertedHTML === content || text.length > textLimit) {
+            return
+        }
+
+        if (text === '') {
+            handleUpdateContent('')
+            return
+        }
+
+        handleUpdateContent(convertedHTML)
+    }
+
     return (
         <div>
             <Label className={css.label} isRequired>
                 {label}
             </Label>
 
-            <FroalaEditorComponent
-                model={value}
-                tag="textarea"
-                config={{
-                    ...config,
-                    editorClass: css.editor,
-                    placeholderText: placeholder,
-                    charCounterMax: maxChars,
-                    heightMin:
-                        height !== undefined
-                            ? height - TOOLBAR_HEIGHT
-                            : undefined,
-                }}
-                onModelChange={onChange}
-            />
+            <ToolbarProvider
+                canAddProductCard={true}
+                canAddDiscountCodeLink={false}
+                canAddVideoPlayer={false}
+                guidanceVariables={guidanceVariables}
+                guidanceActions={availableActions}
+                shopName={shopName}
+            >
+                <RichField
+                    minHeight={320}
+                    maxLength={textLimit}
+                    value={richFieldValue}
+                    allowExternalChanges
+                    onChange={handleChange}
+                    displayedActions={toolbarActions}
+                    noAutoScroll
+                    uploadType={UploadType.PublicAttachment}
+                    onBlur={onBlur}
+                    getGuidanceVariables={() => guidanceVariables}
+                />
+            </ToolbarProvider>
         </div>
     )
 }
