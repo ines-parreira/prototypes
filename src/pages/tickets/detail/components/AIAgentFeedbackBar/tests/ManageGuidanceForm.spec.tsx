@@ -80,16 +80,20 @@ jest.mock('pages/common/forms/input/InputField', () => (props: any) => (
     />
 ))
 
-jest.mock('pages/common/components/Drawer', () => ({
-    Drawer: {
-        Header: ({ children }: any) => (
-            <div data-testid="drawer-header">{children}</div>
-        ),
-        HeaderActions: ({ children }: any) => <div>{children}</div>,
-        Content: ({ children }: any) => <div>{children}</div>,
-        Footer: ({ children }: any) => <div>{children}</div>,
-    },
-}))
+jest.mock('pages/common/components/Drawer', () => {
+    const actual = jest.requireActual('pages/common/components/Drawer')
+
+    return {
+        Drawer: {
+            ...actual.Drawer,
+            Header: ({ children }: any) => (
+                <div data-testid="drawer-header">{children}</div>
+            ),
+            Content: ({ children }: any) => <div>{children}</div>,
+            Footer: ({ children }: any) => <div>{children}</div>,
+        },
+    }
+})
 
 jest.mock(
     'pages/common/components/UnsavedChangesModal',
@@ -621,5 +625,54 @@ describe('ManageGuidanceForm', () => {
                 url: '/guidance/1',
             })
         })
+    })
+
+    it('should call openPreview if close button is clicked while editing', async () => {
+        const openPreviewMock = jest.fn()
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            openPreview: openPreviewMock,
+        })
+
+        render(
+            <ManageGuidanceForm
+                shopName="Demo"
+                shopType="shopify"
+                helpCenter={helpCenter}
+                guidance={{
+                    id: 1,
+                    title: 'Old title',
+                    content: 'Old content',
+                    visibility: 'PUBLIC',
+                    locale: 'en-US',
+                    lastUpdated: '2023-10-01T00:00:00Z',
+                    templateKey: '',
+                }}
+            />,
+        )
+
+        const closeButton = screen.getByText('keyboard_tab')
+        fireEvent.click(closeButton)
+
+        expect(openPreviewMock).toHaveBeenCalled()
+    })
+
+    it('should call onClose if close button is clicked while creating', async () => {
+        const closeModalMock = jest.fn()
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            closeModal: closeModalMock,
+        })
+
+        render(
+            <ManageGuidanceForm
+                shopName="Demo"
+                shopType="shopify"
+                helpCenter={helpCenter}
+            />,
+        )
+
+        const closeButton = screen.getByText('keyboard_tab')
+        fireEvent.click(closeButton)
+
+        expect(closeModalMock).toHaveBeenCalled()
     })
 })

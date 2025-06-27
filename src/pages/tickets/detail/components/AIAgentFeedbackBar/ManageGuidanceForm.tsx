@@ -35,6 +35,11 @@ import { getGuidanceUrl } from 'pages/tickets/detail/components/AIAgentFeedbackB
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+const FORM_ACTION_TYPE = {
+    CREATE: 'create',
+    UPDATE: 'update',
+}
+
 const FORM_INITIAL_STATE = {
     name: '',
     content: '',
@@ -70,7 +75,10 @@ export const ManageGuidanceForm = ({
         setHasUnsavedChangesRef,
     } = useUnsavedChangesModal()
 
-    const actionType = guidance ? 'update' : 'create'
+    const actionType = guidance
+        ? FORM_ACTION_TYPE.UPDATE
+        : FORM_ACTION_TYPE.CREATE
+
     const initialFormState = useMemo(
         () =>
             guidance
@@ -123,6 +131,7 @@ export const ManageGuidanceForm = ({
         deleteGuidanceArticle,
         createGuidanceArticle,
         isGuidanceArticleUpdating,
+        isGuidanceArticleDeleting,
     } = useGuidanceArticleMutation({
         guidanceHelpCenterId: helpCenter.id,
     })
@@ -196,12 +205,13 @@ export const ManageGuidanceForm = ({
     const isSubmitDisabled =
         isLoadingAiGuidances ||
         isLoadingActions ||
+        isGuidanceArticleDeleting ||
         isGuidanceArticleUpdating ||
         isLoadingGuidanceArticleList ||
         isLoadingOnboardingNotificationState ||
         !formState.name ||
         !formState.content ||
-        (actionType === 'update' && !isFormDirty)
+        (actionType === FORM_ACTION_TYPE.UPDATE && !isFormDirty)
 
     const handleDelete = useCallback(
         async (id: number) => {
@@ -235,7 +245,7 @@ export const ManageGuidanceForm = ({
         try {
             await onSubmit(formState)
             const notificationMessage =
-                actionType === 'update'
+                actionType === FORM_ACTION_TYPE.UPDATE
                     ? 'Guidance successfully saved'
                     : 'Guidance successfully created'
             void dispatch(
@@ -306,7 +316,9 @@ export const ManageGuidanceForm = ({
                 <Drawer.HeaderActions
                     onClose={() =>
                         guardUnsavedChanges(() =>
-                            openPreview(selectedResource!),
+                            actionType === FORM_ACTION_TYPE.UPDATE
+                                ? openPreview(selectedResource!)
+                                : closeModal(),
                         )
                     }
                     closeButtonId="close-button"
@@ -361,7 +373,7 @@ export const ManageGuidanceForm = ({
             </Drawer.Content>
             <Drawer.Footer className={css.footer}>
                 <Button isDisabled={isSubmitDisabled} onClick={handleSubmit}>
-                    {actionType === 'update'
+                    {actionType === FORM_ACTION_TYPE.UPDATE
                         ? 'Save Changes'
                         : 'Create Guidance'}
                 </Button>

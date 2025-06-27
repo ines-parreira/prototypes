@@ -169,6 +169,10 @@ export const useGuidanceArticleMutation = ({
 
     const createGuidanceArticle = useCallback(
         async (createGuidanceArticle: CreateGuidanceArticle) => {
+            if (!createGuidanceArticle.content) {
+                throw new Error('Content is required for creating the article')
+            }
+
             const payload = mapGuidanceToArticleApi(createGuidanceArticle)
 
             try {
@@ -198,6 +202,10 @@ export const useGuidanceArticleMutation = ({
             updateGuidanceArticle: UpdateGuidanceArticle,
             { articleId, locale }: { articleId: number; locale: LocaleCode },
         ) => {
+            if (!updateGuidanceArticle.content) {
+                throw new Error('Content is required for updating the article')
+            }
+
             const payload = mapUpdateGuidanceArticleToArticleApi(
                 updateGuidanceArticle,
             )

@@ -119,161 +119,215 @@ describe('useGuidanceArticleMutation', () => {
                 },
             })
         })
+    })
 
-        it('should return correct loading state', () => {
-            mockedUseCopyArticle.mockReturnValue({
-                mutateAsync: mutateAsyncMock,
-                isLoading: true,
-            } as any)
+    it('should return correct loading state', () => {
+        mockedUseCopyArticle.mockReturnValue({
+            mutateAsync: mutateAsyncMock,
+            isLoading: true,
+        } as any)
 
-            const { result } = renderHook(() =>
-                useGuidanceArticleMutation({
-                    guidanceHelpCenterId: helpCenterId,
-                }),
-            )
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
 
-            expect(result.current.isGuidanceArticleUpdating).toBe(true)
+        expect(result.current.isGuidanceArticleUpdating).toBe(true)
+    })
+
+    it('should return return article when created', () => {
+        mockedUseCreateArticle.mockReturnValue({
+            mutateAsync: mutateAsyncMock,
+            isLoading: true,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        expect(result.current.isGuidanceArticleUpdating).toBe(true)
+    })
+
+    it('should return article data when createGuidanceArticle is called', async () => {
+        const mockData = { id: 123, title: 'Test Article' }
+
+        mockedUseCreateArticle.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValueOnce({ data: mockData }),
+            isLoading: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        const payload = { title: 'Some Title', content: 'Test' } as any // minimal shape for CreateGuidanceArticle
+
+        const articleData = await act(async () => {
+            return await result.current.createGuidanceArticle(payload)
         })
 
-        it('should return return article when created', () => {
-            mockedUseCreateArticle.mockReturnValue({
-                mutateAsync: mutateAsyncMock,
-                isLoading: true,
-            } as any)
+        expect(articleData).toEqual(mockData)
+    })
+    it('should return article data when updateGuidanceArticle is called', async () => {
+        const mockUpdatedData = { id: 123, title: 'Updated Title' }
 
-            const { result } = renderHook(() =>
-                useGuidanceArticleMutation({
-                    guidanceHelpCenterId: helpCenterId,
-                }),
-            )
+        mockedUseUpdateArticleTranslation.mockReturnValue({
+            mutateAsync: jest
+                .fn()
+                .mockResolvedValueOnce({ data: mockUpdatedData }),
+            isLoading: false,
+        } as any)
 
-            expect(result.current.isGuidanceArticleUpdating).toBe(true)
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        const payload = {
+            title: 'Updated Title',
+            content: 'Updated',
+        } as any
+        const params = { articleId: 123, locale: 'en' } as any
+
+        const updatedData = await act(async () => {
+            return await result.current.updateGuidanceArticle(payload, params)
         })
 
-        it('should return article data when createGuidanceArticle is called', async () => {
-            const mockData = { id: 123, title: 'Test Article' }
+        expect(updatedData).toEqual(mockUpdatedData)
+    })
 
-            mockedUseCreateArticle.mockReturnValue({
-                mutateAsync: jest
-                    .fn()
-                    .mockResolvedValueOnce({ data: mockData }),
-                isLoading: false,
-            } as any)
+    it('should report error if createGuidanceArticle fails', async () => {
+        const error = new Error('Create failed')
 
-            const { result } = renderHook(() =>
-                useGuidanceArticleMutation({
-                    guidanceHelpCenterId: helpCenterId,
-                }),
-            )
+        mockedUseCreateArticle.mockReturnValue({
+            mutateAsync: jest.fn().mockRejectedValueOnce(error),
+            isLoading: false,
+        } as any)
 
-            const payload = { title: 'Some Title', content: 'Test' } as any // minimal shape for CreateGuidanceArticle
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
 
-            const articleData = await act(async () => {
-                return await result.current.createGuidanceArticle(payload)
-            })
+        const payload = { title: 'Some Title', content: 'Test' } as any
 
-            expect(articleData).toEqual(mockData)
+        await act(async () => {
+            try {
+                await result.current.createGuidanceArticle(payload)
+            } catch (e) {
+                expect(e).toBeInstanceOf(Error)
+                // expected error — do nothing
+            }
         })
-        it('should return article data when updateGuidanceArticle is called', async () => {
-            const mockUpdatedData = { id: 123, title: 'Updated Title' }
 
-            mockedUseUpdateArticleTranslation.mockReturnValue({
-                mutateAsync: jest
-                    .fn()
-                    .mockResolvedValueOnce({ data: mockUpdatedData }),
-                isLoading: false,
-            } as any)
+        expect(mockedReportError).toHaveBeenCalledWith(error, {
+            tags: { team: 'convai-knowledge' },
+            extra: {
+                context: 'Error during guidance article creation',
+            },
+        })
+    })
 
-            const { result } = renderHook(() =>
-                useGuidanceArticleMutation({
-                    guidanceHelpCenterId: helpCenterId,
-                }),
-            )
+    it('should report error if updateGuidanceArticle fails', async () => {
+        const error = new Error('Update failed')
 
-            const payload = {
-                title: 'Updated Title',
-                content: 'Updated',
-            } as any
-            const params = { articleId: 123, locale: 'en' } as any
+        mockedUseUpdateArticleTranslation.mockReturnValue({
+            mutateAsync: jest.fn().mockRejectedValueOnce(error),
+            isLoading: false,
+        } as any)
 
-            const updatedData = await act(async () => {
-                return await result.current.updateGuidanceArticle(
-                    payload,
-                    params,
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        const payload = {
+            title: 'Updated Title',
+            content: 'Updated',
+        } as any
+        const params = { articleId: 123, locale: 'en' } as any
+
+        await act(async () => {
+            try {
+                await result.current.updateGuidanceArticle(payload, params)
+            } catch (e) {
+                expect(e).toBeInstanceOf(Error)
+                // expected error — do nothing
+            }
+        })
+
+        expect(mockedReportError).toHaveBeenCalledWith(error, {
+            tags: { team: 'convai-knowledge' },
+            extra: {
+                context: 'Error during guidance article updating',
+            },
+        })
+    })
+
+    it('should throw an error when createGuidanceArticle is called without content', async () => {
+        mockedUseCreateArticle.mockReturnValue({
+            mutateAsync: mutateAsyncMock,
+            isLoading: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        const payload = { title: 'Some Title' } as any // payload without content
+
+        await act(async () => {
+            try {
+                await result.current.createGuidanceArticle(payload)
+            } catch (e: any) {
+                expect(e).toBeInstanceOf(Error)
+                expect(e.message).toEqual(
+                    'Content is required for creating the article',
                 )
-            })
-
-            expect(updatedData).toEqual(mockUpdatedData)
+                // expected error — do nothing
+            }
         })
 
-        it('should report error if createGuidanceArticle fails', async () => {
-            const error = new Error('Create failed')
+        expect(mutateAsyncMock).not.toHaveBeenCalled()
+    })
 
-            mockedUseCreateArticle.mockReturnValue({
-                mutateAsync: jest.fn().mockRejectedValueOnce(error),
-                isLoading: false,
-            } as any)
+    it('should throw an error when updateGuidanceArticle is called without content', async () => {
+        mockedUseUpdateArticleTranslation.mockReturnValue({
+            mutateAsync: mutateAsyncMock,
+            isLoading: false,
+        } as any)
 
-            const { result } = renderHook(() =>
-                useGuidanceArticleMutation({
-                    guidanceHelpCenterId: helpCenterId,
-                }),
-            )
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
 
-            const payload = { title: 'Some Title', content: 'Test' } as any
+        const payload = { title: 'Some Title' } as any // payload without content
+        const params = { articleId: 123, locale: 'en' } as any
 
-            await act(async () => {
-                try {
-                    await result.current.createGuidanceArticle(payload)
-                } catch (e) {
-                    expect(e).toBeInstanceOf(Error)
-                    // expected error — do nothing
-                }
-            })
-
-            expect(mockedReportError).toHaveBeenCalledWith(error, {
-                tags: { team: 'convai-knowledge' },
-                extra: {
-                    context: 'Error during guidance article creation',
-                },
-            })
+        await act(async () => {
+            try {
+                await result.current.updateGuidanceArticle(payload, params)
+            } catch (e: any) {
+                expect(e).toBeInstanceOf(Error)
+                expect(e.message).toEqual(
+                    'Content is required for updating the article',
+                )
+                // expected error — do nothing
+            }
         })
 
-        it('should report error if updateGuidanceArticle fails', async () => {
-            const error = new Error('Update failed')
-
-            mockedUseUpdateArticleTranslation.mockReturnValue({
-                mutateAsync: jest.fn().mockRejectedValueOnce(error),
-                isLoading: false,
-            } as any)
-
-            const { result } = renderHook(() =>
-                useGuidanceArticleMutation({
-                    guidanceHelpCenterId: helpCenterId,
-                }),
-            )
-
-            const payload = {
-                title: 'Updated Title',
-                content: 'Updated',
-            } as any
-            const params = { articleId: 123, locale: 'en' } as any
-
-            await act(async () => {
-                try {
-                    await result.current.updateGuidanceArticle(payload, params)
-                } catch (e) {
-                    expect(e).toBeInstanceOf(Error)
-                    // expected error — do nothing
-                }
-            })
-
-            expect(mockedReportError).toHaveBeenCalledWith(error, {
-                tags: { team: 'convai-knowledge' },
-                extra: {
-                    context: 'Error during guidance article updating',
-                },
-            })
-        })
+        expect(mutateAsyncMock).not.toHaveBeenCalled()
     })
 })
