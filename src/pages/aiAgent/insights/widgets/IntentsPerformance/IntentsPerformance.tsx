@@ -107,8 +107,10 @@ export const IntentsPerformance = ({
                         title={config.title}
                         hint={config.hint}
                         isLoading={config.trend.isFetching}
+                        className={css.intentPerformanceCell}
                     >
                         <BigNumberMetric
+                            className={css.intentPerformanceBigNumberMetric}
                             isLoading={config.trend.isFetching}
                             trendBadge={
                                 config.trend.data?.prevValue && (
