@@ -7,11 +7,22 @@ on:
   workflow_dispatch: # Allow manual triggering
 
 jobs:
-  deprecation-analysis:
-    runs-on: ubuntu-latest
+
+  workspace-vars:
+    name: Workspace vars
+    runs-on: gh-actions-small-runner-set
     outputs:
-      changed: ${{ steps.check-changes.outputs.changed }}
-    
+      node-version: '22'
+    steps:
+      - name: Workspace vars
+        run: echo "empty step"
+
+  install-dependencies:
+    name: Install dependencies
+    needs: workspace-vars
+    runs-on: gh-actions-large-runner-set
+    outputs:
+      cache-key: ${{ env.CACHE_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,8 +31,26 @@ jobs:
         uses: ./.github/actions/install-dependencies
         id: install-dependencies
         with:
-          node-version: 22
+          node-version: ${{ needs.workspace-vars.outputs.node-version }}
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+  deprecation-analysis:
+    name: Deprecation analysis
+    needs:
+      - workspace-vars
+      - install-dependencies
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check-changes.outputs.changed }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ needs.install-dependencies.outputs.cache-key }}
+          path: node_modules
 
       - name: Run deprecation analysis
         run: pnpm platform:deprecated-analysis
