@@ -208,9 +208,17 @@ describe('utils', () => {
                     is_available_for_call,
                     online: false,
                 }
+                const offlineAgent3 = {
+                    id: 4,
+                    name: undefined,
+                    call_statuses: [],
+                    is_available_for_call,
+                    online: false,
+                }
                 const agents: LiveCallQueueAgent[] = [
-                    offlineAgent1,
+                    offlineAgent3,
                     onlineAgent,
+                    offlineAgent1,
                     offlineAgent2,
                 ]
 
@@ -222,7 +230,12 @@ describe('utils', () => {
                             ? AgentStatusCategory.Available
                             : AgentStatusCategory.Unavailable
                     ],
-                ).toEqual([onlineAgent, offlineAgent1, offlineAgent2])
+                ).toEqual([
+                    onlineAgent,
+                    offlineAgent3,
+                    offlineAgent1,
+                    offlineAgent2,
+                ])
             },
         )
     })

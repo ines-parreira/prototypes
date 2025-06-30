@@ -65,6 +65,26 @@ describe('LiveVoiceAgentsList', () => {
         expect(screen.getByText('Unavailable (1)')).toBeInTheDocument()
     })
 
+    it('should be able to sort data', () => {
+        groupAgentsByStatusMock.mockReturnValue({
+            [AgentStatusCategory.Busy]: [
+                { id: 1, name: 'Agent Tom' },
+                { id: 4, name: 'Agent Ann' },
+            ],
+            [AgentStatusCategory.Available]: [
+                { id: 2, name: undefined },
+                { id: 5, name: undefined },
+                { id: 7, name: 'testing' },
+            ],
+            [AgentStatusCategory.Unavailable]: [{ id: 3, name: 'Agent 3' }],
+        })
+        renderComponent()
+
+        expect(screen.getByText('Busy (2)')).toBeInTheDocument()
+        expect(screen.getByText('Available (3)')).toBeInTheDocument()
+        expect(screen.getByText('Unavailable (1)')).toBeInTheDocument()
+    })
+
     it('should take into account the online statuses', () => {
         groupAgentsByStatusMock.mockReturnValue({
             [AgentStatusCategory.Busy]: [{ id: 1, name: 'Agent 1' }],

@@ -69,10 +69,18 @@ export const recomputeAgentsWithOnlineStatusChange = (
     })
 }
 
-const sortOnlineAgentsFirst = (
+const sortAgentsByOnlineAndName = (
     agents: LiveCallQueueAgent[],
 ): LiveCallQueueAgent[] => {
-    return agents.sort((agentA) => (agentA.online ? -1 : 1))
+    return agents.sort((a, b) => {
+        if (a.online !== b.online) {
+            return a.online ? -1 : 1
+        }
+
+        const nameA = a.name?.toLowerCase() || ''
+        const nameB = b.name?.toLowerCase() || ''
+        return nameA.localeCompare(nameB) // Sort by name
+    })
 }
 
 export const groupAgentsByStatus = (
@@ -82,7 +90,7 @@ export const groupAgentsByStatus = (
     const availableAgents: LiveCallQueueAgent[] = []
     const unavailableAgents: LiveCallQueueAgent[] = []
 
-    agents.forEach((agent) => {
+    sortAgentsByOnlineAndName(agents).forEach((agent) => {
         if (isAgentBusy(agent)) {
             busyAgents.push(agent)
         } else if (isAgentAvailable(agent)) {
@@ -94,9 +102,8 @@ export const groupAgentsByStatus = (
 
     return {
         [AgentStatusCategory.Busy]: busyAgents,
-        [AgentStatusCategory.Available]: sortOnlineAgentsFirst(availableAgents),
-        [AgentStatusCategory.Unavailable]:
-            sortOnlineAgentsFirst(unavailableAgents),
+        [AgentStatusCategory.Available]: availableAgents,
+        [AgentStatusCategory.Unavailable]: unavailableAgents,
     }
 }
 
