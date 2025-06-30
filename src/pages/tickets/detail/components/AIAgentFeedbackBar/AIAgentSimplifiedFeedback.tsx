@@ -316,6 +316,8 @@ const AIAgentSimplifiedFeedback = () => {
                                                 key={resource.resource.id}
                                                 onIconClick={handleIconClick}
                                                 resource={resource}
+                                                shopName={shopName}
+                                                shopType={shopType}
                                             />
                                         ),
                                     )
@@ -353,6 +355,7 @@ const AIAgentSimplifiedFeedback = () => {
                                 }
                                 accountId={accountId}
                                 shopName={shopName}
+                                shopType={shopType}
                             />
                         )}
 

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getResourceMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { assumeMock } from 'utils/testing'
@@ -25,6 +26,14 @@ jest.mock(
 )
 
 const useKnowledgeSourceSideBarMocked = assumeMock(useKnowledgeSourceSideBar)
+
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+)
+
+const useGetGuidancesAvailableActionsMocked = assumeMock(
+    useGetGuidancesAvailableActions,
+)
 
 jest.mock('custom-fields/components/MultiLevelSelect', () => {
     return jest.fn(({ onChange, choices, onFocus, isDisabled }) => (
@@ -170,6 +179,10 @@ const mockUseFlag = useFlag as jest.Mock
 
 describe('MissingKnowledgeSelect', () => {
     beforeEach(() => {
+        useGetGuidancesAvailableActionsMocked.mockReturnValue({
+            isLoading: false,
+            guidanceActions: [],
+        })
         mockUseFlag.mockReturnValue(false)
         getResourceMetadataMock.mockReturnValue({
             title: '',
@@ -193,6 +206,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -225,6 +239,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -258,6 +273,8 @@ describe('MissingKnowledgeSelect', () => {
                     value: '1',
                 }}
                 handleRemove={handleRemove}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -277,6 +294,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -300,6 +318,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -331,6 +350,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -360,6 +380,7 @@ describe('MissingKnowledgeSelect', () => {
                 onSubmit={onSubmit}
                 onRemove={onRemove}
                 shopName="test-shop"
+                shopType="test-type"
                 knowledgeResources={[
                     createResource(
                         '3',
@@ -406,6 +427,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -472,6 +494,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -513,6 +536,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -560,6 +584,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -601,6 +626,8 @@ describe('MissingKnowledgeSelect', () => {
                     type: 'UNKNOWN_TYPE' as AiAgentKnowledgeResourceTypeEnum,
                 }}
                 handleRemove={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -623,6 +650,8 @@ describe('MissingKnowledgeSelect', () => {
                     type: 'MACRO' as AiAgentKnowledgeResourceTypeEnum,
                 }}
                 handleRemove={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -657,6 +686,8 @@ describe('MissingKnowledgeSelect', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                 }}
                 handleRemove={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -666,13 +697,21 @@ describe('MissingKnowledgeSelect', () => {
             id: 'test-test',
             title: 'Knowledge Tag Test',
             knowledgeResourceType: 'GUIDANCE',
+            shopName: 'test-shop',
+            shopType: 'test-type',
             url: 'https://example.com',
             helpCenterId: '1',
         })
     })
 
     it('renders not render if choice is undefined', () => {
-        render(<KnowledgeTag handleRemove={jest.fn()} />)
+        render(
+            <KnowledgeTag
+                handleRemove={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
+            />,
+        )
 
         expect(
             screen.queryByText('Test::No Icon Mapping'),
@@ -701,6 +740,7 @@ describe('MissingKnowledgeSelect', () => {
         const { container } = render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -737,6 +777,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}
@@ -794,6 +835,7 @@ describe('MissingKnowledgeSelect', () => {
         render(
             <MissingKnowledgeSelect
                 shopName="test-shop"
+                shopType="test-type"
                 helpCenterId={1}
                 guidanceHelpCenterId={2}
                 snippetHelpCenterId={3}

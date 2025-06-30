@@ -6,6 +6,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
@@ -55,7 +56,14 @@ jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
 )
-const useKnowledgeSourceSideBarMocked = useKnowledgeSourceSideBar as jest.Mock
+const useKnowledgeSourceSideBarMocked = assumeMock(useKnowledgeSourceSideBar)
+
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+)
+const useGetGuidancesAvailableActionsMocked = assumeMock(
+    useGetGuidancesAvailableActions,
+)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     HelpCenterApiClientProvider: ({
@@ -86,6 +94,11 @@ describe('AIAgentSimplifiedFeedback', () => {
             <div>KnowledgeSourceSideBar</div>,
         )
         jest.useFakeTimers()
+
+        useGetGuidancesAvailableActionsMocked.mockReturnValue({
+            isLoading: false,
+            guidanceActions: [],
+        })
         useGoToNextTicketMock.mockReturnValue({
             goToTicket: jest.fn(),
             isEnabled: false,
@@ -1319,6 +1332,10 @@ describe('AIAgentSimplifiedFeedback', () => {
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: {
                 knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                id: '123',
+                url: 'https://example.com',
+                title: 'Test Article',
+                content: 'Test content',
             },
             mode: null,
             openPreview: jest.fn(),
@@ -1379,6 +1396,10 @@ describe('AIAgentSimplifiedFeedback', () => {
             selectedResource: {
                 knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 helpCenterId: '456',
+                id: '123',
+                url: 'https://example.com',
+                title: 'Test Article',
+                content: 'Test content',
             },
             mode: null,
             openPreview: jest.fn(),

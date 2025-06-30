@@ -2,12 +2,17 @@ import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { Drawer } from 'pages/common/components/Drawer'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar.less'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { getKnowledgeResourceTypeLabel } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
+import {
+    getKnowledgeResourceTypeLabel,
+    parseKnowledgeResourceContent,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { formatDatetime } from 'utils'
-import { sanitizeHtmlDefault } from 'utils/html'
+import { sanitizeHtmlDefault, unescapeAmpAndDollarEntities } from 'utils/html'
 
 type KnowledgeSourcePreviewProps = {
     onClose: () => void
@@ -17,6 +22,8 @@ type KnowledgeSourcePreviewProps = {
     url?: string
     knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum
     lastUpdatedAt?: string
+    shopName: string
+    shopType: string
 }
 
 const KnowledgeSourcePreview = ({
@@ -27,6 +34,8 @@ const KnowledgeSourcePreview = ({
     url,
     lastUpdatedAt,
     knowledgeResourceType,
+    shopName,
+    shopType,
 }: KnowledgeSourcePreviewProps) => {
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate,
@@ -35,6 +44,17 @@ const KnowledgeSourcePreview = ({
         lastUpdatedAt && formatDatetime(lastUpdatedAt, datetimeFormat)
 
     const typeLabel = getKnowledgeResourceTypeLabel(knowledgeResourceType)
+
+    const { guidanceActions } = useGetGuidancesAvailableActions(
+        shopName,
+        shopType,
+    )
+
+    const htmlContent = parseKnowledgeResourceContent(
+        unescapeAmpAndDollarEntities(sanitizeHtmlDefault(content)),
+        guidanceVariables,
+        guidanceActions,
+    )
 
     return (
         <>
@@ -74,7 +94,7 @@ const KnowledgeSourcePreview = ({
                 <h1 className={css.title}>{title}</h1>
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: sanitizeHtmlDefault(content),
+                        __html: htmlContent,
                     }}
                 />
             </Drawer.Content>

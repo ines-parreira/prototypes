@@ -136,6 +136,9 @@ export const AiAgentReasoning = ({
         [sanitizedReasoningContent],
     )
 
+    const shopName = 'artemisathletix'
+    const shopType = 'shopify'
+
     // eslint-disable-next-line no-unused-vars
     const { data } = useGetResourcesReasoningMetadata({
         queriesEnabled: state !== 'collapsed',
@@ -145,8 +148,8 @@ export const AiAgentReasoning = ({
         ),
         ticketId,
         storeConfiguration: {
-            storeName: 'artemisathletix',
-            shopType: 'shopify',
+            storeName: shopName,
+            shopType,
         } as any,
     })
 
@@ -229,6 +232,8 @@ export const AiAgentReasoning = ({
                             url={resourceData.url}
                             title={resourceData.title}
                             content={resourceData.content}
+                            shopName={shopName}
+                            shopType={shopType}
                         >
                             {(ref, eventHandlers) => (
                                 <span ref={ref} {...eventHandlers}>

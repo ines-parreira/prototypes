@@ -330,3 +330,21 @@ export const removeLinksFromHtml = (html = '') => {
 
     return doc.body.innerHTML
 }
+
+export function unescapeAmpAndDollarEntities(html: string): string {
+    if (typeof html !== 'string') {
+        return html
+    }
+
+    const entities: Record<string, string> = {
+        '&amp;': '&',
+        '&#x26;': '&',
+        '&#38;': '&',
+        '&#36;': '$',
+        '&dollar;': '$',
+    }
+
+    const rex = new RegExp(Object.keys(entities).join('|'), 'g')
+
+    return html.replace(rex, (matched) => entities[matched])
+}

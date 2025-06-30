@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { assumeMock } from 'utils/testing'
 
 import KnowledgeSourcePopover from '../KnowledgeSourcePopover'
 
@@ -8,15 +10,30 @@ jest.mock('utils', () => ({
     stripHTML: (html: string) => html,
 }))
 
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+)
+const useGetGuidancesAvailableActionsMocked = assumeMock(
+    useGetGuidancesAvailableActions,
+)
+
 const popoverProps = {
     url: 'https://admin.shopify.com/store/artemisathletix/orders/5994752147558',
     title: 'Order #3584',
     content: 'Order #3584',
     knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ORDER,
     id: 'order-3584',
+    shopName: 'test-shop',
+    shopType: 'test-type',
 }
 
 describe('KnowledgeSourcePopover', () => {
+    beforeEach(() => {
+        useGetGuidancesAvailableActionsMocked.mockReturnValue({
+            isLoading: false,
+            guidanceActions: [],
+        })
+    })
     it('should show popover content on hover and hides on mouse leave', async () => {
         render(
             <KnowledgeSourcePopover {...popoverProps}>

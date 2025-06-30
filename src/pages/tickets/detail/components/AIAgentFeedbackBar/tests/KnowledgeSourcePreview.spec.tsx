@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { assumeMock } from 'utils/testing'
 
 import KnowledgeSourcePreview from '../KnowledgeSourcePreview'
 
@@ -13,7 +15,15 @@ jest.mock('utils', () => ({
 
 jest.mock('utils/html', () => ({
     sanitizeHtmlDefault: (html: string) => html,
+    unescapeAmpAndDollarEntities: (html: string) => html,
 }))
+
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+)
+const useGetGuidancesAvailableActionsMocked = assumeMock(
+    useGetGuidancesAvailableActions,
+)
 
 describe('KnowledgeSourcePreview', () => {
     const mockOnClose = jest.fn()
@@ -25,7 +35,16 @@ describe('KnowledgeSourcePreview', () => {
         url: 'https://example.com',
         knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
         lastUpdatedAt: '2023-10-10T12:00:00Z',
+        shopName: 'test-shop',
+        shopType: 'test-type',
     }
+
+    beforeEach(() => {
+        useGetGuidancesAvailableActionsMocked.mockReturnValue({
+            guidanceActions: [],
+            isLoading: false,
+        })
+    })
 
     it('renders title and content', () => {
         render(<KnowledgeSourcePreview {...defaultProps} />)

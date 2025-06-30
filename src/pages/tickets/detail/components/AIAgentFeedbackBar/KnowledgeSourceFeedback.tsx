@@ -35,6 +35,8 @@ type KnowledgeSourceProps = {
         value: AiAgentBinaryFeedbackEnum,
         resource: KnowledgeResource,
     ) => void
+    shopName: string
+    shopType: string
 }
 
 type ThumbButtonProps = {
@@ -50,6 +52,8 @@ type ThumbButtonProps = {
 const KnowledgeSourceFeedback = ({
     resource,
     onIconClick,
+    shopName,
+    shopType,
 }: KnowledgeSourceProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
     const enableKnowledgeManagementFromTicketView = useFlag(
@@ -80,6 +84,8 @@ const KnowledgeSourceFeedback = ({
         knowledgeResourceType: resource.resource
             .resourceType as AiAgentKnowledgeResourceTypeEnum,
         helpCenterId: resource.resource.resourceSetId,
+        shopName,
+        shopType,
     }
 
     const onClick =

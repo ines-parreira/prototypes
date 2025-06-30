@@ -50,3 +50,15 @@ export const addGuidanceActionEntity = (
     )
     return newContentState
 }
+
+export const replaceActionPlaceholdersWithLabels = (
+    content: string,
+    actions: GuidanceAction[],
+): string => {
+    return content.replace(guidanceActionRegex, (_, actionId) => {
+        const action = actions.find((a) => a.value === actionId)
+        if (!action) return `Use action: ${actionId}`
+
+        return `Use action: ${action.name}`
+    })
+}

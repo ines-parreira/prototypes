@@ -9,6 +9,7 @@ import {
     getKnowledgeResourceTypeLabel,
     getKnowledgeUrl,
     mapToKnowledgeSourceType,
+    parseKnowledgeResourceContent,
 } from '../utils'
 
 describe('getKnowledgeUrl', () => {
@@ -156,5 +157,44 @@ describe('getHelpCenterIdByResourceType', () => {
             undefined,
         )
         expect(result).toBeUndefined()
+    })
+})
+describe('parseKnowledgeResourceContent', () => {
+    const content =
+        '&&&customer.email&&& is cool$$$01JW674XH7CW5SP7VMHK9KJ3WZ$$$ $$$01JV61ETYEC8TCGQGDHQKERQVV$$$ &&&order.order_note&&& some radonm listtesttest1test2something bold'
+    const guidanceVariables: any = [
+        {
+            name: 'Shopify',
+            variables: [
+                {
+                    name: 'Email',
+                    value: '&&&customer.email&&&',
+                    category: 'customer',
+                },
+                {
+                    name: 'Order Note',
+                    value: '&&&order.order_note&&&',
+                    category: 'order',
+                },
+            ],
+        },
+    ]
+    const actions = [
+        {
+            name: 'Get Subscriptions',
+            value: '01JW674XH7CW5SP7VMHK9KJ3WZ',
+        },
+
+        {
+            name: 'Update shipping address',
+            value: '01JV61ETYEC8TCGQGDHQKERQVV',
+        },
+    ]
+    it('returns empty string for undefined', () => {
+        expect(
+            parseKnowledgeResourceContent(content, guidanceVariables, actions),
+        ).toBe(
+            'Customer: Email is coolUse action: Get Subscriptions Use action: Update shipping address Order: Order Note some radonm listtesttest1test2something bold',
+        )
     })
 })

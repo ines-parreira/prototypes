@@ -95,6 +95,8 @@ const KnowledgeSourceSideBar = ({
                     lastUpdatedAt={resourceUpdatedAt}
                     onClose={closeModal}
                     onEdit={() => openEdit(selectedResource)}
+                    shopName={shopName}
+                    shopType={shopType}
                 />
             )}
 

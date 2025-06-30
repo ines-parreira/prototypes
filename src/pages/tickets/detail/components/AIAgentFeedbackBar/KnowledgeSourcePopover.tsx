@@ -2,10 +2,15 @@ import { memo, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
 import { Popover } from 'components/Popover'
 import { useTimeout } from 'hooks/useTimeout'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover.less'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { mapToKnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
+import {
+    mapToKnowledgeSourceType,
+    parseKnowledgeResourceContent,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { stripHTML } from 'utils'
 
 type KnowledgeSourcePopoverProps = {
@@ -22,6 +27,8 @@ type KnowledgeSourcePopoverProps = {
         },
     ) => ReactNode
     onClick?: (e: React.MouseEvent) => void
+    shopName: string
+    shopType: string
 }
 
 const KnowledgeSourcePopover = ({
@@ -31,10 +38,15 @@ const KnowledgeSourcePopover = ({
     knowledgeResourceType,
     children,
     onClick,
+    shopName,
+    shopType,
 }: KnowledgeSourcePopoverProps) => {
     const triggerRef = useRef<HTMLElement>(null)
     const [isOpen, setIsOpen] = useState(false)
     const [setTimeout, clearTimeout] = useTimeout()
+
+    const { guidanceActions, isLoading: isLoadingActions } =
+        useGetGuidancesAvailableActions(shopName, shopType)
 
     const { href, popoverTitle, body } = useMemo(() => {
         const showBody = [
@@ -46,9 +58,16 @@ const KnowledgeSourcePopover = ({
         return {
             href: url ?? '',
             popoverTitle: title || '',
-            body: showBody && content ? stripHTML(content) : null,
+            body:
+                showBody && content
+                    ? parseKnowledgeResourceContent(
+                          stripHTML(content)!,
+                          guidanceVariables,
+                          guidanceActions,
+                      )
+                    : null,
         }
-    }, [url, title, content, knowledgeResourceType])
+    }, [url, title, content, knowledgeResourceType, guidanceActions])
 
     const openPopover = useCallback(() => {
         clearTimeout()
@@ -100,7 +119,7 @@ const KnowledgeSourcePopover = ({
                             />
                         </div>
                         <div className={css.title}>{popoverTitle}</div>
-                        {body && (
+                        {body && !isLoadingActions && (
                             <div className={css.body}>
                                 <span>{body}</span>
                             </div>

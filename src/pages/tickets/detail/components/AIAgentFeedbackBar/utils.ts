@@ -1,7 +1,10 @@
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { Action, Guidance, Knowledge } from 'models/aiAgentFeedback/types'
 import { TicketMessage } from 'models/ticket/types'
+import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { replaceGuidanceVariablesPlaceholdersWithLabels } from 'pages/common/draftjs/plugins/guidance-variables/utils'
+import { replaceActionPlaceholdersWithLabels } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getLDClient } from 'utils/launchDarkly'
 
@@ -138,4 +141,22 @@ export function getHelpCenterIdByResourceType(
         default:
             return
     }
+}
+
+export const parseKnowledgeResourceContent = (
+    content: string,
+    guidanceVariables: GuidanceVariableList = [],
+    actions: { name: string; value: string }[] = [],
+): string => {
+    const withVariables = replaceGuidanceVariablesPlaceholdersWithLabels(
+        content,
+        guidanceVariables,
+    )
+
+    const withActions = replaceActionPlaceholdersWithLabels(
+        withVariables,
+        actions,
+    )
+
+    return withActions
 }

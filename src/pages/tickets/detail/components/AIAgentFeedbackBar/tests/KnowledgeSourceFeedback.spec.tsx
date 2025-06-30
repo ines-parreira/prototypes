@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { assumeMock } from 'utils/testing'
 
@@ -24,13 +25,15 @@ const defaultResource = {
 
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
-    () => ({
-        useKnowledgeSourceSideBar: jest.fn(),
-    }),
 )
-
 const useKnowledgeSourceSideBarMocked = assumeMock(useKnowledgeSourceSideBar)
 
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+)
+const useGetGuidancesAvailableActionsMocked = assumeMock(
+    useGetGuidancesAvailableActions,
+)
 const mockResource = (overrides = {}) =>
     ({
         ...defaultResource,
@@ -42,6 +45,10 @@ const useFlagMock = useFlag as jest.Mock
 
 describe('KnowledgeSourceFeedback', () => {
     beforeEach(() => {
+        useGetGuidancesAvailableActionsMocked.mockReturnValue({
+            isLoading: false,
+            guidanceActions: [],
+        })
         useFlagMock.mockReturnValue(false)
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
@@ -57,6 +64,8 @@ describe('KnowledgeSourceFeedback', () => {
             <KnowledgeSourceFeedback
                 resource={mockResource()}
                 onIconClick={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -71,6 +80,8 @@ describe('KnowledgeSourceFeedback', () => {
                     metadata: { url: null, isDeleted: false },
                 })}
                 onIconClick={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -81,6 +92,8 @@ describe('KnowledgeSourceFeedback', () => {
                     metadata: { url: 'https://example.com', isDeleted: true },
                 })}
                 onIconClick={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -93,6 +106,8 @@ describe('KnowledgeSourceFeedback', () => {
             <KnowledgeSourceFeedback
                 resource={mockResource()}
                 onIconClick={onIconClick}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -108,6 +123,8 @@ describe('KnowledgeSourceFeedback', () => {
             <KnowledgeSourceFeedback
                 resource={mockResource()}
                 onIconClick={onIconClick}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 
@@ -121,6 +138,8 @@ describe('KnowledgeSourceFeedback', () => {
             <KnowledgeSourceFeedback
                 resource={mockResource({ metadata: { isDeleted: true } })}
                 onIconClick={jest.fn()}
+                shopName="test-shop"
+                shopType="test-type"
             />,
         )
 

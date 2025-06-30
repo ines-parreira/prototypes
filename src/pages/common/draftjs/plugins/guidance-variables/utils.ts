@@ -1,4 +1,5 @@
 import { ContentBlock, ContentState, Modifier, SelectionState } from 'draft-js'
+import _capitalize from 'lodash/capitalize'
 
 import {
     GuidanceVariable,
@@ -122,4 +123,16 @@ export const addGuidanceVariableEntity = (
         entityKey,
     )
     return newContentState
+}
+
+export const replaceGuidanceVariablesPlaceholdersWithLabels = (
+    content: string,
+    guidanceVariables: GuidanceVariableList,
+): string => {
+    return content.replace(guidanceVariableRegex, (match) => {
+        const variable = parseGuidanceVariable(match, guidanceVariables)
+        if (!variable) return match
+
+        return `${_capitalize(variable.category)}: ${variable.name}`
+    })
 }

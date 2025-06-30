@@ -42,6 +42,7 @@ type MissingKnowledgeSelectProps = {
     disabled?: boolean
     knowledgeResources?: KnowledgeResource[]
     shopName: string
+    shopType: string
 }
 
 export type ChoiceOption = {
@@ -70,6 +71,7 @@ const MissingKnowledgeSelect = ({
     enrichedData,
     disabled,
     shopName,
+    shopType,
 }: MissingKnowledgeSelectProps) => {
     const [values, setValues] = useState<string[]>([])
 
@@ -479,6 +481,8 @@ const MissingKnowledgeSelect = ({
                                 key={option}
                                 choice={choiceWithDisplayLabel}
                                 handleRemove={handleRemove}
+                                shopName={shopName}
+                                shopType={shopType}
                             />
                         )
                     })}
@@ -493,9 +497,16 @@ export default MissingKnowledgeSelect
 type KnowledgeTagProps = {
     choice?: ChoiceOption & { displayLabel: string }
     handleRemove: (option: string) => void
+    shopName: string
+    shopType: string
 }
 
-export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
+export const KnowledgeTag = ({
+    choice,
+    handleRemove,
+    shopName,
+    shopType,
+}: KnowledgeTagProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
     const enableKnowledgeManagementFromTicketView = useFlag(
         FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
@@ -514,6 +525,8 @@ export const KnowledgeTag = ({ choice, handleRemove }: KnowledgeTagProps) => {
         content: meta?.content || '',
         knowledgeResourceType: type,
         helpCenterId: meta?.helpCenterId || '',
+        shopName,
+        shopType,
     }
 
     const label = choice.displayLabel.split('::').pop()

@@ -12,6 +12,7 @@ import {
     findManyGuidanceVariables,
     guidanceVariableRegex,
     parseGuidanceVariable,
+    replaceGuidanceVariablesPlaceholdersWithLabels,
 } from '../utils'
 
 // Mock Draft.js modules
@@ -277,6 +278,46 @@ describe('Guidance Variables Utils', () => {
                 'existing-entity-key',
             )
             expect(result).toBe(mockContentState)
+        })
+    })
+
+    describe('replaceGuidanceVariablesPlaceholdersWithLabels', () => {
+        it('should replace variable placeholders with labels', () => {
+            const content =
+                'Hello &&&customer.name&&&, your order &&&order.number&&& has been shipped.'
+            const result = replaceGuidanceVariablesPlaceholdersWithLabels(
+                content,
+                variableList,
+            )
+            expect(result).toBe(
+                'Hello Customer: Customer Name, your order Order: Order Number has been shipped.',
+            )
+        })
+
+        it('should handle nested variables', () => {
+            const content = 'Deep variable: &&&deep.variable&&&'
+            const result = replaceGuidanceVariablesPlaceholdersWithLabels(
+                content,
+                variableList,
+            )
+            expect(result).toBe('Deep variable: Customer: Deep Variable')
+        })
+
+        it('should return original content if no variables found', () => {
+            const content = 'No variables here'
+            const result = replaceGuidanceVariablesPlaceholdersWithLabels(
+                content,
+                [],
+            )
+            expect(result).toBe(content)
+        })
+
+        it('should handle empty content', () => {
+            const result = replaceGuidanceVariablesPlaceholdersWithLabels(
+                '',
+                [],
+            )
+            expect(result).toBe('')
         })
     })
 })

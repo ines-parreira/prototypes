@@ -10,6 +10,7 @@ import {
     sanitizeHtmlMinimal,
     textToHTML,
     trimHTML,
+    unescapeAmpAndDollarEntities,
     unescapeQuoteEntities,
 } from '../html'
 
@@ -484,6 +485,17 @@ describe('html util', () => {
             const expected = 'Hello world! <b>this is not a link</b>.'
 
             expect(removeLinksFromHtml(input_html)).toEqual(expected)
+        })
+    })
+
+    describe('unescapeAmpAndDollarEntities()', () => {
+        it('should unescape ampersand and dollar entities', () => {
+            const input_html =
+                'bla bla entities &dollar;, &#36;, &#38;, &#x26;, &amp;, &lt;, &gt;, &quot;, &#39;, then &#x27;, &apos;, &#x27;, &#39;, &quot;, &#x22;, &#34;'
+            const expected =
+                'bla bla entities $, $, &, &, &, &lt;, &gt;, &quot;, &#39;, then &#x27;, &apos;, &#x27;, &#39;, &quot;, &#x22;, &#34;'
+
+            expect(unescapeAmpAndDollarEntities(input_html)).toBe(expected)
         })
     })
 })
