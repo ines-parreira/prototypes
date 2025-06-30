@@ -8,6 +8,7 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 import { assumeMock } from 'utils/testing'
 
 import { PublicSourcesItem } from '../PublicSourcesItem'
+import { SourceItem } from '../types'
 
 jest.mock('core/flags')
 jest.mock('react-router-dom', () => ({
@@ -23,7 +24,7 @@ const renderComponent = ({
         url: 'https://example.com',
         status: 'idle' as const,
         createdDatetime: '2024-01-01T00:00:00.000Z',
-    },
+    } as SourceItem,
     onDelete = jest.fn(),
     onSync = jest.fn(),
     existingUrls = [],
@@ -94,6 +95,118 @@ describe('PublicSourcesItem', () => {
                     selectedResource: source,
                 },
             )
+        })
+    })
+
+    describe('deleteDisabled logic', () => {
+        it('should disable delete button when source created less than 1 hour ago with loading status', () => {
+            useFlagMock.mockReturnValue(false)
+            const oneMinuteAgo = new Date()
+            oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1)
+
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: 'loading',
+                    createdDatetime: oneMinuteAgo.toISOString(),
+                } as SourceItem,
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete public URL',
+            })
+            expect(deleteButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable delete button when source created more than 1 hour ago with loading status', () => {
+            useFlagMock.mockReturnValue(false)
+            const twoHoursAgo = new Date()
+            twoHoursAgo.setHours(twoHoursAgo.getHours() - 2)
+
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: 'loading',
+                    createdDatetime: twoHoursAgo.toISOString(),
+                } as SourceItem,
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete public URL',
+            })
+            expect(deleteButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable delete button for non-loading status regardless of creation time', () => {
+            useFlagMock.mockReturnValue(false)
+            const oneMinuteAgo = new Date()
+            oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1)
+
+            const statuses = ['idle', 'done', 'error'] as const
+            statuses.forEach((status) => {
+                const { unmount } = renderComponent({
+                    source: {
+                        id: 1,
+                        url: 'https://example.com',
+                        status,
+                        createdDatetime: oneMinuteAgo.toISOString(),
+                    } as SourceItem,
+                })
+
+                const deleteButton = screen.getByRole('button', {
+                    name: 'Delete public URL',
+                })
+                expect(deleteButton).toBeEnabled()
+                unmount()
+            })
+        })
+
+        it('should use latestSync date when available instead of createdDatetime', () => {
+            useFlagMock.mockReturnValue(false)
+            const twoHoursAgo = new Date()
+            twoHoursAgo.setHours(twoHoursAgo.getHours() - 2)
+            const oneMinuteAgo = new Date()
+            oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1)
+
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: 'loading',
+                    createdDatetime: twoHoursAgo.toISOString(),
+                    latestSync: oneMinuteAgo.toISOString(),
+                } as SourceItem,
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete public URL',
+            })
+            expect(deleteButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable delete button when latestSync is more than 1 hour ago', () => {
+            useFlagMock.mockReturnValue(false)
+            const threeHoursAgo = new Date()
+            threeHoursAgo.setHours(threeHoursAgo.getHours() - 3)
+            const twoHoursAgo = new Date()
+            twoHoursAgo.setHours(twoHoursAgo.getHours() - 2)
+
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: 'loading',
+                    createdDatetime: threeHoursAgo.toISOString(),
+                    latestSync: twoHoursAgo.toISOString(),
+                } as SourceItem,
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete public URL',
+            })
+            expect(deleteButton).not.toHaveAttribute('aria-disabled', 'true')
         })
     })
 })

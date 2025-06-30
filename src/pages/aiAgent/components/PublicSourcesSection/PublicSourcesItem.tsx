@@ -71,10 +71,10 @@ const isUrlWithDocumentExtension = (url: string): boolean => {
 }
 
 const isDeleteDisabled = (
-    createdDatetime: string,
+    date: string,
     status: SourceItem['status'],
 ): boolean => {
-    const createdDate = new Date(createdDatetime)
+    const createdDate = new Date(date)
     const now = new Date()
     const hourInMs = 60 * 60 * 1000
     const isLessThanOneHourOld =
@@ -243,6 +243,11 @@ export const PublicSourcesItem = ({
         setSyncUrlOnCommand,
     ])
 
+    const deleteDisabled = isDeleteDisabled(
+        source.latestSync || source.createdDatetime,
+        source.status,
+    )
+
     return (
         <div className={css.container}>
             <InputField
@@ -303,10 +308,7 @@ export const PublicSourcesItem = ({
                                 ref={elementRef}
                                 aria-label="Delete public URL"
                                 icon="close"
-                                isDisabled={isDeleteDisabled(
-                                    source.createdDatetime,
-                                    source.status,
-                                )}
+                                isDisabled={deleteDisabled}
                             />
                         )}
                     </ConfirmationPopover>
@@ -318,10 +320,7 @@ export const PublicSourcesItem = ({
                         onClick={handleDelete}
                         aria-label="Delete public URL"
                         icon="close"
-                        isDisabled={isDeleteDisabled(
-                            source.createdDatetime,
-                            source.status,
-                        )}
+                        isDisabled={deleteDisabled}
                     />
                 )}
                 {isAiAgentFilesAndUrlsKnowledgeVisible && (
