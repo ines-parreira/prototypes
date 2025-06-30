@@ -79,4 +79,22 @@ describe('ChannelsDrawerContent', () => {
         expect(screen.getByText('test2@mail.com')).toBeInTheDocument()
         expect(screen.queryByText('test3@mail.com')).not.toBeInTheDocument()
     })
+
+    it('handles activeChannel with no assignedChannels gracefully', () => {
+        const mockActiveChannelWithoutAssigned: ChannelWithMetadata = {
+            ...mockActiveChannel,
+            assignedChannels: [],
+            unassignedChannels: [],
+        }
+
+        renderWithStore(
+            <DrawerContent
+                activeChannel={mockActiveChannelWithoutAssigned}
+                setChanges={mockSetChanges}
+            />,
+            {},
+        )
+
+        expect(screen.getByText(/Assign Test Channel/)).toBeInTheDocument()
+    })
 })

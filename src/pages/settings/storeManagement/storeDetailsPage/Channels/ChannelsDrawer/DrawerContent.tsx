@@ -18,12 +18,15 @@ export default function DrawerContent({
     activeChannel,
     setChanges,
 }: ChannelsDrawerContentProps) {
-    const [assignedChannelIds, setAssignedChannelIds] = useState<number[]>(
-        activeChannel?.assignedChannels.map((ch) => ch.id) ?? [],
-    )
+    const [assignedChannelIds, setAssignedChannelIds] = useState<number[]>([])
+
+    useEffect(() => {
+        setAssignedChannelIds(activeChannel.assignedChannels.map((ch) => ch.id))
+    }, [activeChannel.assignedChannels])
+
     useEffect(() => {
         const changes = trackChannelChanges(assignedChannelIds, activeChannel)
-        setChanges?.(changes)
+        setChanges(changes)
     }, [assignedChannelIds, activeChannel, setChanges])
 
     const onDeleteListItem = (id: number) => {
