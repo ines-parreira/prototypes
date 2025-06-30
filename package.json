@@ -154,7 +154,7 @@
         "indefinite": "^2.5.1",
         "jquery": "3.5.1",
         "jsonp": "0.2.1",
-        "jsonpath-plus": "^10.1.0",
+        "jsonpath-plus": "^10.3.0",
         "jszip": "^3.10.1",
         "launchdarkly-js-client-sdk": "^3.3.0",
         "launchdarkly-react-client-sdk": "^3.3.2",
