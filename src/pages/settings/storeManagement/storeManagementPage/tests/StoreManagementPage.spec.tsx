@@ -10,6 +10,7 @@ import { assumeMock } from 'utils/testing'
 
 import { mockStoresWithAssignedChannels } from '../../fixtures'
 import { StoreManagementProvider } from '../../StoreManagementProvider'
+import * as StoreManagementProviderModule from '../../StoreManagementProvider'
 import StoreManagementPage from '../StoreManagementPage'
 
 jest.mock('core/flags')
@@ -157,5 +158,37 @@ describe('StoreManagementPage', () => {
         const { container } = renderWithProviders(<StoreManagementPage />)
 
         expect(container.firstChild).toBeNull()
+    })
+
+    it('should render NoStoresPage when no stores are available', () => {
+        const mockUseStoreManagementState = jest.spyOn(
+            StoreManagementProviderModule,
+            'useStoreManagementState',
+        )
+        mockUseStoreManagementState.mockReturnValue({
+            stores: [],
+            paginatedStores: [],
+            currentPage: 1,
+            setCurrentPage: jest.fn(),
+            totalPages: 0,
+            unassignedChannels: [],
+            refetchMapping: jest.fn(),
+            refetchIntegrations: jest.fn(),
+            filter: '',
+            setFilter: jest.fn(),
+            sortOrder: 'asc' as const,
+            setSortOrder: jest.fn(),
+            isLoading: false,
+        })
+
+        render(
+            <MemoryRouter>
+                <StoreManagementPage />
+            </MemoryRouter>,
+        )
+
+        expect(screen.getByText('Connect your first store')).toBeInTheDocument()
+
+        mockUseStoreManagementState.mockRestore()
     })
 })

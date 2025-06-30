@@ -9,6 +9,7 @@ import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
 
+import NoStoresPage from '../noStoresPage/NoStoresPage'
 import { useStoreManagementState } from '../StoreManagementProvider'
 import { StoreManagementTable } from '../storeManagementTable/storeManagementTable'
 
@@ -17,10 +18,14 @@ import css from './StoreManagementPage.less'
 const StoreManagementPage = () => {
     const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
 
-    const { filter, setFilter } = useStoreManagementState()
+    const { filter, setFilter, stores, isLoading } = useStoreManagementState()
 
     if (!isMultiStoreEnabled) {
         return null
+    }
+
+    if (!isLoading && stores.length === 0) {
+        return <NoStoresPage />
     }
 
     return (
