@@ -1,21 +1,34 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 
-import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+
+import AddCustomBusinessHoursModal from '../AddCustomBusinessHoursModal'
+
+jest.mock('../AddCustomBusinessHoursModalGeneralSection', () => () => (
+    <div>AddCustomBusinessHoursModalGeneralSection</div>
+))
 
 const defaultProps = {
     isOpen: true,
     onClose: jest.fn(),
 }
 const renderComponent = (props = defaultProps) => {
-    return render(<AddCustomBusinessHoursModal {...props} />)
+    return renderWithStoreAndQueryClientAndRouter(
+        <AddCustomBusinessHoursModal {...props} />,
+        {},
+    )
 }
 
 describe('AddCustomBusinessHoursModal', () => {
-    it('renders the modal with correct title', () => {
+    it('renders the modal with correct title and sections', () => {
         renderComponent()
 
         expect(
             screen.getByText('Add Custom Business Hours'),
+        ).toBeInTheDocument()
+
+        expect(
+            screen.getByText('AddCustomBusinessHoursModalGeneralSection'),
         ).toBeInTheDocument()
     })
 

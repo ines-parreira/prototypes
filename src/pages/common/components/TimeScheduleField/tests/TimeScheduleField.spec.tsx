@@ -1,0 +1,86 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { Form } from 'core/forms'
+import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from 'pages/settings/businessHours/constants'
+
+import TimeScheduleField from '../TimeScheduleField'
+
+const defaultFormValues = {
+    business_hours_config: {
+        business_hours: [
+            {
+                days: '1',
+                from_time: '09:00',
+                to_time: '17:00',
+            },
+            {
+                days: '2',
+                from_time: '09:00',
+                to_time: '17:00',
+            },
+        ],
+    },
+}
+
+describe('TimeScheduleField', () => {
+    it('should render add button', () => {
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <TimeScheduleField name="business_hours_config.business_hours" />
+            </Form>,
+        )
+
+        expect(screen.getByText('Add time range')).toBeInTheDocument()
+    })
+
+    it('should add new row when add button is clicked', async () => {
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <TimeScheduleField name="business_hours_config.business_hours" />
+            </Form>,
+        )
+
+        fireEvent.click(screen.getByText('Add time range'))
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByDisplayValue(
+                    DEFAULT_BUSINESS_HOURS_SCHEDULE.from_time,
+                ),
+            ).toHaveLength(1)
+        })
+    })
+
+    it('should render TimeScheduleRow and remove button for each row', () => {
+        render(
+            <Form onValidSubmit={jest.fn()} defaultValues={defaultFormValues}>
+                <TimeScheduleField name="business_hours_config.business_hours" />
+            </Form>,
+        )
+
+        expect(screen.getAllByDisplayValue('09:00')).toHaveLength(2)
+        expect(screen.getAllByDisplayValue('17:00')).toHaveLength(2)
+        expect(screen.getAllByText('close')).toHaveLength(2)
+    })
+
+    it('should not render remove button when there is only one row', () => {
+        render(
+            <Form
+                onValidSubmit={jest.fn()}
+                defaultValues={{
+                    items: [
+                        {
+                            days: '1',
+                            from_time: '09:00',
+                            to_time: '17:00',
+                        },
+                    ],
+                }}
+            >
+                <TimeScheduleField name="items" />
+            </Form>,
+        )
+
+        expect(screen.queryByText('close')).not.toBeInTheDocument()
+    })
+})

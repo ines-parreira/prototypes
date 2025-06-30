@@ -6,7 +6,7 @@ import { THEME_NAME, useTheme } from 'core/theme'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { SelectableOption } from 'pages/common/forms/SelectField/types'
 
-import { DAYS_OPTIONS } from './constants'
+import { DEPRECATED_DAYS_OPTIONS } from './constants'
 
 import css from './BusinessHours.less'
 
@@ -26,7 +26,7 @@ const BusinessHoursForm = ({ businessHour, onChange }: Props) => {
             <SelectField
                 value={businessHour.get('days')}
                 onChange={(value) => handleOnChange({ days: value })}
-                options={DAYS_OPTIONS as SelectableOption[]}
+                options={DEPRECATED_DAYS_OPTIONS as SelectableOption[]}
                 fixedWidth
             />
             <Input
