@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useMemo, useState } from 'react'
+import { ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react'
 
 import { fromJS } from 'immutable'
 
@@ -12,7 +12,6 @@ import {
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegration } from 'models/integration/types'
 import {
@@ -80,15 +79,33 @@ const TicketRichField = (
     const newMessageChannel = useAppSelector(getNewMessageChannel)
     const isNewMessagePublic = useAppSelector(getIsNewMessagePublic)
     const shopifyIntegrations = useAppSelector(getShopifyIntegrations)
-    const [key, setKey] = useState<string | undefined>()
+    const [key, setKey] = useState<string>(`rich-field-content-${Date.now()}`)
 
     /**
      * Post React 18 migration, we need to set a key to the RichField component
-     * to force a re-render when the value changes.
+     * to force a re-render when the value is cleared/reset.
+     * We only update the key when the content becomes empty (cleared).
      */
-    useEffectOnce(() => {
-        setKey(props.value.html ?? props.value.text ?? 'rich-field-content')
-    })
+    useEffect(() => {
+        // Check if content is empty without assuming it's a string
+        const hasHtmlContent =
+            props.value.html &&
+            (typeof props.value.html === 'string'
+                ? props.value.html.trim() !== ''
+                : true)
+        const hasTextContent =
+            props.value.text &&
+            (typeof props.value.text === 'string'
+                ? props.value.text.trim() !== ''
+                : true)
+
+        const isEmpty = !hasHtmlContent && !hasTextContent
+
+        if (isEmpty) {
+            // Generate a unique key when content is cleared
+            setKey(`rich-field-content-${Date.now()}`)
+        }
+    }, [props.value.html, props.value.text])
 
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
