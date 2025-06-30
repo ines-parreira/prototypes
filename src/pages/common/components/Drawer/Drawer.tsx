@@ -78,6 +78,7 @@ type Props = {
     className?: string
     rootClassName?: string
     withFooter?: boolean
+    showBackdrop?: boolean
     ['data-testid']?: string
 } & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
 
@@ -94,6 +95,7 @@ const Drawer = ({
     className,
     rootClassName,
     withFooter = true,
+    showBackdrop = true,
     ['data-testid']: dataTestId,
 }: Props): JSX.Element => {
     const [zIndexOpen, zIndexClosed] = containerZIndices
@@ -144,19 +146,21 @@ const Drawer = ({
                 }
             }}
         >
-            <div
-                className={classNames({
-                    backdrop: true,
-                    opened: open,
-                })}
-                style={
-                    {
-                        '--animation-duration': `${transitionDurationMs}ms`,
-                    } as React.CSSProperties
-                }
-                role="presentation"
-                onClick={() => onBackdropClick?.() ?? undefined}
-            />
+            {showBackdrop && (
+                <div
+                    className={classNames({
+                        backdrop: true,
+                        opened: open,
+                    })}
+                    style={
+                        {
+                            '--animation-duration': `${transitionDurationMs}ms`,
+                        } as React.CSSProperties
+                    }
+                    role="presentation"
+                    onClick={() => onBackdropClick?.() ?? undefined}
+                />
+            )}
             <div
                 aria-label={ariaLabel}
                 data-testid={dataTestId}

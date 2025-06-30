@@ -5,17 +5,14 @@
 
 :local {
     .drawer {
-        right: -@drawer-width !important;
+        right: 0 !important;
         background-color: var(--neutral-grey-0) !important;
-        &:global.opened {
-            transform: translateX(-@drawer-width) !important;
-        }
+        max-width: @drawer-width !important;
+        width: @drawer-width !important;
+
         @media @mobiles {
             width: 100% !important;
-            right: -100% !important;
-            &:global.opened {
-                transform: translateX(-100%) !important;
-            }
+            max-width: 100% !important;
         }
 
         grid-template-areas:

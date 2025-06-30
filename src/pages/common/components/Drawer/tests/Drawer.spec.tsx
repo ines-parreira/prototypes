@@ -56,4 +56,33 @@ describe('<Drawer/>', () => {
         const drawer = container.querySelector('.drawer')
         expect(drawer).toHaveClass('withoutFooter')
     })
+
+    it('should render with backdrop by default', () => {
+        const { container } = render(<Drawer {...props}>Modal content</Drawer>)
+
+        const backdrop = container.querySelector('.backdrop')
+        expect(backdrop).toBeInTheDocument()
+    })
+
+    it('should not render backdrop when showBackdrop is false', () => {
+        const { container } = render(
+            <Drawer {...props} showBackdrop={false}>
+                Modal content
+            </Drawer>,
+        )
+
+        const backdrop = container.querySelector('.backdrop')
+        expect(backdrop).not.toBeInTheDocument()
+    })
+
+    it('should render backdrop when showBackdrop is true', () => {
+        const { container } = render(
+            <Drawer {...props} showBackdrop={true}>
+                Modal content
+            </Drawer>,
+        )
+
+        const backdrop = container.querySelector('.backdrop')
+        expect(backdrop).toBeInTheDocument()
+    })
 })

@@ -59,6 +59,7 @@ export default function WorkflowsPublisher() {
             isLoading={false}
             portalRootId="app-root"
             transitionDurationMs={300}
+            onBackdropClick={() => setFlowPublishingInChannels(false)}
         >
             <EditorDrawerHeader
                 testId="publisher"

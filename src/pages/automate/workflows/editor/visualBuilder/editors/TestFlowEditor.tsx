@@ -210,6 +210,7 @@ export const TestFlowEditor = ({
             isLoading={false}
             portalRootId="app-root"
             transitionDurationMs={300}
+            onBackdropClick={() => onClose()}
         >
             <EditorDrawerHeader
                 testId="test"
