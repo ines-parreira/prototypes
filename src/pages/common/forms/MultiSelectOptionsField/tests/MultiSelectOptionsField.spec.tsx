@@ -380,5 +380,21 @@ describe('MultiSelectField', () => {
 
             expect(displayedOptions.length).toBe(TAGS_LIMIT)
         })
+
+        it('should display all options when showAllOptions is true', () => {
+            const tags: string[] = []
+            for (let i = 0; i < TAGS_LIMIT * 3; i++) {
+                tags.push(`tag${i}`)
+            }
+            props.options = tags.map((tag) => ({ label: tag, value: tag }))
+
+            const { container } = render(
+                <MultiSelectField {...minProps} {...props} showAllOptions />,
+            )
+            const displayedOptions =
+                container.querySelectorAll('.dropdown-item')
+
+            expect(displayedOptions.length).toBe(TAGS_LIMIT * 3)
+        })
     })
 })

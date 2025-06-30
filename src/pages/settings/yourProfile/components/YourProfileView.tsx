@@ -615,6 +615,7 @@ export function YourProfileView({
                                             <MultiSelectOptionsField
                                                 id="proficient-languages"
                                                 plural="Languages"
+                                                showAllOptions
                                                 options={
                                                     proficientLanguagesOptions
                                                 }

@@ -33,6 +33,7 @@ type Props = {
     loading?: boolean
     dropdownMenu?: ComponentType<unknown>
     isCompact?: boolean
+    showAllOptions?: boolean
 }
 
 export default function MultiSelectOptionsField(props: Props) {
@@ -58,6 +59,7 @@ export default function MultiSelectOptionsField(props: Props) {
         onInputChange,
         onSelectTag,
         id,
+        showAllOptions = false,
     } = props
 
     const [previousOptions, setPreviousOptions] = React.useState(options)
@@ -218,7 +220,9 @@ export default function MultiSelectOptionsField(props: Props) {
             displayOptions = [getCustomOption()].concat(displayOptions)
         }
     }
-    displayOptions = displayOptions.slice(0, TAGS_LIMIT)
+    displayOptions = showAllOptions
+        ? displayOptions
+        : displayOptions.slice(0, TAGS_LIMIT)
 
     return (
         <div
