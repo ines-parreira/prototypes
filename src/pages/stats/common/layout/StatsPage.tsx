@@ -6,8 +6,11 @@ import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
+import css from 'pages/stats/common/layout/StatsPage.less'
 
-import css from './StatsPage.less'
+export enum StatsPageBackgroundColor {
+    Grey = 'grey',
+}
 
 export const StatsPageWrapper = ({
     children,
@@ -45,12 +48,24 @@ export const StatsPageHeader = ({
 
 export const StatsPageContent = ({
     children,
+    backgroundColor,
 }: {
     children: React.ReactNode
-}) => <div className={css.statsContainer}>{children}</div>
+    backgroundColor?: StatsPageBackgroundColor
+}) => (
+    <div
+        className={classNames(
+            css.statsContainer,
+            backgroundColor && css[backgroundColor],
+        )}
+    >
+        {children}
+    </div>
+)
 
 type Props = {
     children: ReactNode
+    backgroundColor?: StatsPageBackgroundColor
     titleExtra?: ReactNode
     headerCanduId?: string
     banner?: ReactNode
@@ -58,6 +73,7 @@ type Props = {
 
 export default function StatsPage({
     children,
+    backgroundColor,
     titleExtra,
     headerCanduId,
     banner,
@@ -71,7 +87,9 @@ export default function StatsPage({
                 right={titleExtra}
                 canduId={headerCanduId}
             />
-            <StatsPageContent>{children}</StatsPageContent>
+            <StatsPageContent backgroundColor={backgroundColor}>
+                {children}
+            </StatsPageContent>
         </StatsPageWrapper>
     )
 }

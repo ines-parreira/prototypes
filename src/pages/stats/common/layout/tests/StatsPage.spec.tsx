@@ -1,29 +1,36 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
-import StatsPage from '../StatsPage'
+import StatsPage, { StatsPageBackgroundColor } from '../StatsPage'
 
 jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 describe('StatsPage', () => {
+    const pageContent = 'Children'
+
     it('should render the title, children and filters', () => {
-        const { container } = render(
+        const title = 'Foo'
+        const titleExtra = 'Filters'
+        render(
             <StatsPage
-                title="Foo"
+                title={title}
                 description="Foo statistic page"
                 helpUrl="http://example.com"
-                titleExtra={<p>Filters</p>}
+                titleExtra={<p>{titleExtra}</p>}
             >
-                Children
+                {pageContent}
             </StatsPage>,
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(screen.getByText(pageContent)).toBeInTheDocument()
+        expect(screen.getByText(title)).toBeInTheDocument()
+        expect(screen.getByText(titleExtra)).toBeInTheDocument()
     })
 
     it('should render custom candu header id', () => {
-        const { container } = render(
+        render(
             <StatsPage
                 title="Foo"
                 description="Foo statistic page"
@@ -31,11 +38,29 @@ describe('StatsPage', () => {
                 titleExtra={<p>Filters</p>}
                 headerCanduId="foo-id"
             >
-                Children
+                {pageContent}
             </StatsPage>,
         )
+
         expect(
-            container.querySelector(`div[data-candu-id="foo-id"]`),
+            document.querySelector(`div[data-candu-id="foo-id"]`),
         ).toBeInTheDocument()
+    })
+
+    it('should render custom candu header id', () => {
+        render(
+            <StatsPage
+                title="Foo"
+                description="Foo statistic page"
+                titleExtra={<p>Filters</p>}
+                backgroundColor={StatsPageBackgroundColor.Grey}
+            >
+                {pageContent}
+            </StatsPage>,
+        )
+
+        const contentContainer = screen.getByText(pageContent)
+
+        expect(contentContainer).toHaveClass(StatsPageBackgroundColor.Grey)
     })
 })
