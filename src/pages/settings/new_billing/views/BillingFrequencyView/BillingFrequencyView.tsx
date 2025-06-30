@@ -2,7 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Cadence, ProductType } from 'models/billing/types'
+import {
+    AutomatePlan,
+    Cadence,
+    ConvertPlan,
+    HelpdeskPlan,
+    ProductType,
+    SMSOrVoicePlan,
+} from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
@@ -61,6 +68,26 @@ const BillingFrequencyView = ({
     const isPaymentEnabled = !!useIsPaymentEnabled()
 
     const [showAlert, setShowAlert] = useState(true)
+    const [helpdeskPlansForAllCadences, setHelpdeskPlansForAllCadences] =
+        useState<Partial<Record<Cadence, HelpdeskPlan>>>({
+            [cadence]: currentHelpdeskPlan,
+        })
+    const [automatePlansForAllCadences, setAutomatePlansForAllCadences] =
+        useState<Partial<Record<Cadence, AutomatePlan>>>({
+            [cadence]: currentAutomatePlan,
+        })
+    const [voicePlansForAllCadences, setVoicePlansForAllCadences] = useState<
+        Partial<Record<Cadence, SMSOrVoicePlan>>
+    >({
+        [cadence]: currentVoicePlan,
+    })
+    const [smsPlansForAllCadences, setSmsPlansForAllCadences] = useState<
+        Partial<Record<Cadence, SMSOrVoicePlan>>
+    >({ [cadence]: currentSmsPlan })
+    const [convertPlansForAllCadences, setConvertPlansForAllCadences] =
+        useState<Partial<Record<Cadence, ConvertPlan>>>({
+            [cadence]: currentConvertPlan,
+        })
 
     const [selectedCadence, setSelectedCadence] = useState<Cadence>(cadence)
     const [disabledCadences] = useState<Set<Cadence>>(() => {
@@ -71,35 +98,55 @@ const BillingFrequencyView = ({
         otherCadences.forEach((otherCadence) => {
             try {
                 // Test all the plan conversions
-                getCorrespondingPlanAtCadence({
+                const helpdeskPlan = getCorrespondingPlanAtCadence({
                     availablePlans: helpdeskAvailablePlans,
                     cadence: otherCadence,
                     currentPlan: currentHelpdeskPlan,
                 })
-
-                getCorrespondingPlanAtCadence({
+                const automatePlan = getCorrespondingPlanAtCadence({
                     availablePlans: automateAvailablePlans,
                     cadence: otherCadence,
                     currentPlan: currentAutomatePlan,
                 })
-
-                getCorrespondingPlanAtCadence({
+                const voicePlan = getCorrespondingPlanAtCadence({
                     availablePlans: voiceAvailablePlans ?? [],
                     cadence: otherCadence,
                     currentPlan: currentVoicePlan,
                 })
-
-                getCorrespondingPlanAtCadence({
+                const smsPlan = getCorrespondingPlanAtCadence({
                     availablePlans: smsAvailablePlans ?? [],
                     cadence: otherCadence,
                     currentPlan: currentSmsPlan,
                 })
-
-                getCorrespondingPlanAtCadence({
+                const convertPlan = getCorrespondingPlanAtCadence({
                     availablePlans: convertAvailablePlans ?? [],
                     cadence: otherCadence,
                     currentPlan: currentConvertPlan,
                 })
+                setHelpdeskPlansForAllCadences((prev) => ({
+                    ...prev,
+                    [otherCadence]: helpdeskPlan,
+                }))
+
+                setAutomatePlansForAllCadences((prev) => ({
+                    ...prev,
+                    [otherCadence]: automatePlan,
+                }))
+
+                setVoicePlansForAllCadences((prev) => ({
+                    ...prev,
+                    [otherCadence]: voicePlan,
+                }))
+
+                setSmsPlansForAllCadences((prev) => ({
+                    ...prev,
+                    [otherCadence]: smsPlan,
+                }))
+
+                setConvertPlansForAllCadences((prev) => ({
+                    ...prev,
+                    [otherCadence]: convertPlan,
+                }))
             } catch (error) {
                 if (
                     error instanceof Error &&
@@ -122,59 +169,34 @@ const BillingFrequencyView = ({
                 ...prev,
                 [ProductType.Helpdesk]: {
                     ...prev[ProductType.Helpdesk],
-                    plan: getCorrespondingPlanAtCadence({
-                        availablePlans: helpdeskAvailablePlans,
-                        cadence: selectedCadence,
-                        currentPlan: currentHelpdeskPlan,
-                    }),
+                    plan: helpdeskPlansForAllCadences[selectedCadence],
                 },
                 [ProductType.Automation]: {
                     ...prev[ProductType.Automation],
-                    plan: getCorrespondingPlanAtCadence({
-                        availablePlans: automateAvailablePlans,
-                        cadence: selectedCadence,
-                        currentPlan: currentAutomatePlan,
-                    }),
+                    plan: automatePlansForAllCadences[selectedCadence],
                 },
                 [ProductType.Voice]: {
                     ...prev[ProductType.Voice],
-                    plan: getCorrespondingPlanAtCadence({
-                        availablePlans: voiceAvailablePlans ?? [],
-                        cadence: selectedCadence,
-                        currentPlan: currentVoicePlan,
-                    }),
+                    plan: voicePlansForAllCadences[selectedCadence],
                 },
                 [ProductType.SMS]: {
                     ...prev[ProductType.SMS],
-                    plan: getCorrespondingPlanAtCadence({
-                        availablePlans: smsAvailablePlans ?? [],
-                        cadence: selectedCadence,
-                        currentPlan: currentSmsPlan,
-                    }),
+                    plan: smsPlansForAllCadences[selectedCadence],
                 },
                 [ProductType.Convert]: {
                     ...prev[ProductType.Convert],
-                    plan: getCorrespondingPlanAtCadence({
-                        availablePlans: convertAvailablePlans ?? [],
-                        cadence: selectedCadence,
-                        currentPlan: currentConvertPlan,
-                    }),
+                    plan: convertPlansForAllCadences[selectedCadence],
                 },
             }))
         },
         [
-            automateAvailablePlans,
-            currentAutomatePlan,
-            helpdeskAvailablePlans,
-            currentHelpdeskPlan,
+            helpdeskPlansForAllCadences,
+            automatePlansForAllCadences,
+            voicePlansForAllCadences,
+            smsPlansForAllCadences,
+            convertPlansForAllCadences,
             setSelectedCadence,
             setSelectedPlans,
-            smsAvailablePlans,
-            currentSmsPlan,
-            convertAvailablePlans,
-            currentConvertPlan,
-            voiceAvailablePlans,
-            currentVoicePlan,
         ],
     )
 
