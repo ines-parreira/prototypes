@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
@@ -12,9 +11,6 @@ jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
     return fn
 })
-jest.mock('ulidx', () => ({
-    ulid: jest.fn(() => 'ulid-generated-id'),
-}))
 
 const ParameterMock = assumeMock(Parameter)
 
@@ -40,17 +36,20 @@ describe('<Parameters/>', () => {
         ],
     }
 
-    it('should call onChange when adding a new parameter', () => {
+    it('should call onChange when adding a new parameter', async () => {
+        const user = userEvent.setup()
         render(<Parameters {...{ ...props, value: [] }} />)
 
-        fireEvent.click(
-            screen.getByRole('button', {
-                name: /Add Parameter/,
-            }),
+        await act(() =>
+            user.click(
+                screen.getByRole('button', {
+                    name: /Add Parameter/,
+                }),
+            ),
         )
         expect(props.onChange).toHaveBeenCalledWith(props.path, [
             {
-                id: 'ulid-generated-id',
+                id: expect.any(String),
                 key: '',
                 value: '',
                 editable: false,
@@ -74,7 +73,7 @@ describe('<Parameters/>', () => {
         expect(props.onChange).toHaveBeenCalledWith(props.path, [
             {
                 key: 'key1',
-                id: 'ulid-generated-id',
+                id: expect.any(String),
                 value: 'value1',
                 label: 'label1',
                 editable: false,
@@ -82,7 +81,7 @@ describe('<Parameters/>', () => {
             },
             {
                 key: 'key2',
-                id: 'ulid-generated-id',
+                id: expect.any(String),
                 value: 'value2',
                 label: 'label2',
                 editable: false,

@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
@@ -29,10 +28,13 @@ describe('<Parameter/>', () => {
         expect(screen.queryAllByLabelText(/.+/)).toHaveLength(0)
     })
 
-    it('should call onChange when changing type', () => {
+    it('should call onChange when changing type', async () => {
+        const user = userEvent.setup()
         render(<Parameter {...props} />)
-        fireEvent.click(screen.getByLabelText('Type'))
-        fireEvent.click(screen.getByRole('menuitem', { name: /Dropdown/ }))
+        await act(() => user.click(screen.getByLabelText('Type')))
+        await act(() =>
+            user.click(screen.getByRole('menuitem', { name: /Dropdown/ })),
+        )
 
         expect(props.onChange).toHaveBeenCalledWith(
             `${props.path}[${props.index}].type`,
@@ -43,15 +45,16 @@ describe('<Parameter/>', () => {
     describe('Text parameter', () => {
         it.each(['label', 'key', 'value'])(
             'should call onChange when changing %s',
-            (field) => {
+            async (field) => {
+                const user = userEvent.setup()
                 render(<Parameter {...props} />)
                 const newValue = 'newValue'
-                fireEvent.change(
-                    screen.getByLabelText(new RegExp(field, 'i')),
-                    {
-                        target: { value: newValue },
-                    },
-                )
+                await act(async () => {
+                    const input = screen.getByLabelText(new RegExp(field, 'i'))
+                    await user.clear(input)
+                    await user.type(input, newValue)
+                })
+
                 expect(props.debouncedOnChange).toHaveBeenCalledWith(
                     `${props.path}[${props.index}].${field}`,
                     newValue,
@@ -59,7 +62,8 @@ describe('<Parameter/>', () => {
             },
         )
 
-        it('should enable the required checkbox conditionally and call onChange when clicking it', () => {
+        it('should enable the required checkbox conditionally and call onChange when clicking it', async () => {
+            const user = userEvent.setup()
             const { rerender } = render(<Parameter {...props} />)
             expect(screen.getByLabelText('Required')).toHaveAttribute(
                 'disabled',
@@ -78,7 +82,7 @@ describe('<Parameter/>', () => {
                 'disabled',
             )
 
-            fireEvent.click(screen.getByLabelText('Required'))
+            await act(() => user.click(screen.getByLabelText('Required')))
 
             expect(props.onChange).toHaveBeenCalledWith(
                 `${props.path}[${props.index}].mandatory`,
@@ -90,15 +94,16 @@ describe('<Parameter/>', () => {
     describe('Dropdown parameter', () => {
         it.each(['label', 'key', 'value'])(
             'should call onChange when changing %s',
-            (field) => {
+            async (field) => {
+                const user = userEvent.setup()
                 render(<Parameter {...props} />)
                 const newValue = 'newValue'
-                fireEvent.change(
-                    screen.getByLabelText(new RegExp(field, 'i')),
-                    {
-                        target: { value: newValue },
-                    },
-                )
+                await act(async () => {
+                    const input = screen.getByLabelText(new RegExp(field, 'i'))
+                    await user.clear(input)
+                    await user.type(input, newValue)
+                })
+
                 expect(props.debouncedOnChange).toHaveBeenCalledWith(
                     `${props.path}[${props.index}].${field}`,
                     newValue,
@@ -106,7 +111,8 @@ describe('<Parameter/>', () => {
             },
         )
 
-        it('should disable the editable checkbox and call onChange when clicking required checkbox', () => {
+        it('should disable the editable checkbox and call onChange when clicking required checkbox', async () => {
+            const user = userEvent.setup()
             render(
                 <Parameter
                     {...{
@@ -122,7 +128,7 @@ describe('<Parameter/>', () => {
                 'disabled',
             )
 
-            fireEvent.click(screen.getByLabelText('Required'))
+            await act(() => user.click(screen.getByLabelText('Required')))
 
             expect(props.onChange).toHaveBeenCalledWith(
                 `${props.path}[${props.index}].mandatory`,
@@ -131,18 +137,22 @@ describe('<Parameter/>', () => {
         })
     })
 
-    it('should call onChange when clicking editable', () => {
+    it('should call onChange when clicking editable', async () => {
+        const user = userEvent.setup()
         render(<Parameter {...props} />)
-        fireEvent.click(screen.getByLabelText('Editable'))
+        await act(() => user.click(screen.getByLabelText('Editable')))
         expect(props.onChange).toHaveBeenCalledWith(
             `${props.path}[${props.index}].editable`,
             true,
         )
     })
 
-    it('should call onDelete when removing param', () => {
+    it('should call onDelete when removing param', async () => {
+        const user = userEvent.setup()
         render(<Parameter {...props} />)
-        fireEvent.click(screen.getByRole('button', { name: 'close' }))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'close' })),
+        )
         expect(props.onDelete).toHaveBeenCalledWith(props.index)
     })
 })

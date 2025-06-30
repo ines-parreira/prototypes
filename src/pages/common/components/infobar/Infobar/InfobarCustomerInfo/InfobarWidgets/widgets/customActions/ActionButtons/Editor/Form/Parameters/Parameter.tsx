@@ -1,11 +1,10 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 import { MAX_HEADER_LENGTH } from 'config'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     OnChangeAction,

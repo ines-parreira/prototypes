@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { Source } from 'models/widget/types'
-import Button from 'pages/common/components/button/Button'
 import {
     Button as ButtonType,
     OnOpenForm,

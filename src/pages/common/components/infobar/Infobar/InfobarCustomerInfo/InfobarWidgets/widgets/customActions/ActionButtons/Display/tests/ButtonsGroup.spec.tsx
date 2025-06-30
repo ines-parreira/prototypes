@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { useComputeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
@@ -61,10 +60,13 @@ describe('<ButtonsGroup/>', () => {
         expect(screen.queryByRole('menu')).toBeFalsy()
     })
 
-    it('should show button in dropdown on click, with correct label', () => {
+    it('should show button in dropdown on click, with correct label', async () => {
+        const user = userEvent.setup()
         render(<ButtonsGroup buttons={buttons} source={source} />)
 
-        fireEvent.click(screen.getByRole('button', { name: 'more_horiz' }))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'more_horiz' })),
+        )
         expect(screen.queryByRole('menu')?.getAttribute('aria-hidden')).toBe(
             'false',
         )

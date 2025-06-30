@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -45,7 +44,9 @@ describe('<Editor/>', () => {
         )
         expect(container).toMatchSnapshot()
     })
+
     it('should open modal when clicking on "add button" button', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -55,12 +56,14 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Add Button' }))
-        await waitFor(() => {
-            expect(screen.queryByRole('button', { name: 'Save' })).toBeTruthy()
-        })
+        user.click(screen.getByRole('button', { name: 'Add Button' }))
+        expect(
+            await screen.findByRole('button', { name: 'Save' }),
+        ).toBeInTheDocument()
     })
-    it.skip('should close the modal when clicking "Cancel"', async () => {
+
+    it('should close the modal when clicking "Cancel"', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -70,14 +73,21 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Add Button' }))
-        await screen.findByRole('button', { name: 'Save' })
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
-        await waitFor(() => {
-            expect(screen.queryByRole('button', { name: 'Save' })).toBeFalsy()
-        })
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Add Button' })),
+        )
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Cancel' })),
+        )
+        await waitFor(() =>
+            expect(
+                screen.queryByRole('button', { name: 'Save' }),
+            ).not.toBeInTheDocument(),
+        )
     })
-    it('should call the correct callbacks when removing a button', () => {
+
+    it('should call the correct callbacks when removing a button', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -87,12 +97,14 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>,
         )
-        fireEvent.click(screen.getAllByText('delete')[1])
+        await act(() => user.click(screen.getAllByText('delete')[1]))
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
         expect(removeEditedWidget.mock.calls).toMatchSnapshot()
     })
+
     it('should call the correct callbacks when submitting a new button', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -102,16 +114,22 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Add Button' }))
-        await screen.findByRole('button', { name: 'Save' })
-        fireEvent.change(screen.getByLabelText(/Button title/), {
-            target: { value: 'ok' },
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Add Button' })),
+        )
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        await act(async () => {
+            const buttonTitle = screen.getByLabelText(/Button title/)
+            await user.clear(buttonTitle)
+            await user.type(buttonTitle, 'ok')
         })
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        await act(() => user.click(saveButton))
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
+
     it('should call the correct callbacks when submitting a edited button', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -121,9 +139,9 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>,
         )
-        fireEvent.click(screen.getAllByText('edit')[1])
-        await screen.findByRole('button', { name: 'Save' })
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        await act(() => user.click(screen.getAllByText('edit')[1]))
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        await act(() => user.click(saveButton))
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })

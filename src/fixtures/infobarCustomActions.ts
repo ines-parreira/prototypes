@@ -1,3 +1,5 @@
+import { ulid } from 'ulidx'
+
 import { ContentType, HttpMethod } from 'models/api/types'
 import {
     Action,
@@ -20,7 +22,7 @@ export const actionFixture = ({ edit = false } = {}): Action => {
         key: 'someKey',
         value: 'somevalue',
         label: '',
-        id: 'ulid-generated-id',
+        id: ulid(),
         editable: true,
         mandatory: false,
     }

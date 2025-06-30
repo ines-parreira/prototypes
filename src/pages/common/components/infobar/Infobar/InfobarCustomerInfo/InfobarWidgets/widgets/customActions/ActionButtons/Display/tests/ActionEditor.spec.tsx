@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { ContentType } from 'models/api/types'
@@ -73,25 +72,31 @@ describe('<ActionEditor/>', () => {
         ).toBeTruthy()
     })
 
-    it('should call on close when clicking the close button', () => {
+    it('should call on close when clicking the close button', async () => {
+        const user = userEvent.setup()
         render(<ActionEditor {...props} />)
-        fireEvent.click(screen.getByText('Cancel'))
+        await act(() => user.click(screen.getByText('Cancel')))
         expect(props.onClose).toHaveBeenCalledTimes(1)
     })
 
-    it('should call onSubmit with proper params when clicking the execute button and then onClose', () => {
+    it('should call onSubmit with proper params when clicking the execute button and then onClose', async () => {
+        const user = userEvent.setup()
         const newValue = 'edited'
         render(<ActionEditor {...props} />)
 
-        fireEvent.change(screen.getByLabelText(/textLabel/), {
-            target: { value: newValue },
+        await act(async () => {
+            const textLabel = screen.getByLabelText(/textLabel/)
+            await user.clear(textLabel)
+            await user.type(textLabel, newValue)
         })
 
-        fireEvent.change(screen.getByLabelText(/dropdownLabel/), {
-            target: { value: 'dropdownValue2' },
+        await act(async () => {
+            const dropdownLabel = screen.getByLabelText(/dropdownLabel/)
+            await user.clear(dropdownLabel)
+            await user.type(dropdownLabel, 'dropdownValue2')
         })
 
-        fireEvent.click(screen.getByText('Execute'))
+        await act(() => user.click(screen.getByText('Execute')))
 
         expect(props.onSubmit).toHaveBeenCalledWith({
             ...props.action,

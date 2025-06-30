@@ -9,11 +9,12 @@ import React, {
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
+import { Button as BaseButton } from '@gorgias/merchant-ui-kit'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import BaseButton from 'pages/common/components/button/Button'
 import { mapActionToActionPayload } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapActionToActionPayload'
 import {
     Action,

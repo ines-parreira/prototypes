@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -36,7 +35,8 @@ describe('<Button/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should call the right callbacks with correct index when clicking on buttons', () => {
+    it('should call the right callbacks with correct index when clicking on buttons', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -47,9 +47,9 @@ describe('<Button/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('edit'))
+        await act(() => user.click(screen.getByText('edit')))
         expect(props.onOpenForm).toHaveBeenCalledWith(props.index)
-        fireEvent.click(screen.getByText('delete'))
+        await act(() => user.click(screen.getByText('delete')))
         expect(props.onRemove).toHaveBeenCalledWith(props.index)
     })
 })

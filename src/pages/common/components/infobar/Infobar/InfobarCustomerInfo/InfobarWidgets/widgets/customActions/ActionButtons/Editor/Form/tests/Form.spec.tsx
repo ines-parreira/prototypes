@@ -1,6 +1,6 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
+import { ulid } from 'ulidx'
 
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { ContentType } from 'models/api/types'
@@ -12,10 +12,6 @@ jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     return fn
 })
 
-jest.mock('ulidx', () => ({
-    ulid: jest.fn(() => 'ulid-generated-id'),
-}))
-
 describe('<Form/>', () => {
     const onClose = jest.fn()
     const onSubmit = jest.fn()
@@ -25,14 +21,16 @@ describe('<Form/>', () => {
     }
     const index = 2
 
-    it('should call onClose when clicking cancel button', () => {
+    it('should call onClose when clicking cancel button', async () => {
+        const user = userEvent.setup()
         render(<Form onClose={onClose} onSubmit={onSubmit} />)
         expect(onClose).not.toHaveBeenCalled()
-        fireEvent.click(screen.getByText('Cancel'))
+        await act(() => user.click(screen.getByText('Cancel')))
         expect(onClose).toHaveBeenCalled()
     })
 
-    it('should call onSubmit with button’s data and then onClose when submitted', () => {
+    it('should call onSubmit with button’s data and then onClose when submitted', async () => {
+        const user = userEvent.setup()
         render(
             <Form
                 index={index}
@@ -42,28 +40,35 @@ describe('<Form/>', () => {
             />,
         )
 
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Save' })),
+        )
         expect(onSubmit).toHaveBeenCalledWith(button, index)
         expect(onClose).toHaveBeenCalled()
     })
 
-    it('should submit updated label', () => {
+    it('should submit updated label', async () => {
+        const user = userEvent.setup()
         render(<Form button={button} onClose={onClose} onSubmit={onSubmit} />)
         const newValue = ' newValue '
-        fireEvent.change(
-            screen.getByRole('textbox', { name: /Button title/ }),
-            {
-                target: { value: newValue },
-            },
+        await act(async () => {
+            const buttonTitle = screen.getByRole('textbox', {
+                name: /Button title/,
+            })
+            await user.clear(buttonTitle)
+            await user.type(buttonTitle, newValue)
+        })
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Save' })),
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(onSubmit).toHaveBeenCalledWith(
             { ...button, label: newValue.trim() },
             undefined,
         )
     })
 
-    it('should submit updated action header', () => {
+    it('should submit updated action header', async () => {
+        const user = userEvent.setup()
         render(
             <Form
                 index={2}
@@ -73,13 +78,18 @@ describe('<Form/>', () => {
             />,
         )
         const newValue = 'newValue'
-        fireEvent.click(
-            screen.getAllByRole('button', { name: /Add Header/ })[0],
-        )
-        fireEvent.change(screen.getByPlaceholderText('Key'), {
-            target: { value: newValue },
+        const addHeaderButton = screen.getByRole('button', {
+            name: /Add Header/,
         })
-        fireEvent.submit(screen.getByRole('button', { name: 'Save' }))
+        await act(() => user.click(addHeaderButton))
+        const key = screen.getAllByPlaceholderText('Key')[0]
+        const value = screen.getAllByPlaceholderText('Value')[0]
+        await act(() => user.type(key, newValue))
+        await act(() => user.type(value, newValue))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Save' })),
+        )
+
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,
@@ -88,8 +98,8 @@ describe('<Form/>', () => {
                     headers: [
                         {
                             key: newValue,
-                            id: 'ulid-generated-id',
-                            value: '',
+                            id: expect.any(String),
+                            value: newValue,
                             editable: false,
                             mandatory: false,
                         },
@@ -100,12 +110,15 @@ describe('<Form/>', () => {
         )
     })
 
-    it('should remove duplicates on submit', () => {
+    it('should remove duplicates on submit', async () => {
+        const user = userEvent.setup()
         const action = actionFixture({ edit: true })
-        action.params.push(action.params[0])
         const button = {
             label: 'label',
-            action,
+            action: {
+                ...action,
+                params: [...action.params, { ...action.params[0], id: ulid() }],
+            },
         }
         render(
             <Form
@@ -115,17 +128,20 @@ describe('<Form/>', () => {
                 onSubmit={onSubmit}
             />,
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Save' })),
+        )
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,
-                action: actionFixture({ edit: true }),
+                action,
             },
             2,
         )
     })
 
-    it('should trim leftover body data on submit', () => {
+    it('should trim leftover body data on submit', async () => {
+        const user = userEvent.setup()
         const action = actionFixture()
         action.body[ContentType.Json] = {
             ok: 'sure',
@@ -143,6 +159,7 @@ describe('<Form/>', () => {
             label: 'label',
             action,
         }
+
         render(
             <Form
                 index={2}
@@ -151,7 +168,11 @@ describe('<Form/>', () => {
                 onSubmit={onSubmit}
             />,
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Save' })),
+        )
+
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,
@@ -161,7 +182,8 @@ describe('<Form/>', () => {
         )
     })
 
-    it('should trim leftover body form data on submit', () => {
+    it('should trim leftover body form data on submit', async () => {
+        const user = userEvent.setup()
         const action = actionFixture()
         action.body[ContentType.Form] = [
             {
@@ -184,7 +206,9 @@ describe('<Form/>', () => {
                 onSubmit={onSubmit}
             />,
         )
-        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Save' })),
+        )
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,

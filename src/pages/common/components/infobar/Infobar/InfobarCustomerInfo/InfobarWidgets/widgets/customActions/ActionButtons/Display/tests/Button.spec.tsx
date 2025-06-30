@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore, Reducer } from 'redux'
@@ -64,7 +63,8 @@ describe('<Button/>', () => {
         ).toBeInTheDocument()
     })
 
-    it('should call executeAction with the right params and disable the button', () => {
+    it('should call executeAction with the right params and disable the button', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -74,7 +74,7 @@ describe('<Button/>', () => {
                 <Button {...props} />
             </Provider>,
         )
-        fireEvent.click(screen.getByText(props.label))
+        await act(() => user.click(screen.getByText(props.label)))
         expect(infobarActions.executeAction).toHaveBeenCalledWith({
             actionLabel: props.label,
             actionName: 'customHttpAction',
@@ -95,7 +95,8 @@ describe('<Button/>', () => {
         ).toBeAriaDisabled()
     })
 
-    it('should display param editor on button click if some fields are editable', () => {
+    it('should display param editor on button click if some fields are editable', async () => {
+        const user = userEvent.setup()
         const actionFixtureWithEdit = actionFixture({ edit: true })
         render(
             <Provider
@@ -106,7 +107,7 @@ describe('<Button/>', () => {
                 <Button {...props} action={actionFixtureWithEdit} />
             </Provider>,
         )
-        fireEvent.click(screen.getByText(props.label))
+        await act(() => user.click(screen.getByText(props.label)))
         expect(getLastMockCall(mockedActionEditor)[0]).toEqual(
             expect.objectContaining({ action: actionFixtureWithEdit }),
         )
@@ -115,6 +116,7 @@ describe('<Button/>', () => {
     })
 
     it('should enable the button once action is done', async () => {
+        const user = userEvent.setup()
         // We need to have a real store here to execute the whole action flow
         const DUMB_ACTION_TYPE = 'dumbdumb'
         const reducer: Reducer = (state: unknown, action) => {
@@ -147,7 +149,7 @@ describe('<Button/>', () => {
                 <Button {...props} />
             </Provider>,
         )
-        fireEvent.click(screen.getByText(props.label))
+        await act(() => user.click(screen.getByText(props.label)))
 
         // We need to dispatch any dummy action so we get our new state
         store.dispatch({ type: DUMB_ACTION_TYPE })

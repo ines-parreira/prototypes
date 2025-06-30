@@ -1,10 +1,11 @@
-import React, { FormEvent, memo, useCallback, useState } from 'react'
+import { FormEvent, memo, useCallback, useState } from 'react'
 
 import { produce } from 'immer'
 import { set as _set } from 'lodash'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { ContentType, HttpMethod } from 'models/api/types'
-import Button from 'pages/common/components/button/Button'
 import { httpMethodsWithBody } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 import {
     Button as ButtonType,

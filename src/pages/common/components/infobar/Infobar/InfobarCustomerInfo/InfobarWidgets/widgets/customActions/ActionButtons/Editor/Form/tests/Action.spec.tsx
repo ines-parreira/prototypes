@@ -1,6 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { HttpMethod } from 'models/api/types'
@@ -31,40 +30,53 @@ describe('<Action/>', () => {
         expect(screen.queryByText('Body')).toBeInTheDocument()
     })
 
-    it('should call onChange when changing action method', () => {
+    it('should call onChange when changing action method', async () => {
+        const user = userEvent.setup()
         render(<Action {...props} />)
-        fireEvent.click(screen.getByRole('textbox', { name: /Method/ }))
-        fireEvent.click(screen.getByRole('menuitem', { name: HttpMethod.Post }))
-        expect(props.onChange).toHaveBeenCalledWith('method', HttpMethod.Post)
+        await act(() =>
+            user.click(screen.getByRole('textbox', { name: /Method/ })),
+        )
+        await act(() =>
+            user.click(screen.getByRole('menuitem', { name: HttpMethod.Post })),
+        )
+        expect(props.onChange).toHaveBeenLastCalledWith(
+            'method',
+            HttpMethod.Post,
+        )
     })
 
-    it('should call onChange when changing action url', () => {
+    it('should call onChange when changing action url', async () => {
         render(<Action {...props} />)
         const newValue = 'newValue'
-        fireEvent.change(screen.getByRole('textbox', { name: /URL/ }), {
-            target: { value: newValue },
-        })
-        expect(props.onChange).toHaveBeenCalledWith('url', newValue)
+        const url = screen.getByRole('textbox', { name: /URL/ })
+        await act(() => fireEvent.change(url, { target: { value: newValue } }))
+        expect(props.onChange).toHaveBeenLastCalledWith('url', newValue)
     })
 
-    it('should call onChange when changing action headers', () => {
+    it('should call onChange when changing action headers', async () => {
+        const user = userEvent.setup()
         render(<Action {...props} />)
 
-        fireEvent.click(
-            screen.getAllByRole('button', {
-                name: /Add Header/,
-            })[0],
+        await act(() =>
+            user.click(
+                screen.getAllByRole('button', {
+                    name: /Add Header/,
+                })[0],
+            ),
         )
         expect(props.onChange).toHaveBeenCalled()
     })
 
-    it('should call onChange when changing action parameters', () => {
+    it('should call onChange when changing action parameters', async () => {
+        const user = userEvent.setup()
         render(<Action {...props} />)
 
-        fireEvent.click(
-            screen.getAllByRole('button', {
-                name: /Add Parameter/,
-            })[0],
+        await act(() =>
+            user.click(
+                screen.getAllByRole('button', {
+                    name: /Add Parameter/,
+                })[0],
+            ),
         )
         expect(props.onChange).toHaveBeenCalled()
     })

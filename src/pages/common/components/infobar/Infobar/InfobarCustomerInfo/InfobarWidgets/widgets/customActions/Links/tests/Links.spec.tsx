@@ -1,13 +1,11 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as actions from 'state/widgets/actions'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { Link } from '../../types'
 import { Links } from '../Links'
@@ -108,6 +106,7 @@ describe('<Links/>', () => {
     })
 
     it('should open Editor when clicking on Add Link', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -118,13 +117,13 @@ describe('<Links/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('Add Link'))
-        await waitFor(() => {
-            expect(screen.queryByText('Save')).toBeTruthy()
-        })
+        await act(() => user.click(screen.getByText('Add Link')))
+
+        expect(await screen.findByText('Save')).toBeInTheDocument()
     })
 
-    it('should call only `removeEditedWidget` action when removing the last link', () => {
+    it('should call only `removeEditedWidget` action when removing the last link', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -135,13 +134,14 @@ describe('<Links/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getAllByText('delete')[0])
+        await act(() => user.click(screen.getAllByText('delete')[0]))
         expect(removeEditedWidget.mock.calls).toMatchSnapshot()
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 
-    it('should call all actions when removing a link', () => {
+    it('should call all actions when removing a link', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -152,13 +152,15 @@ describe('<Links/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getAllByText('delete')[0])
+        await act(() => user.click(screen.getAllByText('delete')[0]))
+
         expect(removeEditedWidget.mock.calls).toMatchSnapshot()
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 
     it('should call widget actions when editing a link', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -169,15 +171,14 @@ describe('<Links/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('edit'))
-        await waitFor(() => expect(screen.getByText('Save')))
-
-        fireEvent.click(screen.getByText('Save'))
+        await act(() => user.click(screen.getByText('edit')))
+        await act(() => user.click(screen.getByText('Save')))
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 
     it('should call actions when adding a link', async () => {
+        const user = userEvent.setup()
         render(
             <Provider
                 store={mockStore({
@@ -188,16 +189,23 @@ describe('<Links/>', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('Add Link'))
+        await act(() => user.click(screen.getByText('Add Link')))
 
-        await waitFor(() => {
-            expect(screen.getByText('Save'))
+        const saveButton = await screen.findByText('Save')
+        expect(saveButton).toBeInTheDocument()
+
+        await act(async () => {
+            const title = screen.getByLabelText('Title')
+            await user.clear(title)
+            await user.type(title, 'Gorgias')
+        })
+        await act(async () => {
+            const link = screen.getByLabelText('Link')
+            await user.clear(link)
+            await user.type(link, 'www.gorgias.com')
         })
 
-        userEvent.type(screen.getByLabelText('Title'), 'Gorgias')
-        userEvent.type(screen.getByLabelText('Link'), 'www.gorgias.com')
-
-        fireEvent.click(screen.getByText('Save'))
+        await act(() => user.click(saveButton))
 
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()

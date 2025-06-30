@@ -7,22 +7,22 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small left"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         I am in snapshots
       </span>
     </button>
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small right"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         I am in snapshots too
       </span>
