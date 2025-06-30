@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 
 import {
     TicketSLADimension,
@@ -65,7 +65,10 @@ describe('<SLAStatusCell />', () => {
 
         render(<SLAStatusCell item={slaData} />)
         const slaStatusBadge = screen.getByText(SlaStatusLabel[ticketSlaStatus])
-        userEvent.hover(slaStatusBadge)
+
+        act(() => {
+            userEvent.hover(slaStatusBadge)
+        })
 
         expect(slaStatusBadge).toBeInTheDocument()
         await waitFor(() => {
