@@ -3,7 +3,10 @@ import { render, screen } from '@testing-library/react'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useNegativeSentimentsPerProductMetricTrend } from 'hooks/reporting/voice-of-customer/useSentimentPerProduct'
 import { ReportingGranularity } from 'models/reporting/types'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { NegativeSentimentsPerProductKpi } from 'pages/stats/voice-of-customer/charts/NegativeSentimentsPerProductKpiChart/NegativeSentimentsPerProductKpi'
+import { getDrillDownMetricData } from 'pages/stats/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
+import { ProductInsightsTableColumns } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/voice-of-customer/useSentimentPerProduct')
@@ -14,8 +17,11 @@ const useNegativeSentimentsPerProductMetricTrendMock = assumeMock(
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger')
+const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
+
 describe('NegativeSentimentsPerProductKpi', () => {
-    const productId = 'productId'
+    const product = { id: 'productId', name: 'productName' }
     const sentimentCustomFieldId = 123
     const negativeSentiments = 45
 
@@ -30,6 +36,10 @@ describe('NegativeSentimentsPerProductKpi', () => {
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
         })
+
+        DrillDownModalTriggerMock.mockImplementation(({ children }) => (
+            <div>{children}</div>
+        ))
     })
 
     it('should not render the Kpi when loading', () => {
@@ -41,11 +51,12 @@ describe('NegativeSentimentsPerProductKpi', () => {
 
         render(
             <NegativeSentimentsPerProductKpi
-                productId={productId}
+                product={product}
                 sentimentCustomFieldId={sentimentCustomFieldId}
             />,
         )
 
+        expect(DrillDownModalTriggerMock).not.toHaveBeenCalled()
         expect(screen.queryByText(negativeSentiments)).not.toBeInTheDocument()
     })
 
@@ -58,11 +69,24 @@ describe('NegativeSentimentsPerProductKpi', () => {
 
         render(
             <NegativeSentimentsPerProductKpi
-                productId={productId}
+                product={product}
                 sentimentCustomFieldId={sentimentCustomFieldId}
             />,
         )
 
+        expect(DrillDownModalTriggerMock).toHaveBeenCalledWith(
+            {
+                children: '45',
+                enabled: true,
+                highlighted: true,
+                metricData: getDrillDownMetricData(
+                    ProductInsightsTableColumns.NegativeSentiment,
+                    product,
+                    sentimentCustomFieldId,
+                ),
+            },
+            {},
+        )
         expect(screen.getByText(negativeSentiments)).toBeInTheDocument()
     })
 })

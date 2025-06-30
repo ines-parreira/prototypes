@@ -12,7 +12,7 @@ export const NegativeSentimentsPerProductKpiChart = () => {
             {sentimentCustomFieldId && product ? (
                 <NegativeSentimentsPerProductKpi
                     sentimentCustomFieldId={sentimentCustomFieldId}
-                    productId={product.id}
+                    product={product}
                 />
             ) : null}
         </>

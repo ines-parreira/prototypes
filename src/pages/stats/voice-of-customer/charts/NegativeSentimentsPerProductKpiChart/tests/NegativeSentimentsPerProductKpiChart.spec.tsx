@@ -63,7 +63,7 @@ describe('NegativeSentimentsPerProductKpiChart', () => {
         expect(NegativeSentimentsPerProductKpiMock).toHaveBeenCalledWith(
             {
                 sentimentCustomFieldId,
-                productId,
+                product,
             },
             {},
         )
