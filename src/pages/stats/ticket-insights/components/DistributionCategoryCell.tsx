@@ -1,7 +1,6 @@
 import { PropsWithRef } from 'react'
 
-import colors from '@gorgias/design-tokens/tokens/colors'
-
+import { useTheme } from 'core/theme'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'models/reporting/queryFactories/utils'
 import BodyCell, {
     Props as BodyCellProps,
@@ -15,7 +14,6 @@ type Props = {
     progress: number
 }
 
-const cellColor = colors.classic.accessory.blue_bg.value
 export const formatCategory = (category: string) =>
     category
         ?.split(TICKET_CUSTOM_FIELDS_API_SEPARATOR)
@@ -26,6 +24,8 @@ export const DistributionCategoryCell = ({
     progress,
     ...props
 }: PropsWithRef<BodyCellProps> & Props) => {
+    const theme = useTheme()
+    const cellColor = theme.tokens.Accessory.Blue_1.value
     const content = formatCategory(category)
 
     return (

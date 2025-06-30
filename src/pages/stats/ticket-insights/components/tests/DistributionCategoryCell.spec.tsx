@@ -16,10 +16,16 @@ describe('<DistributionCategoryCell />', () => {
 
     it('should render the cell', () => {
         render(
-            <DistributionCategoryCell
-                {...minProps}
-                category={'Level 0::Level 1'}
-            />,
+            <table>
+                <tbody>
+                    <tr>
+                        <DistributionCategoryCell
+                            {...minProps}
+                            category={'Level 0::Level 1'}
+                        />
+                    </tr>
+                </tbody>
+            </table>,
         )
 
         expect(screen.getByText('Level 0 > Level 1')).toBeInTheDocument()
