@@ -1,4 +1,4 @@
-import { Cadence, Plan } from 'models/billing/types'
+import { Cadence, cadenceNames, Plan } from 'models/billing/types'
 
 export type Props<T extends Plan> = {
     availablePlans: T[]
@@ -11,20 +11,27 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
     currentPlan,
     cadence,
 }: Props<T>): T | undefined => {
-    const switchInterval =
-        cadence === Cadence.Month
-            ? { to: 'monthly', from: 'yearly' }
-            : { to: 'yearly', from: 'monthly' }
+    // If the current plan is null or already has the desired cadence, return it
+    if (!currentPlan || currentPlan?.cadence === cadence) {
+        return currentPlan
+    }
 
     const targetPlanId = currentPlan?.plan_id.replace(
-        switchInterval.from,
-        switchInterval.to,
+        cadenceNames[currentPlan.cadence].toLowerCase(),
+        cadenceNames[cadence].toLowerCase(),
     )
 
-    const plan = availablePlans.find((plan) => plan.plan_id === targetPlanId)
+    const plan = availablePlans.find(
+        (plan) =>
+            plan.plan_id === targetPlanId ||
+            (plan.cadence === cadence &&
+                plan.product === currentPlan.product &&
+                plan.name === currentPlan.name &&
+                plan.generation === currentPlan.generation),
+    )
 
     if (!plan) {
-        return currentPlan
+        throw new Error('Plan not found at this cadence')
     }
 
     return plan

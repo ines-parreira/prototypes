@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 
 import { Cadence } from 'models/billing/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import BillingFrequency, { BillingFrequencyProps } from '../BillingFrequency'
 
@@ -36,12 +35,54 @@ describe('BillingFrequency', () => {
             selector: 'input',
         })
 
-        userEvent.click(monthlyRadioButton)
+        fireEvent.click(monthlyRadioButton)
         expect(mockOnFrequencySelect).toHaveBeenCalledWith('month')
 
-        userEvent.click(yearlyRadioButton)
+        fireEvent.click(yearlyRadioButton)
         expect(mockOnFrequencySelect).toHaveBeenCalledWith('year')
     })
 
-    // Add more test cases as needed
+    it('should show text when monthly billing is not available', () => {
+        const { getByLabelText, container } = setup({
+            disabledCadences: new Set([Cadence.Month]),
+        })
+        const monthlyRadioButton = getByLabelText('Monthly', {
+            selector: 'input',
+        })
+        const yearlyRadioButton = getByLabelText('Yearly', {
+            selector: 'input',
+        })
+
+        fireEvent.click(yearlyRadioButton)
+        expect(mockOnFrequencySelect).toHaveBeenCalledWith('year')
+
+        expect(monthlyRadioButton).toBeDisabled()
+        expect(
+            container.getElementsByClassName('disabledMessage')[0].textContent,
+        ).toContain(
+            'Monthly billing is not available for your current plan configuration.',
+        )
+    })
+
+    it('should show text when yearly billing is not available', () => {
+        const { getByLabelText, container } = setup({
+            disabledCadences: new Set([Cadence.Year]),
+        })
+        const monthlyRadioButton = getByLabelText('Monthly', {
+            selector: 'input',
+        })
+        const yearlyRadioButton = getByLabelText('Yearly', {
+            selector: 'input',
+        })
+
+        fireEvent.click(monthlyRadioButton)
+        expect(mockOnFrequencySelect).toHaveBeenCalledWith('month')
+
+        expect(yearlyRadioButton).toBeDisabled()
+        expect(
+            container.getElementsByClassName('disabledMessage')[0].textContent,
+        ).toContain(
+            'Yearly billing is not available for your current plan configuration.',
+        )
+    })
 })

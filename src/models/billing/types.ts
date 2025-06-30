@@ -7,6 +7,10 @@ export enum Cadence {
     Month = 'month',
     Year = 'year',
 }
+export const cadenceNames = {
+    [Cadence.Month]: 'Monthly',
+    [Cadence.Year]: 'Yearly',
+}
 
 export type PlanLimits = {
     default: number

@@ -1,6 +1,7 @@
 import {
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
+    basicYearlyHelpdeskPlan2,
 } from 'fixtures/productPrices'
 import { Cadence } from 'models/billing/types'
 import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
@@ -20,15 +21,28 @@ describe('getCorrespondingPlanAtInterval', () => {
             cadence: Cadence.Month,
         })
         expect(result2).toBe(basicMonthlyHelpdeskPlan)
-    })
 
-    it('should return the currentPlan if the price for the given cadence does not exist', () => {
-        const result = getCorrespondingPlanAtCadence({
-            availablePlans: [],
+        const result3 = getCorrespondingPlanAtCadence({
+            availablePlans: [
+                basicMonthlyHelpdeskPlan,
+                basicYearlyHelpdeskPlan2,
+            ],
             currentPlan: basicMonthlyHelpdeskPlan,
             cadence: Cadence.Year,
         })
-        expect(result).toBe(basicMonthlyHelpdeskPlan)
+        expect(result3).toBe(basicYearlyHelpdeskPlan2)
+    })
+
+    it('should thow an error if the price for the given cadence does not exist', () => {
+        try {
+            getCorrespondingPlanAtCadence({
+                availablePlans: [],
+                currentPlan: basicMonthlyHelpdeskPlan,
+                cadence: Cadence.Year,
+            })
+        } catch (e) {
+            expect(e).toEqual(new Error('Plan not found at this cadence'))
+        }
     })
 
     it('should return undefined if the currentPrice is not provided', () => {

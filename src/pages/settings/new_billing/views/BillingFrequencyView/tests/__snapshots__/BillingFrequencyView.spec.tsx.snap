@@ -79,48 +79,52 @@ exports[`UsageAndPlansView should render 1`] = `
             class="container"
           >
             <div
-              aria-checked="true"
-              aria-label="Monthly"
-              class="wrapper selected"
-              role="radio"
-              tabindex="0"
+              class="radioButtons"
             >
-              <div>
-                <label
-                  class="ui-label-label-3864 label"
-                  for="month"
-                >
-                  <input
-                    checked=""
-                    class="input"
-                    id="month"
-                    tabindex="-1"
-                    type="radio"
-                  />
-                  Monthly
-                </label>
+              <div
+                aria-checked="true"
+                aria-label="Monthly"
+                class="wrapper selected"
+                role="radio"
+                tabindex="0"
+              >
+                <div>
+                  <label
+                    class="ui-label-label-3864 label"
+                    for="month"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="month"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    Monthly
+                  </label>
+                </div>
               </div>
-            </div>
-            <div
-              aria-checked="false"
-              aria-label="Yearly"
-              class="wrapper"
-              role="radio"
-              tabindex="0"
-            >
-              <div>
-                <label
-                  class="ui-label-label-3864 label"
-                  for="year"
-                >
-                  <input
-                    class="input"
-                    id="year"
-                    tabindex="-1"
-                    type="radio"
-                  />
-                  Yearly
-                </label>
+              <div
+                aria-checked="false"
+                aria-label="Yearly"
+                class="wrapper"
+                role="radio"
+                tabindex="0"
+              >
+                <div>
+                  <label
+                    class="ui-label-label-3864 label"
+                    for="year"
+                  >
+                    <input
+                      class="input"
+                      id="year"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    Yearly
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -156,6 +160,171 @@ exports[`UsageAndPlansView should render 1`] = `
               class="container"
             >
               <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  Helpdesk
+                </div>
+                <div
+                  class="description"
+                >
+                  Basic - 
+                  300
+                   
+                  tickets
+                  /
+                  month
+                </div>
+              </div>
+              <div
+                class="price"
+              >
+                <span>
+                  $60
+                </span>
+                /
+                month
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  AI Agent
+                </div>
+                <div
+                  class="description"
+                >
+                  30
+                   
+                  automated interactions
+                  /
+                  month
+                </div>
+              </div>
+              <div
+                class="price"
+              >
+                <span>
+                  $30
+                </span>
+                /
+                month
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  Voice
+                </div>
+                <div
+                  class="description"
+                >
+                  30
+                   
+                  voice tickets
+                  /
+                  month
+                </div>
+              </div>
+              <div
+                class="price"
+              >
+                <span>
+                  $3
+                </span>
+                /
+                month
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  SMS
+                </div>
+                <div
+                  class="description"
+                >
+                  30
+                   
+                  SMS tickets
+                  /
+                  month
+                </div>
+              </div>
+              <div
+                class="price"
+              >
+                <span>
+                  $0.20
+                </span>
+                /
+                month
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="details"
+              >
+                <div
+                  class="title"
+                >
+                  Convert
+                </div>
+                <div
+                  class="description"
+                >
+                  60
+                   
+                  clicks
+                  /
+                  month
+                </div>
+              </div>
+              <div
+                class="price"
+              >
+                <span>
+                  $36
+                </span>
+                /
+                month
+                <div>
+                  <img
+                    alt="warning icon"
+                    class="material-icons autoUpgradeWarningIcon mr-1"
+                    id="summary-auto-upgrade-disabled-convert"
+                    src="test-file-stub"
+                  />
+                  Auto-upgrade disabled
+                </div>
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
                 class="total"
               >
                 <div
@@ -169,7 +338,7 @@ exports[`UsageAndPlansView should render 1`] = `
                   <span
                     aria-label="Total price"
                   >
-                    $0
+                    $129.20
                   </span>
                   /
                   month

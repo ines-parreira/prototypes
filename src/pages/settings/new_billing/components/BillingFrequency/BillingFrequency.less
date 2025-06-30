@@ -2,6 +2,32 @@
     .container {
         padding: 16px 16px 16px;
         display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .radioButtons {
+        display: flex;
         gap: 12px;
+    }
+
+    .disabledMessage {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px;
+        background-color: var(--neutral-grey-1);
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+        color: var(--neutral-grey-6);
+        font-size: 14px;
+        line-height: 1.4;
+
+        i {
+            color: var(--neutral-grey-5);
+            font-size: 16px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
     }
 }

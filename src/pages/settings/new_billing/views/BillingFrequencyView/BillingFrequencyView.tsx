@@ -63,10 +63,60 @@ const BillingFrequencyView = ({
     const [showAlert, setShowAlert] = useState(true)
 
     const [selectedCadence, setSelectedCadence] = useState<Cadence>(cadence)
+    const [disabledCadences] = useState<Set<Cadence>>(() => {
+        const disabledCadences = new Set<Cadence>()
+        const otherCadences = Object.values(Cadence).filter(
+            (otherCadence) => otherCadence !== cadence,
+        )
+        otherCadences.forEach((otherCadence) => {
+            try {
+                // Test all the plan conversions
+                getCorrespondingPlanAtCadence({
+                    availablePlans: helpdeskAvailablePlans,
+                    cadence: otherCadence,
+                    currentPlan: currentHelpdeskPlan,
+                })
+
+                getCorrespondingPlanAtCadence({
+                    availablePlans: automateAvailablePlans,
+                    cadence: otherCadence,
+                    currentPlan: currentAutomatePlan,
+                })
+
+                getCorrespondingPlanAtCadence({
+                    availablePlans: voiceAvailablePlans ?? [],
+                    cadence: otherCadence,
+                    currentPlan: currentVoicePlan,
+                })
+
+                getCorrespondingPlanAtCadence({
+                    availablePlans: smsAvailablePlans ?? [],
+                    cadence: otherCadence,
+                    currentPlan: currentSmsPlan,
+                })
+
+                getCorrespondingPlanAtCadence({
+                    availablePlans: convertAvailablePlans ?? [],
+                    cadence: otherCadence,
+                    currentPlan: currentConvertPlan,
+                })
+            } catch (error) {
+                if (
+                    error instanceof Error &&
+                    error.message === 'Plan not found at this cadence'
+                ) {
+                    disabledCadences.add(otherCadence)
+                } else {
+                    throw error
+                }
+            }
+        })
+        return disabledCadences
+    })
 
     const onFrequencySelect = useCallback(
-        (cadence: Cadence) => {
-            setSelectedCadence(cadence)
+        (selectedCadence: Cadence) => {
+            setSelectedCadence(selectedCadence)
 
             setSelectedPlans((prev) => ({
                 ...prev,
@@ -74,7 +124,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Helpdesk],
                     plan: getCorrespondingPlanAtCadence({
                         availablePlans: helpdeskAvailablePlans,
-                        cadence: cadence,
+                        cadence: selectedCadence,
                         currentPlan: currentHelpdeskPlan,
                     }),
                 },
@@ -82,7 +132,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Automation],
                     plan: getCorrespondingPlanAtCadence({
                         availablePlans: automateAvailablePlans,
-                        cadence: cadence,
+                        cadence: selectedCadence,
                         currentPlan: currentAutomatePlan,
                     }),
                 },
@@ -90,7 +140,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Voice],
                     plan: getCorrespondingPlanAtCadence({
                         availablePlans: voiceAvailablePlans ?? [],
-                        cadence: cadence,
+                        cadence: selectedCadence,
                         currentPlan: currentVoicePlan,
                     }),
                 },
@@ -98,7 +148,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.SMS],
                     plan: getCorrespondingPlanAtCadence({
                         availablePlans: smsAvailablePlans ?? [],
-                        cadence: cadence,
+                        cadence: selectedCadence,
                         currentPlan: currentSmsPlan,
                     }),
                 },
@@ -106,7 +156,7 @@ const BillingFrequencyView = ({
                     ...prev[ProductType.Convert],
                     plan: getCorrespondingPlanAtCadence({
                         availablePlans: convertAvailablePlans ?? [],
-                        cadence: cadence,
+                        cadence: selectedCadence,
                         currentPlan: currentConvertPlan,
                     }),
                 },
@@ -155,6 +205,7 @@ const BillingFrequencyView = ({
                     <BillingFrequency
                         selectedCadence={selectedCadence}
                         onCadenceSelect={onFrequencySelect}
+                        disabledCadences={disabledCadences}
                     />
                 </Card>
                 <Card title="Summary">
