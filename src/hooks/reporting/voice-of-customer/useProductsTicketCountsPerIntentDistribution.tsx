@@ -7,6 +7,8 @@ import { TicketProductsEnrichedMeasure } from 'models/reporting/cubes/core/Ticke
 import { EnrichmentFields } from 'models/reporting/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
+export const PRODUCTS_PER_INTENT_LIMIT = 5
+
 export const useProductsTicketCountsPerIntentDistribution = (
     intentCustomFieldId: number,
     intentsCustomFieldValueString: string,
@@ -31,6 +33,7 @@ export const useProductsTicketCountsPerIntentDistribution = (
             intentCustomFieldId,
             intentsCustomFieldValueString,
             sorting,
+            PRODUCTS_PER_INTENT_LIMIT,
         )
 
     const {
@@ -46,6 +49,7 @@ export const useProductsTicketCountsPerIntentDistribution = (
         intentCustomFieldId,
         intentsCustomFieldValueString,
         sorting,
+        PRODUCTS_PER_INTENT_LIMIT,
     )
 
     const formattedData = useMemo(() => {

@@ -9,6 +9,7 @@ import {
     PRODUCT_ENRICHMENT_ENTITY_ID,
     PRODUCT_ENRICHMENT_FIELDS,
 } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
+import { PRODUCTS_PER_INTENT_LIMIT } from 'hooks/reporting/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
 import { withEnrichment } from 'hooks/reporting/withEnrichment'
 import {
     TicketProductsEnrichedDimension,
@@ -224,6 +225,8 @@ appQueryClient.setQueryData(
             'UTC',
             intentCustomFieldId,
             TICKET_CUSTOM_FIELDS_VALUE,
+            undefined,
+            PRODUCTS_PER_INTENT_LIMIT,
         ),
         enrichment_fields: PRODUCT_ENRICHMENT_FIELDS,
     }),
@@ -248,6 +251,8 @@ appQueryClient.setQueryData(
             'UTC',
             intentCustomFieldId,
             TICKET_CUSTOM_FIELDS_VALUE,
+            undefined,
+            PRODUCTS_PER_INTENT_LIMIT,
         ),
         enrichment_fields: PRODUCT_ENRICHMENT_FIELDS,
     }),

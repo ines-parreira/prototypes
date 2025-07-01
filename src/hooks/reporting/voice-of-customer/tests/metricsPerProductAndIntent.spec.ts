@@ -45,11 +45,14 @@ describe('metricsPerProductAndIntent', () => {
     const intentCustomFieldId = 123
     const productId = 'test-product'
     const sorting = OrderDirection.Desc
+    const limit = 5
+
     const mockQuery = {
         measures: [],
         dimensions: [],
         filters: [],
         timezone: 'UTC',
+        limit,
     }
     const mockResult: MetricWithDecile = {
         data: {
@@ -139,6 +142,7 @@ describe('metricsPerProductAndIntent', () => {
                     intentCustomFieldId,
                     intentsCustomFieldValueString,
                     sorting,
+                    limit,
                 ),
             )
 
@@ -148,6 +152,7 @@ describe('metricsPerProductAndIntent', () => {
                 intentCustomFieldId,
                 intentsCustomFieldValueString,
                 sorting,
+                limit,
             )
             expect(useMetricPerDimensionWithEnrichment).toHaveBeenCalledWith(
                 mockQuery,
@@ -171,6 +176,7 @@ describe('metricsPerProductAndIntent', () => {
                 timezone,
                 intentCustomFieldId,
                 intentsCustomFieldValueString,
+                undefined,
                 undefined,
             )
             expect(useMetricPerDimensionWithEnrichment).toHaveBeenCalledWith(

@@ -53,6 +53,7 @@ export const useProductsTicketCountsPerIntentWithEnrichment = (
     intentsCustomFieldId: number,
     intentsCustomFieldValueString: string,
     sorting?: OrderDirection,
+    limit?: number,
 ): MetricWithEnrichment<
     TicketProductsEnrichedMeasure,
     TicketProductsEnrichedDimension
@@ -64,6 +65,7 @@ export const useProductsTicketCountsPerIntentWithEnrichment = (
             intentsCustomFieldId,
             intentsCustomFieldValueString,
             sorting,
+            limit,
         ),
         PRODUCT_ENRICHMENT_FIELDS,
         PRODUCT_ENRICHMENT_ENTITY_ID,

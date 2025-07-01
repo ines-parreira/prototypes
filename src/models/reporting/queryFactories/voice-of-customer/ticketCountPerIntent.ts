@@ -74,6 +74,7 @@ export const ticketCountForIntentQueryFactory = (
     intentCustomFieldId: number,
     intentsCustomFieldValueString: string,
     sorting?: OrderDirection,
+    limit?: number,
 ) => {
     const baseQuery = ticketCountPerIntentQueryFactory(
         injectCustomFieldId(statsFilters, intentCustomFieldId, [
@@ -85,6 +86,7 @@ export const ticketCountForIntentQueryFactory = (
 
     return {
         ...baseQuery,
+        limit,
         dimensions: [
             TicketProductsEnrichedDimension.ProductId,
             TicketProductsEnrichedDimension.StoreId,

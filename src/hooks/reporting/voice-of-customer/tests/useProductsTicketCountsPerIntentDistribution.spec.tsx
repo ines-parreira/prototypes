@@ -23,6 +23,7 @@ describe('useProductsTicketCountsPerIntentDistribution', () => {
     const intentCustomFieldId = 123
     const intentsCustomFieldValueString = 'Product::Return'
     const sorting = OrderDirection.Desc
+    const limit = 5
 
     const mockStatsFilters: StatsFilters = {
         period: {
@@ -83,6 +84,7 @@ describe('useProductsTicketCountsPerIntentDistribution', () => {
                 intentCustomFieldId,
                 intentsCustomFieldValueString,
                 sorting,
+                limit,
             )
             expect(
                 useProductsTicketCountsPerIntentWithEnrichment,
@@ -96,6 +98,7 @@ describe('useProductsTicketCountsPerIntentDistribution', () => {
                 intentCustomFieldId,
                 intentsCustomFieldValueString,
                 sorting,
+                limit,
             )
         })
 
@@ -116,6 +119,7 @@ describe('useProductsTicketCountsPerIntentDistribution', () => {
                 intentCustomFieldId,
                 intentsCustomFieldValueString,
                 undefined,
+                limit,
             )
             expect(
                 useProductsTicketCountsPerIntentWithEnrichment,
@@ -129,6 +133,7 @@ describe('useProductsTicketCountsPerIntentDistribution', () => {
                 intentCustomFieldId,
                 intentsCustomFieldValueString,
                 undefined,
+                limit,
             )
         })
 
