@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _difference from 'lodash/difference'
 import _uniq from 'lodash/uniq'
 import _upperFirst from 'lodash/upperFirst'
 import _xor from 'lodash/xor'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { SourceAddress } from 'models/ticket/types'
@@ -28,7 +26,6 @@ import { getTicket } from 'state/ticket/selectors'
 import { RootState } from 'state/types'
 
 import ReceiversSelectField from './components/ReceiversSelectField'
-import DEPRECATED_SenderSelectField from './components/SenderSelectField/DEPRECATED_SenderSelectField'
 import SenderSelectField from './components/SenderSelectField/SenderSelectField'
 
 import css from './MessageSourceFields.less'
@@ -94,8 +91,6 @@ export default function MessageSourceFields() {
 
         return true
     })
-
-    const showNewSenderSelect = useFlags()[FeatureFlagKey.NewSenderSelect]
 
     useEffect(() => {
         if (!canOpen || areNewMessageContactPropertiesFulfilled) {
@@ -232,11 +227,7 @@ export default function MessageSourceFields() {
                     {from && (
                         <div key="from" className={css.sourceField}>
                             <span className={css.label}>From: </span>
-                            {showNewSenderSelect ? (
-                                <SenderSelectField />
-                            ) : (
-                                <DEPRECATED_SenderSelectField />
-                            )}
+                            <SenderSelectField />
                         </div>
                     )}
                     {

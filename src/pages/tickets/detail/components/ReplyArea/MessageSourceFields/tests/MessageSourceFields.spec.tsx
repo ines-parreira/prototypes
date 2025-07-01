@@ -2,10 +2,8 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
@@ -185,23 +183,7 @@ describe('<MessageSourceFields />', () => {
             }),
         }
 
-        it('renders the old selector when the feature flag is off', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.NewSenderSelect]: false,
-            }))
-
-            const { container, getByText } = renderWithStore(initialState)
-
-            expect(getByText('To:')).toBeInTheDocument()
-            expect(getByText('From:')).toBeInTheDocument()
-            expect(container.querySelector('select')).toBeInTheDocument()
-        })
-
-        it('renders the new selector when the feature flag is on', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.NewSenderSelect]: true,
-            }))
-
+        it('renders the new selector', () => {
             const { container, getByText } = renderWithStore(initialState)
 
             expect(getByText('To:')).toBeInTheDocument()

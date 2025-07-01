@@ -122,7 +122,6 @@ export enum FeatureFlagKey {
     MultiStore = 'linear.project_multistore.enable_multistore',
     NewDomainVerification = 'new-domain-verification',
     NewSatisfactionReport = 'new-satisfaction-report',
-    NewSenderSelect = 'new-sender-select',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityROICalculator = 'roi-calculator-for-automate',
