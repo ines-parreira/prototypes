@@ -94,7 +94,7 @@ describe('useSelfServiceHelpCenterChannels', () => {
         expect(result.current).toEqual(expectedResult)
     })
 
-    it('returns an empty array if no help centers match the storeIntegration name', () => {
+    it('returns an empty array if no help centers match the given shop name', () => {
         mockedUseSelfServiceStoreIntegration.mockReturnValue({
             id: 1,
             name: 'My Other Shop',
@@ -102,7 +102,7 @@ describe('useSelfServiceHelpCenterChannels', () => {
         } as unknown as ReturnType<typeof useSelfServiceStoreIntegration>)
 
         const { result } = renderHook(() =>
-            useSelfServiceHelpCenterChannels(shopType, shopName),
+            useSelfServiceHelpCenterChannels(shopType, shopName + 'temp'),
         )
 
         expect(result.current).toEqual([])

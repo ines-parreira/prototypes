@@ -18,7 +18,7 @@ const useSelfServiceHelpCenterChannels = (
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
     const { data: helpCenters } = useGetHelpCenterList(
         {
-            shop_name: storeIntegration?.name,
+            shop_name: shopName,
             type: 'faq',
         },
         {
@@ -33,16 +33,13 @@ const useSelfServiceHelpCenterChannels = (
 
         return (
             helpCenters?.data.data
-                .filter(
-                    (helpCenter) =>
-                        helpCenter.shop_name === storeIntegration.name,
-                )
+                .filter((helpCenter) => helpCenter.shop_name === shopName)
                 .map((helpCenter) => ({
                     type: TicketChannel.HelpCenter,
                     value: helpCenter,
                 })) ?? []
         )
-    }, [helpCenters, storeIntegration])
+    }, [helpCenters, storeIntegration, shopName])
 }
 
 export default useSelfServiceHelpCenterChannels
