@@ -40,7 +40,7 @@ describe('AiSalesAgentTrendCard', () => {
         mockUseGmvInfluencedTrend.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: { value: 100, prevValue: 90 },
+            data: { value: 100, prevValue: 90, currency: 'USD' },
         })
 
         renderWithStore(

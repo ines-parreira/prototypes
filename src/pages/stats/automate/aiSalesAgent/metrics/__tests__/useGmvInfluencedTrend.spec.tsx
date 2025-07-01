@@ -1,9 +1,15 @@
-import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
-import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
@@ -29,28 +35,46 @@ const statsFilters: StatsFilters = {
 
 const queryClient = mockQueryClient()
 
-jest.mock('models/reporting/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
-const fetchPostReportingMock = assumeMock(fetchPostReporting)
+jest.mock('hooks/reporting/useMetricPerDimension')
+const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
 jest.useFakeTimers()
 
-describe('gmvInfluecedTrend', () => {
+describe('gmvInfluencedTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
-    } as UseQueryResult
+    }
 
-    describe('useGmvInfluecedTrend', () => {
-        it('should return correct metric data when the query resolves', async () => {
-            usePostReportingMock.mockReturnValueOnce({
+    describe('useGmvInfluencedTrend', () => {
+        it('should return correct metric data with currency when the query resolves', async () => {
+            useMetricPerDimensionMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 32.41,
-            } as UseQueryResult)
-            usePostReportingMock.mockReturnValueOnce({
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [
+                        {
+                            [AiSalesAgentOrdersMeasure.Gmv]: '32.41',
+                            [AiSalesAgentOrdersDimension.Currency]: 'USD',
+                        },
+                    ],
+                },
+            })
+            useMetricPerDimensionMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 24.56,
-            } as UseQueryResult)
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [
+                        {
+                            [AiSalesAgentOrdersMeasure.Gmv]: '24.56',
+                            [AiSalesAgentOrdersDimension.Currency]: 'USD',
+                        },
+                    ],
+                },
+            })
 
             act(() => jest.runAllTimers())
 
@@ -70,6 +94,41 @@ describe('gmvInfluecedTrend', () => {
                     data: {
                         value: 32.41,
                         prevValue: 24.56,
+                        currency: 'USD',
+                    },
+                    isError: false,
+                    isFetching: false,
+                })
+            })
+        })
+
+        it('should handle null values correctly', async () => {
+            useMetricPerDimensionMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: null,
+            })
+            useMetricPerDimensionMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: null,
+            })
+
+            const { result } = renderHook(
+                () => useGmvInfluencedTrend(statsFilters, timezone),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+
+            await waitFor(() => {
+                expect(result.current).toEqual({
+                    data: {
+                        value: null,
+                        prevValue: null,
+                        currency: 'USD',
                     },
                     isError: false,
                     isFetching: false,
@@ -78,20 +137,38 @@ describe('gmvInfluecedTrend', () => {
         })
     })
 
-    describe('fetchGmvInfluecedTrend', () => {
-        it('should return the correct data when the query resolves', async () => {
-            fetchPostReportingMock.mockReturnValueOnce({
-                data: {
+    describe('fetchGmvInfluencedTrend', () => {
+        it('should return the correct data with currency when the query resolves', async () => {
+            fetchMetricPerDimensionMock.mockReturnValueOnce(
+                Promise.resolve({
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 32.41 }],
-                },
-            } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockReturnValueOnce({
-                data: {
+                    data: {
+                        value: null,
+                        decile: null,
+                        allData: [
+                            {
+                                [AiSalesAgentOrdersMeasure.Gmv]: '32.41',
+                                [AiSalesAgentOrdersDimension.Currency]: 'EUR',
+                            },
+                        ],
+                    },
+                }),
+            )
+            fetchMetricPerDimensionMock.mockReturnValueOnce(
+                Promise.resolve({
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 24.56 }],
-                },
-            } as unknown as ReturnType<typeof fetchPostReporting>)
+                    data: {
+                        value: null,
+                        decile: null,
+                        allData: [
+                            {
+                                [AiSalesAgentOrdersMeasure.Gmv]: '24.56',
+                                [AiSalesAgentOrdersDimension.Currency]: 'EUR',
+                            },
+                        ],
+                    },
+                }),
+            )
 
             const result = await fetchGmvInfluencedTrend(statsFilters, timezone)
 
@@ -99,8 +176,27 @@ describe('gmvInfluecedTrend', () => {
                 data: {
                     value: 32.41,
                     prevValue: 24.56,
+                    currency: 'EUR',
                 },
                 isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should handle errors correctly', async () => {
+            fetchMetricPerDimensionMock.mockRejectedValueOnce(
+                new Error('Network error'),
+            )
+
+            const result = await fetchGmvInfluencedTrend(statsFilters, timezone)
+
+            expect(result).toEqual({
+                data: {
+                    value: null,
+                    prevValue: null,
+                    currency: 'USD',
+                },
+                isError: true,
                 isFetching: false,
             })
         })

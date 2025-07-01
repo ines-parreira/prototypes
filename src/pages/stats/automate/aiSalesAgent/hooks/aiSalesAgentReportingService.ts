@@ -74,12 +74,17 @@ const timeSeriesReportSource = timeSeriesSource.map(
     (metric: TimeSeriesMetric) => AiSalesAgentChartConfig[metric],
 )
 
-const formatMetric = (column: ProductTableKeys, value?: number | null) => {
+const formatMetric = (
+    column: ProductTableKeys,
+    value?: number | null,
+    currency?: string,
+) => {
     return ProductTableConfig[column].metricFormat
         ? formatMetricValue(
               value,
               ProductTableConfig[column].metricFormat,
               NOT_AVAILABLE_PLACEHOLDER,
+              currency,
           )
         : value
 }

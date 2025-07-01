@@ -8,14 +8,14 @@ import { getPreviousPeriod } from 'utils/reporting'
 
 import { fetchGenericTrend, useGenericTrend } from './useGenericTrend'
 import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
+    fetchGmvInfluencedTrendInUSD,
+    useGmvInfluencedTrendInUSD,
 } from './useGmvInfluencedTrend'
 
 const useGmvInfluencedRateTrend = (filters: StatsFilters, timezone: string) =>
     useGenericTrend(
         {
-            gmvInfluenced: useGmvInfluencedTrend(filters, timezone),
+            gmvInfluenced: useGmvInfluencedTrendInUSD(filters, timezone),
             gmv: useMetricTrend(
                 gmvQueryFactory(filters, timezone),
                 gmvQueryFactory(
@@ -33,7 +33,7 @@ const useGmvInfluencedRateTrend = (filters: StatsFilters, timezone: string) =>
 const fetchGmvInfluencedRateTrend = (filters: StatsFilters, timezone: string) =>
     fetchGenericTrend(
         {
-            gmvInfluenced: fetchGmvInfluencedTrend(filters, timezone),
+            gmvInfluenced: fetchGmvInfluencedTrendInUSD(filters, timezone),
             gmv: fetchMetricTrend(
                 gmvQueryFactory(filters, timezone),
                 gmvQueryFactory(

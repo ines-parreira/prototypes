@@ -4,8 +4,8 @@ import moment from 'moment'
 
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
+    fetchGmvInfluencedTrendInUSD,
+    useGmvInfluencedTrendInUSD,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import {
     fetchTotalNumberOfAutomatedSalesTrend,
@@ -49,8 +49,8 @@ const fetchTotalAIConvTrendMock = assumeMock(
 )
 
 jest.mock('pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedTrend')
-const useGmvInfluencedTrendMock = assumeMock(useGmvInfluencedTrend)
-const fetchGmvInfluencedTrendMock = assumeMock(fetchGmvInfluencedTrend)
+const useGmvInfluencedTrendMock = assumeMock(useGmvInfluencedTrendInUSD)
+const fetchGmvInfluencedTrendMock = assumeMock(fetchGmvInfluencedTrendInUSD)
 
 jest.mock(
     'pages/stats/automate/aiSalesAgent/metrics/useTotalNumberOfAutomatedSalesTrend',
@@ -165,34 +165,32 @@ describe('roiRateTrend', () => {
 
     describe('fetchRoiRateTrend', () => {
         beforeEach(() => {
-            fetchGmvInfluencedTrendMock.mockReturnValue({
+            fetchGmvInfluencedTrendMock.mockResolvedValue({
                 ...defaultReporting,
                 data: {
                     value: 200,
                     prevValue: 100,
                 },
-            } as unknown as ReturnType<typeof fetchGmvInfluencedTrend>)
-            fetchTotalNumberOfAutomatedSalesTrendMock.mockReturnValue({
+            })
+            fetchTotalNumberOfAutomatedSalesTrendMock.mockResolvedValue({
                 ...defaultReporting,
                 data: {
                     value: 10,
                     prevValue: 5,
                 },
-            } as unknown as ReturnType<
-                typeof fetchTotalNumberOfAutomatedSalesTrend
-            >)
+            })
         })
 
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            fetchTotalAIConvTrendMock.mockReturnValue({
+            fetchTotalAIConvTrendMock.mockResolvedValue({
                 ...defaultReporting,
                 data: {
                     value: 5,
                     prevValue: 2,
                 },
-            } as unknown as ReturnType<typeof fetchTotalAIConvTrendMock>)
+            })
 
             const result = await fetchRoiRateTrend(filters, timezone)
 
@@ -206,16 +204,16 @@ describe('roiRateTrend', () => {
             })
         })
 
-        it('should retrun correct value if cube returns null', async () => {
+        it('should return correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            fetchTotalAIConvTrendMock.mockReturnValue({
+            fetchTotalAIConvTrendMock.mockResolvedValue({
                 ...defaultReporting,
                 data: {
                     value: null,
                     prevValue: null,
                 },
-            } as unknown as ReturnType<typeof fetchTotalAIConvTrendMock>)
+            })
 
             const result = await fetchRoiRateTrend(filters, timezone)
 

@@ -16,11 +16,27 @@ export type MetricTrend = {
     }
 }
 
+export type MetricTrendWithCurrency = {
+    isFetching: boolean
+    isError: boolean
+    data?: {
+        value: number | null
+        prevValue: number | null
+        currency: string
+    }
+}
+
+export const isMetricTrendWithCurrency = (
+    trend: MetricTrend | MetricTrendWithCurrency,
+): trend is MetricTrendWithCurrency => {
+    return !!(trend.data && 'currency' in trend.data)
+}
+
 export type MetricTrendHook = (
     statsFilters: StatsFilters,
     timezone: string,
     enabled?: boolean,
-) => MetricTrend
+) => MetricTrend | MetricTrendWithCurrency
 
 export type MetricTrendFetch = (
     statsFilters: StatsFilters,

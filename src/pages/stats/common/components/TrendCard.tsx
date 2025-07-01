@@ -1,7 +1,10 @@
 import React, { ReactNode } from 'react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
+import {
+    isMetricTrendWithCurrency,
+    MetricTrendHook,
+} from 'hooks/reporting/useMetricTrend'
 import { TrendMetric } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
 import MetricCard from 'pages/stats/common/components/MetricCard'
@@ -54,6 +57,7 @@ export const TrendCard = ({
         trend.data?.value,
         metricFormat,
         NOT_AVAILABLE_PLACEHOLDER,
+        isMetricTrendWithCurrency(trend) ? trend?.data?.currency : undefined,
     )
 
     return (

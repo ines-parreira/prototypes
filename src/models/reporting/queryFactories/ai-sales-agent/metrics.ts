@@ -93,12 +93,32 @@ export const gmvQueryFactory = (
     timezone,
 })
 
-export const gmvInfluencedQueryFactory = (
+export const gmvUSDInfluencedQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
     measures: [AiSalesAgentOrdersMeasure.GmvUsd],
     dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentOrdersDimension.IsInfluenced,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+})
+
+export const gmvInfluencedQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.Gmv],
+    dimensions: [AiSalesAgentOrdersDimension.Currency],
     filters: [
         {
             member: AiSalesAgentOrdersDimension.IsInfluenced,

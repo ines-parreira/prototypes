@@ -14,8 +14,8 @@ import {
     useGmvInfluencedRateTrend,
 } from '../useGmvInfluencedRateTrend'
 import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
+    fetchGmvInfluencedTrendInUSD,
+    useGmvInfluencedTrendInUSD,
 } from '../useGmvInfluencedTrend'
 
 const timezone = 'UTC'
@@ -34,8 +34,10 @@ const statsFilters: StatsFilters = {
 const queryClient = mockQueryClient()
 
 jest.mock('pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedTrend')
-const useGmvTrendMock = assumeMock(useGmvInfluencedTrend)
-const fetchGmvTrendMock = assumeMock(fetchGmvInfluencedTrend)
+const useGmvInfluencedTrendInUSDMock = assumeMock(useGmvInfluencedTrendInUSD)
+const fetchGmvInfluencedTrendInUSDMock = assumeMock(
+    fetchGmvInfluencedTrendInUSD,
+)
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -51,7 +53,7 @@ describe('gmvInfluencedRateTrend', () => {
 
     describe('useGmvInfluecedTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
-            useGmvTrendMock.mockReturnValue({
+            useGmvInfluencedTrendInUSDMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -96,13 +98,13 @@ describe('gmvInfluencedRateTrend', () => {
 
     describe('fetchGmvInfluncedTrend', () => {
         it('should return the correct data when the query resolves', async () => {
-            fetchGmvTrendMock.mockReturnValue({
+            fetchGmvInfluencedTrendInUSDMock.mockReturnValue({
                 ...defaultReporting,
                 data: {
                     value: 10,
                     prevValue: 2,
                 },
-            } as unknown as ReturnType<typeof fetchGmvInfluencedTrend>)
+            } as unknown as ReturnType<typeof fetchGmvInfluencedTrendInUSD>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,

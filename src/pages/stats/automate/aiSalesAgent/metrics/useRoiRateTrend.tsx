@@ -1,7 +1,7 @@
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
+    fetchGmvInfluencedTrendInUSD,
+    useGmvInfluencedTrendInUSD,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import {
     fetchTotalNumberOfAutomatedSalesTrend,
@@ -39,7 +39,7 @@ const calculateRoiRate = ({
 const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
     return useGenericTrend(
         {
-            gmvInfluenced: useGmvInfluencedTrend(filters, timezone),
+            gmvInfluenced: useGmvInfluencedTrendInUSD(filters, timezone),
             totalConversations: useTotalNumberOfSalesConversationsTrend(
                 filters,
                 timezone,
@@ -56,7 +56,7 @@ const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
 const fetchRoiRateTrend = (filters: StatsFilters, timezone: string) => {
     return fetchGenericTrend(
         {
-            gmvInfluenced: fetchGmvInfluencedTrend(filters, timezone),
+            gmvInfluenced: fetchGmvInfluencedTrendInUSD(filters, timezone),
             totalConversations: fetchTotalNumberOfSalesConversationsTrend(
                 filters,
                 timezone,
