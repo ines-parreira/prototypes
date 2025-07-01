@@ -1,7 +1,7 @@
 :local {
     .container {
-        padding: var(--layout-spacing-l);
-        width: 100vw;
+        padding: var(--layout-spacing-m);
+        width: 100%;
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-s);
@@ -10,6 +10,23 @@
     @media (max-width: 768px) {
         .container {
             padding: 0px;
+        }
+    }
+
+    .dashboardsContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--layout-spacing-l);
+        width: 100%;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+            padding: var(--layout-spacing-s);
+            gap: var(--layout-spacing-xs);
+        }
+
+        @media (max-width: 1024px) {
+            gap: var(--layout-spacing-xs);
         }
     }
 }

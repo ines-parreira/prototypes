@@ -18,12 +18,18 @@ const digestMetrics = [
     { label: 'Global Sentiment', value: 'Positive', variation: '-30%' },
 ]
 
+const analyticsData = digestMetrics.filter(
+    (d) => d.label !== 'Global Sentiment',
+)
+
 export const Performance = () => {
     return (
         <div className={css.container}>
             <DigestCard content={digestContent} metrics={digestMetrics} />
-            <AnalyticsCard status="live" />
-            <AnalyticsCard status="paused" />
+            <div className={css.dashboardsContainer}>
+                <AnalyticsCard analyticsData={analyticsData} status="live" />
+                <AnalyticsCard analyticsData={analyticsData} status="paused" />
+            </div>
         </div>
     )
 }
