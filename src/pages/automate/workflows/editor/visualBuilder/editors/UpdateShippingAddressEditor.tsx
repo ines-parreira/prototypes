@@ -205,6 +205,7 @@ export default function UpdateShippingAddressEditor({
                             }}
                             variables={workflowVariables}
                             error={nodeInEdition.data.errors?.country}
+                            allowFilters={true}
                             onBlur={() => {
                                 dispatch({
                                     type: 'SET_TOUCHED',
@@ -258,6 +259,7 @@ export default function UpdateShippingAddressEditor({
                             }}
                             variables={workflowVariables}
                             error={nodeInEdition.data.errors?.firstName}
+                            allowFilters={true}
                             onBlur={() => {
                                 dispatch({
                                     type: 'SET_TOUCHED',
