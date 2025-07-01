@@ -11,8 +11,6 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { useFirstStoreWithAiSalesData } from 'pages/stats/convert/hooks/useFirstStoreWithAiSalesData'
@@ -21,13 +19,13 @@ import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSli
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
+import { useWarningBannerIsDisplayed } from '../../hooks/useWarningBannerIsDisplayed'
 import SalesOverview from '../SalesOverview'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock('pages/stats/convert/hooks/useFirstStoreWithAiSalesData')
-jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
-jest.mock('pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck')
+jest.mock('pages/stats/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -50,10 +48,7 @@ jest.mock('pages/stats/dashboards/DashboardComponent', () => ({
 const mockUseFirstStoreWithAiSalesData = assumeMock(
     useFirstStoreWithAiSalesData,
 )
-const mockUseStoreActivations = assumeMock(useStoreActivations)
-const mockUseTrackingBundleInstallationWarningCheck = assumeMock(
-    useTrackingBundleInstallationWarningCheck,
-)
+const mockUseWarningBannerIsDisplayed = assumeMock(useWarningBannerIsDisplayed)
 
 const mockUseStoreIntegrationByShopName =
     useStoreIntegrationByShopName as jest.Mock
@@ -131,18 +126,11 @@ describe('<SalesOverview />', () => {
             isLoading: false,
             storeId: 1,
         })
-        mockUseStoreActivations.mockReturnValue({
-            storeActivations: {
-                'test-shop': {
-                    configuration: {
-                        monitoredChatIntegrations: [2],
-                    },
-                },
-            },
-            isFetchLoading: false,
-        } as unknown as ReturnType<typeof useStoreActivations>)
-        mockUseTrackingBundleInstallationWarningCheck.mockReturnValue({
-            uninstalledChatIntegrationId: undefined,
+        mockUseWarningBannerIsDisplayed.mockReturnValue({
+            isBannerDisplayed: false,
+            isLoading: false,
+            redirectionPath: '',
+            redirectToChatSettings: jest.fn(),
         })
         mockUseStoreIntegrationByShopName.mockReturnValue({
             id: 1,
@@ -195,8 +183,12 @@ describe('<SalesOverview />', () => {
         })
 
         it('should display warning banner when chat integration is not installed', async () => {
-            mockUseTrackingBundleInstallationWarningCheck.mockReturnValue({
-                uninstalledChatIntegrationId: 2,
+            mockUseWarningBannerIsDisplayed.mockReturnValue({
+                isBannerDisplayed: true,
+                isLoading: false,
+                redirectionPath:
+                    '/app/settings/channels/gorgias_chat/2/installation',
+                redirectToChatSettings: jest.fn(),
             })
             renderComponent({ path })
 
@@ -243,8 +235,13 @@ describe('<SalesOverview />', () => {
         })
 
         it('should redirect to the chat integration installation page when the chat integration is not installed', async () => {
-            mockUseTrackingBundleInstallationWarningCheck.mockReturnValue({
-                uninstalledChatIntegrationId: 2,
+            const mockRedirectToChatSettings = jest.fn()
+            mockUseWarningBannerIsDisplayed.mockReturnValue({
+                isBannerDisplayed: true,
+                isLoading: false,
+                redirectionPath:
+                    '/app/settings/channels/gorgias_chat/2/installation',
+                redirectToChatSettings: mockRedirectToChatSettings,
             })
 
             renderComponent({ path })
@@ -256,9 +253,8 @@ describe('<SalesOverview />', () => {
             })
 
             await userEvent.click(screen.getByText('Update Installation'))
-            expect(mockHistoryPush).toHaveBeenCalledWith(
-                '/app/settings/channels/gorgias_chat/2/installation',
-            )
+
+            expect(mockRedirectToChatSettings).toHaveBeenCalled()
         })
     })
 })

@@ -4,24 +4,37 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useListBundles } from 'models/convert/bundle/queries'
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 
 const BUNDLE_RECENT_ACTIVITY_THRESHOLD_IN_HOURS = 72
 
 export const useTrackingBundleInstallationWarningCheck = ({
-    storeActivations,
+    storeName,
 }: {
-    storeActivations: Record<string, StoreActivation>
+    storeName?: string
 }) => {
     const storeIntegrations = useShopifyIntegrations()
 
     const hasShoppingAssistant =
-        useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+        !!useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+
+    const canUseAiSalesAgent = useCanUseAiSalesAgent()
+
+    const enabled = hasShoppingAssistant && canUseAiSalesAgent
+
+    const { storeActivations, isFetchLoading: isStoreActivationsLoading } =
+        useStoreActivations({
+            storeName,
+            withChatIntegrationsStatus: enabled,
+            withStoresKnowledgeStatus: enabled,
+            enabled,
+        })
 
     const { data: bundles } = useListBundles({
-        enabled: hasShoppingAssistant,
+        enabled,
     })
 
     const integrationsToCheck = Object.values(storeActivations)
@@ -90,6 +103,7 @@ export const useTrackingBundleInstallationWarningCheck = ({
     }, [activeBundleIds, integrationsToCheck])
 
     return {
+        isLoading: isStoreActivationsLoading,
         uninstalledChatIntegrationId: uninstalledChatIntegrationIds?.[0],
     }
 }

@@ -5,19 +5,14 @@ import { Router } from 'react-router-dom'
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useWarningBannerIsDisplayed } from '../useWarningBannerIsDisplayed'
 
-jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
-
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
-
-const mockUseStoreActivations = assumeMock(useStoreActivations)
 
 jest.mock('pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck')
 const mockUseTrackingBundleInstallationWarningCheck = jest.mocked(
@@ -45,27 +40,25 @@ const renderHookWithRouter = ({
 describe('useWarningBannerIsDisplayed', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseStoreActivations.mockReturnValue({
-            storeActivations: {},
-        } as ReturnType<typeof useStoreActivations>)
         mockUseTrackingBundleInstallationWarningCheck.mockReturnValue({
+            isLoading: false,
             uninstalledChatIntegrationId: 456,
-        } as any)
+        })
         useAppSelectorMock.mockReturnValue(fromJS(user))
     })
 
     it('should return loading state when store activations are loading', () => {
-        mockUseStoreActivations.mockReturnValue({
-            storeActivations: {},
-            isFetchLoading: true,
-        } as ReturnType<typeof useStoreActivations>)
+        mockUseTrackingBundleInstallationWarningCheck.mockReturnValue({
+            isLoading: true,
+            uninstalledChatIntegrationId: undefined,
+        })
 
         const { result } = renderHookWithRouter()
 
         expect(result.current.isLoading).toEqual(true)
     })
 
-    it('should call store activations hook with storeName when storeName and storeIntegration are provided', () => {
+    it('should call tracking bundle warning check hook with storeName when storeName and storeIntegration are provided', () => {
         renderHookWithRouter({
             props: {
                 storeName: 'testStore',
@@ -75,14 +68,14 @@ describe('useWarningBannerIsDisplayed', () => {
             },
         })
 
-        expect(mockUseStoreActivations).toHaveBeenCalledWith({
+        expect(
+            mockUseTrackingBundleInstallationWarningCheck,
+        ).toHaveBeenCalledWith({
             storeName: 'testStore',
-            withChatIntegrationsStatus: true,
-            withStoresKnowledgeStatus: true,
         })
     })
 
-    it('should call store activations hook with storeName from storeIntegration when only storeIntegration is provided', () => {
+    it('should call tracking bundle warning check hook with storeName from storeIntegration when only storeIntegration is provided', () => {
         renderHookWithRouter({
             props: {
                 storeIntegrationFromStoreFilter: {
@@ -91,10 +84,10 @@ describe('useWarningBannerIsDisplayed', () => {
             },
         })
 
-        expect(mockUseStoreActivations).toHaveBeenCalledWith({
+        expect(
+            mockUseTrackingBundleInstallationWarningCheck,
+        ).toHaveBeenCalledWith({
             storeName: 'testStoreFromFilter',
-            withChatIntegrationsStatus: true,
-            withStoresKnowledgeStatus: true,
         })
     })
 

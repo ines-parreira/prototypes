@@ -71,11 +71,13 @@ export const computeActivationPercentage = (
 export const useStoreConfigurations = (
     accountDomain: string,
     storeName?: string,
+    enabled: boolean = true,
 ) => {
     const { storeConfigurations: allStoreConfigurations, isLoading } =
         useStoreConfigurationForAccount({
             accountDomain,
             storesName: storeName ? [storeName] : undefined,
+            enabled,
         })
 
     const storeConfigurations: StoreConfiguration[] = useMemo(() => {
@@ -138,10 +140,12 @@ export const useStoreActivations = ({
     storeName,
     withChatIntegrationsStatus = false,
     withStoresKnowledgeStatus = false,
+    enabled = true,
 }: {
     storeName?: string
     withChatIntegrationsStatus?: boolean
     withStoresKnowledgeStatus?: boolean
+    enabled?: boolean
 } = {}): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
@@ -210,7 +214,7 @@ export const useStoreActivations = ({
         storeConfigurations,
         storeNames,
         isLoading: isStoreConfigurationLoading,
-    } = useStoreConfigurations(accountDomain, storeName)
+    } = useStoreConfigurations(accountDomain, storeName, enabled)
 
     const chatIds = useMemo(() => {
         return storeConfigurations.flatMap(

@@ -2,15 +2,18 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useListBundles } from 'models/convert/bundle/queries'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import { renderHook } from 'utils/testing/renderHook'
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
+jest.mock('launchdarkly-react-client-sdk')
 const mockUseFlags = jest.mocked(useFlags)
+
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
 
 jest.mock('models/convert/bundle/queries', () => ({
     useListBundles: jest.fn(),
@@ -19,6 +22,9 @@ const mockUseListBundles = jest.mocked(useListBundles)
 
 jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
 const mockUseShopifyIntegrations = jest.mocked(useShopifyIntegrations)
+
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+const mockUseStoreActivations = jest.mocked(useStoreActivations)
 
 const STORE_1 = 'store-1'
 const STORE_2 = 'store-2'
@@ -75,30 +81,71 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
                 },
             ],
         } as any)
+
+        mockUseStoreActivations.mockReturnValue({
+            storeActivations: STORE_ACTIVATIONS,
+            isFetchLoading: false,
+        } as any)
+
+        mockUseCanUseAiSalesAgent.mockReturnValue(true)
     })
 
     it('should return undefined when no store activations are provided', () => {
+        mockUseStoreActivations.mockReturnValueOnce({
+            storeActivations: {},
+            isFetchLoading: false,
+        } as any)
+
         const { result } = renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: {},
-            }),
+            useTrackingBundleInstallationWarningCheck({}),
         )
 
         expect(result.current.uninstalledChatIntegrationId).toBeUndefined()
     })
 
-    it('should disable query when ai shopping assistant is not enabled', () => {
-        mockUseFlags.mockReturnValue({
+    it('should disable queries when ai shopping assistant is not enabled', () => {
+        mockUseFlags.mockReturnValueOnce({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
 
+        renderHook(() => useTrackingBundleInstallationWarningCheck({}))
+
+        expect(mockUseListBundles).toHaveBeenCalledWith({ enabled: false })
+        expect(mockUseStoreActivations).toHaveBeenCalledWith({
+            storeName: undefined,
+            enabled: false,
+            withChatIntegrationsStatus: false,
+            withStoresKnowledgeStatus: false,
+        })
+    })
+
+    it('should disable queries when user cannot use ai sales agent', () => {
+        mockUseCanUseAiSalesAgent.mockReturnValueOnce(false)
+
+        renderHook(() => useTrackingBundleInstallationWarningCheck({}))
+
+        expect(mockUseListBundles).toHaveBeenCalledWith({ enabled: false })
+        expect(mockUseStoreActivations).toHaveBeenCalledWith({
+            storeName: undefined,
+            enabled: false,
+            withChatIntegrationsStatus: false,
+            withStoresKnowledgeStatus: false,
+        })
+    })
+
+    it('should call store activation with storeName', () => {
         renderHook(() =>
             useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
+                storeName: STORE_1,
             }),
         )
 
-        expect(mockUseListBundles).toHaveBeenCalledWith({ enabled: false })
+        expect(mockUseStoreActivations).toHaveBeenCalledWith({
+            storeName: STORE_1,
+            enabled: true,
+            withChatIntegrationsStatus: true,
+            withStoresKnowledgeStatus: true,
+        })
     })
 
     it('should return first chat of first store when no active installations are returned', () => {
@@ -107,9 +154,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
-            }),
+            useTrackingBundleInstallationWarningCheck({}),
         )
 
         expect(result.current.uninstalledChatIntegrationId).toEqual(
@@ -132,9 +177,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
-            }),
+            useTrackingBundleInstallationWarningCheck({}),
         )
 
         expect(result.current.uninstalledChatIntegrationId).toBeUndefined()
@@ -159,9 +202,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
-            }),
+            useTrackingBundleInstallationWarningCheck({}),
         )
 
         expect(result.current.uninstalledChatIntegrationId).toBeUndefined()
@@ -182,9 +223,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
-            }),
+            useTrackingBundleInstallationWarningCheck({}),
         )
 
         expect(result.current.uninstalledChatIntegrationId).toEqual(
@@ -213,9 +252,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
-            }),
+            useTrackingBundleInstallationWarningCheck({}),
         )
 
         expect(result.current.uninstalledChatIntegrationId).toEqual(
@@ -241,9 +278,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useTrackingBundleInstallationWarningCheck({
-                storeActivations: STORE_ACTIVATIONS,
-            }),
+            useTrackingBundleInstallationWarningCheck({}),
         )
         expect(result.current.uninstalledChatIntegrationId).toEqual(
             STORE_2_CHAT_INTEGRATION_ID_2,

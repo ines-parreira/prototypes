@@ -4,7 +4,6 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreIntegration } from 'models/integration/types'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin, isTeamLead } from 'utils'
@@ -25,17 +24,13 @@ export const useWarningBannerIsDisplayed = ({
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
 
-    const { storeActivations, isFetchLoading } = useStoreActivations({
-        storeName: storeName || storeIntegrationFromStoreFilter?.name,
-        withChatIntegrationsStatus: true,
-        withStoresKnowledgeStatus: true,
-    })
-
     const isTicketsPage = !!useRouteMatch(ticketsPages)
     const history = useHistory()
 
-    const { uninstalledChatIntegrationId } =
-        useTrackingBundleInstallationWarningCheck({ storeActivations })
+    const { uninstalledChatIntegrationId, isLoading } =
+        useTrackingBundleInstallationWarningCheck({
+            storeName: storeName || storeIntegrationFromStoreFilter?.name,
+        })
 
     const redirectionPath = useMemo(() => {
         if (!uninstalledChatIntegrationId) {
@@ -69,7 +64,7 @@ export const useWarningBannerIsDisplayed = ({
 
     return {
         isBannerDisplayed,
-        isLoading: isFetchLoading,
+        isLoading,
         redirectionPath,
         redirectToChatSettings,
     }
