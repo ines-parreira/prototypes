@@ -32,7 +32,7 @@ export const ExpressionRow = function ExpressionRow({
 
     return (
         <div className={css.row}>
-            {index > 0 && <Pill color="grey">And</Pill>}
+            {index > 0 && <Pill color="light">And</Pill>}
             <Pill>Ticket Field</Pill>
             <span className={css.fieldSource}>
                 <FormField

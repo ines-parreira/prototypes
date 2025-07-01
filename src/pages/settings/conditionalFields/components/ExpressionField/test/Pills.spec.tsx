@@ -10,13 +10,13 @@ describe('Pills', () => {
         expect(screen.getByText('Moukalviouk!')).toBeInTheDocument()
     })
 
-    it('should have blue class or grey class', () => {
+    it('should have secondary class or light class', () => {
         const { rerender } = render(<Pill>Moukalviouk!</Pill>)
 
-        expect(screen.getByText('Moukalviouk!')).toHaveClass('blue')
+        expect(screen.getByText('Moukalviouk!')).toHaveClass('secondary')
 
-        rerender(<Pill color="grey">Moukalviouk!</Pill>)
+        rerender(<Pill color="light">Moukalviouk!</Pill>)
 
-        expect(screen.getByText('Moukalviouk!')).toHaveClass('grey')
+        expect(screen.getByText('Moukalviouk!')).toHaveClass('light')
     })
 })
