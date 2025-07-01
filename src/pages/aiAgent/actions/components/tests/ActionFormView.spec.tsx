@@ -1,4 +1,5 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { produce } from 'immer'
 
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -16,16 +17,21 @@ jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceContext', () => {
     }
 })
 jest.mock('react-router-dom', () => {
-    const actual = jest.requireActual('react-router-dom')
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return {
-        ...actual,
         useParams: () => ({
             shopName: 'test-store',
             shopType: 'shopify' as const,
         }),
     } as unknown as any
 })
+
+jest.mock(
+    'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps',
+    () => ({
+        __esModule: true,
+        default: () => <></>,
+    }),
+)
 
 describe('<ActionFormView />', () => {
     it('should dispatch SET_NAME action on name change', () => {
@@ -511,6 +517,7 @@ describe('<ActionFormView />', () => {
     })
 
     it('should open the modal on requires confirmation change', async () => {
+        const user = userEvent.setup()
         const mockDispatch = jest.fn()
         const graph = {
             ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -561,42 +568,43 @@ describe('<ActionFormView />', () => {
             </VisualBuilderContext.Provider>,
         )
 
-        const confirmationCheckbox: HTMLInputElement = screen.getByLabelText(
-            'Require customer confirmation to perform Action',
+        const confirmationCheckbox: HTMLInputElement =
+            await screen.findByLabelText(
+                'Require customer confirmation to perform Action',
+            )
+        expect(confirmationCheckbox.checked).toBe(true)
+        act(() => {
+            user.click(confirmationCheckbox)
+        })
+
+        let modalHeader = await screen.findByText(
+            'Disable confirmation requirement?',
         )
-        expect(confirmationCheckbox.checked).toBe(true)
-        act(() => {
-            fireEvent.click(confirmationCheckbox)
-        })
 
+        expect(modalHeader).toBeInTheDocument()
+
+        act(() => {
+            user.click(screen.getByText('Back To Editing'))
+        })
         await waitFor(() => {
-            expect(
-                screen.getByText('Disable confirmation requirement?'),
-            ).toBeInTheDocument()
+            expect(confirmationCheckbox.checked).toBe(true)
         })
 
         act(() => {
-            fireEvent.click(screen.getByText('Back To Editing'))
+            user.click(confirmationCheckbox)
         })
 
-        expect(confirmationCheckbox.checked).toBe(true)
-
-        act(() => {
-            fireEvent.click(confirmationCheckbox)
-        })
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Disable confirmation requirement?'),
-            ).toBeInTheDocument()
-        })
+        modalHeader = await screen.findByText(
+            'Disable confirmation requirement?',
+        )
+        expect(modalHeader).toBeInTheDocument()
 
         act(() => {
             const button = screen.getByRole('button', {
                 name: 'Disable Confirmation Requirement',
             })
             expect(button).toBeInTheDocument()
-            fireEvent.click(button)
+            user.click(button)
         })
 
         await waitFor(() => {
