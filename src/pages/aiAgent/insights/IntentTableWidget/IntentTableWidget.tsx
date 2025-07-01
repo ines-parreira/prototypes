@@ -12,7 +12,7 @@ type IntentWidget = {
         link: string
         linkText: string
     }
-    intentLevel?: number
+    intentLevel: number
 }
 
 export const IntentTableWidget = ({

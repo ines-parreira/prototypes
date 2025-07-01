@@ -1,14 +1,10 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
-import { assumeMock } from 'utils/testing'
 
 import { IntentTableExpandedRowContent } from '../IntentTableExpandedRowContent'
 import { Intent, IntentTableColumn } from '../types'
@@ -43,9 +39,6 @@ jest.mock('../IntentTableCells', () => ({
         <div data-testid="default-cell">Default Cell</div>
     ),
 }))
-
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
 
 jest.mock(
     'pages/stats/common/components/Table/TableWithNestedRowsCell',
@@ -109,12 +102,6 @@ describe('IntentTableExpandedRowContent', () => {
             </Provider>,
         )
     }
-
-    beforeEach(() => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentOptimize1PageLayout]: true,
-        } as any)
-    })
 
     it('renders the intent name in the nested cell', () => {
         renderComponent()

@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { TableWithNestedRowsCell } from 'pages/stats/common/components/Table/TableWithNestedRowsCell'
@@ -53,9 +51,6 @@ export const IntentTableExpandedRowContent: React.FC<
     }>()
 
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
-
-    const isAiAgentOptimize1PageLayoutEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOptimize1PageLayout]
 
     const getTableCellComponent = (column: IntentTableColumn) => {
         switch (column) {
@@ -114,28 +109,20 @@ export const IntentTableExpandedRowContent: React.FC<
         }
     }
 
-    const tableColumns = useMemo(() => {
-        return isAiAgentOptimize1PageLayoutEnabled
-            ? TableColumnsOrder.slice(1)
-            : TableColumnsOrder
-    }, [isAiAgentOptimize1PageLayoutEnabled])
-
     return (
         <>
-            {isAiAgentOptimize1PageLayoutEnabled && (
-                <TableWithNestedRowsCell
-                    isLeadColumn={false}
-                    isTableScrolled={isTableScrolled}
-                    hasChildren={hasChildren}
-                    onClick={onClick}
-                    level={level}
-                    className={css.leadColumn}
-                >
-                    {intent[IntentTableColumn.IntentName]}
-                </TableWithNestedRowsCell>
-            )}
+            <TableWithNestedRowsCell
+                isLeadColumn={false}
+                isTableScrolled={isTableScrolled}
+                hasChildren={hasChildren}
+                onClick={onClick}
+                level={level}
+                className={css.leadColumn}
+            >
+                {intent[IntentTableColumn.IntentName]}
+            </TableWithNestedRowsCell>
 
-            {tableColumns.map((column) => {
+            {TableColumnsOrder.slice(1).map((column) => {
                 const CellComponent = getTableCellComponent(column)
 
                 return (

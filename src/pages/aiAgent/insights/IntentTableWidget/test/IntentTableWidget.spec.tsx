@@ -21,6 +21,7 @@ describe('IntentTableWidget Component', () => {
             link: 'https://example.com',
             linkText: 'Learn more',
         },
+        intentLevel: 2,
     }
 
     test('renders title and description correctly', () => {
@@ -40,6 +41,7 @@ describe('IntentTableWidget Component', () => {
             {
                 tableTitle: defaultProps.tableTitle,
                 tableHint: defaultProps.tableHint,
+                intentLevel: defaultProps.intentLevel,
             },
             {},
         )
@@ -50,6 +52,7 @@ describe('IntentTableWidget Component', () => {
             title: 'Widget Title',
             description: 'Description without a hint.',
             tableTitle: 'Table Title',
+            intentLevel: 2,
         }
 
         render(<IntentTableWidget {...propsWithoutHint} />)
@@ -66,6 +69,7 @@ describe('IntentTableWidget Component', () => {
             {
                 tableTitle: propsWithoutHint.tableTitle,
                 tableHint: undefined,
+                intentLevel: propsWithoutHint.intentLevel,
             },
             {},
         )

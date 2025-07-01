@@ -52,7 +52,6 @@ import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgen
 import AiAgentExternalDocumentsArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer'
 import AiAgentUrlSourcesArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { Level2IntentsContainer } from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
@@ -464,12 +463,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             exact
                             component={OptimizeContainer}
                         />
-                        <Switch>
-                            <Route
-                                path={`${path}/optimize/:intentId`}
-                                component={Level2IntentsContainer}
-                            />
-                        </Switch>
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary section="ai-agent-configuration-channels">
                         <Route

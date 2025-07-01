@@ -172,7 +172,10 @@ describe('Intent Table components', () => {
         it('renders table with data', () => {
             const store = mockStore(initialState)
             renderWithProvider(
-                <IntentTable paginatedIntents={defaultPaginatedIntents} />,
+                <IntentTable
+                    paginatedIntents={defaultPaginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
                 store,
             )
 
@@ -204,7 +207,10 @@ describe('Intent Table components', () => {
             })
 
             renderWithProvider(
-                <IntentTable paginatedIntents={paginatedIntents} />,
+                <IntentTable
+                    paginatedIntents={paginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
                 store,
             )
 
@@ -229,7 +235,10 @@ describe('Intent Table components', () => {
             })
 
             renderWithProvider(
-                <IntentTable paginatedIntents={paginatedIntents} />,
+                <IntentTable
+                    paginatedIntents={paginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
                 store,
             )
 
@@ -251,7 +260,10 @@ describe('Intent Table components', () => {
 
             useAIAgentUserIdMock.mockReturnValue(undefined)
             renderWithProvider(
-                <IntentTable paginatedIntents={defaultPaginatedIntents} />,
+                <IntentTable
+                    paginatedIntents={defaultPaginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
                 store,
             )
 
@@ -292,7 +304,10 @@ describe('Intent Table components', () => {
             })
 
             renderWithProvider(
-                <IntentTable paginatedIntents={defaultPaginatedIntents} />,
+                <IntentTable
+                    paginatedIntents={defaultPaginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
                 store,
             )
 
@@ -379,7 +394,10 @@ describe('Intent Table components', () => {
             } as unknown as ReturnType<typeof useStatsFilters>)
 
             renderWithProvider(
-                <IntentTableWithDefaultState tableTitle="Test Table" />,
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    intentLevel={INTENT_LEVEL}
+                />,
                 store,
             )
 
@@ -418,7 +436,10 @@ describe('Intent Table components', () => {
             })
 
             renderWithProvider(
-                <IntentTableWithDefaultState tableTitle="Test Table" />,
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    intentLevel={INTENT_LEVEL}
+                />,
                 store,
             )
 
@@ -458,6 +479,7 @@ describe('Intent Table components', () => {
                 <IntentTableWithDefaultState
                     tableTitle="Test Table"
                     tableDescription="Test Description"
+                    intentLevel={INTENT_LEVEL}
                 />,
                 store,
             )
@@ -499,6 +521,7 @@ describe('Intent Table components', () => {
                     tableDescription={
                         (<div>Test Description</div>) as unknown as string
                     }
+                    intentLevel={INTENT_LEVEL}
                 />,
                 store,
             )

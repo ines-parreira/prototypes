@@ -12,8 +12,6 @@ import { useParams } from 'react-router-dom'
 
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -79,7 +77,7 @@ export const IntentTable = ({
     intentLevel,
 }: {
     paginatedIntents: PaginatedIntents
-    intentLevel?: number
+    intentLevel: number
 }) => {
     const dispatch = useAppDispatch()
     const { intents, allIntents, currentPage, perPage } = paginatedIntents
@@ -89,10 +87,6 @@ export const IntentTable = ({
     const [selectedIntentId, setSelectedIntentId] = useState<string>()
     const [childrenDataMap, setChildrenDataMap] = useState<Record<string, any>>(
         {},
-    )
-    const isAiAgentOptimize1PageLayoutEnabled = useFlag(
-        FeatureFlagKey.AiAgentOptimize1PageLayout,
-        false,
     )
 
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
@@ -106,12 +100,12 @@ export const IntentTable = ({
         IntentTableColumn.SuccessRateUpliftOpportunity,
         shopName,
         selectedIntentId,
-        intentLevel ? intentLevel + 1 : INTENT_LEVEL + 1,
-        !!selectedIntentId && isAiAgentOptimize1PageLayoutEnabled,
+        intentLevel + 1,
+        !!selectedIntentId,
     )
 
     useEffect(() => {
-        if (!selectedIntentId || !isAiAgentOptimize1PageLayoutEnabled) {
+        if (!selectedIntentId) {
             return
         }
 
@@ -121,12 +115,12 @@ export const IntentTable = ({
 
         const newChildrenData = intentsArray.map((childIntent) => ({
             intent: childIntent,
-            intentLevel: intentLevel ? intentLevel + 1 : INTENT_LEVEL + 1,
+            intentLevel: intentLevel + 1,
             allIntents: intentsArray,
             isTableScrolled,
             hasChildren: false,
             children: [],
-            level: intentLevel ?? INTENT_LEVEL,
+            level: intentLevel,
         }))
 
         setChildrenDataMap((prevMap) => {
@@ -156,7 +150,6 @@ export const IntentTable = ({
         selectedIntentId,
         isTableScrolled,
         intentLevel,
-        isAiAgentOptimize1PageLayoutEnabled,
     ])
 
     useEffectOnce(() => {
@@ -166,17 +159,12 @@ export const IntentTable = ({
     })
 
     const shouldLazyLoadChildren = useMemo(() => {
-        return (
-            intentLevel === INTENT_LEVEL && isAiAgentOptimize1PageLayoutEnabled
-        )
-    }, [intentLevel, isAiAgentOptimize1PageLayoutEnabled])
+        return intentLevel === INTENT_LEVEL
+    }, [intentLevel])
 
     const onLazyLoadChildren = useCallback(
         (intent: Intent) => {
-            if (
-                intentLevel === INTENT_LEVEL &&
-                isAiAgentOptimize1PageLayoutEnabled
-            ) {
+            if (intentLevel === INTENT_LEVEL) {
                 setSelectedIntentId(intent.id)
 
                 logEvent(SegmentEvent.AiAgentOptimizeToggleClicked, {
@@ -184,7 +172,7 @@ export const IntentTable = ({
                 })
             }
         },
-        [intentLevel, isAiAgentOptimize1PageLayoutEnabled],
+        [intentLevel],
     )
 
     const onPageChangeCallback = (page: number) => {
@@ -257,8 +245,7 @@ export const IntentTable = ({
                                             intentLevel,
                                             allIntents,
                                             isTableScrolled,
-                                            hasChildren:
-                                                isAiAgentOptimize1PageLayoutEnabled,
+                                            hasChildren: true,
                                             children:
                                                 childrenDataMap[intent.id]
                                                     ?.data || [],
@@ -311,7 +298,7 @@ export const IntentTable = ({
 
 export const LoadingTableRows = ({
     numberOfLoadingRows = 4,
-    intentLevel = INTENT_LEVEL,
+    intentLevel,
 }: {
     numberOfLoadingRows?: number
     intentLevel?: number
@@ -347,7 +334,7 @@ export const IntentTableWithDefaultState = ({
         link: string
         linkText: string
     }
-    intentLevel?: number
+    intentLevel: number
 }) => {
     const { intentId, shopName } = useParams<{
         shopName: string
