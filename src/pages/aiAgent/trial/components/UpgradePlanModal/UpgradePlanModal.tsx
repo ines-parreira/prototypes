@@ -1,10 +1,14 @@
 import React, { useRef, useState } from 'react'
 
 import classNames from 'classnames'
-import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import {
+    ModalBodyWrapper,
+    ModalHeaderWrapper,
+    ModalWrapper,
+} from 'pages/aiAgent/trial/components/ModalWrapper'
 import { Separator } from 'pages/common/components/Separator/Separator'
 
 import css from './UpgradePlanModal.less'
@@ -163,18 +167,11 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
     const [isTermsChecked, setIsTermsChecked] = useState(false)
 
     return (
-        <Modal
-            isOpen
-            size="lg"
-            toggle={onClose}
-            fade
-            centered
-            className={css.modal}
-        >
-            <ModalHeader toggle={onClose} className={css.modalHeader}>
+        <ModalWrapper isOpen size="lg" toggle={onClose} fade centered>
+            <ModalHeaderWrapper withoutBorder toggle={onClose}>
                 {title}
-            </ModalHeader>
-            <ModalBody className={css.modalBody} data-candu-id={canduId}>
+            </ModalHeaderWrapper>
+            <ModalBodyWrapper className={css.modalBody} data-candu-id={canduId}>
                 <div className={css.newPlan}>
                     <PlanSection
                         plan={newPlan}
@@ -193,7 +190,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                         buttonIntent="secondary"
                     />
                 </div>
-            </ModalBody>
-        </Modal>
+            </ModalBodyWrapper>
+        </ModalWrapper>
     )
 }

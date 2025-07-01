@@ -1,0 +1,158 @@
+@import (reference) '~css/typography';
+
+:local {
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .title {
+        color: var(--neutral-grey-6);
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .modalBody {
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal {
+        min-width: 923px;
+        max-width: 923px;
+        border-radius: 12px;
+    }
+
+    .descriptionWrapper {
+        display: flex;
+        align-items: center;
+        width: 50%;
+        align-self: stretch;
+    }
+
+    .descriptionContainer {
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-m) var(--layout-spacing-xl)
+            var(--layout-spacing-m) var(--layout-spacing-m);
+        gap: var(--layout-spacing-xs);
+        flex: 1 0 0;
+    }
+
+    .descriptionTitle {
+        color: var(--neutral-grey-6);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+        letter-spacing: -0.4px;
+    }
+
+    .descriptionText {
+        color: var(--neutral-grey-6);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+
+    .detailsWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+        background-image:
+            linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0)),
+            linear-gradient(
+                315deg,
+                var(--Purple-purple-500, #a084e1) 20.19%,
+                var(--Fuchsia-fuchsia-300, #fc8ae9) 50%,
+                var(--Orange-orange-500, #ff9a57) 80%
+            );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        border: 1px solid transparent;
+        border-radius: 12px;
+    }
+
+    .detailsContainer {
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-m);
+        align-self: stretch;
+        width: 100%;
+    }
+
+    .condition {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .conditionText {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .successCheck {
+        color: var(--feedback-success-3);
+        font-size: 32px;
+    }
+
+    .successCheckOutline {
+        color: var(--neutral-grey-4);
+        font-size: 32px;
+    }
+
+    .conditionTextTitle {
+        color: var(--neutral-grey-6);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .conditionTextSubtitle {
+        color: var(--neutral-grey-6);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    .discountBadgeWrapper {
+        padding-top: 6px;
+    }
+
+    .discountBadgeText {
+        text-transform: none;
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .discountBadgeIcon {
+        font-size: 12px;
+    }
+
+    .completeSetUpButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        align-self: stretch;
+
+        background-color: var(--neutral-grey-6) !important;
+        color: var(--neutral-grey-0) !important;
+        border-color: var(--neutral-grey-6) !important;
+        height: 36px;
+        padding: var(--layout-spacing-xs) 12px;
+    }
+
+    .rightSide {
+        display: flex;
+        width: 50%;
+        padding: var(--layout-spacing-m);
+    }
+}
