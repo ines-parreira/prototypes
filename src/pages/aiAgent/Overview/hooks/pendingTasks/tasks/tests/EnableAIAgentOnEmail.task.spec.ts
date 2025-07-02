@@ -8,7 +8,10 @@ describe('EnableAIAgentOnEmail', () => {
     it('should display the task if ai agent store configuration email disabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
-                .withoutConnectedHelpCenter()
+                .withConnectedEmailIntegrations({
+                    email: 'test@test.com',
+                    id: 1,
+                })
                 .build()
 
         const task = new EnableAIAgentOnEmailTask(
@@ -23,8 +26,26 @@ describe('EnableAIAgentOnEmail', () => {
     it('should not display the task if ai agent store configuration email enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
-                .withoutConnectedHelpCenter()
+                .withConnectedEmailIntegrations({
+                    email: 'test@test.com',
+                    id: 1,
+                })
                 .withEmailChannelEnabled()
+                .build()
+
+        const task = new EnableAIAgentOnEmailTask(
+            buildRuleEngineData({
+                aiAgentStoreConfiguration,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.display).toBe(false)
+    })
+
+    it('should not display the task if no emails are selected', () => {
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withConnectedEmailIntegrations()
                 .build()
 
         const task = new EnableAIAgentOnEmailTask(
@@ -50,7 +71,10 @@ describe('EnableAIAgentOnEmail', () => {
         it('should generate URL with activation modal when activation is enabled', () => {
             const aiAgentStoreConfiguration =
                 AiAgentStoreConfigurationFixture.start()
-                    .withoutConnectedHelpCenter()
+                    .withConnectedEmailIntegrations({
+                        email: 'test@test.com',
+                        id: 1,
+                    })
                     .build()
 
             const task = new EnableAIAgentOnEmailTask(
@@ -71,7 +95,10 @@ describe('EnableAIAgentOnEmail', () => {
         it('should generate settings channels URL when activation is disabled', () => {
             const aiAgentStoreConfiguration =
                 AiAgentStoreConfigurationFixture.start()
-                    .withoutConnectedHelpCenter()
+                    .withConnectedEmailIntegrations({
+                        email: 'test@test.com',
+                        id: 1,
+                    })
                     .build()
 
             const task = new EnableAIAgentOnEmailTask(

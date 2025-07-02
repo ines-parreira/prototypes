@@ -23,11 +23,28 @@ export class EnableAIAgentOnChatTask extends Task {
         return !!data?.aiAgentStoreConfiguration
     }
 
-    // Email channel should be deactivated in ai agent store configuration
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return (
+        const uninstalledChats = new Set(
+            data.chatIntegrationsStatus
+                ?.filter(({ installed }) => !installed)
+                .map(({ chatId }) => chatId),
+        )
+        const hasUninstalledSelectedChats =
+            data.aiAgentStoreConfiguration.monitoredChatIntegrations.some(
+                (chatId) => uninstalledChats.has(chatId),
+            )
+
+        const hasSelectedChats =
+            data.aiAgentStoreConfiguration.monitoredChatIntegrations.length > 0
+
+        const isChatChannelDeactivated =
             data.aiAgentStoreConfiguration.chatChannelDeactivatedDatetime !==
             null
+
+        return (
+            hasSelectedChats &&
+            !hasUninstalledSelectedChats &&
+            isChatChannelDeactivated
         )
     }
 
