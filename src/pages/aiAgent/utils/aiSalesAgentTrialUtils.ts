@@ -19,6 +19,10 @@ export const isAtLeastOneStoreEligibleForTrial = async (
     return isCanduTrial && storesEligibleForTrial.length > 0
 }
 
+/**
+ * @deprecated this function will be removed once we have a new trial banner component. Going forward use the function from 'src/pages/aiAgent/trial/utils/utils.ts'
+ * @date 2025-06-27
+ */
 export const getStoresEligibleForTrial = (
     storeActivations: Record<string, StoreActivation>,
 ) => {
@@ -27,6 +31,10 @@ export const getStoresEligibleForTrial = (
     })
 }
 
+/**
+ * @deprecated this function will be removed once we have a new trial banner component. Going forward use the function from 'src/pages/aiAgent/trial/utils/utils.ts'
+ * @date 2025-06-27
+ */
 export const isStoreEligibleForTrial = (storeActivation: StoreActivation) => {
     return (
         !storeActivation.support.chat.isIntegrationMissing &&
@@ -35,6 +43,10 @@ export const isStoreEligibleForTrial = (storeActivation: StoreActivation) => {
     )
 }
 
+/**
+ * @deprecated this function will be removed once we have a new trial banner component. Going forward use the function from 'src/pages/aiAgent/trial/utils/utils.ts'
+ * @date 2025-06-27
+ */
 export const getAiSalesAgentTrialState = (
     storeConfiguration: StoreConfiguration,
 ): TrialState => {

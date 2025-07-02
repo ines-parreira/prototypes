@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import {
     getStoresEligibleForTrial,
@@ -39,6 +40,16 @@ export const useTrialEligibility = (
 
         checkEligibility()
     }, [storeActivations, isOnEligiblePan, isCurrentUserTeamLead])
+
+    const isTrialRevampEnabled = useFlag(
+        FeatureFlagKey.ShoppingAssistantTrialRevamp,
+    )
+    useEffect(() => {
+        // Disable the old trial implementation in case the revamp flag is activated
+        if (isTrialRevampEnabled) {
+            setCanStartTrial(false)
+        }
+    }, [isTrialRevampEnabled])
 
     return { canStartTrial, isLoading }
 }

@@ -1,14 +1,21 @@
 import React from 'react'
 
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
-import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { user } from 'fixtures/users'
+import {
+    useAtLeastOneStoreHasActiveTrial,
+    useCanUseAiSalesAgent,
+} from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { RootState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
@@ -18,6 +25,9 @@ import AiSalesAgentSalesOverview from '../AiSalesAgentSalesOverview'
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
+const mockUseAtLeastOneStoreHasActiveTrial = jest.mocked(
+    useAtLeastOneStoreHasActiveTrial,
+)
 
 jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
     useActivation: jest.fn(() => ({
@@ -27,7 +37,72 @@ jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
 }))
 
 jest.mock('pages/aiAgent/AiAgentPaywallView', () => ({
-    AiAgentPaywallView: () => <div>ai-agent-paywall</div>,
+    AiAgentPaywallView: ({ children }: { children: React.ReactNode }) => (
+        <div>
+            ai-agent-paywall
+            {children}
+        </div>
+    ),
+}))
+
+jest.mock('pages/aiAgent/Activation/hooks/useActivateAiAgentTrial')
+const mockUseActivateAiAgentTrial = jest.mocked(useActivateAiAgentTrial)
+
+jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
+const mockUseShoppingAssistantTrialAccess = jest.mocked(
+    useShoppingAssistantTrialAccess,
+)
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
+
+jest.mock(
+    'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal',
+    () => ({
+        UpgradePlanModal: ({
+            title,
+            onClose,
+            onConfirm,
+        }: {
+            title: string
+            onClose: () => void
+            onConfirm: () => void
+        }) => (
+            <div data-testid="upgrade-plan-modal">
+                <h1>{title}</h1>
+                <button onClick={onClose}>Close Modal</button>
+                <button onClick={onConfirm}>Confirm Modal</button>
+            </div>
+        ),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal',
+    () =>
+        ({
+            isOpen,
+            onClick,
+            onClose,
+        }: {
+            isOpen: boolean
+            onClick: () => void
+            onClose: () => void
+        }) =>
+            isOpen ? (
+                <div data-testid="trial-success-modal">
+                    <button onClick={onClick}>Go to Customer Engagement</button>
+                    <button onClick={onClose}>Close Success Modal</button>
+                </div>
+            ) : null,
+)
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
+    useParams: jest.fn().mockReturnValue({ shopName: 'test-shop' }),
+    useHistory: jest.fn(() => ({
+        push: jest.fn(),
+    })),
 }))
 
 const mockUseFirstStoreWithAiSalesDataState: {
@@ -82,11 +157,6 @@ jest.mock('pages/stats/dashboards/DashboardComponent', () => ({
     DashboardComponent: () => <div>top-products-table</div>,
 }))
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({ shopName: 'test-shop' }),
-}))
-
 jest.mock(
     'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName',
     () => ({
@@ -123,6 +193,8 @@ describe('AiSalesAgentSalesOverview', () => {
         },
         billing: fromJS(billingState),
         integrations: fromJS(integrationsState),
+        currentUser: fromJS(user),
+        currentAccount: fromJS({ domain: 'test-account' }),
     } as RootState
 
     const renderComponent = () => {
@@ -132,13 +204,17 @@ describe('AiSalesAgentSalesOverview', () => {
         )
     }
 
+    const mockStartTrial = jest.fn()
+
     beforeEach(() => {
+        jest.clearAllMocks()
         mockUseFirstStoreWithAiSalesDataState.isLoading = false
         mockUseFirstStoreWithAiSalesDataState.storeId = 123
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
+        mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
         mockUseStoreActivations.mockReturnValue({
             storeActivations: {
                 'test-shop': {
@@ -157,6 +233,26 @@ describe('AiSalesAgentSalesOverview', () => {
             },
             isFetchLoading: false,
         } as unknown as ReturnType<typeof useStoreActivations>)
+
+        // Mock useActivateAiAgentTrial
+        mockUseActivateAiAgentTrial.mockReturnValue({
+            routes: { customerEngagement: '/customer-engagement' },
+            startTrial: mockStartTrial,
+            canStartTrial: false,
+            canStartTrialFromFeatureFlag: false,
+            isLoading: false,
+        } as any)
+
+        // Mock useShoppingAssistantTrialAccess
+        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            canNotifyAdmin: false,
+            canBookDemo: false,
+            canSeeSystemBanner: false,
+            canSeeTrialCTA: false, // Default to false, will override in specific tests
+        })
+
+        // Mock useFlag
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render when store data is ready', () => {
@@ -236,5 +332,194 @@ describe('AiSalesAgentSalesOverview', () => {
         renderComponent()
 
         expect(screen.queryByText('ai-agent-paywall')).not.toBeInTheDocument()
+    })
+
+    describe('Trial functionality', () => {
+        beforeEach(() => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+        })
+
+        it('should call startTrial when trial button is clicked and revamp flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseActivateAiAgentTrial.mockReturnValue({
+                routes: { customerEngagement: '/customer-engagement' },
+                startTrial: mockStartTrial,
+                canStartTrial: true, // Need this for old logic when revamp flag is disabled
+                canStartTrialFromFeatureFlag: false,
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            expect(mockStartTrial).toHaveBeenCalledTimes(1)
+        })
+
+        it('should open upgrade modal when trial button is clicked and revamp flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: true, // Allow trial CTA to show
+            })
+
+            renderComponent()
+
+            // Initially modal should not be visible
+            expect(
+                screen.queryByTestId('upgrade-plan-modal'),
+            ).not.toBeInTheDocument()
+
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            // Modal should now be visible
+            expect(screen.getByTestId('upgrade-plan-modal')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should close upgrade modal when close button is clicked', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: true, // Allow trial CTA to show
+            })
+
+            renderComponent()
+
+            // Open the modal
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            expect(screen.getByTestId('upgrade-plan-modal')).toBeInTheDocument()
+
+            // Click close button
+            const closeButton = screen.getByText('Close Modal')
+            fireEvent.click(closeButton)
+
+            // Modal should be closed
+            expect(
+                screen.queryByTestId('upgrade-plan-modal'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should close upgrade modal when confirm button is clicked', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: true, // Allow trial CTA to show
+            })
+
+            renderComponent()
+
+            // Open the modal
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            expect(screen.getByTestId('upgrade-plan-modal')).toBeInTheDocument()
+
+            // Click confirm button
+            const confirmButton = screen.getByText('Confirm Modal')
+            fireEvent.click(confirmButton)
+
+            // Modal should be closed
+            expect(
+                screen.queryByTestId('upgrade-plan-modal'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show trial button when canStartTrial is false', () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseActivateAiAgentTrial.mockReturnValue({
+                routes: { customerEngagement: '/customer-engagement' },
+                startTrial: mockStartTrial,
+                canStartTrial: false,
+                canStartTrialFromFeatureFlag: false,
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show trial button when canStartTrialFromFeatureFlag is true', () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseActivateAiAgentTrial.mockReturnValue({
+                routes: { customerEngagement: '/customer-engagement' },
+                startTrial: mockStartTrial,
+                canStartTrial: false,
+                canStartTrialFromFeatureFlag: true,
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            expect(
+                screen.getByText('Start 14-Day Trial At No Additional Cost'),
+            ).toBeInTheDocument()
+        })
+
+        it('should show trial success modal when trial is started successfully', async () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseActivateAiAgentTrial.mockReturnValue({
+                routes: { customerEngagement: '/customer-engagement' },
+                startTrial: mockStartTrial,
+                canStartTrial: true, // Need this for old logic when revamp flag is disabled
+                canStartTrialFromFeatureFlag: false,
+                isLoading: false,
+            } as any)
+
+            const { rerender } = renderComponent()
+
+            // Simulate the onSuccess callback being called by mocking the hook to call it immediately
+            mockUseActivateAiAgentTrial.mockImplementation(({ onSuccess }) => {
+                mockStartTrial.mockImplementation(() => {
+                    onSuccess()
+                })
+                return {
+                    routes: { customerEngagement: '/customer-engagement' },
+                    startTrial: mockStartTrial,
+                    canStartTrial: true, // Need this for old logic when revamp flag is disabled
+                    canStartTrialFromFeatureFlag: false,
+                    isLoading: false,
+                } as any
+            })
+
+            rerender(<AiSalesAgentSalesOverview />)
+
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('trial-success-modal'),
+                ).toBeInTheDocument()
+            })
+        })
     })
 })

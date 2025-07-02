@@ -4,76 +4,41 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
-import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
-import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { hasAtLeastOneShopifyStore } from 'pages/aiAgent/trial/utils/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
-/**
- * @deprecated this hook will be removed once we have a new trial banner component. Going forward use the hook from 'src/pages/aiAgent/trial/hooks/useShoppingAssistantTrialBanner.tsx'
- * @date 2025-06-26
- */
-export function useAiShoppingAssistantTrialBanner() {
+export const useShoppingAssistantTrialBanner = () => {
     const { addBanner, removeBanner } = useBanners()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-
-    const pathname = useLocation().pathname
-
-    const { storeActivations } = useStoreActivations()
-    const history = useHistory()
-
     const currentUser = useAppSelector(getCurrentUser)
     const userRole = useAppSelector(getRoleName)
-    const isShoppingAssistantTrialSystemBannerEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantTrialSystemBanner,
-        false,
-    )
 
-    const isShoppingAssistantTrialRevampEnabled = useFlag(
-        FeatureFlagKey.ShoppingAssistantTrialRevamp,
-        false,
-    )
+    const { storeActivations } = useStoreActivations()
 
-    const { canStartTrial, canStartTrialFromFeatureFlag } =
-        useActivateAiAgentTrial({
-            storeActivations,
-            accountDomain,
-            onSuccess: () => {},
-        })
+    const history = useHistory()
 
-    const isAtLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
-
-    const storeEligibleForTrial = getStoresEligibleForTrial(storeActivations)
+    const pathname = useLocation().pathname
 
     const isTicketsPage =
         pathname.includes('tickets') || pathname.includes('views')
 
+    // Check if the banner should be hidden
+    const { canSeeSystemBanner } = useShoppingAssistantTrialAccess()
+
+    // Check if the store has chat integration
+    const storeEligibleForTrial = hasAtLeastOneShopifyStore(storeActivations)
+
     const displayBanner = useMemo(
-        () =>
-            !isShoppingAssistantTrialRevampEnabled &&
-            isShoppingAssistantTrialSystemBannerEnabled &&
-            !isAtLeastOneStoreHasActiveTrial &&
-            !isTicketsPage &&
-            storeEligibleForTrial.length &&
-            (canStartTrial || canStartTrialFromFeatureFlag),
-        [
-            isShoppingAssistantTrialRevampEnabled,
-            isShoppingAssistantTrialSystemBannerEnabled,
-            isAtLeastOneStoreHasActiveTrial,
-            isTicketsPage,
-            storeEligibleForTrial,
-            canStartTrial,
-            canStartTrialFromFeatureFlag,
-        ],
+        () => !isTicketsPage && canSeeSystemBanner,
+        [isTicketsPage, canSeeSystemBanner],
     )
+
     const basePath = getAiAgentBasePath(storeEligibleForTrial[0]?.name)
     const redirectionPath = `${basePath}/sales`
 
@@ -86,6 +51,7 @@ export function useAiShoppingAssistantTrialBanner() {
         }),
         [currentAccount, currentUser, userRole],
     )
+
     const onClick = useCallback(() => {
         history.push(redirectionPath)
         logEvent(
@@ -103,8 +69,8 @@ export function useAiShoppingAssistantTrialBanner() {
             })
             addBanner({
                 preventDismiss: false,
-                category: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
-                instanceId: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+                category: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
+                instanceId: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
                 type: AlertBannerTypes.Info,
                 message:
                     'AI Agent just got even smarter with brand new Shopping Assistant skills, start your exclusive access to a 14-day trial',
@@ -116,8 +82,8 @@ export function useAiShoppingAssistantTrialBanner() {
             })
         } else {
             removeBanner(
-                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
-                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL,
+                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
+                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
             )
         }
     }, [displayBanner, addBanner, removeBanner, eventData, onClick])

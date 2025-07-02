@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
@@ -7,6 +7,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
@@ -19,6 +20,8 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SALES } from 'pages/aiAgent/constants'
+import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
@@ -30,6 +33,7 @@ import css from './SalesPaywallMiddleware.less'
 type PaywallWrapperProps = {
     children: React.ReactNode
 }
+
 const PaywallWrapper = ({ children }: PaywallWrapperProps) => {
     const { shopName } = useParams<{
         shopName: string
@@ -58,16 +62,26 @@ export const SalesPaywallMiddleware =
         const history = useHistory()
         const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
+        const [isTrialModalRevampOpen, setIsTrialModalRevampOpen] =
+            useState(false)
+
         const accountDomain = currentAccount.get('domain')
 
         const onSuccess = () => {
             trialModal.openModal(AI_TRIAL_MODAL_NAME, false)
         }
 
+        const isShoppingAssistantTrialRevampEnabled = useFlag(
+            FeatureFlagKey.ShoppingAssistantTrialRevamp,
+            false,
+        )
+
+        const { canSeeTrialCTA } = useShoppingAssistantTrialAccess()
+
         const {
-            canStartTrial,
+            canStartTrial: canStartTrialOriginal,
             routes,
-            startTrial,
+            startTrial: startTrialOriginal,
             isLoading,
             canStartTrialFromFeatureFlag,
             shopName,
@@ -77,11 +91,23 @@ export const SalesPaywallMiddleware =
             onSuccess,
         })
 
+        const displayTrialButton = isShoppingAssistantTrialRevampEnabled
+            ? canSeeTrialCTA
+            : canStartTrialOriginal || canStartTrialFromFeatureFlag
+
+        const onStartTrialClicked = () => {
+            if (isShoppingAssistantTrialRevampEnabled) {
+                setIsTrialModalRevampOpen(true)
+            } else {
+                startTrialOriginal()
+            }
+        }
+
         const { earlyAccessModal, showEarlyAccessModal } = useActivation({
             autoDisplayEarlyAccessDisabled:
                 currentStoreHasActiveTrial ||
                 isLoading ||
-                canStartTrial ||
+                displayTrialButton ||
                 canStartTrialFromFeatureFlag,
         })
 
@@ -123,12 +149,51 @@ export const SalesPaywallMiddleware =
 
         return (
             <>
+                {isTrialModalRevampOpen && (
+                    <UpgradePlanModal
+                        title="Try Shopping Assistant for 14 days at no additional cost"
+                        onClose={() => {
+                            setIsTrialModalRevampOpen(false)
+                        }}
+                        onConfirm={() => {
+                            setIsTrialModalRevampOpen(false)
+                        }}
+                        currentPlan={{
+                            title: 'Support Agent',
+                            description:
+                                'Provide best-in-class automated support',
+                            price: '$450',
+                            billingPeriod: 'month',
+                            features: [
+                                '2000 automated interactions',
+                                'Deliver instant answers to repetitive questions and improve customer satisfaction',
+                                'Automatically handle orders, returns, and subscriptions quickly, 24/7',
+                            ],
+                            buttonText: 'Keep current plan',
+                        }}
+                        newPlan={{
+                            title: 'Support Agent and Shopping Assistant ',
+                            description:
+                                'Unlock full potential to drive more sales',
+                            price: '$530',
+                            billingPeriod: 'month after trial ends',
+                            features: [
+                                'Everything in Support Agent skills',
+                                'Proactively engage with customers to guide discovery',
+                                'Personalize recommendations with rich customer insights',
+                                'Intelligent upsell using customer input, not guesswork',
+                                'Offer discounts based on purchase intent',
+                            ],
+                            buttonText: 'Try for 14 days',
+                            priceTooltipText:
+                                'Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a $X.XX helpdesk fee.',
+                        }}
+                    />
+                )}
                 <PaywallWrapperComponent
                     showUpgradePaywall={showUpgradePaywall}
                     showEarlyAccessModal={showEarlyAccessModal}
-                    canStartTrial={
-                        canStartTrial || canStartTrialFromFeatureFlag
-                    }
+                    displayTrialButton={displayTrialButton}
                     startTrial={() => {
                         logEvent(
                             SegmentEvent.AiAgentShoppingAssistantStartTrialClicked,
@@ -136,7 +201,7 @@ export const SalesPaywallMiddleware =
                                 ...eventData,
                             },
                         )
-                        startTrial()
+                        onStartTrialClicked()
                     }}
                     earlyAccessModal={earlyAccessModal}
                     showSalesSettings={showSalesSettings}
@@ -160,7 +225,7 @@ export const SalesPaywallMiddleware =
 const PaywallWrapperComponent = ({
     showUpgradePaywall,
     showEarlyAccessModal,
-    canStartTrial,
+    displayTrialButton,
     startTrial,
     earlyAccessModal,
     showSalesSettings,
@@ -169,7 +234,7 @@ const PaywallWrapperComponent = ({
 }: {
     showUpgradePaywall: boolean
     showEarlyAccessModal: () => void
-    canStartTrial: boolean
+    displayTrialButton: boolean
     startTrial: () => void
     earlyAccessModal: React.ReactNode
     showSalesSettings: boolean
@@ -184,14 +249,14 @@ const PaywallWrapperComponent = ({
         if (
             isAiShoppingAssistantEnabled &&
             showUpgradePaywall &&
-            canStartTrial
+            displayTrialButton
         ) {
             logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
                 ...eventData,
             })
         }
     }, [
-        canStartTrial,
+        displayTrialButton,
         isAiShoppingAssistantEnabled,
         showUpgradePaywall,
         eventData,
@@ -211,7 +276,7 @@ const PaywallWrapperComponent = ({
                         >
                             Upgrade Now
                         </AIButton>
-                        {canStartTrial && (
+                        {displayTrialButton && (
                             <Button fillStyle="ghost" onClick={startTrial}>
                                 Start 14-Day Trial At No Additional Cost
                             </Button>

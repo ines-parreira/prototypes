@@ -1,3 +1,5 @@
+import { useShoppingAssistantTrialBanner } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialBanner'
+
 import {
     useEmailDisconnectedBanner,
     useEmailDomainVerificationBanner,
@@ -6,7 +8,7 @@ import {
     useZendeskImportFailedBanner,
 } from './banners'
 import { useAccountNotVerifiedBanner } from './useAccountNotVerifiedBanner'
-import { useAiShoppingAssistantTrialBanner } from './useAiShoppingAssistantTrialBanner'
+import { useAiShoppingAssistantTrialBanner as useDeprecatedAiShoppingAssistantTrialBanner } from './useAiShoppingAssistantTrialBanner'
 import { useStatusPageManager } from './useStatusPageManager'
 import { useTrackingBundleInstallationWarningBanner } from './useTrackingBundleInstallationWarningBanner'
 import { useUsageBanner } from './useUsageBanner'
@@ -20,6 +22,7 @@ export function useSetBanners() {
     useEmailDisconnectedBanner()
     useEmailMigrationBanner()
     useZendeskImportFailedBanner()
-    useAiShoppingAssistantTrialBanner()
     useTrackingBundleInstallationWarningBanner()
+    useDeprecatedAiShoppingAssistantTrialBanner()
+    useShoppingAssistantTrialBanner()
 }

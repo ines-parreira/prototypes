@@ -1,19 +1,22 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Route, Switch } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { user } from 'fixtures/users'
+import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
     useTrialEligibility,
     useTrialEligibilityForManualActivationFromFeatureFlag,
 } from 'pages/aiAgent/hooks/useTrialEligibility'
+// Import mocks
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -58,6 +61,12 @@ const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
     useTrialEligibilityForManualActivationFromFeatureFlag,
 )
 
+jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
+jest.mock('pages/aiAgent/Activation/hooks/useActivateAiAgentTrial')
+
 const mockShopName = 'test-shop'
 const queryClient = mockQueryClient()
 
@@ -79,6 +88,16 @@ const renderMiddleware = () => {
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 
+const mockUseShoppingAssistantTrialAccess =
+    useShoppingAssistantTrialAccess as jest.Mock
+const mockUseFlag = useFlag as jest.Mock
+const mockUseFlags = useFlags as jest.Mock
+const mockAtLeastOneStoreHasActiveTrialOnSpecificStores =
+    atLeastOneStoreHasActiveTrialOnSpecificStores as jest.Mock
+const mockUseActivateAiAgentTrial = jest.requireMock(
+    'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial',
+).useActivateAiAgentTrial as jest.Mock
+
 describe('SalesPaywallMiddleware', () => {
     beforeEach(() => {
         useStoreActivationsMock.mockReturnValue({
@@ -93,6 +112,21 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
             },
         )
+        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            canSeeTrialCTA: false,
+            canStartTrial: false,
+        })
+        mockUseFlag.mockReturnValue(false)
+        mockUseFlags.mockReturnValue({})
+        mockAtLeastOneStoreHasActiveTrialOnSpecificStores.mockReturnValue(false)
+        mockUseActivateAiAgentTrial.mockReturnValue({
+            canStartTrial: false,
+            routes: {},
+            startTrial: jest.fn(),
+            isLoading: false,
+            canStartTrialFromFeatureFlag: false,
+            shopName: 'test-shop',
+        })
     })
     it('should render automate paywall when it doesnt has automate', () => {
         useAppSelectorMock.mockImplementation((selector) => {
@@ -358,6 +392,26 @@ describe('SalesPaywallMiddleware', () => {
             canStartTrial: true,
             isLoading: false,
         })
+        // Mock the revamp flag to false to use original logic
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
+                ? false
+                : false,
+        )
+        // Mock trial access to return false for canSeeTrialCTA (revamp disabled)
+        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            canSeeTrialCTA: false,
+            canStartTrial: false,
+        })
+        // Mock the original trial hook to return canStartTrial: true
+        mockUseActivateAiAgentTrial.mockReturnValue({
+            canStartTrial: true,
+            routes: {},
+            startTrial: jest.fn(),
+            isLoading: false,
+            canStartTrialFromFeatureFlag: false,
+            shopName: 'test-shop',
+        })
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getHasAutomate) {
                 return true
@@ -414,6 +468,26 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: true,
             },
         )
+        // Mock the revamp flag to false to use original logic
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
+                ? false
+                : false,
+        )
+        // Mock trial access to return false for canSeeTrialCTA (revamp disabled)
+        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            canSeeTrialCTA: false,
+            canStartTrial: false,
+        })
+        // Mock the original trial hook to return canStartTrialFromFeatureFlag: true
+        mockUseActivateAiAgentTrial.mockReturnValue({
+            canStartTrial: false,
+            routes: {},
+            startTrial: jest.fn(),
+            isLoading: false,
+            canStartTrialFromFeatureFlag: true,
+            shopName: 'test-shop',
+        })
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getHasAutomate) {
                 return true
@@ -576,4 +650,158 @@ describe('SalesPaywallMiddleware', () => {
             ).toBeInTheDocument()
         },
     )
+
+    describe('Shopping Assistant Trial Revamp', () => {
+        it('shows trial button when revamp flag is enabled and canSeeTrialCTA is true', () => {
+            // Mock the revamp flag to true
+            mockUseFlag.mockImplementation((flag) =>
+                flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
+                    ? true
+                    : false,
+            )
+            // canSeeTrialCTA controls the button
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+            })
+            // Set up other mocks to hit the upgrade paywall
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) return true
+                if (selector === getCurrentUser) return fromJS(user)
+                if (selector === getCurrentAccountState)
+                    return fromJS({ domain: 'test' })
+                if (selector === getCurrentAutomatePlan)
+                    return { generation: 5 }
+                return undefined
+            })
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            // The trial button should be present
+            expect(
+                screen.getByText('Start 14-Day Trial At No Additional Cost'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not show trial button when revamp flag is enabled and canSeeTrialCTA is false', () => {
+            mockUseFlag.mockImplementation((flag) =>
+                flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
+                    ? true
+                    : false,
+            )
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: false,
+                canStartTrial: false,
+            })
+            // Set up other mocks to hit the upgrade paywall
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) return true
+                if (selector === getCurrentUser) return fromJS(user)
+                if (selector === getCurrentAccountState)
+                    return fromJS({ domain: 'test' })
+                if (selector === getCurrentAutomatePlan)
+                    return { generation: 5 }
+                return undefined
+            })
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            // The trial button should NOT be present
+            expect(
+                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('opens the revamp modal when trial button is clicked and revamp is enabled', () => {
+            mockUseFlag.mockImplementation((flag) =>
+                flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
+                    ? true
+                    : false,
+            )
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+            })
+            // Set up other mocks to hit the upgrade paywall
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) return true
+                if (selector === getCurrentUser) return fromJS(user)
+                if (selector === getCurrentAccountState)
+                    return fromJS({ domain: 'test' })
+                if (selector === getCurrentAutomatePlan)
+                    return { generation: 5 }
+                return undefined
+            })
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            // The modal should now be open (check for modal title)
+            expect(
+                screen.getByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('calls startTrialOriginal when revamp is disabled and trial button is clicked', () => {
+            mockUseFlag.mockImplementation(() => false) // revamp disabled
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: false,
+                canStartTrial: true,
+            })
+            const startTrialOriginal = jest.fn()
+            mockUseActivateAiAgentTrial.mockReturnValue({
+                canStartTrial: true,
+                routes: {},
+                startTrial: startTrialOriginal,
+                isLoading: false,
+                canStartTrialFromFeatureFlag: false,
+                shopName: 'test-shop',
+            })
+            // Set up other mocks to hit the upgrade paywall
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getHasAutomate) return true
+                if (selector === getCurrentUser) return fromJS(user)
+                if (selector === getCurrentAccountState)
+                    return fromJS({ domain: 'test' })
+                if (selector === getCurrentAutomatePlan)
+                    return { generation: 5 }
+                return undefined
+            })
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            expect(startTrialOriginal).toHaveBeenCalled()
+        })
+    })
 })

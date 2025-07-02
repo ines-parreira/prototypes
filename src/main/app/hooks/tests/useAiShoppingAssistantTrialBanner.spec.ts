@@ -2,7 +2,6 @@ import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
-import { useFlag } from 'core/flags'
 import { user } from 'fixtures/users'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
@@ -20,11 +19,12 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiShoppingAssistantTrialBanner } from '../useAiShoppingAssistantTrialBanner'
 
+// Mock the new useFlag hook instead of the deprecated useFlags
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-const mockUseFlag = useFlag as jest.Mock
+const mockUseFlag = jest.requireMock('core/flags').useFlag as jest.Mock
 
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 
@@ -74,8 +74,23 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
         mockStoreConfigurations.mockReturnValue({
             storeConfigurations: {},
         } as ReturnType<typeof useStoreConfigurations>)
-        // useAtLeastOneStoreHasActiveTrialMock.mockReturnValue(false)
-        mockUseFlag.mockReturnValue(true)
+        useAtLeastOneStoreHasActiveTrialMock.mockReturnValue(false)
+
+        // Mock the new useFlag hook properly
+        mockUseFlag.mockImplementation(
+            (flagKey: string, defaultValue: boolean = false) => {
+                if (flagKey === 'ai-shopping-assistant-trial-system-banner') {
+                    return true
+                }
+                if (
+                    flagKey === 'linear.project_shopping-assistant-trial-revamp'
+                ) {
+                    return false
+                }
+                return defaultValue
+            },
+        )
+
         getStoresEligibleForTrialMock.mockReturnValue([
             {
                 name: 'store1',
@@ -84,6 +99,7 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
                 },
             },
         ] as ReturnType<typeof getStoresEligibleForTrial>)
+
         // Mock selectors
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getCurrentAutomatePlan) {
@@ -131,15 +147,47 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
         })
     })
 
-    it('should not render if the feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
+    it('should not render if the system banner feature flag is disabled', () => {
+        mockUseFlag.mockImplementation(
+            (flagKey: string, defaultValue: boolean = false) => {
+                if (flagKey === 'ai-shopping-assistant-trial-system-banner') {
+                    return false
+                }
+                if (
+                    flagKey === 'linear.project_shopping-assistant-trial-revamp'
+                ) {
+                    return false
+                }
+                return defaultValue
+            },
+        )
+
+        renderHook(useAiShoppingAssistantTrialBanner)
+
+        expect(mockedAddBanner).not.toHaveBeenCalled()
+    })
+
+    it('should not render if the revamp feature flag is enabled', () => {
+        mockUseFlag.mockImplementation(
+            (flagKey: string, defaultValue: boolean = false) => {
+                if (flagKey === 'ai-shopping-assistant-trial-system-banner') {
+                    return true
+                }
+                if (
+                    flagKey === 'linear.project_shopping-assistant-trial-revamp'
+                ) {
+                    return true
+                }
+                return defaultValue
+            },
+        )
+
         renderHook(useAiShoppingAssistantTrialBanner)
 
         expect(mockedAddBanner).not.toHaveBeenCalled()
     })
 
     it('should not render if the account is not eligible for any type of trial', () => {
-        mockUseFlag.mockReturnValue(true)
         useActivateAiAgentTrialMock.mockReturnValue({
             canStartTrial: false,
             canStartTrialFromFeatureFlag: false,
@@ -154,7 +202,6 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
     })
 
     it('should not render if the user is visiting the tickets page', () => {
-        mockUseFlag.mockReturnValue(true)
         useLocationMock.mockReturnValue({
             pathname: '/tickets',
         } as any)
@@ -164,7 +211,6 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
     })
 
     it('should not render if one store has an active trial', () => {
-        mockUseFlag.mockReturnValue(true)
         useAtLeastOneStoreHasActiveTrialMock.mockReturnValue(true)
         renderHook(useAiShoppingAssistantTrialBanner)
 
@@ -172,8 +218,6 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
     })
 
     it('should remove the banner if the user goes to the tickets or views page', () => {
-        mockUseFlag.mockReturnValue(true)
-        useAtLeastOneStoreHasActiveTrialMock.mockReturnValue(false)
         renderHook(useAiShoppingAssistantTrialBanner)
 
         expect(mockedAddBanner).toHaveBeenCalled()
@@ -190,8 +234,6 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
     })
 
     it('should remove the banner if the user starts a trial', () => {
-        mockUseFlag.mockReturnValue(true)
-        useAtLeastOneStoreHasActiveTrialMock.mockReturnValue(false)
         renderHook(useAiShoppingAssistantTrialBanner)
 
         expect(mockedAddBanner).toHaveBeenCalled()

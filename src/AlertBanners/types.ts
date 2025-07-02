@@ -48,6 +48,7 @@ export const BannerCategories = {
     ACCOUNT_NOT_VERIFIED: 'account_not_verified',
     ACCOUNT_USAGE: 'account_usage',
     AI_SHOPPING_ASSISTANT_TRIAL: 'ai_shopping_assistant_trial',
+    AI_SHOPPING_ASSISTANT_TRIAL_REVAMP: 'ai_shopping_assistant_trial_revamp',
     BILLING: 'billing',
     EMAIL_DISCONNECTED: 'email_disconnected',
     EMAIL_DOMAIN_VERIFICATION: 'email_domain_verification',

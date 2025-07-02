@@ -15,6 +15,7 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
@@ -39,6 +40,7 @@ jest.mock(
 )
 jest.mock('react-router')
 jest.mock('pages/aiAgent/Overview/hooks/useThankYouModal')
+jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 
 const logEventMock = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
@@ -65,6 +67,8 @@ const defaultThankYouModalValues = {
 }
 
 const mockUseThankYouModal = useThankYouModal as jest.Mock
+const mockUseShoppingAssistantTrialAccess =
+    useShoppingAssistantTrialAccess as jest.Mock
 const useLocationMock = assumeMock(useLocation)
 useLocationMock.mockReturnValue(defaultLocation)
 
@@ -101,6 +105,9 @@ describe('AiAgentOverview', () => {
         useStoreActivationsMock.mockReturnValue({
             storeActivations: {},
         } as any)
+        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            canSeeTrialCTA: false,
+        })
     })
     it('should render', () => {
         const { queryByText } = renderComponent()
@@ -232,5 +239,322 @@ describe('AiAgentOverview', () => {
         })
         const { queryByText } = renderComponent()
         expect(queryByText('Resources')).toBeFalsy()
+    })
+
+    describe('Shopping Assistant Trial', () => {
+        it('should not render trial banner when canSeeTrialCTA is false', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: false,
+            })
+
+            const { queryByText } = renderComponent()
+            expect(
+                queryByText('Drive more revenue with Shopping Assistant'),
+            ).toBeFalsy()
+            expect(queryByText('Try for 14 days')).toBeFalsy()
+        })
+
+        it('should render trial banner when canSeeTrialCTA is true', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { queryByText } = renderComponent()
+            expect(
+                queryByText('Drive more revenue with Shopping Assistant'),
+            ).toBeTruthy()
+            expect(queryByText('Try for 14 days')).toBeTruthy()
+            expect(
+                queryByText('How Shopping Assistant Accelerates Growth'),
+            ).toBeTruthy()
+        })
+
+        it('should toggle isUpgradeTrialModalRevampOpen when Try for 14 days is clicked and closed', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { getByText, queryByText } = renderComponent()
+
+            // Modal should not be open initially
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeFalsy()
+
+            // Open the modal
+            fireEvent.click(getByText('Try for 14 days'))
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeTruthy()
+
+            // Close the modal using the current plan button
+            fireEvent.click(getByText('Keep current plan'))
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeFalsy()
+        })
+
+        it('should open upgrade trial modal when banner button is clicked', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { getAllByText, queryByText } = renderComponent()
+
+            // Open the modal
+            fireEvent.click(getAllByText('Try for 14 days')[0])
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeTruthy()
+
+            // Verify modal content is displayed
+            expect(queryByText('Support Agent')).toBeTruthy()
+            expect(queryByText('Keep current plan')).toBeTruthy()
+        })
+
+        it('should display correct pricing and features in trial modal', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { getByText, queryByText } = renderComponent()
+
+            // Open the modal
+            fireEvent.click(getByText('Try for 14 days'))
+
+            // Check current plan details
+            expect(queryByText('Support Agent')).toBeTruthy()
+            expect(queryByText('$450')).toBeTruthy()
+            expect(queryByText('2000 automated interactions')).toBeTruthy()
+
+            // Check new plan details
+            expect(
+                queryByText('Support Agent and Shopping Assistant'),
+            ).toBeTruthy()
+            expect(queryByText('$530')).toBeTruthy()
+            expect(
+                queryByText('Everything in Support Agent skills'),
+            ).toBeTruthy()
+            expect(
+                queryByText(
+                    'Proactively engage with customers to guide discovery',
+                ),
+            ).toBeTruthy()
+        })
+
+        it('should open the correct URL when clicking How Shopping Assistant Accelerates Growth', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+            const originalOpen = window.open
+            window.open = jest.fn()
+
+            const { getByText } = renderComponent()
+            fireEvent.click(
+                getByText('How Shopping Assistant Accelerates Growth'),
+            )
+
+            expect(window.open).toHaveBeenCalledWith(
+                'https://www.gorgias.com/ai-shopping-assistant',
+                '_blank',
+            )
+
+            window.open = originalOpen // Restore original
+        })
+
+        it('should handle multiple banner actions correctly', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { getAllByText, getByText, queryByText } = renderComponent()
+
+            // Verify both actions are available
+            expect(getAllByText('Try for 14 days')[0]).toBeTruthy()
+            expect(
+                getByText('How Shopping Assistant Accelerates Growth'),
+            ).toBeTruthy()
+
+            // Test primary action multiple times
+            fireEvent.click(getAllByText('Try for 14 days')[0])
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeTruthy()
+
+            // Close modal
+            fireEvent.click(getByText('Keep current plan'))
+
+            // Open again
+            fireEvent.click(getAllByText('Try for 14 days')[0])
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeTruthy()
+        })
+
+        it('should not render trial components when canSeeTrialCTA is undefined', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({})
+
+            const { queryByText } = renderComponent()
+            expect(
+                queryByText('Drive more revenue with Shopping Assistant'),
+            ).toBeFalsy()
+            expect(queryByText('Try for 14 days')).toBeFalsy()
+        })
+
+        it('should display new plan features in trial modal', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { getAllByText, queryByText } = renderComponent()
+
+            // Open the modal
+            fireEvent.click(getAllByText('Try for 14 days')[0])
+
+            // Check for new plan features instead of tooltip
+            expect(
+                queryByText(
+                    'Intelligent upsell using customer input, not guesswork',
+                ),
+            ).toBeTruthy()
+        })
+
+        it('should maintain banner visibility state correctly', () => {
+            const mockReturnValue = { canSeeTrialCTA: true }
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(mockReturnValue)
+
+            const { queryByText, rerender } = renderComponent()
+
+            // Initially visible
+            expect(
+                queryByText('Drive more revenue with Shopping Assistant'),
+            ).toBeTruthy()
+
+            // Change to not visible
+            mockReturnValue.canSeeTrialCTA = false
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: false,
+            })
+
+            rerender(
+                <Provider store={mockStore(defaultStore)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AiAgentOverview />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            // Should not be visible
+            expect(
+                queryByText('Drive more revenue with Shopping Assistant'),
+            ).toBeFalsy()
+        })
+
+        it('should handle edge case where trial access hook returns empty object', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({})
+
+            const { queryByText } = renderComponent()
+            expect(
+                queryByText('Drive more revenue with Shopping Assistant'),
+            ).toBeFalsy()
+        })
+    })
+
+    describe('Component Integration', () => {
+        it('should render all major sections when feature flags are enabled', () => {
+            mockFlags({
+                [FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]: true,
+            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { queryByText, getByTestId } = renderComponent()
+
+            // Check all major sections
+            expect(queryByText(/Welcome,.*/)).toBeTruthy() // Title
+            expect(
+                queryByText('Drive more revenue with Shopping Assistant'),
+            ).toBeTruthy() // Trial Banner
+            expect(queryByText('AI Agent performance')).toBeTruthy() // KPI Section
+            expect(getByTestId('mocked-pending-tasks')).toBeTruthy() // Pending Tasks
+            expect(queryByText('Resources')).toBeTruthy() // Resources Section
+        })
+
+        it('should handle hook errors gracefully', () => {
+            mockUseShoppingAssistantTrialAccess.mockImplementation(() => {
+                throw new Error('Test error')
+            })
+
+            // Component should crash when hook throws
+            expect(() => renderComponent()).toThrow('Test error')
+        })
+
+        it('should call useShoppingAssistantTrialAccess hook on every render', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: false,
+            })
+
+            renderComponent()
+
+            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(1)
+
+            // Re-render should call again
+            renderComponent()
+            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(2)
+        })
+    })
+
+    describe('State Management', () => {
+        it('should handle modal state transitions correctly', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+            })
+
+            const { getAllByText, getByText, queryByText } = renderComponent()
+
+            // Initial state - modal closed
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeFalsy()
+
+            // Open modal
+            fireEvent.click(getAllByText('Try for 14 days')[0])
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeTruthy()
+
+            // Keep current plan button closes the modal
+            fireEvent.click(getByText('Keep current plan'))
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeFalsy()
+
+            // Can open again after closing
+            fireEvent.click(getAllByText('Try for 14 days')[0])
+            expect(
+                queryByText(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                ),
+            ).toBeTruthy()
+        })
     })
 })
