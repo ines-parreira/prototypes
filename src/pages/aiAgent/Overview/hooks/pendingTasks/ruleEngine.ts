@@ -24,6 +24,7 @@ import { EnableTriggerOnSearchTask } from './tasks/EnableTriggerOnSearch.task'
 import { InstallYourChatTask } from './tasks/InstallYourChat.task'
 import { PublishYourFirstGuidanceTask } from './tasks/PublishYourFirstGuidance.task'
 import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidances.task'
+import { SelectYourChatTask } from './tasks/SelectYourChat.task'
 import { SetYourActionsLiveTask } from './tasks/SetYourActionsLive.task'
 import { TestAIAgentTask } from './tasks/TestAIAgent.task'
 import { UpdateYourChatInstallationTask } from './tasks/UpdateYourChatInstallation.task'
@@ -71,6 +72,7 @@ const tasksPerAiAgentType: Record<
     (data: RuleEngineData, routes: RuleEngineRoutes) => Task[]
 > = {
     mixed: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new SelectYourChatTask(data, routes),
         new InstallYourChatTask(data, routes),
         new UpdateYourChatInstallationTask(data, routes),
         new SetUpYourEmailTask(data, routes),
@@ -95,6 +97,7 @@ const tasksPerAiAgentType: Record<
         new EnableSuggestedProductQuestionsTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new SelectYourChatTask(data, routes),
         new InstallYourChatTask(data, routes),
         new UpdateYourChatInstallationTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),
@@ -112,6 +115,7 @@ const tasksPerAiAgentType: Record<
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new SetUpYourEmailTask(data, routes),
+        new SelectYourChatTask(data, routes),
         new InstallYourChatTask(data, routes),
         new ConnectYourDefaultEmailTask(data, routes),
         new UpdateShopifyPermissionsTask(data, routes),

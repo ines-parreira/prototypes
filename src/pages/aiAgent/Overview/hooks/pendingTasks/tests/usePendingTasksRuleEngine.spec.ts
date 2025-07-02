@@ -181,17 +181,17 @@ describe('usePendingTasksRuleEngine', () => {
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
             pendingTasks: 6,
-            completedTasks: 16,
+            completedTasks: 17,
         },
         {
             scopes: [AiAgentScope.Support],
             pendingTasks: 5,
-            completedTasks: 13,
+            completedTasks: 14,
         },
         {
             scopes: [AiAgentScope.Sales],
             pendingTasks: 4,
-            completedTasks: 10,
+            completedTasks: 11,
         },
     ])(
         'should return valid tasks for scopes $scopes',
