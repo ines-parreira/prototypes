@@ -1,0 +1,64 @@
+import { fireEvent, render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+
+import { MoreOptions } from './MoreOptions'
+
+describe('<MoreOptions />', () => {
+    const shopName = 'test-shop'
+
+    function setup() {
+        render(
+            <MemoryRouter>
+                <MoreOptions shopName={shopName} />
+            </MemoryRouter>,
+        )
+    }
+
+    it('renders the menu button', () => {
+        setup()
+        expect(screen.getByText('more_horiz')).toBeInTheDocument()
+    })
+
+    it('opens and closes the menu on click', () => {
+        setup()
+        const menuButton = screen.getByText('more_horiz')
+        fireEvent.click(menuButton)
+        expect(screen.getByText('edit')).toBeInTheDocument()
+        fireEvent.click(menuButton)
+        expect(screen.queryByText('edit')).not.toBeInTheDocument()
+    })
+
+    it('renders all options when menu is open', () => {
+        setup()
+        fireEvent.click(screen.getByText('more_horiz'))
+        expect(screen.getByText('Edit')).toBeInTheDocument()
+        expect(screen.getByText('Test campaign')).toBeInTheDocument()
+        expect(screen.getByText('Pause')).toBeInTheDocument()
+    })
+
+    it('navigates to the correct route when a link is clicked', () => {
+        setup()
+        fireEvent.click(screen.getByText('more_horiz'))
+        const editLink = screen.getByText('Edit').closest('a')
+        expect(editLink).toHaveAttribute(
+            'to',
+            `/app/ai-journey/${shopName}/conversation-setup`,
+        )
+    })
+
+    it('calls alert when pause is clicked', () => {
+        setup()
+        window.alert = jest.fn()
+        fireEvent.click(screen.getByText('more_horiz'))
+        fireEvent.click(screen.getByText('Pause'))
+        expect(window.alert).toHaveBeenCalledWith('Should pause journey')
+    })
+
+    it('closes the menu when clicking outside', () => {
+        setup()
+        fireEvent.click(screen.getByText('more_horiz'))
+        expect(screen.getByText('Edit')).toBeInTheDocument()
+        fireEvent.mouseDown(document)
+        expect(screen.queryByText('Edit')).not.toBeInTheDocument()
+    })
+})

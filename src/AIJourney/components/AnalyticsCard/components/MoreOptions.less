@@ -1,0 +1,47 @@
+:local {
+    .statusRight {
+        margin-left: auto;
+    }
+    .menuButton {
+        font-size: 24px;
+        cursor: pointer;
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
+    }
+
+    .menuPopover {
+        position: absolute;
+        top: 35px;
+        right: 0;
+        border-radius: var(--layout-spacing-s);
+        border: 1px solid #ececec;
+        background: var(--neutral-grey-0);
+        backdrop-filter: blur(4px);
+        width: fit-content;
+        z-index: 2;
+        overflow: hidden;
+    }
+
+    .option {
+        color: var(--neutral-grey-6);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        text-align: left;
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+        width: 100%;
+        cursor: pointer;
+        white-space: nowrap;
+        background: transparent;
+
+        &:hover {
+            background: var(--neutral-grey-1);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral-grey-6);
+        }
+    }
+}

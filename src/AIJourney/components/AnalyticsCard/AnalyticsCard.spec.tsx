@@ -6,6 +6,12 @@ jest.mock('AIJourney/components/DiscountCard/DiscountCard', () => ({
     DiscountCard: () => <div data-testid="discount-card" />,
 }))
 
+const mockUseParams = jest.fn()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: () => mockUseParams(),
+}))
+
 const data = [
     { label: 'Revenue', value: '$999', variation: '+24%' },
     { label: 'Orders', value: '789', variation: '+9%' },
@@ -13,6 +19,10 @@ const data = [
 ]
 
 describe('<AnalyticsCard />', () => {
+    beforeEach(() => {
+        mockUseParams.mockReturnValue({ shopName: 'test-shop' })
+    })
+
     it('renders live status with correct badge and icon', () => {
         render(<AnalyticsCard analyticsData={data} status="live" />)
         expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
