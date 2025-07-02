@@ -169,7 +169,7 @@ export const useGuidanceArticleMutation = ({
 
     const createGuidanceArticle = useCallback(
         async (createGuidanceArticle: CreateGuidanceArticle) => {
-            if (!createGuidanceArticle.content) {
+            if (createGuidanceArticle.content === '') {
                 throw new Error('Content is required for creating the article')
             }
 
@@ -202,7 +202,7 @@ export const useGuidanceArticleMutation = ({
             updateGuidanceArticle: UpdateGuidanceArticle,
             { articleId, locale }: { articleId: number; locale: LocaleCode },
         ) => {
-            if (!updateGuidanceArticle.content) {
+            if (updateGuidanceArticle.content === '') {
                 throw new Error('Content is required for updating the article')
             }
 

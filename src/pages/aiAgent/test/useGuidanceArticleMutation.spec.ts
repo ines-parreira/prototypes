@@ -284,7 +284,7 @@ describe('useGuidanceArticleMutation', () => {
             }),
         )
 
-        const payload = { title: 'Some Title' } as any // payload without content
+        const payload = { title: 'Some Title', content: '' } as any // payload without content
 
         await act(async () => {
             try {
@@ -313,7 +313,7 @@ describe('useGuidanceArticleMutation', () => {
             }),
         )
 
-        const payload = { title: 'Some Title' } as any // payload without content
+        const payload = { title: 'Some Title', content: '' } as any // payload without content
         const params = { articleId: 123, locale: 'en' } as any
 
         await act(async () => {
