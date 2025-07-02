@@ -365,6 +365,9 @@ export const defaultTicketView = {
             path: 'priority',
             filter: {
                 enum: PRIORITIES,
+                sort: {
+                    priority: 'desc',
+                },
             },
         },
     ],

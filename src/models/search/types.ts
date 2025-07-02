@@ -140,6 +140,7 @@ export enum TicketSearchSortableProperties {
     LastReceivedMessageDatetime = 'last_received_message_datetime',
     ClosedDatetime = 'closed_datetime',
     SnoozeDatetime = 'snooze_datetime',
+    Priority = 'priority',
 }
 
 export const pickedCustomerFields = ['email', 'id', 'name', 'channels'] as const
