@@ -28,7 +28,10 @@ import {
     SuggestedResource,
     suggestedResourceValueSchema,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { Components } from 'rest_api/knowledge_service_api/client.generated'
+import {
+    Components,
+    Paths,
+} from 'rest_api/knowledge_service_api/client.generated'
 import { getLDClient } from 'utils/launchDarkly'
 
 const DEFAULT_STALE_TIME = 10 * 60 * 1000
@@ -200,7 +203,7 @@ const useActionResources = (
 
     return {
         actions: data ?? [],
-        isLoading,
+        isLoading: queryEnabled && isLoading,
     }
 }
 
@@ -719,7 +722,7 @@ export const useGetResourceData = ({
     const { actions, isLoading: isActionsLoading } = useActionResources(
         shopName,
         shopType,
-        queriesEnabled,
+        queriesEnabled && !!shopName && !!shopType,
     )
 
     // Determine overall loading state
@@ -822,10 +825,12 @@ export const useGetResourcesReasoningMetadata = ({
 }: {
     resources: KnowledgeReasoningResource[]
     ticketId: number
-    storeConfiguration?: StoreConfiguration
+    storeConfiguration?:
+        | Paths.FindAiReasoningAiReasoning.Responses.$200['storeConfiguration']
+        | null
     queriesEnabled?: boolean
 }) => {
-    const shopName = storeConfiguration?.storeName ?? ''
+    const shopName = storeConfiguration?.shopName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
 
     const relatedHelpCenterData = resources.reduce(

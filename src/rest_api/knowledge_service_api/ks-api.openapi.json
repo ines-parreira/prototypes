@@ -519,7 +519,7 @@
         },
         "/api/ai-reasoning": {
             "get": {
-                "operationId": "findAiReasoningsAiReasoning",
+                "operationId": "findAiReasoningAiReasoning",
                 "parameters": [
                     {
                         "name": "objectType",
@@ -538,11 +538,18 @@
                         "in": "query",
                         "description": "Object identifier",
                         "schema": { "example": "789", "type": "string" }
+                    },
+                    {
+                        "name": "messageId",
+                        "required": true,
+                        "in": "query",
+                        "description": "Message identifier",
+                        "schema": { "example": "123", "type": "string" }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Returns a constant AI reasoning message",
+                        "description": "Returns the AI reasoning (outcome, response and task) for a given message",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1908,57 +1915,102 @@
             "AiReasoningDto": {
                 "type": "object",
                 "properties": {
-                    "objectType": {
-                        "type": "string",
-                        "enum": ["TICKET", "SEARCH_BAR"],
-                        "description": "Type of object",
-                        "example": "TICKET"
+                    "reasoning": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "objectType": {
+                                    "type": "string",
+                                    "enum": ["TICKET", "SEARCH_BAR"],
+                                    "description": "Type of object",
+                                    "example": "TICKET"
+                                },
+                                "objectId": {
+                                    "type": "string",
+                                    "description": "Object identifier",
+                                    "example": "789"
+                                },
+                                "executionId": {
+                                    "type": "string",
+                                    "description": "AI Agent Execution identifier",
+                                    "example": "exec-123"
+                                },
+                                "targetType": {
+                                    "type": "string",
+                                    "enum": ["REPLY", "TASK"],
+                                    "description": "Target type",
+                                    "example": "REPLY"
+                                },
+                                "targetId": {
+                                    "type": "string",
+                                    "description": "Target identifier",
+                                    "example": "target-123"
+                                },
+                                "responseType": {
+                                    "type": "string",
+                                    "enum": ["RESPONSE", "OUTCOME", "TASK"],
+                                    "description": "Response type",
+                                    "example": "OUTCOME"
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "description": "AI Reasoning content",
+                                    "example": "exec-123"
+                                },
+                                "createdDatetime": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Ai Reasoning creation datetime"
+                                }
+                            },
+                            "required": [
+                                "objectType",
+                                "objectId",
+                                "executionId",
+                                "targetType",
+                                "targetId",
+                                "responseType",
+                                "value",
+                                "createdDatetime"
+                            ]
+                        }
                     },
-                    "objectId": {
-                        "type": "string",
-                        "description": "Object identifier",
-                        "example": "789"
-                    },
-                    "executionId": {
-                        "type": "string",
-                        "description": "AI Agent Execution identifier",
-                        "example": "exec-123"
-                    },
-                    "targetType": {
-                        "type": "string",
-                        "enum": [
-                            "TICKET_MESSAGE",
-                            "TICKET_HANDOVER",
-                            "TICKET_CLOSE"
+                    "storeConfiguration": {
+                        "type": "object",
+                        "properties": {
+                            "shopName": {
+                                "type": "string",
+                                "example": "My Shop"
+                            },
+                            "shopType": {
+                                "type": "string",
+                                "example": "shopify"
+                            },
+                            "faqHelpCenterId": {
+                                "type": "number",
+                                "nullable": true
+                            },
+                            "guidanceHelpCenterId": {
+                                "type": "number",
+                                "example": 2
+                            },
+                            "snippetHelpCenterId": {
+                                "type": "number",
+                                "example": 3
+                            }
+                        },
+                        "required": [
+                            "shopName",
+                            "shopType",
+                            "faqHelpCenterId",
+                            "guidanceHelpCenterId",
+                            "snippetHelpCenterId"
                         ],
-                        "description": "Target type",
-                        "example": "TICKET_MESSAGE"
-                    },
-                    "targetId": {
-                        "type": "string",
-                        "description": "Target identifier",
-                        "example": "target-123"
-                    },
-                    "value": {
-                        "type": "string",
-                        "description": "AI Reasoning content",
-                        "example": "exec-123"
-                    },
-                    "createdDatetime": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Ai Reasoning creation datetime"
+                        "nullable": true
                     }
                 },
-                "required": [
-                    "objectType",
-                    "objectId",
-                    "executionId",
-                    "targetType",
-                    "targetId",
-                    "value",
-                    "createdDatetime"
-                ]
+                "required": ["reasoning"]
             }
         }
     },

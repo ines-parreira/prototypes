@@ -80,8 +80,11 @@ export const useMultipleStoreWebsiteQuestions = ({
 
     const isLoading = useMemo(
         () =>
-            isIngestionLogsLoading || queries.some((query) => query.isLoading),
-        [queries, isIngestionLogsLoading],
+            queryOptionsOverrides?.enabled === false
+                ? false
+                : isIngestionLogsLoading ||
+                  queries.some((query) => query.isLoading),
+        [queries, isIngestionLogsLoading, queryOptionsOverrides?.enabled],
     )
 
     const storeWebsiteQuestions = useMemo(() => {

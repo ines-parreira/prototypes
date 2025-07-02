@@ -260,7 +260,7 @@ export class Container extends Component<Props> {
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
                                 (isSimplifiedFeedbackCollectionEnabled ? (
-                                    showAiReasoning ? (
+                                    showAiReasoning && message.id ? (
                                         <AiAgentReasoning
                                             messageId={message.id}
                                         />

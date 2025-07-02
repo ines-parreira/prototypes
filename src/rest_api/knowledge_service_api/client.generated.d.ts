@@ -9,46 +9,77 @@ import type {
 declare namespace Components {
     namespace Schemas {
         export interface AiReasoningDto {
-            /**
-             * Type of object
-             * example:
-             * TICKET
-             */
-            objectType: 'TICKET' | 'SEARCH_BAR'
-            /**
-             * Object identifier
-             * example:
-             * 789
-             */
-            objectId: string
-            /**
-             * AI Agent Execution identifier
-             * example:
-             * exec-123
-             */
-            executionId: string
-            /**
-             * Target type
-             * example:
-             * TICKET_MESSAGE
-             */
-            targetType: 'TICKET_MESSAGE' | 'TICKET_HANDOVER' | 'TICKET_CLOSE'
-            /**
-             * Target identifier
-             * example:
-             * target-123
-             */
-            targetId: string
-            /**
-             * AI Reasoning content
-             * example:
-             * exec-123
-             */
-            value: string
-            /**
-             * Ai Reasoning creation datetime
-             */
-            createdDatetime: string // date-time
+            reasoning: {
+                /**
+                 * Type of object
+                 * example:
+                 * TICKET
+                 */
+                objectType: 'TICKET' | 'SEARCH_BAR'
+                /**
+                 * Object identifier
+                 * example:
+                 * 789
+                 */
+                objectId: string
+                /**
+                 * AI Agent Execution identifier
+                 * example:
+                 * exec-123
+                 */
+                executionId: string
+                /**
+                 * Target type
+                 * example:
+                 * REPLY
+                 */
+                targetType: 'REPLY' | 'TASK'
+                /**
+                 * Target identifier
+                 * example:
+                 * target-123
+                 */
+                targetId: string
+                /**
+                 * Response type
+                 * example:
+                 * OUTCOME
+                 */
+                responseType: 'RESPONSE' | 'OUTCOME' | 'TASK'
+                /**
+                 * AI Reasoning content
+                 * example:
+                 * exec-123
+                 */
+                value: string
+                /**
+                 * Ai Reasoning creation datetime
+                 */
+                createdDatetime: string // date-time
+            }[]
+            storeConfiguration?: {
+                /**
+                 * example:
+                 * My Shop
+                 */
+                shopName: string
+                /**
+                 * example:
+                 * shopify
+                 */
+                shopType: string
+                faqHelpCenterId: number | null
+                /**
+                 * example:
+                 * 2
+                 */
+                guidanceHelpCenterId: number
+                /**
+                 * example:
+                 * 3
+                 */
+                snippetHelpCenterId: number
+            } | null
         }
         export interface EarliestExecutionDto {
             /**
@@ -802,8 +833,13 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
-    namespace FindAiReasoningsAiReasoning {
+    namespace FindAiReasoningAiReasoning {
         namespace Parameters {
+            /**
+             * example:
+             * 123
+             */
+            export type MessageId = string
             /**
              * example:
              * 789
@@ -826,6 +862,11 @@ declare namespace Paths {
              * 789
              */
             Parameters.ObjectId
+            messageId: /**
+             * example:
+             * 123
+             */
+            Parameters.MessageId
         }
         namespace Responses {
             export type $200 = Components.Schemas.AiReasoningDto
@@ -1258,13 +1299,13 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.LiveHealth.Responses.$200>
     /**
-     * findAiReasoningsAiReasoning - Get AI reasoning message
+     * findAiReasoningAiReasoning - Get AI reasoning message
      */
-    'findAiReasoningsAiReasoning'(
-        parameters?: Parameters<Paths.FindAiReasoningsAiReasoning.QueryParameters> | null,
+    'findAiReasoningAiReasoning'(
+        parameters?: Parameters<Paths.FindAiReasoningAiReasoning.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.FindAiReasoningsAiReasoning.Responses.$200>
+    ): OperationResponse<Paths.FindAiReasoningAiReasoning.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -1370,13 +1411,13 @@ export interface PathsDictionary {
     }
     ['/api/ai-reasoning']: {
         /**
-         * findAiReasoningsAiReasoning - Get AI reasoning message
+         * findAiReasoningAiReasoning - Get AI reasoning message
          */
         'get'(
-            parameters?: Parameters<Paths.FindAiReasoningsAiReasoning.QueryParameters> | null,
+            parameters?: Parameters<Paths.FindAiReasoningAiReasoning.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.FindAiReasoningsAiReasoning.Responses.$200>
+        ): OperationResponse<Paths.FindAiReasoningAiReasoning.Responses.$200>
     }
 }
 

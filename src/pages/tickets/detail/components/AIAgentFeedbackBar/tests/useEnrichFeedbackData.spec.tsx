@@ -54,27 +54,21 @@ jest.mock('pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions', () => ({
 // Mock the getAiAgentNavigationRoutes function to prevent feature flag issues
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     getAiAgentNavigationRoutes: jest.fn(() => ({
-        guidanceArticleEdit: jest.fn((id) => `/mock/guidance/edit/${id}`),
-        articleEdit: jest.fn((id) => `/mock/article/edit/${id}`),
-        urlArticlesDetail: jest.fn(
-            (ingestionId, articleId) =>
-                `/mock/articles/detail/${ingestionId}/${articleId}`,
-        ),
-        externalSnippetView: jest.fn((id) => `/mock/snippet/view/${id}`),
-        fileSnippetView: jest.fn((id) => `/mock/file/view/${id}`),
-        macroEdit: jest.fn((id) => `/mock/macro/edit/${id}`),
-        actionEdit: jest.fn((id) => `/mock/action/edit/${id}`),
-        editAction: jest.fn((id) => `/mock/action/edit/${id}`),
-        fileArticlesDetail: jest.fn(
-            (ingestionId, id) => `/mock/file/${ingestionId}/${id}`,
-        ),
-        pagesContentDetail: jest.fn(
-            (ingestionId, id) => `/mock/content/${ingestionId}/${id}`,
-        ),
-        orderView: jest.fn((id) => `/mock/order/view/${id}`),
-        storeWebsiteQuestionView: jest.fn(
-            (id) => `/mock/store-website/view/${id}`,
-        ),
+        guidanceArticleEdit: (id: number) => `/mock/guidance/edit/${id}`,
+        articleEdit: (id: number) => `/mock/article/edit/${id}`,
+        urlArticlesDetail: (ingestionId: number, articleId: number) =>
+            `/mock/articles/detail/${ingestionId}/${articleId}`,
+        externalSnippetView: (id: number) => `/mock/snippet/view/${id}`,
+        fileSnippetView: (id: number) => `/mock/file/view/${id}`,
+        macroEdit: (id: number) => `/mock/macro/edit/${id}`,
+        actionEdit: (id: string) => `/mock/action/edit/${id}`,
+        editAction: (id: string) => `/mock/action/edit/${id}`,
+        fileArticlesDetail: (ingestionId: number, id: number) =>
+            `/mock/file/${ingestionId}/${id}`,
+        pagesContentDetail: (id: number) => `/mock/content/${id}`,
+        orderView: (id: number) => `/mock/order/view/${id}`,
+        storeWebsiteQuestionView: (id: number) =>
+            `/mock/store-website/view/${id}`,
     })),
 }))
 
@@ -337,6 +331,13 @@ describe('useGetResourceData', () => {
 })
 
 describe('useEnrichFeedbackData', () => {
+    const mockStoreConfiguration = {
+        shopName: 'test-store',
+        shopType: 'shopify',
+        faqHelpCenterId: 100,
+        guidanceHelpCenterId: 200,
+        snippetHelpCenterId: 300,
+    }
     const wrapper = ({ children }: any) => (
         <QueryClientProvider client={queryClient}>
             {children}
@@ -627,13 +628,7 @@ describe('useEnrichFeedbackData', () => {
                             feedback: null,
                         },
                     ],
-                    storeConfiguration: {
-                        shopName: 'test-store',
-                        shopType: 'shopify',
-                        faqHelpCenterId: 100,
-                        guidanceHelpCenterId: 200,
-                        snippetHelpCenterId: 300,
-                    },
+                    storeConfiguration: mockStoreConfiguration,
                 },
             ],
         } as Components.Schemas.FeedbackDto
@@ -795,13 +790,7 @@ describe('useEnrichFeedbackData', () => {
                         },
                     ],
                     resources: [],
-                    storeConfiguration: {
-                        shopName: 'test-store',
-                        shopType: 'shopify',
-                        faqHelpCenterId: 100,
-                        guidanceHelpCenterId: 200,
-                        snippetHelpCenterId: 300,
-                    },
+                    storeConfiguration: mockStoreConfiguration,
                 },
             ],
         } as Components.Schemas.FeedbackDto
@@ -855,13 +844,7 @@ describe('useEnrichFeedbackData', () => {
                             feedback: null,
                         },
                     ],
-                    storeConfiguration: {
-                        shopName: 'test-store',
-                        shopType: 'shopify',
-                        faqHelpCenterId: 100,
-                        guidanceHelpCenterId: 200,
-                        snippetHelpCenterId: 300,
-                    },
+                    storeConfiguration: mockStoreConfiguration,
                 },
             ],
         } as Components.Schemas.FeedbackDto
@@ -947,11 +930,8 @@ describe('useEnrichFeedbackData', () => {
                         },
                     ],
                     storeConfiguration: {
+                        ...mockStoreConfiguration,
                         shopName: '',
-                        shopType: 'shopify',
-                        faqHelpCenterId: 100,
-                        guidanceHelpCenterId: 200,
-                        snippetHelpCenterId: 300,
                     },
                 },
             ],
@@ -1096,13 +1076,7 @@ describe('useEnrichFeedbackData', () => {
                             feedback: null,
                         },
                     ],
-                    storeConfiguration: {
-                        shopName: 'test-store',
-                        shopType: 'shopify',
-                        faqHelpCenterId: 100,
-                        guidanceHelpCenterId: 200,
-                        snippetHelpCenterId: 300,
-                    },
+                    storeConfiguration: mockStoreConfiguration,
                 },
             ],
         } as Components.Schemas.FeedbackDto
@@ -1159,13 +1133,7 @@ describe('useEnrichFeedbackData', () => {
                             feedback: null,
                         },
                     ],
-                    storeConfiguration: {
-                        shopName: 'test-store',
-                        shopType: 'shopify',
-                        faqHelpCenterId: 100,
-                        guidanceHelpCenterId: 200,
-                        snippetHelpCenterId: 300,
-                    },
+                    storeConfiguration: mockStoreConfiguration,
                 },
             ],
         } as any // Use any to bypass type checking for unknown resource type
@@ -1223,13 +1191,7 @@ describe('useEnrichFeedbackData', () => {
                             feedback: null,
                         },
                     ],
-                    storeConfiguration: {
-                        shopName: 'test-store',
-                        shopType: 'shopify',
-                        faqHelpCenterId: 100,
-                        guidanceHelpCenterId: 200,
-                        snippetHelpCenterId: 300,
-                    },
+                    storeConfiguration: mockStoreConfiguration,
                 },
             ],
         } as Components.Schemas.FeedbackDto
@@ -1261,6 +1223,14 @@ describe('useEnrichFeedbackData', () => {
 })
 
 describe('useGetResourcesReasoningMetadata', () => {
+    const mockStoreConfiguration = {
+        shopName: 'test-store',
+        shopType: 'shopify',
+        faqHelpCenterId: 100,
+        guidanceHelpCenterId: 200,
+        snippetHelpCenterId: 300,
+    }
+
     const resources: KnowledgeReasoningResource[] = [
         {
             resourceId: '1',
@@ -1351,14 +1321,12 @@ describe('useGetResourcesReasoningMetadata', () => {
     })
 
     it('should correctly process resources and call useGetResourceData with correct parameters', () => {
-        const storeConfiguration = createMockStoreConfiguration()
-
         renderHook(
             () =>
                 useGetResourcesReasoningMetadata({
                     resources,
                     ticketId: 123,
-                    storeConfiguration,
+                    storeConfiguration: mockStoreConfiguration,
                     queriesEnabled: true,
                 }),
             { wrapper },
@@ -1382,8 +1350,6 @@ describe('useGetResourcesReasoningMetadata', () => {
     })
 
     it('should return enriched resource metadata for all resource types', () => {
-        const storeConfiguration = createMockStoreConfiguration()
-
         const mockArticles = [
             {
                 id: 1,
@@ -1395,7 +1361,12 @@ describe('useGetResourcesReasoningMetadata', () => {
             },
         ]
         const mockGuidanceArticles = [
-            { id: 2, title: 'Guidance Title', content: 'Guidance Content' },
+            {
+                id: 2,
+                title: 'Guidance Title',
+                content: 'Guidance Content',
+                helpCenterId: 200,
+            },
         ]
         const mockSourceItems = [
             {
@@ -1461,7 +1432,7 @@ describe('useGetResourcesReasoningMetadata', () => {
                 useGetResourcesReasoningMetadata({
                     resources,
                     ticketId: 123,
-                    storeConfiguration,
+                    storeConfiguration: mockStoreConfiguration,
                 }),
             { wrapper },
         )
@@ -1479,7 +1450,8 @@ describe('useGetResourcesReasoningMetadata', () => {
         expect(result.current.data[1]).toEqual({
             title: 'Guidance Title',
             content: 'Guidance Content',
-            url: expect.any(String),
+            url: '/mock/guidance/edit/2',
+            helpCenterId: 200,
         })
 
         expect(result.current.data[2]).toEqual({
@@ -1514,8 +1486,6 @@ describe('useGetResourcesReasoningMetadata', () => {
     })
 
     it('should handle loading state correctly', () => {
-        const storeConfiguration = createMockStoreConfiguration()
-
         // at least one resource has to be loading
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -1527,7 +1497,7 @@ describe('useGetResourcesReasoningMetadata', () => {
                 useGetResourcesReasoningMetadata({
                     resources,
                     ticketId: 123,
-                    storeConfiguration,
+                    storeConfiguration: mockStoreConfiguration,
                 }),
             { wrapper },
         )
@@ -1536,14 +1506,12 @@ describe('useGetResourcesReasoningMetadata', () => {
     })
 
     it('should handle disabled queries', () => {
-        const storeConfiguration = createMockStoreConfiguration()
-
         renderHook(
             () =>
                 useGetResourcesReasoningMetadata({
                     resources,
                     ticketId: 123,
-                    storeConfiguration,
+                    storeConfiguration: mockStoreConfiguration,
                     queriesEnabled: false,
                 }),
             { wrapper },

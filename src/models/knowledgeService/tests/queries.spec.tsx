@@ -16,6 +16,7 @@ import {
     useFindAllGuidancesKnowledgeResources,
     useGetEarliestExecution,
     useGetFeedback,
+    useGetMessageAiReasoning,
 } from '../queries'
 
 jest.mock('rest_api/knowledge_service_api/client', () => ({
@@ -29,6 +30,7 @@ describe('knowledgeService queries', () => {
         findFeedbackFeedback: jest.fn(),
         findAllGuidancesKnowledgeResources: jest.fn(),
         getEarliestExecutionFeedback: jest.fn(),
+        findAiReasoningAiReasoning: jest.fn(),
     }
 
     beforeEach(() => {
@@ -76,6 +78,17 @@ describe('knowledgeService queries', () => {
                 'earliestExecution',
             ])
         })
+
+        it('should generate correct getMessageAiReasoning key with params', () => {
+            const params: Paths.FindAiReasoningAiReasoning.QueryParameters = {
+                objectType: 'TICKET',
+                objectId: 'ticket-123',
+                messageId: 'message-123',
+            }
+            expect(
+                feedbackDefinitionKeys.getMessageAiReasoning(params),
+            ).toEqual(['feedback', 'messageAiReasoning', params])
+        })
     })
 
     describe('useGetFeedback', () => {
@@ -119,13 +132,10 @@ describe('knowledgeService queries', () => {
                 wrapper,
             })
 
-            // Initial state should be loading
             expect(result.current.isLoading).toBe(true)
 
-            // Wait for the query to complete
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-            // Verify API was called with correct params
             expect(mockClient.findFeedbackFeedback).toHaveBeenCalledWith(
                 params,
                 {},
@@ -136,12 +146,10 @@ describe('knowledgeService queries', () => {
                 },
             )
 
-            // Verify data is correct
             expect(result.current.data).toEqual(mockResponse.data)
         })
 
         it('should use correct stale and cache times', async () => {
-            // We need to spy on useQuery's options directly
             const useQuerySpy = jest.spyOn(
                 require('@tanstack/react-query'),
                 'useQuery',
@@ -203,13 +211,10 @@ describe('knowledgeService queries', () => {
                 wrapper,
             })
 
-            // Initial state should be loading
             expect(result.current.isLoading).toBe(true)
 
-            // Wait for the query to complete
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-            // Verify API was called with correct params
             expect(
                 mockClient.getEarliestExecutionFeedback,
             ).toHaveBeenCalledWith(
@@ -221,12 +226,10 @@ describe('knowledgeService queries', () => {
                 },
             )
 
-            // Verify data is correct
             expect(result.current.data).toEqual(mockResponse.data)
         })
 
         it('should use correct stale and cache times', async () => {
-            // We need to spy on useQuery's options directly
             const useQuerySpy = jest.spyOn(
                 require('@tanstack/react-query'),
                 'useQuery',
@@ -279,6 +282,125 @@ describe('knowledgeService queries', () => {
             expect(useQuerySpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     queryKey: feedbackDefinitionKeys.earliestExecution(),
+                }),
+            )
+        })
+    })
+
+    describe('useGetMessageAiReasoning', () => {
+        const params: Paths.FindAiReasoningAiReasoning.QueryParameters = {
+            objectType: 'TICKET',
+            objectId: 'ticket-123',
+            messageId: 'message-123',
+        }
+
+        const mockResponse = {
+            data: {
+                executionId: 'exec-123',
+                storeConfiguration: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                },
+                resources: [
+                    {
+                        resourceId: 'resource-1',
+                        resourceType: 'ARTICLE',
+                        resourceTitle: 'Test Article',
+                        resourceSetId: '1',
+                    },
+                ],
+                reasoning: {
+                    outcome: 'Test reasoning outcome',
+                    response: 'Test reasoning response',
+                    task: 'Test reasoning task',
+                },
+            },
+        }
+
+        beforeEach(() => {
+            mockClient.findAiReasoningAiReasoning.mockResolvedValue(
+                mockResponse,
+            )
+        })
+
+        it('should call API with correct parameters', async () => {
+            const { result } = renderHook(
+                () => useGetMessageAiReasoning(params),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(mockClient.findAiReasoningAiReasoning).toHaveBeenCalledWith(
+                params,
+                {
+                    paramsSerializer: {
+                        indexes: false,
+                    },
+                },
+            )
+
+            expect(result.current.data).toEqual(mockResponse.data)
+        })
+
+        it('should use correct stale and cache times', async () => {
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(() => useGetMessageAiReasoning(params), { wrapper })
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    staleTime: STALE_TIME_MS,
+                    cacheTime: CACHE_TIME_MS,
+                }),
+            )
+        })
+
+        it('should allow overriding query options', async () => {
+            const customStaleTime = 5000
+            const customRetry = false
+
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(
+                () =>
+                    useGetMessageAiReasoning(params, {
+                        staleTime: customStaleTime,
+                        retry: customRetry,
+                    }),
+                { wrapper },
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    staleTime: customStaleTime,
+                    retry: customRetry,
+                }),
+            )
+        })
+
+        it('should use correct query key', async () => {
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(() => useGetMessageAiReasoning(params), { wrapper })
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    queryKey:
+                        feedbackDefinitionKeys.getMessageAiReasoning(params),
                 }),
             )
         })

@@ -1,12 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
+import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import {
+    ReasoningResponseType,
+    useGetMessageAiReasoning,
+} from 'models/knowledgeService/queries'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -15,14 +21,12 @@ import { mapToKnowledgeSourceType } from 'pages/tickets/detail/components/AIAgen
 import { getTicketState } from 'state/ticket/selectors'
 import { changeActiveTab, getActiveTab } from 'state/ui/ticketAIAgentFeedback'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './AiAgentReasoning.less'
 
 type AiAgentReasoningState = 'loading' | 'collapsed' | 'expanded' | 'error'
-
 type AiAgentReasoningProps = {
-    messageId?: number
+    messageId: number
 }
 
 export const parseReasoningResources = (
@@ -94,10 +98,7 @@ export const parseReasoningResources = (
         )
 }
 
-export const AiAgentReasoning = ({
-    // eslint-disable-next-line no-unused-vars
-    messageId,
-}: AiAgentReasoningProps) => {
+export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
     const [state, setState] = useState<AiAgentReasoningState>('collapsed')
     const [isRetriable] = useState(true)
 
@@ -107,154 +108,171 @@ export const AiAgentReasoning = ({
     const activeTab = useAppSelector(getActiveTab)
     const dispatch = useAppDispatch()
 
-    const mockReasoningContent = `Acknowledged the customer's confusion.
-            Indicated that the AI Agent is working to clarify the information.
-            Full details
-
-            Sales
-
-            The customer is in the CustomerInterestStage.READY_TO_BUY because they have added the 'Cheirosa 68 Beija Flor™ Perfume Mist' to their cart and are now asking questions about it [6715103903846].
-            The next step is to clarify the previous product suggestion message in simple, clear language, explaining that the agent was recommending complementary perfume mists to pair with the 'Cheirosa 68 Beija Flor™ Perfume Mist'.
-            The agent recommended 'Flor Mística Perfume Mist' [7446567059558], 'Água Mística Perfume Mist' [7446568140902], and 'Cheirosa 48 Perfume Mist' [7187838271590] because the customer has shown interest in the 'Cheirosa 68 Beija Flor™ Perfume Mist' [6715103903846], and these products are complementary perfume mists that pair well with it.
-            Support
-
-            The agent provided details about Cheirosa 68, including its inspiration, scent notes, and sizes, drawing from product details and knowledge about the fragrance [6715103903846, 790565, 1664446]. The agent also suggested related scents like Flor Mística and Cheirosa 48 [7446567059558, 7187838271590].
-
-            Outcome
-
-            The AI Agent is waiting for the customer to respond to the clarification, so the outcome is AIAgentDecisionOutcome.WAIT_FOR_CUSTOMER_RESPONSE.
-            
-            Test resource embeddings {{ARTICLE::16::13608}} {{GUIDANCE::26665::1045245}} {{ACTION::01J7KWHHMDY3H5S174D89VG7S3}} {{MACRO::45::67890}} {{FILE_EXTERNAL_SNIPPET::78::12345}} {{EXTERNAL_SNIPPET::89::54321}} {{ORDER::99::98765::#98765}}`
-
-    const sanitizedReasoningContent = useMemo(
-        () => sanitizeHtmlDefault(mockReasoningContent),
-        [mockReasoningContent],
-    )
-
-    const reasoningResources = useMemo(
-        () => parseReasoningResources(sanitizedReasoningContent),
-        [sanitizedReasoningContent],
-    )
-
-    const shopName = 'artemisathletix'
-    const shopType = 'shopify'
-
-    // eslint-disable-next-line no-unused-vars
-    const { data } = useGetResourcesReasoningMetadata({
-        queriesEnabled: state !== 'collapsed',
-        resources: reasoningResources.filter(
-            (resource): resource is NonNullable<typeof resource> =>
-                resource !== null,
-        ),
-        ticketId,
-        storeConfiguration: {
-            storeName: shopName,
-            shopType,
-        } as any,
-    })
-
-    const mockData = {
-        isLoading: false,
-        data: [
-            // ARTICLE::16::13608
+    const { data: messageAiReasoning, refetch: refetchMessageAiReasoning } =
+        useGetMessageAiReasoning(
             {
-                title: 'Cheirosa 68 Beija Flor™ Perfume Mist - Product Guide',
-                content:
-                    'Complete guide to Cheirosa 68 Beija Flor™ Perfume Mist including scent notes, inspiration, and pairing recommendations. This fragrance combines floral and fruity elements with notes of jasmine, pink dragonfruit, and sheer vanilla.',
-                url: 'https://artemisathletix.gorgias.help/en-us/articles/13608-cheirosa-68-beija-flor-perfume-mist-guide',
+                objectId: ticketId.toString(),
+                objectType: 'TICKET',
+                messageId: messageId.toString(),
             },
-            // GUIDANCE::26665::1045245
             {
-                title: 'Sales Guidance: Perfume Mist Recommendations',
-                content:
-                    'Guidelines for recommending complementary perfume mists based on customer preferences. Focus on scent profiles, seasonal appropriateness, and cross-selling opportunities for fragrance collections.',
-                url: '/app/aiagent/artemisathletix/guidance/1045245/edit',
+                enabled: state !== 'collapsed' && !!messageId,
             },
-            // ACTION::01J7KWHHMDY3H5S174D89VG7S3
-            {
-                title: 'Suggest Complementary Products',
-                content: 'Suggest Complementary Products',
-                url: '/app/aiagent/artemisathletix/actions/01J7KWHHMDY3H5S174D89VG7S3/edit',
-            },
-            // MACRO::45::67890
-            {
-                title: 'Customer Confusion Response Macro',
-                content:
-                    'Standard macro for responding to customer confusion about product recommendations.',
-                url: '/app/macros/67890/edit',
-            },
-            // FILE_EXTERNAL_SNIPPET::78::12345
-            {
-                title: 'Product Specification Document',
-                content:
-                    'External file containing detailed product specifications and technical data.',
-                url: '/app/files/external/12345/view',
-            },
-            // EXTERNAL_SNIPPET::89::54321
-            {
-                title: 'Fragrance Pairing Guide - External Link',
-                content:
-                    'External Link content about fragrance layering and pairing recommendations.',
-                url: 'https://example-beauty-site.com/fragrance-pairing-guide',
-            },
-            // ORDER::99::98765
-            {
-                title: 'Order #98765 - Previous Purchase Data',
-                content:
-                    "Customer's previous order containing Cheirosa fragrance products for context.",
-                url: '/app/orders/98765/details',
-            },
-        ],
-    }
+        )
 
-    const renderContentWithIcons = useMemo(() => {
-        const resourceMatches =
-            sanitizedReasoningContent.match(/\{\{[^}]+\}\}/g) || []
+    const { reasoningContent, reasoningResources } = useMemo(() => {
+        if (messageAiReasoning?.reasoning) {
+            const outcomeReasoning = messageAiReasoning.reasoning.find(
+                (reasoning) =>
+                    reasoning.responseType === ReasoningResponseType.OUTCOME,
+            )
+            const responseReasoning = messageAiReasoning.reasoning.find(
+                (reasoning) =>
+                    reasoning.responseType === ReasoningResponseType.RESPONSE,
+            )
+            const fullDetailsReasoning = messageAiReasoning.reasoning.filter(
+                (reasoning) =>
+                    reasoning.responseType === ReasoningResponseType.TASK,
+            )
 
-        if (resourceMatches.length === 0) {
-            return sanitizedReasoningContent
-        }
-
-        const parts = sanitizedReasoningContent.split(/\{\{[^}]+\}\}/)
-        const elements: (string | React.ReactElement)[] = []
-
-        parts.forEach((part, index) => {
-            elements.push(part)
-            if (index < resourceMatches.length) {
-                const resource = reasoningResources[index]
-                const resourceData = mockData.data[index]
-                if (resource && resourceData) {
-                    elements.push(
-                        <KnowledgeSourcePopover
-                            id={resource.resourceId}
-                            key={`resource-${index}`}
-                            knowledgeResourceType={resource.resourceType}
-                            url={resourceData.url}
-                            title={resourceData.title}
-                            content={resourceData.content}
-                            shopName={shopName}
-                            shopType={shopType}
-                        >
-                            {(ref, eventHandlers) => (
-                                <span ref={ref} {...eventHandlers}>
-                                    <KnowledgeSourceIcon
-                                        type={mapToKnowledgeSourceType(
-                                            resource.resourceType,
-                                        )}
-                                        badgeIconClassname={
-                                            css.knowledgeSourceIcon
-                                        }
-                                    />
-                                </span>
-                            )}
-                        </KnowledgeSourcePopover>,
-                    )
+            if (
+                !outcomeReasoning ||
+                !responseReasoning ||
+                !fullDetailsReasoning.length
+            ) {
+                return {
+                    reasoningContent: '',
+                    reasoningResources: [],
                 }
             }
+
+            const content = `**Reasoning:**\n\n${outcomeReasoning?.value}\n\n&nbsp;\n\n**Full details:**\n\n${fullDetailsReasoning?.map((resource) => resource.value.replace(/\\n/g, '\n\n')).join('\n\n')}\n\n&nbsp;\n\n**Outcome:**\n\n ${responseReasoning?.value}`
+
+            return {
+                reasoningContent: content,
+                reasoningResources: parseReasoningResources(content),
+            }
+        }
+        return {
+            reasoningContent: null,
+            reasoningResources: [],
+        }
+    }, [messageAiReasoning?.reasoning])
+
+    const { data, isLoading: isResourcesReasoningMetadataLoading } =
+        useGetResourcesReasoningMetadata({
+            queriesEnabled: state !== 'collapsed',
+            resources: reasoningResources.filter(
+                (resource): resource is NonNullable<typeof resource> =>
+                    resource !== null,
+            ),
+            ticketId,
+            storeConfiguration: messageAiReasoning?.storeConfiguration,
         })
 
-        return elements
-    }, [sanitizedReasoningContent, reasoningResources, mockData.data])
+    useEffect(() => {
+        if (reasoningContent === null) return
+        if (state === 'loading' && !isResourcesReasoningMetadataLoading) {
+            if (reasoningContent) {
+                setState('expanded')
+            } else {
+                setState('error')
+            }
+        }
+    }, [reasoningContent, state, isResourcesReasoningMetadataLoading])
+
+    const renderContentWithIcons = useMemo(() => {
+        if (reasoningContent === null) return null
+        const resourceMatches = reasoningContent.match(/\{\{[^}]+\}\}/g) || []
+
+        if (resourceMatches.length === 0) {
+            return (
+                <div className={css.contentWithIcons}>
+                    <ReactMarkdown>{reasoningContent}</ReactMarkdown>
+                </div>
+            )
+        }
+
+        let processedContent = reasoningContent
+        resourceMatches.forEach((match, index) => {
+            processedContent = processedContent.replace(
+                match,
+                `<kbd id="${index}" />`,
+            )
+        })
+
+        return (
+            <div className={css.contentWithIcons}>
+                <ReactMarkdown
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                        p: ({ children }) => (
+                            <div style={{ marginBottom: '4px' }}>
+                                {children}
+                            </div>
+                        ),
+                        kbd: ({ id }: { id?: string }) => {
+                            const index = parseInt(id as string)
+                            const resource = reasoningResources[index]
+                            const resourceData = data[index]
+
+                            if (
+                                !resource ||
+                                !resourceData ||
+                                'isDeleted' in resourceData
+                            ) {
+                                return null
+                            }
+
+                            return (
+                                <span key={`resource-${index}`}>
+                                    <KnowledgeSourcePopover
+                                        id={resource.resourceId}
+                                        knowledgeResourceType={
+                                            resource.resourceType
+                                        }
+                                        url={resourceData.url ?? ''}
+                                        title={resourceData.title}
+                                        content={resourceData.content}
+                                        shopName={
+                                            messageAiReasoning
+                                                ?.storeConfiguration
+                                                ?.shopName ?? ''
+                                        }
+                                        shopType={
+                                            messageAiReasoning
+                                                ?.storeConfiguration
+                                                ?.shopType ?? ''
+                                        }
+                                    >
+                                        {(ref, eventHandlers) => (
+                                            <span ref={ref} {...eventHandlers}>
+                                                <KnowledgeSourceIcon
+                                                    type={mapToKnowledgeSourceType(
+                                                        resource.resourceType,
+                                                    )}
+                                                    badgeIconClassname={
+                                                        css.knowledgeSourceIcon
+                                                    }
+                                                />
+                                            </span>
+                                        )}
+                                    </KnowledgeSourcePopover>
+                                </span>
+                            )
+                        },
+                    }}
+                >
+                    {processedContent}
+                </ReactMarkdown>
+            </div>
+        )
+    }, [
+        reasoningContent,
+        reasoningResources,
+        data,
+        messageAiReasoning?.storeConfiguration,
+    ])
 
     const handleToggleExpansion = useCallback(() => {
         if (state === 'collapsed') {
@@ -266,10 +284,8 @@ export const AiAgentReasoning = ({
 
     const handleTryAgain = useCallback(() => {
         setState('loading')
-        setTimeout(() => {
-            setState('expanded')
-        }, 3000)
-    }, [])
+        refetchMessageAiReasoning()
+    }, [refetchMessageAiReasoning])
 
     const handleGiveFeedback = () => {
         dispatch(
@@ -281,15 +297,6 @@ export const AiAgentReasoning = ({
     const isError = state === 'error'
     const isExpanded = state === 'expanded'
     const isLoaded = state === 'collapsed' || state === 'expanded'
-
-    useEffect(() => {
-        if (isLoading) {
-            const timer = setTimeout(() => {
-                setState('expanded')
-            }, 2000)
-            return () => clearTimeout(timer)
-        }
-    }, [isLoading])
 
     const renderTitle = () => {
         if (isLoading) {
@@ -363,9 +370,7 @@ export const AiAgentReasoning = ({
                     [css.loading]: isLoading,
                 })}
             >
-                <div style={{ whiteSpace: 'pre-line' }}>
-                    {renderContentWithIcons}
-                </div>
+                {renderContentWithIcons}
             </div>
         )
     }
