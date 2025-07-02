@@ -3,8 +3,8 @@
 :local {
     .allDevicesSwitch {
         color: var(--neutral-grey-6);
-        font-size: 14px;
-        font-weight: @body-regular-font-weight;
+        font-size: 16px;
+        font-weight: 600;
     }
 
     .allDevicesSwitchDescription {
@@ -12,11 +12,6 @@
         font-size: 14px;
         font-weight: @body-regular-font-weight;
         margin-bottom: var(--layout-spacing-xs);
-    }
-
-    .translateInputFields {
-        margin-left: var(--layout-spacing-s);
-        margin-bottom: var(--layout-spacing-s);
     }
 
     .drawerToggleRow {
@@ -34,14 +29,22 @@
         background: var(--neutral-grey-0);
 
         padding: 24px;
-        gap: 46px;
+        display: flex;
+        flex-direction: column;
     }
 
     .toggleContainer {
         display: flex;
-        gap: var(--layout-spacing-s);
-        justify-content: flex-end;
-        flex-grow: 1;
+        justify-content: space-between;
+        width: 100%;
+        padding-bottom: var(--layout-spacing-xs);
+    }
+
+    .switchDescription {
+        color: var(--neutral-grey-5);
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .drawerFooter {
@@ -52,12 +55,30 @@
         display: flex;
         width: 100%;
         justify-content: flex-start;
-        gap: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xs);
+        padding-bottom: var(--layout-spacing-xs);
+    }
+
+    .cardContent {
+        flex-grow: 1;
     }
 
     .setUpButton {
         display: flex;
         justify-content: flex-end;
         flex-grow: 1;
+    }
+
+    .placeholderTextDescription {
+        color: var(--neutral-grey-5);
+        font-size: 14px;
+        font-weight: 400;
+        padding-top: var(--layout-spacing-xs);
+    }
+
+    .translateInputFields {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
     }
 }

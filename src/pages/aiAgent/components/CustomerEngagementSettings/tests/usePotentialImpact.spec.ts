@@ -94,7 +94,7 @@ describe('usePotentialImpact', () => {
         )
 
         expect(result.current).toEqual(
-            'Unlock up to $250 of yearly additional GMV.',
+            'Unlock up to $250 of yearly additional GMV',
         )
     })
 
@@ -104,7 +104,7 @@ describe('usePotentialImpact', () => {
         )
 
         expect(result.current).toEqual(
-            'Unlock up to $819K of yearly additional GMV.',
+            'Unlock up to $819K of yearly additional GMV',
         )
     })
 })

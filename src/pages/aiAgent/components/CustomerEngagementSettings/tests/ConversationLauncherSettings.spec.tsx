@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -210,9 +210,7 @@ describe('ConversationLauncherSettings', () => {
 
         fireEvent.click(screen.getByText('Set up'))
 
-        expect(
-            screen.getByText('Enable Ask anything input on all devices'),
-        ).toBeVisible()
+        expect(screen.getByText('Enable Ask anything input')).toBeVisible()
     })
 
     it('opens drawer when toggle is clicked and feature is disabled', () => {
@@ -250,9 +248,7 @@ describe('ConversationLauncherSettings', () => {
 
         fireEvent.click(screen.getByRole('switch'))
 
-        expect(
-            screen.getByText('Enable Ask anything input on all devices'),
-        ).toBeVisible()
+        expect(screen.getByText('Enable Ask anything input')).toBeVisible()
     })
 
     it('calls onAdvancedSettingsSave and closes advanced settings when updating Advanced settings', () => {
@@ -271,13 +267,307 @@ describe('ConversationLauncherSettings', () => {
         )
 
         fireEvent.click(screen.getByText('Set up'))
-        fireEvent.click(
-            screen.getByText('Enable Ask anything input on all devices'),
-        )
+
+        // Wait for drawer to open and click the switch
+        const drawer = screen.getByRole('dialog', {
+            name: 'Ask anything input',
+        })
+        const toggleSwitch = within(drawer).getByRole('switch')
+        fireEvent.click(toggleSwitch)
 
         fireEvent.click(screen.getByText('Update'))
 
         expect(mockOnAdvancedSettingsSave).toHaveBeenCalled()
+    })
+
+    it('shows the settings gear icon when ask anything input is setup', () => {
+        // Mock with configured floatingChatInputConfiguration to show toggle
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...mockStoreConfigurationWithOneChat,
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                    isDesktopOnly: false,
+                    needHelpText: 'Need help?',
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        render(
+            <Wrapper
+                defaultValues={{
+                    isAskAnythingInputEnabled: true,
+                    isFloatingInputDesktopOnly: false,
+                }}
+            >
+                <ConversationLauncherSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    primaryLanguage="en-US"
+                    translations={mockTranslations}
+                />
+            </Wrapper>,
+        )
+
+        expect(
+            screen.getByRole('button', { name: 'Open settings' }),
+        ).toBeInTheDocument()
+    })
+
+    it('opens drawer when settings icon is clicked', () => {
+        // Mock with configured floatingChatInputConfiguration to show toggle
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...mockStoreConfigurationWithOneChat,
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                    isDesktopOnly: false,
+                    needHelpText: 'Need help?',
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        render(
+            <Wrapper
+                defaultValues={{
+                    isAskAnythingInputEnabled: true,
+                    isFloatingInputDesktopOnly: false,
+                }}
+            >
+                <ConversationLauncherSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    primaryLanguage="en-US"
+                    translations={mockTranslations}
+                />
+            </Wrapper>,
+        )
+
+        const settingsButton = screen.getByRole('button', {
+            name: 'Open settings',
+        })
+        fireEvent.click(settingsButton)
+
+        expect(screen.getByText('Enable Ask anything input')).toBeVisible()
+    })
+
+    it('does not show desktop only badge when feature is enabled for all devices', () => {
+        // Mock with configured floatingChatInputConfiguration to show toggle
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...mockStoreConfigurationWithOneChat,
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                    isDesktopOnly: false,
+                    needHelpText: 'Need help?',
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        render(
+            <Wrapper
+                defaultValues={{
+                    isAskAnythingInputEnabled: true,
+                    isFloatingInputDesktopOnly: false,
+                }}
+            >
+                <ConversationLauncherSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    primaryLanguage="en-US"
+                    translations={mockTranslations}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.queryByText('Desktop only')).not.toBeInTheDocument()
+    })
+
+    it('shows only desktop badge when feature is desktop only', () => {
+        // Mock with configured floatingChatInputConfiguration to show toggle
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...mockStoreConfigurationWithOneChat,
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                    isDesktopOnly: true,
+                    needHelpText: 'Need help?',
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        render(
+            <Wrapper
+                defaultValues={{
+                    isAskAnythingInputEnabled: true,
+                    isFloatingInputDesktopOnly: true,
+                }}
+            >
+                <ConversationLauncherSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    primaryLanguage="en-US"
+                    translations={mockTranslations}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.queryByText('Mobile')).not.toBeInTheDocument()
+        expect(screen.getByText('Desktop only')).toBeInTheDocument()
+    })
+
+    it('disables the feature when toggle is clicked while enabled', () => {
+        const mockSetValue = jest.fn()
+
+        // Mock with configured floatingChatInputConfiguration to show toggle
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...mockStoreConfigurationWithOneChat,
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                    isDesktopOnly: false,
+                    needHelpText: 'Need help?',
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        const MockFormWrapper = ({ children }: { children: ReactNode }) => {
+            const methods = useForm<FormValues>({
+                defaultValues: {
+                    isAskAnythingInputEnabled: true,
+                    isFloatingInputDesktopOnly: false,
+                },
+            })
+            methods.setValue = mockSetValue
+            return (
+                <Provider store={store}>
+                    <MemoryRouter>
+                        <FormProvider {...methods}>{children}</FormProvider>
+                    </MemoryRouter>
+                </Provider>
+            )
+        }
+
+        render(
+            <MockFormWrapper>
+                <ConversationLauncherSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    primaryLanguage="en-US"
+                    translations={mockTranslations}
+                />
+            </MockFormWrapper>,
+        )
+
+        const toggle = screen.getByRole('switch')
+        fireEvent.click(toggle)
+
+        expect(mockSetValue).toHaveBeenCalledWith(
+            'isAskAnythingInputEnabled',
+            false,
+            {
+                shouldDirty: true,
+            },
+        )
+        expect(mockSetValue).toHaveBeenCalledWith(
+            'isFloatingInputDesktopOnly',
+            false,
+            {
+                shouldDirty: true,
+            },
+        )
+    })
+
+    it('shows Track Performance link when feature is enabled', () => {
+        // Mock with configured floatingChatInputConfiguration with isEnabled true
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...mockStoreConfigurationWithOneChat,
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                    isDesktopOnly: false,
+                    needHelpText: 'Need help?',
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        render(
+            <Wrapper
+                defaultValues={{
+                    isAskAnythingInputEnabled: true,
+                    isFloatingInputDesktopOnly: false,
+                }}
+            >
+                <ConversationLauncherSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    primaryLanguage="en-US"
+                    translations={mockTranslations}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('Track Performance')).toBeInTheDocument()
+    })
+
+    it('does not show Track Performance link when feature is disabled', () => {
+        // Mock with configured floatingChatInputConfiguration with isEnabled false
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...mockStoreConfigurationWithOneChat,
+                floatingChatInputConfiguration: {
+                    isEnabled: false,
+                    isDesktopOnly: false,
+                    needHelpText: 'Need help?',
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        render(
+            <Wrapper
+                defaultValues={{
+                    isAskAnythingInputEnabled: false,
+                    isFloatingInputDesktopOnly: false,
+                }}
+            >
+                <ConversationLauncherSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    primaryLanguage="en-US"
+                    translations={mockTranslations}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.queryByText('Track Performance')).not.toBeInTheDocument()
     })
 
     describe('ConversationLauncherAdvancedSettings', () => {
@@ -326,12 +616,13 @@ describe('ConversationLauncherSettings', () => {
             )
 
             expect(
-                screen.getByText('Enable Ask anything input on all devices'),
+                screen.getByText('Enable Ask anything input'),
             ).toBeInTheDocument()
+            expect(screen.getByText('Hide on mobile')).toBeInTheDocument()
+            expect(screen.getAllByRole('switch')).toHaveLength(1)
             expect(
-                screen.getByText('Enable on Desktop only'),
+                screen.getByRole('checkbox', { name: 'Hide on mobile' }),
             ).toBeInTheDocument()
-            expect(screen.getAllByRole('switch')).toHaveLength(2)
             expect(
                 screen.getByRole('button', { name: 'Update' }),
             ).toHaveAttribute('aria-disabled', 'true')
@@ -362,7 +653,7 @@ describe('ConversationLauncherSettings', () => {
             )
 
             expect(
-                screen.queryByText('Customize placeholder'),
+                screen.queryByText('Customize placeholder text'),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByPlaceholderText('Enter custom value'),
@@ -395,7 +686,7 @@ describe('ConversationLauncherSettings', () => {
             )
 
             expect(
-                screen.getByText('Customize placeholder'),
+                screen.getByText('Customize placeholder text'),
             ).toBeInTheDocument()
             expect(
                 screen.getByPlaceholderText('Enter custom value'),
@@ -426,8 +717,7 @@ describe('ConversationLauncherSettings', () => {
                 </Wrapper>,
             )
 
-            const toggles = screen.getAllByRole('switch')
-            const mainToggle = toggles[0]
+            const mainToggle = screen.getByRole('switch')
             fireEvent.click(mainToggle)
 
             expect(
@@ -435,7 +725,7 @@ describe('ConversationLauncherSettings', () => {
             ).not.toBeDisabled()
         })
 
-        it('enables Update button when desktop only toggle changes', () => {
+        it('enables Update button when hide on mobile checkbox changes', () => {
             render(
                 <Wrapper
                     defaultValues={{
@@ -453,38 +743,14 @@ describe('ConversationLauncherSettings', () => {
                 </Wrapper>,
             )
 
-            const toggles = screen.getAllByRole('switch')
-            const desktopToggle = toggles[1]
-            fireEvent.click(desktopToggle)
+            const hideOnMobileCheckbox = screen.getByRole('checkbox', {
+                name: 'Hide on mobile',
+            })
+            fireEvent.click(hideOnMobileCheckbox)
 
             expect(
                 screen.getByRole('button', { name: 'Update' }),
             ).not.toBeDisabled()
-        })
-
-        it('disables desktop toggle when main toggle is on', () => {
-            render(
-                <Wrapper
-                    defaultValues={{
-                        isFloatingInputDesktopOnly: false,
-                        isAskAnythingInputEnabled: true,
-                        isAskAnythingInputSetUp: true,
-                    }}
-                >
-                    <ConversationLauncherAdvancedSettings
-                        isOpen
-                        onClose={mockOnClose}
-                        onSave={mockOnSave}
-                        primaryLanguage="en-US"
-                        translations={mockTranslations}
-                    />
-                </Wrapper>,
-            )
-
-            const toggles = screen.getAllByRole('switch')
-            const desktopToggle = toggles[1]
-
-            expect(desktopToggle).toHaveClass('disabled')
         })
 
         it('enables Update button when placeholder is different than initial value', async () => {
@@ -536,8 +802,7 @@ describe('ConversationLauncherSettings', () => {
                 </Wrapper>,
             )
 
-            const toggles = screen.getAllByRole('switch')
-            const mainToggle = toggles[0]
+            const mainToggle = screen.getByRole('switch')
             fireEvent.click(mainToggle)
             fireEvent.click(screen.getByRole('button', { name: 'Update' }))
 

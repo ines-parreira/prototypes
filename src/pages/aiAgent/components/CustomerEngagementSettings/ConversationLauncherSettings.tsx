@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import { Button, Label } from '@gorgias/merchant-ui-kit'
+import { Button, CheckBoxField, Label } from '@gorgias/merchant-ui-kit'
 
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,7 +15,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { Drawer } from 'pages/common/components/Drawer'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
-import GorgiasTranslateInputField from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateInputField'
+import TextArea from 'pages/common/forms/TextArea'
 import translationsAvailableKeys from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
 import { Translations } from 'rest_api/gorgias_chat_protected_api/types'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
@@ -74,9 +74,9 @@ export const ConversationLauncherAdvancedSettings = ({
     useEffect(() => {
         if (isOpen) {
             setLocalValue(() => ({
-                isAskAnythingInputEnabled: isAskAnythingInputEnabled,
-                needHelpText: needHelpText,
-                isFloatingInputDesktopOnly: isFloatingInputDesktopOnly,
+                isAskAnythingInputEnabled,
+                needHelpText,
+                isFloatingInputDesktopOnly,
             }))
         }
     }, [
@@ -97,26 +97,18 @@ export const ConversationLauncherAdvancedSettings = ({
 
         setValue(
             'isAskAnythingInputEnabled',
-            localValue.isFloatingInputDesktopOnly ||
-                localValue.isAskAnythingInputEnabled,
+            localValue.isAskAnythingInputEnabled,
             {
                 shouldDirty: true,
             },
         )
 
-        setValue('needHelpText', localValue.needHelpText, {
+        setValue('needHelpText', localValue.needHelpText?.trim(), {
             shouldDirty: true,
         })
 
         onSave()
     }
-
-    const saveKeyValue = useCallback((key: string, value: string) => {
-        setLocalValue((prev) => ({
-            ...prev,
-            needHelpText: value,
-        }))
-    }, [])
 
     return (
         <Drawer
@@ -128,7 +120,7 @@ export const ConversationLauncherAdvancedSettings = ({
             onBackdropClick={onClose}
         >
             <Drawer.Header>
-                Ask anything input
+                Ask Anything Input
                 <Drawer.HeaderActions
                     onClose={onClose}
                     closeButtonId="close-drawer"
@@ -136,86 +128,104 @@ export const ConversationLauncherAdvancedSettings = ({
             </Drawer.Header>
 
             <Drawer.Content>
-                {storeHasOnlyOneChatIntegration && (
-                    <>
-                        <Label className={css.sidebarToggleRow}>
-                            <div className={css.desktopSwitch}>
-                                Customize placeholder
-                                <p className={css.desktopSwitchDescription}>
-                                    You can also customize the placeholder of
-                                    the Ask anything input for your other chat
-                                    language in the{' '}
-                                    <Link
-                                        to={`/app/settings/channels/gorgias_chat/${gorgiasChatIntegrations?.id}/languages/${primaryLanguage}`}
-                                    >
-                                        chat settings
-                                    </Link>
-                                    .
-                                </p>
-                            </div>
-                        </Label>
-                        <div className={css.translateInputFields}>
-                            <GorgiasTranslateInputField
-                                maxLength={
-                                    translationsAvailableKeys.general[
-                                        needHelpKey
-                                    ].maxLength
-                                }
-                                keyName={needHelpKey}
-                                value={localValue.needHelpText}
-                                defaultValue={get(translations, needHelpKey)}
-                                saveValue={saveKeyValue}
-                                isRequired={false}
-                            />
-                        </div>
-                    </>
-                )}
-                <Label className={css.drawerToggleRow}>
-                    <div className={css.allDevicesSwitch}>
-                        Enable Ask anything input on all devices
-                        <p className={css.allDevicesSwitchDescription}>
-                            Drives more sales by showing an always-on input
-                            field that encourages
-                            <br />
-                            shoppers to start a conversation.
-                        </p>
-                    </div>
-                    <NewToggleButton
-                        checked={localValue.isAskAnythingInputEnabled}
-                        onChange={() =>
-                            setLocalValue((prev) => ({
-                                ...prev,
-                                isAskAnythingInputEnabled:
-                                    !prev.isAskAnythingInputEnabled,
-                            }))
-                        }
-                        stopPropagation
-                        isDisabled={localValue.isFloatingInputDesktopOnly}
-                    />
-                </Label>
-
                 <Label
                     className={classNames(
                         css.drawerToggleRow,
                         css.desktopToggleRow,
                     )}
                 >
-                    <div className={css.allDevicesSwitch}>
-                        Enable on Desktop only
+                    <div className={css.toggleContainer}>
+                        <div className={css.allDevicesSwitch}>
+                            Enable Ask anything input
+                        </div>
+                        <NewToggleButton
+                            checked={localValue.isAskAnythingInputEnabled}
+                            onChange={() =>
+                                setLocalValue((prev) => ({
+                                    ...prev,
+                                    isAskAnythingInputEnabled:
+                                        !prev.isAskAnythingInputEnabled,
+                                    isFloatingInputDesktopOnly:
+                                        prev.isAskAnythingInputEnabled
+                                            ? false
+                                            : prev.isFloatingInputDesktopOnly,
+                                }))
+                            }
+                            stopPropagation
+                        />
                     </div>
-                    <NewToggleButton
-                        checked={localValue.isFloatingInputDesktopOnly}
+                    <span className={css.switchDescription}>
+                        Drive more sales by showing an always-on input field
+                        that encourages shoppers to start a conversation.
+                    </span>
+                    <CheckBoxField
+                        label="Hide on mobile"
+                        value={localValue.isFloatingInputDesktopOnly}
                         onChange={() =>
                             setLocalValue((prev) => ({
                                 ...prev,
                                 isFloatingInputDesktopOnly:
                                     !prev.isFloatingInputDesktopOnly,
+                                isAskAnythingInputEnabled:
+                                    !prev.isFloatingInputDesktopOnly
+                                        ? true
+                                        : prev.isAskAnythingInputEnabled,
                             }))
                         }
-                        isDisabled={localValue.isAskAnythingInputEnabled}
-                        stopPropagation
                     />
                 </Label>
+                {storeHasOnlyOneChatIntegration && (
+                    <>
+                        <Label
+                            className={classNames(
+                                css.drawerToggleRow,
+                                css.desktopToggleRow,
+                            )}
+                        >
+                            <div className={css.allDevicesSwitch}>
+                                Customize placeholder text
+                            </div>
+                            <p className={css.placeholderTextDescription}>
+                                Choose what text customers see in the Ask
+                                anything input. You can update the language in{' '}
+                                <Link
+                                    to={`/app/settings/channels/gorgias_chat/${gorgiasChatIntegrations?.id}/languages/${primaryLanguage}`}
+                                >
+                                    chat settings
+                                </Link>
+                                .
+                            </p>
+                            <div className={css.translateInputFields}>
+                                <Label>Placeholder text</Label>
+                                <TextArea
+                                    aria-label={get(translations, needHelpKey)}
+                                    defaultValue={get(
+                                        translations,
+                                        needHelpKey,
+                                    )}
+                                    maxLength={
+                                        translationsAvailableKeys.general[
+                                            needHelpKey
+                                        ].maxLength
+                                    }
+                                    onChange={(event) => {
+                                        setLocalValue((prev) => ({
+                                            ...prev,
+                                            needHelpText: event,
+                                        }))
+                                    }}
+                                    placeholder={'Enter custom value'}
+                                    key={needHelpKey}
+                                    autoFocus={false}
+                                    rows={1}
+                                    autoRowHeight
+                                    isRequired={false}
+                                    value={localValue.needHelpText}
+                                />
+                            </div>
+                        </Label>
+                    </>
+                )}
             </Drawer.Content>
 
             <Drawer.Footer className={css.drawerFooter}>
@@ -311,11 +321,11 @@ export const ConversationLauncherSettings = ({
                     <EngagementSettingsCardImage
                         alt="image showing an example of the Ask anything input"
                         src={assetsUrl(
-                            '/img/ai-agent/ai_agent_floating_input.png',
+                            '/img/ai-agent/ai_agent_floating_input_small.png',
                         )}
                     />
 
-                    <EngagementSettingsCardContent>
+                    <EngagementSettingsCardContent className={css.cardContent}>
                         <div className={css.cardHeader}>
                             <EngagementSettingsCardTitle>
                                 Ask anything input
@@ -328,6 +338,32 @@ export const ConversationLauncherSettings = ({
                                     isLoading={isGmvLoading}
                                     isChecked
                                 />
+                            )}
+
+                            {Object.keys(
+                                storeConfiguration?.floatingChatInputConfiguration ||
+                                    {},
+                            ).length ? (
+                                <EngagementSettingsCardToggle
+                                    isChecked={isAskAnythingInputEnabled}
+                                    onChange={() =>
+                                        isAskAnythingInputEnabled
+                                            ? handleToggle()
+                                            : setSidebarOpen(true)
+                                    }
+                                    onSettingsClick={() => setSidebarOpen(true)}
+                                    isDesktopOnly={isFloatingInputDesktopOnly}
+                                    withBadges
+                                />
+                            ) : (
+                                <div className={css.setUpButton}>
+                                    <Button
+                                        intent="primary"
+                                        onClick={() => setSidebarOpen(true)}
+                                    >
+                                        Set up
+                                    </Button>
+                                </div>
                             )}
                         </div>
 
@@ -343,30 +379,6 @@ export const ConversationLauncherSettings = ({
                             />
                         )}
                     </EngagementSettingsCardContent>
-
-                    {Object.keys(
-                        storeConfiguration?.floatingChatInputConfiguration ||
-                            {},
-                    ).length ? (
-                        <EngagementSettingsCardToggle
-                            isChecked={isAskAnythingInputEnabled}
-                            onChange={() =>
-                                isAskAnythingInputEnabled
-                                    ? handleToggle()
-                                    : setSidebarOpen(true)
-                            }
-                            isDesktopOnly={isFloatingInputDesktopOnly}
-                        />
-                    ) : (
-                        <div className={css.setUpButton}>
-                            <Button
-                                intent="primary"
-                                onClick={() => setSidebarOpen(true)}
-                            >
-                                Set up
-                            </Button>
-                        </div>
-                    )}
                 </EngagementSettingsCardContentWrapper>
             </EngagementSettingsCard>
         </>

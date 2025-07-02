@@ -63,11 +63,11 @@ export const ConversationStartersSettings = ({
                 <EngagementSettingsCardImage
                     alt="image showing an example of the conversation starters"
                     src={assetsUrl(
-                        '/img/ai-agent/ai_agent_conversation_starters.png',
+                        '/img/ai-agent/ai_agent_conversation_starters_small.png',
                     )}
                 />
 
-                <EngagementSettingsCardContent>
+                <EngagementSettingsCardContent className={css.cardContent}>
                     <div className={css.cardHeader}>
                         <EngagementSettingsCardTitle>
                             Suggested product questions
@@ -80,6 +80,12 @@ export const ConversationStartersSettings = ({
                                 isChecked
                             />
                         )}
+
+                        <EngagementSettingsCardToggle
+                            isChecked={isConversationStartersEnabled}
+                            isDisabled={!isEnabled}
+                            onChange={handleToggle}
+                        />
                     </div>
 
                     <EngagementSettingsCardDescription>
@@ -93,12 +99,6 @@ export const ConversationStartersSettings = ({
                         />
                     )}
                 </EngagementSettingsCardContent>
-
-                <EngagementSettingsCardToggle
-                    isChecked={isConversationStartersEnabled}
-                    isDisabled={!isEnabled}
-                    onChange={handleToggle}
-                />
             </EngagementSettingsCardContentWrapper>
         </EngagementSettingsCard>
     )

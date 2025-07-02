@@ -317,10 +317,15 @@ describe('CustomerEngagementSettings', () => {
         click(setupButton)
 
         // Enable floating input
-        const floatingInputToggle = result
-            .getByText('Enable Ask anything input on all devices')
-            .closest('.drawerToggleRow')!
-            .querySelector('[role="switch"]') as HTMLElement
+        // Wait for drawer to open
+        await waitFor(() => {
+            expect(result.getByText('Enable Ask anything input')).toBeVisible()
+        })
+        // Get the switch from within the drawer specifically
+        const drawer = result.getByRole('dialog', {
+            name: 'Ask anything input',
+        })
+        const floatingInputToggle = within(drawer).getByRole('switch')
         click(floatingInputToggle)
 
         // Click update in drawer
@@ -344,11 +349,17 @@ describe('CustomerEngagementSettings', () => {
             const setupButton = getFloatingInputSetupButton(result.container)
             click(setupButton)
 
-            // Enable floating input
-            const floatingInputToggle = result
-                .getByText('Enable Ask anything input on all devices')
-                .closest('.drawerToggleRow')!
-                .querySelector('[role="switch"]') as HTMLElement
+            // Wait for drawer to open and enable floating input
+            await waitFor(() => {
+                expect(
+                    result.getByText('Enable Ask anything input'),
+                ).toBeVisible()
+            })
+            // Get the switch from within the drawer specifically
+            const drawer = result.getByRole('dialog', {
+                name: 'Ask anything input',
+            })
+            const floatingInputToggle = within(drawer).getByRole('switch')
             click(floatingInputToggle)
 
             // Click update in drawer
@@ -386,11 +397,17 @@ describe('CustomerEngagementSettings', () => {
             const setupButton = getFloatingInputSetupButton(result.container)
             click(setupButton)
 
-            // Enable floating input
-            const floatingInputToggle = result
-                .getByText('Enable Ask anything input on all devices')
-                .closest('.drawerToggleRow')!
-                .querySelector('[role="switch"]') as HTMLElement
+            // Wait for drawer to open and enable floating input
+            await waitFor(() => {
+                expect(
+                    result.getByText('Enable Ask anything input'),
+                ).toBeVisible()
+            })
+            // Get the switch from within the drawer specifically
+            const drawer = result.getByRole('dialog', {
+                name: 'Ask anything input',
+            })
+            const floatingInputToggle = within(drawer).getByRole('switch')
             click(floatingInputToggle)
 
             // Click update in drawer
@@ -435,11 +452,17 @@ describe('CustomerEngagementSettings', () => {
             const setupButton = getFloatingInputSetupButton(result.container)
             click(setupButton)
 
-            // Enable floating input
-            const floatingInputToggle = result
-                .getByText('Enable Ask anything input on all devices')
-                .closest('.drawerToggleRow')!
-                .querySelector('[role="switch"]') as HTMLElement
+            // Wait for drawer to open and enable floating input
+            await waitFor(() => {
+                expect(
+                    result.getByText('Enable Ask anything input'),
+                ).toBeVisible()
+            })
+            // Get the switch from within the drawer specifically
+            const drawer = result.getByRole('dialog', {
+                name: 'Ask anything input',
+            })
+            const floatingInputToggle = within(drawer).getByRole('switch')
             click(floatingInputToggle)
 
             // Click update in drawer
@@ -466,11 +489,17 @@ describe('CustomerEngagementSettings', () => {
             const setupButton = getFloatingInputSetupButton(result.container)
             click(setupButton)
 
-            // Enable floating input
-            const floatingInputToggle = result
-                .getByText('Enable Ask anything input on all devices')
-                .closest('.drawerToggleRow')!
-                .querySelector('[role="switch"]') as HTMLElement
+            // Wait for drawer to open and enable floating input
+            await waitFor(() => {
+                expect(
+                    result.getByText('Enable Ask anything input'),
+                ).toBeVisible()
+            })
+            // Get the switch from within the drawer specifically
+            const drawer = result.getByRole('dialog', {
+                name: 'Ask anything input',
+            })
+            const floatingInputToggle = within(drawer).getByRole('switch')
             click(floatingInputToggle)
 
             // Clear the textarea
@@ -541,10 +570,15 @@ describe('CustomerEngagementSettings', () => {
         const setupButton = getFloatingInputSetupButton(result.container)
         click(setupButton)
 
-        const floatingInputToggle = result
-            .getByText('Enable Ask anything input on all devices')
-            .closest('.drawerToggleRow')!
-            .querySelector('[role="switch"]') as HTMLElement
+        // Wait for drawer to open
+        await waitFor(() => {
+            expect(result.getByText('Enable Ask anything input')).toBeVisible()
+        })
+        // Get the switch from within the drawer specifically
+        const drawer = result.getByRole('dialog', {
+            name: 'Ask anything input',
+        })
+        const floatingInputToggle = within(drawer).getByRole('switch')
         click(floatingInputToggle)
 
         const updateButton = result.getByRole('button', { name: 'Update' })
@@ -694,7 +728,7 @@ describe('CustomerEngagementSettings', () => {
                 result.getByRole('dialog', { name: 'Ask anything input' }),
             ).toBeInTheDocument()
             expect(
-                result.getByText('Enable Ask anything input on all devices'),
+                result.getByText('Enable Ask anything input'),
             ).toBeInTheDocument()
         })
 
@@ -745,11 +779,17 @@ describe('CustomerEngagementSettings', () => {
             const setupButton = getFloatingInputSetupButton(result.container)
             click(setupButton)
 
-            // Enable floating input
-            const floatingInputToggle = result
-                .getByText('Enable Ask anything input on all devices')
-                .closest('.drawerToggleRow')!
-                .querySelector('[role="switch"]') as HTMLElement
+            // Wait for drawer to open and enable floating input
+            await waitFor(() => {
+                expect(
+                    result.getByText('Enable Ask anything input'),
+                ).toBeVisible()
+            })
+            // Get the switch from within the drawer specifically
+            const drawer = result.getByRole('dialog', {
+                name: 'Ask anything input',
+            })
+            const floatingInputToggle = within(drawer).getByRole('switch')
             click(floatingInputToggle)
 
             // Click update in drawer
@@ -781,12 +821,11 @@ describe('CustomerEngagementSettings', () => {
             const setupButton = getFloatingInputSetupButton(result.container)
             click(setupButton)
 
-            // Enable desktop-only
-            const desktopOnlyToggle = result
-                .getByText('Enable on Desktop only')
-                .closest('.drawerToggleRow')!
-                .querySelector('[role="switch"]') as HTMLElement
-            click(desktopOnlyToggle)
+            // Enable hide on mobile
+            const hideOnMobileCheckbox = result.getByRole('checkbox', {
+                name: 'Hide on mobile',
+            })
+            click(hideOnMobileCheckbox)
 
             // Click update in drawer
             const updateButton = result.getByRole('button', { name: 'Update' })

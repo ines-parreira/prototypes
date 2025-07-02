@@ -56,11 +56,11 @@ export const TriggerOnSearchSettings = ({
                 <EngagementSettingsCardImage
                     alt="image showing an example of the trigger on search"
                     src={assetsUrl(
-                        '/img/ai-agent/ai_agent_trigger_on_search.png',
+                        '/img/ai-agent/ai_agent_trigger_on_search_small.png',
                     )}
                 />
 
-                <EngagementSettingsCardContent>
+                <EngagementSettingsCardContent className={css.cardContent}>
                     <div className={css.cardHeader}>
                         <EngagementSettingsCardTitle>
                             Trigger on search
@@ -73,6 +73,11 @@ export const TriggerOnSearchSettings = ({
                                 isChecked
                             />
                         )}
+
+                        <EngagementSettingsCardToggle
+                            isChecked={isSalesHelpOnSearchEnabled}
+                            onChange={handleToggle}
+                        />
                     </div>
 
                     <EngagementSettingsCardDescription>
@@ -86,11 +91,6 @@ export const TriggerOnSearchSettings = ({
                         />
                     )}
                 </EngagementSettingsCardContent>
-
-                <EngagementSettingsCardToggle
-                    isChecked={isSalesHelpOnSearchEnabled}
-                    onChange={handleToggle}
-                />
             </EngagementSettingsCardContentWrapper>
         </EngagementSettingsCard>
     )
