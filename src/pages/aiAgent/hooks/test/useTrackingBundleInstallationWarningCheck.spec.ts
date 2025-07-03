@@ -2,7 +2,10 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import {
+    useAtLeastOneStoreHasActiveTrial,
+    useCanUseAiSalesAgent,
+} from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useListBundles } from 'models/convert/bundle/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
@@ -14,6 +17,9 @@ const mockUseFlags = jest.mocked(useFlags)
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
+const mockUseAtLeastOneStoreHasActiveTrial = jest.mocked(
+    useAtLeastOneStoreHasActiveTrial,
+)
 
 jest.mock('models/convert/bundle/queries', () => ({
     useListBundles: jest.fn(),
@@ -88,6 +94,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         } as any)
 
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
+        mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
     })
 
     it('should return undefined when no store activations are provided', () => {
@@ -133,6 +140,21 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         })
     })
 
+    it('should enabled queries when one store has an active trial', () => {
+        mockUseCanUseAiSalesAgent.mockReturnValueOnce(false)
+        mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(true)
+
+        renderHook(() => useTrackingBundleInstallationWarningCheck({}))
+
+        expect(mockUseListBundles).toHaveBeenCalledWith({ enabled: true })
+        expect(mockUseStoreActivations).toHaveBeenCalledWith({
+            storeName: undefined,
+            enabled: true,
+            withChatIntegrationsStatus: true,
+            withStoresKnowledgeStatus: true,
+        })
+    })
+
     it('should call store activation with storeName', () => {
         renderHook(() =>
             useTrackingBundleInstallationWarningCheck({
@@ -160,6 +182,28 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
         expect(result.current.uninstalledChatIntegrationId).toEqual(
             STORE_1_CHAT_INTEGRATION_ID,
         )
+    })
+
+    it('should return undefined when data is returned (by cache) but query is disabled', () => {
+        mockUseCanUseAiSalesAgent.mockReturnValue(false)
+        mockUseListBundles.mockReturnValueOnce({
+            data: [
+                {
+                    shop_integration_id: STORE_1_INTEGRATION_ID,
+                    last_loaded_datetime: new Date(),
+                },
+                {
+                    shop_integration_id: STORE_2_CHAT_INTEGRATION_ID,
+                    last_loaded_datetime: new Date(),
+                },
+            ],
+        } as any)
+
+        const { result } = renderHook(() =>
+            useTrackingBundleInstallationWarningCheck({}),
+        )
+
+        expect(result.current.uninstalledChatIntegrationId).toBeUndefined()
     })
 
     it('should return undefined when store integration is installed and seen within last 72 hours', () => {
