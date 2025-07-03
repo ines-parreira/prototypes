@@ -18,7 +18,7 @@ import './initSocketManager'
 
 import React from 'react'
 
-import {createRoot} from 'react-dom/client'
+import { render } from 'react-dom'
 
 import 'init'
 
@@ -47,6 +47,14 @@ if (process.env.NODE_ENV === 'development') {
 const container = document.getElementById('App')
 
 if (container) {
-    const root = createRoot(container)
-    root.render(<Root store={store} />)
+    // `createRoot` enables concurrent rendering features, but that
+    // currently causes issues with our editor. If you are reading
+    // this from the future and want to replace this with `createRoot`,
+    // please ensure you test the editor properly (also in places like
+    // editing macros etc).
+    //
+    // Or, once we fix up our editor, feel free to try again. :)
+    //
+    // For more context: https://linear.app/gorgias/issue/SUPXP-3770
+    render(<Root store={store} />, container)
 }
