@@ -2390,6 +2390,37 @@ describe('errors', () => {
             })
         })
 
+        it('should not add an error for a number condition with exists or doesNotExist', () => {
+            const node: LLMPromptTriggerNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'llm_prompt_trigger',
+                data: {
+                    touched: {
+                        conditions: { 0: true },
+                    },
+                    instructions: '',
+                    inputs: [],
+                    conditionsType: 'or',
+                    conditions: [
+                        { exists: [{ var: 'variable1' }] },
+                        { doesNotExist: [{ var: 'variable1' }] },
+                    ],
+                    requires_confirmation: false,
+                },
+            }
+
+            const errors = getLLMPromptTriggerNodeErrors(node, [
+                {
+                    type: 'number',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual(null)
+        })
+
         it('should add an error if a date condition value is empty', () => {
             const node: LLMPromptTriggerNodeType = {
                 ...buildNodeCommonProperties(),
