@@ -84,7 +84,8 @@ export function AgentLabel({
                     />
                 )
             ) : (
-                !isAIAgent && (
+                !isAIAgent &&
+                !hasTicketThreadRevamp && (
                     <span
                         className="material-icons md-2"
                         aria-label={`${name} icon`}

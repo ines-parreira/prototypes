@@ -221,6 +221,16 @@
         display: flex;
         gap: var(--layout-spacing-xs);
         padding: var(--layout-spacing-s);
+
+        &.ticketHandledByAIAgent {
+            &:hover {
+                background: #fef9ff;
+
+                :global(.message-content) {
+                    background: #fef9ff;
+                }
+            }
+        }
     }
 
     .internal {
