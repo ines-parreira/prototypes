@@ -86,7 +86,7 @@ export const SatisfactionMetricConfig = {
         title: SURVEYS_SENT_LABEL,
         hint: {
             title: 'Number of surveys sent during the timeframe; surveys are sent following ticket resolution.',
-            link: 'https://link.gorgias.com/oau',
+            link: 'https://link.gorgias.com/858019',
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
