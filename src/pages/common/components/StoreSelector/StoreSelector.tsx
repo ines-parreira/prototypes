@@ -15,9 +15,15 @@ type Props = {
     integrations: StoreIntegration[]
     selected?: StoreIntegration
     onChange: (value: number) => void
+    withSearch?: boolean
 }
 
-export function StoreSelector({ integrations, selected, onChange }: Props) {
+export default function StoreSelector({
+    integrations,
+    selected,
+    onChange,
+    withSearch = false,
+}: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const targetRef = useRef<HTMLButtonElement | null>(null)
 
@@ -46,7 +52,7 @@ export function StoreSelector({ integrations, selected, onChange }: Props) {
                 target={targetRef}
                 onToggle={setIsOpen}
             >
-                <DropdownSearch autoFocus />
+                {withSearch && <DropdownSearch autoFocus />}
                 <DropdownBody>
                     {integrations.map((integration) => (
                         <DropdownItem

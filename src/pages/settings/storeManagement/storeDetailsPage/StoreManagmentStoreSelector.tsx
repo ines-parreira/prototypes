@@ -1,6 +1,6 @@
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
+import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 
 import { useStoreManagementState } from '../StoreManagementProvider'
 
@@ -27,6 +27,7 @@ export default function StoreManagementStoreSelector() {
             integrations={integrations}
             selected={selected}
             onChange={onChange}
+            withSearch
         />
     )
 }

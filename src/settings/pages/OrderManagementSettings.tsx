@@ -6,7 +6,8 @@ import OrderManagementPreviewProvider from 'pages/automate/orderManagement/Order
 import OrderManagementView from 'pages/automate/orderManagement/OrderManagementView'
 import Header from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import { StoreSelector, useStoreSelector } from 'settings/automate'
+import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { useStoreSelector } from 'settings/automate'
 
 import { AutomateSettingsChannelsRoute } from './flows-routes/AutomateSettingsFlowsChannelsRoute'
 import { OrderManagementCancelRoute } from './order-management-routes/OrderManagementCancelRoute'
