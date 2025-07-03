@@ -98,6 +98,21 @@ export type StoreConfiguration = {
     isConversationStartersEnabled: boolean
     isSalesHelpOnSearchEnabled: boolean | null
     customFieldIds: number[]
+
+    sales?: {
+        trial: {
+            startDatetime: string | null
+            endDatetime: string | null
+
+            account: {
+                plannedUpgradeDatetime: string | null
+                optInDatetime: string | null
+                optOutDatetime: string | null
+                actualUpgradeDatetime: string | null
+                actualTerminationDatetime: string | null
+            }
+        }
+    }
 }
 
 export type CreateStoreConfigurationPayload = Pick<
