@@ -11,7 +11,7 @@ import { MoreOptions } from './components/MoreOptions'
 import css from './AnalyticsCard.less'
 
 type AnalyticsCardProps = {
-    status: 'live' | 'paused'
+    status: string
     analyticsData: any[]
 }
 

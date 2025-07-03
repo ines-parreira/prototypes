@@ -1,0 +1,68 @@
+:local {
+    .journeyPlaceholder {
+        position: relative;
+        border: 1px solid var(--neutral-grey-2);
+        border-radius: var(--layout-spacing-s);
+        padding: var(--layout-spacing-s);
+        padding-top: 0px;
+        width: 100%;
+    }
+
+    .status {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-s) 0px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .comingSoon {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+        color: var(--neutral-grey-5);
+        font-size: 12px;
+        margin-left: auto;
+    }
+
+    .cover {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        filter: blur(5px);
+    }
+
+    .coverInfo {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--neutral-grey-5);
+        width: 100%;
+        top: 40%;
+    }
+
+    .calendarClock {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--neutral-grey-0);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .primaryText {
+        font-weight: 600;
+    }
+    .secondaryText {
+        font-weight: 400;
+    }
+}

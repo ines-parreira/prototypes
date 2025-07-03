@@ -1,16 +1,20 @@
-import { useCallback, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 
 import classNames from 'classnames'
 
 import css from './Selector.less'
 
-type SelectorProps = {
-    options?: number[]
-    value?: number | null
-    onChange?: (option?: number) => void
+type SelectorProps<T> = {
+    options: T[]
+    value?: T | null
+    onChange?: ((option: T) => void) | Dispatch<SetStateAction<T>>
 }
 
-export const Selector = ({ options, value, onChange }: SelectorProps) => {
+export const Selector = <T,>({
+    options,
+    value,
+    onChange,
+}: SelectorProps<T>) => {
     const [selectedOptionIndex, setSelectedOptionIndex] = useState(
         options?.findIndex((option) => option === value),
     )
@@ -18,7 +22,7 @@ export const Selector = ({ options, value, onChange }: SelectorProps) => {
     const handleOptionChange = useCallback(
         (optionIndex: number) => {
             setSelectedOptionIndex(optionIndex)
-            onChange?.(options?.[optionIndex])
+            onChange?.(options[optionIndex])
         },
         [options, onChange],
     )
@@ -35,7 +39,7 @@ export const Selector = ({ options, value, onChange }: SelectorProps) => {
                         })}
                         onClick={() => handleOptionChange(index)}
                     >
-                        {option}
+                        {String(option)}
                     </button>
                 ))}
             </div>

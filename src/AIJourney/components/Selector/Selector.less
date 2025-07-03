@@ -2,11 +2,14 @@
     .selector {
         background-color: var(--neutral-grey-2);
 
-        width: 100%;
         border-radius: var(--layout-spacing-s);
 
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        gap: var(--layout-spacing-xs);
+        width: 100%;
+        max-width: 400px;
 
         gap: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-xxs);
@@ -23,6 +26,8 @@
         justify-content: center;
         align-items: center;
         flex-grow: 1;
+        width: 100%;
+        min-width: 0;
 
         cursor: pointer;
 
