@@ -27,33 +27,31 @@ src/utils/tests/reporting.spec.ts @gorgias/crm-reporting
 src/pages/aiAgent/ @gorgias/conv-ai-orchestration
 src/pages/standalone/ @gorgias/conv-ai-orchestration
 
-# Conv AI scope @gorgias/conv-ai-actions
+# Conv AI scope @gorgias/conv-ai-expansion
 
-src/pages/automate @gorgias/conv-ai-actions
-src/pages/aiAgent/actions @gorgias/conv-ai-actions
-src/models/selfServiceConfiguration @gorgias/conv-ai-actions
-src/pages/stats/self-service @gorgias/conv-ai-actions
-src/state/entities/selfServiceConfigurations @gorgias/conv-ai-actions
-src/state/ui/selfServiceConfigurations @gorgias/conv-ai-actions
-src/models/workflows @gorgias/conv-ai-actions
+src/pages/automate @gorgias/conv-ai-expansion
+src/models/selfServiceConfiguration @gorgias/conv-ai-expansion
+src/pages/stats/self-service @gorgias/conv-ai-expansion
+src/state/entities/selfServiceConfigurations @gorgias/conv-ai-expansion
+src/state/ui/selfServiceConfigurations @gorgias/conv-ai-expansion
 
-# Help center scope @gorgias/conv-ai-actions
+# Help center scope @gorgias/conv-ai-expansion
 
-src/rest_api/help_center_api @gorgias/conv-ai-actions
-src/config/helpCenter.ts @gorgias/conv-ai-actions
-src/config/help_center_texts.json @gorgias/conv-ai-actions
-src/pages/settings/helpCenter @gorgias/conv-ai-actions
-src/models/helpCenter @gorgias/conv-ai-actions
-src/hooks/helpCenter @gorgias/conv-ai-actions
-src/state/entities/helpCenter @gorgias/conv-ai-actions
+src/rest_api/help_center_api @gorgias/conv-ai-expansion
+src/config/helpCenter.ts @gorgias/conv-ai-expansion
+src/config/help_center_texts.json @gorgias/conv-ai-expansion
+src/pages/settings/helpCenter @gorgias/conv-ai-expansion
+src/models/helpCenter @gorgias/conv-ai-expansion
+src/hooks/helpCenter @gorgias/conv-ai-expansion
+src/state/entities/helpCenter @gorgias/conv-ai-expansion
 
-# Contact Form scope @gorgias/conv-ai-actions
+# Contact Form scope @gorgias/conv-ai-expansion
 
-src/state/contactForm @gorgias/conv-ai-actions
-src/pages/settings/contactForm @gorgias/conv-ai-actions
-src/state/ui/contactForm @gorgias/conv-ai-actions
-src/state/entities/contactForm @gorgias/conv-ai-actions
-src/models/contactForm @gorgias/conv-ai-actions
+src/state/contactForm @gorgias/conv-ai-expansion
+src/pages/settings/contactForm @gorgias/conv-ai-expansion
+src/state/ui/contactForm @gorgias/conv-ai-expansion
+src/state/entities/contactForm @gorgias/conv-ai-expansion
+src/models/contactForm @gorgias/conv-ai-expansion
 
 # Marketing suite scope @gorgias/marketing-suite
 
@@ -67,15 +65,15 @@ src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegratio
 src/pages/aiAgent/Onboarding/ @gorgias/marketing-suite
 src/pages/aiAgent/Activation/ @gorgias/marketing-suite
 
-# Chat widget scope @gorgias/conv-ai-actions
+# Chat widget scope @gorgias/conv-ai-expansion
 
-src/pages/integrations/integration/components/gorgias_chat @gorgias/conv-ai-actions
-src/config/integrations/gorgias_chat.ts @gorgias/conv-ai-actions
-src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/conv-ai-actions
-src/models/integration/types/gorgiasChat.ts @gorgias/conv-ai-actions
-src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/conv-ai-actions
-src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/conv-ai-actions
-src/rest_api/gorgias_chat_protected_api @gorgias/conv-ai-actions
+src/pages/integrations/integration/components/gorgias_chat @gorgias/conv-ai-expansion
+src/config/integrations/gorgias_chat.ts @gorgias/conv-ai-expansion
+src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/conv-ai-expansion
+src/models/integration/types/gorgiasChat.ts @gorgias/conv-ai-expansion
+src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/conv-ai-expansion
+src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/conv-ai-expansion
+src/rest_api/gorgias_chat_protected_api @gorgias/conv-ai-expansion
 
 # Support AgentXP scope @gorgias/support-agent-xp-frontend
 
@@ -120,6 +118,13 @@ src/pages/stats/voice @gorgias/support-phone
 src/pages/common/components/VoiceCallStatusLabel @gorgias/support-phone
 src/pages/common/components/VoiceCallCustomerLabel @gorgias/support-phone
 src/pages/tickets/detail/components/TicketVoiceCall @gorgias/support-phone
+
+# Support: Actions & Flows
+
+src/models/workflows @gorgias/support-actions-flows
+src/pages/aiAgent/actions @gorgias/support-actions-flows
+src/pages/automate/actionsPlatform @gorgias/support-actions-flows
+src/pages/automate/workflows @gorgias/support-actions-flows
 
 # Ecommerce & DevRel @gorgias/crm-devrel
 
