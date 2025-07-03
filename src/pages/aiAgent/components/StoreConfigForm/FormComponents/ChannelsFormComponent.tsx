@@ -83,7 +83,10 @@ export const ChannelsFormComponent = ({
         return chatChannels.map((chat) => chat.value.id)
     }, [chatChannels])
 
-    const { data: chatIntegrationStatus } = useFetchChatIntegrationsStatusData({
+    const {
+        data: chatIntegrationStatus,
+        isLoading: isChatIntegrationsStatusLoading,
+    } = useFetchChatIntegrationsStatusData({
         enabled: !!chatIds.length,
         chatIds,
     })
@@ -105,11 +108,12 @@ export const ChannelsFormComponent = ({
         )
         chatChannels.forEach((chatChannel) => {
             const isAvailable = availableChatsSet.has(chatChannel.value.id)
-            chatChannel.value.isUninstalled = !isAvailable
+            chatChannel.value.isUninstalled =
+                !isAvailable && !isChatIntegrationsStatusLoading
         })
 
         return [...chatChannels]
-    }, [chatChannels, chatIntegrationStatus])
+    }, [chatChannels, chatIntegrationStatus, isChatIntegrationsStatusLoading])
 
     return (
         <>
