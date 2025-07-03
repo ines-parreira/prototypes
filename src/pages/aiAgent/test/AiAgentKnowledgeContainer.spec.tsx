@@ -273,7 +273,7 @@ const renderComponent = ({
     mockUseAiAgentNavigation.mockReturnValue({
         routes: {
             main: '/main',
-            pagesContent: '/knowledge/sources/pages-content',
+            questionsContent: '/knowledge/sources/questions-content',
         },
         navigationItems: [],
     } as unknown as ReturnType<typeof useAiAgentNavigation>)

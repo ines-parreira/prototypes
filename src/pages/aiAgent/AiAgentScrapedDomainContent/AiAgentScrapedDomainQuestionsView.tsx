@@ -34,7 +34,7 @@ const AiAgentScrapedDomainQuestionsView = ({
     defaultLocale,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
-    const { id: selectedId } = useParams<{ id?: string }>()
+    const { articleId } = useParams<{ articleId?: string }>()
     const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
         string | null
     >(null)
@@ -72,9 +72,9 @@ const AiAgentScrapedDomainQuestionsView = ({
     }, [syncIsPending, setSyncStoreDomainStatus])
 
     const handleOnSelect = (id: number) =>
-        history.push(routes.pagesContentDetail(id))
+        history.push(routes.questionsContentDetail(id))
 
-    const handleOnClose = () => history.push(routes.pagesContent)
+    const handleOnClose = () => history.push(routes.questionsContent)
 
     const {
         contents: paginatedQuestions,
@@ -122,17 +122,17 @@ const AiAgentScrapedDomainQuestionsView = ({
         shopName,
         helpCenterId,
         defaultLocale,
-        selectedId: selectedId ? Number(selectedId) : null,
+        articleId: articleId ? Number(articleId) : null,
         storeDomainIngestionLogId: storeDomainIngestionLog?.id ?? null,
     })
 
     useEffect(() => {
-        if (selectedId && selectedQuestion) {
+        if (articleId && selectedQuestion) {
             setIsOpened(true)
         } else {
             setIsOpened(false)
         }
-    }, [selectedId, selectedQuestion])
+    }, [articleId, selectedQuestion])
 
     return (
         <AiAgentScrapedDomainContentLayout

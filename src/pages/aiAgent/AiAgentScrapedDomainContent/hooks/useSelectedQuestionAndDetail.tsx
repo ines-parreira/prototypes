@@ -15,11 +15,11 @@ export const useSelectedQuestionAndDetail = ({
     shopName,
     helpCenterId,
     defaultLocale,
-    selectedId,
+    articleId,
     storeDomainIngestionLogId,
 }: {
     shopName: string
-    selectedId: number | null
+    articleId: number | null
     helpCenterId: number
     defaultLocale: LocaleCode
     storeDomainIngestionLogId: number | null
@@ -28,26 +28,28 @@ export const useSelectedQuestionAndDetail = ({
     const { routes } = useAiAgentNavigation({ shopName })
 
     const {
+        data: articleData,
+        isInitialLoading: isFetchingArticleLoading,
+        isError: isFetchingArticleError,
+    } = useGetHelpCenterArticle(articleId ?? 0, helpCenterId, defaultLocale, {
+        enabled: !!articleId,
+    })
+
+    const {
         data: selectedQuestionData,
         isLoading: isFetchingQuestionLoading,
         isError: isFetchingQuestionError,
     } = useGetIngestedResource(
         {
             help_center_id: helpCenterId,
-            id: selectedId ?? 0,
+            id: articleData?.ingested_resource_id ?? 0,
         },
         {
-            enabled: !!selectedId && !!storeDomainIngestionLogId,
+            enabled:
+                !!storeDomainIngestionLogId &&
+                !!articleData?.ingested_resource_id,
         },
     )
-
-    const { data: articleData, isInitialLoading: isFetchingArticleLoading } =
-        useGetHelpCenterArticle(
-            selectedQuestionData?.article_id ?? 0,
-            helpCenterId,
-            defaultLocale,
-            { enabled: !!selectedId && !!selectedQuestionData },
-        )
 
     const selectedQuestion = useMemo(() => {
         return selectedQuestionData &&
@@ -68,8 +70,10 @@ export const useSelectedQuestionAndDetail = ({
 
     useEffect(() => {
         if (
-            isFetchingQuestionError ||
-            (!!selectedId && !isFetchingQuestionLoading && !selectedQuestion)
+            isFetchingArticleError ||
+            (!!articleId &&
+                !isFetchingArticleLoading &&
+                !articleData?.ingested_resource_id)
         ) {
             void dispatch(
                 notify({
@@ -79,28 +83,29 @@ export const useSelectedQuestionAndDetail = ({
                 }),
             )
 
-            history.push(routes.pagesContent)
+            history.push(routes.questionsContent)
         }
     }, [
-        isFetchingQuestionError,
-        selectedId,
-        isFetchingQuestionLoading,
-        selectedQuestion,
+        isFetchingArticleError,
+        articleId,
+        isFetchingArticleLoading,
+        articleData,
         dispatch,
-        routes.pagesContent,
+        routes.questionsContent,
     ])
 
     return useMemo(() => {
         return {
             selectedQuestion,
             questionDetail: articleData,
-            isError: isFetchingQuestionError,
+            isError: isFetchingQuestionError || isFetchingArticleError,
             isLoading: isFetchingQuestionLoading || isFetchingArticleLoading,
         }
     }, [
         selectedQuestion,
         articleData,
         isFetchingQuestionError,
+        isFetchingArticleError,
         isFetchingQuestionLoading,
         isFetchingArticleLoading,
     ])

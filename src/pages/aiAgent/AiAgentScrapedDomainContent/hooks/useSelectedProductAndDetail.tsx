@@ -14,19 +14,19 @@ import { isProductExcludedFromAiAgent } from './usePaginatedProductIntegration'
 export const useSelectedProductAndDetail = ({
     shopName,
     integrationId,
-    selectedId,
+    productId,
 }: {
     shopName: string
     integrationId: number | null
-    selectedId: string | null
+    productId: string | null
 }) => {
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
 
     const selectedProductData = useGetProductsByIdsFromIntegration(
         integrationId || 0,
-        [selectedId ? Number(selectedId) : 0],
-        !!selectedId,
+        [productId ? Number(productId) : 0],
+        !!productId,
         false,
     )
 
@@ -35,8 +35,8 @@ export const useSelectedProductAndDetail = ({
             ECOMMERCE_TYPE,
             ECOMMERCE_SOURCE,
             integrationId || 0,
-            selectedId ?? '',
-            { enabled: !!selectedId },
+            productId ?? '',
+            { enabled: !!productId },
         )
 
     const selectedProduct = useMemo(
@@ -62,7 +62,7 @@ export const useSelectedProductAndDetail = ({
     useEffect(() => {
         if (
             selectedProductData.isError ||
-            (!!selectedId && !selectedProductData.isLoading && !selectedProduct)
+            (!!productId && !selectedProductData.isLoading && !selectedProduct)
         ) {
             void dispatch(
                 notify({
@@ -76,7 +76,7 @@ export const useSelectedProductAndDetail = ({
         }
     }, [
         selectedProductData,
-        selectedId,
+        productId,
         selectedProduct,
         dispatch,
         routes.productsContent,

@@ -51,7 +51,7 @@ const AiAgentScrapedDomainContentLayout = ({
 
     const headerNavbarItems = [
         {
-            route: routes.pagesContent,
+            route: routes.questionsContent,
             title: SCRAPPING_CONTENT.QUESTIONS,
         },
         {

@@ -31,7 +31,7 @@ const AiAgentScrapedDomainProductsView = ({
     helpCenterId,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
-    const { id: selectedId } = useParams<{ id?: string }>()
+    const { productId } = useParams<{ productId?: string }>()
     const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
         string | null
     >(null)
@@ -98,16 +98,16 @@ const AiAgentScrapedDomainProductsView = ({
     } = useSelectedProductAndDetail({
         shopName,
         integrationId,
-        selectedId: selectedId ?? null,
+        productId: productId ?? null,
     })
 
     useEffect(() => {
-        if (selectedId && selectedProduct) {
+        if (productId && selectedProduct) {
             setIsOpened(true)
         } else {
             setIsOpened(false)
         }
-    }, [selectedId, selectedProduct])
+    }, [productId, selectedProduct])
 
     return (
         <AiAgentScrapedDomainContentLayout

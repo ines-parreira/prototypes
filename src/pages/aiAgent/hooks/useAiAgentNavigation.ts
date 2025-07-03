@@ -60,12 +60,12 @@ export const getAiAgentNavigationRoutes = (
         salesStrategy: `${basePath}/sales/strategy`,
         customerEngagement: `${basePath}/sales/customer-engagement`,
         analytics: `${basePath}/sales/analytics`,
-        pagesContent: `${basePath}/knowledge/sources/pages-content`,
+        questionsContent: `${basePath}/knowledge/sources/questions-content`,
         productsContent: `${basePath}/knowledge/sources/products-content`,
-        pagesContentDetail: (contentId: number) =>
-            `${basePath}/knowledge/sources/pages-content/${contentId}`,
-        productsContentDetail: (contentId: number) =>
-            `${basePath}/knowledge/sources/products-content/${contentId}`,
+        questionsContentDetail: (articleId: number) =>
+            `${basePath}/knowledge/sources/questions-content/${articleId}`,
+        productsContentDetail: (productId: number) =>
+            `${basePath}/knowledge/sources/products-content/${productId}`,
         urlArticles: (articleIngestionId: number) =>
             `${basePath}/knowledge/sources/url-articles/${articleIngestionId}/articles`,
         urlArticlesDetail: (articleIngestionId: number, articleId: number) =>

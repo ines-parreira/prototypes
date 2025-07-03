@@ -43,7 +43,7 @@ const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 
 describe('useSelectedProductAndDetail', () => {
     const mockedIntegrationId = 1
-    const mockedSelectedId = '12345'
+    const mockedProductId = '12345'
     const mockedShopName = 'Test Shop'
 
     beforeEach(() => {
@@ -90,7 +90,7 @@ describe('useSelectedProductAndDetail', () => {
             useSelectedProductAndDetail({
                 shopName: mockedShopName,
                 integrationId: mockedIntegrationId,
-                selectedId: mockedSelectedId,
+                productId: mockedProductId,
             }),
         )
 
@@ -116,7 +116,7 @@ describe('useSelectedProductAndDetail', () => {
             useSelectedProductAndDetail({
                 shopName: mockedShopName,
                 integrationId: mockedIntegrationId,
-                selectedId: mockedSelectedId,
+                productId: mockedProductId,
             }),
         )
 

@@ -33,7 +33,7 @@ const SyncIngestionDomainBanner = ({
         pageName,
     })
     const onReview = () => {
-        history.push(routes.pagesContent)
+        history.push(routes.questionsContent)
     }
 
     const reviewButton = (

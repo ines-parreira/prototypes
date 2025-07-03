@@ -20,6 +20,7 @@ const mockContent = [
         id: 1,
         title: 'Sample Question or Product',
         image: { src: 'https://example.com/image.jpg' },
+        article_id: 101,
     },
 ]
 
@@ -95,7 +96,7 @@ describe('ScrapedDomainContentView', () => {
         setup()
         const row = screen.getByText(mockContent[0].title)
         fireEvent.click(row)
-        expect(mockOnSelect).toHaveBeenCalledWith(mockContent[0].id)
+        expect(mockOnSelect).toHaveBeenCalledWith(mockContent[0].article_id)
     })
 
     it('calls onUpdateStatus when toggle is changed', () => {

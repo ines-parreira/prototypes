@@ -619,13 +619,13 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                         />
                                         <Route
                                             exact
-                                            path={`${path}/knowledge/sources/pages-content`}
+                                            path={`${path}/knowledge/sources/questions-content`}
                                             component={
                                                 AiAgentScrapedDomainQuestionsContainer
                                             }
                                         />
                                         <Route
-                                            path={`${path}/knowledge/sources/pages-content/:id`}
+                                            path={`${path}/knowledge/sources/questions-content/:articleId`}
                                             component={
                                                 AiAgentScrapedDomainQuestionsContainer
                                             }
@@ -638,7 +638,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                             }
                                         />
                                         <Route
-                                            path={`${path}/knowledge/sources/products-content/:id`}
+                                            path={`${path}/knowledge/sources/products-content/:productId`}
                                             component={
                                                 AiAgentScrapedDomainProductsContainer
                                             }
@@ -675,6 +675,16 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                             to={location.pathname.replace(
                                                 '/knowledge',
                                                 '/knowledge/sources',
+                                            )}
+                                        />
+                                    )}
+                                    {location.pathname.includes(
+                                        '/pages-content',
+                                    ) && (
+                                        <Redirect
+                                            to={location.pathname.replace(
+                                                '/pages-content',
+                                                '/questions-content',
                                             )}
                                         />
                                     )}

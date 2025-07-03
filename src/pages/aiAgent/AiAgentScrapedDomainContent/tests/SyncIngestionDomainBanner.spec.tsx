@@ -38,7 +38,7 @@ describe('SyncIngestionDomainBanner', () => {
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
                 main: '/main',
-                pagesContent: '/pages-content',
+                questionsContent: '/questions-content',
             },
             navigationItems: [],
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
@@ -114,7 +114,7 @@ describe('SyncIngestionDomainBanner', () => {
         )
 
         fireEvent.click(screen.getByRole('button', { name: /review/i }))
-        expect(history.push).toHaveBeenCalledWith('/pages-content')
+        expect(history.push).toHaveBeenCalledWith('/questions-content')
     })
 
     it('renders failed banner', () => {

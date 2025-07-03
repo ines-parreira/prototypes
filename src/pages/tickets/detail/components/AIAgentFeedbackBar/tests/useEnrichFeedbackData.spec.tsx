@@ -65,7 +65,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         editAction: (id: string) => `/mock/action/edit/${id}`,
         fileArticlesDetail: (ingestionId: number, id: number) =>
             `/mock/file/${ingestionId}/${id}`,
-        pagesContentDetail: (id: number) => `/mock/content/${id}`,
+        questionsContentDetail: (id: number) => `/mock/content/${id}`,
         orderView: (id: number) => `/mock/order/view/${id}`,
         storeWebsiteQuestionView: (id: number) =>
             `/mock/store-website/view/${id}`,

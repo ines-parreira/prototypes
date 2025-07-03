@@ -71,7 +71,7 @@ describe('ScrapeStoreDomainSection', () => {
         } as unknown as ReturnType<typeof useGetStoreDomainIngestionLog>)
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
-                pagesContent: '/pages-content',
+                questionsContent: '/questions-content',
             },
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
         mockUseIngestionLogMutation.mockReturnValue({
@@ -128,7 +128,7 @@ describe('ScrapeStoreDomainSection', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Manage'))
-        expect(history.push).toHaveBeenCalledWith('/pages-content')
+        expect(history.push).toHaveBeenCalledWith('/questions-content')
     })
 
     describe('Articles button visibility', () => {

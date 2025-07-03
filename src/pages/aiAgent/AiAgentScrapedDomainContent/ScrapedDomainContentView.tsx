@@ -342,7 +342,13 @@ function ScrapedDomainContentView<T extends ContentType>({
                                 <TableBodyRow
                                     key={content.id}
                                     className={css.tableBodyRow}
-                                    onClick={() => onSelect(content.id)}
+                                    onClick={() =>
+                                        onSelect(
+                                            pageType === CONTENT_TYPE.QUESTION
+                                                ? content.article_id
+                                                : content.id,
+                                        )
+                                    }
                                 >
                                     <BodyCell
                                         className={classnames({

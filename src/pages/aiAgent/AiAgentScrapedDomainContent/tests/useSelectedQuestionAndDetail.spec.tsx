@@ -30,7 +30,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 
 describe('useSelectedQuestionAndDetail', () => {
-    const mockedSelectedId = 12345
+    const mockedArticleId = 12345
     const mockedShopName = 'Test Shop'
     const mockedStoreDomainIngestionLogId = 123
     const mockedHelpCenterId = 1
@@ -41,13 +41,14 @@ describe('useSelectedQuestionAndDetail', () => {
     const mockedArticleData = {
         available_locales: ['en-US'],
         help_center_id: 1,
-        id: 1,
+        id: mockedArticleId,
         translation: {
             article_id: 10,
             content: '<div>This article exists</div>',
             title: 'Article A',
             slug: 'article-a',
         },
+        ingested_resource_id: mockedIngestedResource.id,
     }
 
     beforeEach(() => {
@@ -65,7 +66,7 @@ describe('useSelectedQuestionAndDetail', () => {
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
                 main: '/main',
-                pagesContent: '/knowledge/sources/pages-content',
+                questionsContent: '/knowledge/sources/questions-content',
             },
             navigationItems: [],
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
@@ -81,6 +82,7 @@ describe('useSelectedQuestionAndDetail', () => {
         mockUseGetHelpCenterArticle.mockReturnValue({
             data: mockedArticleData,
             isInitialLoading: false,
+            isError: false,
         } as unknown as ReturnType<typeof useGetHelpCenterArticle>)
 
         const { result } = renderHook(() =>
@@ -88,7 +90,7 @@ describe('useSelectedQuestionAndDetail', () => {
                 shopName: mockedShopName,
                 helpCenterId: mockedHelpCenterId,
                 defaultLocale: mockedDefaultLocale,
-                selectedId: mockedSelectedId,
+                articleId: mockedArticleId,
                 storeDomainIngestionLogId: mockedStoreDomainIngestionLogId,
             }),
         )
@@ -99,19 +101,13 @@ describe('useSelectedQuestionAndDetail', () => {
         expect(result.current.isError).toBe(false)
     })
 
-    it('redirects and show error notification when product is not found', () => {
-        mockUseGetIngestedResource.mockReturnValue({
-            isLoading: false,
-            isError: true,
-            data: null,
-        } as unknown as ReturnType<typeof useGetIngestedResource>)
-
+    it('redirects and show error notification when article is not found', () => {
         const { result } = renderHook(() =>
             useSelectedQuestionAndDetail({
                 shopName: mockedShopName,
                 helpCenterId: mockedHelpCenterId,
                 defaultLocale: mockedDefaultLocale,
-                selectedId: mockedSelectedId,
+                articleId: mockedArticleId,
                 storeDomainIngestionLogId: mockedStoreDomainIngestionLogId,
             }),
         )
@@ -122,7 +118,28 @@ describe('useSelectedQuestionAndDetail', () => {
             status: NotificationStatus.Error,
         })
         expect(history.push).toHaveBeenCalledWith(
-            '/knowledge/sources/pages-content',
+            '/knowledge/sources/questions-content',
+        )
+        expect(result.current.selectedQuestion).toBeNull()
+        expect(result.current.questionDetail).toBeNull()
+    })
+
+    it('should disable API calls when articleId is not provided', () => {
+        const { result } = renderHook(() =>
+            useSelectedQuestionAndDetail({
+                shopName: mockedShopName,
+                helpCenterId: mockedHelpCenterId,
+                defaultLocale: mockedDefaultLocale,
+                articleId: null,
+                storeDomainIngestionLogId: mockedStoreDomainIngestionLogId,
+            }),
+        )
+
+        expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
+            0,
+            mockedHelpCenterId,
+            mockedDefaultLocale,
+            { enabled: false },
         )
         expect(result.current.selectedQuestion).toBeNull()
         expect(result.current.questionDetail).toBeNull()

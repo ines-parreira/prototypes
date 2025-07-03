@@ -46,7 +46,7 @@ export const ScrapeStoreDomainSection = ({
 
     const { routes } = useAiAgentNavigation({ shopName })
     const onManage = () => {
-        history.push(routes.pagesContent)
+        history.push(routes.questionsContent)
     }
 
     const {

@@ -339,9 +339,8 @@ export const getResourceMetadata = (
                     title: storeWebsiteQuestion.title,
                     content: storeWebsiteQuestion.title,
                     url:
-                        aiAgentRoutes?.pagesContentDetail(
-                            storeWebsiteQuestion.id,
-                        ) ?? '',
+                        aiAgentRoutes?.questionsContentDetail(parseInt(id)) ??
+                        '',
                 }
             }
             return emptyMetadata

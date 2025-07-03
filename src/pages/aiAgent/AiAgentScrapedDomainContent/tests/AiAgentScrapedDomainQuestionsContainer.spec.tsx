@@ -86,8 +86,8 @@ const defaultState = {
 }
 
 const renderComponent = (id?: string) => {
-    const path = `/app/ai-agent/:shopType/:shopName/knowledge/sources/pages-content${id ? '/:id' : ''}`
-    const route = `/app/ai-agent/shopify/test-shop/knowledge/sources/pages-content${id ? `/${id}` : ''}`
+    const path = `/app/ai-agent/:shopType/:shopName/knowledge/sources/questions-content${id ? '/:id' : ''}`
+    const route = `/app/ai-agent/shopify/test-shop/knowledge/sources/questions-content${id ? `/${id}` : ''}`
     return renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
@@ -393,7 +393,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         expect(screen.getByText('View source URLs')).toBeInTheDocument()
     })
 
-    it('should redirect to pagesContent path without id when hide side panel button is clicked', () => {
+    it('should redirect to questionsContent path without id when hide side panel button is clicked', () => {
         mockUseGetIngestedResource.mockReturnValue({
             isLoading: false,
             isError: false,
@@ -406,7 +406,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         fireEvent.click(hideIcon)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/knowledge/sources/pages-content',
+            '/app/ai-agent/shopify/test-shop/knowledge/sources/questions-content',
         )
     })
 })
