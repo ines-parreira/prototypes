@@ -56,6 +56,8 @@ const fakeProcessedAverageOrdersPerDayTrend = [
     },
 ]
 
+const fakeAverageDiscountPercentage = 10
+
 const useProcessedAverageOrdersPerDayTrend = (
     filters: StatsFilters,
     timezone: string,
@@ -144,7 +146,8 @@ export const useGetKnowledgePreviewData = ({
             categories: mockedCategories,
             averageDiscount: averageDiscountPercentage.isFetching
                 ? undefined
-                : (averageDiscountPercentage.data?.value ?? 0),
+                : (averageDiscountPercentage.data?.value ??
+                  fakeAverageDiscountPercentage),
             repeatRate,
             isRepeatRateLoading,
             averageOrders: averageOrders,

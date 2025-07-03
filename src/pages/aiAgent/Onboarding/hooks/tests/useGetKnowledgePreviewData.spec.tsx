@@ -106,7 +106,7 @@ describe('useGetKnowledgePreviewData', () => {
         expect(result.current.data.averageDiscount).toBeUndefined()
     })
 
-    it('should return averageDiscountPercentage as 0 when no result', () => {
+    it('should return averageDiscountPercentage as 10 when no result', () => {
         useAverageDiscountPercentageMock.mockClear()
         useAverageDiscountPercentageMock.mockReturnValue({
             isFetching: false,
@@ -120,7 +120,22 @@ describe('useGetKnowledgePreviewData', () => {
             useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
         )
 
-        expect(result.current.data.averageDiscount).toBe(0)
+        expect(result.current.data.averageDiscount).toBe(10)
+    })
+
+    it('should return averageDiscountPercentage as 10 when data is undefined', () => {
+        useAverageDiscountPercentageMock.mockClear()
+        useAverageDiscountPercentageMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: undefined,
+        })
+
+        const { result } = renderHookWithWrapper(() =>
+            useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
+        )
+
+        expect(result.current.data.averageDiscount).toBe(10)
     })
 
     it('should return averageDiscountPercentage when has a result', () => {
