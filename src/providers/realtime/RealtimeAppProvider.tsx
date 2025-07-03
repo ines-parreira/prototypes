@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useMemo } from 'react'
 
-import { toPlainObject } from 'lodash'
+import { isObject, isString, toPlainObject } from 'lodash'
 
 import {
     ExponentialRetryPolicy,
@@ -91,12 +91,25 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
                 isRealtimeEnabled &&
                 isErrorThresholdEnabled &&
                 incrementErrorCount()
+
+            let message: undefined | string
+            if (
+                status.category === 'PNAccessDeniedCategory' &&
+                status.errorData &&
+                isObject(status.errorData) &&
+                'message' in status.errorData &&
+                isString(status.errorData.message)
+            ) {
+                message = status.errorData.message
+            }
+
             isCatchPNErrorsEnabled &&
                 reportError(new Error(`PubNub Status error`), {
                     tags: {
                         operation: status.operation ?? 'unknown',
                         statusCode: status.statusCode ?? 'unknown',
                         category: status.category ?? 'unknown',
+                        ...(message && { message }),
                     },
                     extra: { status: toPlainObject(status) },
                 })

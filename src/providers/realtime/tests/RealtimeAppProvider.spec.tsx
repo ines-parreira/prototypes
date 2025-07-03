@@ -148,6 +148,35 @@ describe('RealtimeAppProvider', () => {
         })
     })
 
+    it('should call report error with access error message when status is access denied', () => {
+        const pnError = new Error(`PubNub Status error`)
+        render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+        MockRealtimeProvider.mock.calls[0][0].onErrorStatus({
+            statusCode: '400',
+            operation: 'foo',
+            category: 'PNAccessDeniedCategory',
+            errorData: { message: 'Access denied' },
+        })
+
+        expect(mockReportError).toHaveBeenCalledWith(pnError, {
+            tags: {
+                operation: 'foo',
+                statusCode: '400',
+                category: 'PNAccessDeniedCategory',
+                message: 'Access denied',
+            },
+            extra: {
+                status: {
+                    statusCode: '400',
+                    operation: 'foo',
+                    category: 'PNAccessDeniedCategory',
+                    errorData: { message: 'Access denied' },
+                },
+            },
+        })
+    })
+
     it('should increment the error count when network issues occur', () => {
         const mockIncrementErrorCount = jest.fn()
         mockUseErrorThreshold.mockReturnValueOnce({
