@@ -101,7 +101,7 @@ describe('TicketVolumeTable', () => {
 
         renderWithStore(<TicketVolumeTable />, defaultState)
 
-        expect(screen.getByText(productName)).toBeInTheDocument()
+        expect(screen.getByText(new RegExp(productName))).toBeInTheDocument()
     })
 
     it.each([

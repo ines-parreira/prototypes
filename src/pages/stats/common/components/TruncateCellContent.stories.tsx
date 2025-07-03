@@ -9,7 +9,7 @@ const storyConfig: Meta = {
 const content = 'Lorem ipsum long cell content'
 type Story = StoryObj<typeof TruncateCellContent>
 
-export const Content: Story = {
+export const DefaultTruncate: Story = {
     render: (args) => (
         <div style={{ maxWidth: '100px' }}>
             <TruncateCellContent {...args} />
@@ -19,6 +19,20 @@ export const Content: Story = {
         content,
         className: '',
         left: false,
+    },
+}
+
+export const LeftTruncate: Story = {
+    render: (args) => (
+        <div style={{ maxWidth: '200px' }}>
+            <TruncateCellContent {...args} />
+            <TruncateCellContent content={content} left />
+        </div>
+    ),
+    args: {
+        content: 'Lorem > Lorem ipsum > Lorem ipsum long cell content:',
+        className: '',
+        left: true,
     },
 }
 

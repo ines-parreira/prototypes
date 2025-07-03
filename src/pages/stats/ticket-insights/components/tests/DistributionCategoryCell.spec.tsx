@@ -28,6 +28,8 @@ describe('<DistributionCategoryCell />', () => {
             </table>,
         )
 
-        expect(screen.getByText('Level 0 > Level 1')).toBeInTheDocument()
+        expect(
+            screen.getByText(new RegExp('Level 0 > Level 1')),
+        ).toBeInTheDocument()
     })
 })

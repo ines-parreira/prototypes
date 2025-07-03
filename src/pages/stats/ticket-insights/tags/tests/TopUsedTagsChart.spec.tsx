@@ -104,7 +104,7 @@ describe('<TopUsedTagsChart/>', () => {
         renderWithStore(<TopUsedTagsChart />, mockStore)
 
         useTagsDistributionReturnValue.data.forEach((value) => {
-            expect(screen.getByText(value.name)).toBeInTheDocument()
+            expect(screen.getByText(new RegExp(value.name))).toBeInTheDocument()
             expect(screen.getByText(value.value)).toBeInTheDocument()
             expect(
                 screen.getByText(`${value.gaugePercentage}%`),

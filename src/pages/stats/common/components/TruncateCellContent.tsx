@@ -22,6 +22,9 @@ export const TruncateCellContent = ({
     const [isEllipsisActive, setIsEllipsisActive] = useState(false)
     const randomId = useId()
     const tooltipTargetID = 'truncate-cell-' + randomId
+    // \u2066 wraps a string in Unicode LRI/PDI to enforce LTR rendering inside RTL content
+    const isolatedContent =
+        typeof content === 'string' && left ? `\u2066${content}\u2069` : content
 
     useLayoutEffect(() => {
         if (ref.current) {
@@ -44,7 +47,7 @@ export const TruncateCellContent = ({
                     className,
                 )}
             >
-                {content}
+                {isolatedContent}
             </span>
             <Tooltip
                 target={tooltipTargetID}

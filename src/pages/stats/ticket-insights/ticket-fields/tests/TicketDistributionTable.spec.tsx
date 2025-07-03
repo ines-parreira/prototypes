@@ -108,12 +108,14 @@ describe('<TicketDistributionTable>', () => {
 
         expect(screen.getByRole('table')).toBeInTheDocument()
         expect(
-            screen.getByText(
-                data[0][
-                    TicketCustomFieldsDimension.TicketCustomFieldsValueString
-                ],
+            screen.getAllByText(
+                new RegExp(
+                    data[0][
+                        TicketCustomFieldsDimension.TicketCustomFieldsValueString
+                    ],
+                ),
             ),
-        ).toBeInTheDocument()
+        ).toHaveLength(2)
     })
 
     it('should render the total value', () => {

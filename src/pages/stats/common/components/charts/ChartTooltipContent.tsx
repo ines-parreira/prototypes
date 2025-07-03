@@ -4,6 +4,7 @@ import { TooltipLabelStyle, TooltipModel } from 'chart.js'
 import classNames from 'classnames'
 
 import css from 'pages/stats/common/components/charts/ChartTooltipContent.less'
+import { TruncateCellContent } from 'pages/stats/common/components/TruncateCellContent'
 import { NOT_AVAILABLE_TEXT } from 'pages/stats/common/utils'
 
 type Props = {
@@ -47,13 +48,12 @@ export const ChartTooltipContent = ({
                                     Number(currentLabel.borderRadius) || 2,
                             }}
                         />
-                        <div
-                            className={classNames(
-                                css.tooltipSpaceBetween,
-                                css.minusItemBox,
-                            )}
-                        >
-                            <span>{item.dataset.label}:</span>
+                        <div className={classNames(css.tooltipSpaceBetween)}>
+                            <TruncateCellContent
+                                left
+                                content={`${item.dataset.label}:`}
+                                className={css.tooltipItemLabel}
+                            />
                             <span className={css.tooltipItemValue}>
                                 {showZeroAsNA && item.formattedValue === '0'
                                     ? NOT_AVAILABLE_TEXT
