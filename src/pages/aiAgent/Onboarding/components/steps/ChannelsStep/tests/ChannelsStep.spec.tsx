@@ -21,6 +21,7 @@ import {
 import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
 import { useSelectedEmailsBeforeRedirect } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useSelectedEmailsBeforeRedirect'
+import { useShouldDisplayEmailIntegrationsLink } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useShouldDisplayEmailIntegrationsLink'
 import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
@@ -98,6 +99,13 @@ jest.mock(
     'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails',
 )
 const usePreselectedEmailsMock = assumeMock(usePreselectedEmails)
+
+jest.mock(
+    'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useShouldDisplayEmailIntegrationsLink',
+)
+const useShouldDisplayEmailIntegrationsLinkMock = assumeMock(
+    useShouldDisplayEmailIntegrationsLink,
+)
 
 jest.mock(
     'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useSelectedEmailsBeforeRedirect',
@@ -192,6 +200,8 @@ describe('ChannelsStep', () => {
                 setSelectedEmailsBeforeRedirect: jest.fn(),
                 clearSelectedEmailsBeforeRedirect: jest.fn(),
             })
+
+            useShouldDisplayEmailIntegrationsLinkMock.mockReturnValue(true)
 
             useGetOnboardingsMock.mockReturnValue({
                 data: [defaultOnboardingData],
@@ -762,6 +772,44 @@ describe('ChannelsStep', () => {
             const nextButton = screen.getByText('Next')
             userEvent.click(nextButton)
             expect(defaultProps.goToStep).not.toHaveBeenCalled()
+        })
+
+        it('renders the email integration creation link', async () => {
+            mockedDispatch.mockImplementationOnce(() => Promise.resolve())
+            useGetOnboardingDataMock.mockReturnValue({
+                data: defaultOnboardingData,
+                isLoading: false,
+            } as any)
+
+            const screen = renderWithProvider(defaultState)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        'Don’t see the email you want? Click here',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('does not render the email integration creation link when useShowEmailIntegrationsLink returns false', async () => {
+            useShouldDisplayEmailIntegrationsLinkMock.mockReturnValue(false)
+
+            mockedDispatch.mockImplementationOnce(() => Promise.resolve())
+            useGetOnboardingDataMock.mockReturnValue({
+                data: defaultOnboardingData,
+                isLoading: false,
+            } as any)
+
+            const screen = renderWithProvider(defaultState)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        'Don’t see the email you want? Click here',
+                    ),
+                ).not.toBeInTheDocument()
+            })
         })
 
         it('renders chat preview section', () => {

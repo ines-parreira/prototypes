@@ -35,6 +35,7 @@ import {
 } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
 import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
+import { useShouldDisplayEmailIntegrationsLink } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useShouldDisplayEmailIntegrationsLink'
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
@@ -323,6 +324,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
         defaultIntegrations?.data?.email,
     ])
 
+    const showEmailIntegrationsLink = useShouldDisplayEmailIntegrationsLink()
+
     const logChannelViewEvent = (
         updatedField: keyof ChannelsFormValues,
         updatedValue: boolean,
@@ -520,17 +523,19 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                     sortingCallback={emailSortingCallback}
                                     withDefaultTag
                                 />
-                                <a
-                                    // The href is for a11y purposes only
-                                    href={emailIntegrationPath}
-                                    className={css.link}
-                                    onClick={(event) => {
-                                        event.preventDefault()
-                                        setModalOpen(true)
-                                    }}
-                                >
-                                    Don’t see the email you want? Click here
-                                </a>
+                                {showEmailIntegrationsLink && (
+                                    <a
+                                        // The href is for a11y purposes only
+                                        href={emailIntegrationPath}
+                                        className={css.link}
+                                        onClick={(event) => {
+                                            event.preventDefault()
+                                            setModalOpen(true)
+                                        }}
+                                    >
+                                        Don’t see the email you want? Click here
+                                    </a>
+                                )}
                             </div>
                         </ToggleCard>
                         <Separator />
