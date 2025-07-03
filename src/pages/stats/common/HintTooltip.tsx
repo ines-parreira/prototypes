@@ -2,7 +2,9 @@ import { ReactElement, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import IconTooltip, {
+    IconTooltipProps,
+} from 'pages/common/forms/IconTooltip/IconTooltip'
 import { hintTooltipDelay } from 'pages/stats/common/constants'
 import css from 'pages/stats/common/HintTooltip.less'
 import { TooltipData } from 'pages/stats/types'
@@ -30,18 +32,20 @@ export const HintTooltipContent = ({
     )
 }
 
+const tooltipProps: IconTooltipProps['tooltipProps'] = {
+    innerProps: {
+        innerClassName: css.innerTooltip,
+        boundariesElement: 'window',
+    },
+    delay: hintTooltipDelay,
+    autohide: false,
+    placement: 'top-start',
+}
+
 export const HintTooltip = ({ title, link, linkText, className }: Props) => {
     return (
         <IconTooltip
-            tooltipProps={{
-                innerProps: {
-                    innerClassName: classnames(css.innerTooltip),
-                    boundariesElement: 'window',
-                },
-                delay: hintTooltipDelay,
-                autohide: false,
-                placement: 'top-start',
-            }}
+            tooltipProps={tooltipProps}
             className={classnames(css.tooltip, className)}
         >
             <HintTooltipContent title={title} link={link} linkText={linkText} />

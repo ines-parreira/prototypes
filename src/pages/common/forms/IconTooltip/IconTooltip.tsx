@@ -1,16 +1,14 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode, useRef } from 'react'
 
 import classnames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
-
 import css from './IconTooltip.less'
 
-type TooltipProps = ComponentProps<typeof Tooltip>
+type TooltipProps = Omit<ComponentProps<typeof Tooltip>, 'target'>
 
-type Props = {
+export type IconTooltipProps = {
     children: ReactNode
     className?: string
     icon?: string
@@ -23,31 +21,28 @@ const IconTooltip = ({
     className,
     icon = 'info',
     tooltipProps,
-}: Props) => {
-    const id = useId()
-    const tooltipId = 'tooltip-' + id
+}: IconTooltipProps) => {
+    const targetRef = useRef<HTMLDivElement>(null)
 
     return (
-        <div className={classnames(css.wrapper, className)}>
-            <i
-                id={tooltipId}
-                className={classnames('material-icons-outlined', css.icon)}
+        <>
+            <div
+                ref={targetRef}
+                className={classnames(css.wrapper, className)}
                 onClick={(e) => e.stopPropagation()}
             >
-                {icon}
-            </i>
+                <i className={classnames('material-icons-outlined', css.icon)}>
+                    {icon}
+                </i>
+            </div>
             <Tooltip
-                target={tooltipId}
-                innerProps={{
-                    style: {
-                        textAlign: 'left',
-                    },
-                }}
                 {...tooltipProps}
+                target={targetRef}
+                container={window.document.body}
             >
                 {children}
             </Tooltip>
-        </div>
+        </>
     )
 }
 

@@ -75,7 +75,12 @@ export const DrillDownModalTrigger = ({
             })}
             onClick={openDrillDownModal}
         >
-            <Tooltip delay={hintTooltipDelay} target={targetId}>
+            <Tooltip
+                delay={hintTooltipDelay}
+                target={targetId}
+                innerProps={{ boundariesElement: 'window' }}
+                container={window.document.body}
+            >
                 {tooltipText}
             </Tooltip>
             {children}

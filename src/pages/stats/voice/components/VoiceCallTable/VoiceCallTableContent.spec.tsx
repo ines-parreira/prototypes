@@ -200,7 +200,7 @@ describe('VoiceCallTableContent', () => {
 
     it('should render table tooltips', async () => {
         const { getAllByText, getByText } = renderComponent()
-        const helpIcons = getAllByText('info_outline')
+        const helpIcons = getAllByText('info')
 
         // State tooltip
         fireEvent.mouseOver(helpIcons[0])

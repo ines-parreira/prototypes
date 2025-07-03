@@ -1,13 +1,13 @@
-import React, { HTMLProps, ReactNode, useRef } from 'react'
+import { HTMLProps, ReactNode } from 'react'
 
 import classnames from 'classnames'
-
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { OrderDirection } from 'models/api/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
-import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
+import IconTooltip, {
+    IconTooltipProps,
+} from 'pages/common/forms/IconTooltip/IconTooltip'
 
 type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
@@ -25,6 +25,12 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     height?: 'comfortable' | 'compact'
 }
 
+const tooltipProps: IconTooltipProps['tooltipProps'] = {
+    innerProps: { boundariesElement: 'window' },
+    autohide: false,
+    placement: 'top-start',
+}
+
 export default function HeaderCellProperty({
     children,
     className,
@@ -39,8 +45,6 @@ export default function HeaderCellProperty({
     isSticky = false,
     ...otherProps
 }: Props) {
-    const tooltipRef = useRef<HTMLElement>(null)
-
     return (
         <HeaderCell
             {...otherProps}
@@ -67,12 +71,12 @@ export default function HeaderCellProperty({
                         {title}
                     </span>
                     {tooltip && (
-                        <span>
-                            <StatsHelpIcon ref={tooltipRef} />
-                            <Tooltip target={tooltipRef} autohide={false}>
-                                {tooltip}
-                            </Tooltip>
-                        </span>
+                        <IconTooltip
+                            tooltipProps={tooltipProps}
+                            className={css.tooltip}
+                        >
+                            {tooltip}
+                        </IconTooltip>
                     )}
                     <i
                         className={classnames(

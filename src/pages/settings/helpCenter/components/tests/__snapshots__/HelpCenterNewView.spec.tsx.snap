@@ -60,7 +60,6 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             >
               <i
                 class="material-icons-outlined icon"
-                id="tooltip-1"
               >
                 info
               </i>
@@ -72,7 +71,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                 <input
                   class="input"
                   data-testid="name"
-                  id="input-text-2"
+                  id="input-text-1"
                   name="name"
                   placeholder="e.g. My brand name"
                   required=""

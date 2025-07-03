@@ -6,7 +6,6 @@ exports[`<IconTooltip /> should render an Icon 1`] = `
 >
   <i
     class="material-icons-outlined icon"
-    id="tooltip-42"
   >
     info
   </i>
