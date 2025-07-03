@@ -11,7 +11,6 @@ import {
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { hasAtLeastOneShopifyStore } from 'pages/aiAgent/trial/utils/utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -31,7 +30,6 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 jest.mock('hooks/useAppSelector')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
-jest.mock('pages/aiAgent/trial/utils/utils')
 
 // Mock utility functions
 jest.mock('utils', () => ({
@@ -48,7 +46,6 @@ const mockUseAtLeastOneStoreHasActiveTrial = assumeMock(
 )
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseStoreConfigurations = assumeMock(useStoreConfigurations)
-const mockHasAtLeastOneShopifyStore = assumeMock(hasAtLeastOneShopifyStore)
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
 
@@ -122,9 +119,6 @@ describe('useShoppingAssistantTrialAccess', () => {
             storeNames: ['Test Store'],
             isLoading: false,
         })
-        mockHasAtLeastOneShopifyStore.mockReturnValue([
-            mockStoreActivations.store1,
-        ])
         mockIsAdmin.mockReturnValue(true)
         mockIsTeamLead.mockReturnValue(false)
     })
@@ -336,22 +330,7 @@ describe('useShoppingAssistantTrialAccess', () => {
         })
     })
 
-    describe('when store conditions are not met', () => {
-        it('should return false when no Shopify stores exist', () => {
-            mockHasAtLeastOneShopifyStore.mockReturnValue([])
-
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
-
-            expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-            })
-        })
-
+    describe('AI Agent on chat requirements', () => {
         it('should return false for system banner when no AI Agent on chat', () => {
             mockUseStoreConfigurations.mockReturnValue({
                 storeConfigurations: [
@@ -384,7 +363,6 @@ describe('useShoppingAssistantTrialAccess', () => {
             // NOTE: This test documents current behavior with placeholder trial history
             // Once proper trial history API is implemented, this test should be updated
             // to expect false values when hasAlreadyCompletedTrial is true
-
             const { result } = renderHook(() =>
                 useShoppingAssistantTrialAccess(),
             )

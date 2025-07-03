@@ -32,6 +32,7 @@ export type UpgradePlanModalProps = {
     currentPlan: PlanDetails
     newPlan: PlanDetails
     showTermsCheckbox?: boolean
+    isLoading?: boolean
 }
 
 const PlanSection: React.FC<{
@@ -42,6 +43,7 @@ const PlanSection: React.FC<{
     isTermsChecked?: boolean
     onTermsChange?: (checked: boolean) => void
     buttonIntent?: 'primary' | 'secondary'
+    isLoading?: boolean
 }> = ({
     plan,
     isNewPlan = false,
@@ -50,6 +52,7 @@ const PlanSection: React.FC<{
     isTermsChecked = false,
     onTermsChange,
     buttonIntent = 'primary',
+    isLoading = false,
 }) => {
     const tooltipId = `${isNewPlan ? 'new' : 'current'}-plan-price-tooltip`
     const priceContainerRef = useRef<HTMLDivElement>(null)
@@ -109,6 +112,7 @@ const PlanSection: React.FC<{
                     isDisabled={
                         isNewPlan && showTermsCheckbox && !isTermsChecked
                     }
+                    isLoading={isLoading}
                     onClick={onButtonClick}
                     intent={buttonIntent}
                     className={
@@ -162,6 +166,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
     currentPlan,
     newPlan,
     showTermsCheckbox = true,
+    isLoading = false,
 }) => {
     const canduId = 'upgrade-plan-modal'
     const [isTermsChecked, setIsTermsChecked] = useState(false)
@@ -180,6 +185,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                         showTermsCheckbox={showTermsCheckbox}
                         isTermsChecked={isTermsChecked}
                         onTermsChange={setIsTermsChecked}
+                        isLoading={isLoading}
                     />
                 </div>
                 <div className={css.currentPlan}>

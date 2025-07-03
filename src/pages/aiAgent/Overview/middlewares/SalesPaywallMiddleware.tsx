@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
@@ -20,8 +20,11 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SALES } from 'pages/aiAgent/constants'
+import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
@@ -62,12 +65,9 @@ export const SalesPaywallMiddleware =
         const history = useHistory()
         const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
-        const [isTrialModalRevampOpen, setIsTrialModalRevampOpen] =
-            useState(false)
-
         const accountDomain = currentAccount.get('domain')
 
-        const onSuccess = () => {
+        const onSuccessOriginal = () => {
             trialModal.openModal(AI_TRIAL_MODAL_NAME, false)
         }
 
@@ -88,16 +88,29 @@ export const SalesPaywallMiddleware =
         } = useActivateAiAgentTrial({
             accountDomain,
             storeActivations,
-            onSuccess,
+            onSuccess: onSuccessOriginal,
         })
 
         const displayTrialButton = isShoppingAssistantTrialRevampEnabled
             ? canSeeTrialCTA
             : canStartTrialOriginal || canStartTrialFromFeatureFlag
 
+        const {
+            startTrial: startRevampTrial,
+            isLoading: isTrialRevampLoading,
+            isTrialModalOpen,
+            isSuccessModalOpen,
+            closeUpgradeModal,
+            closeSuccessModal,
+            openUpgradeModal,
+        } = useShoppingAssistantTrialFlow({
+            accountDomain,
+            storeActivations,
+        })
+
         const onStartTrialClicked = () => {
             if (isShoppingAssistantTrialRevampEnabled) {
-                setIsTrialModalRevampOpen(true)
+                openUpgradeModal()
             } else {
                 startTrialOriginal()
             }
@@ -137,6 +150,8 @@ export const SalesPaywallMiddleware =
             autoDestroy: false,
         })
 
+        const { upgradePlanModal, trialActivatedModal } = useTrialModalProps()
+
         if (!hasAutomate) {
             return (
                 <PaywallWrapper>
@@ -149,45 +164,19 @@ export const SalesPaywallMiddleware =
 
         return (
             <>
-                {isTrialModalRevampOpen && (
+                {isTrialModalOpen && (
                     <UpgradePlanModal
-                        title="Try Shopping Assistant for 14 days at no additional cost"
-                        onClose={() => {
-                            setIsTrialModalRevampOpen(false)
-                        }}
-                        onConfirm={() => {
-                            setIsTrialModalRevampOpen(false)
-                        }}
-                        currentPlan={{
-                            title: 'Support Agent',
-                            description:
-                                'Provide best-in-class automated support',
-                            price: '$450',
-                            billingPeriod: 'month',
-                            features: [
-                                '2000 automated interactions',
-                                'Deliver instant answers to repetitive questions and improve customer satisfaction',
-                                'Automatically handle orders, returns, and subscriptions quickly, 24/7',
-                            ],
-                            buttonText: 'Keep current plan',
-                        }}
-                        newPlan={{
-                            title: 'Support Agent and Shopping Assistant ',
-                            description:
-                                'Unlock full potential to drive more sales',
-                            price: '$530',
-                            billingPeriod: 'month after trial ends',
-                            features: [
-                                'Everything in Support Agent skills',
-                                'Proactively engage with customers to guide discovery',
-                                'Personalize recommendations with rich customer insights',
-                                'Intelligent upsell using customer input, not guesswork',
-                                'Offer discounts based on purchase intent',
-                            ],
-                            buttonText: 'Try for 14 days',
-                            priceTooltipText:
-                                'Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a $X.XX helpdesk fee.',
-                        }}
+                        {...upgradePlanModal}
+                        onClose={closeUpgradeModal}
+                        onConfirm={startRevampTrial}
+                        isLoading={isTrialRevampLoading}
+                    />
+                )}
+
+                {isSuccessModalOpen && (
+                    <TrialActivatedModal
+                        {...trialActivatedModal}
+                        onConfirm={closeSuccessModal}
                     />
                 )}
                 <PaywallWrapperComponent

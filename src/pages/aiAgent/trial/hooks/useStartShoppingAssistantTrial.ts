@@ -13,18 +13,11 @@ type Params = {
 
 const TRIAL_DURATION = 14 * 24 * 60 * 60 * 1000
 
-/**
- * @deprecated Use {@link useStartShoppingAssistantTrial} instead
- */
-export const useStartAiSalesAgentTrialForMultipleStores = () => {
+export const useStartShoppingAssistantTrial = () => {
     return useMutation<void, Error, Params>(
         async ({ accountDomain, storeActivations }) => {
-            const storesEligibleForTrial = Object.values(
-                storeActivations,
-            ).filter(
-                (storeActivation) =>
-                    !storeActivation.support.chat.isIntegrationMissing,
-            )
+            // TODO: check if the store has a trial already active
+            const storesEligibleForTrial = Object.values(storeActivations)
 
             await Promise.all(
                 storesEligibleForTrial.map((storeActivation) =>

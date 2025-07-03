@@ -4,11 +4,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpdeskPlanTier } from 'models/billing/types'
-import {
-    useStoreActivations,
-    useStoreConfigurations,
-} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { hasAtLeastOneShopifyStore } from 'pages/aiAgent/trial/utils/utils'
+import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -48,9 +44,6 @@ export const useShoppingAssistantTrialAccess =
         const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
         const currentAccount = useAppSelector(getCurrentAccountState)
         const accountDomain = currentAccount.get('domain')
-
-        // Get store activations (contextual based current page)
-        const { storeActivations } = useStoreActivations()
 
         // Get all store configurations to check trial history
         const { storeConfigurations } = useStoreConfigurations(accountDomain)
@@ -96,10 +89,6 @@ export const useShoppingAssistantTrialAccess =
         const isAiShoppingAssistantTrialMerchantsEnabled =
             flags[FeatureFlagKey.AiShoppingAssistantTrialMerchants]
 
-        // Check if at least one Shopify store exists
-        const shopifyStores = hasAtLeastOneShopifyStore(storeActivations)
-        const hasShopifyStore = shopifyStores.length > 0
-
         // Check if AI Agent is being used on chat (any store with monitored chat integrations)
         const isUsingAiAgentOnChat = storeConfigurations.some(
             (config) => config.monitoredChatIntegrations.length > 0,
@@ -110,7 +99,6 @@ export const useShoppingAssistantTrialAccess =
             isAdminUser &&
                 isOnUsd5Plan &&
                 isOnStarterOrBasicPlan &&
-                hasShopifyStore &&
                 isUsingAiAgentOnChat,
         )
 
@@ -119,8 +107,7 @@ export const useShoppingAssistantTrialAccess =
             isAdminUser &&
                 isOnUsd5Plan &&
                 (isOnStarterOrBasicPlan ||
-                    isAiShoppingAssistantTrialMerchantsEnabled) &&
-                hasShopifyStore,
+                    isAiShoppingAssistantTrialMerchantsEnabled),
         )
 
         // Team leads can notify admin if trial CTA conditions are met (except admin check)
@@ -128,8 +115,7 @@ export const useShoppingAssistantTrialAccess =
             isTeamLeadUser &&
                 isOnUsd5Plan &&
                 (isOnStarterOrBasicPlan ||
-                    isAiShoppingAssistantTrialMerchantsEnabled) &&
-                hasShopifyStore,
+                    isAiShoppingAssistantTrialMerchantsEnabled),
         )
 
         // Pro+ Admins without feature flag can book a demo
@@ -137,8 +123,7 @@ export const useShoppingAssistantTrialAccess =
             isAdminUser &&
                 isOnUsd5Plan &&
                 isOnProPlusPlan &&
-                !isAiShoppingAssistantTrialMerchantsEnabled &&
-                hasShopifyStore,
+                !isAiShoppingAssistantTrialMerchantsEnabled,
         )
 
         return {
