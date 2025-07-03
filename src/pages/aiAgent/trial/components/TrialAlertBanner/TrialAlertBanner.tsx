@@ -9,6 +9,8 @@ import css from './TrialAlertBanner.less'
 type Action = {
     label: string
     disabled?: boolean
+    isLoading?: boolean
+    loadingLabel?: string
     variant?: 'primary' | 'secondary'
     onClick: () => void
 }
@@ -52,9 +54,16 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                                 intent="primary"
                                 fillStyle="fill"
                                 onClick={primaryAction.onClick}
-                                className={css.primaryActionButton}
+                                className={
+                                    primaryAction.isLoading
+                                        ? undefined
+                                        : css.primaryActionButton
+                                }
+                                isLoading={primaryAction.isLoading}
                             >
-                                {primaryAction.label}
+                                {primaryAction.isLoading
+                                    ? primaryAction.loadingLabel
+                                    : primaryAction.label}
                             </Button>
                         )}
                         {collapsible && (
@@ -95,9 +104,16 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                 {primaryAction && (
                     <Button
                         onClick={primaryAction.onClick}
-                        className={css.primaryActionButton}
+                        className={
+                            primaryAction.isLoading
+                                ? undefined
+                                : css.primaryActionButton
+                        }
+                        isLoading={primaryAction.isLoading}
                     >
-                        {primaryAction.label}
+                        {primaryAction.isLoading
+                            ? primaryAction.loadingLabel
+                            : primaryAction.label}
                     </Button>
                 )}
                 {secondaryAction && (
@@ -105,9 +121,16 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                         onClick={secondaryAction.onClick}
                         fillStyle="ghost"
                         intent="secondary"
-                        className={css.secondaryActionButton}
+                        className={
+                            secondaryAction.isLoading
+                                ? undefined
+                                : css.secondaryActionButton
+                        }
+                        isLoading={secondaryAction.isLoading}
                     >
-                        {secondaryAction.label}
+                        {secondaryAction.isLoading
+                            ? secondaryAction.loadingLabel
+                            : secondaryAction.label}
                     </Button>
                 )}
             </div>

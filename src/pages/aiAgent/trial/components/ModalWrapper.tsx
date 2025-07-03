@@ -17,7 +17,10 @@ export const ModalWrapper = ({
     ...props
 }: ModalProps & { children: React.ReactNode }) => {
     return (
-        <Modal contentClassName={css.modal} {...props}>
+        <Modal
+            contentClassName={classNames(css.modal, props.contentClassName)}
+            {...props}
+        >
             {children}
         </Modal>
     )
@@ -48,7 +51,10 @@ export const ModalBodyWrapper = ({
     ...props
 }: ModalBodyProps & { children: React.ReactNode }) => {
     return (
-        <ModalBody className={css.modalBody} {...props}>
+        <ModalBody
+            className={classNames(css.modalBody, props.className)}
+            {...props}
+        >
             {children}
         </ModalBody>
     )
@@ -59,7 +65,10 @@ export const ModalFooterWrapper = ({
     ...props
 }: ModalFooterProps & { children: React.ReactNode }) => {
     return (
-        <ModalFooter className={css.modalFooter} {...props}>
+        <ModalFooter
+            className={classNames(css.modalFooter, props.className)}
+            {...props}
+        >
             {children}
         </ModalFooter>
     )

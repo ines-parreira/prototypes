@@ -1,0 +1,99 @@
+@import (reference) '~css/typography';
+
+:local {
+    .modal {
+        width: 800px;
+        min-width: 800px;
+    }
+
+    .modalBody {
+        display: flex;
+        width: 100%;
+    }
+
+    .leftSide {
+        width: 55%;
+        padding: var(--layout-spacing-m) 40px var(--layout-spacing-m)
+            var(--layout-spacing-m);
+    }
+
+    .rightSide {
+        width: 45%;
+        padding: var(--layout-spacing-m);
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+        align-items: center;
+    }
+
+    .advantages {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-m) var(--layout-spacing-s);
+
+        border-radius: var(--Border-radius-XL, 12px);
+        border: 2px solid transparent;
+        background:
+            linear-gradient(90deg, #fff4e6 0%, #f9eaff 60%, #ffe3fa 100%)
+                padding-box,
+            linear-gradient(90deg, #ff9a57, #a084e1, #fc8ae9) border-box;
+        background-clip: padding-box, border-box;
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+    }
+
+    .advantagesCenter {
+        align-items: center;
+    }
+
+    .advantage {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .icon {
+        color: var(--feedback-success);
+        font-size: 24px;
+    }
+
+    .advantageValue {
+        color: var(--neutral-grey-6);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+        letter-spacing: -0.4px;
+    }
+
+    .primaryActionButton {
+        background-color: var(--neutral-grey-6) !important;
+        color: var(--neutral-grey-0) !important;
+        border-color: var(--neutral-grey-6) !important;
+        height: 36px;
+        padding: var(--layout-spacing-xs) 12px;
+    }
+
+    .secondaryActionButton {
+        height: 36px;
+        padding: var(--layout-spacing-xs) 12px;
+    }
+
+    .description {
+        display: flex;
+        height: 100%;
+        align-items: center;
+
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+
+    .secondaryDescription {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        color: var(--neutral-grey-5);
+    }
+}

@@ -226,6 +226,189 @@ describe('TrialAlertBanner', () => {
         expect(button).toBeInTheDocument()
     })
 
+    it('should show loading state for primary action when isLoading is true', () => {
+        const props = {
+            ...defaultProps,
+            primaryAction: {
+                label: 'Primary Action',
+                loadingLabel: 'Loading...',
+                onClick: jest.fn(),
+                isLoading: true,
+            },
+        }
+
+        render(<TrialAlertBanner {...props} />)
+
+        const button = screen.getByRole('button', {
+            name: 'Loading... Loading...',
+        })
+        expect(button).toBeInTheDocument()
+        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
+    })
+
+    it('should show loading state for secondary action when isLoading is true', () => {
+        const props = {
+            ...defaultProps,
+            secondaryAction: {
+                label: 'Secondary Action',
+                loadingLabel: 'Processing...',
+                onClick: jest.fn(),
+                isLoading: true,
+            },
+        }
+
+        render(<TrialAlertBanner {...props} />)
+
+        const button = screen.getByRole('button', {
+            name: 'Loading... Processing...',
+        })
+        expect(button).toBeInTheDocument()
+        expect(screen.queryByText('Secondary Action')).not.toBeInTheDocument()
+    })
+
+    it('should show loading state for both actions when isLoading is true', () => {
+        const props = {
+            ...defaultProps,
+            primaryAction: {
+                label: 'Primary Action',
+                loadingLabel: 'Primary Loading...',
+                onClick: jest.fn(),
+                isLoading: true,
+            },
+            secondaryAction: {
+                label: 'Secondary Action',
+                loadingLabel: 'Secondary Loading...',
+                onClick: jest.fn(),
+                isLoading: true,
+            },
+        }
+
+        render(<TrialAlertBanner {...props} />)
+
+        expect(
+            screen.getByRole('button', {
+                name: 'Loading... Primary Loading...',
+            }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {
+                name: 'Loading... Secondary Loading...',
+            }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
+        expect(screen.queryByText('Secondary Action')).not.toBeInTheDocument()
+    })
+
+    it('should show loading state in collapsed view for primary action', async () => {
+        const user = userEvent.setup()
+        const props = {
+            ...defaultProps,
+            primaryAction: {
+                label: 'Primary Action',
+                loadingLabel: 'Loading...',
+                onClick: jest.fn(),
+                isLoading: true,
+            },
+        }
+
+        render(<TrialAlertBanner {...props} />)
+
+        // Collapse the banner
+        await act(async () => {
+            await user.click(screen.getByText('expand_less'))
+        })
+
+        // Should still show loading state in collapsed view
+        expect(
+            screen.getByRole('button', { name: 'Loading... Loading...' }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
+    })
+
+    it('should not show loading state when isLoading is false', () => {
+        const props = {
+            ...defaultProps,
+            primaryAction: {
+                label: 'Primary Action',
+                loadingLabel: 'Loading...',
+                onClick: jest.fn(),
+                isLoading: false,
+            },
+        }
+
+        render(<TrialAlertBanner {...props} />)
+
+        expect(
+            screen.getByRole('button', { name: 'Primary Action' }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+    })
+
+    it('should not show loading state when loadingLabel is not provided', () => {
+        const props = {
+            ...defaultProps,
+            primaryAction: {
+                label: 'Primary Action',
+                onClick: jest.fn(),
+                isLoading: true,
+            },
+        }
+
+        render(<TrialAlertBanner {...props} />)
+
+        // When loadingLabel is not provided, it should fall back to the regular label
+        expect(
+            screen.getByRole('button', { name: 'Loading...' }),
+        ).toBeInTheDocument()
+    })
+
+    it('should handle loading state transition', async () => {
+        const mockOnClick = jest.fn()
+        const props = {
+            ...defaultProps,
+            primaryAction: {
+                label: 'Primary Action',
+                loadingLabel: 'Loading...',
+                onClick: mockOnClick,
+                isLoading: false,
+            },
+        }
+
+        const { rerender } = render(<TrialAlertBanner {...props} />)
+
+        // Initially not loading
+        expect(
+            screen.getByRole('button', { name: 'Primary Action' }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+
+        // Update to loading state
+        const loadingProps = {
+            ...props,
+            primaryAction: {
+                ...props.primaryAction,
+                isLoading: true,
+            },
+        }
+
+        rerender(<TrialAlertBanner {...loadingProps} />)
+
+        // Should now show loading state
+        expect(
+            screen.getByRole('button', { name: 'Loading... Loading...' }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
+
+        // Update back to not loading
+        rerender(<TrialAlertBanner {...props} />)
+
+        // Should show original label again
+        expect(
+            screen.getByRole('button', { name: 'Primary Action' }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+    })
+
     it('should handle variant prop for primary action', () => {
         const props = {
             ...defaultProps,
