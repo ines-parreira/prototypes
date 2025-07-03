@@ -2964,6 +2964,52 @@ describe('errors', () => {
                 },
             })
         })
+
+        it('should not add an error for number type condition with exists operator', () => {
+            const edges: VisualBuilderEdge[] = [
+                {
+                    ...buildEdgeCommonProperties(),
+                    id: 'edge1',
+                    source: 'node1',
+                    target: 'node2',
+                    data: {
+                        name: 'Branch name',
+                        conditions: {
+                            and: [{ exists: [{ var: 'variable1' }] }],
+                        },
+                    },
+                },
+            ]
+            const node: ConditionsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'node1',
+                type: 'conditions',
+                data: {
+                    touched: {
+                        branches: {
+                            edge1: {
+                                name: true,
+                                conditions: {
+                                    0: true,
+                                },
+                            },
+                        },
+                    },
+                    name: '',
+                },
+            }
+
+            const errors = getConditionsNodeErrors(edges, node, [
+                {
+                    type: 'number',
+                    value: 'variable1',
+                    nodeType: 'http_request',
+                    name: '',
+                },
+            ])
+
+            expect(errors).toEqual(null)
+        })
     })
 
     describe('getChannelTriggerNodeErrors()', () => {

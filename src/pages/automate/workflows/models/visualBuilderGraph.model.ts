@@ -2240,7 +2240,9 @@ export function getConditionsNodeErrors(
                         )
                     } else if (
                         variable.type === 'number' &&
-                        typeof schema[1] !== 'number'
+                        typeof schema[1] !== 'number' &&
+                        key !== 'exists' &&
+                        key !== 'doesNotExist'
                     ) {
                         errors = mergeErrors(
                             errors,
