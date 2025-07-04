@@ -229,7 +229,7 @@ describe('knowledgeService queries', () => {
             expect(result.current.data).toEqual(mockResponse.data)
         })
 
-        it('should use correct stale and cache times', async () => {
+        it('should use correct stale and cache times with refetch prevention', async () => {
             const useQuerySpy = jest.spyOn(
                 require('@tanstack/react-query'),
                 'useQuery',
@@ -239,8 +239,9 @@ describe('knowledgeService queries', () => {
 
             expect(useQuerySpy).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    staleTime: STALE_TIME_MS,
+                    staleTime: Infinity,
                     cacheTime: CACHE_TIME_MS,
+                    refetchOnWindowFocus: false,
                 }),
             )
         })
@@ -267,6 +268,7 @@ describe('knowledgeService queries', () => {
                 expect.objectContaining({
                     staleTime: customStaleTime,
                     retry: customRetry,
+                    refetchOnWindowFocus: false,
                 }),
             )
         })
@@ -282,6 +284,27 @@ describe('knowledgeService queries', () => {
             expect(useQuerySpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     queryKey: feedbackDefinitionKeys.earliestExecution(),
+                }),
+            )
+        })
+
+        it('should allow overriding refetch behaviors', async () => {
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(
+                () =>
+                    useGetEarliestExecution({
+                        refetchOnWindowFocus: true,
+                    }),
+                { wrapper },
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    refetchOnWindowFocus: true,
                 }),
             )
         })

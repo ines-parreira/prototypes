@@ -115,8 +115,9 @@ export const useGetEarliestExecution = (
             )
             return response.data
         },
-        staleTime: STALE_TIME_MS,
+        staleTime: Infinity, // The earliest execution is not updated so getting it once is enough.
         cacheTime: CACHE_TIME_MS,
+        refetchOnWindowFocus: false, // Prevent refetch when switching browser tabs
         ...overrides,
     })
 }
