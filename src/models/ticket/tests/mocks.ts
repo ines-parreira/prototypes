@@ -42,6 +42,7 @@ export const message: TicketMessage = {
     stripped_html: null,
     stripped_text: null,
     attachments: [],
+    auth_customer_identity: null,
 }
 
 export const facebookMessageNoMeta: TicketMessage = {
@@ -87,6 +88,7 @@ export const facebookMessageNoMeta: TicketMessage = {
     stripped_html: null,
     stripped_text: null,
     attachments: [],
+    auth_customer_identity: null,
 }
 
 export const facebookMessageWithCustomerReaction = {

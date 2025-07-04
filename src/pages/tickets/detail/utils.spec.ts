@@ -52,6 +52,7 @@ describe('isShoppingAssistantEvent', () => {
             opened_datetime: null,
             is_retriable: false,
             isMessage: true,
+            auth_customer_identity: null,
         }
 
         expect(isShoppingAssistantEvent(message)).toBe(false)

@@ -661,6 +661,7 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
             {
               "actions": null,
               "attachments": [],
+              "auth_customer_identity": null,
               "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
               "body_text": "Hi! How are you?",
               "channel": "email",
@@ -2023,6 +2024,7 @@ exports[`actions new message prepareTicketDataToSend() should add email extra to
         {
           "actions": null,
           "attachments": [],
+          "auth_customer_identity": null,
           "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
           "body_text": "Hi! How are you?",
           "channel": "email",
@@ -2086,6 +2088,7 @@ exports[`actions new message prepareTicketDataToSend() should add email extra to
           {
             "actions": null,
             "attachments": [],
+            "auth_customer_identity": null,
             "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
             "body_text": "Hi! How are you?",
             "channel": "email",

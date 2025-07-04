@@ -69,6 +69,7 @@ describe('useInsertShoppingAssistantEventElements', () => {
         stripped_text: null,
         attachments: [],
         body_text: content,
+        auth_customer_identity: null,
     })
 
     beforeEach(() => {

@@ -75,6 +75,7 @@ export const ticket: Ticket = {
             rule_id: null,
             is_retriable: false,
             isMessage: true,
+            auth_customer_identity: null,
         },
     ],
     uri: '/api/tickets/0/',

@@ -1,4 +1,8 @@
-import { SatisfactionSurvey, Tag } from '@gorgias/helpdesk-queries'
+import {
+    SatisfactionSurvey,
+    Tag,
+    TicketMessageAuthCustomerIdentityProperty,
+} from '@gorgias/helpdesk-queries'
 
 import {
     TicketChannel,
@@ -127,6 +131,7 @@ export type TicketMessage = {
     }
     isMessage: boolean
     intents?: TicketMessageIntent[]
+    auth_customer_identity: TicketMessageAuthCustomerIdentityProperty
 }
 
 export type TicketMessageIntent = {

@@ -121,6 +121,7 @@ describe('TicketMessageEmbeddedCard utils', () => {
             failed_datetime: null,
             isMessage: true,
             rule_id: null,
+            auth_customer_identity: null,
         }
 
         it('should map TicketMessage for Quoted Tweet to EmbeddedCard', () => {
