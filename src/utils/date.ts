@@ -105,6 +105,7 @@ export const subtractDaysFromDate = (date: string, daysToSubtract: number) => {
         .parseZone(date)
         .utcOffset(0, true)
         .subtract(daysToSubtract, 'days')
+        .toISOString()
 }
 
 export const shortenRelativeDurationLabel = (duration: string | null) => {

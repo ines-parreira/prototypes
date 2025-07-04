@@ -69,18 +69,18 @@ describe('date utils', () => {
             const date = '2022-12-16T00:00:00Z'
             const expectedResult = moment
                 .parseZone('2022-12-11T00:00:00Z')
-                .utcOffset(0, true)
+                .toISOString()
 
             const result = subtractDaysFromDate(date, 5)
 
-            expect(result.toISOString()).toEqual(expectedResult.toISOString())
+            expect(result).toEqual(expectedResult)
         })
 
         it('should return the same date when subtracting 0 days', () => {
             const date = '2022-12-16T00:00:00Z'
             const expectedResult = moment
                 .parseZone('2022-12-16T00:00:00Z')
-                .utcOffset(0, true)
+                .toISOString()
 
             const result = subtractDaysFromDate(date, 0)
 
