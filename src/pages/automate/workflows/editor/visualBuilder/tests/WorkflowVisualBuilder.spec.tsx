@@ -1,116 +1,100 @@
-import React from 'react'
+import { screen, waitFor } from '@testing-library/react'
 
-import { screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
-import { fromJS } from 'immutable'
-import { keyBy } from 'lodash'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
-import { billingState } from 'fixtures/billing'
-import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import { visualBuilderGraphSimpleChoicesFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
-import { RootState } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-
-import WorkflowVisualBuilder from '../WorkflowVisualBuilder'
-
-const mockStore = configureMockStore([thunk])
-
-const defaultState = {
-    integrations: fromJS({
-        integrations: [],
-    }),
-
-    billing: fromJS(billingState),
-} as RootState
-
-const contactForm = ContactFormFixture
-const mockedStore = mockStore({
-    ...defaultState,
-    entities: {
-        contactForm: {
-            contactFormsAutomationSettings: {
-                automationSettingsByContactFormId: {
-                    [contactForm.id]: {
-                        workflows: [],
-                        order_management: { enabled: false },
-                    },
-                },
-            },
-            contactForms: {
-                contactFormById: keyBy([contactForm], 'id'),
-            },
-        },
-    },
-})
-
-const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
-    const history = createMemoryHistory({ initialEntries: [route] })
-    return {
-        ...renderWithQueryClientProvider(
-            <Provider store={mockedStore}>
-                <Router history={history}>{ui}</Router>
-            </Provider>,
-        ),
-        history,
-    }
-}
+import {
+    edgeHelpers,
+    nodeHelpers,
+    renderVisualBuilder,
+} from 'pages/automate/workflows/utils/testVisualBuilderScaffolding'
 
 describe('<WorkflowVisualBuilder />', () => {
-    it('should render template preview', () => {
-        renderWithRouter(
-            <WorkflowEditorContext.Provider
-                value={{
-                    configuration: {
-                        available_languages: ['en-GB'],
-                        id: '0000',
-                        initial_step_id: '1',
-                        internal_id: '0000',
-                        is_draft: false,
-                        name: 'name',
-                        steps: [],
-                        transitions: [],
-                    },
-                    configurationSizeToLimitRate: 500,
-                    currentLanguage: 'en-GB',
-                    deleteTranslation: jest.fn(),
-                    dispatch: jest.fn(),
-                    handleDiscard: jest.fn(),
-                    handlePublish: jest.fn(),
-                    handleSave: jest.fn(),
-                    handleValidate: jest.fn(),
-                    isDirty: false,
-                    isFetchPending: false,
-                    isFlowPublishingInChannels: true,
-                    isPublishPending: false,
-                    isSavePending: false,
-                    isTesting: false,
-                    setFlowPublishingInChannels: jest.fn(),
-                    setIsTesting: jest.fn(),
-                    setWorkflowStepMetrics: jest.fn(),
-                    setZoom: jest.fn(),
-                    switchLanguage: jest.fn(),
-                    translateGraph: jest.fn(),
-                    translateKey: jest.fn(),
-                    translationSizeToLimitRate: 500,
-                    visualBuilderGraph: visualBuilderGraphSimpleChoicesFixture,
-                    workflowStepMetrics: null,
-                    zoom: 1,
-                    handleValidateSize: jest.fn(),
-                }}
-            >
-                <WorkflowVisualBuilder
-                    isNew={false}
-                    dispatch={jest.fn()}
-                    visualBuilderGraph={visualBuilderGraphSimpleChoicesFixture}
-                />
-            </WorkflowEditorContext.Provider>,
-        )
+    describe('Basic workflow rendering', () => {
+        it('should display mini map', () => {
+            renderVisualBuilder({
+                builderType: 'workflow',
+                nodes: [nodeHelpers.message()],
+            })
 
-        expect(screen.getByText('entrypoint')).toBeInTheDocument()
+            expect(screen.getByText('React Flow mini map')).toBeInTheDocument()
+        })
+        it('should render template preview with simple scaffolding', () => {
+            renderVisualBuilder({
+                builderType: 'workflow',
+                nodes: [
+                    nodeHelpers.channelTrigger('entrypoint', 'trigger_button1'),
+                    nodeHelpers.message('Hello World', 'message1'),
+                    nodeHelpers.end('ask-for-feedback', 'end1'),
+                ],
+                edges: [
+                    edgeHelpers.simple('trigger_button1', 'message1'),
+                    edgeHelpers.simple('message1', 'end1'),
+                ],
+            })
+
+            expect(screen.getByText('entrypoint')).toBeInTheDocument()
+        })
+
+        it('renders a simple linear workflow', () => {
+            renderVisualBuilder({
+                builderType: 'workflow',
+                nodes: [
+                    nodeHelpers.channelTrigger('Start Conversation', 'trigger'),
+                    nodeHelpers.message('Welcome to our support!', 'welcome'),
+                    nodeHelpers.message('How can I help you today?', 'help'),
+                    nodeHelpers.end('end', 'end'),
+                ],
+                edges: [
+                    edgeHelpers.simple('trigger', 'welcome'),
+                    edgeHelpers.simple('welcome', 'help'),
+                    edgeHelpers.simple('help', 'end'),
+                ],
+            })
+
+            expect(screen.getByText('Start Conversation')).toBeInTheDocument()
+            expect(
+                screen.getByText('Welcome to our support!'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('How can I help you today?'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Choice-based workflows', () => {
+        it('should render workflow with multiple choices', () => {
+            const { getByText } = renderVisualBuilder({
+                builderType: 'workflow',
+                nodes: [
+                    nodeHelpers.channelTrigger('Start', 'trigger'),
+                    nodeHelpers.choices(
+                        [
+                            { label: 'Option 1', event_id: 'opt1' },
+                            { label: 'Option 2', event_id: 'opt2' },
+                            { label: 'Option 3', event_id: 'opt3' },
+                        ],
+                        'choices1',
+                    ),
+                    nodeHelpers.message('You selected option 1', 'msg1'),
+                    nodeHelpers.message('You selected option 2', 'msg2'),
+                    nodeHelpers.message('You selected option 3', 'msg3'),
+                    nodeHelpers.end('ask-for-feedback', 'end1'),
+                    nodeHelpers.end('ask-for-feedback', 'end2'),
+                    nodeHelpers.end('ask-for-feedback', 'end3'),
+                ],
+                edges: [
+                    edgeHelpers.simple('trigger', 'choices1'),
+                    edgeHelpers.withChoiceEvent('choices1', 'msg1', 'opt1'),
+                    edgeHelpers.withChoiceEvent('choices1', 'msg2', 'opt2'),
+                    edgeHelpers.withChoiceEvent('choices1', 'msg3', 'opt3'),
+                    edgeHelpers.simple('msg1', 'end1'),
+                    edgeHelpers.simple('msg2', 'end2'),
+                    edgeHelpers.simple('msg3', 'end3'),
+                ],
+            })
+
+            waitFor(() => {
+                expect(getByText('Start')).toBeInTheDocument()
+                expect(getByText('Choose an option')).toBeInTheDocument()
+            })
+        })
     })
 })
