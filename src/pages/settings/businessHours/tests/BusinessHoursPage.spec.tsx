@@ -2,9 +2,11 @@ import { screen } from '@testing-library/react'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
 import BusinessHoursPage from '../BusinessHoursPage'
+import { BUSINESS_HOURS_BASE_URL } from '../constants'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
@@ -25,16 +27,33 @@ describe('BusinessHoursPage', () => {
             }
         })
 
-        renderWithStore(<BusinessHoursPage />, {})
+        renderWithStoreAndQueryClientAndRouter(<BusinessHoursPage />, {})
 
         expect(
             screen.queryByText('Custom Business Hours'),
         ).not.toBeInTheDocument()
+        expect(screen.getByText('Add business hours')).toBeInTheDocument()
     })
 
     it('renders CustomBusinessHours when the feature flag is on', () => {
-        renderWithStore(<BusinessHoursPage />, {})
+        renderWithStoreAndQueryClientAndRouter(<BusinessHoursPage />, {})
 
         expect(screen.getByText('Custom Business Hours')).toBeInTheDocument()
+        expect(screen.getByText('Add business hours')).toBeInTheDocument()
+    })
+
+    it('should render the edit custom business hours page', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <BusinessHoursPage />,
+            {},
+            {
+                path: BUSINESS_HOURS_BASE_URL,
+                route: `${BUSINESS_HOURS_BASE_URL}/1`,
+            },
+        )
+
+        expect(
+            screen.getByText('Edit custom business hours'),
+        ).toBeInTheDocument()
     })
 })

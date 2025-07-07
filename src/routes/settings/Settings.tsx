@@ -171,7 +171,7 @@ export function SettingRoutes() {
                         roleParams: [ADMIN_ROLE, PageSection.Access],
                     })}
                 </Route>
-                <Route path={`${path}/business-hours`} exact>
+                <Route path={`${path}/business-hours`}>
                     {renderAppSettings(BusinessHoursPage, {
                         roleParams: [ADMIN_ROLE, PageSection.BusinessHours],
                     })}

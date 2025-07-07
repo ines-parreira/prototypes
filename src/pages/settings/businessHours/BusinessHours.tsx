@@ -25,7 +25,7 @@ import settingsCss from '../settings.less'
 import css from './BusinessHours.less'
 
 type BusinessHoursProps = {
-    children: React.ReactNode
+    children?: React.ReactNode
 }
 
 type Props = ConnectedProps<typeof connector> & BusinessHoursProps

@@ -227,7 +227,7 @@ const testingMap = [
     },
     {
         callOrder: 24,
-        exact: true,
+        exact: false,
         path: `${basePath}/business-hours`,
         component: BusinessHoursPage,
     },

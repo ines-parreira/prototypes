@@ -1,6 +1,8 @@
 import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import { AccountSettingBusinessHours } from 'state/currentAccount/types'
 
+export const BUSINESS_HOURS_BASE_URL = '/app/settings/business-hours'
+
 export const DEFAULT_BUSINESS_HOUR: AccountSettingBusinessHours['data']['business_hours'][number] =
     Object.freeze({
         days: '1,2,3,4,5',
