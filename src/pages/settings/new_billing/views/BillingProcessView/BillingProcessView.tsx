@@ -54,6 +54,7 @@ type BillingProcessViewProps = {
     isCurrentSubscriptionCanceled: boolean
     periodEnd: string
     currentUsage: CurrentProductsUsages
+    setSessionSelectedPlans?: React.Dispatch<SelectedPlans>
 }
 
 export type SelectedPlans = {
@@ -93,6 +94,7 @@ const BillingProcessView = ({
     periodEnd,
     isCurrentSubscriptionCanceled,
     currentUsage,
+    setSessionSelectedPlans,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
     const hasCreditCard = useHasCreditCard()
@@ -303,6 +305,7 @@ const BillingProcessView = ({
                     isSubscriptionUpdating={isSubscriptionUpdating}
                     setUpdateProcessStarted={setUpdateProcessStarted}
                     autoUpgradeChanged={autoUpgradeChanged}
+                    setSessionSelectedPlans={setSessionSelectedPlans}
                 />
             </Card>
         )

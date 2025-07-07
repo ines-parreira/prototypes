@@ -10,7 +10,9 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
+import { ProductType } from 'models/billing/types'
 import { BILLING_BASE_PATH } from 'pages/settings/new_billing/constants'
+import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import { RootState, StoreDispatch } from 'state/types'
 
 import SummaryFooter, { SummaryFooterProps } from '../SummaryFooter'
@@ -128,6 +130,48 @@ describe('SummaryFooter', () => {
         expect(mockUpdateSubscription).toHaveBeenCalled()
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledWith(BILLING_BASE_PATH)
+        })
+    })
+
+    it('calls setSessionSelectedPlans with selectedPlans when subscription is updated', async () => {
+        const mockSetSessionSelectedPlans = jest.fn()
+        const selectedPlans: SelectedPlans = {
+            [ProductType.Helpdesk]: {
+                plan: basicMonthlyHelpdeskPlan,
+                isSelected: true,
+            },
+            [ProductType.Automation]: {
+                isSelected: false,
+            },
+            [ProductType.Voice]: {
+                isSelected: false,
+            },
+            [ProductType.SMS]: {
+                isSelected: false,
+            },
+            [ProductType.Convert]: {
+                isSelected: false,
+            },
+        }
+
+        render(
+            <Provider store={store}>
+                <SummaryFooter
+                    {...props}
+                    anyNewProductSelected={false}
+                    selectedPlans={selectedPlans}
+                    setSessionSelectedPlans={mockSetSessionSelectedPlans}
+                />
+            </Provider>,
+        )
+        const button = screen.getByText('Update Subscription')
+        fireEvent.click(button)
+
+        expect(mockUpdateSubscription).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockSetSessionSelectedPlans).toHaveBeenCalledWith(
+                selectedPlans,
+            )
         })
     })
 })

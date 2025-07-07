@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import moment from 'moment'
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import useSessionStorage from 'hooks/useSessionStorage'
 import { isEnterprise } from 'models/billing/utils'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -54,12 +55,14 @@ import {
     BILLING_PROCESS_PATH,
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
+    SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
     ZAPIER_BILLING_HOOK,
 } from '../../constants'
 import { BillingAddressSetupView } from '../BillingAddressSetupView/BillingAddressSetupView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import BillingInternalView from '../BillingInternalView'
 import BillingProcessView from '../BillingProcessView'
+import { SelectedPlans } from '../BillingProcessView/BillingProcessView'
 import PaymentsHistoryView from '../PaymentHistoryView'
 import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
 import UsageAndPlansView from '../UsageAndPlansView'
@@ -79,6 +82,9 @@ const BillingStartView = () => {
     const payment = useAppSelector(paymentMethod)
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
+    const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
+        SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
+    )
 
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.LongDateWithYear,
@@ -468,6 +474,9 @@ const BillingStartView = () => {
                                 }
                                 periodEnd={periodEnd}
                                 currentUsage={currentUsage}
+                                setSessionSelectedPlans={
+                                    setSessionSelectedPlans
+                                }
                             />
                         </Route>
                         <Route exact path={BILLING_INFORMATION_PATH}>

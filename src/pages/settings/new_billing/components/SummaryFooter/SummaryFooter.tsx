@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useSessionStorage from 'hooks/useSessionStorage'
 import Button from 'pages/common/components/button/Button'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
@@ -19,7 +18,6 @@ import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_BASE_PATH,
     BILLING_PAYMENT_CARD_PATH,
-    SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
 } from '../../constants'
 import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
@@ -48,6 +46,7 @@ export type SummaryFooterProps = {
     setUpdateProcessStarted?: (isStarted: boolean) => void
     autoUpgradeChanged?: boolean
     noRedirect?: boolean
+    setSessionSelectedPlans?: React.Dispatch<SelectedPlans>
 }
 
 const SummaryFooter = ({
@@ -73,11 +72,9 @@ const SummaryFooter = ({
     setUpdateProcessStarted,
     autoUpgradeChanged = false,
     noRedirect = false,
+    setSessionSelectedPlans,
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
-    const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
-        SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
-    )
     const history = useHistory()
     const dispatch = useAppDispatch()
 
@@ -106,7 +103,7 @@ const SummaryFooter = ({
         } catch (error) {
             reportError(error as Error)
         } finally {
-            if (selectedPlans) {
+            if (selectedPlans && setSessionSelectedPlans) {
                 setSessionSelectedPlans(selectedPlans)
             }
 
