@@ -142,12 +142,14 @@ export const executeAction =
     (dispatch: StoreDispatch, getState: () => RootState): string => {
         const state = getState()
         const { ticket } = state
-
         const ticketId = ticket.get('id') as number | undefined
+        const ticketCustomerId = ticket.getIn(['customer', 'id']) as
+            | number
+            | undefined
 
         const actionId = utils.actionButtonHashForData({
             action_name: actionName,
-            user_id: customerId,
+            user_id: customerId || ticketCustomerId?.toString(),
             integration_id: integrationId?.toString(),
             app_id: appId || undefined,
             payload,
@@ -157,7 +159,7 @@ export const executeAction =
             action_name: actionName,
             action_label: actionLabel,
             action_id: actionId,
-            user_id: customerId,
+            user_id: customerId || ticketCustomerId?.toString(),
             ticket_id: ticketId?.toString(),
             integration_id: integrationId?.toString(),
             app_id: appId || undefined,

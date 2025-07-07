@@ -201,6 +201,98 @@ describe('infobar actions', () => {
                 done()
             })
         })
+
+        describe('user_id fallback logic', () => {
+            let postSpy: jest.SpyInstance
+
+            beforeEach(() => {
+                postSpy = jest.spyOn(client, 'post').mockResolvedValue({})
+            })
+
+            afterEach(() => {
+                postSpy.mockRestore()
+            })
+
+            it('should use customerId when provided', () => {
+                const store = mockStore({
+                    infobar: initialState,
+                    ticket: fromJS({
+                        id: 1,
+                        customer: { id: 999 },
+                    }),
+                })
+
+                store.dispatch(
+                    actions.executeAction({
+                        actionName,
+                        integrationId,
+                        customerId: '123',
+                        payload,
+                        callback,
+                    }),
+                )
+
+                expect(postSpy).toHaveBeenCalledWith(
+                    '/api/actions/execute/',
+                    expect.objectContaining({
+                        user_id: '123',
+                    }),
+                )
+            })
+
+            it('should fallback to ticketCustomerId when customerId is undefined', () => {
+                const store = mockStore({
+                    infobar: initialState,
+                    ticket: fromJS({
+                        id: 1,
+                        customer: { id: 654 },
+                    }),
+                })
+
+                store.dispatch(
+                    actions.executeAction({
+                        actionName,
+                        integrationId,
+                        customerId: undefined,
+                        payload,
+                        callback,
+                    }),
+                )
+
+                expect(postSpy).toHaveBeenCalledWith(
+                    '/api/actions/execute/',
+                    expect.objectContaining({
+                        user_id: '654',
+                    }),
+                )
+            })
+
+            it('should not break if either does not exist', () => {
+                const store = mockStore({
+                    infobar: initialState,
+                    ticket: fromJS({
+                        id: 1,
+                    }),
+                })
+
+                store.dispatch(
+                    actions.executeAction({
+                        actionName,
+                        integrationId,
+                        customerId: undefined,
+                        payload,
+                        callback,
+                    }),
+                )
+
+                expect(postSpy).toHaveBeenCalledWith(
+                    '/api/actions/execute/',
+                    expect.objectContaining({
+                        user_id: undefined,
+                    }),
+                )
+            })
+        })
     })
 
     describe('handle executed action', () => {
