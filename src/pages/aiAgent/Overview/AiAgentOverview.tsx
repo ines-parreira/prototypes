@@ -12,6 +12,7 @@ import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSect
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import { Separator } from 'pages/aiAgent/Overview/components/Separator/Separator'
 import { Title } from 'pages/aiAgent/Overview/components/Title/Title'
+import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
@@ -79,11 +80,15 @@ export const AiAgentOverview = () => {
 
     const trialModalProps = useTrialModalProps({ onConfirmTrial })
 
+    const hasNoOnboardedStores = useHasNoOnboardedStores()
+
     return (
         <AiAgentOverviewLayout>
             <Title
                 firstName={currentUser.get('firstname')}
-                activationButton={activationButton}
+                activationButton={
+                    hasNoOnboardedStores ? null : activationButton
+                }
             />
             {(canSeeTrialRevamp || canBookDemo) &&
                 !canSeeTrialStartedBanner && (

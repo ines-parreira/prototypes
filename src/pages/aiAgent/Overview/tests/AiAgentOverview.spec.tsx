@@ -18,6 +18,7 @@ import {
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
@@ -53,6 +54,9 @@ jest.mock('pages/aiAgent/Overview/hooks/useThankYouModal')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('models/billing/queries')
 jest.mock('models/billing/utils')
+
+jest.mock('pages/aiAgent/Overview/hooks/useHasNoOnboardedStores')
+const mockUseHasNoOnboardedStores = jest.mocked(useHasNoOnboardedStores)
 
 const logEventMock = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
@@ -123,6 +127,8 @@ describe('AiAgentOverview', () => {
             canSeeTrialCTA: false,
         })
 
+        mockUseHasNoOnboardedStores.mockReturnValue(false)
+
         // Mock billing queries
         mockUseBillingState.mockReturnValue({
             data: {
@@ -156,6 +162,15 @@ describe('AiAgentOverview', () => {
         expect(queryByText(/Welcome,.*/)).toBeTruthy()
         expect(queryByText('AI Agent performance')).toBeTruthy()
         expect(queryByText('Mocked PendingTasksSectionConnected')).toBeTruthy()
+        expect(queryByText('ActivationButton')).toBeInTheDocument()
+    })
+
+    it('should not render the activation button if account has no onboarded stores', () => {
+        mockUseHasNoOnboardedStores.mockReturnValue(true)
+
+        const { queryByText } = renderComponent()
+
+        expect(queryByText('ActivationButton')).not.toBeInTheDocument()
     })
 
     it('should not renders the Thank You modal', () => {
