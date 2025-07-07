@@ -20,6 +20,9 @@ import { useActivationModalDisclosure } from './useActivationModalDisclosure'
 import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { useStoreActivations } from './useStoreActivations'
 
+/**
+ * @deprecated this is the old activation hook, use {@link useUpgradePlan} instead
+ */
 export const useActivation = (
     options: {
         autoDisplayEarlyAccessDisabled?: boolean
@@ -142,10 +145,32 @@ export const useActivation = (
         } satisfies Omit<LegacyActivationManageButtonProps, 'onClick'>
     }
 
+    const onUpgradePlanClick = async () => {
+        try {
+            await handleSubscriptionUpdate()
+            if (hasAiAgentNewActivationXp) {
+                await migrateToNewPricing()
+            } else {
+                // if feature flag is not enabled, we need to use dedicated function
+                await endTrial()
+            }
+
+            closeEarlyAccessModal('upgraded')
+
+            if (storeNameToSaveOnSubscriptionUpdate) {
+                changeSales(storeNameToSaveOnSubscriptionUpdate, true)
+                shouldSaveAfterUpgrade.current = true
+            }
+        } catch {
+            closeEarlyAccessModal('upgrade-failed')
+        }
+    }
+
     return {
         isOnNewPlan,
         showEarlyAccessModal,
         showActivationModal: () => setIsModalVisible(true),
+        onUpgradePlanClick,
         activationModal: (
             <AiAgentActivationModal
                 onLearnMoreClick={showEarlyAccessModal}
@@ -211,29 +236,7 @@ export const useActivation = (
                 onClose={() => {
                     closeEarlyAccessModal('clicked-on-cross-or-outside')
                 }}
-                onUpgradeClick={async () => {
-                    try {
-                        await handleSubscriptionUpdate()
-                        if (hasAiAgentNewActivationXp) {
-                            await migrateToNewPricing()
-                        } else {
-                            // if feature flag is not enabled, we need to use dedicated function
-                            await endTrial()
-                        }
-
-                        closeEarlyAccessModal('upgraded')
-
-                        if (storeNameToSaveOnSubscriptionUpdate) {
-                            changeSales(
-                                storeNameToSaveOnSubscriptionUpdate,
-                                true,
-                            )
-                            shouldSaveAfterUpgrade.current = true
-                        }
-                    } catch {
-                        closeEarlyAccessModal('upgrade-failed')
-                    }
-                }}
+                onUpgradeClick={onUpgradePlanClick}
                 currentPlan={currentPlan}
                 helpdeskPlan={helpdeskPlan}
                 earlyAccessPlan={earlyAccessPlan}

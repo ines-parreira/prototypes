@@ -22,6 +22,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from '../hooks/useShoppingAssistantTrialAccess'
+import { atLeastOneStoreHasActiveTrial } from '../utils/utils'
 
 // Mock dependencies
 jest.mock('launchdarkly-react-client-sdk', () => ({
@@ -32,6 +33,7 @@ jest.mock('hooks/useAppSelector')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('../hooks/useSalesTrialRevampMilestone')
+jest.mock('../utils/utils')
 
 // Mock utility functions
 jest.mock('utils', () => ({
@@ -50,6 +52,9 @@ const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseStoreConfigurations = assumeMock(useStoreConfigurations)
 const mockUseSalesTrialRevampMilestone = assumeMock(
     useSalesTrialRevampMilestone,
+)
+const mockAtLeastOneStoreHasActiveTrial = assumeMock(
+    atLeastOneStoreHasActiveTrial,
 )
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
@@ -76,6 +81,7 @@ describe('useShoppingAssistantTrialAccess', () => {
             shopType: 'shopify',
             trialModeActivatedDatetime: null,
             monitoredChatIntegrations: [1, 2],
+            sales: undefined, // No sales trial data
         }),
     ]
 
@@ -107,6 +113,7 @@ describe('useShoppingAssistantTrialAccess', () => {
         })
 
         mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+        mockAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
         mockUseStoreActivations.mockReturnValue({
             storeActivations: mockStoreActivations,
             progressPercentage: 50,

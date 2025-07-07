@@ -26,7 +26,6 @@ import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useSh
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
-import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
@@ -256,15 +255,19 @@ const PaywallWrapperComponent = ({
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
                     <div className={css.buttonsWrapper}>
-                        <AIButton
-                            intent="primary"
+                        <Button
                             size="medium"
                             onClick={showEarlyAccessModal}
+                            className={css.upgradeButton}
                         >
                             Upgrade Now
-                        </AIButton>
+                        </Button>
                         {displayTrialButton && (
-                            <Button fillStyle="ghost" onClick={startTrial}>
+                            <Button
+                                fillStyle="ghost"
+                                onClick={startTrial}
+                                className={css.trialButton}
+                            >
                                 Start 14-Day Trial At No Additional Cost
                             </Button>
                         )}

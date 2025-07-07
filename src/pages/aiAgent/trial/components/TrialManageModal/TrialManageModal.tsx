@@ -20,7 +20,7 @@ type Action = {
     onClick: () => void
 }
 
-type TrialManageModalProps = {
+export type TrialManageModalProps = {
     title: string
     description: ReactNode | string
     secondaryDescription?: ReactNode | string

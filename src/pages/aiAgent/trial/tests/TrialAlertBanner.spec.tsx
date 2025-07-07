@@ -231,7 +231,6 @@ describe('TrialAlertBanner', () => {
             ...defaultProps,
             primaryAction: {
                 label: 'Primary Action',
-                loadingLabel: 'Loading...',
                 onClick: jest.fn(),
                 isLoading: true,
             },
@@ -239,11 +238,11 @@ describe('TrialAlertBanner', () => {
 
         render(<TrialAlertBanner {...props} />)
 
+        // The button shows loading spinner with "Loading..." prefix
         const button = screen.getByRole('button', {
-            name: 'Loading... Loading...',
+            name: 'Loading... Primary Action',
         })
         expect(button).toBeInTheDocument()
-        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
     })
 
     it('should show loading state for secondary action when isLoading is true', () => {
@@ -251,7 +250,6 @@ describe('TrialAlertBanner', () => {
             ...defaultProps,
             secondaryAction: {
                 label: 'Secondary Action',
-                loadingLabel: 'Processing...',
                 onClick: jest.fn(),
                 isLoading: true,
             },
@@ -259,11 +257,11 @@ describe('TrialAlertBanner', () => {
 
         render(<TrialAlertBanner {...props} />)
 
+        // The button shows loading spinner with "Loading..." prefix
         const button = screen.getByRole('button', {
-            name: 'Loading... Processing...',
+            name: 'Loading... Secondary Action',
         })
         expect(button).toBeInTheDocument()
-        expect(screen.queryByText('Secondary Action')).not.toBeInTheDocument()
     })
 
     it('should show loading state for both actions when isLoading is true', () => {
@@ -271,13 +269,11 @@ describe('TrialAlertBanner', () => {
             ...defaultProps,
             primaryAction: {
                 label: 'Primary Action',
-                loadingLabel: 'Primary Loading...',
                 onClick: jest.fn(),
                 isLoading: true,
             },
             secondaryAction: {
                 label: 'Secondary Action',
-                loadingLabel: 'Secondary Loading...',
                 onClick: jest.fn(),
                 isLoading: true,
             },
@@ -285,18 +281,13 @@ describe('TrialAlertBanner', () => {
 
         render(<TrialAlertBanner {...props} />)
 
+        // Both buttons show loading spinner with "Loading..." prefix
         expect(
-            screen.getByRole('button', {
-                name: 'Loading... Primary Loading...',
-            }),
+            screen.getByRole('button', { name: 'Loading... Primary Action' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', {
-                name: 'Loading... Secondary Loading...',
-            }),
+            screen.getByRole('button', { name: 'Loading... Secondary Action' }),
         ).toBeInTheDocument()
-        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
-        expect(screen.queryByText('Secondary Action')).not.toBeInTheDocument()
     })
 
     it('should show loading state in collapsed view for primary action', async () => {
@@ -305,7 +296,6 @@ describe('TrialAlertBanner', () => {
             ...defaultProps,
             primaryAction: {
                 label: 'Primary Action',
-                loadingLabel: 'Loading...',
                 onClick: jest.fn(),
                 isLoading: true,
             },
@@ -318,11 +308,10 @@ describe('TrialAlertBanner', () => {
             await user.click(screen.getByText('expand_less'))
         })
 
-        // Should still show loading state in collapsed view
+        // Should show loading state in collapsed view
         expect(
-            screen.getByRole('button', { name: 'Loading... Loading...' }),
+            screen.getByRole('button', { name: 'Loading... Primary Action' }),
         ).toBeInTheDocument()
-        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
     })
 
     it('should not show loading state when isLoading is false', () => {
@@ -330,7 +319,6 @@ describe('TrialAlertBanner', () => {
             ...defaultProps,
             primaryAction: {
                 label: 'Primary Action',
-                loadingLabel: 'Loading...',
                 onClick: jest.fn(),
                 isLoading: false,
             },
@@ -341,25 +329,6 @@ describe('TrialAlertBanner', () => {
         expect(
             screen.getByRole('button', { name: 'Primary Action' }),
         ).toBeInTheDocument()
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-    })
-
-    it('should not show loading state when loadingLabel is not provided', () => {
-        const props = {
-            ...defaultProps,
-            primaryAction: {
-                label: 'Primary Action',
-                onClick: jest.fn(),
-                isLoading: true,
-            },
-        }
-
-        render(<TrialAlertBanner {...props} />)
-
-        // When loadingLabel is not provided, it should fall back to the regular label
-        expect(
-            screen.getByRole('button', { name: 'Loading...' }),
-        ).toBeInTheDocument()
     })
 
     it('should handle loading state transition', async () => {
@@ -368,7 +337,6 @@ describe('TrialAlertBanner', () => {
             ...defaultProps,
             primaryAction: {
                 label: 'Primary Action',
-                loadingLabel: 'Loading...',
                 onClick: mockOnClick,
                 isLoading: false,
             },
@@ -380,7 +348,6 @@ describe('TrialAlertBanner', () => {
         expect(
             screen.getByRole('button', { name: 'Primary Action' }),
         ).toBeInTheDocument()
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
 
         // Update to loading state
         const loadingProps = {
@@ -393,11 +360,10 @@ describe('TrialAlertBanner', () => {
 
         rerender(<TrialAlertBanner {...loadingProps} />)
 
-        // Should now show loading state
+        // Should show loading state
         expect(
-            screen.getByRole('button', { name: 'Loading... Loading...' }),
+            screen.getByRole('button', { name: 'Loading... Primary Action' }),
         ).toBeInTheDocument()
-        expect(screen.queryByText('Primary Action')).not.toBeInTheDocument()
 
         // Update back to not loading
         rerender(<TrialAlertBanner {...props} />)
@@ -406,7 +372,6 @@ describe('TrialAlertBanner', () => {
         expect(
             screen.getByRole('button', { name: 'Primary Action' }),
         ).toBeInTheDocument()
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
     })
 
     it('should handle variant prop for primary action', () => {

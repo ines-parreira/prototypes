@@ -151,6 +151,7 @@ const AiSalesAgentSalesOverview = () => {
                             intent="primary"
                             size="medium"
                             onClick={showEarlyAccessModal}
+                            className={css.upgradeButton}
                         >
                             Upgrade Now
                         </AIButton>

@@ -3,25 +3,34 @@ import { userEvent } from '@testing-library/user-event'
 
 // Import mocked modules
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    useBillingState,
+    useEarlyAccessAutomatePlan,
+} from 'models/billing/queries'
+import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
-import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
+import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
 import { TrialManageWorkflow } from '../components/TrialManageWorkflow/TrialManageWorkflow'
 
 // Mock all the hooks and components
 jest.mock('hooks/useAppSelector')
+jest.mock('models/billing/queries')
+jest.mock('models/billing/utils')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner')
 jest.mock('pages/aiAgent/trial/components/TrialManageModal/TrialManageModal')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
-jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
+jest.mock('pages/settings/new_billing/utils/formatAmount')
+jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 
 describe('TrialManageWorkflow', () => {
     const mockOpenManageTrialModal = jest.fn()
@@ -38,17 +47,42 @@ describe('TrialManageWorkflow', () => {
         ;(useAppSelector as jest.Mock).mockReturnValue({
             get: (key: string) => (key === 'domain' ? 'test-domain.com' : null),
         })
-        ;(useTrialModalProps as jest.Mock).mockReturnValue({
-            trialStartedBanner: {
-                title: 'Trial Started',
-                description: 'Your trial has begun',
+        ;(useBillingState as jest.Mock).mockReturnValue({
+            data: {
+                current_plans: {
+                    automate: {
+                        amount: 10000, // $100 in cents
+                        currency: 'USD',
+                    },
+                    helpdesk: {
+                        amount: 5000, // $50 in cents
+                        num_quota_tickets: 100,
+                        currency: 'USD',
+                    },
+                },
             },
+        })
+        ;(useEarlyAccessAutomatePlan as jest.Mock).mockReturnValue({
+            data: {
+                amount: 15000, // $150 in cents
+                currency: 'USD',
+            },
+        })
+        ;(getAutomateEarlyAccessPricesFormatted as jest.Mock).mockReturnValue({
+            amount: '$150',
+            amountAfterDiscount: '$150',
+            discount: 0,
+        })
+        ;(formatAmount as jest.Mock).mockImplementation((amount) => {
+            return `$${amount}`
         })
         ;(useStoreActivations as jest.Mock).mockReturnValue({
             storeActivations: ['store1', 'store2'],
         })
         ;(useTrialMetrics as jest.Mock).mockReturnValue({
-            gmv: '25%',
+            gmv: 25,
+            remainingDays: 5,
+            isLoading: false,
         })
         ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
             canSeeTrialStartedBanner: false,
@@ -58,6 +92,14 @@ describe('TrialManageWorkflow', () => {
             openManageTrialModal: mockOpenManageTrialModal,
             isManageTrialModalOpen: false,
             closeManageTrialModal: mockCloseManageTrialModal,
+        })
+        ;(useUpgradePlan as jest.Mock).mockReturnValue({
+            upgradePlan: jest.fn(),
+            upgradePlanAsync: jest.fn(),
+            isLoading: false,
+            error: null,
+            isSuccess: false,
+            isError: false,
         })
 
         // Mock components to render test content
@@ -187,7 +229,9 @@ describe('TrialManageWorkflow', () => {
                 screen.getByText('Manage Shopping Assistant trial'),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(/Shopping Assistant drove 25% uplift in GMV/),
+                screen.getByText(
+                    /Shopping Assistant boosted your GMV by \+25 during the trial/,
+                ),
             ).toBeInTheDocument()
         })
 
@@ -196,7 +240,7 @@ describe('TrialManageWorkflow', () => {
 
             expect(TrialManageModal).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    advantages: ['25% GMV uplift'],
+                    advantages: ['25 GMV uplift'],
                 }),
                 expect.anything(),
             )
@@ -240,12 +284,6 @@ describe('TrialManageWorkflow', () => {
         })
     })
 
-    it('calls useTrialModalProps with empty object', () => {
-        render(<TrialManageWorkflow />)
-
-        expect(useTrialModalProps).toHaveBeenCalledWith({})
-    })
-
     it('passes correct props to TrialAlertBanner', () => {
         ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
             canSeeTrialStartedBanner: true,
@@ -256,11 +294,13 @@ describe('TrialManageWorkflow', () => {
 
         expect(TrialAlertBanner).toHaveBeenCalledWith(
             expect.objectContaining({
-                title: 'Trial Started',
-                description: 'Your trial has begun',
+                title: 'Shopping Assistant trial ends in 5 days.',
+                description:
+                    "So far, it's generated 25 in added GMV for your store.",
                 primaryAction: {
                     label: 'Upgrade Now',
                     onClick: expect.any(Function),
+                    isLoading: false,
                 },
                 secondaryAction: {
                     label: 'Manage Trial',
@@ -282,19 +322,14 @@ describe('TrialManageWorkflow', () => {
 
         const call = (TrialManageModal as jest.Mock).mock.calls[0]
         expect(call[0].title).toBe('Manage Shopping Assistant trial')
-        expect(call[0].description).toContain(
-            'Shopping Assistant drove 25% uplift in GMV',
+        expect(call[0].description).toBe(
+            'Shopping Assistant boosted your GMV by +25 during the trial. Keep the momentum going and turn even more visitors into buyers.',
         )
-        expect(call[0].description).toContain(
-            'keep the gains going by upgrading today',
-        )
-        expect(call[0].advantages).toEqual(['25% GMV uplift'])
+        expect(call[0].advantages).toEqual(['25 GMV uplift'])
         expect(call[0].onClose).toBe(mockCloseManageTrialModal)
         expect(call[0].primaryAction.label).toBe('Upgrade Now')
         expect(typeof call[0].primaryAction.onClick).toBe('function')
-        expect(call[0].secondaryAction).toEqual({
-            label: 'Opt Out',
-            onClick: mockCloseManageTrialModal,
-        })
+        expect(call[0].secondaryAction.label).toBe('Opt Out')
+        expect(typeof call[0].secondaryAction.onClick).toBe('function')
     })
 })

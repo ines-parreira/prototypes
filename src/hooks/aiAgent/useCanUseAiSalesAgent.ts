@@ -53,6 +53,9 @@ export const useAtLeastOneStoreHasActiveTrial = () => {
     )
 }
 
+/**
+ * @deprecated use {@link atLeastOneStoreHasActiveTrial} instead
+ */
 export const atLeastOneStoreHasActiveTrialOnSpecificStores = (
     storeActivations: Record<string, StoreActivation>,
 ) => {

@@ -6,6 +6,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { ReportingGranularity } from 'models/reporting/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { getShoppingAssistantExpirationDays } from 'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useGmvUsdOverTimeSeries } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getTimezone } from 'state/currentUser/selectors'
@@ -19,6 +21,9 @@ export const useTrialMetrics = () => {
             IntegrationType.Magento2,
         ]),
     )
+    const trialMilestone = useSalesTrialRevampMilestone()
+
+    const isRevampTrialMilestone0Enabled = trialMilestone === 'milestone-0'
     const { storeActivations } = useStoreActivations()
 
     const storeIds = useMemo(() => {
@@ -73,6 +78,13 @@ export const useTrialMetrics = () => {
 
         const remainingDays = Object.values(storeActivations)
             .map((storeConfig) => {
+                if (isRevampTrialMilestone0Enabled) {
+                    return (
+                        getShoppingAssistantExpirationDays(
+                            storeConfig.configuration.salesDeactivatedDatetime,
+                        ) || Infinity
+                    )
+                }
                 const trialStartDatetime =
                     storeConfig.configuration.sales?.trial.startDatetime
                 const trialEndDatetime =
@@ -90,7 +102,7 @@ export const useTrialMetrics = () => {
             .filter((days) => days !== Infinity)
 
         return remainingDays.length > 0 ? Math.min(...remainingDays) : 0
-    }, [storeActivations])
+    }, [storeActivations, isRevampTrialMilestone0Enabled])
 
     const gmv = useMemo(() => {
         if (!data || !Array.isArray(data) || data.length === 0) {

@@ -5,7 +5,9 @@ import {
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
+import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
+import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
@@ -16,16 +18,15 @@ export type TrialModalProps = {
         UpgradePlanModalProps,
         'title' | 'currentPlan' | 'newPlan'
     >
-    trialActivatedModal: {
-        title: string
-    }
-    trialStartedBanner: {
-        title: string
-        description: string
-    }
+    trialActivatedModal: Pick<TrialActivatedModalProps, 'title'>
+    trialStartedBanner: Pick<TrialAlertBannerProps, 'title' | 'description'>
     trialAlertBanner: Pick<
         TrialAlertBannerProps,
         'title' | 'description' | 'primaryAction' | 'secondaryAction'
+    >
+    manageTrialModal: Pick<
+        TrialManageModalProps,
+        'description' | 'advantages' | 'secondaryDescription'
     >
 }
 
@@ -100,12 +101,19 @@ const useTrialActivatedModal = () => {
 const useTrialStartedBanner = (): TrialModalProps['trialStartedBanner'] => {
     const { remainingDays, gmv } = useTrialMetrics()
 
+    const description = useMemo(() => {
+        if (gmv > 0) {
+            return `So far, it's generated ${gmv} in added GMV for your store.`
+        }
+        return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.`
+    }, [gmv])
+
     return useMemo(
         () => ({
             title: `Shopping Assistant trial ends in ${remainingDays} days.`,
-            description: `So far, it's generated ${gmv} in added GMV for your store.`,
+            description,
         }),
-        [remainingDays, gmv],
+        [remainingDays, description],
     )
 }
 
@@ -154,6 +162,46 @@ const useTrialAlertBanner = ({
         [onConfirmTrial, secondaryAction],
     )
 }
+
+const useTrialEndedModal = (): TrialModalProps['manageTrialModal'] => {
+    const { gmv } = useTrialMetrics()
+
+    const description = useMemo(() => {
+        if (gmv > 0) {
+            return `Shopping Assistant boosted your GMV by +${gmv} during the trial. Keep the momentum going and turn even more visitors into buyers.`
+        }
+        return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.`
+    }, [gmv])
+
+    const advantages = useMemo(() => {
+        if (gmv > 0) {
+            return [`${gmv} GMV uplift`]
+        }
+        return [
+            '10% average order value',
+            '62% conversion rate',
+            '1.5% revenue',
+        ]
+    }, [gmv])
+
+    const secondaryDescription = useMemo(() => {
+        if (gmv > 0) {
+            return `After your trial, your plan will increase by $X/month.`
+        }
+        return `Typical results achieved by merchants. After upgrading, your plan will increase by $X/month.`
+    }, [gmv])
+
+    return useMemo(
+        () => ({
+            title: 'Your trial has ended — and it made an impact.',
+            description,
+            secondaryDescription,
+            advantages,
+        }),
+        [description, secondaryDescription, advantages],
+    )
+}
+
 export const useTrialModalProps = ({
     onConfirmTrial,
 }: {
@@ -165,6 +213,7 @@ export const useTrialModalProps = ({
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })
+    const manageTrialModal = useTrialEndedModal()
 
     return useMemo(
         () => ({
@@ -172,12 +221,14 @@ export const useTrialModalProps = ({
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,
+            manageTrialModal,
         }),
         [
             upgradePlanModal,
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,
+            manageTrialModal,
         ],
     )
 }

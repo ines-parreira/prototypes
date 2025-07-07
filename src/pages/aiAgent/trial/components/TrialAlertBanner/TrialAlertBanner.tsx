@@ -10,7 +10,6 @@ type Action = {
     label: string
     disabled?: boolean
     isLoading?: boolean
-    loadingLabel?: string
     variant?: 'primary' | 'secondary'
     onClick: () => void
 }
@@ -61,9 +60,7 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                                 }
                                 isLoading={primaryAction.isLoading}
                             >
-                                {primaryAction.isLoading
-                                    ? primaryAction.loadingLabel
-                                    : primaryAction.label}
+                                {primaryAction.label}
                             </Button>
                         )}
                         {collapsible && (
@@ -112,9 +109,7 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                             }
                             isLoading={primaryAction.isLoading}
                         >
-                            {primaryAction.isLoading
-                                ? primaryAction.loadingLabel
-                                : primaryAction.label}
+                            {primaryAction.label}
                         </Button>
                     )}
                     {secondaryAction && (
@@ -129,9 +124,7 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                             }
                             isLoading={secondaryAction.isLoading}
                         >
-                            {secondaryAction.isLoading
-                                ? secondaryAction.loadingLabel
-                                : secondaryAction.label}
+                            {secondaryAction.label}
                         </Button>
                     )}
                 </div>

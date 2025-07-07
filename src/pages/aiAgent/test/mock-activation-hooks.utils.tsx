@@ -13,6 +13,7 @@ export const applyMockActivationHook = () => {
         activationButton: <div>ActivationButton</div>,
         activationModal: <div>ActivationModal</div>,
         earlyAccessModal: <div>EarlyAccessModal</div>,
+        onUpgradePlanClick: () => Promise.resolve(),
     })
 }
 

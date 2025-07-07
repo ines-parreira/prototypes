@@ -18,6 +18,31 @@ type AiShoppingAssistantExpireBannerProps = {
 }
 
 /**
+ * @deprecated This function is no longer used try to use the new logic in {@link useTrialMetrics} instead
+ */
+export const getShoppingAssistantExpirationDays = (
+    deactiveDatetime?: string | null,
+) => {
+    const trialExtensionPeriodInDays =
+        getAiShoppingAssistantTrialExtensionEnabledFlag()
+
+    if (!deactiveDatetime) {
+        return undefined
+    }
+
+    const deactiveDate = moment(deactiveDatetime)
+    const currentDate = moment()
+    if (trialExtensionPeriodInDays) {
+        return Math.round(
+            deactiveDate
+                .add(trialExtensionPeriodInDays, 'days')
+                .diff(currentDate, 'days', true),
+        )
+    }
+    return Math.round(deactiveDate.diff(currentDate, 'days', true))
+}
+
+/**
  * @deprecated This component is no longer used try to use the new trial banner {@link TrialAlertBanner} instead
  */
 const AiShoppingAssistantExpireBanner: React.FC<
@@ -27,8 +52,7 @@ const AiShoppingAssistantExpireBanner: React.FC<
         FeatureFlagKey.AiSalesAgentBypassPlanCheck,
         false,
     )
-    const trialExtensionPeriodInDays =
-        getAiShoppingAssistantTrialExtensionEnabledFlag()
+
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
@@ -37,20 +61,10 @@ const AiShoppingAssistantExpireBanner: React.FC<
     const trialMilestone = useSalesTrialRevampMilestone()
     const isTrialRevampEnabled = trialMilestone !== 'off'
 
-    const days = useMemo(() => {
-        if (!deactiveDatetime) {
-            return undefined
-        }
-
-        const deactiveDate = moment(deactiveDatetime)
-        const currentDate = moment()
-        if (trialExtensionPeriodInDays) {
-            return deactiveDate
-                .add(trialExtensionPeriodInDays, 'days')
-                .diff(currentDate, 'days')
-        }
-        return deactiveDate.diff(currentDate, 'days')
-    }, [deactiveDatetime, trialExtensionPeriodInDays])
+    const days = useMemo(
+        () => getShoppingAssistantExpirationDays(deactiveDatetime),
+        [deactiveDatetime],
+    )
 
     if (
         isTrialRevampEnabled ||

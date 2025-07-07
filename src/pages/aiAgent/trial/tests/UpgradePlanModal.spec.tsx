@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import {
@@ -135,7 +135,9 @@ describe('UpgradePlanModal', () => {
         render(<UpgradePlanModal {...defaultProps} />)
 
         const checkbox = screen.getAllByRole('checkbox')[0]
-        await user.click(checkbox)
+        await act(async () => {
+            await user.click(checkbox)
+        })
 
         const upgradeButton = screen.getByRole('button', {
             name: 'Upgrade Now',
@@ -155,7 +157,9 @@ describe('UpgradePlanModal', () => {
 
         // Check terms
         const checkbox = screen.getAllByRole('checkbox')[0]
-        await user.click(checkbox)
+        await act(async () => {
+            await user.click(checkbox)
+        })
 
         // Click upgrade
         const upgradeButton = screen.getByRole('button', {

@@ -3,7 +3,10 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpdeskPlanTier } from 'models/billing/types'
-import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import {
+    useStoreActivations,
+    useStoreConfigurations,
+} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { atLeastOneStoreHasActiveTrial } from 'pages/aiAgent/trial/utils/utils'
 import {
     getCurrentAutomatePlan,
@@ -52,10 +55,20 @@ export const useShoppingAssistantTrialAccess =
         // Get all store configurations to check trial history
         const { storeConfigurations } = useStoreConfigurations(accountDomain)
 
+        const { storeActivations } = useStoreActivations()
+
+        const trialMilestone = useSalesTrialRevampMilestone()
+
+        const isRevampTrialEnabled = trialMilestone !== 'off'
+        const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
+
         // Hook must be called unconditionally due to React rules
         // We're checking trial history differently now, but keeping for compatibility
-        const hasAtLeastOneStoreHasActiveTrial =
-            atLeastOneStoreHasActiveTrial(storeConfigurations)
+        const hasAtLeastOneStoreHasActiveTrial = atLeastOneStoreHasActiveTrial(
+            storeConfigurations,
+            isRevampTrialMilestone1Enabled,
+            storeActivations,
+        )
 
         // User is an admin
         const isAdminUser = isAdmin(currentUser)
@@ -77,9 +90,6 @@ export const useShoppingAssistantTrialAccess =
         const isOnProPlusPlan = !isOnStarterOrBasicPlan
 
         const flags = useFlags()
-        const trialMilestone = useSalesTrialRevampMilestone()
-
-        const isRevampTrialEnabled = trialMilestone !== 'off'
 
         if (!isRevampTrialEnabled) {
             return {
