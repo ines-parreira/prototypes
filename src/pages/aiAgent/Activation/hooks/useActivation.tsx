@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useNotify } from 'hooks/useNotify'
 import {
     ActivationManageButton,
@@ -50,6 +51,9 @@ export const useActivation = (
     })
 
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
+    const atLeastOneStoreHasActiveTrial =
+        atLeastOneStoreHasActiveTrialOnSpecificStores(storeActivations)
+
     const {
         isOnNewPlan,
         setIsPreviewModalVisible,
@@ -62,6 +66,7 @@ export const useActivation = (
         handleSubscriptionUpdate,
         isSubscriptionUpdating,
     } = useEarlyAccessModalState({
+        atLeastOneStoreHasActiveTrial,
         hasActivationEnabled,
         autoDisplayDisabled: options.autoDisplayEarlyAccessDisabled,
     })

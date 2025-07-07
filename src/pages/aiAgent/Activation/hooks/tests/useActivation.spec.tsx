@@ -15,6 +15,7 @@ import { logEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
+import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
@@ -23,6 +24,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
+import { SalesEarlyAccessUtils } from '../../utils'
 import { useActivation } from '../useActivation'
 import { getStoreConfigurationFixture } from './fixtures/store-configurations.fixture'
 
@@ -37,6 +39,11 @@ const useGetHelpCenterListMock = assumeMock(useGetHelpCenterList)
 
 jest.mock('pages/aiAgent/hooks/useStoresKnowledgeStatus')
 const useStoresKnowledgeStatusMock = assumeMock(useStoresKnowledgeStatus)
+
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+const mockAtLeastOneStoreHasActiveTrialOnSpecificStores = jest.mocked(
+    atLeastOneStoreHasActiveTrialOnSpecificStores,
+)
 
 jest.mock('state/billing/selectors', () => ({
     ...jest.requireActual('state/billing/selectors'),
@@ -263,15 +270,17 @@ jest.spyOn(axios, 'get').mockImplementation(async (url) => {
 const renderHookWithRouter = ({
     initialEntry = '/',
     autoDisplayEarlyAccessDisabled = false,
+    store = defaultState,
 }: {
     initialEntry?: string
     autoDisplayEarlyAccessDisabled?: boolean
+    store?: Record<string, any>
 } = {}) => {
     const history = createMemoryHistory({ initialEntries: [initialEntry] })
     const wrapper = ({ children }: { children?: React.ReactNode }) => (
         <Router history={history}>
             <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
+                <Provider store={mockStore(store)}>
                     <Switch>
                         <Route path="/overview">{children}</Route>
                         <Route path="/:shopName?">{children}</Route>
@@ -528,6 +537,18 @@ describe('useActivation', () => {
     })
 
     describe('earlyAccessModal', () => {
+        beforeEach(() => {
+            mockAtLeastOneStoreHasActiveTrialOnSpecificStores.mockReturnValue(
+                false,
+            )
+        })
+
+        afterEach(() => {
+            window.localStorage.removeItem(
+                SalesEarlyAccessUtils(account.id).modalDisplayedAtKey,
+            )
+        })
+
         it('should handle modal close', async () => {
             const { result } = renderHookWithRouter()
 
@@ -620,18 +641,54 @@ describe('useActivation', () => {
             // )
         })
 
-        it('should auto-display early access modal when redering hook for the first time only', () => {
-            renderHookWithRouter({
+        it('should not auto-display early access modal when account is in trial', async () => {
+            const { result } = renderHookWithRouter({
                 initialEntry: '/',
             })
 
-            // expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
+            expect(result.current.earlyAccessModal.props.isOpen).toBe(false)
+        })
 
-            const { result: result2 } = renderHookWithRouter({
+        it('should not auto-display early access modal when one store is in active trial', async () => {
+            mockAtLeastOneStoreHasActiveTrialOnSpecificStores.mockReturnValue(
+                true,
+            )
+
+            const { result } = renderHookWithRouter({
                 initialEntry: '/',
+                store: {
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            status: 'active',
+                        },
+                    }),
+                },
             })
 
-            expect(result2.current.earlyAccessModal.props.isOpen).toBe(false)
+            expect(result.current.earlyAccessModal.props.isOpen).toBe(false)
+        })
+
+        it('should auto-display early access modal when account is not on new automate plan', async () => {
+            const store = {
+                ...defaultState,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        status: 'active',
+                    },
+                }),
+            }
+
+            const { result } = renderHookWithRouter({
+                initialEntry: '/',
+                store,
+            })
+
+            expect(result.current.earlyAccessModal.props.isOpen).toBe(true)
         })
 
         it('should open upgrade modal on sales enabled and then save configurations when upgrade is successful', async () => {

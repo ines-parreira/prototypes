@@ -10,7 +10,10 @@ import {
 import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing as getIsTrialing,
+} from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'
 
@@ -35,9 +38,11 @@ const useAutoDisplaySalesEarlyAccessModal = (
 }
 
 export const useEarlyAccessModalState = ({
+    atLeastOneStoreHasActiveTrial,
     hasActivationEnabled,
     autoDisplayDisabled,
 }: {
+    atLeastOneStoreHasActiveTrial?: boolean
     hasActivationEnabled: boolean
     autoDisplayDisabled?: boolean
 }) => {
@@ -51,6 +56,7 @@ export const useEarlyAccessModalState = ({
         billingState?.data?.current_plans?.automate?.generation === 6
 
     const currentUser = useAppSelector(getCurrentUser)
+    const isTrialing = useAppSelector(getIsTrialing)
     const isCurrentUserAdmin = isAdmin(currentUser)
     const currentPlan = billingState?.data?.current_plans?.automate
     const helpdeskPlan = billingState?.data?.current_plans?.helpdesk
@@ -58,7 +64,9 @@ export const useEarlyAccessModalState = ({
     useAutoDisplaySalesEarlyAccessModal(
         !autoDisplayDisabled &&
             isCurrentUserAdmin &&
-            currentPlan?.generation !== 6,
+            !isOnNewPlan &&
+            !isTrialing &&
+            !atLeastOneStoreHasActiveTrial,
         () => setIsPreviewModalVisible(true),
     )
 
