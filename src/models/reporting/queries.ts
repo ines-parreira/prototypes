@@ -2,7 +2,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 
 import { appQueryClient } from 'api/queryClient'
-import { doNotRetry40XErrorsHandler } from 'api/utils'
+import { doNotRetry40xAnd5xxErrors } from 'api/utils'
 import {
     postEnrichedReporting,
     postReporting,
@@ -18,7 +18,7 @@ import {
 const defaultOptions = {
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes
-    retry: doNotRetry40XErrorsHandler,
+    retry: doNotRetry40xAnd5xxErrors,
 }
 
 export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
