@@ -309,7 +309,7 @@ describe('useActivateStore', () => {
             expect(successMock).not.toHaveBeenCalled()
         })
 
-        it('should not call upsertStoresConfiguration when canActivate is disabled', () => {
+        it('should call upsertStoresConfiguration when chat and email can be activated', () => {
             const { result } = renderUseActivateStore({
                 isLoading: false,
                 state: {
@@ -319,12 +319,12 @@ describe('useActivateStore', () => {
                             support: {
                                 enabled: true,
                                 chat: {
-                                    enabled: true,
+                                    enabled: false,
                                     isIntegrationMissing: false,
                                     isInstallationMissing: false,
                                 },
                                 email: {
-                                    enabled: true,
+                                    enabled: false,
                                     isIntegrationMissing: false,
                                 },
                             },
@@ -354,6 +354,153 @@ describe('useActivateStore', () => {
                     expect.objectContaining({
                         emailChannelDeactivatedDatetime: null,
                         chatChannelDeactivatedDatetime: null,
+                    }),
+                ]),
+            )
+        })
+
+        it('should call upsertStoresConfiguration only for chat when email is missing integration', () => {
+            const { result } = renderUseActivateStore({
+                isLoading: false,
+                state: {
+                    'my-shop': storeActivationFixture({
+                        storeName: 'my-shop',
+                        settings: {
+                            support: {
+                                enabled: true,
+                                chat: {
+                                    enabled: false,
+                                    isIntegrationMissing: false,
+                                    isInstallationMissing: false,
+                                },
+                                email: {
+                                    enabled: false,
+                                    isIntegrationMissing: true,
+                                },
+                            },
+                            sales: {
+                                isDisabled: false,
+                                enabled: true,
+                            },
+                        },
+                        configuration: getStoreConfigurationFixture({
+                            emailChannelDeactivatedDatetime:
+                                new Date().toISOString(),
+                            chatChannelDeactivatedDatetime:
+                                new Date().toISOString(),
+                        }),
+                    }),
+                },
+            })
+            const { activate } = result.current({
+                shopName: 'my-shop',
+            })
+
+            const successMock = jest.fn()
+            activate(successMock)
+
+            expect(upsertStoresConfigurationMock).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        chatChannelDeactivatedDatetime: null,
+                    }),
+                ]),
+            )
+        })
+
+        it('should call upsertStoresConfiguration only for email when chat is missing integration', () => {
+            const { result } = renderUseActivateStore({
+                isLoading: false,
+                state: {
+                    'my-shop': storeActivationFixture({
+                        storeName: 'my-shop',
+                        settings: {
+                            support: {
+                                enabled: true,
+                                chat: {
+                                    enabled: false,
+                                    isIntegrationMissing: true,
+                                    isInstallationMissing: false,
+                                },
+                                email: {
+                                    enabled: false,
+                                    isIntegrationMissing: false,
+                                },
+                            },
+                            sales: {
+                                isDisabled: false,
+                                enabled: true,
+                            },
+                        },
+                        configuration: getStoreConfigurationFixture({
+                            emailChannelDeactivatedDatetime:
+                                new Date().toISOString(),
+                            chatChannelDeactivatedDatetime:
+                                new Date().toISOString(),
+                        }),
+                    }),
+                },
+            })
+            const { activate } = result.current({
+                shopName: 'my-shop',
+            })
+
+            const successMock = jest.fn()
+            activate(successMock)
+
+            expect(upsertStoresConfigurationMock).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        emailChannelDeactivatedDatetime: null,
+                    }),
+                ]),
+            )
+        })
+
+        it('should call upsertStoresConfiguration only for email when chat is missing installation', () => {
+            const { result } = renderUseActivateStore({
+                isLoading: false,
+                state: {
+                    'my-shop': storeActivationFixture({
+                        storeName: 'my-shop',
+                        settings: {
+                            support: {
+                                enabled: true,
+                                chat: {
+                                    enabled: false,
+                                    isIntegrationMissing: false,
+                                    isInstallationMissing: true,
+                                },
+                                email: {
+                                    enabled: false,
+                                    isIntegrationMissing: false,
+                                },
+                            },
+                            sales: {
+                                isDisabled: false,
+                                enabled: true,
+                            },
+                        },
+                        configuration: getStoreConfigurationFixture({
+                            emailChannelDeactivatedDatetime:
+                                new Date().toISOString(),
+                            chatChannelDeactivatedDatetime:
+                                new Date().toISOString(),
+                        }),
+                    }),
+                },
+            })
+            const { activate } = result.current({
+                shopName: 'my-shop',
+            })
+
+            const successMock = jest.fn()
+            activate(successMock)
+
+            expect(upsertStoresConfigurationMock).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        emailChannelDeactivatedDatetime: null,
                     }),
                 ]),
             )

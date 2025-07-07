@@ -47,11 +47,14 @@ export const useActivateStore = ({
                 storeActivation.configuration,
             )
 
-            if (storeActivation.support.email.enabled) {
+            if (!storeActivation.support.email.isIntegrationMissing) {
                 newStoreConfiguration.emailChannelDeactivatedDatetime = null
             }
 
-            if (storeActivation.support.chat.enabled) {
+            if (
+                !storeActivation.support.chat.isIntegrationMissing &&
+                !storeActivation.support.chat.isInstallationMissing
+            ) {
                 newStoreConfiguration.chatChannelDeactivatedDatetime = null
             }
 
