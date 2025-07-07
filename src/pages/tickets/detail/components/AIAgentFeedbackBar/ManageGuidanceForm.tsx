@@ -14,7 +14,10 @@ import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgent
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { GuidanceArticle, GuidanceFormFields } from 'pages/aiAgent/types'
-import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
+import {
+    handleGuidanceDuplicateError,
+    mapGuidanceFormFieldsToGuidanceArticle,
+} from 'pages/aiAgent/utils/guidance.utils'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { Drawer } from 'pages/common/components/Drawer'
 import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
@@ -26,6 +29,7 @@ import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentF
 import { getGuidanceUrl } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { onApiError } from 'state/utils'
 
 const FORM_ACTION_TYPE = {
     CREATE: 'create',
@@ -245,12 +249,22 @@ export const ManageGuidanceForm = ({
             if (guidanceArticles.length >= 2) {
                 handleOnTriggerActivateAiAgentNotification()
             }
-        } catch {
+        } catch (error) {
+            const duplicateErrorResult = handleGuidanceDuplicateError(
+                error,
+                formState.name,
+            )
+
+            if (duplicateErrorResult.isDuplicate) {
+                void dispatch(notify(duplicateErrorResult.notification))
+                return
+            }
+
             void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Error during guidance article ${actionType}.`,
-                }),
+                onApiError(
+                    error,
+                    `Error during guidance article ${actionType}.`,
+                ),
             )
         }
     }, [

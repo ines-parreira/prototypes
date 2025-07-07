@@ -25,9 +25,11 @@ import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { onApiError } from 'state/utils'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { GuidanceFormFields } from '../../types'
+import { handleGuidanceDuplicateError } from '../../utils/guidance.utils'
 import { GuidanceEditor } from '../GuidanceEditor/GuidanceEditor'
 
 import css from './GuidanceForm.less'
@@ -163,12 +165,22 @@ export const GuidanceForm = ({
                 handleOnTriggerActivateAiAgentNotification()
             }
             history.push(redirectTo)
-        } catch {
+        } catch (error) {
+            const duplicateErrorResult = handleGuidanceDuplicateError(
+                error,
+                formState.name,
+            )
+
+            if (duplicateErrorResult.isDuplicate) {
+                void dispatch(notify(duplicateErrorResult.notification))
+                return
+            }
+
             void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Error during guidance article ${actionType}.`,
-                }),
+                onApiError(
+                    error,
+                    `Error during guidance article ${actionType}.`,
+                ),
             )
         }
     }

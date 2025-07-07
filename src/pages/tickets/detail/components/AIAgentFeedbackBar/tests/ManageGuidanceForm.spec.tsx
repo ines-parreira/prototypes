@@ -4,7 +4,14 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import {
+    handleGuidanceDuplicateError,
+    mapGuidanceFormFieldsToGuidanceArticle,
+} from 'pages/aiAgent/utils/guidance.utils'
 import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { onApiError } from 'state/utils'
 import { assumeMock } from 'utils/testing'
 
 import { useKnowledgeSourceSideBar } from '../hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -102,6 +109,30 @@ jest.mock(
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn(),
+}))
+
+jest.mock('state/utils', () => ({
+    onApiError: jest.fn(),
+}))
+
+// Get access to the mocked functions
+const mockNotify = jest.mocked(notify)
+const mockOnApiError = jest.mocked(onApiError)
+
+jest.mock('pages/aiAgent/utils/guidance.utils', () => ({
+    handleGuidanceDuplicateError: jest.fn(),
+    mapGuidanceFormFieldsToGuidanceArticle: jest.fn(),
+}))
+
+const mockHandleGuidanceDuplicateError = jest.mocked(
+    handleGuidanceDuplicateError,
+)
+const mockMapGuidanceFormFieldsToGuidanceArticle = jest.mocked(
+    mapGuidanceFormFieldsToGuidanceArticle,
+)
+
 describe('ManageGuidanceForm', () => {
     const helpCenter = {
         id: 1,
@@ -116,6 +147,17 @@ describe('ManageGuidanceForm', () => {
             closeUnsavedChangesModal: jest.fn(),
             setHasUnsavedChangesRef: jest.fn(),
         })
+
+        // Mock the utility function to return the expected format
+        mockMapGuidanceFormFieldsToGuidanceArticle.mockImplementation(
+            (formValues, locale, templateKey) => ({
+                title: formValues.name,
+                content: formValues.content,
+                visibility: formValues.isVisible ? 'PUBLIC' : 'UNLISTED',
+                locale,
+                templateKey: templateKey || null,
+            }),
+        )
 
         useGuidanceArticleMutationMock.mockReturnValue({
             updateGuidanceArticle: jest.fn().mockResolvedValue({
@@ -666,5 +708,242 @@ describe('ManageGuidanceForm', () => {
         fireEvent.click(closeButton)
 
         expect(closeModalMock).toHaveBeenCalled()
+    })
+
+    describe('Error Handling', () => {
+        const mockDispatch = jest.fn()
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+            mockDispatch.mockClear()
+            useAppDispatchMock.mockReturnValue(mockDispatch)
+
+            mockNotify.mockImplementation(
+                (notification) =>
+                    ({
+                        type: 'NOTIFY',
+                        ...notification,
+                    }) as any,
+            )
+            mockOnApiError.mockReturnValue((dispatch: any) => {
+                dispatch({ type: 'API_ERROR' })
+            })
+
+            useGuidanceArticleMutationMock.mockReturnValue({
+                createGuidanceArticle: jest.fn(),
+                updateGuidanceArticle: jest.fn(),
+                deleteGuidanceArticle: jest.fn(),
+                isGuidanceArticleUpdating: false,
+                isGuidanceArticleDeleting: false,
+            })
+        })
+
+        it('handles duplicate title error correctly for update', async () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'An article with the title "Updated Title" already exists in this help center',
+                        },
+                    },
+                },
+            }
+
+            mockHandleGuidanceDuplicateError.mockReturnValue({
+                isDuplicate: true,
+                type: 'title',
+                notification: {
+                    status: NotificationStatus.Error,
+                    message:
+                        'Guidance with the name "Updated Title" already exists in this help center',
+                },
+            })
+
+            useGuidanceArticleMutationMock.mockReturnValue({
+                updateGuidanceArticle: jest.fn().mockRejectedValue(error),
+                isGuidanceArticleUpdating: false,
+                isGuidanceArticleDeleting: false,
+            })
+
+            render(
+                <ManageGuidanceForm
+                    shopName="Demo"
+                    shopType="shopify"
+                    helpCenter={helpCenter}
+                    guidance={{
+                        id: 1,
+                        title: 'Original Title',
+                        content: 'Original Content',
+                        visibility: 'PUBLIC',
+                        locale: 'en-US',
+                        lastUpdated: '2023-10-01T00:00:00Z',
+                        templateKey: '',
+                    }}
+                />,
+            )
+
+            fireEvent.change(screen.getByTestId('name-input'), {
+                target: { value: 'Updated Title' },
+            })
+
+            const submitButton = screen.getByRole('button', {
+                name: /save changes/i,
+            })
+            fireEvent.click(submitButton)
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalled()
+            })
+
+            expect(mockHandleGuidanceDuplicateError).toHaveBeenCalledWith(
+                error,
+                'Updated Title',
+            )
+
+            expect(mockNotify).toHaveBeenCalledWith({
+                status: NotificationStatus.Error,
+                message:
+                    'Guidance with the name "Updated Title" already exists in this help center',
+            })
+        })
+
+        it('handles duplicate content error correctly', async () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'An article with identical content already exists in this help center',
+                        },
+                    },
+                },
+            }
+
+            mockHandleGuidanceDuplicateError.mockReturnValue({
+                isDuplicate: true,
+                type: 'content',
+                notification: {
+                    status: NotificationStatus.Error,
+                    message:
+                        'Guidance with identical instructions already exists in this help center',
+                },
+            })
+
+            useGuidanceArticleMutationMock.mockReturnValue({
+                updateGuidanceArticle: jest.fn().mockRejectedValue(error),
+                isGuidanceArticleUpdating: false,
+                isGuidanceArticleDeleting: false,
+            })
+
+            render(
+                <ManageGuidanceForm
+                    shopName="Demo"
+                    shopType="shopify"
+                    helpCenter={helpCenter}
+                    guidance={{
+                        id: 1,
+                        title: 'Original Title',
+                        content: 'Original Content',
+                        visibility: 'PUBLIC',
+                        locale: 'en-US',
+                        lastUpdated: '2023-10-01T00:00:00Z',
+                        templateKey: '',
+                    }}
+                />,
+            )
+
+            // Update content to trigger duplicate error
+            fireEvent.change(screen.getByTestId('editor'), {
+                target: { value: 'Duplicate Content' },
+            })
+
+            // Submit form
+            const submitButton = screen.getByRole('button', {
+                name: /save changes/i,
+            })
+            fireEvent.click(submitButton)
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalled()
+            })
+
+            expect(mockHandleGuidanceDuplicateError).toHaveBeenCalledWith(
+                error,
+                'Original Title',
+            )
+
+            expect(mockNotify).toHaveBeenCalledWith({
+                status: NotificationStatus.Error,
+                message:
+                    'Guidance with identical instructions already exists in this help center',
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: 'NOTIFY',
+                    status: NotificationStatus.Error,
+                    message:
+                        'Guidance with identical instructions already exists in this help center',
+                }),
+            )
+        })
+
+        it('falls back to default error handling when no error message is present', async () => {
+            const error = {
+                response: {
+                    data: {},
+                },
+            }
+
+            mockHandleGuidanceDuplicateError.mockReturnValue({
+                isDuplicate: false,
+            })
+
+            useGuidanceArticleMutationMock.mockReturnValue({
+                updateGuidanceArticle: jest.fn().mockRejectedValue(error),
+                isGuidanceArticleUpdating: false,
+                isGuidanceArticleDeleting: false,
+            })
+
+            render(
+                <ManageGuidanceForm
+                    shopName="Demo"
+                    shopType="shopify"
+                    helpCenter={helpCenter}
+                    guidance={{
+                        id: 1,
+                        title: 'Test Title',
+                        content: 'Test Content',
+                        visibility: 'PUBLIC',
+                        locale: 'en-US',
+                        lastUpdated: '2023-10-01T00:00:00Z',
+                        templateKey: '',
+                    }}
+                />,
+            )
+
+            fireEvent.change(screen.getByTestId('name-input'), {
+                target: { value: 'Updated Title' },
+            })
+
+            const submitButton = screen.getByRole('button', {
+                name: /save changes/i,
+            })
+            fireEvent.click(submitButton)
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalled()
+            })
+
+            expect(mockHandleGuidanceDuplicateError).toHaveBeenCalledWith(
+                error,
+                'Updated Title',
+            )
+
+            expect(mockOnApiError).toHaveBeenCalledWith(
+                error,
+                'Error during guidance article update.',
+            )
+            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+        })
     })
 })

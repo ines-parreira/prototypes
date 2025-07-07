@@ -6,6 +6,7 @@ import {
 } from 'models/helpCenter/types'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { Components } from 'rest_api/help_center_api/client.generated'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     AIGuidance,
@@ -85,4 +86,60 @@ export const mapAIGuidanceDTOToAIGuidance = (
         content: aiGuidance.content,
         name: aiGuidance.name,
     }
+}
+
+export type DuplicateErrorResult = {
+    isDuplicate: boolean
+    type?: 'title' | 'content'
+    notification?: {
+        status: NotificationStatus.Error
+        message: string
+    }
+}
+
+/**
+ * Server returns error message when guidance with the same title or content already exists
+ * Title error: "An article with the title "..." already exists in this help center"
+ * Content error: "An article with identical content already exists in this help center"
+ * We check for "already exists" in the error message to handle both cases and display the correct message
+ *
+ * @param error - The error object from the API
+ * @param guidanceName - The name of the guidance being created/updated (for title errors)
+ * @returns Object indicating if it's a duplicate error and the appropriate notification
+ */
+export const handleGuidanceDuplicateError = (
+    error: unknown,
+    guidanceName: string,
+): DuplicateErrorResult => {
+    const errorMessage = (error as any)?.response?.data?.error?.msg || ''
+    const isDuplicateError = errorMessage.includes('already exists')
+
+    if (!isDuplicateError) {
+        return { isDuplicate: false }
+    }
+
+    if (errorMessage.includes('title')) {
+        return {
+            isDuplicate: true,
+            type: 'title',
+            notification: {
+                status: NotificationStatus.Error,
+                message: `Guidance with the name "${guidanceName}" already exists in this help center`,
+            },
+        }
+    }
+
+    if (errorMessage.includes('identical content')) {
+        return {
+            isDuplicate: true,
+            type: 'content',
+            notification: {
+                status: NotificationStatus.Error,
+                message:
+                    'Guidance with identical instructions already exists in this help center',
+            },
+        }
+    }
+
+    return { isDuplicate: false }
 }

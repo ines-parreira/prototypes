@@ -1,8 +1,10 @@
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { getGuidanceArticleFixture } from '../../fixtures/guidanceArticle.fixture'
 import { UpdateGuidanceArticle } from '../../types'
 import {
+    handleGuidanceDuplicateError,
     mapArticleApiToGuidanceArticle,
     mapGuidanceFormFieldsToGuidanceArticle,
     mapGuidanceToArticleApi,
@@ -107,6 +109,133 @@ describe('guidance.utils', () => {
             )
 
             expect(result).toEqual(expected)
+        })
+    })
+
+    describe('handleGuidanceDuplicateError', () => {
+        it('should handle duplicate title error correctly', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'An article with the title "Test Title" already exists in this help center',
+                        },
+                    },
+                },
+            }
+
+            const result = handleGuidanceDuplicateError(error, 'Test Title')
+
+            expect(result).toEqual({
+                isDuplicate: true,
+                type: 'title',
+                notification: {
+                    status: NotificationStatus.Error,
+                    message:
+                        'Guidance with the name "Test Title" already exists in this help center',
+                },
+            })
+        })
+
+        it('should handle duplicate content error correctly', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'An article with identical content already exists in this help center',
+                        },
+                    },
+                },
+            }
+
+            const result = handleGuidanceDuplicateError(error, 'Some Title')
+
+            expect(result).toEqual({
+                isDuplicate: true,
+                type: 'content',
+                notification: {
+                    status: NotificationStatus.Error,
+                    message:
+                        'Guidance with identical instructions already exists in this help center',
+                },
+            })
+        })
+
+        it('should return not duplicate for other errors', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'Some other error message',
+                        },
+                    },
+                },
+            }
+
+            const result = handleGuidanceDuplicateError(error, 'Test Title')
+
+            expect(result).toEqual({
+                isDuplicate: false,
+            })
+        })
+
+        it('should return not duplicate when no error message is present', () => {
+            const error = {
+                response: {
+                    data: {},
+                },
+            }
+
+            const result = handleGuidanceDuplicateError(error, 'Test Title')
+
+            expect(result).toEqual({
+                isDuplicate: false,
+            })
+        })
+
+        it('should return not duplicate for malformed error object', () => {
+            const error = {}
+
+            const result = handleGuidanceDuplicateError(error, 'Test Title')
+
+            expect(result).toEqual({
+                isDuplicate: false,
+            })
+        })
+
+        it('should return not duplicate for null/undefined error', () => {
+            const result1 = handleGuidanceDuplicateError(null, 'Test Title')
+            const result2 = handleGuidanceDuplicateError(
+                undefined,
+                'Test Title',
+            )
+
+            expect(result1).toEqual({ isDuplicate: false })
+            expect(result2).toEqual({ isDuplicate: false })
+        })
+
+        it('should use provided guidance name in title error message', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'An article with the title "Different Title" already exists in this help center',
+                        },
+                    },
+                },
+            }
+
+            const result = handleGuidanceDuplicateError(error, 'My Custom Name')
+
+            expect(result).toEqual({
+                isDuplicate: true,
+                type: 'title',
+                notification: {
+                    status: NotificationStatus.Error,
+                    message:
+                        'Guidance with the name "My Custom Name" already exists in this help center',
+                },
+            })
         })
     })
 })
