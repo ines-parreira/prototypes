@@ -100,40 +100,42 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                 )}
             </div>
             <div className={css.description}>{description}</div>
-            <div className={classNames(css.actions, css.expandedActions)}>
-                {primaryAction && (
-                    <Button
-                        onClick={primaryAction.onClick}
-                        className={
-                            primaryAction.isLoading
-                                ? undefined
-                                : css.primaryActionButton
-                        }
-                        isLoading={primaryAction.isLoading}
-                    >
-                        {primaryAction.isLoading
-                            ? primaryAction.loadingLabel
-                            : primaryAction.label}
-                    </Button>
-                )}
-                {secondaryAction && (
-                    <Button
-                        onClick={secondaryAction.onClick}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        className={
-                            secondaryAction.isLoading
-                                ? undefined
-                                : css.secondaryActionButton
-                        }
-                        isLoading={secondaryAction.isLoading}
-                    >
-                        {secondaryAction.isLoading
-                            ? secondaryAction.loadingLabel
-                            : secondaryAction.label}
-                    </Button>
-                )}
-            </div>
+            {(secondaryAction || primaryAction) && (
+                <div className={classNames(css.actions, css.expandedActions)}>
+                    {primaryAction && (
+                        <Button
+                            onClick={primaryAction.onClick}
+                            className={
+                                primaryAction.isLoading
+                                    ? undefined
+                                    : css.primaryActionButton
+                            }
+                            isLoading={primaryAction.isLoading}
+                        >
+                            {primaryAction.isLoading
+                                ? primaryAction.loadingLabel
+                                : primaryAction.label}
+                        </Button>
+                    )}
+                    {secondaryAction && (
+                        <Button
+                            onClick={secondaryAction.onClick}
+                            fillStyle="ghost"
+                            intent="secondary"
+                            className={
+                                secondaryAction.isLoading
+                                    ? undefined
+                                    : css.secondaryActionButton
+                            }
+                            isLoading={secondaryAction.isLoading}
+                        >
+                            {secondaryAction.isLoading
+                                ? secondaryAction.loadingLabel
+                                : secondaryAction.label}
+                        </Button>
+                    )}
+                </div>
+            )}
         </div>
     )
 }

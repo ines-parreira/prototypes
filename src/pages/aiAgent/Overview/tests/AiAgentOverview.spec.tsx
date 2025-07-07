@@ -42,6 +42,12 @@ jest.mock(
         ),
     }),
 )
+jest.mock(
+    'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow',
+    () => ({
+        TrialManageWorkflow: () => <div>Trial-Manage-Workflow</div>,
+    }),
+)
 jest.mock('react-router')
 jest.mock('pages/aiAgent/Overview/hooks/useThankYouModal')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
@@ -547,13 +553,17 @@ describe('AiAgentOverview', () => {
                 canSeeTrialCTA: false,
             })
 
+            // Clear any previous calls from beforeEach
+            mockUseShoppingAssistantTrialAccess.mockClear()
+
             renderComponent()
 
-            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(1)
+            // Hook is called multiple times due to TrialManageWorkflow component and React re-renders
+            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(2)
 
             // Re-render should call again
             renderComponent()
-            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(2)
+            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(4)
         })
     })
 

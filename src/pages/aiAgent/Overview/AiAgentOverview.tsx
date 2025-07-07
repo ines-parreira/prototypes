@@ -16,6 +16,7 @@ import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
+import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -52,8 +53,11 @@ export const AiAgentOverview = () => {
     const { isOpen, isLoading, handleModalAction, modalContent } =
         useThankYouModal()
 
-    const { canSeeTrialCTA: canSeeTrialRevamp } =
-        useShoppingAssistantTrialAccess()
+    const {
+        canSeeTrialCTA: canSeeTrialRevamp,
+        canBookDemo,
+        canSeeTrialStartedBanner,
+    } = useShoppingAssistantTrialAccess()
 
     const { storeActivations } = useStoreActivations()
 
@@ -73,7 +77,7 @@ export const AiAgentOverview = () => {
     const onConfirmModal = () => handleModalAction('confirm')
     const onCloseModal = () => handleModalAction('close')
 
-    const { upgradePlanModal, trialActivatedModal } = useTrialModalProps()
+    const trialModalProps = useTrialModalProps({ onConfirmTrial })
 
     return (
         <AiAgentOverviewLayout>
@@ -81,29 +85,16 @@ export const AiAgentOverview = () => {
                 firstName={currentUser.get('firstname')}
                 activationButton={activationButton}
             />
-            {canSeeTrialRevamp && (
-                <TrialAlertBanner
-                    title="Drive more revenue with Shopping Assistant"
-                    description="Make every interaction personal. With AI Agent's new shopping assistant features, you can offer real-time recommendations powered by rich insights and persuasive selling skills that help customers buy with confidence."
-                    primaryAction={{
-                        label: 'Try for 14 days',
-                        onClick: onConfirmTrial,
-                    }}
-                    secondaryAction={{
-                        label: 'How Shopping Assistant Accelerates Growth',
-                        onClick: () => {
-                            window.open(
-                                'https://www.gorgias.com/ai-shopping-assistant',
-                                '_blank',
-                            )
-                        },
-                    }}
-                />
-            )}
+            {(canSeeTrialRevamp || canBookDemo) &&
+                !canSeeTrialStartedBanner && (
+                    <TrialAlertBanner {...trialModalProps.trialAlertBanner} />
+                )}
+
+            <TrialManageWorkflow />
 
             {isUpgradeModalOpen && (
                 <UpgradePlanModal
-                    {...upgradePlanModal}
+                    {...trialModalProps.upgradePlanModal}
                     onClose={closeUpgradeModal}
                     onConfirm={startTrial}
                     isLoading={isTrialRevampLoading}
@@ -112,7 +103,7 @@ export const AiAgentOverview = () => {
 
             {isSuccessModalOpen && (
                 <TrialActivatedModal
-                    {...trialActivatedModal}
+                    {...trialModalProps.trialActivatedModal}
                     onConfirm={closeSuccessModal}
                 />
             )}

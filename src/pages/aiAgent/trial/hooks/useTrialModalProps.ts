@@ -5,35 +5,31 @@ import {
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
+import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
+import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
-export interface TrialModalProps {
-    upgradePlanModal: {
-        title: string
-        currentPlan: {
-            title: string
-            description: string
-            price: string
-            billingPeriod: string
-            features: string[]
-            buttonText: string
-        }
-        newPlan: {
-            title: string
-            description: string
-            price: string
-            billingPeriod: string
-            features: string[]
-            buttonText: string
-            priceTooltipText: string
-        }
-    }
+export type TrialModalProps = {
+    upgradePlanModal: Pick<
+        UpgradePlanModalProps,
+        'title' | 'currentPlan' | 'newPlan'
+    >
     trialActivatedModal: {
         title: string
     }
+    trialStartedBanner: {
+        title: string
+        description: string
+    }
+    trialAlertBanner: Pick<
+        TrialAlertBannerProps,
+        'title' | 'description' | 'primaryAction' | 'secondaryAction'
+    >
 }
 
-const useUpgradePlanModal = () => {
+const useUpgradePlanModal = (): TrialModalProps['upgradePlanModal'] => {
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
     const { amount: earlyAccessPlanAmount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessAutomatePlanQuery.data)
@@ -101,15 +97,87 @@ const useTrialActivatedModal = () => {
     )
 }
 
-export const useTrialModalProps = (): TrialModalProps => {
+const useTrialStartedBanner = (): TrialModalProps['trialStartedBanner'] => {
+    const { remainingDays, gmv } = useTrialMetrics()
+
+    return useMemo(
+        () => ({
+            title: `Shopping Assistant trial ends in ${remainingDays} days.`,
+            description: `So far, it's generated ${gmv} in added GMV for your store.`,
+        }),
+        [remainingDays, gmv],
+    )
+}
+
+const useTrialAlertBanner = ({
+    onConfirmTrial,
+}: {
+    onConfirmTrial?: () => void
+}): TrialModalProps['trialAlertBanner'] => {
+    const { canBookDemo } = useShoppingAssistantTrialAccess()
+
+    const secondaryAction = useMemo(() => {
+        if (canBookDemo) {
+            return {
+                label: 'Book a demo',
+                onClick: () => {
+                    window.open(
+                        'https://www.gorgias.com/demo/customers/automate',
+                        '_blank',
+                    )
+                },
+            }
+        }
+
+        return {
+            label: 'How Shopping Assistant Accelerates Growth',
+            onClick: () => {
+                window.open(
+                    'https://www.gorgias.com/ai-shopping-assistant',
+                    '_blank',
+                )
+            },
+        }
+    }, [canBookDemo])
+
+    return useMemo(
+        () => ({
+            title: 'Drive more revenue with Shopping Assistant',
+            description:
+                "Make every interaction personal. With AI Agent's new shopping assistant features, you can offer real-time recommendations powered by rich insights and persuasive selling skills that help customers buy with confidence.",
+            primaryAction: {
+                label: 'Try for 14 days',
+                onClick: onConfirmTrial ?? (() => {}),
+            },
+            secondaryAction,
+        }),
+        [onConfirmTrial, secondaryAction],
+    )
+}
+export const useTrialModalProps = ({
+    onConfirmTrial,
+}: {
+    onConfirmTrial?: () => void
+}): TrialModalProps => {
     const upgradePlanModal = useUpgradePlanModal()
     const trialActivatedModal = useTrialActivatedModal()
+    const trialStartedBanner = useTrialStartedBanner()
+    const trialAlertBanner = useTrialAlertBanner({
+        onConfirmTrial: onConfirmTrial,
+    })
 
     return useMemo(
         () => ({
             upgradePlanModal,
             trialActivatedModal,
+            trialStartedBanner,
+            trialAlertBanner,
         }),
-        [upgradePlanModal, trialActivatedModal],
+        [
+            upgradePlanModal,
+            trialActivatedModal,
+            trialStartedBanner,
+            trialAlertBanner,
+        ],
     )
 }

@@ -1,10 +1,10 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpdeskPlanTier } from 'models/billing/types'
 import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { atLeastOneStoreHasActiveTrial } from 'pages/aiAgent/trial/utils/utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -22,6 +22,8 @@ type ShoppingAssistantTrialAccess = {
     canSeeSystemBanner: boolean
     /** Whether the user can see the trial CTA (only for Admins) */
     canSeeTrialCTA: boolean
+    /** Whether the trial has started or not */
+    canSeeTrialStartedBanner: boolean
 }
 
 /**
@@ -50,7 +52,8 @@ export const useShoppingAssistantTrialAccess =
 
         // Hook must be called unconditionally due to React rules
         // We're checking trial history differently now, but keeping for compatibility
-        useAtLeastOneStoreHasActiveTrial()
+        const hasAtLeastOneStoreHasActiveTrial =
+            atLeastOneStoreHasActiveTrial(storeConfigurations)
 
         // User is an admin
         const isAdminUser = isAdmin(currentUser)
@@ -82,6 +85,7 @@ export const useShoppingAssistantTrialAccess =
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
+                canSeeTrialStartedBanner: false,
             }
         }
 
@@ -131,5 +135,6 @@ export const useShoppingAssistantTrialAccess =
             canBookDemo,
             canSeeSystemBanner,
             canSeeTrialCTA,
+            canSeeTrialStartedBanner: hasAtLeastOneStoreHasActiveTrial,
         }
     }

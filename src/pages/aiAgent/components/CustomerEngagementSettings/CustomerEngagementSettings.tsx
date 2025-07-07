@@ -15,6 +15,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import * as IntegrationsActions from 'state/integrations/actions'
@@ -211,6 +212,7 @@ export const CustomerEngagementSettings = () => {
                                 undefined
                             }
                         />
+                        <TrialManageWorkflow />
                         {isTriggerOnSearchEnabled && (
                             <TriggerOnSearchSettings
                                 gmv={gmv}

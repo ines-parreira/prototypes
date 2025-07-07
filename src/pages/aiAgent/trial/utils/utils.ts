@@ -1,10 +1,9 @@
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { StoreConfiguration } from 'models/aiAgent/types'
 
-export const hasAtLeastOneShopifyStore = (
-    storeActivations: Record<string, StoreActivation>,
+export const atLeastOneStoreHasActiveTrial = (
+    storeConfigurations: StoreConfiguration[],
 ) => {
-    return Object.values(storeActivations).filter(
-        (storeActivation) =>
-            storeActivation.configuration.shopType === 'shopify',
+    return storeConfigurations.some(
+        (storeConfiguration) => storeConfiguration.sales?.trial.startDatetime,
     )
 }

@@ -19,6 +19,7 @@ import {
     PersuasionLevelSteps,
 } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -223,6 +224,7 @@ export const SalesSettings = () => {
                                     undefined
                                 }
                             />
+                            <TrialManageWorkflow />
                         </div>
                         <section className={css.card}>
                             <div className={css.titleContainer}>

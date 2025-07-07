@@ -150,7 +150,7 @@ export const SalesPaywallMiddleware =
             autoDestroy: false,
         })
 
-        const { upgradePlanModal, trialActivatedModal } = useTrialModalProps()
+        const trialModalProps = useTrialModalProps({})
 
         if (!hasAutomate) {
             return (
@@ -166,7 +166,7 @@ export const SalesPaywallMiddleware =
             <>
                 {isTrialModalOpen && (
                     <UpgradePlanModal
-                        {...upgradePlanModal}
+                        {...trialModalProps.upgradePlanModal}
                         onClose={closeUpgradeModal}
                         onConfirm={startRevampTrial}
                         isLoading={isTrialRevampLoading}
@@ -175,7 +175,7 @@ export const SalesPaywallMiddleware =
 
                 {isSuccessModalOpen && (
                     <TrialActivatedModal
-                        {...trialActivatedModal}
+                        {...trialModalProps.trialActivatedModal}
                         onConfirm={closeSuccessModal}
                     />
                 )}

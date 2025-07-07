@@ -20,16 +20,20 @@ type UseShoppingAssistantTrialFlowProps = {
 
 const UPGRADE_MODAL_NAME = 'ShoppingAssistantUpgradeModal'
 const SUCCESS_MODAL_NAME = 'ShoppingAssistantSuccessModal'
+const MANAGE_TRIAL_MODAL_NAME = 'ShoppingAssistantManageTrialModal'
 
 type UseShoppingAssistantTrialFlowReturn = {
     startTrial: () => void
     isLoading: boolean
     isTrialModalOpen: boolean
     isSuccessModalOpen: boolean
+    isManageTrialModalOpen: boolean
     closeUpgradeModal: () => void
     closeSuccessModal: () => void
+    closeManageTrialModal: () => void
     openUpgradeModal: () => void
     onConfirmTrial: () => void
+    openManageTrialModal: () => void
 }
 
 export const useShoppingAssistantTrialFlow = ({
@@ -44,7 +48,9 @@ export const useShoppingAssistantTrialFlow = ({
     const successModal = useModalManager(SUCCESS_MODAL_NAME, {
         autoDestroy: false,
     })
-
+    const manageTrialModal = useModalManager(MANAGE_TRIAL_MODAL_NAME, {
+        autoDestroy: false,
+    })
     const queryClient = useQueryClient()
     const history = useHistory()
 
@@ -87,9 +93,17 @@ export const useShoppingAssistantTrialFlow = ({
         onUpgradeModalClose?.()
     }
 
+    const closeManageTrialModal = () => {
+        manageTrialModal.closeModal(MANAGE_TRIAL_MODAL_NAME)
+    }
+
     const closeSuccessModal = () => {
         history.push(routes.customerEngagement)
         successModal.closeModal(SUCCESS_MODAL_NAME)
+    }
+
+    const openManageTrialModal = () => {
+        manageTrialModal.openModal(MANAGE_TRIAL_MODAL_NAME)
     }
 
     const openUpgradeModal = () => {
@@ -109,9 +123,14 @@ export const useShoppingAssistantTrialFlow = ({
         isLoading,
         isTrialModalOpen: trialModal.isOpen(UPGRADE_MODAL_NAME),
         isSuccessModalOpen: successModal.isOpen(SUCCESS_MODAL_NAME),
+        isManageTrialModalOpen: manageTrialModal.isOpen(
+            MANAGE_TRIAL_MODAL_NAME,
+        ),
         closeUpgradeModal,
         closeSuccessModal,
+        closeManageTrialModal,
         openUpgradeModal,
         onConfirmTrial,
+        openManageTrialModal,
     }
 }

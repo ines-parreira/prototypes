@@ -15,6 +15,10 @@ import css from './AiShoppingAssistantExpireBanner.less'
 type AiShoppingAssistantExpireBannerProps = {
     deactiveDatetime?: string
 }
+
+/**
+ * @deprecated This component is no longer used try to use the new trial banner {@link TrialAlertBanner} instead
+ */
 const AiShoppingAssistantExpireBanner: React.FC<
     AiShoppingAssistantExpireBannerProps
 > = ({ deactiveDatetime }) => {
@@ -28,6 +32,10 @@ const AiShoppingAssistantExpireBanner: React.FC<
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
     const { earlyAccessModal, showEarlyAccessModal } = useActivation()
+
+    const isTrialRevampEnabled = useFlag(
+        FeatureFlagKey.ShoppingAssistantTrialRevamp,
+    )
 
     const days = useMemo(() => {
         if (!deactiveDatetime) {
@@ -45,6 +53,7 @@ const AiShoppingAssistantExpireBanner: React.FC<
     }, [deactiveDatetime, trialExtensionPeriodInDays])
 
     if (
+        isTrialRevampEnabled ||
         days === undefined ||
         days < 0 ||
         !(bypassPlanCheck || !hasNewAutomatePlan)

@@ -87,6 +87,12 @@ jest.mock(
     () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
 )
 jest.mock(
+    'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow',
+    () => ({
+        TrialManageWorkflow: () => <div>Trial-Manage-Workflow</div>,
+    }),
+)
+jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/hooks/useTexts',
     () => ({
         useTexts: () => ({

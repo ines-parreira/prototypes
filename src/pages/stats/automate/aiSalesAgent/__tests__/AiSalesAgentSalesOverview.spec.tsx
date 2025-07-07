@@ -249,6 +249,7 @@ describe('AiSalesAgentSalesOverview', () => {
             canBookDemo: false,
             canSeeSystemBanner: false,
             canSeeTrialCTA: false, // Default to false, will override in specific tests
+            canSeeTrialStartedBanner: false,
         })
 
         // Mock useFlag
@@ -367,6 +368,7 @@ describe('AiSalesAgentSalesOverview', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: true, // Allow trial CTA to show
+                canSeeTrialStartedBanner: false,
             })
 
             renderComponent()
@@ -397,6 +399,7 @@ describe('AiSalesAgentSalesOverview', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: true, // Allow trial CTA to show
+                canSeeTrialStartedBanner: false,
             })
 
             renderComponent()
@@ -426,6 +429,7 @@ describe('AiSalesAgentSalesOverview', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: true, // Allow trial CTA to show
+                canSeeTrialStartedBanner: false,
             })
 
             renderComponent()

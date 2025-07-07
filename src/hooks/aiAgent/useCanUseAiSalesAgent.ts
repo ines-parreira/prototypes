@@ -39,6 +39,9 @@ export const canStoreUseAiSalesAgent = (
     return trialState === TrialState.Trial
 }
 
+/**
+ * @deprecated use {@link atLeastOneStoreHasActiveTrial} instead
+ */
 export const useAtLeastOneStoreHasActiveTrial = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
