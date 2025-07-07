@@ -76,6 +76,7 @@ describe('time series', () => {
     }
     const timezone = 'UTC'
     const granularity = ReportingGranularity.Day
+    const customFieldId = 1
 
     describe.each([
         [
@@ -290,7 +291,6 @@ describe('time series', () => {
 
     describe('useCustomFieldsTicketCountTimeSeries', () => {
         it('should render expected query', () => {
-            const customFieldId = '1'
             renderHook(
                 ({ statsFilters, timezone, granularity, customFieldId }) =>
                     useCustomFieldsTicketCountTimeSeries(
@@ -316,12 +316,10 @@ describe('time series', () => {
                     granularity,
                     customFieldId,
                 ),
-                true,
             )
         })
 
         it('should accept time reference as a parameter', () => {
-            const customFieldId = '1'
             renderHook(
                 ({ statsFilters, timezone, granularity, customFieldId }) =>
                     useCustomFieldsTicketCountTimeSeries(
@@ -330,7 +328,6 @@ describe('time series', () => {
                         granularity,
                         customFieldId,
                         undefined,
-                        true,
                         TicketTimeReference.CreatedAt,
                     ),
                 {
@@ -350,12 +347,10 @@ describe('time series', () => {
                     granularity,
                     customFieldId,
                 ),
-                true,
             )
         })
 
         it('should render expected query', () => {
-            const customFieldId = '1'
             renderHook(
                 ({ statsFilters, timezone, granularity, customFieldId }) =>
                     fetchCustomFieldsTicketCountTimeSeries(
@@ -385,7 +380,6 @@ describe('time series', () => {
         })
 
         it('should accept time reference as a parameter', () => {
-            const customFieldId = '1'
             renderHook(
                 ({ statsFilters, timezone, granularity, customFieldId }) =>
                     fetchCustomFieldsTicketCountTimeSeries(
@@ -420,7 +414,6 @@ describe('time series', () => {
     describe('useCustomFieldsTicketCountForProductTimeSeries', () => {
         const productId = 'some-product-id'
         it('should render expected query', () => {
-            const customFieldId = '1'
             renderHook(() =>
                 useCustomFieldsTicketCountForProductTimeSeries(
                     statsFilters,
@@ -439,7 +432,6 @@ describe('time series', () => {
                     customFieldId,
                     productId,
                 ),
-                true,
             )
         })
     })
@@ -523,10 +515,9 @@ describe('time series', () => {
     })
 
     describe('useSentimentsCustomFieldsTicketCountTimeSeries', () => {
-        const sentimentCustomFieldId = '123'
+        const sentimentCustomFieldId = 123
         const sentimentValueStrings = [Sentiment.Positive, Sentiment.Negative]
         const sorting = OrderDirection.Desc
-        const enabled = true
         const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
             statsFilters,
             timezone,
@@ -544,77 +535,34 @@ describe('time series', () => {
                     sentimentCustomFieldId,
                     sentimentValueStrings,
                     sorting,
-                    enabled,
                 ),
             )
 
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
-                {
-                    ...baseQuery,
-                    filters: expect.arrayContaining([
-                        ...baseQuery.filters,
-                        {
-                            member: TicketMember.CustomField,
-                            operator: ReportingFilterOperator.Equals,
-                            values: sentimentValueStrings.map(
-                                getCustomFieldValueSerializer(
-                                    Number(sentimentCustomFieldId),
-                                ),
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith({
+                ...baseQuery,
+                filters: expect.arrayContaining([
+                    ...baseQuery.filters,
+                    {
+                        member: TicketMember.CustomField,
+                        operator: ReportingFilterOperator.Equals,
+                        values: sentimentValueStrings.map(
+                            getCustomFieldValueSerializer(
+                                sentimentCustomFieldId,
                             ),
-                        },
-                        {
-                            member: TicketProductsEnrichedDimension.ProductId,
-                            operator: ReportingFilterOperator.NotEquals,
-                            values: ['null'],
-                        },
-                    ]),
-                },
-                enabled,
-            )
-        })
-
-        it('should call with the default enabled value', () => {
-            renderHook(() =>
-                useSentimentsCustomFieldsTicketCountTimeSeries(
-                    statsFilters,
-                    timezone,
-                    granularity,
-                    sentimentCustomFieldId,
-                    sentimentValueStrings,
-                    sorting,
-                ),
-            )
-
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
-                {
-                    ...baseQuery,
-                    filters: expect.arrayContaining([
-                        ...baseQuery.filters,
-                        {
-                            member: TicketMember.CustomField,
-                            operator: ReportingFilterOperator.Equals,
-                            values: sentimentValueStrings.map(
-                                getCustomFieldValueSerializer(
-                                    Number(sentimentCustomFieldId),
-                                ),
-                            ),
-                        },
-                        {
-                            member: TicketProductsEnrichedDimension.ProductId,
-                            operator: ReportingFilterOperator.NotEquals,
-                            values: ['null'],
-                        },
-                    ]),
-                },
-                true,
-            )
+                        ),
+                    },
+                    {
+                        member: TicketProductsEnrichedDimension.ProductId,
+                        operator: ReportingFilterOperator.NotEquals,
+                        values: ['null'],
+                    },
+                ]),
+            })
         })
     })
 
     describe('useAIIntentCustomFieldsTicketCountTimeSeries', () => {
-        const customFieldId = '123'
         const sorting = OrderDirection.Desc
-        const enabled = false
 
         it('should call useTimeSeriesPerDimension with correct query and ProductId filter', () => {
             const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
@@ -632,59 +580,20 @@ describe('time series', () => {
                     granularity,
                     customFieldId,
                     sorting,
-                    enabled,
                 ),
             )
 
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
-                {
-                    ...baseQuery,
-                    filters: [
-                        ...baseQuery.filters,
-                        {
-                            member: TicketProductsEnrichedDimension.ProductId,
-                            operator: ReportingFilterOperator.NotEquals,
-                            values: ['null'],
-                        },
-                    ],
-                },
-                enabled,
-            )
-        })
-
-        it('should call with default enabled value', () => {
-            const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
-                statsFilters,
-                timezone,
-                granularity,
-                customFieldId,
-                sorting,
-            )
-
-            renderHook(() =>
-                useAIIntentCustomFieldsTicketCountTimeSeries(
-                    statsFilters,
-                    timezone,
-                    granularity,
-                    customFieldId,
-                    sorting,
-                ),
-            )
-
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
-                {
-                    ...baseQuery,
-                    filters: [
-                        ...baseQuery.filters,
-                        {
-                            member: TicketProductsEnrichedDimension.ProductId,
-                            operator: ReportingFilterOperator.NotEquals,
-                            values: ['null'],
-                        },
-                    ],
-                },
-                true,
-            )
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith({
+                ...baseQuery,
+                filters: [
+                    ...baseQuery.filters,
+                    {
+                        member: TicketProductsEnrichedDimension.ProductId,
+                        operator: ReportingFilterOperator.NotEquals,
+                        values: ['null'],
+                    },
+                ],
+            })
         })
     })
 })

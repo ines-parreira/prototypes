@@ -90,7 +90,7 @@ export const sentimentsTicketCountPerProductDrillDownQueryFactory = (
     sorting = OrderDirection.Desc,
 ): ReportingQuery<TicketCubeWithJoins> => {
     const baseQuery = sentimentsTicketCountPerProductQueryFactory(
-        injectCustomFieldId(statsFilters, Number(customFieldId), [sentiment]),
+        injectCustomFieldId(statsFilters, customFieldId, [sentiment]),
         timezone,
         customFieldId,
         productId,

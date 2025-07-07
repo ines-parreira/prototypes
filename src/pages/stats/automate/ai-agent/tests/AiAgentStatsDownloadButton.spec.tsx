@@ -24,18 +24,19 @@ const saveZippedFilesMock = assumeMock(saveZippedFiles)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
-const statsFiltersMock: StatsFiltersWithLogicalOperator = {
-    period: {
-        start_datetime: '2024-09-14T00:00:00+00:00',
-        end_datetime: '2024-09-20T23:59:59+00:00',
-    },
-    agents: {
-        operator: LogicalOperatorEnum.ONE_OF,
-        values: [5],
-    },
-}
-
 describe('AiAgentStatsDownloadButton', () => {
+    const selectedCustomFieldId = 123
+    const statsFiltersMock: StatsFiltersWithLogicalOperator = {
+        period: {
+            start_datetime: '2024-09-14T00:00:00+00:00',
+            end_datetime: '2024-09-20T23:59:59+00:00',
+        },
+        agents: {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [5],
+        },
+    }
+
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue(statsFiltersMock)
         useAIAgentReportMetricsMock.mockReturnValue({
@@ -46,7 +47,11 @@ describe('AiAgentStatsDownloadButton', () => {
     })
 
     it('should call logEvent & saveReport on click', () => {
-        render(<AiAgentStatsDownloadButton />)
+        render(
+            <AiAgentStatsDownloadButton
+                selectedCustomFieldId={selectedCustomFieldId}
+            />,
+        )
 
         fireEvent.click(screen.getByText(DOWNLOAD_DATA_BUTTON_LABEL))
 
@@ -67,7 +72,11 @@ describe('AiAgentStatsDownloadButton', () => {
             isLoading: true,
         } as any)
 
-        render(<AiAgentStatsDownloadButton />)
+        render(
+            <AiAgentStatsDownloadButton
+                selectedCustomFieldId={selectedCustomFieldId}
+            />,
+        )
 
         fireEvent.click(screen.getByText(DOWNLOAD_DATA_BUTTON_LABEL))
 

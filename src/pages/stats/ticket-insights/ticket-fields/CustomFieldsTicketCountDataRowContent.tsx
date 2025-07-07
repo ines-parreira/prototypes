@@ -30,6 +30,10 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import { TicketFieldsMetric, ValueMode } from 'state/ui/stats/types'
 
+export type WithSelectedCustomField = {
+    selectedCustomField: { id: number; label: string }
+}
+
 export type DataRowProps =
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile & {
         level?: number
@@ -37,7 +41,6 @@ export type DataRowProps =
         isTableScrolled?: boolean
         onClick?: () => void
         children?: TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile[]
-        selectedCustomField?: { id: number; label: string }
     }
 
 const formatAccordingToValueMode =
@@ -55,12 +58,14 @@ const formatAccordingToValueMode =
                   NOT_AVAILABLE_PLACEHOLDER,
               )
 
-export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
+export const CustomFieldsTicketCountDataRowContent = (
+    props: DataRowProps & { tableProps: WithSelectedCustomField },
+) => {
     const {
         isTableScrolled = false,
         timeSeries,
         initialCustomFieldValue,
-        selectedCustomField,
+        tableProps,
         percentage,
         decile,
         totalsDecile,
@@ -68,6 +73,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
         onClick,
         children,
     } = props
+    const { selectedCustomField } = tableProps
     const breakdownField = BREAKDOWN_FIELD
     const valueField = VALUE_FIELD
     const label = props[breakdownField]
@@ -124,7 +130,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                         )} | ${label} | Total`,
                         metricName:
                             TicketFieldsMetric.TicketCustomFieldsTicketCount,
-                        customFieldId: selectedCustomField?.id || null,
+                        customFieldId: selectedCustomField.id,
                         customFieldValue: initialCustomFieldValue,
                         ticketTimeReference: ticketFieldsTicketTimeReference,
                     }}
@@ -171,7 +177,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                             )}`,
                             metricName:
                                 TicketFieldsMetric.TicketCustomFieldsTicketCount,
-                            customFieldId: selectedCustomField?.id || null,
+                            customFieldId: selectedCustomField.id,
                             customFieldValue: initialCustomFieldValue,
                             dateRange: getUtcPeriodFromDateAndGranularity(
                                 data.dateTime,

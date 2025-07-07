@@ -245,16 +245,13 @@ const ticketInsights = {
 }
 
 describe('useTicketInsightsMetrics', () => {
+    const selectedCustomFieldId = 123
+
     beforeEach(() => {
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                id: '1',
-                label: 'AI Intent',
-            })
-            .mockReturnValueOnce({
-                direction: order,
-                column: 'total',
-            })
+        useAppSelectorMock.mockReturnValueOnce({
+            direction: order,
+            column: 'total',
+        })
 
         useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: {
@@ -280,7 +277,9 @@ describe('useTicketInsightsMetrics', () => {
             data: { data: [] },
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
-        const data = renderHook(() => useTicketInsightsMetrics())
+        const data = renderHook(() =>
+            useTicketInsightsMetrics(selectedCustomFieldId),
+        )
 
         expect(data.result.current).toEqual({
             ticketInsightsData: undefined,
@@ -293,7 +292,9 @@ describe('useTicketInsightsMetrics', () => {
             data: { data: aiAgentCustomFields },
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
-        const data = renderHook(() => useTicketInsightsMetrics())
+        const data = renderHook(() =>
+            useTicketInsightsMetrics(selectedCustomFieldId),
+        )
 
         expect(data.result.current).toEqual({
             ticketInsights: ticketInsights,
@@ -302,14 +303,14 @@ describe('useTicketInsightsMetrics', () => {
     })
 })
 
-const period = {
-    start_datetime: '2024-09-14T00:00:00+00:00',
-    end_datetime: '2024-09-20T23:59:59+00:00',
-}
-
 describe('useAIAgentReportMetrics', () => {
+    const selectedCustomFieldId = 123
+    const period = {
+        start_datetime: '2024-09-14T00:00:00+00:00',
+        end_datetime: '2024-09-20T23:59:59+00:00',
+    }
+
     beforeEach(() => {
-        // useAgentPerformanceMetrics
         useAppSelectorMock.mockReturnValueOnce(statsFiltersMock)
 
         useAppSelectorMock.mockReturnValueOnce(agents)
@@ -329,7 +330,6 @@ describe('useAIAgentReportMetrics', () => {
             columnsOrder: [AgentsTableColumn.AgentName],
         } as unknown as ReturnType<typeof useAgentsTableConfigSetting>)
 
-        // useAutomatedTicketsMetrics
         useAppSelectorMock.mockReturnValueOnce(statsFiltersMock)
 
         useNewStatsFiltersMock.mockReturnValue({
@@ -358,16 +358,10 @@ describe('useAIAgentReportMetrics', () => {
             },
         } as unknown as ReturnType<typeof getTimeSeriesFormattedData>)
 
-        // useTicketInsightsMetrics
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                id: '1',
-                label: 'AI Intent',
-            })
-            .mockReturnValueOnce({
-                direction: order,
-                column: 'total',
-            })
+        useAppSelectorMock.mockReturnValueOnce({
+            direction: order,
+            column: 'total',
+        })
 
         useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: {
@@ -393,7 +387,9 @@ describe('useAIAgentReportMetrics', () => {
             data: { data: aiAgentCustomFields },
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
-        const data = renderHook(() => useAIAgentReportMetrics())
+        const data = renderHook(() =>
+            useAIAgentReportMetrics(selectedCustomFieldId),
+        )
 
         expect(getTicketInsightsDataMock).toHaveBeenCalledWith(
             ticketInsights.data,
@@ -433,7 +429,9 @@ describe('useAIAgentReportMetrics', () => {
             data: { data: [] },
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
-        const data = renderHook(() => useAIAgentReportMetrics())
+        const data = renderHook(() =>
+            useAIAgentReportMetrics(selectedCustomFieldId),
+        )
 
         expect(data.result.current).toEqual({
             fileName: getCsvFileNameWithDates(

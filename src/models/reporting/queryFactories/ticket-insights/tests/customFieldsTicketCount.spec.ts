@@ -51,7 +51,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
             end_datetime: periodEnd,
         },
     }
-    const customFieldId = '123'
+    const customFieldId = 123
     const timezone = 'UTC'
     const sorting = OrderDirection.Asc
     const perAgentId = '1'
@@ -83,7 +83,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -123,7 +123,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -180,7 +180,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -238,7 +238,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -311,7 +311,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
             )
             const filtersWithDrillDownCustomField = injectCustomFieldId(
                 statsFilters,
-                Number(customFieldId),
+                customFieldId,
                 customFieldsValueStrings,
             )
 
@@ -411,7 +411,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
         })
 
         it('should replace a custom field filter values with a drill down value', () => {
-            const sameId = Number(customFieldId)
+            const sameId = customFieldId
             const uiFilterCustomFields = [
                 `${sameId}::Some::Value`,
                 `${sameId}::Some::OtherValue`,
@@ -453,7 +453,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     },
                 ],
             }
-            expect(String(sameId)).toEqual(customFieldId)
+            expect(String(sameId)).toEqual(String(customFieldId))
             const query = customFieldsTicketCountPerTicketDrillDownQueryFactory(
                 filtersWithCustomFields,
                 timezone,
@@ -536,7 +536,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -584,7 +584,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -626,7 +626,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
-                        values: [customFieldId],
+                        values: [String(customFieldId)],
                     },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,

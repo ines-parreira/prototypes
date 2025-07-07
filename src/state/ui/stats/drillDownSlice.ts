@@ -179,7 +179,7 @@ export type ChannelsMetrics = {
 export type TicketFieldsMetrics = {
     metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount
     ticketTimeReference: TicketTimeReference
-    customFieldId: number | null
+    customFieldId: number
     customFieldValue: string[] | null
     dateRange?: {
         end_datetime: string

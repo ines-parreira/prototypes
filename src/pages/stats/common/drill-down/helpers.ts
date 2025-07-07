@@ -268,7 +268,7 @@ export const getDrillDownQuery = (
                 queryFactory(
                     statsFilters,
                     timezone,
-                    String(metricData.customFieldId),
+                    metricData.customFieldId,
                     metricData.customFieldValue,
                     metricData.dateRange || statsFilters.period,
                     sorting,

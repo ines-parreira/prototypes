@@ -89,16 +89,15 @@ export const useCustomFieldsTimeSeries = ({
         cleanStatsFilters,
         userTimezone,
         granularity,
-        String(selectedCustomFieldId),
+        selectedCustomFieldId,
         OrderDirection.Desc,
-        true,
         ticketFieldsTicketTimeReference,
     )
 
     const customFieldsTicketCount = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
-        String(selectedCustomFieldId),
+        selectedCustomFieldId,
         OrderDirection.Desc,
         ticketFieldsTicketTimeReference,
     )
@@ -139,15 +138,14 @@ export const useAIIntentCustomFieldsTimeSeries = ({
             cleanStatsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomFieldId),
+            selectedCustomFieldId,
             OrderDirection.Desc,
-            true,
         )
 
     const customFieldsTicketCount = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
-        String(selectedCustomFieldId),
+        selectedCustomFieldId,
         OrderDirection.Desc,
         ticketFieldsTicketTimeReference,
     )
@@ -181,7 +179,7 @@ export const useCustomFieldsForProductTimeSeries = ({
     datasetVisibilityItems = DATASET_VISIBILITY_ITEMS,
     productId,
 }: {
-    selectedCustomFieldId: number | null
+    selectedCustomFieldId: number
     topAmount?: number
     datasetVisibilityItems?: number
     productId: string
@@ -193,16 +191,15 @@ export const useCustomFieldsForProductTimeSeries = ({
             cleanStatsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomFieldId),
+            selectedCustomFieldId,
             productId,
             OrderDirection.Desc,
-            true,
         )
 
     const customFieldsTicketCount = useCustomFieldsForProductTicketCount(
         cleanStatsFilters,
         userTimezone,
-        String(selectedCustomFieldId),
+        selectedCustomFieldId,
         productId,
         OrderDirection.Desc,
     )
@@ -268,7 +265,7 @@ export const useSentimentsCustomFieldsTimeSeries = ({
     sentimentCustomFieldId,
     sentimentValueStrings,
 }: {
-    sentimentCustomFieldId: number | null
+    sentimentCustomFieldId: number
     sentimentValueStrings: Sentiment[]
 }) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
@@ -281,10 +278,9 @@ export const useSentimentsCustomFieldsTimeSeries = ({
         cleanStatsFilters,
         userTimezone,
         granularity,
-        String(sentimentCustomFieldId),
+        sentimentCustomFieldId,
         sentimentValueStrings,
         OrderDirection.Desc,
-        true,
     )
 
     const format = getFormat(granularity)

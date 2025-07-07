@@ -231,7 +231,7 @@ describe('MetricPerDimension', () => {
 })
 
 describe('useMetricPerDimensionWithBreakdown', () => {
-    const customFieldId = '1'
+    const customFieldId = 1
     const ticketField = 'customTag'
     const ticketFieldL2_1 = 'subTag'
     const ticketFieldL2_2 = 'subTag2'

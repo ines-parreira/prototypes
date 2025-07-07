@@ -128,9 +128,7 @@ export const useTables = (
             channelColumnsOrder,
             customFieldsOrder,
             selectedCustomFieldId:
-                selectedCustomField.id !== null
-                    ? String(selectedCustomField.id)
-                    : null,
+                selectedCustomField.id !== null ? selectedCustomField.id : null,
             selectedBTODMetric,
             tags,
             tagsTableOrder,

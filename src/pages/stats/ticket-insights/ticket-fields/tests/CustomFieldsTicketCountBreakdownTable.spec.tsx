@@ -73,6 +73,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         {
             [VALUE_FIELD]: 668,
             [BREAKDOWN_FIELD]: 'abc',
+            selectedCustomField: { id: 123, label: 'asd' },
             initialCustomFieldValue: ['abc::xyz'],
             decile: 9,
             totalsDecile: 7,
@@ -81,6 +82,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 {
                     [VALUE_FIELD]: 668,
                     [BREAKDOWN_FIELD]: 'xyz',
+                    selectedCustomField: { id: 123, label: 'asd' },
                     initialCustomFieldValue: null,
                     decile: 9,
                     totalsDecile: 7,
@@ -237,6 +239,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         const dataPoint = {
             [BREAKDOWN_FIELD]: 'abc',
             [VALUE_FIELD]: 2,
+            selectedCustomField: { id: 123, label: 'asd' },
             initialCustomFieldValue: ['abc'],
             timeSeries: [
                 {

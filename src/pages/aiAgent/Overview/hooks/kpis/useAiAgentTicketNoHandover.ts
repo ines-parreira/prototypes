@@ -4,7 +4,7 @@ import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFie
 import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { useCustomFieldOutcome } from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { getPreviousPeriod } from 'utils/reporting'
 
 /**
@@ -14,7 +14,7 @@ export const useAiAgentTicketNoHandover = (
     filters: StatsFilters,
     timezone: string,
 ) => {
-    const customField = useCustomFieldOutcome()
+    const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
     const additionalFilters = [
         {
             member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
@@ -27,13 +27,13 @@ export const useAiAgentTicketNoHandover = (
         customFieldsTicketTotalCountQueryFactory({
             filters,
             timezone,
-            customFieldId: customField,
+            customFieldId: outcomeCustomFieldId,
             additionalFilters,
         }),
         customFieldsTicketTotalCountQueryFactory({
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            customFieldId: customField,
+            customFieldId: outcomeCustomFieldId,
             additionalFilters,
         }),
     )

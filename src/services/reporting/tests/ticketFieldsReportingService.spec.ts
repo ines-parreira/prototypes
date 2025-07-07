@@ -174,7 +174,7 @@ describe('ticketFieldsReportingService', () => {
                 granularity,
                 {
                     customFieldsOrder,
-                    selectedCustomFieldId: String(selectedCustomFieldId),
+                    selectedCustomFieldId: selectedCustomFieldId,
                     ticketFieldsTicketTimeReference:
                         TicketTimeReference.CreatedAt,
                 },
@@ -197,7 +197,7 @@ describe('ticketFieldsReportingService', () => {
                 granularity,
                 {
                     customFieldsOrder,
-                    selectedCustomFieldId: String(selectedCustomFieldId),
+                    selectedCustomFieldId: selectedCustomFieldId,
                     ticketFieldsTicketTimeReference:
                         TicketTimeReference.CreatedAt,
                 },
@@ -239,7 +239,7 @@ describe('ticketFieldsReportingService', () => {
                 granularity,
                 {
                     customFieldsOrder,
-                    selectedCustomFieldId: String(selectedCustomFieldId),
+                    selectedCustomFieldId: selectedCustomFieldId,
                     ticketFieldsTicketTimeReference:
                         TicketTimeReference.CreatedAt,
                 },

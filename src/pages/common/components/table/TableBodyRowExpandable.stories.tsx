@@ -126,10 +126,11 @@ const TableWithExpandableRows: Story = {
                 </TableHead>
                 <TableBody>
                     {sampleData.map((tag, index) => (
-                        <TableBodyRowExpandable<WithChildren<Data>>
+                        <TableBodyRowExpandable<WithChildren<Data>, undefined>
                             key={index}
                             RowContentComponent={CustomFieldsDataRow}
                             rowContentProps={tag}
+                            tableProps={undefined}
                         />
                     ))}
                 </TableBody>

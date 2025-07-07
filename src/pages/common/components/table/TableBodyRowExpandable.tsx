@@ -9,10 +9,10 @@ import css from 'pages/common/components/table/TableBodyRowExpandable.less'
 
 export type WithChildren<T> = T & { children: WithChildren<T>[] }
 
-type Props<T> = {
+type Props<T, K> = {
     tableBodyRowProps?: Omit<ComponentProps<typeof TableBodyRow>, 'children'>
     level?: number
-    RowContentComponent: FC<T>
+    RowContentComponent: FC<T & { tableProps: K }>
     rowContentProps: WithChildren<T & { onClick?: () => void }>
     innerClassName?: string
     isDefaultExpanded?: boolean
@@ -20,12 +20,13 @@ type Props<T> = {
     lazyLoadChildren?: boolean
     SkeletonComponent?: FC
     isLoading?: boolean
+    tableProps: K
 }
 
 export const COLUMN_WIDTH = 24
 export const MOBILE_COLUMN_WIDTH = 10
 
-export const TableBodyRowExpandable = <T,>({
+export const TableBodyRowExpandable = <T, K>({
     level = 0,
     tableBodyRowProps,
     RowContentComponent,
@@ -36,7 +37,8 @@ export const TableBodyRowExpandable = <T,>({
     lazyLoadChildren,
     SkeletonComponent,
     isLoading,
-}: Props<T>) => {
+    tableProps,
+}: Props<T, K>) => {
     const [isExpanded, setIsExpanded] = useState(isDefaultExpanded)
     const toggleExpand = () => {
         setIsExpanded(!isExpanded)
@@ -75,6 +77,7 @@ export const TableBodyRowExpandable = <T,>({
                     {...rowContentProps}
                     onClick={toggleExpand}
                     level={level}
+                    tableProps={tableProps}
                 />
             </TableBodyRow>
             {isExpanded && (
@@ -84,7 +87,7 @@ export const TableBodyRowExpandable = <T,>({
                     )}
                     {(!lazyLoadChildren || !isLoading) &&
                         rowContentProps.children.map((tag, index) => (
-                            <TableBodyRowExpandable<T>
+                            <TableBodyRowExpandable<T, K>
                                 key={index}
                                 level={level + 1}
                                 RowContentComponent={RowContentComponent}
@@ -93,6 +96,7 @@ export const TableBodyRowExpandable = <T,>({
                                     ...tag,
                                     onClick: toggleExpand,
                                 }}
+                                tableProps={tableProps}
                             />
                         ))}
                 </>

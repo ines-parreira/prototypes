@@ -409,7 +409,7 @@ export const fetchAutoQAAgentsTableReportData = async (
     context: {
         agentsQA: User[]
         customFieldsOrder: TicketInsightsOrder
-        selectedCustomFieldId: string | null
+        selectedCustomFieldId: number | null
     },
 ) => {
     const metricConfig = autoQAAgentsMetricsDataSources

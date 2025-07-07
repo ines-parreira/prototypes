@@ -25,10 +25,7 @@ import { formatPerformanceFeatureData } from 'services/reporting/automateOvervie
 import { formatData as getTicketInsightsData } from 'services/reporting/ticketFieldsReportingService'
 import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
-import {
-    getCustomFieldsOrder,
-    getSelectedCustomField,
-} from 'state/ui/stats/ticketInsightsSlice'
+import { getCustomFieldsOrder } from 'state/ui/stats/ticketInsightsSlice'
 import { createCsv } from 'utils/file'
 import { getFilterDateRange } from 'utils/reporting'
 
@@ -105,9 +102,8 @@ export const useAutomatedTicketsMetrics = () => {
     }
 }
 
-export const useTicketInsightsMetrics = () => {
+export const useTicketInsightsMetrics = (selectedCustomFieldId: number) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-    const selectedCustomField = useAppSelector(getSelectedCustomField)
     const order = useAppSelector(getCustomFieldsOrder)
 
     const { data: timeSeriesData, isLoading: ticketInsightsDataIsLoading } =
@@ -115,9 +111,7 @@ export const useTicketInsightsMetrics = () => {
             cleanStatsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomField.id),
-            undefined,
-            selectedCustomField.id !== null,
+            selectedCustomFieldId,
         )
 
     const { data: { data: activeFields = [] } = {} } =
@@ -149,7 +143,7 @@ export const useTicketInsightsMetrics = () => {
     }
 }
 
-export const useAIAgentReportMetrics = () => {
+export const useAIAgentReportMetrics = (selectedCustomFieldId: number) => {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
 
     const { agents, performance, performanceDataIsLoading } =
@@ -173,7 +167,7 @@ export const useAIAgentReportMetrics = () => {
     )
 
     const { ticketInsights, ticketInsightsDataIsLoading } =
-        useTicketInsightsMetrics()
+        useTicketInsightsMetrics(selectedCustomFieldId)
 
     const ticketInsightsData =
         ticketInsights &&

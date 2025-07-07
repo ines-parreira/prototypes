@@ -65,7 +65,7 @@ export default function LiveVoiceAgentsList({ agents }: Props) {
         <TableWrapper>
             <TableBody>
                 {data.map((row, index) => (
-                    <TableBodyRowExpandable<WithChildren<Data>>
+                    <TableBodyRowExpandable<WithChildren<Data>, undefined>
                         key={index}
                         RowContentComponent={Row}
                         rowContentProps={row}
@@ -74,6 +74,7 @@ export default function LiveVoiceAgentsList({ agents }: Props) {
                             className: css.row,
                         }}
                         isDefaultExpanded
+                        tableProps={undefined}
                     />
                 ))}
             </TableBody>

@@ -59,6 +59,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
     const defaultProps = {
         [BREAKDOWN_FIELD]: 'someTag',
         [VALUE_FIELD]: 12,
+        tableProps: { selectedCustomField: { id: 123, label: 'someLabel' } },
         initialCustomFieldValue: ['someTag'],
         timeSeries: [
             {
@@ -101,7 +102,9 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: 3456,
             initialCustomFieldValue: ['someTag'],
-            selectedCustomField: { id: 123, label: 'someField' },
+            tableProps: {
+                selectedCustomField: { id: 123, label: 'someLabel' },
+            },
             timeSeries: [
                 {
                     dateTime: '2023-08-09',
@@ -135,6 +138,9 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
         const props = {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: 56,
+            tableProps: {
+                selectedCustomField: { id: 123, label: 'someLabel' },
+            },
             initialCustomFieldValue: ['someTag'],
             timeSeries: [
                 {
@@ -170,7 +176,9 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: 12,
             initialCustomFieldValue: ['someTag'],
-            selectedCustomField: { id: 123, label: 'someField' },
+            tableProps: {
+                selectedCustomField: { id: 123, label: 'someLabel' },
+            },
             timeSeries: [
                 {
                     dateTime: '2023-08-09',
@@ -210,7 +218,9 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
                 [BREAKDOWN_FIELD]: 'someTag',
                 [VALUE_FIELD]: value,
                 initialCustomFieldValue: ['someTag'],
-                selectedCustomField: { id: 123, label: 'someField' },
+                tableProps: {
+                    selectedCustomField: { id: 123, label: 'someLabel' },
+                },
                 timeSeries: [
                     {
                         dateTime: '2023-08-09',
@@ -243,7 +253,9 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: undefined,
             initialCustomFieldValue: ['someTag'],
-            selectedCustomField: { id: 123, label: 'someField' },
+            tableProps: {
+                selectedCustomField: { id: 123, label: 'someLabel' },
+            },
             timeSeries: [
                 {
                     dateTime: '2023-08-09',
@@ -281,7 +293,9 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
             [BREAKDOWN_FIELD]: 'someTag',
             [VALUE_FIELD]: undefined,
             initialCustomFieldValue: ['someTag'],
-            selectedCustomField: { id: 123, label: 'someField' },
+            tableProps: {
+                selectedCustomField: { id: 123, label: 'someLabel' },
+            },
             timeSeries: [
                 {
                     dateTime: '2023-08-09',

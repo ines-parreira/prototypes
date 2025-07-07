@@ -306,7 +306,7 @@ export const fetchAgentsTableReportData = async (
         channelColumnsOrder: ChannelsTableColumns[]
         selectedBTODMetric: BusiestTimeOfDaysMetrics
         customFieldsOrder: TicketInsightsOrder
-        selectedCustomFieldId: string | null
+        selectedCustomFieldId: number | null
     },
 ) => {
     const metricConfig = agentsMetricsDataSources

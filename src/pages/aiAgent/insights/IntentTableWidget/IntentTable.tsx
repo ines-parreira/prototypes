@@ -235,7 +235,10 @@ export const IntentTable = ({
                         {!isSortingLoading ? (
                             intents.map((intent) => {
                                 return (
-                                    <TableBodyRowExpandable<IntentTableExpandedRowContentProps>
+                                    <TableBodyRowExpandable<
+                                        IntentTableExpandedRowContentProps,
+                                        undefined
+                                    >
                                         key={
                                             intent[IntentTableColumn.IntentName]
                                         }
@@ -259,6 +262,7 @@ export const IntentTable = ({
                                         RowContentComponent={
                                             IntentTableExpandedRowContent
                                         }
+                                        tableProps={undefined}
                                         SkeletonComponent={() => (
                                             <LoadingTableRows
                                                 numberOfLoadingRows={1}

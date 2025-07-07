@@ -116,9 +116,8 @@ export const useCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    customFieldId: string,
+    customFieldId: number,
     sorting?: OrderDirection,
-    enabled = true,
     timeReference: TicketTimeReference = TicketTimeReference.TaggedAt,
 ) => {
     const queryFactory =
@@ -128,7 +127,6 @@ export const useCustomFieldsTicketCountTimeSeries = (
 
     return useTimeSeriesPerDimension(
         queryFactory(filters, timezone, granularity, customFieldId, sorting),
-        enabled,
     )
 }
 
@@ -136,9 +134,8 @@ export const useAIIntentCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    customFieldId: string,
+    customFieldId: number,
     sorting?: OrderDirection,
-    enabled = true,
 ) => {
     const query = customFieldsTicketCountTimeSeriesQueryFactory(
         filters,
@@ -148,30 +145,26 @@ export const useAIIntentCustomFieldsTicketCountTimeSeries = (
         sorting,
     )
 
-    return useTimeSeriesPerDimension(
-        {
-            ...query,
-            filters: [
-                ...query.filters,
-                {
-                    member: TicketProductsEnrichedDimension.ProductId,
-                    operator: ReportingFilterOperator.NotEquals,
-                    values: ['null'],
-                },
-            ],
-        },
-        enabled,
-    )
+    return useTimeSeriesPerDimension({
+        ...query,
+        filters: [
+            ...query.filters,
+            {
+                member: TicketProductsEnrichedDimension.ProductId,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['null'],
+            },
+        ],
+    })
 }
 
 export const useSentimentsCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    sentimentCustomFieldId: string,
+    sentimentCustomFieldId: number,
     sentimentValueStrings: Sentiment[],
     sorting?: OrderDirection,
-    enabled = true,
 ) =>
     useTimeSeriesPerDimension(
         intentsWithProductsTicketCountTimeseriesQueryFactory(
@@ -182,17 +175,15 @@ export const useSentimentsCustomFieldsTicketCountTimeSeries = (
             sentimentValueStrings,
             sorting,
         ),
-        enabled,
     )
 
 export const useCustomFieldsTicketCountForProductTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    customFieldId: string,
+    customFieldId: number,
     productId: string,
     sorting?: OrderDirection,
-    enabled = true,
 ) => {
     return useTimeSeriesPerDimension(
         customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFactory(
@@ -203,7 +194,6 @@ export const useCustomFieldsTicketCountForProductTimeSeries = (
             productId,
             sorting,
         ),
-        enabled,
     )
 }
 
@@ -211,7 +201,7 @@ export const fetchCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    customFieldId: string,
+    customFieldId: number,
     sorting?: OrderDirection,
     timeReference: TicketTimeReference = TicketTimeReference.TaggedAt,
 ) => {

@@ -63,9 +63,10 @@ describe('<TableBodyRowExpandable />', () => {
 
     it('should render the component with it`s props but no children initially', () => {
         render(
-            <TableBodyRowExpandable<WithChildren<Data>>
+            <TableBodyRowExpandable<WithChildren<Data>, undefined>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
+                tableProps={undefined}
             />,
         )
 
@@ -75,9 +76,10 @@ describe('<TableBodyRowExpandable />', () => {
 
     it('should show children when first rendering if isDefaultExpanded is true', () => {
         render(
-            <TableBodyRowExpandable<WithChildren<Data>>
+            <TableBodyRowExpandable<WithChildren<Data>, undefined>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
+                tableProps={undefined}
                 isDefaultExpanded
             />,
         )
@@ -88,9 +90,10 @@ describe('<TableBodyRowExpandable />', () => {
 
     it('should show children 1 level below after clicking expand icon', () => {
         render(
-            <TableBodyRowExpandable<WithChildren<Data>>
+            <TableBodyRowExpandable<WithChildren<Data>, undefined>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
+                tableProps={undefined}
             />,
         )
 
@@ -104,9 +107,10 @@ describe('<TableBodyRowExpandable />', () => {
 
     it('should show allow expanding all levels and pass common props to each', () => {
         render(
-            <TableBodyRowExpandable<WithChildren<Data>>
+            <TableBodyRowExpandable<WithChildren<Data>, undefined>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
+                tableProps={undefined}
             />,
         )
 
@@ -129,9 +133,10 @@ describe('<TableBodyRowExpandable />', () => {
 
     it('should hide all levels below', () => {
         render(
-            <TableBodyRowExpandable<WithChildren<Data>>
+            <TableBodyRowExpandable<WithChildren<Data>, undefined>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
+                tableProps={undefined}
             />,
         )
 
@@ -162,9 +167,10 @@ describe('<TableBodyRowExpandable />', () => {
 
     it('should check if expand cell indent(left) style is applied based on depth level', async () => {
         const { container } = render(
-            <TableBodyRowExpandable<WithChildren<Data>>
+            <TableBodyRowExpandable<WithChildren<Data>, undefined>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
+                tableProps={undefined}
             />,
         )
         triggerWidthResize(500)

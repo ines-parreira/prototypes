@@ -1,4 +1,7 @@
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import {
+    TICKET_FIELD_ID_NOT_AVAILABLE,
+    useGetCustomTicketsFieldsDefinitionData,
+} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { TopAIIntentsOverTimeGraph } from 'pages/stats/voice-of-customer/charts/TopAIIntentsOverTimeChart/TopAIIntentsOverTimeGraph'
 import {
@@ -14,9 +17,11 @@ export function TopAIIntentsOverTimeChart() {
 
     return (
         <ChartCard title={title} hint={hint}>
-            <TopAIIntentsOverTimeGraph
-                intentCustomFieldId={intentCustomFieldId}
-            />
+            {intentCustomFieldId !== TICKET_FIELD_ID_NOT_AVAILABLE && (
+                <TopAIIntentsOverTimeGraph
+                    intentCustomFieldId={intentCustomFieldId}
+                />
+            )}
         </ChartCard>
     )
 }

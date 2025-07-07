@@ -83,7 +83,13 @@ export default function AutomateAiAgentStatsReport() {
         <AiAgentStatsFilters>
             <StatsPage
                 title={PAGE_TITLE_AI_AGENT}
-                titleExtra={<AiAgentStatsDownloadButton />}
+                titleExtra={
+                    selectedCustomField.id && (
+                        <AiAgentStatsDownloadButton
+                            selectedCustomFieldId={selectedCustomField.id}
+                        />
+                    )
+                }
             >
                 {showNoActivityAlert && !isNoActivityAlertDismissed && (
                     <div style={{ padding: '24px' }}>

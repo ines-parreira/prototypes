@@ -881,7 +881,7 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
-            String(customFieldMetric?.customFieldId),
+            customFieldMetric.customFieldId,
             customFieldMetric.customFieldValue,
             statsFilters.period,
             undefined,
@@ -1107,7 +1107,7 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
-            String(customFieldMetric?.customFieldId),
+            customFieldMetric.customFieldId,
             customFieldMetric.customFieldValue,
             statsFilters.period,
             undefined,

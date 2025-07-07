@@ -277,9 +277,8 @@ describe('useCustomFieldsTimeSeries', () => {
                 }),
                 'UTC',
                 ReportingGranularity.Hour,
-                '2',
+                selectedCustomFieldId,
                 'desc',
-                true,
             )
         })
     })

@@ -5,8 +5,14 @@ import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download AI Agent Data'
 
-export const AiAgentStatsDownloadButton = () => {
-    const { files, fileName, isLoading } = useAIAgentReportMetrics()
+export const AiAgentStatsDownloadButton = ({
+    selectedCustomFieldId,
+}: {
+    selectedCustomFieldId: number
+}) => {
+    const { files, fileName, isLoading } = useAIAgentReportMetrics(
+        selectedCustomFieldId,
+    )
 
     return (
         <DownloadDataButton

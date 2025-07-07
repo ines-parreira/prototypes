@@ -23,6 +23,7 @@ import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import {
     CustomFieldsTicketCountDataRowContent,
     DataRowProps,
+    WithSelectedCustomField,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
 import { formatDates } from 'pages/stats/utils'
 import {
@@ -140,15 +141,18 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                   ),
                               )
                             : currentPageOfCustomFieldDataRows.map((row) => (
-                                  <TableBodyRowExpandable<DataRowProps>
+                                  <TableBodyRowExpandable<
+                                      DataRowProps,
+                                      WithSelectedCustomField
+                                  >
                                       key={row[BREAKDOWN_FIELD]}
                                       innerClassName={css.small}
                                       rowContentProps={{
                                           ...row,
                                           isLoading,
                                           isTableScrolled,
-                                          selectedCustomField,
                                       }}
+                                      tableProps={{ selectedCustomField }}
                                       RowContentComponent={
                                           CustomFieldsTicketCountDataRowContent
                                       }

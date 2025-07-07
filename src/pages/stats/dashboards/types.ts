@@ -128,7 +128,7 @@ export type ReportFetch = (
         channelColumnsOrder: ChannelsTableColumns[]
         selectedBTODMetric: BusiestTimeOfDaysMetrics
         customFieldsOrder: TicketInsightsOrder
-        selectedCustomFieldId: string | null
+        selectedCustomFieldId: number | null
         tags: Record<string, Tag | undefined>
         tagsTableOrder: TagsTableOrder
         isExtendedReportingEnabled: boolean

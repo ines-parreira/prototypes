@@ -15,7 +15,7 @@ import { StatsFilters, TicketTimeReference } from 'models/stat/types'
 export const useCustomFieldsTicketCount = (
     statsFilters: StatsFilters,
     timezone: string,
-    customFieldId: string,
+    customFieldId: number,
     sorting?: OrderDirection,
     timeReference: TicketTimeReference = TicketTimeReference.TaggedAt,
 ): MetricWithDecile => {
@@ -32,7 +32,7 @@ export const useCustomFieldsTicketCount = (
 export const useCustomFieldsForProductTicketCount = (
     statsFilters: StatsFilters,
     timezone: string,
-    customFieldId: string,
+    customFieldId: number,
     productId: string,
     sorting?: OrderDirection,
 ): MetricWithDecile => {
@@ -50,7 +50,7 @@ export const useCustomFieldsForProductTicketCount = (
 export const useCustomTicketFieldWithBreakdown = (
     statsFilters: StatsFilters,
     timezone: string,
-    customFieldId: string,
+    customFieldId: number,
     sorting?: OrderDirection,
 ): MetricWithBreakdown =>
     useMetricPerDimensionWithBreakdown(

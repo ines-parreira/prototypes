@@ -87,9 +87,8 @@ export const useCustomFieldsReportData = (selectedCustomFieldId: number) => {
             statsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomFieldId),
+            selectedCustomFieldId,
             undefined,
-            true,
             ticketFieldsTicketTimeReference,
         )
 
@@ -130,7 +129,7 @@ export const fetchCustomFieldsReportData = async (
     granularity: ReportingGranularity,
     context: {
         customFieldsOrder: TicketInsightsOrder
-        selectedCustomFieldId: string | null
+        selectedCustomFieldId: number | null
         ticketFieldsTicketTimeReference: TicketTimeReference
     },
 ): Promise<{

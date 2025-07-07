@@ -30,7 +30,7 @@ export const useTicketsDistribution = (
     const { data, isFetching } = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
-        String(selectedCustomFieldId),
+        selectedCustomFieldId,
         OrderDirection.Desc,
         ticketFieldsTicketTimeReference,
     )

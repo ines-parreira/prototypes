@@ -7,9 +7,9 @@ import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { StatsFilters } from 'models/stat/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useAllTickets } from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
-import { useCustomFieldOutcome } from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
 import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/AutomationRateMetric'
 import { getPreviousPeriod } from 'utils/reporting'
@@ -18,7 +18,7 @@ export const useCoverageRate = (
     filters: StatsFilters,
     timezone: string,
 ): KpiMetric => {
-    const customField = useCustomFieldOutcome()
+    const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     const allTickets = useAllTickets(filters, timezone)
 
@@ -26,12 +26,12 @@ export const useCoverageRate = (
         customFieldsTicketTotalCountQueryFactory({
             filters,
             timezone,
-            customFieldId: customField,
+            customFieldId: outcomeCustomFieldId,
         }),
         customFieldsTicketTotalCountQueryFactory({
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            customFieldId: customField,
+            customFieldId: outcomeCustomFieldId,
         }),
     )
 

@@ -54,14 +54,14 @@ export const intentsWithProductsTicketCountTimeseriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    sentimentCustomFieldId: string,
+    sentimentCustomFieldId: number,
     sentimentValueStrings: Sentiment[],
     sorting?: OrderDirection,
 ) => {
     const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
         injectCustomFieldId(
             filters,
-            Number(sentimentCustomFieldId),
+            sentimentCustomFieldId,
             sentimentValueStrings,
         ),
         timezone,

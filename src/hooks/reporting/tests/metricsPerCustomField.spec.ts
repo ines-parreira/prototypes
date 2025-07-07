@@ -54,7 +54,7 @@ describe('metricsPerCustomField', () => {
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
-    const customFieldId = '1'
+    const customFieldId = 1
 
     describe('useCustomFieldsTicketCount', () => {
         it('should pass the query to useMetricPerDimension hook', () => {

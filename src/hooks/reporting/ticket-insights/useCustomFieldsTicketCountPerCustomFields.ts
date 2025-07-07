@@ -79,9 +79,8 @@ export const useCustomFieldsTicketCountPerCustomFields = (
             cleanStatsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomFieldId),
+            selectedCustomFieldId,
             undefined,
-            true,
             ticketFieldsTicketTimeReference,
         )
 

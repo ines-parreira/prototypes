@@ -346,7 +346,7 @@ export const injectCustomFieldId = (
         customFieldId,
         operator: LogicalOperatorEnum.ONE_OF,
         values: customFieldsValueStrings.map(
-            getCustomFieldValueSerializer(Number(customFieldId)),
+            getCustomFieldValueSerializer(customFieldId),
         ),
     }
 
