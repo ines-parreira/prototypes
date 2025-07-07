@@ -15,6 +15,7 @@ import {
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { RootState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
@@ -51,6 +52,11 @@ const mockUseActivateAiAgentTrial = jest.mocked(useActivateAiAgentTrial)
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 const mockUseShoppingAssistantTrialAccess = jest.mocked(
     useShoppingAssistantTrialAccess,
+)
+
+jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
+const mockUseSalesTrialRevampMilestone = jest.mocked(
+    useSalesTrialRevampMilestone,
 )
 
 jest.mock('core/flags')
@@ -254,6 +260,9 @@ describe('AiSalesAgentSalesOverview', () => {
 
         // Mock useFlag
         mockUseFlag.mockReturnValue(false)
+
+        // Mock useSalesTrialRevampMilestone
+        mockUseSalesTrialRevampMilestone.mockReturnValue('off')
     })
 
     it('should render when store data is ready', () => {
@@ -363,6 +372,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
         it('should open upgrade modal when trial button is clicked and revamp flag is enabled', () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canNotifyAdmin: false,
                 canBookDemo: false,
@@ -394,6 +404,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
         it('should close upgrade modal when close button is clicked', () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canNotifyAdmin: false,
                 canBookDemo: false,
@@ -424,6 +435,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
         it('should close upgrade modal when confirm button is clicked', () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canNotifyAdmin: false,
                 canBookDemo: false,

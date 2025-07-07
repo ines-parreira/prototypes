@@ -147,8 +147,10 @@ export enum FeatureFlagKey {
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
-    /** https://app.launchdarkly.com/projects/default/flags/linear.project_shopping-assistant-trial-revamp/targeting?env=production&selected-env=production */
+    /** @deprecated https://app.launchdarkly.com/projects/default/flags/linear.project_shopping-assistant-trial-revamp/targeting?env=production&selected-env=production */
     ShoppingAssistantTrialRevamp = 'linear.project_shopping-assistant-trial-revamp',
+    /** https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */
+    ShoppingAssistantTrialRevampMilestone = 'shopping-assistant-trial-revamp-milestone',
     SimplifyAiAgentFeedbackCollection = 'linear.project_simplify-ai-agent-feedback-collection.enable_feedback_collection',
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',

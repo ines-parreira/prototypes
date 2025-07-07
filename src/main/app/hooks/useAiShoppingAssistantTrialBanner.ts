@@ -11,6 +11,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
@@ -37,10 +38,8 @@ export function useAiShoppingAssistantTrialBanner() {
         false,
     )
 
-    const isShoppingAssistantTrialRevampEnabled = useFlag(
-        FeatureFlagKey.ShoppingAssistantTrialRevamp,
-        false,
-    )
+    const trialMilestone = useSalesTrialRevampMilestone()
+    const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
     const { canStartTrial, canStartTrialFromFeatureFlag } =
         useActivateAiAgentTrial({

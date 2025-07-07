@@ -141,7 +141,6 @@ describe('TrialManageWorkflow', () => {
 
         it('shows "Upgrade Now" as primary action when user cannot book demo', () => {
             render(<TrialManageWorkflow />)
-
             expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
         })
 
@@ -178,7 +177,6 @@ describe('TrialManageWorkflow', () => {
 
         it('renders TrialManageModal', () => {
             render(<TrialManageWorkflow />)
-
             expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
         })
 

@@ -7,6 +7,7 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
@@ -33,9 +34,8 @@ const AiShoppingAssistantExpireBanner: React.FC<
 
     const { earlyAccessModal, showEarlyAccessModal } = useActivation()
 
-    const isTrialRevampEnabled = useFlag(
-        FeatureFlagKey.ShoppingAssistantTrialRevamp,
-    )
+    const trialMilestone = useSalesTrialRevampMilestone()
+    const isTrialRevampEnabled = trialMilestone !== 'off'
 
     const days = useMemo(() => {
         if (!deactiveDatetime) {

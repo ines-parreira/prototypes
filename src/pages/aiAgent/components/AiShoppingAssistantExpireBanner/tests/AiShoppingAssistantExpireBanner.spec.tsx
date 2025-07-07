@@ -4,6 +4,7 @@ import moment from 'moment'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { assumeMock } from 'utils/testing'
 
@@ -27,6 +28,11 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
+jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
+const useSalesTrialRevampMilestoneMock = assumeMock(
+    useSalesTrialRevampMilestone,
+)
+
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useFlagMock = assumeMock(useFlag)
 
@@ -39,6 +45,12 @@ describe('AiShoppingAssistantExpireBanner', () => {
             return null
         })
         useFlagMock.mockReturnValue(false)
+
+        // Mock trial revamp to be disabled so the banner can show
+        useSalesTrialRevampMilestoneMock.mockReturnValue('off')
+
+        // Mock trial extension to be disabled
+        getAiShoppingAssistantTrialExtensionEnabledFlagMock.mockReturnValue(0)
     })
 
     it('should render correctly', () => {

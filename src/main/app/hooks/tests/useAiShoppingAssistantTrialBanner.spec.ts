@@ -10,6 +10,7 @@ import {
     useStoreActivations,
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -47,6 +48,11 @@ const getStoresEligibleForTrialMock = assumeMock(getStoresEligibleForTrial)
 
 jest.mock('pages/aiAgent/Activation/hooks/useActivateAiAgentTrial')
 const useActivateAiAgentTrialMock = assumeMock(useActivateAiAgentTrial)
+
+jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
+const useSalesTrialRevampMilestoneMock = assumeMock(
+    useSalesTrialRevampMilestone,
+)
 
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockStoreConfigurations = assumeMock(useStoreConfigurations)
@@ -127,6 +133,9 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
         useLocationMock.mockReturnValue({
             pathname: '/sales',
         } as any)
+
+        // Mock useSalesTrialRevampMilestone to return 'off' so isShoppingAssistantTrialRevampEnabled = false
+        useSalesTrialRevampMilestoneMock.mockReturnValue('off')
     })
 
     it('should render', () => {
@@ -181,6 +190,9 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
                 return defaultValue
             },
         )
+
+        // Mock the milestone to return a value other than 'off' to enable the revamp
+        useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
 
         renderHook(useAiShoppingAssistantTrialBanner)
 

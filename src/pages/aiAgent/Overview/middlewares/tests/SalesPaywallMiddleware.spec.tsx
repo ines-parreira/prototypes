@@ -16,6 +16,7 @@ import {
     useTrialEligibilityForManualActivationFromFeatureFlag,
 } from 'pages/aiAgent/hooks/useTrialEligibility'
 // Import mocks
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -61,6 +62,7 @@ const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
     useTrialEligibilityForManualActivationFromFeatureFlag,
 )
 
+jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('launchdarkly-react-client-sdk')
@@ -88,6 +90,8 @@ const renderMiddleware = () => {
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 
+const mockUseSalesTrialRevampMilestone =
+    useSalesTrialRevampMilestone as jest.Mock
 const mockUseShoppingAssistantTrialAccess =
     useShoppingAssistantTrialAccess as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
@@ -100,6 +104,8 @@ const mockUseActivateAiAgentTrial = jest.requireMock(
 
 describe('SalesPaywallMiddleware', () => {
     beforeEach(() => {
+        // Default to 'off' for the milestone hook
+        mockUseSalesTrialRevampMilestone.mockReturnValue('off')
         useStoreActivationsMock.mockReturnValue({
             storeActivations: {},
         } as any)
@@ -392,12 +398,8 @@ describe('SalesPaywallMiddleware', () => {
             canStartTrial: true,
             isLoading: false,
         })
-        // Mock the revamp flag to false to use original logic
-        mockUseFlag.mockImplementation((flag) =>
-            flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
-                ? false
-                : false,
-        )
+        // Mock the milestone to 'off' to use original logic
+        mockUseSalesTrialRevampMilestone.mockReturnValue('off')
         // Mock trial access to return false for canSeeTrialCTA (revamp disabled)
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
@@ -468,12 +470,8 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: true,
             },
         )
-        // Mock the revamp flag to false to use original logic
-        mockUseFlag.mockImplementation((flag) =>
-            flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
-                ? false
-                : false,
-        )
+        // Mock the milestone to 'off' to use original logic
+        mockUseSalesTrialRevampMilestone.mockReturnValue('off')
         // Mock trial access to return false for canSeeTrialCTA (revamp disabled)
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
@@ -653,12 +651,8 @@ describe('SalesPaywallMiddleware', () => {
 
     describe('Shopping Assistant Trial Revamp', () => {
         it('shows trial button when revamp flag is enabled and canSeeTrialCTA is true', () => {
-            // Mock the revamp flag to true
-            mockUseFlag.mockImplementation((flag) =>
-                flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
-                    ? true
-                    : false,
-            )
+            // Mock the milestone to 'milestone-0' (equivalent to true)
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             // canSeeTrialCTA controls the button
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
@@ -689,11 +683,8 @@ describe('SalesPaywallMiddleware', () => {
         })
 
         it('does not show trial button when revamp flag is enabled and canSeeTrialCTA is false', () => {
-            mockUseFlag.mockImplementation((flag) =>
-                flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
-                    ? true
-                    : false,
-            )
+            // Mock the milestone to 'milestone-0' (equivalent to true)
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
@@ -723,11 +714,8 @@ describe('SalesPaywallMiddleware', () => {
         })
 
         it('opens the revamp modal when trial button is clicked and revamp is enabled', () => {
-            mockUseFlag.mockImplementation((flag) =>
-                flag === FeatureFlagKey.ShoppingAssistantTrialRevamp
-                    ? true
-                    : false,
-            )
+            // Mock the milestone to 'milestone-0' (equivalent to true)
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,

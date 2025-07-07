@@ -13,6 +13,8 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin, isTeamLead } from 'utils'
 
+import { useSalesTrialRevampMilestone } from './useSalesTrialRevampMilestone'
+
 type ShoppingAssistantTrialAccess = {
     /** Whether the user can notify the admin about the trial (only for Leads) */
     canNotifyAdmin: boolean
@@ -75,9 +77,9 @@ export const useShoppingAssistantTrialAccess =
         const isOnProPlusPlan = !isOnStarterOrBasicPlan
 
         const flags = useFlags()
+        const trialMilestone = useSalesTrialRevampMilestone()
 
-        const isRevampTrialEnabled =
-            flags[FeatureFlagKey.ShoppingAssistantTrialRevamp]
+        const isRevampTrialEnabled = trialMilestone !== 'off'
 
         if (!isRevampTrialEnabled) {
             return {

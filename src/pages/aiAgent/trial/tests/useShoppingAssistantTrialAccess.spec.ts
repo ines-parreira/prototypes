@@ -20,6 +20,7 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
+import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from '../hooks/useShoppingAssistantTrialAccess'
 
 // Mock dependencies
@@ -30,6 +31,7 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 jest.mock('hooks/useAppSelector')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+jest.mock('../hooks/useSalesTrialRevampMilestone')
 
 // Mock utility functions
 jest.mock('utils', () => ({
@@ -46,6 +48,9 @@ const mockUseAtLeastOneStoreHasActiveTrial = assumeMock(
 )
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseStoreConfigurations = assumeMock(useStoreConfigurations)
+const mockUseSalesTrialRevampMilestone = assumeMock(
+    useSalesTrialRevampMilestone,
+)
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
 
@@ -80,8 +85,10 @@ describe('useShoppingAssistantTrialAccess', () => {
         // Default mock implementations
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-            [FeatureFlagKey.ShoppingAssistantTrialRevamp]: true,
         })
+
+        // Mock the new milestone hook to return 'milestone-0' (equivalent to true)
+        mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
 
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getCurrentUser) {
@@ -127,8 +134,10 @@ describe('useShoppingAssistantTrialAccess', () => {
         it('should return all false when feature flag is disabled', () => {
             mockUseFlags.mockReturnValue({
                 [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-                [FeatureFlagKey.ShoppingAssistantTrialRevamp]: false,
             })
+
+            // Mock the milestone hook to return 'off' (equivalent to false)
+            mockUseSalesTrialRevampMilestone.mockReturnValue('off')
 
             const { result } = renderHook(() =>
                 useShoppingAssistantTrialAccess(),
@@ -243,7 +252,6 @@ describe('useShoppingAssistantTrialAccess', () => {
         it('should allow Pro+ admin to book demo when feature flag is disabled', () => {
             mockUseFlags.mockReturnValue({
                 [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: false,
-                [FeatureFlagKey.ShoppingAssistantTrialRevamp]: true,
             })
 
             const { result } = renderHook(() =>

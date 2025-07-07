@@ -4,8 +4,6 @@ import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
@@ -18,6 +16,7 @@ import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
@@ -62,10 +61,8 @@ const AiSalesAgentSalesOverview = () => {
         onSuccess,
     })
 
-    const isShoppingAssistantTrialRevampEnabled = useFlag(
-        FeatureFlagKey.ShoppingAssistantTrialRevamp,
-        false,
-    )
+    const trialMilestone = useSalesTrialRevampMilestone()
+    const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
     const { canSeeTrialCTA } = useShoppingAssistantTrialAccess()
 

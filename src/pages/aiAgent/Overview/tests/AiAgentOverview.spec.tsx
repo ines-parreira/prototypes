@@ -556,6 +556,9 @@ describe('AiAgentOverview', () => {
             // Clear any previous calls from beforeEach
             mockUseShoppingAssistantTrialAccess.mockClear()
 
+            // Clear any previous calls from beforeEach
+            mockUseShoppingAssistantTrialAccess.mockClear()
+
             renderComponent()
 
             // Hook is called multiple times due to TrialManageWorkflow component and React re-renders

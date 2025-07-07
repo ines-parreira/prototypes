@@ -7,7 +7,6 @@ import { Button } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
@@ -22,6 +21,7 @@ import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLay
 import { SALES } from 'pages/aiAgent/constants'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -71,10 +71,8 @@ export const SalesPaywallMiddleware =
             trialModal.openModal(AI_TRIAL_MODAL_NAME, false)
         }
 
-        const isShoppingAssistantTrialRevampEnabled = useFlag(
-            FeatureFlagKey.ShoppingAssistantTrialRevamp,
-            false,
-        )
+        const trialMilestone = useSalesTrialRevampMilestone()
+        const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
         const { canSeeTrialCTA } = useShoppingAssistantTrialAccess()
 
