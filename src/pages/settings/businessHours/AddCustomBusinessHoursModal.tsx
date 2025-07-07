@@ -8,6 +8,7 @@ import SectionHeader from 'pages/common/components/SectionHeader/SectionHeader'
 
 import AddCustomBusinessHoursModalGeneralSection from './AddCustomBusinessHoursModalGeneralSection'
 import CustomBusinessHoursForm from './CustomBusinessHoursForm'
+import CustomBusinessHoursIntegrationsTable from './CustomBusinessHoursIntegrationsTable'
 import FormSectionCard from './FormSectionCard'
 
 import css from './AddCustomBusinessHoursModal.less'
@@ -40,6 +41,9 @@ export default function AddCustomBusinessHoursModal({
                     </FormSectionCard>
                     <FormSectionCard>
                         <AddCustomBusinessHoursModalGeneralSection />
+                    </FormSectionCard>
+                    <FormSectionCard>
+                        <CustomBusinessHoursIntegrationsTable />
                     </FormSectionCard>
                 </ModalBody>
                 <ModalActionsFooter className={css.actionsFooter}>

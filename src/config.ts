@@ -244,6 +244,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
         type: IntegrationType.Phone,
         title: 'Voice',
+        image: '/img/icons/channels/phone.svg',
         description:
             'Make and receive phone calls from Gorgias with easy access to customer data and conversation history.',
         requiredFeature: AccountFeature.PhoneNumber,

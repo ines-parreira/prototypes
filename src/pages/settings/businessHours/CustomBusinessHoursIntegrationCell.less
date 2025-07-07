@@ -1,0 +1,21 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .address {
+        color: var(--neutral-grey-4);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 16px;
+
+        .text {
+            .caption-regular();
+        }
+    }
+}

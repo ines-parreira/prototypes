@@ -35,7 +35,7 @@ export const DAYS_OPTIONS = [
         value: '1,2,3,4,5,6,7',
     },
     {
-        label: 'Weekdays',
+        label: 'Mon-Fri',
         value: '1,2,3,4,5',
     },
     { label: 'Weekend', value: '6,7' },
@@ -59,5 +59,9 @@ export const DEFAULT_BUSINESS_HOURS_SCHEDULE = {
 export const CUSTOM_BUSINESS_HOURS_DEFAULT_VALUES = {
     business_hours_config: {
         business_hours: [DEFAULT_BUSINESS_HOURS_SCHEDULE],
+    },
+    assigned_integrations: {
+        assign_all: false,
+        assign_integrations: [],
     },
 }

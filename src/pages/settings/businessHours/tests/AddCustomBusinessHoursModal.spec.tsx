@@ -8,6 +8,10 @@ jest.mock('../AddCustomBusinessHoursModalGeneralSection', () => () => (
     <div>AddCustomBusinessHoursModalGeneralSection</div>
 ))
 
+jest.mock('../CustomBusinessHoursIntegrationsTable', () => () => (
+    <div>CustomBusinessHoursIntegrationsTable</div>
+))
+
 const defaultProps = {
     isOpen: true,
     onClose: jest.fn(),
@@ -29,6 +33,10 @@ describe('AddCustomBusinessHoursModal', () => {
 
         expect(
             screen.getByText('AddCustomBusinessHoursModalGeneralSection'),
+        ).toBeInTheDocument()
+
+        expect(
+            screen.getByText('CustomBusinessHoursIntegrationsTable'),
         ).toBeInTheDocument()
     })
 
