@@ -153,6 +153,7 @@ export default function EndNodeEditor({ nodeInEdition }: EndNodeEditorProps) {
                                     )}
                                     addTag={handleAddTag}
                                     removeTag={handleDeleteTag}
+                                    disableTagCreation={true}
                                     transparent
                                 />
                                 <TicketAssignee

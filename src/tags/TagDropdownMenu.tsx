@@ -31,6 +31,7 @@ import css from './TagDropdownMenu.less'
 
 type Props = {
     className?: string
+    disableTagCreation?: boolean
     filterBy?: (s: Tag) => boolean
     onClick: (item: Item) => void
 }
@@ -53,7 +54,12 @@ const removeMatchingQueries = (newTag: string, queryKey: QueryKey) => {
     )
 }
 
-const TagDropdownMenu = ({ className, filterBy, onClick }: Props) => {
+const TagDropdownMenu = ({
+    className,
+    disableTagCreation = false,
+    filterBy,
+    onClick,
+}: Props) => {
     const currentUser = useAppSelector(getCurrentUserState)
     const wrapperRef = useRef<HTMLDivElement>(null)
     const hasUserRole = useMemo(
@@ -127,10 +133,11 @@ const TagDropdownMenu = ({ className, filterBy, onClick }: Props) => {
 
     const canCreateTag = useMemo(
         () =>
+            !disableTagCreation &&
             hasUserRole &&
             search !== '' &&
             !aggregatedTagsData.find((tag) => tag.name === search),
-        [hasUserRole, search, aggregatedTagsData],
+        [disableTagCreation, hasUserRole, search, aggregatedTagsData],
     )
 
     const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {

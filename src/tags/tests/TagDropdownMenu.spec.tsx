@@ -265,4 +265,45 @@ describe('<TagDropdownMenu />', () => {
 
         expect(screen.queryByText(/Create/i)).not.toBeInTheDocument()
     })
+
+    it('should disable tag creation when disableTagCreation prop is true', () => {
+        renderWithWrappers({ ...props, disableTagCreation: true })
+
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
+            target: { value: 'Foo' },
+        })
+        act(() => jest.runAllTimers())
+
+        expect(screen.queryByText(/Create/i)).not.toBeInTheDocument()
+    })
+
+    it('should enable tag creation when disableTagCreation prop is false', () => {
+        renderWithWrappers({ ...props, disableTagCreation: false })
+
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
+            target: { value: 'Foo' },
+        })
+        act(() => jest.runAllTimers())
+
+        expect(screen.getByText(/Create/i)).toBeInTheDocument()
+    })
+
+    it('should disable tag creation even for lead agent when disableTagCreation is true', () => {
+        renderWithWrappers(
+            { ...props, disableTagCreation: true },
+            {
+                currentUser: fromJS({
+                    ...user,
+                    role: { name: UserRole.Agent },
+                }),
+            },
+        )
+
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
+            target: { value: 'Foo' },
+        })
+        act(() => jest.runAllTimers())
+
+        expect(screen.queryByText(/Create/i)).not.toBeInTheDocument()
+    })
 })

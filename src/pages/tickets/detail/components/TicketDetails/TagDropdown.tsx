@@ -14,6 +14,7 @@ import css from './TagDropdown.less'
 
 type Props = {
     addTag: (tag: Item) => void
+    disableTagCreation?: boolean
     shouldBindKeys: boolean
     ticketTags: TicketTag[]
     transparent?: boolean
@@ -21,6 +22,7 @@ type Props = {
 
 const TagDropdown = ({
     addTag,
+    disableTagCreation = false,
     shouldBindKeys,
     ticketTags,
     transparent,
@@ -71,7 +73,11 @@ const TagDropdown = ({
                 onToggle={onToggle}
                 target={targetRef}
             >
-                <TagDropdownMenu filterBy={filterBy} onClick={addTag} />
+                <TagDropdownMenu
+                    disableTagCreation={disableTagCreation}
+                    filterBy={filterBy}
+                    onClick={addTag}
+                />
             </Dropdown>
         </div>
     )

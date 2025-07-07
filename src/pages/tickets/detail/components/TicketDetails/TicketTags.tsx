@@ -18,6 +18,7 @@ import css from './TicketTags.less'
 type Props = {
     addTag?: (tag: Tag) => void
     className?: string
+    disableTagCreation?: boolean
     isDisabled?: boolean
     removeTag?: (tag: string) => void
     right?: boolean
@@ -29,6 +30,7 @@ type Props = {
 const TicketTags = ({
     addTag,
     className,
+    disableTagCreation = false,
     isDisabled = false,
     removeTag,
     right = false,
@@ -92,6 +94,7 @@ const TicketTags = ({
                     {!isDisabled && (
                         <TagDropdown
                             addTag={(tag) => addTag?.(tag as Tag)}
+                            disableTagCreation={disableTagCreation}
                             shouldBindKeys={shouldBindKeys}
                             ticketTags={ticketTags}
                             transparent={transparent}
