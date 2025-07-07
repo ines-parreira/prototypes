@@ -78,6 +78,17 @@ export const initDatadogRum = ({
         sessionReplaySampleRate: DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE,
         trackResources: true,
         trackLongTasks: true,
+        beforeSend: (event) => {
+            if (
+                event.type === 'error' &&
+                event.error?.message?.includes(
+                    'ResizeObserver loop completed with undelivered notifications.',
+                )
+            ) {
+                return false
+            }
+            return true
+        },
     })
     datadogRum.setUser({
         id: user.id.toString(),

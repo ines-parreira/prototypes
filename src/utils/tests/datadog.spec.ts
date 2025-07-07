@@ -87,6 +87,7 @@ describe('datadog', () => {
             initDatadogRum(defaultOptions)
 
             expect(datadogRum.init).toHaveBeenCalledWith({
+                beforeSend: expect.any(Function),
                 clientToken: DATADOG_RUM_CLIENT_TOKEN,
                 applicationId: DATADOG_RUM_APPLICATION_ID,
                 site: DATADOG_SITE,
@@ -116,6 +117,41 @@ describe('datadog', () => {
             expect(datadogRum.setGlobalContext).toHaveBeenCalledWith({
                 serverVersion: defaultServerVersion,
             })
+        })
+
+        it('should filter out ResizeObserver errors in beforeSend', () => {
+            initDatadogRum(defaultOptions)
+
+            const initCall = (datadogRum.init as jest.Mock).mock.calls[0][0]
+            const beforeSend = initCall.beforeSend
+
+            // Test that ResizeObserver errors are filtered out
+            const resizeObserverError = {
+                type: 'error',
+                error: {
+                    message:
+                        'ResizeObserver loop completed with undelivered notifications.',
+                },
+            }
+            expect(beforeSend(resizeObserverError)).toBe(false)
+
+            // Test that other errors are not filtered
+            const otherError = {
+                type: 'error',
+                error: {
+                    message: 'Some other error message',
+                },
+            }
+            expect(beforeSend(otherError)).toBe(true)
+
+            // Test that non-error events are not filtered
+            const nonErrorEvent = {
+                type: 'action',
+                action: {
+                    name: 'click',
+                },
+            }
+            expect(beforeSend(nonErrorEvent)).toBe(true)
         })
     })
 })
