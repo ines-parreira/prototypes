@@ -1,4 +1,4 @@
-import React from 'react'
+import { ReactElement } from 'react'
 
 import { screen } from '@testing-library/react'
 
@@ -36,6 +36,16 @@ const MOCK_SKELETON_TEST_ID = 'skeleton'
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
 }))
+
+const renderWithTable = (element: ReactElement, state: Partial<RootState>) =>
+    renderWithStore(
+        <table>
+            <tbody>
+                <tr>{element}</tr>
+            </tbody>
+        </table>,
+        state,
+    )
 
 describe('<AgentsCellContent />', () => {
     const agent = {
@@ -80,7 +90,7 @@ describe('<AgentsCellContent />', () => {
                 () => useClosedTicketsMetricPerAgentMockReturnValue,
             )
 
-        renderWithStore(
+        renderWithTable(
             <AgentsCellContent
                 agent={agent}
                 useMetricPerAgentQueryHook={metricHook}
@@ -123,7 +133,7 @@ describe('<AgentsCellContent />', () => {
                 () => useClosedTicketsMetricPerAgentMockReturnValue,
             )
 
-        renderWithStore(
+        renderWithTable(
             <AgentsCellContent
                 agent={agent}
                 useMetricPerAgentQueryHook={metricHook}
@@ -154,12 +164,75 @@ describe('<AgentsCellContent />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should not render value in heatmap mode if no value', () => {
+        const metricFormat = 'decimal'
+        const metricHook = jest.fn().mockImplementation(() => ({
+            ...useClosedTicketsMetricPerAgentMockReturnValue,
+            data: {
+                ...useClosedTicketsMetricPerAgentMockReturnValue.data,
+                value: null,
+            },
+        }))
+
+        renderWithTable(
+            <AgentsCellContent
+                agent={agent}
+                useMetricPerAgentQueryHook={metricHook}
+                metricFormat={metricFormat}
+                drillDownMetricData={null}
+                isHeatmapMode={true}
+                isSortingMetricLoading={false}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                }}
+            />,
+            defaultState,
+        )
+
+        const elementWithHeatmap = document.querySelector(
+            `.p${useClosedTicketsMetricPerAgentMockReturnValue.data.decile}`,
+        )
+        expect(elementWithHeatmap).toBeNull()
+    })
+
+    it('should not apply heatmap class when decile is null', () => {
+        const decile = null
+        const metricHook = jest.fn().mockImplementation(() => ({
+            ...useClosedTicketsMetricPerAgentMockReturnValue,
+            data: {
+                ...useClosedTicketsMetricPerAgentMockReturnValue.data,
+                value: closedTicketsValue,
+                decile,
+            },
+        }))
+
+        renderWithTable(
+            <AgentsCellContent
+                agent={agent}
+                useMetricPerAgentQueryHook={metricHook}
+                metricFormat={'decimal'}
+                drillDownMetricData={null}
+                isHeatmapMode={true}
+                isSortingMetricLoading={false}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                }}
+            />,
+            defaultState,
+        )
+
+        const elementWithHeatmap = document.querySelector(`.p${decile}`)
+        expect(elementWithHeatmap).toBeNull()
+    })
+
     it('should render skeleton when fetching', () => {
         const metricHook = jest.fn().mockImplementation(() => ({
             ...useClosedTicketsMetricPerAgentMockReturnValue,
             isFetching: true,
         }))
-        renderWithStore(
+        renderWithTable(
             <AgentsCellContent
                 agent={agent}
                 useMetricPerAgentQueryHook={metricHook}
@@ -188,7 +261,7 @@ describe('<AgentsCellContent />', () => {
             .mockImplementation(
                 () => useClosedTicketsMetricPerAgentMockReturnValue,
             )
-        renderWithStore(
+        renderWithTable(
             <AgentsCellContent
                 agent={agent}
                 useMetricPerAgentQueryHook={metricHook}
@@ -205,5 +278,61 @@ describe('<AgentsCellContent />', () => {
         )
 
         expect(DrillDownModalTriggerMock).toHaveBeenCalled()
+    })
+
+    it('should handle null data', () => {
+        const metricHook = jest.fn().mockImplementation(() => ({
+            ...useClosedTicketsMetricPerAgentMockReturnValue,
+            data: null,
+        }))
+
+        renderWithTable(
+            <AgentsCellContent
+                agent={agent}
+                useMetricPerAgentQueryHook={metricHook}
+                metricFormat={'decimal'}
+                drillDownMetricData={null}
+                isHeatmapMode={true}
+                isSortingMetricLoading={false}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                }}
+            />,
+            defaultState,
+        )
+
+        expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
+    })
+
+    it('should apply custom innerClassName from bodyCellProps', () => {
+        const customInnerClassName = 'custom-inner-class'
+        const metricHook = jest
+            .fn()
+            .mockImplementation(
+                () => useClosedTicketsMetricPerAgentMockReturnValue,
+            )
+
+        renderWithTable(
+            <AgentsCellContent
+                agent={agent}
+                useMetricPerAgentQueryHook={metricHook}
+                metricFormat={'decimal'}
+                drillDownMetricData={null}
+                isHeatmapMode={false}
+                isSortingMetricLoading={false}
+                bodyCellProps={{
+                    innerClassName: customInnerClassName,
+                }}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                }}
+            />,
+            defaultState,
+        )
+
+        const cellElement = document.querySelector(`.${customInnerClassName}`)
+        expect(cellElement).toBeInTheDocument()
     })
 })

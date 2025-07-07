@@ -117,7 +117,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                             percentage,
                         }) !== NOT_AVAILABLE_PLACEHOLDER
                     }
-                    highlighted
+                    highlighted={!isHeatmapMode}
                     metricData={{
                         title: `${String(
                             selectedCustomField?.label,
@@ -161,7 +161,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                             formatAccordingToValueMode(valueMode)(data) !==
                             NOT_AVAILABLE_PLACEHOLDER
                         }
-                        highlighted
+                        highlighted={!isHeatmapMode}
                         metricData={{
                             title: `${String(
                                 selectedCustomField?.label,

@@ -268,6 +268,7 @@ const TableRow = ({
                 >
                     <DrillDownModalTrigger
                         enabled={data.value !== 0}
+                        highlighted={!isHeatmapMode}
                         metricData={{
                             title: `${getTagName({ name: tag?.name, id: tagId })} | ${formatDates(
                                 granularity,

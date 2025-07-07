@@ -84,7 +84,7 @@ export const ChannelsCellContent = ({
                         !!data?.value &&
                         column !== ChannelsTableColumns.CreatedTicketsPercentage
                     }
-                    highlighted
+                    highlighted={!isHeatmapMode}
                     metricData={{
                         metricName: column,
                         perChannel: channel.slug,

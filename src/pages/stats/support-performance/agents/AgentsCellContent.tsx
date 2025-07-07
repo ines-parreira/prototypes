@@ -1,6 +1,7 @@
-import React, { PropsWithRef } from 'react'
+import { PropsWithRef } from 'react'
 
 import classNames from 'classnames'
+import _isNil from 'lodash/isNil'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
@@ -55,6 +56,7 @@ export const AgentsCellContent = ({
         String(agent.id),
     )
     const metricValue = data?.value
+    const decile = data?.decile
     const isLoading = isFetching || isSortingMetricLoading
     const formattedMetric = formatMetricValue(
         metricValue,
@@ -62,17 +64,21 @@ export const AgentsCellContent = ({
         NOT_AVAILABLE_PLACEHOLDER,
     )
 
+    const heatmapLevel =
+        metricValue &&
+        !_isNil(decile) &&
+        isHeatmapMode &&
+        !isLoading &&
+        css[`p${decile}`]
+
     return (
         <BodyCell
             {...bodyCellProps}
-            className={classNames(
-                [css.heatmap],
-                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`],
-            )}
+            className={classNames([css.heatmap], heatmapLevel)}
             innerClassName={classNames(
                 bodyCellProps?.innerClassName,
                 [css.heatmap],
-                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`],
+                heatmapLevel,
             )}
         >
             {isLoading ? (
@@ -80,7 +86,7 @@ export const AgentsCellContent = ({
             ) : drillDownMetricData !== null ? (
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
-                    highlighted
+                    highlighted={!isHeatmapMode}
                     metricData={drillDownMetricData}
                 >
                     {formattedMetric}
