@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import css from './PercentageInput.less'
 
-interface PercentageInputProps {
+type PercentageInputProps = {
     value?: string
     isDisabled?: boolean
     onChange?: (value: string) => void

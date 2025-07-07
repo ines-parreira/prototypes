@@ -1,50 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Button, PerformanceBadge } from 'AIJourney/components'
-import { splitStringUsingRegex } from 'AIJourney/utils'
+import { useIntegrations } from 'AIJourney/providers'
+import { useJourneys } from 'AIJourney/queries'
 
 import { AdditionalInfo } from './components/AdditionalInfo'
+import { AnimatedText } from './components/AnimatedText'
 
 import css from './LandingPage.less'
-
-const text =
-    'AI Journey automatically creates and sends personalized SMS messages to shoppers who abandon their cart. No need for templates — Gorgias handles everything, from syncing opted-in subscribers from your platforms to personalizing and delivering each message. \n We know your brand and your shoppers. By combining your existing tone of voice and brand guidelines with the invaluable data we have — including cart contents, pages visited, search history, past orders, and previous conversations — AI Journey crafts impactful, on-brand, and hyper-personalized messages that delight your customers and drive more conversions.'
-
-const charVariants = {
-    hidden: { opacity: 0 },
-    reveal: { opacity: 1 },
-}
-
-const AnimatedText = () => {
-    const textChars = splitStringUsingRegex(text)
-
-    return (
-        <motion.div
-            className={css.content}
-            initial="hidden"
-            whileInView="reveal"
-            transition={{ staggerChildren: 0.001 }}
-        >
-            {textChars.map((char, index) =>
-                char === '\n' ? (
-                    <br key={index} />
-                ) : (
-                    <motion.span
-                        key={index}
-                        transition={{ duration: 0.5 }}
-                        variants={charVariants}
-                        style={{ display: 'inline' }}
-                    >
-                        {char}
-                    </motion.span>
-                ),
-            )}
-        </motion.div>
-    )
-}
 
 export const LandingPage = () => {
     const history = useHistory()
@@ -57,6 +23,48 @@ export const LandingPage = () => {
             history.push(`/app/ai-journey/${shopName}/conversation-setup`)
         }, 700)
     }
+
+    const { integrations, isLoading } = useIntegrations()
+
+    const currentIntegration = useMemo(() => {
+        if (isLoading) return undefined
+        return integrations.find((i) => i.name === shopName)
+    }, [integrations, shopName, isLoading])
+
+    const { data: merchantAiJourneys, isError } = useJourneys(
+        currentIntegration?.id,
+        {
+            enabled: !!currentIntegration || !isLoading,
+        },
+    )
+
+    const abandonedCartJourney = merchantAiJourneys?.find(
+        (journey) => journey.type === 'cart_abandoned',
+    )
+    const shouldAccessOnboarding: boolean =
+        !abandonedCartJourney || abandonedCartJourney?.state === 'draft'
+
+    useEffect(() => {
+        if (!shouldAccessOnboarding) {
+            history.push(`/app/ai-journey/${shopName}/performance`)
+        }
+    }, [shouldAccessOnboarding, history, shopName])
+
+    if (isError)
+        return (
+            <motion.div
+                className={css.container}
+                animate={{ opacity: isVisible ? 1 : 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <div className={css.error}>
+                    <p>
+                        An error occurred while fetching the AI Journey data.
+                        Please try again later.
+                    </p>
+                </div>
+            </motion.div>
+        )
 
     return (
         <motion.div

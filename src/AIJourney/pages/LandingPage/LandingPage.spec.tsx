@@ -1,6 +1,10 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { IntegrationsProvider } from 'AIJourney/providers'
+import { useJourneys } from 'AIJourney/queries'
+import { appQueryClient } from 'api/queryClient'
 import { renderWithRouter } from 'utils/testing'
 
 import { LandingPage } from './LandingPage'
@@ -13,20 +17,66 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
+jest.mock('AIJourney/queries', () => ({
+    ...jest.requireActual('AIJourney/queries'),
+    useJourneys: jest.fn(() => ({
+        data: [],
+        isError: false,
+    })),
+}))
+
+const mockUseJourneys = useJourneys as jest.Mock
+
 describe('<LandingPage />', () => {
+    afterEach(() => {
+        mockHistoryPush.mockClear()
+        jest.useRealTimers()
+    })
+
     it('should render AI Journey landing page', () => {
-        renderWithRouter(<LandingPage />)
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <IntegrationsProvider>
+                    <LandingPage />
+                </IntegrationsProvider>
+            </QueryClientProvider>,
+        )
 
         expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
     })
     it('should redirect to conversation-setup page when placeholder button is clicked', async () => {
-        renderWithRouter(<LandingPage />)
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <IntegrationsProvider>
+                    <LandingPage />
+                </IntegrationsProvider>
+            </QueryClientProvider>,
+        )
 
         const buttonLabel = screen.getByText('Continue')
         expect(buttonLabel).toBeInTheDocument()
 
         const button = screen.getByTestId('ai-journey-button')
         await userEvent.click(button)
+        await waitFor(() => {
+            expect(mockHistoryPush).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('should redirect to performance page when AI Journey is already active', async () => {
+        mockUseJourneys.mockImplementationOnce(() => ({
+            data: [{ type: 'cart_abandoned', state: 'active =' }],
+            isError: false,
+        }))
+
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <IntegrationsProvider>
+                    <LandingPage />
+                </IntegrationsProvider>
+            </QueryClientProvider>,
+        )
+
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledTimes(1)
         })

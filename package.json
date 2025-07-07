@@ -93,6 +93,7 @@
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
+        "@gorgias/convert-client": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-client": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-queries": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-types": "catalog:rest-api-sdk",

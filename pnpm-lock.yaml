@@ -22,6 +22,9 @@ catalogs:
       specifier: 18.2.0
       version: 18.2.0
   rest-api-sdk:
+    '@gorgias/convert-client':
+      specifier: 0.2.12
+      version: 0.2.12
     '@gorgias/helpdesk-client':
       specifier: 0.9.5
       version: 0.9.5
@@ -117,6 +120,9 @@ importers:
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
+      '@gorgias/convert-client':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.12
       '@gorgias/design-tokens':
         specifier: ^0.10.5
         version: 0.10.5
@@ -2510,6 +2516,12 @@ packages:
       eslint-plugin-jsx-a11y: ^6.8.0
       eslint-plugin-react: ^7.34.3
       eslint-plugin-react-hooks: ^4.6.2
+
+  '@gorgias/convert-client@0.2.12':
+    resolution: {integrity: sha512-8QkJZrI6jqPmOO74jnT9DHp3TXlkM8fwfti8bMdayLiDykyvG6WZcQCfvlI48BVYqflPDvkUmq2RAiapA2kNaw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.2.12/82ce76b6d6e89752ba4203f0e8de33c6f7d2abae}
+
+  '@gorgias/convert-types@0.2.8':
+    resolution: {integrity: sha512-b0BSQcp/PeRuQKRSRQvo9DM6OlaZNBNyY95/m+BcoH0XBVEwPWjs0EyIqZK1ImLZrpYKamKkLltHpPlKHvR2uA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.2.8/3e49d2990197f82dec185a84f6d0926fafff7b89}
 
   '@gorgias/design-tokens@0.10.2':
     resolution: {integrity: sha512-WfZ76lyPNHThtjOaW2OHI1CwprcQriO7+DGeOLhgg+xq6rKO28NrCtV4Rs5c4lv9Qh8h2Gji8RnIKuYDa1y8jw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.2/c38285ac14e6bcfc888beddf1b8057129a59afba}
@@ -13411,6 +13423,16 @@ snapshots:
       eslint-plugin-jsx-a11y: 6.4.1(eslint@8.1.0)
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
+
+  '@gorgias/convert-client@0.2.12':
+    dependencies:
+      '@gorgias/convert-types': 0.2.8
+      '@gorgias/sdk-client': 0.9.3
+      axios: 1.8.4
+    transitivePeerDependencies:
+      - debug
+
+  '@gorgias/convert-types@0.2.8': {}
 
   '@gorgias/design-tokens@0.10.2': {}
 

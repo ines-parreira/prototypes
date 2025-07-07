@@ -12,6 +12,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
+import { IntegrationsProvider, TokenProvider } from 'AIJourney/providers'
 import { logPageChange } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -191,6 +192,21 @@ const ProtectedRouteMock = assumeMock(ProtectedRoute)
 })
 
 window.loadGorgiasChat = jest.fn()
+
+jest.mock('AIJourney/providers', () => {
+    return {
+        ...jest.requireActual('AIJourney/providers'),
+        TokenProvider: ({ children }: { children: React.ReactNode }) => (
+            <>{children}</>
+        ),
+        useAccessToken: () => 'test-token',
+    }
+})
+
+jest.mock('rest_api/auth', () => ({
+    ...jest.requireActual('rest_api/auth'),
+    getAccessToken: jest.fn().mockResolvedValue('test-token'),
+}))
 
 describe('<Routes/>', () => {
     const defaultState = {
@@ -757,18 +773,16 @@ describe('<Routes/>', () => {
         })
     })
 
-    describe.only('AiJourneyRoutes', () => {
+    describe('AiJourneyRoutes', () => {
         beforeEach(() => {
             jest.spyOn(axios, 'request').mockImplementation((config) => {
-                // Log the request config to see what is being called
                 // oxlint-disable-next-line no-console
                 console.log('AXIOS REQUEST:', config)
-                // Optionally, return a resolved/rejected promise to avoid the error
                 return Promise.reject(new Error('Mocked network error'))
             })
         })
         const queryClient = new QueryClient()
-        it.skip('should redirect to /app when feature flag is disabled', () => {
+        it('should redirect to /app when feature flag is disabled', () => {
             mockFlags({
                 [FeatureFlagKey.AiJourneyEnabled]: false,
             })
@@ -782,7 +796,6 @@ describe('<Routes/>', () => {
                     <Router history={history}>
                         <Routes />
                     </Router>
-                    ,
                 </QueryClientProvider>,
             )
 
@@ -800,10 +813,13 @@ describe('<Routes/>', () => {
 
             render(
                 <QueryClientProvider client={queryClient}>
-                    <Router history={history}>
-                        <Routes />
-                    </Router>
-                    ,
+                    <IntegrationsProvider>
+                        <TokenProvider>
+                            <Router history={history}>
+                                <Routes />
+                            </Router>
+                        </TokenProvider>
+                    </IntegrationsProvider>
                 </QueryClientProvider>,
             )
 
@@ -837,9 +853,11 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <Router history={history}>
-                    <Routes />
-                </Router>,
+                <QueryClientProvider client={queryClient}>
+                    <Router history={history}>
+                        <Routes />
+                    </Router>
+                </QueryClientProvider>,
             )
 
             await waitFor(() => {
@@ -849,7 +867,7 @@ describe('<Routes/>', () => {
             })
         })
 
-        it('should redirect to first store when no store is passed in the URL', async () => {
+        it('should render performance page', async () => {
             mockUseFlag.mockReturnValue(true)
             const history = createMemoryHistory({
                 initialEntries: ['/app/ai-journey/shopify-store/performance'],

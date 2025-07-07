@@ -6,7 +6,7 @@ import { FieldPresentation, PercentageInput } from 'AIJourney/components'
 
 import css from './MaximumDiscount.less'
 
-interface MaximumDiscountFieldProps {
+type MaximumDiscountFieldProps = {
     value?: string
     isDisabled?: boolean
     onChange?: (value: string) => void

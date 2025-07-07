@@ -6,7 +6,7 @@ import playIcon from 'assets/img/ai-journey/play.svg'
 
 import css from './InputAction.less'
 
-interface InputActionProps {
+type InputActionProps = {
     value?: string
     onChange?: (value: string) => void
 }
