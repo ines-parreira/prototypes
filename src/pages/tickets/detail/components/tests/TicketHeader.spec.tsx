@@ -1,8 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _omit from 'lodash/omit'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -10,9 +9,11 @@ import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { TicketPriority } from '@gorgias/helpdesk-types'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -118,7 +119,9 @@ const mockUseIsTicketNavigationAvailable =
     useIsTicketNavigationAvailable as jest.Mock
 
 const useParamsMock = useParams as jest.Mock
-const useFlagsMock = useFlags as jest.Mock
+
+jest.mock('core/flags')
+const useFlagMock = useFlag as jest.Mock
 
 describe('<TicketHeader />', () => {
     const defaultStore: Partial<RootState> = {
@@ -137,6 +140,7 @@ describe('<TicketHeader />', () => {
     const useAppDispatchMock = useAppDispatch as jest.Mock
 
     beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         mockUseIsTicketNavigationAvailable.mockReturnValue(false)
@@ -351,9 +355,8 @@ describe('<TicketHeader />', () => {
     })
 
     it('should render AI ticket summary popover when enableAITicketSummary feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AITicketSummary]: true,
-        })
+        useFlagMock.mockReturnValue(true)
+
         const { getByText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <TicketHeader {...minProps} />
@@ -364,9 +367,6 @@ describe('<TicketHeader />', () => {
     })
 
     it('should not render AI ticket summary popover when enableAITicketSummary feature flag is disabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AITicketSummary]: false,
-        })
         const { queryByText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <TicketHeader {...minProps} />
@@ -374,5 +374,39 @@ describe('<TicketHeader />', () => {
         )
 
         expect(queryByText('Summarize')).not.toBeInTheDocument()
+    })
+
+    it('should render priority dropdown when feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <TicketHeader
+                    {...minProps}
+                    ticket={fromJS({
+                        ...ticket,
+                        priority: TicketPriority.Critical,
+                    })}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText(/critical/i)).toBeInTheDocument()
+    })
+
+    it('should not render AI ticket summary popover when enableAITicketSummary feature flag is disabled', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <TicketHeader
+                    {...minProps}
+                    ticket={fromJS({
+                        ...ticket,
+                        priority: TicketPriority.Critical,
+                    })}
+                />
+            </Provider>,
+        )
+
+        expect(screen.queryByText(/critical/i)).not.toBeInTheDocument()
     })
 })

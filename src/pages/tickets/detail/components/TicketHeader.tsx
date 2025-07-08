@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import classnames from 'classnames'
 import { Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment, { Moment } from 'moment-timezone'
+
+import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
@@ -48,6 +50,7 @@ import TicketTags from './TicketDetails/TicketTags'
 import TicketTrash from './TicketDetails/TicketTrash'
 import { TicketHeaderToggle } from './TicketHeaderToggle'
 import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
+import TicketPriorityDropdown from './TicketPriorityDropdown'
 import TicketSummaryPopover from './TicketSummaryPopover'
 
 import css from './TicketHeader.less'
@@ -77,7 +80,11 @@ const TicketHeader = ({
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents,
     )
-    const enableAITicketSummary = useFlags()[FeatureFlagKey.AITicketSummary]
+    const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary, false)
+    const setPriorityFlagEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+        false,
+    )
 
     const dispatch = useAppDispatch()
 
@@ -269,6 +276,14 @@ const TicketHeader = ({
         return actions
     }
 
+    const handlePriorityChange = async (priority: TicketPriority) => {
+        await dispatch(
+            ticketPartialUpdate({
+                priority,
+            }),
+        )
+    }
+
     return (
         <div className={classnames(css.component, className)} id="TicketHeader">
             <div className={css.title}>
@@ -284,6 +299,12 @@ const TicketHeader = ({
                 />
 
                 <div className={css.actions}>
+                    {setPriorityFlagEnabled && (
+                        <TicketPriorityDropdown
+                            priority={ticket.get('priority') as TicketPriority}
+                            onPriorityChange={handlePriorityChange}
+                        />
+                    )}
                     <TicketSnooze datetime={snoozedUntil} timezone={timezone} />
                     {enableAITicketSummary && <TicketSummaryPopover />}
 

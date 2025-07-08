@@ -5,6 +5,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { TicketPriority } from '@gorgias/helpdesk-types'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import {
@@ -518,21 +519,16 @@ describe('components utils: labels', () => {
     describe('<PriorityLabel/>', () => {
         Object.entries(labels.PRIORITY_TO_BADGE).forEach(([priority, type]) => {
             it(`should call Badge with correct type based on priority prop's value ${priority}`, () => {
-                render(<labels.PriorityLabel priority={priority} />)
+                render(
+                    <labels.PriorityLabel
+                        priority={priority as TicketPriority}
+                    />,
+                )
                 expect(Badge).toHaveBeenCalledWith(
                     expect.objectContaining({ type }),
                     {},
                 )
             })
-        })
-
-        it('should fallback to `modern` as default badge type', () => {
-            const madeUpPriority = 'non-existing'
-            render(<labels.PriorityLabel priority={madeUpPriority} />)
-            expect(Badge).toHaveBeenCalledWith(
-                expect.objectContaining({ type: 'modern' }),
-                {},
-            )
         })
     })
 })

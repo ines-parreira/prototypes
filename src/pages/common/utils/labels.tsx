@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Map } from 'immutable'
 
+import { TicketPriority } from '@gorgias/helpdesk-types'
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import { isImmutable } from 'common/utils'
@@ -221,9 +222,16 @@ const STATUS_TO_BADGE: Record<string, ColorType> = {
     closed: 'light-dark',
 }
 
-export const PRIORITY_TO_BADGE: Record<string, ColorType> = {
-    low: 'classic',
-    normal: 'blue',
+export const PRIORITY_TO_ICON: Record<TicketPriority, string> = {
+    low: 'keyboard_arrow_down',
+    normal: 'drag_handle',
+    high: 'keyboard_arrow_up',
+    critical: 'keyboard_double_arrow_up',
+}
+
+export const PRIORITY_TO_BADGE: Record<TicketPriority, ColorType> = {
+    low: 'light-grey',
+    normal: 'light-dark',
     high: 'light-warning',
     critical: 'light-error',
 }
@@ -249,12 +257,15 @@ export const PriorityLabel = ({
     priority,
 }: {
     className?: string
-    priority: string
+    priority: TicketPriority
 }) => {
     const type = PRIORITY_TO_BADGE[priority] || 'modern'
 
     return (
         <Badge className={className ?? 'text-center'} type={type}>
+            <span className="material-icons md-2">
+                {PRIORITY_TO_ICON[priority]}
+            </span>
             {priority}
         </Badge>
     )
@@ -474,6 +485,8 @@ export const RenderLabel = ({
         case 'via':
         case ViewField.Channel:
             return <ChannelLabel channel={value} />
+        case ViewField.Priority:
+            return <PriorityLabel priority={value} />
         default:
             return <span>{value}</span>
     }

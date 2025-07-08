@@ -10,7 +10,7 @@ import { LDFlagSet } from 'launchdarkly-js-client-sdk'
 import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import { Badge } from 'reactstrap'
 
-import { File, MacroAction } from '@gorgias/helpdesk-queries'
+import { File, MacroAction, TicketPriority } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ActionTemplateExecution } from 'config'
@@ -179,7 +179,9 @@ class Preview extends Component<Props> {
             <div className={css.macroData}>
                 <strong className="text-muted mr-2">Set priority:</strong>
                 <PriorityLabel
-                    priority={setPriorityAction.arguments.priority as string}
+                    priority={
+                        setPriorityAction.arguments.priority as TicketPriority
+                    }
                 />
             </div>
         )

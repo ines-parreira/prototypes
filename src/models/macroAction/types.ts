@@ -1,3 +1,5 @@
+import { TicketPriority } from '@gorgias/helpdesk-types'
+
 import type { User } from 'config/types/user'
 import { HttpMethod } from 'models/api/types'
 import type { Team } from 'models/team/types'
@@ -58,7 +60,7 @@ export type MacroAction = {
         url?: string
         params?: Record<string, unknown>[]
         status?: string
-        priority?: string
+        priority?: TicketPriority
         assignee_user?: User
         assignee_team?: Team
         subject?: string
