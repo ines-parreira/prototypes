@@ -1,3 +1,8 @@
+---
+description: Use pnpm as the default package manager
+alwaysApply: true
+---
+
 # Use pnpm for package management
 
 - **ALWAYS use pnpm** for all package management operations
@@ -7,27 +12,27 @@
 - Use `pnpm run <script>` instead of `npm run <script>` or `yarn <script>`
 - Use `pnpm exec <command>` instead of `npx <command>` or `yarn exec <command>`
 
-## Development Workflow
+# Development Workflow
 
 - When suggesting package installations, always use pnpm commands
 - When running scripts or commands, prefer pnpm over other package managers
 - When creating new scripts in package.json, ensure they work with pnpm
 - When debugging dependency issues, use `pnpm why <package>` for dependency analysis
 
-## Code Generation
+# Code Generation
 
 - When generating package.json scripts, ensure compatibility with pnpm
 - When suggesting dependency updates, use pnpm-specific commands
 - When creating new projects or components, use pnpm for dependency management
 
-## Best Practices
+# Best Practices
 
 - Leverage pnpm's efficient disk space usage and fast installation
 - Use pnpm's workspace features for monorepo management if applicable
 - Prefer pnpm's stricter dependency resolution for better security
 - Use `pnpm audit` for security audits instead of npm audit
 
-## Error Resolution
+# Error Resolution
 
 - If encountering package manager conflicts, default to pnpm solutions
 - When troubleshooting installation issues, use pnpm-specific debugging commands
