@@ -5,6 +5,7 @@ import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
+    TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
     satisfactionScoreDrillDownQueryFactory,
@@ -110,7 +111,7 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
                 TicketDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
             ],
-            segments: [],
+            segments: [TicketSatisfactionSurveySegment.SurveyScored],
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
@@ -141,7 +142,7 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
                 TicketDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
             ],
-            segments: [],
+            segments: [TicketSatisfactionSurveySegment.SurveyScored],
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,

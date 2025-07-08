@@ -4,6 +4,7 @@ import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
+    TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
@@ -47,6 +48,7 @@ export const satisfactionScoreDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...satisfactionScoreQueryFactory(filters, timezone, sorting),
+    segments: [TicketSatisfactionSurveySegment.SurveyScored],
     dimensions: [
         TicketDimension.TicketId,
         TicketSatisfactionSurveyDimension.SurveyScore,
