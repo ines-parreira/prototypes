@@ -202,7 +202,7 @@ describe('<EmailIntegrationList/>', () => {
             )
 
             // Render with specific integration data
-            const { container, findByText } = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <EmailIntegrationList
@@ -218,18 +218,20 @@ describe('<EmailIntegrationList/>', () => {
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
             // Wait for the integration to render
-            await findByText('email@gorgias-test.com')
+            await waitFor(() => {
+                // The EmailIntegrationListVerificationStatus component should now be mocked
+                // Instead of checking if the mock was called, let's verify the component renders successfully
+                // Look for the text in the verification status component or check for the email address
+                expect(container.textContent).toContain(
+                    'email@gorgias-test.com',
+                )
 
-            // The EmailIntegrationListVerificationStatus component should now be mocked
-            // Instead of checking if the mock was called, let's verify the component renders successfully
-            // Look for the text in the verification status component or check for the email address
-            expect(container.textContent).toContain('email@gorgias-test.com')
-
-            // Check if EmailIntegrationListVerificationStatus is rendered by looking for
-            // the mocked component output
-            expect(container.textContent).toContain(
-                'EmailIntegrationListVerificationStatus',
-            )
+                // Check if EmailIntegrationListVerificationStatus is rendered by looking for
+                // the mocked component output
+                expect(container.textContent).toContain(
+                    'EmailIntegrationListVerificationStatus',
+                )
+            })
         })
 
         it('should render the page with an alert when there are unverified integrations', async () => {
@@ -286,22 +288,13 @@ describe('<EmailIntegrationList/>', () => {
             // Wait for one of the integration addresses to be visible
             // using waitFor to check periodically
             await waitFor(() => {
-                const address1Present = result.queryByText(
-                    integrations[0].meta.address,
-                )
-                const address2Present = result.queryByText(
-                    integrations[1].meta.address,
-                )
-
-                if (!address1Present && !address2Present) {
-                    throw new Error(
-                        'Neither integration address was found in the rendered output',
-                    )
-                }
+                expect(
+                    result.queryByText(integrations[0].meta.address),
+                ).toBeInTheDocument()
+                expect(
+                    result.queryByText(integrations[1].meta.address),
+                ).toBeInTheDocument()
             })
-
-            // Simply verify a render without errors
-            // This is enough to confirm the component can handle unverified integrations
         })
 
         it('should render the alert when there is just the base email integration', async () => {
