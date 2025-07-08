@@ -41,7 +41,7 @@ export const useSentimentPerProduct = (
         statsFilters,
         timezone,
         sentimentCustomFieldId,
-        productId,
+        undefined,
         sorting,
     )
 

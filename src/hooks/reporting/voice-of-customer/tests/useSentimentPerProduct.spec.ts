@@ -95,7 +95,6 @@ describe('useSentimentPerProduct', () => {
                     statsFilters,
                     timezone,
                     sentimentCustomFieldId,
-                    firstProductId,
                 ),
             ],
             expect.objectContaining({ select }),
