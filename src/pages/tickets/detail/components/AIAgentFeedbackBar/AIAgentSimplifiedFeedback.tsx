@@ -36,6 +36,7 @@ import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getTicketState } from 'state/ticket/selectors'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { getViewsState } from 'state/views/selectors'
 
 const AIAgentSimplifiedFeedback = () => {
@@ -64,7 +65,7 @@ const AIAgentSimplifiedFeedback = () => {
     const userId: number = currentUser.get('id')
 
     const { goToTicket: goToNextTicket, isEnabled: isNextEnabled } =
-        useGoToNextTicket(ticketId.toString())
+        useGoToNextTicket(ticketId.toString(), TicketAIAgentFeedbackTab.AIAgent)
 
     const { data: feedback } = useGetFeedback({
         objectId: ticketId.toString(),
@@ -403,6 +404,7 @@ const AIAgentSimplifiedFeedback = () => {
             {showNextTicketButton && (
                 <div className={css.footer}>
                     <Button
+                        className={css.nextTicketButton}
                         fillStyle="ghost"
                         intent="primary"
                         trailingIcon="keyboard_arrow_right"
@@ -410,7 +412,7 @@ const AIAgentSimplifiedFeedback = () => {
                         isDisabled={!isNextEnabled}
                         onClick={goToNextTicket}
                     >
-                        Review next Ticket
+                        Review next ticket
                     </Button>
                 </div>
             )}

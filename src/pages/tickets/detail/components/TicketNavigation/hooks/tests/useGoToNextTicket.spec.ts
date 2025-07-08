@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { renderHook } from 'utils/testing/renderHook'
 
 import useGoToNextTicket from '../useGoToNextTicket'
@@ -98,5 +99,25 @@ describe('useGoToNextTicket', () => {
         await result.current.goToTicket()
         expect(mockUsePrevNextTicketNavigationFn).not.toHaveBeenCalled()
         expect(history.push).toHaveBeenCalledWith('/app/views/123/456')
+    })
+
+    it('should add the active tab query param if activeTab is provided and using DTP ticket navigation method', async () => {
+        mockUseSplitTicketViewMock.mockReturnValue({
+            isEnabled: true,
+            nextTicketId: 456,
+        })
+        useParamsMock.mockReturnValue({ viewId: '123' })
+
+        const { result } = renderHook(() =>
+            useGoToNextTicket('123', TicketAIAgentFeedbackTab.AIAgent),
+        )
+        expect(result.current.goToTicket).toBeDefined()
+        expect(result.current.isEnabled).toBe(true)
+
+        await result.current.goToTicket()
+        expect(mockUsePrevNextTicketNavigationFn).not.toHaveBeenCalled()
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/views/123/456?activeTab=AI_AGENT',
+        )
     })
 })

@@ -14,6 +14,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getTicketState } from 'state/ticket/selectors'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { getViewsState } from 'state/views/selectors'
 import { assumeMock } from 'utils/testing'
 
@@ -189,6 +190,16 @@ describe('AIAgentSimplifiedFeedback', () => {
             ),
         ).toBeInTheDocument()
     })
+
+    it('should set the ai agent feedback tab as the active tab when reviewing next ticket', () => {
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(useGoToNextTicket).toHaveBeenCalledWith(
+            '123',
+            TicketAIAgentFeedbackTab.AIAgent,
+        )
+    })
+
     it('should save free form feedback after debounce', async () => {
         jest.useFakeTimers()
         const mutateAsyncMock = jest.fn()
@@ -415,7 +426,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         render(<AIAgentSimplifiedFeedback />)
 
-        const reviwewNextButton = screen.getByText('Review next Ticket')
+        const reviwewNextButton = screen.getByText('Review next ticket')
 
         expect(reviwewNextButton).toBeInTheDocument()
 
