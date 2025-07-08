@@ -32,6 +32,7 @@ export enum AccountSettingType {
     AutoMerge = 'auto-merge',
     InTicketSuggestion = 'in-ticket-suggestion',
     DefaultIntegration = 'default-integration',
+    Limits = 'limits',
 }
 
 export enum AccountFeature {

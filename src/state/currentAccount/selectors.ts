@@ -286,6 +286,11 @@ export const getBusinessHoursRangesByUserTimezone = createSelector(
 export const getTicketAssignmentSettings = createSettingByTypeSelector(
     AccountSettingType.TicketAssignment,
 )
+
+export const getLimitsSetting = createSettingByTypeSelector(
+    AccountSettingType.Limits,
+)
+
 /**
  * @deprecated
  * @date 2021-08-06
