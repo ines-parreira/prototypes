@@ -28,11 +28,12 @@ import { reportError } from 'utils/errors'
 import { CategoriesPositionsType } from '../components/CategoriesTable'
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../constants'
 import { getCategoriesToUpdate } from '../utils/getCategoriesToUpdate'
+import useCurrentHelpCenter from './useCurrentHelpCenter'
 import { useHelpCenterApi } from './useHelpCenterApi'
-import { useHelpCenterIdParam } from './useHelpCenterIdParam'
 
 export const useCategoriesActions = () => {
-    const helpCenterId = useHelpCenterIdParam()
+    const helpCenter = useCurrentHelpCenter()
+    const helpCenterId = helpCenter.id
     const dispatch = useAppDispatch()
     const { client } = useHelpCenterApi()
     const viewLanguage = useAppSelector(getViewLanguage)

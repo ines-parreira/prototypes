@@ -87,6 +87,7 @@ export function KnowledgeSourceSideBarProvider({
                 url: '',
                 title: '',
                 content: '',
+                helpCenterId: '',
             })
             setSideBarMode(KnowledgeSourceSideBarMode.CREATE)
             onOpen()

@@ -54,8 +54,10 @@ const store = mockStore({
     ...ticketsStore,
     ui: {
         ticketAIAgentFeedback: {
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
-            message: mockMessage,
+            feedback: {
+                activeTab: TicketAIAgentFeedbackTab.AIAgent,
+                message: mockMessage,
+            },
         },
     },
 } as RootState)

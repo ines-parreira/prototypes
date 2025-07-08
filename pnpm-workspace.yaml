@@ -21,6 +21,11 @@ catalogs:
     '@gorgias/knowledge-service-types': '0.2.8'
     '@gorgias/knowledge-service-validators': '0.2.8'
     '@gorgias/convert-client': '0.2.12'
+    '@gorgias/help-center-client': '0.2.11'
+    '@gorgias/help-center-mocks': '0.2.11'
+    '@gorgias/help-center-queries': '0.2.11'
+    '@gorgias/help-center-types': '0.2.8'
+    '@gorgias/help-center-validators': '0.2.11'
     '@tanstack/react-query': '4.36.1'
   react:
     react: '18.2.0'

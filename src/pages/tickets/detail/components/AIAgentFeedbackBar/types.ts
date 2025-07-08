@@ -105,3 +105,8 @@ export type KnowledgeResourcePreview = {
     content: string
     helpCenterId?: string
 }
+
+export enum KnowledgePendingCloseType {
+    Discard = 'discard',
+    Article = 'article',
+}

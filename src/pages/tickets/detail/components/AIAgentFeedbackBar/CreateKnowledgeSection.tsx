@@ -7,9 +7,10 @@ import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
-import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { AiAgentKnowledgeResourceTypeEnum } from './types'
 
 type LinkProps = {
@@ -43,15 +44,29 @@ const CreateKnowledgeSection = ({
 }: CreateKnowledgeSectionProps) => {
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
-
     const enableKnowledgeManagementFromTicketView = useFlag(
         FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
     )
-
+    const { isPassingRulesCheck } = useAbilityChecker()
     const aiAgentNavigation = useAiAgentNavigation({ shopName })
+    const { openCreate } = useKnowledgeSourceSideBar()
     const guidanceLink = aiAgentNavigation.routes.guidanceTemplates
     const helpCenterArticlesLink = `/app/settings/help-center/${helpCenterId}/articles`
-    const { openCreate } = useKnowledgeSourceSideBar()
+    const canCreateArticle = isPassingRulesCheck(({ can }) =>
+        can('create', 'ArticleEntity'),
+    )
+
+    const getLinkProps = (
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        fallbackHref: string,
+    ) => {
+        return enableKnowledgeManagementFromTicketView
+            ? {
+                  onClick: () => openCreate(resourceType),
+              }
+            : { href: fallbackHref }
+    }
+
     return (
         <div>
             <div className={css.info}>
@@ -85,29 +100,30 @@ const CreateKnowledgeSection = ({
                     >
                         <LinkInText
                             text="Create Guidance"
-                            {...(enableKnowledgeManagementFromTicketView
-                                ? {
-                                      onClick: () =>
-                                          openCreate(
-                                              AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                                          ),
-                                  }
-                                : { href: guidanceLink })}
+                            {...getLinkProps(
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                                guidanceLink,
+                            )}
                         />
                     </DropdownItem>
-                    <DropdownItem
-                        onClick={() => setToggleDropdown(false)}
-                        option={{
-                            label: 'create_article',
-                            value: 1,
-                        }}
-                        className={css.dropdownItem}
-                    >
-                        <LinkInText
-                            href={helpCenterArticlesLink}
-                            text="Create Help Center article"
-                        />
-                    </DropdownItem>
+                    {canCreateArticle && (
+                        <DropdownItem
+                            onClick={() => setToggleDropdown(false)}
+                            option={{
+                                label: 'create_article',
+                                value: 1,
+                            }}
+                            className={css.dropdownItem}
+                        >
+                            <LinkInText
+                                text="Create Help Center article"
+                                {...getLinkProps(
+                                    AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                                    helpCenterArticlesLink,
+                                )}
+                            />
+                        </DropdownItem>
+                    )}
                 </DropdownBody>
             </Dropdown>
         </div>

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Provider } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -25,10 +24,12 @@ import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../constants'
 import { useCategoriesActions } from '../useCategoriesActions'
 import { useHelpCenterApi } from '../useHelpCenterApi'
 
-jest.mock('react-router')
-;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
-    helpCenterId: '1',
-})
+jest.mock('../useCurrentHelpCenter', () => ({
+    __esModule: true,
+    default: jest.fn().mockReturnValue({
+        id: 1,
+    }),
+}))
 
 function mockHelpCenterApiClient() {
     return {

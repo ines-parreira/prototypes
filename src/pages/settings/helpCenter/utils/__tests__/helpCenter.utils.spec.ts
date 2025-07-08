@@ -1,8 +1,16 @@
-import { ShopifyIntegration, StoreIntegration } from 'models/integration/types'
+import copy from 'copy-to-clipboard'
 
+import { ShopifyIntegration, StoreIntegration } from 'models/integration/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
+import { assumeMock } from 'utils/testing'
+
+import { getSingleArticleEnglish } from '../../fixtures/getArticlesResponse.fixture'
 import { getSingleCustomDomainResponseFixture } from '../../fixtures/getCustomDomainsResponse.fixture'
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import {
+    copyArticleLinkToClipboard,
     getAbsoluteUrl,
     getArticleUrl,
     getCategoryUrl,
@@ -16,6 +24,14 @@ import {
     replaceUploadUrls,
     slugify,
 } from '../helpCenter.utils'
+
+jest.mock('copy-to-clipboard')
+jest.mock('state/notifications/actions')
+jest.mock('utils/errors')
+
+const mockedCopy = assumeMock(copy)
+const mockedNotify = assumeMock(notify)
+const mockedReportError = assumeMock(reportError)
 
 describe('getNewArticleTranslation()', () => {
     it('returns a new article translation', () => {
@@ -326,5 +342,198 @@ describe('getValidStoreIntegrationId', () => {
         expect(
             getValidStoreIntegrationId(allStoreIntegrations, null),
         ).toBeNull()
+    })
+})
+
+describe('copyArticleLinkToClipboard()', () => {
+    const mockDispatch = jest.fn()
+
+    const mockArticle = getSingleArticleEnglish
+    const mockHelpCenter = getSingleHelpCenterResponseFixture
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should return early when article.translation is null', () => {
+        const articleWithoutTranslation = { ...mockArticle, translation: null }
+
+        copyArticleLinkToClipboard({
+            article: articleWithoutTranslation as any,
+            isUnlisted: false,
+            helpCenter: mockHelpCenter,
+            hasDefaultLayout: true,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockedCopy).not.toHaveBeenCalled()
+        expect(mockDispatch).toHaveBeenCalledWith(
+            mockedNotify({
+                message: 'Failed to copy the link',
+                status: NotificationStatus.Error,
+            }),
+        )
+        expect(mockedReportError).toHaveBeenCalledWith(
+            new Error('Help Center Article has no translation'),
+            { extra: { article: articleWithoutTranslation } },
+        )
+    })
+
+    it('should return early when article.translation is undefined', () => {
+        const articleWithoutTranslation = {
+            ...mockArticle,
+            translation: undefined,
+        }
+
+        copyArticleLinkToClipboard({
+            article: articleWithoutTranslation as any,
+            isUnlisted: false,
+            helpCenter: mockHelpCenter,
+            hasDefaultLayout: true,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockedCopy).not.toHaveBeenCalled()
+        expect(mockDispatch).toHaveBeenCalledWith(
+            mockedNotify({
+                message: 'Failed to copy the link',
+                status: NotificationStatus.Error,
+            }),
+        )
+        expect(mockedReportError).toHaveBeenCalledWith(
+            new Error('Help Center Article has no translation'),
+            { extra: { article: articleWithoutTranslation } },
+        )
+    })
+
+    it('should copy article URL and dispatch success notification when hasDefaultLayout is true', () => {
+        mockedCopy.mockReturnValue(true)
+
+        copyArticleLinkToClipboard({
+            article: mockArticle,
+            isUnlisted: false,
+            helpCenter: mockHelpCenter,
+            hasDefaultLayout: true,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockedCopy).toHaveBeenCalledWith(
+            'http://acme.gorgias.docker:4000/en-US/uncategorized-article-18',
+        )
+        expect(mockDispatch).toHaveBeenCalledWith(
+            mockedNotify({
+                message: 'Link copied with success',
+                status: NotificationStatus.Success,
+            }),
+        )
+    })
+
+    it('should copy article URL for unlisted article when hasDefaultLayout is true', () => {
+        mockedCopy.mockReturnValue(true)
+
+        copyArticleLinkToClipboard({
+            article: mockArticle,
+            isUnlisted: true,
+            helpCenter: mockHelpCenter,
+            hasDefaultLayout: true,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockedCopy).toHaveBeenCalledWith(
+            'http://acme.gorgias.docker:4000/en-US/18-2c4dc16efdb94307be6f31004054d3cb',
+        )
+        expect(mockDispatch).toHaveBeenCalledWith(
+            mockedNotify({
+                message: 'Link copied with success',
+                status: NotificationStatus.Success,
+            }),
+        )
+    })
+
+    it('should copy home page hash URL and dispatch success notification when hasDefaultLayout is false', () => {
+        mockedCopy.mockReturnValue(true)
+
+        copyArticleLinkToClipboard({
+            article: mockArticle,
+            isUnlisted: false,
+            helpCenter: mockHelpCenter,
+            hasDefaultLayout: false,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockedCopy).toHaveBeenCalledWith(
+            'http://acme.gorgias.docker:4000/en-US#article-18',
+        )
+        expect(mockDispatch).toHaveBeenCalledWith(
+            mockedNotify({
+                message: 'Link copied with success',
+                status: NotificationStatus.Success,
+            }),
+        )
+    })
+
+    it('should not copy hash URL for unlisted article when hasDefaultLayout is false', () => {
+        mockedCopy.mockReturnValue(true)
+
+        copyArticleLinkToClipboard({
+            article: mockArticle,
+            isUnlisted: true,
+            helpCenter: mockHelpCenter,
+            hasDefaultLayout: false,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockedCopy).toHaveBeenCalledWith(
+            'http://acme.gorgias.docker:4000/en-US',
+        )
+        expect(mockDispatch).toHaveBeenCalledWith(
+            mockedNotify({
+                message: 'Link copied with success',
+                status: NotificationStatus.Success,
+            }),
+        )
+    })
+
+    it('should use custom domain when available', () => {
+        const helpCenterWithCustomDomain = {
+            ...mockHelpCenter,
+            customDomain: getSingleCustomDomainResponseFixture,
+        }
+        mockedCopy.mockReturnValue(true)
+
+        copyArticleLinkToClipboard({
+            article: mockArticle,
+            isUnlisted: false,
+            helpCenter: helpCenterWithCustomDomain,
+            hasDefaultLayout: true,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockedCopy).toHaveBeenCalledWith(
+            'http://chuck-norris.com/en-US/uncategorized-article-18',
+        )
+    })
+
+    it('should dispatch error notification and report error when copy throws', () => {
+        const testError = new Error('Copy failed')
+        mockedCopy.mockImplementation(() => {
+            throw testError
+        })
+
+        copyArticleLinkToClipboard({
+            article: mockArticle,
+            isUnlisted: false,
+            helpCenter: mockHelpCenter,
+            hasDefaultLayout: true,
+            dispatch: mockDispatch,
+        })
+
+        expect(mockDispatch).toHaveBeenCalledWith(
+            mockedNotify({
+                message: 'Failed to copy the link',
+                status: NotificationStatus.Error,
+            }),
+        )
+        expect(mockedReportError).toHaveBeenCalledWith(testError)
     })
 })

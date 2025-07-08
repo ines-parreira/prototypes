@@ -1,3 +1,5 @@
+import copy from 'copy-to-clipboard'
+
 import {
     AIArticle,
     Article,
@@ -12,7 +14,11 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 import { StoreIntegration } from 'models/integration/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
 import { isDevelopment } from 'utils/environment'
+import { reportError } from 'utils/errors'
 
 import {
     ARTICLE_HASH_PREFIX,
@@ -356,4 +362,68 @@ export const getValidStoreIntegrationId = (
     return !hasMultiStores
         ? allStoreIntegrations[0].id
         : (storeIntegration?.id ?? null)
+}
+
+export const copyArticleLinkToClipboard = (props: {
+    article: Article
+    isUnlisted: boolean
+    helpCenter: HelpCenter
+    hasDefaultLayout: boolean
+    dispatch: StoreDispatch
+}) => {
+    const { article, isUnlisted, helpCenter, hasDefaultLayout, dispatch } =
+        props
+
+    if (!article.translation) {
+        void dispatch(
+            notify({
+                message: 'Failed to copy the link',
+                status: NotificationStatus.Error,
+            }),
+        )
+        reportError(new Error('Help Center Article has no translation'), {
+            extra: { article },
+        })
+        return
+    }
+    const { id: articleId, translation } = article
+    const { locale, slug, article_unlisted_id: unlistedId } = translation
+
+    const domain = getHelpCenterDomain(helpCenter)
+
+    try {
+        copy(
+            hasDefaultLayout
+                ? getArticleUrl({
+                      domain,
+                      locale,
+                      slug,
+                      articleId,
+                      unlistedId,
+                      isUnlisted,
+                  })
+                : getHomePageItemHashUrl({
+                      itemType: 'article',
+                      domain,
+                      locale,
+                      itemId: articleId,
+                      isUnlisted,
+                  }),
+        )
+
+        void dispatch(
+            notify({
+                message: 'Link copied with success',
+                status: NotificationStatus.Success,
+            }),
+        )
+    } catch (err) {
+        void dispatch(
+            notify({
+                message: 'Failed to copy the link',
+                status: NotificationStatus.Error,
+            }),
+        )
+        reportError(err as Error)
+    }
 }

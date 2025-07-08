@@ -25,11 +25,11 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
-    return {
-        useHelpCenterIdParam: jest.fn().mockReturnValue(1),
-    }
-})
+jest.mock('@tanstack/react-query', () => ({
+    useQueryClient: () => ({
+        invalidateQueries: jest.fn(),
+    }),
+}))
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),

@@ -2,6 +2,7 @@ import React from 'react'
 
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
@@ -33,6 +34,8 @@ const KnowledgeSourceSideBarMock = assumeMock(KnowledgeSourceSideBar)
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = useAppDispatch as jest.Mock
 jest.mock('hooks/useGetDateAndTimeFormat')
 const useGetDateAndTimeFormatMock = useGetDateAndTimeFormat as jest.Mock
 jest.mock('models/knowledgeService/queries')
@@ -71,6 +74,18 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     }: {
         children: React.ReactNode
     }) => <div>{children}</div>,
+    useAbilityChecker: jest.fn().mockReturnValue({
+        isPassingRulesCheck: jest.fn().mockReturnValue(true),
+    }),
+    useHelpCenterApi: jest.fn().mockReturnValue({
+        client: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
+    SupportedLocalesProvider: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
 }))
 
 const initialFeedbackData = {
@@ -89,6 +104,15 @@ const initialFeedbackData = {
 }
 
 describe('AIAgentSimplifiedFeedback', () => {
+    const helpCentersMock = [
+        {
+            id: 456,
+            name: 'Help Center 1',
+            supported_locales: ['en-US', 'en-GB'],
+            default_locale: 'en-US',
+        },
+    ]
+
     beforeEach(() => {
         KnowledgeSourceSideBarMock.mockReturnValue(
             <div>KnowledgeSourceSideBar</div>,
@@ -138,6 +162,8 @@ describe('AIAgentSimplifiedFeedback', () => {
             openCreate: jest.fn(),
             closeModal: jest.fn(),
         })
+
+        useAppDispatchMock.mockReturnValue(jest.fn())
     })
 
     it('should render explanation message if there are no feedback executions yet', () => {
@@ -1382,7 +1408,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     },
                 ],
             },
-            helpCenters: [{ id: 456, name: 'Help Center 1' }],
+            helpCenters: helpCentersMock,
             isLoading: false,
         })
 
@@ -1446,7 +1472,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     },
                 ],
             },
-            helpCenters: [{ id: 456, name: 'Help Center 1' }],
+            helpCenters: helpCentersMock,
             isLoading: false,
         })
 
@@ -1503,7 +1529,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     },
                 ],
             },
-            helpCenters: [{ id: 456, name: 'Help Center 1' }],
+            helpCenters: helpCentersMock,
             isLoading: false,
         })
 

@@ -1,6 +1,7 @@
 import { PayloadActionCreator } from '@reduxjs/toolkit'
 
 import { TicketMessage } from 'models/ticket/types'
+import { KnowledgeSourceArticleEditorState } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
 import { TicketAIAgentFeedbackTab } from './constants'
 
@@ -14,7 +15,12 @@ export type ChangeActiveTabAction = PayloadActionCreator<
     UIActions.ChangeActiveTab
 >
 
-export type TicketAIAgentFeedbackState = {
+export type TicketDetailAIAgentFeedbackState = {
     activeTab: TicketAIAgentFeedbackTab
     message?: TicketMessage
+}
+
+export type TicketAIAgentFeedbackState = {
+    feedback: TicketDetailAIAgentFeedbackState
+    knowledgeSourceArticleEditor: KnowledgeSourceArticleEditorState
 }

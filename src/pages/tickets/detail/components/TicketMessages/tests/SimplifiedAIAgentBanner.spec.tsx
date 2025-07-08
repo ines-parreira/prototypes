@@ -40,7 +40,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     ui: {
         ticketAIAgentFeedback: {
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
+            feedback: {
+                activeTab: TicketAIAgentFeedbackTab.AIAgent,
+            },
         },
     },
 } as RootState)

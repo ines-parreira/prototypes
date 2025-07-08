@@ -28,11 +28,18 @@ const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
 ])
 
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
-    return {
-        useHelpCenterIdParam: jest.fn().mockReturnValue(1),
-    }
-})
+jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
+    __esModule: true,
+    default: jest.fn().mockReturnValue({
+        id: 1,
+    }),
+}))
+
+jest.mock('@tanstack/react-query', () => ({
+    useQueryClient: () => ({
+        invalidateQueries: jest.fn(),
+    }),
+}))
 
 const mockedListArticles = jest.fn().mockResolvedValue({
     data: { data: [], meta: { item_count: 0 } },

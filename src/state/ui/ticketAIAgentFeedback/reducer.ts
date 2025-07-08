@@ -1,15 +1,22 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { combineReducers, createReducer } from '@reduxjs/toolkit'
+
+import knowledgeSourceArticleEditorReducer, {
+    initialState as knowledgeSourceArticleEditorInitialState,
+} from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
 import { changeActiveTab, changeTicketMessage } from './actions'
 import { TicketAIAgentFeedbackTab } from './constants'
-import { TicketAIAgentFeedbackState } from './types'
+import {
+    TicketAIAgentFeedbackState,
+    TicketDetailAIAgentFeedbackState,
+} from './types'
 
-export const initialState: TicketAIAgentFeedbackState = {
+const feedbackInitialState: TicketDetailAIAgentFeedbackState = {
     activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
 }
 
-export default createReducer<TicketAIAgentFeedbackState>(
-    initialState,
+const feedbackReducer = createReducer<TicketDetailAIAgentFeedbackState>(
+    feedbackInitialState,
     (builder) =>
         builder
             .addCase(changeActiveTab, (state, { payload }) => {
@@ -19,3 +26,13 @@ export default createReducer<TicketAIAgentFeedbackState>(
                 state.message = payload.message
             }),
 )
+
+export const initialState: TicketAIAgentFeedbackState = {
+    feedback: feedbackInitialState,
+    knowledgeSourceArticleEditor: knowledgeSourceArticleEditorInitialState,
+}
+
+export default combineReducers({
+    feedback: feedbackReducer,
+    knowledgeSourceArticleEditor: knowledgeSourceArticleEditorReducer,
+})

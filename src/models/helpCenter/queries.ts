@@ -48,6 +48,7 @@ import {
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
+const CACHE_TIME = 10 * 60 * 1000 // 10 minutes
 
 export const helpCenterKeys = {
     all: () => ['help-centers'] as const,
@@ -143,6 +144,16 @@ export const helpCenterKeys = {
         ].filter(Boolean),
     knowledgeStatus: () =>
         [...helpCenterKeys.all(), 'knowledge-status'].filter(Boolean),
+    articleTranslations: (
+        helpCenterId: number,
+        articleId: number,
+        queryParams?: Paths.ListArticleTranslations.QueryParameters,
+    ) =>
+        [
+            ...helpCenterKeys.article(helpCenterId, articleId),
+            'translations',
+            queryParams,
+        ].filter(Boolean),
 }
 
 export const helpCenterArticleKeys = (
@@ -1001,5 +1012,41 @@ export const useGetKnowledgeStatus = (
         enabled:
             Boolean(helpCenterClient) &&
             (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetArticleTranslations = (
+    helpCenterId: Paths.ListArticleTranslations.Parameters.HelpCenterId,
+    articleId: Paths.ListArticleTranslations.Parameters.ArticleId,
+    queryParams?: Paths.ListArticleTranslations.QueryParameters,
+    overrides?: UseQueryOptions<
+        Awaited<Paths.ListArticleTranslations.Responses.$200>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.articleTranslations(
+            helpCenterId,
+            articleId,
+            queryParams,
+        ),
+        queryFn: async () => {
+            const response = await client!.listArticleTranslations({
+                help_center_id: helpCenterId,
+                article_id: articleId,
+                ...queryParams,
+            })
+            return response.data
+        },
+        staleTime: STALE_TIME,
+        cacheTime: CACHE_TIME,
+        ...overrides,
+        enabled:
+            !!client &&
+            helpCenterId !== undefined &&
+            articleId !== undefined &&
+            (overrides === undefined || overrides.enabled),
+        refetchOnWindowFocus: false,
     })
 }

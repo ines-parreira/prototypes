@@ -1,9 +1,11 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
 import { chain as _chain } from 'lodash'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { helpCenterKeys } from 'models/helpCenter/queries'
 import {
     Article,
     CreateArticleTranslationDto,
@@ -27,8 +29,8 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import { ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE } from '../constants'
 import { ArticleTemplateKey } from '../types/articleTemplates'
 import { useCategoriesActions } from './useCategoriesActions'
+import useCurrentHelpCenter from './useCurrentHelpCenter'
 import { useHelpCenterApi } from './useHelpCenterApi'
-import { useHelpCenterIdParam } from './useHelpCenterIdParam'
 
 function updatePositionRequest(
     client: HelpCenterClient,
@@ -63,19 +65,39 @@ function updatePositionRequest(
 }
 
 export const useArticlesActions = () => {
-    const helpCenterId = useHelpCenterIdParam()
+    const helpCenter = useCurrentHelpCenter()
+    const helpCenterId = helpCenter.id
     const dispatch = useAppDispatch()
     const { client } = useHelpCenterApi()
     const viewLanguage =
         useAppSelector(getViewLanguage) ?? HELP_CENTER_DEFAULT_LOCALE
     const { fetchCategoryArticleCount } = useCategoriesActions()
     const articlesById = useAppSelector(getArticlesById)
+    const queryClient = useQueryClient()
 
     /* TODO: Fix isLoading
             isLoading works only in case of sequential requests. If 2 requests started,
             and only 1st finished, isLoading will be false, but should be true
     */
     const [isLoading, setIsLoading] = useState(false)
+
+    const invalidateArticlesQuery = useCallback(() => {
+        queryClient.invalidateQueries({
+            queryKey: helpCenterKeys.articles(helpCenter.id),
+        })
+    }, [queryClient, helpCenter.id])
+
+    const invalidateArticleTranslationsQuery = useCallback(
+        (selectedArticleId: number) => {
+            queryClient.invalidateQueries({
+                queryKey: helpCenterKeys.articleTranslations(
+                    helpCenter.id,
+                    selectedArticleId,
+                ),
+            })
+        },
+        [queryClient, helpCenter.id],
+    )
 
     const fetchArticlesByIds = useCallback(
         async (ids: number[]) => {
@@ -210,6 +232,8 @@ export const useArticlesActions = () => {
 
                 dispatch(saveArticles([createdArticle]))
 
+                invalidateArticlesQuery()
+
                 void fetchCategoryArticleCount(data.category_id, viewLanguage)
 
                 setIsLoading(false)
@@ -227,6 +251,7 @@ export const useArticlesActions = () => {
             fetchCategoryArticleCount,
             helpCenterId,
             viewLanguage,
+            invalidateArticlesQuery,
         ],
     )
 
@@ -351,6 +376,8 @@ export const useArticlesActions = () => {
                     dispatch(updateArticleAction(updatedArticle))
                 }
 
+                invalidateArticlesQuery()
+
                 // update the article count for the old category
                 void fetchCategoryArticleCount(previousCategoryId, viewLanguage)
 
@@ -393,6 +420,7 @@ export const useArticlesActions = () => {
             helpCenterId,
             updateArticleTranslation,
             viewLanguage,
+            invalidateArticlesQuery,
         ],
     )
 
@@ -418,6 +446,8 @@ export const useArticlesActions = () => {
                     )
                 }
 
+                invalidateArticlesQuery()
+
                 setIsLoading(false)
 
                 return response
@@ -434,6 +464,7 @@ export const useArticlesActions = () => {
             fetchCategoryArticleCount,
             helpCenterId,
             viewLanguage,
+            invalidateArticlesQuery,
         ],
     )
 
@@ -486,6 +517,7 @@ export const useArticlesActions = () => {
                 })
 
                 dispatch(removeLocaleFromArticle({ articleId, locale }))
+                invalidateArticleTranslationsQuery(articleId)
 
                 setIsLoading(false)
             } catch (err) {
@@ -494,7 +526,7 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
-        [client, dispatch, helpCenterId],
+        [client, dispatch, helpCenterId, invalidateArticleTranslationsQuery],
     )
 
     const cloneArticle = useCallback(

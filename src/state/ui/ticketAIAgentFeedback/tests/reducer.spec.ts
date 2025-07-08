@@ -17,7 +17,7 @@ describe('ticketAIAgentFeedback reducer', () => {
         const action = changeActiveTab({ activeTab: newTab })
         const newState = reducer(initialState, action)
 
-        expect(newState.activeTab).toEqual(newTab)
+        expect(newState.feedback.activeTab).toEqual(newTab)
     })
 
     it('should handle changeTicketMessage with message', () => {
@@ -25,6 +25,6 @@ describe('ticketAIAgentFeedback reducer', () => {
         const action = changeTicketMessage({ message: newMessage })
         const newState = reducer(initialState, action)
 
-        expect(newState.message).toEqual(newMessage)
+        expect(newState.feedback.message).toEqual(newMessage)
     })
 })

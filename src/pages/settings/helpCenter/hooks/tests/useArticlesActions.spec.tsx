@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Provider } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -28,10 +27,21 @@ import { useArticlesActions } from '../useArticlesActions'
 
 const articles = getArticlesResponseFixture.data
 const uncategoriedArticle = articles[articles.length - 1]
-jest.mock('react-router')
-;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
-    helpCenterId: '1',
-})
+
+jest.mock('../useCurrentHelpCenter', () => ({
+    __esModule: true,
+    default: jest.fn().mockReturnValue({
+        id: 1,
+    }),
+}))
+
+const mockInvalidateQueries = jest.fn()
+
+jest.mock('@tanstack/react-query', () => ({
+    useQueryClient: () => ({
+        invalidateQueries: mockInvalidateQueries,
+    }),
+}))
 
 const mockCreateArticle = jest.fn().mockImplementation(
     (
@@ -250,6 +260,7 @@ const defaultState: Partial<RootState> = {
     } as any,
     ui: { helpCenter: uiState } as any,
 }
+const queryKey = ['help-center', 1, 'articles']
 
 // TODO: This should be extracted in a tests utils folder
 const dependencyWrapper: React.ComponentType<any> = ({
@@ -259,6 +270,10 @@ const dependencyWrapper: React.ComponentType<any> = ({
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
 
 describe('useArticlesActions()', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     describe('fetchArticles()', () => {
         it('dispatches saveArticles action for uncategorized articles', async () => {
             const { result } = renderHook(useArticlesActions, {
@@ -301,6 +316,9 @@ describe('useArticlesActions()', () => {
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(saveArticles).toHaveBeenCalled()
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey,
+            })
         })
 
         it('dispatches saveArticles action for article in category', async () => {
@@ -327,6 +345,9 @@ describe('useArticlesActions()', () => {
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(saveArticles).toHaveBeenCalled()
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey,
+            })
         })
     })
 
@@ -383,6 +404,9 @@ describe('useArticlesActions()', () => {
                 articleId: 1,
                 supportedLocales: ['fr-FR'],
             })
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey,
+            })
             expect(available_locales).toEqual(['en-US', 'fr-FR'])
         })
 
@@ -437,6 +461,9 @@ describe('useArticlesActions()', () => {
                 articleId: 1,
                 supportedLocales: ['fr-FR'],
             })
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey,
+            })
             expect(available_locales).toEqual(['en-US', 'fr-FR'])
         })
     })
@@ -451,6 +478,9 @@ describe('useArticlesActions()', () => {
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(deleteArticle).toHaveBeenCalled()
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey,
+            })
         })
     })
 
@@ -491,6 +521,18 @@ describe('useArticlesActions()', () => {
             await result.current.deleteArticleTranslation(1, 'en-US')
 
             expect(removeLocaleFromArticle).toHaveBeenCalled()
+        })
+
+        it('invalidates the article translations query', async () => {
+            const { result } = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.deleteArticleTranslation(1, 'en-US')
+
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey: ['help-center', 1, 'articles', 1, 'translations'],
+            })
         })
     })
 

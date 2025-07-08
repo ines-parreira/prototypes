@@ -17,6 +17,7 @@ type Props = {
     isLoading: boolean
     transitionDurationMs?: number
     containerZIndices?: [number, number]
+    modalStyle?: React.CSSProperties
 }
 
 export const HelpCenterEditModal = ({
@@ -26,6 +27,7 @@ export const HelpCenterEditModal = ({
     isLoading,
     transitionDurationMs = 300,
     containerZIndices = [205, -1],
+    modalStyle,
 }: Props): JSX.Element => {
     const ref = useRef<HTMLDivElement>(null)
     const { isFullscreenEditModal, editModal } = useEditionManager()
@@ -80,6 +82,7 @@ export const HelpCenterEditModal = ({
                 ref={ref}
                 style={{
                     transitionDuration: `${transitionDurationMs}ms`,
+                    ...modalStyle,
                 }}
                 className={classnames({
                     [css.modal]: true,

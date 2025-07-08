@@ -8,7 +8,9 @@ describe('getActiveTab', () => {
         const state: Partial<StoreState> = {
             ui: {
                 ticketAIAgentFeedback: {
-                    activeTab: TicketAIAgentFeedbackTab.AIAgent,
+                    feedback: {
+                        activeTab: TicketAIAgentFeedbackTab.AIAgent,
+                    },
                 },
             } as any,
         }
@@ -22,8 +24,10 @@ describe('getActiveTab', () => {
         const state: Partial<StoreState> = {
             ui: {
                 ticketAIAgentFeedback: {
-                    message: {
-                        id: '1',
+                    feedback: {
+                        message: {
+                            id: '1',
+                        },
                     },
                 },
             } as any,

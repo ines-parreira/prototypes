@@ -10,6 +10,8 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
@@ -393,16 +395,20 @@ const AIAgentSimplifiedFeedback = () => {
             )}
 
             {!!helpCenter && (
-                <CurrentHelpCenterContext.Provider value={helpCenter}>
-                    <UnsavedChangesModalProvider>
-                        <KnowledgeSourceSideBar
-                            articles={articles}
-                            guidanceArticles={guidanceArticles}
-                            shopName={shopName}
-                            shopType={shopType}
-                        />
-                    </UnsavedChangesModalProvider>
-                </CurrentHelpCenterContext.Provider>
+                <SupportedLocalesProvider>
+                    <CurrentHelpCenterContext.Provider value={helpCenter}>
+                        <UnsavedChangesModalProvider>
+                            <EditionManagerContextProvider>
+                                <KnowledgeSourceSideBar
+                                    articles={articles}
+                                    guidanceArticles={guidanceArticles}
+                                    shopName={shopName}
+                                    shopType={shopType}
+                                />
+                            </EditionManagerContextProvider>
+                        </UnsavedChangesModalProvider>
+                    </CurrentHelpCenterContext.Provider>
+                </SupportedLocalesProvider>
             )}
         </>
     )

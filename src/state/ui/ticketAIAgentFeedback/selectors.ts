@@ -10,10 +10,10 @@ const getTicketAIAgentFeedbackState = (
 
 export const getActiveTab = createSelector(
     getTicketAIAgentFeedbackState,
-    (state) => state.activeTab,
+    (state) => state.feedback.activeTab,
 )
 
 export const getSelectedAIMessage = createSelector(
     getTicketAIAgentFeedbackState,
-    (state) => state.message,
+    (state) => state.feedback.message,
 )

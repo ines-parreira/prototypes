@@ -20,6 +20,7 @@ import {
     useGetArticleIngestionArticlesTitleAndStatus,
     useGetArticleIngestionLogs,
     useGetArticleIngestionLogsList,
+    useGetArticleTranslations,
     useGetFileIngestion,
     useGetFileIngestionArticleTitlesAndStatus,
     useGetHelpCenter,
@@ -1766,6 +1767,141 @@ describe('queries', () => {
                 wrapper,
             })
             expect(getKnowledgeStatus).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetArticleTranslations', () => {
+        const helpCenterId = 1
+        const articleId = 123
+
+        beforeEach(() => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: { listArticleTranslations: jest.fn() } as any,
+                isReady: true,
+            })
+        })
+
+        it('should return article translations on success', async () => {
+            const mockResponse = {
+                data: [
+                    {
+                        id: 1,
+                        title: 'Translation 1',
+                        locale: 'en-US',
+                        article_id: articleId,
+                        content: 'Content 1',
+                    },
+                    {
+                        id: 2,
+                        title: 'Translation 2',
+                        locale: 'fr-FR',
+                        article_id: articleId,
+                        content: 'Content 2',
+                    },
+                ],
+            }
+            const mockClient = {
+                listArticleTranslations: jest
+                    .fn()
+                    .mockResolvedValue({ data: mockResponse }),
+            } as any
+            mockUseHelpCenterApi.mockReturnValue({
+                client: mockClient,
+                isReady: true,
+            })
+            const { result } = renderHook(
+                () => useGetArticleTranslations(helpCenterId, articleId),
+                { wrapper },
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toEqual(mockResponse)
+            expect(mockClient.listArticleTranslations).toHaveBeenCalledWith({
+                help_center_id: helpCenterId,
+                article_id: articleId,
+            })
+        })
+
+        it('should not call the api function when client is not set', () => {
+            const mockClient = {
+                listArticleTranslations: jest.fn(),
+            } as any
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+            renderHook(
+                () => useGetArticleTranslations(helpCenterId, articleId),
+                { wrapper },
+            )
+            expect(mockClient.listArticleTranslations).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function when enabled is false', () => {
+            const mockClient = {
+                listArticleTranslations: jest.fn(),
+            } as any
+            mockUseHelpCenterApi.mockReturnValue({
+                client: mockClient,
+                isReady: true,
+            })
+            renderHook(
+                () =>
+                    useGetArticleTranslations(
+                        helpCenterId,
+                        articleId,
+                        undefined,
+                        { enabled: false },
+                    ),
+                { wrapper },
+            )
+            expect(mockClient.listArticleTranslations).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function when helpCenterId is undefined', () => {
+            const mockClient = {
+                listArticleTranslations: jest.fn(),
+            } as any
+            mockUseHelpCenterApi.mockReturnValue({
+                client: mockClient,
+                isReady: true,
+            })
+            renderHook(
+                () => useGetArticleTranslations(undefined as any, articleId),
+                { wrapper },
+            )
+            expect(mockClient.listArticleTranslations).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function when articleId is undefined', () => {
+            const mockClient = {
+                listArticleTranslations: jest.fn(),
+            } as any
+            mockUseHelpCenterApi.mockReturnValue({
+                client: mockClient,
+                isReady: true,
+            })
+            renderHook(
+                () => useGetArticleTranslations(helpCenterId, undefined as any),
+                { wrapper },
+            )
+            expect(mockClient.listArticleTranslations).not.toHaveBeenCalled()
+        })
+
+        it('should handle errors gracefully', async () => {
+            const error = new Error('API Error')
+            const mockClient = {
+                listArticleTranslations: jest.fn().mockRejectedValue(error),
+            } as any
+            mockUseHelpCenterApi.mockReturnValue({
+                client: mockClient,
+                isReady: true,
+            })
+            const { result } = renderHook(
+                () => useGetArticleTranslations(helpCenterId, articleId),
+                { wrapper },
+            )
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toBe(error)
         })
     })
 

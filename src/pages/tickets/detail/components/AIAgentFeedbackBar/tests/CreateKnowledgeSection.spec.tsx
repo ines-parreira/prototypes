@@ -24,8 +24,18 @@ jest.mock(
 )
 const useKnowledgeSourceSideBarMocked = useKnowledgeSourceSideBar as jest.Mock
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useAbilityChecker: jest.fn(),
+}))
+const mockUseAbilityChecker = jest.mocked(
+    jest.requireMock('pages/settings/helpCenter/hooks/useHelpCenterApi')
+        .useAbilityChecker,
+)
+
 const shopName = 'MyShop'
 const helpCenterId = 123
+
+const mockIsPassingRulesCheck = jest.fn()
 
 describe('CreateKnowledgeSection', () => {
     beforeEach(() => {
@@ -37,6 +47,9 @@ describe('CreateKnowledgeSection', () => {
             openEdit: jest.fn(),
             openCreate: jest.fn(),
             closeModal: jest.fn(),
+        })
+        mockUseAbilityChecker.mockReturnValue({
+            isPassingRulesCheck: mockIsPassingRulesCheck.mockReturnValue(true),
         })
     })
 
@@ -137,5 +150,52 @@ describe('CreateKnowledgeSection', () => {
         expect(
             useKnowledgeSourceSideBarMocked().openCreate,
         ).toHaveBeenCalledWith(AiAgentKnowledgeResourceTypeEnum.GUIDANCE)
+    })
+
+    it('should call openCreate on create article click when enableKnowledgeManagementFromTicketView is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(
+            <CreateKnowledgeSection
+                shopName={shopName}
+                helpCenterId={helpCenterId}
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        fireEvent.click(button)
+
+        const articleLink = screen.getByText('Create Help Center article')
+        if (articleLink) {
+            fireEvent.click(articleLink)
+        }
+
+        expect(articleLink.closest('a')).not.toHaveAttribute(
+            'href',
+            '/app/settings/help-center/123/articles',
+        )
+
+        expect(
+            useKnowledgeSourceSideBarMocked().openCreate,
+        ).toHaveBeenCalledWith(AiAgentKnowledgeResourceTypeEnum.ARTICLE)
+    })
+
+    it('should not display article link when the user does not have sufficient permissions', () => {
+        mockUseFlag.mockReturnValue(true)
+        mockIsPassingRulesCheck.mockReturnValue(false)
+
+        render(
+            <CreateKnowledgeSection
+                shopName={shopName}
+                helpCenterId={helpCenterId}
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        fireEvent.click(button)
+
+        expect(screen.getByText('Create Guidance')).toBeInTheDocument()
+        expect(
+            screen.queryByText('Create Help Center article'),
+        ).not.toBeInTheDocument()
     })
 })
