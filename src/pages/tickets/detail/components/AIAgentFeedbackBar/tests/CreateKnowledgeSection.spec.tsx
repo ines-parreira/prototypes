@@ -38,6 +38,12 @@ const helpCenterId = 123
 const mockIsPassingRulesCheck = jest.fn()
 
 describe('CreateKnowledgeSection', () => {
+    const defaultProps = {
+        shopName: shopName,
+        helpCenterId: helpCenterId,
+        onKnowledgeResourceCreateClick: jest.fn(),
+    }
+
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
         useKnowledgeSourceSideBarMocked.mockReturnValue({
@@ -54,12 +60,7 @@ describe('CreateKnowledgeSection', () => {
     })
 
     it('should render the component and toggles dropdown', () => {
-        render(
-            <CreateKnowledgeSection
-                shopName={shopName}
-                helpCenterId={helpCenterId}
-            />,
-        )
+        render(<CreateKnowledgeSection {...defaultProps} />)
 
         expect(
             screen.getByText(
@@ -79,12 +80,7 @@ describe('CreateKnowledgeSection', () => {
     })
 
     it('should contain correct links in dropdown items', () => {
-        render(
-            <CreateKnowledgeSection
-                shopName={shopName}
-                helpCenterId={helpCenterId}
-            />,
-        )
+        render(<CreateKnowledgeSection {...defaultProps} />)
 
         const button = screen.getByRole('button', { name: /Create knowledge/i })
         fireEvent.click(button)
@@ -104,12 +100,7 @@ describe('CreateKnowledgeSection', () => {
     })
 
     it('should open dropdown and closes it after clicking guidance link', () => {
-        render(
-            <CreateKnowledgeSection
-                shopName={shopName}
-                helpCenterId={helpCenterId}
-            />,
-        )
+        render(<CreateKnowledgeSection {...defaultProps} />)
 
         const button = screen.getByRole('button', { name: /Create knowledge/i })
         fireEvent.click(button)
@@ -127,10 +118,13 @@ describe('CreateKnowledgeSection', () => {
 
     it('should call openCreate on create guidance click when enableKnowledgeManagementFromTicketView is enabled', () => {
         mockUseFlag.mockReturnValue(true)
+        const mockOnKnowledgeResourceCreateClick = jest.fn()
         render(
             <CreateKnowledgeSection
-                shopName={shopName}
-                helpCenterId={helpCenterId}
+                {...defaultProps}
+                onKnowledgeResourceCreateClick={
+                    mockOnKnowledgeResourceCreateClick
+                }
             />,
         )
 
@@ -150,14 +144,20 @@ describe('CreateKnowledgeSection', () => {
         expect(
             useKnowledgeSourceSideBarMocked().openCreate,
         ).toHaveBeenCalledWith(AiAgentKnowledgeResourceTypeEnum.GUIDANCE)
+        expect(mockOnKnowledgeResourceCreateClick).toHaveBeenCalledWith(
+            AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+        )
     })
 
     it('should call openCreate on create article click when enableKnowledgeManagementFromTicketView is enabled', () => {
         mockUseFlag.mockReturnValue(true)
+        const mockOnKnowledgeResourceCreateClick = jest.fn()
         render(
             <CreateKnowledgeSection
-                shopName={shopName}
-                helpCenterId={helpCenterId}
+                {...defaultProps}
+                onKnowledgeResourceCreateClick={
+                    mockOnKnowledgeResourceCreateClick
+                }
             />,
         )
 
@@ -177,18 +177,16 @@ describe('CreateKnowledgeSection', () => {
         expect(
             useKnowledgeSourceSideBarMocked().openCreate,
         ).toHaveBeenCalledWith(AiAgentKnowledgeResourceTypeEnum.ARTICLE)
+        expect(mockOnKnowledgeResourceCreateClick).toHaveBeenCalledWith(
+            AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+        )
     })
 
     it('should not display article link when the user does not have sufficient permissions', () => {
         mockUseFlag.mockReturnValue(true)
         mockIsPassingRulesCheck.mockReturnValue(false)
 
-        render(
-            <CreateKnowledgeSection
-                shopName={shopName}
-                helpCenterId={helpCenterId}
-            />,
-        )
+        render(<CreateKnowledgeSection {...defaultProps} />)
 
         const button = screen.getByRole('button', { name: /Create knowledge/i })
         fireEvent.click(button)

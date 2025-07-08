@@ -58,6 +58,11 @@ type ManageGuidanceFormProps = {
     helpCenter: HelpCenter
     guidance?: GuidanceArticle
     onSubmitNewMissingKnowledge: (resource: SuggestedResourceValue) => void
+    onSaveClick: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        isNew: boolean,
+    ) => void
 }
 
 export const ManageGuidanceForm = ({
@@ -67,6 +72,7 @@ export const ManageGuidanceForm = ({
     helpCenter,
     guidance,
     onSubmitNewMissingKnowledge,
+    onSaveClick,
 }: ManageGuidanceFormProps) => {
     const { openPreview, closeModal, selectedResource } =
         useKnowledgeSourceSideBar()
@@ -212,6 +218,11 @@ export const ManageGuidanceForm = ({
             }
 
             openPreview(newSelectedResource)
+            onSaveClick(
+                newGuidance?.article_id.toString() ?? '',
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                actionType === FORM_ACTION_TYPE.CREATE,
+            )
         },
         [
             openPreview,
@@ -223,6 +234,8 @@ export const ManageGuidanceForm = ({
             helpCenter.id,
             shopName,
             onSubmitNewMissingKnowledge,
+            onSaveClick,
+            actionType,
         ],
     )
 

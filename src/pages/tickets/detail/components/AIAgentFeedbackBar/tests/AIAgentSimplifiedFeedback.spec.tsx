@@ -8,6 +8,7 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
@@ -67,6 +68,11 @@ jest.mock(
 const useGetGuidancesAvailableActionsMocked = assumeMock(
     useGetGuidancesAvailableActions,
 )
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking',
+)
+const useFeedbackTrackingMocked = assumeMock(useFeedbackTracking)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     HelpCenterApiClientProvider: ({
@@ -139,6 +145,8 @@ describe('AIAgentSimplifiedFeedback', () => {
                 ] as any)
             if (selector === getDateAndTimeFormatter)
                 return () => 'MMMM DD, YYYY'
+            if (selector.toString().includes('state.currentUser'))
+                return new Map([['id', 789]])
             return null
         })
 
@@ -164,6 +172,13 @@ describe('AIAgentSimplifiedFeedback', () => {
         })
 
         useAppDispatchMock.mockReturnValue(jest.fn())
+
+        useFeedbackTrackingMocked.mockReturnValue({
+            onKnowledgeResourceClick: jest.fn(),
+            onKnowledgeResourceEditClick: jest.fn(),
+            onKnowledgeResourceCreateClick: jest.fn(),
+            onKnowledgeResourceSaved: jest.fn(),
+        })
     })
 
     it('should render explanation message if there are no feedback executions yet', () => {
@@ -1538,5 +1553,26 @@ describe('AIAgentSimplifiedFeedback', () => {
         expect(
             screen.queryByText('KnowledgeSourceSideBar'),
         ).not.toBeInTheDocument()
+    })
+
+    describe('useFeedbackTracking integration', () => {
+        it('should call useFeedbackTracking with correct parameters', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(useFeedbackTrackingMocked).toHaveBeenCalledWith({
+                ticketId: 123,
+                accountId: 1,
+                userId: 789,
+            })
+        })
     })
 })

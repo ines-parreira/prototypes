@@ -44,6 +44,16 @@ jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = useFlag as jest.Mock
 
 describe('KnowledgeSourceFeedback', () => {
+    const mockOpenPreview = jest.fn()
+
+    const defaultProps = {
+        resource: mockResource(),
+        onIconClick: jest.fn(),
+        shopName: 'test-shop',
+        shopType: 'test-type',
+        onKnowledgeResourceClick: jest.fn(),
+    }
+
     beforeEach(() => {
         useGetGuidancesAvailableActionsMocked.mockReturnValue({
             isLoading: false,
@@ -53,21 +63,15 @@ describe('KnowledgeSourceFeedback', () => {
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
-            openPreview: jest.fn(),
+            openPreview: mockOpenPreview,
             openEdit: jest.fn(),
             openCreate: jest.fn(),
             closeModal: jest.fn(),
         })
+        mockOpenPreview.mockClear()
     })
     it('renders resource title and icon', () => {
-        render(
-            <KnowledgeSourceFeedback
-                resource={mockResource()}
-                onIconClick={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
-            />,
-        )
+        render(<KnowledgeSourceFeedback {...defaultProps} />)
 
         expect(screen.getByText('Test Knowledge Title')).toBeInTheDocument()
         expect(screen.getByText('open_in_new')).toBeInTheDocument()
@@ -76,24 +80,20 @@ describe('KnowledgeSourceFeedback', () => {
     it('does not render open-in-new icon if url is missing', () => {
         const { rerender } = render(
             <KnowledgeSourceFeedback
+                {...defaultProps}
                 resource={mockResource({
                     metadata: { url: null, isDeleted: false },
                 })}
-                onIconClick={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
             />,
         )
 
         expect(screen.queryByText('open_in_new')).not.toBeInTheDocument()
         rerender(
             <KnowledgeSourceFeedback
+                {...defaultProps}
                 resource={mockResource({
                     metadata: { url: 'https://example.com', isDeleted: true },
                 })}
-                onIconClick={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
             />,
         )
 
@@ -104,10 +104,9 @@ describe('KnowledgeSourceFeedback', () => {
         const onIconClick = jest.fn()
         render(
             <KnowledgeSourceFeedback
+                {...defaultProps}
                 resource={mockResource()}
                 onIconClick={onIconClick}
-                shopName="test-shop"
-                shopType="test-type"
             />,
         )
 
@@ -121,10 +120,9 @@ describe('KnowledgeSourceFeedback', () => {
         const onIconClick = jest.fn()
         render(
             <KnowledgeSourceFeedback
+                {...defaultProps}
                 resource={mockResource()}
                 onIconClick={onIconClick}
-                shopName="test-shop"
-                shopType="test-type"
             />,
         )
 
@@ -136,15 +134,89 @@ describe('KnowledgeSourceFeedback', () => {
     it('should disable feedback buttons when resource is deleted', () => {
         render(
             <KnowledgeSourceFeedback
-                resource={mockResource({ metadata: { isDeleted: true } })}
-                onIconClick={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
+                {...defaultProps}
+                resource={mockResource({
+                    metadata: {
+                        ...defaultResource.metadata,
+                        isDeleted: true,
+                    },
+                })}
             />,
         )
 
         const [thumbsUp, thumbsDown] = screen.getAllByRole('button')
         expect(thumbsUp).toHaveAttribute('aria-disabled', 'true')
         expect(thumbsDown).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    describe('when knowledge source is clicked', () => {
+        const renderComponentAndClickSource = (
+            resource: KnowledgeResource,
+            additionalProps = {},
+        ) => {
+            render(
+                <KnowledgeSourceFeedback
+                    {...defaultProps}
+                    resource={resource}
+                    {...additionalProps}
+                />,
+            )
+
+            const knowledgeSource = screen.getByText('Test Knowledge Title')
+            fireEvent.click(knowledgeSource)
+        }
+
+        it('should call onKnowledgeResourceClick with correct parameters', () => {
+            const onKnowledgeResourceClick = jest.fn()
+            renderComponentAndClickSource(mockResource(), {
+                onKnowledgeResourceClick,
+            })
+
+            expect(onKnowledgeResourceClick).toHaveBeenCalledWith(
+                'resource-1',
+                'ARTICLE',
+            )
+        })
+
+        it('should not call openPreview when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+            renderComponentAndClickSource(mockResource())
+
+            expect(mockOpenPreview).not.toHaveBeenCalled()
+        })
+
+        it('should not call openPreview when resource is deleted', () => {
+            useFlagMock.mockReturnValue(true)
+            const deletedResource = mockResource({
+                metadata: {
+                    ...defaultResource.metadata,
+                    isDeleted: true,
+                },
+            })
+            renderComponentAndClickSource(deletedResource)
+
+            expect(mockOpenPreview).not.toHaveBeenCalled()
+        })
+
+        it('should call openPreview when feature flag is enabled and resource type is ARTICLE', () => {
+            useFlagMock.mockReturnValue(true)
+            const resource = mockResource({
+                resource: { resourceType: 'ARTICLE' },
+            })
+            renderComponentAndClickSource(resource)
+
+            expect(mockOpenPreview).toHaveBeenCalledWith({
+                id: resource.resource.resourceId,
+                url: resource.metadata?.url || '',
+                title:
+                    resource.metadata?.title ||
+                    resource.resource?.resourceTitle,
+                content: resource.metadata?.content,
+                knowledgeResourceType: 'ARTICLE',
+                helpCenterId: resource.resource.resourceSetId,
+                shopName: 'test-shop',
+                shopType: 'test-type',
+            })
+        })
     })
 })

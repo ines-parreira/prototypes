@@ -37,6 +37,10 @@ type KnowledgeSourceProps = {
     ) => void
     shopName: string
     shopType: string
+    onKnowledgeResourceClick: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+    ) => void
 }
 
 type ThumbButtonProps = {
@@ -54,6 +58,7 @@ const KnowledgeSourceFeedback = ({
     onIconClick,
     shopName,
     shopType,
+    onKnowledgeResourceClick,
 }: KnowledgeSourceProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
     const enableKnowledgeManagementFromTicketView = useFlag(
@@ -88,10 +93,18 @@ const KnowledgeSourceFeedback = ({
         shopType,
     }
 
-    const onClick =
-        !enableKnowledgeManagementFromTicketView || isLink || isDeleted
-            ? undefined
-            : () => openPreview(popoverProps)
+    const onClick = () => {
+        onKnowledgeResourceClick(
+            resource.resource.id,
+            resource.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+        )
+
+        if (!enableKnowledgeManagementFromTicketView || isLink || isDeleted) {
+            return
+        }
+
+        openPreview(popoverProps)
+    }
 
     return (
         <div className={css.source}>

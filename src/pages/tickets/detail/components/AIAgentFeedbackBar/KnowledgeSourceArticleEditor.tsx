@@ -63,6 +63,11 @@ type KnowledgeSourceArticleEditorProps = {
     isCreateMode: boolean
     onClose: () => void
     onSubmitNewMissingKnowledge: (resource: SuggestedResourceValue) => void
+    onSaveClick: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        isNew: boolean,
+    ) => void
 }
 
 const UNINITIALIZED_ARTICLE_ID = -1
@@ -72,6 +77,7 @@ const KnowledgeSourceArticleEditor = ({
     isCreateMode,
     onClose,
     onSubmitNewMissingKnowledge,
+    onSaveClick,
 }: KnowledgeSourceArticleEditorProps) => {
     const dispatch = useAppDispatch()
     const helpCenter = useCurrentHelpCenter()
@@ -157,6 +163,30 @@ const KnowledgeSourceArticleEditor = ({
         ],
     )
 
+    const onArticleCreate = useCallback(
+        (article: Article) => {
+            onArticleCreateOrUpdate(article)
+            onSaveClick(
+                article.id.toString(),
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                true,
+            )
+        },
+        [onSaveClick, onArticleCreateOrUpdate],
+    )
+
+    const onArticleUpdate = useCallback(
+        (article: Article) => {
+            onArticleCreateOrUpdate(article)
+            onSaveClick(
+                article.id.toString(),
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                false,
+            )
+        },
+        [onSaveClick, onArticleCreateOrUpdate],
+    )
+
     const onArticleDelete = useCallback(() => {
         setSelectedArticle(null)
         closeModal()
@@ -198,8 +228,8 @@ const KnowledgeSourceArticleEditor = ({
         deleteArticleTranslation,
     } = useFeedbackArticleActions(
         selectedTemplateKey,
-        onArticleCreateOrUpdate,
-        onArticleCreateOrUpdate,
+        onArticleCreate,
+        onArticleUpdate,
         onArticleDelete,
         onArticleTranslationDelete,
     )

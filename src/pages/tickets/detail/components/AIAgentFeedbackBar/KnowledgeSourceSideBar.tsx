@@ -31,6 +31,15 @@ type KnowledgeSourceSideBarProps = {
     shopName: string
     shopType: string
     onSubmitNewMissingKnowledge: (resource: SuggestedResourceValue) => void
+    onKnowledgeResourceEditClick: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+    ) => void
+    onKnowledgeResourceSaved: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        isNew: boolean,
+    ) => void
 }
 
 const KnowledgeSourceSideBar = ({
@@ -39,6 +48,8 @@ const KnowledgeSourceSideBar = ({
     shopName,
     shopType,
     onSubmitNewMissingKnowledge,
+    onKnowledgeResourceEditClick,
+    onKnowledgeResourceSaved,
 }: KnowledgeSourceSideBarProps) => {
     const { selectedResource, mode, closeModal, openEdit } =
         useKnowledgeSourceSideBar()
@@ -117,6 +128,18 @@ const KnowledgeSourceSideBar = ({
         })
     }, [setEditModal, closeModal])
 
+    const onEditClick = useCallback(() => {
+        if (!selectedResource) {
+            return
+        }
+
+        onKnowledgeResourceEditClick(
+            selectedResource.id,
+            selectedResource.knowledgeResourceType,
+        )
+        openEdit(selectedResource)
+    }, [onKnowledgeResourceEditClick, openEdit, selectedResource])
+
     return (
         <>
             {!shouldDisplayArticleEditor && (
@@ -138,7 +161,7 @@ const KnowledgeSourceSideBar = ({
                             {...selectedResource}
                             lastUpdatedAt={resourceUpdatedAt}
                             onClose={closeModal}
-                            onEdit={() => openEdit(selectedResource)}
+                            onEdit={onEditClick}
                             shopName={shopName}
                             shopType={shopType}
                         />
@@ -154,6 +177,7 @@ const KnowledgeSourceSideBar = ({
                             onSubmitNewMissingKnowledge={
                                 onSubmitNewMissingKnowledge
                             }
+                            onSaveClick={onKnowledgeResourceSaved}
                         />
                     )}
                 </Drawer>
@@ -165,6 +189,7 @@ const KnowledgeSourceSideBar = ({
                     isCreateMode={isCreateMode}
                     onClose={onClose}
                     onSubmitNewMissingKnowledge={onSubmitNewMissingKnowledge}
+                    onSaveClick={onKnowledgeResourceSaved}
                 />
             )}
         </>

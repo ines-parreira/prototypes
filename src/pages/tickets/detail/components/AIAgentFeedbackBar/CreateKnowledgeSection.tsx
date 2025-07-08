@@ -36,11 +36,15 @@ const LinkInText = ({ href, text, onClick }: LinkProps) => {
 type CreateKnowledgeSectionProps = {
     shopName: string
     helpCenterId?: number | null
+    onKnowledgeResourceCreateClick: (
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+    ) => void
 }
 
 const CreateKnowledgeSection = ({
     shopName,
     helpCenterId,
+    onKnowledgeResourceCreateClick,
 }: CreateKnowledgeSectionProps) => {
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
@@ -62,7 +66,10 @@ const CreateKnowledgeSection = ({
     ) => {
         return enableKnowledgeManagementFromTicketView
             ? {
-                  onClick: () => openCreate(resourceType),
+                  onClick: () => {
+                      onKnowledgeResourceCreateClick(resourceType)
+                      openCreate(resourceType)
+                  },
               }
             : { href: fallbackHref }
     }

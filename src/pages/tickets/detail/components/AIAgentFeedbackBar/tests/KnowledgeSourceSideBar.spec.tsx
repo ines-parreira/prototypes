@@ -38,20 +38,26 @@ jest.mock(
 )
 
 jest.mock('../ManageGuidanceForm', () => ({
-    ManageGuidanceForm: ({ url }: any) => (
+    ManageGuidanceForm: ({ url, onSaveClick }: any) => (
         <div data-testid="mock-manage-guidance">
             Manage Guidance - URL: {url}
+            <button onClick={() => onSaveClick?.('2', 'GUIDANCE', true)}>
+                Save Guidance
+            </button>
         </div>
     ),
 }))
 
 jest.mock('../KnowledgeSourceArticleEditor', () => ({
     __esModule: true,
-    default: ({ article, isCreateMode, onClose }: any) => (
+    default: ({ article, isCreateMode, onClose, onSaveClick }: any) => (
         <div data-testid="mock-article-editor">
             <div>Mode: {isCreateMode ? 'CREATE' : 'EDIT'}</div>
             <div>Article ID: {article?.id || 'none'}</div>
             <button onClick={onClose}>Close Editor</button>
+            <button onClick={() => onSaveClick?.('1', 'ARTICLE', isCreateMode)}>
+                Save Article
+            </button>
         </div>
     ),
 }))
@@ -95,6 +101,9 @@ describe('KnowledgeSourceSideBar', () => {
         helpCenterId: 1,
     }
 
+    const mockOnKnowledgeResourceEditClick = jest.fn()
+    const mockOnKnowledgeResourceSaved = jest.fn()
+
     const baseProps = {
         articles: [testArticle],
         guidanceArticles: [
@@ -103,6 +112,8 @@ describe('KnowledgeSourceSideBar', () => {
         shopName: 'Shop A',
         shopType: 'Retail',
         onSubmitNewMissingKnowledge: jest.fn(),
+        onKnowledgeResourceEditClick: mockOnKnowledgeResourceEditClick,
+        onKnowledgeResourceSaved: mockOnKnowledgeResourceSaved,
     }
 
     const mockCloseModal = jest.fn()
@@ -126,6 +137,8 @@ describe('KnowledgeSourceSideBar', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockOnKnowledgeResourceEditClick.mockClear()
+        mockOnKnowledgeResourceSaved.mockClear()
 
         mockIsPassingRulesCheck.mockImplementation((callback) => {
             const mockCan = jest.fn(() => true)
@@ -359,5 +372,85 @@ describe('KnowledgeSourceSideBar', () => {
         expect(
             screen.getByText('Preview - Last updated: 2023-01-02T00:00:00Z'),
         ).toBeInTheDocument()
+    })
+
+    describe('when edit button is clicked', () => {
+        it('calls onKnowledgeResourceEditClick with correct parameters for article', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: helpCenterResource,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.click(screen.getByText('Edit'))
+
+            expect(mockOnKnowledgeResourceEditClick).toHaveBeenCalledWith(
+                1,
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+            )
+            expect(mockOpenEdit).toHaveBeenCalledWith(helpCenterResource)
+        })
+
+        it('calls onKnowledgeResourceEditClick with correct parameters for guidance', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: guidanceResource,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.click(screen.getByText('Edit'))
+
+            expect(mockOnKnowledgeResourceEditClick).toHaveBeenCalledWith(
+                2,
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+            )
+            expect(mockOpenEdit).toHaveBeenCalledWith(guidanceResource)
+        })
+    })
+
+    describe('when save button is clicked', () => {
+        it('calls onKnowledgeResourceSaved from ManageGuidanceForm', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: guidanceResource,
+                mode: KnowledgeSourceSideBarMode.EDIT,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.click(screen.getByText('Save Guidance'))
+
+            expect(mockOnKnowledgeResourceSaved).toHaveBeenCalledWith(
+                '2',
+                'GUIDANCE',
+                true,
+            )
+        })
+
+        it('calls onKnowledgeResourceSaved from KnowledgeSourceArticleEditor in create mode', () => {
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: helpCenterResource,
+                mode: KnowledgeSourceSideBarMode.CREATE,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.click(screen.getByText('Save Article'))
+
+            expect(mockOnKnowledgeResourceSaved).toHaveBeenCalledWith(
+                '1',
+                'ARTICLE',
+                true,
+            )
+        })
     })
 })

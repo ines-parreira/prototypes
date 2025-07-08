@@ -142,12 +142,14 @@ describe('ManageGuidanceForm', () => {
     } as any
 
     const onSubmitNewMissingKnowledgeMock = jest.fn()
+    const onSaveClickMock = jest.fn()
 
     const baseProps = {
         shopName: 'Demo',
         shopType: 'shopify' as const,
         helpCenter,
         onSubmitNewMissingKnowledge: onSubmitNewMissingKnowledgeMock,
+        onSaveClick: onSaveClickMock,
     }
 
     const mockGuidanceArticle = {
@@ -184,6 +186,7 @@ describe('ManageGuidanceForm', () => {
 
     beforeEach(() => {
         onSubmitNewMissingKnowledgeMock.mockClear()
+        onSaveClickMock.mockClear()
         useAppDispatchMock.mockReturnValue(jest.fn())
         useUnsavedChangesModalMock.mockReturnValue({
             isOpen: false,
@@ -421,13 +424,20 @@ describe('ManageGuidanceForm', () => {
 
         fireEvent.click(screen.getByText('Save'))
 
-        expect(closeUnsavedChangesModalMock).toHaveBeenCalled()
-        expect(createGuidanceArticleMock).toHaveBeenCalledWith({
-            content: 'test content here.',
-            locale: 'en',
-            templateKey: null,
-            title: 'test',
-            visibility: 'PUBLIC',
+        await waitFor(() => {
+            expect(closeUnsavedChangesModalMock).toHaveBeenCalled()
+            expect(createGuidanceArticleMock).toHaveBeenCalledWith({
+                content: 'test content here.',
+                locale: 'en',
+                templateKey: null,
+                title: 'test',
+                visibility: 'PUBLIC',
+            })
+            expect(onSaveClickMock).toHaveBeenCalledWith(
+                '1',
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                true,
+            )
         })
     })
 
@@ -514,6 +524,11 @@ describe('ManageGuidanceForm', () => {
                 knowledgeResourceType: 'GUIDANCE',
                 url: '/guidance/1',
             })
+            expect(onSaveClickMock).toHaveBeenCalledWith(
+                '1',
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                false,
+            )
         })
     })
 
@@ -797,21 +812,8 @@ describe('ManageGuidanceForm', () => {
 
             render(
                 <ManageGuidanceForm
-                    shopName="Demo"
-                    shopType="shopify"
-                    helpCenter={helpCenter}
-                    onSubmitNewMissingKnowledge={
-                        onSubmitNewMissingKnowledgeMock
-                    }
-                    guidance={{
-                        id: 1,
-                        title: 'Original Title',
-                        content: 'Original Content',
-                        visibility: 'PUBLIC',
-                        locale: 'en-US',
-                        lastUpdated: '2023-10-01T00:00:00Z',
-                        templateKey: '',
-                    }}
+                    {...baseProps}
+                    guidance={mockGuidanceArticle}
                 />,
             )
 
@@ -869,21 +871,8 @@ describe('ManageGuidanceForm', () => {
 
             render(
                 <ManageGuidanceForm
-                    shopName="Demo"
-                    shopType="shopify"
-                    helpCenter={helpCenter}
-                    onSubmitNewMissingKnowledge={
-                        onSubmitNewMissingKnowledgeMock
-                    }
-                    guidance={{
-                        id: 1,
-                        title: 'Original Title',
-                        content: 'Original Content',
-                        visibility: 'PUBLIC',
-                        locale: 'en-US',
-                        lastUpdated: '2023-10-01T00:00:00Z',
-                        templateKey: '',
-                    }}
+                    {...baseProps}
+                    guidance={mockGuidanceArticle}
                 />,
             )
 
@@ -904,7 +893,7 @@ describe('ManageGuidanceForm', () => {
 
             expect(mockHandleGuidanceDuplicateError).toHaveBeenCalledWith(
                 error,
-                'Original Title',
+                'Test Guidance Title',
             )
 
             expect(mockNotify).toHaveBeenCalledWith({
@@ -942,21 +931,8 @@ describe('ManageGuidanceForm', () => {
 
             render(
                 <ManageGuidanceForm
-                    shopName="Demo"
-                    shopType="shopify"
-                    helpCenter={helpCenter}
-                    onSubmitNewMissingKnowledge={
-                        onSubmitNewMissingKnowledgeMock
-                    }
-                    guidance={{
-                        id: 1,
-                        title: 'Test Title',
-                        content: 'Test Content',
-                        visibility: 'PUBLIC',
-                        locale: 'en-US',
-                        lastUpdated: '2023-10-01T00:00:00Z',
-                        templateKey: '',
-                    }}
+                    {...baseProps}
+                    guidance={mockGuidanceArticle}
                 />,
             )
 

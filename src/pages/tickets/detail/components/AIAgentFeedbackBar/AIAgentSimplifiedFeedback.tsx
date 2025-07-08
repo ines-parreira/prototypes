@@ -17,6 +17,7 @@ import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/Au
 import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
 import FeedbackInternalNote from 'pages/tickets/detail/components/AIAgentFeedbackBar/FeedbackInternalNote'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
+import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
 import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedbackSkeleton'
@@ -56,9 +57,11 @@ const AIAgentSimplifiedFeedback = () => {
 
     const ticket = useAppSelector(getTicketState)
     const account = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector((state) => state.currentUser)
 
     const ticketId: number = ticket.get('id')
     const accountId: number = account.get('id')
+    const userId: number = currentUser.get('id')
 
     const { goToTicket: goToNextTicket, isEnabled: isNextEnabled } =
         useGoToNextTicket(ticketId.toString())
@@ -66,6 +69,17 @@ const AIAgentSimplifiedFeedback = () => {
     const { data: feedback } = useGetFeedback({
         objectId: ticketId.toString(),
         objectType: 'TICKET',
+    })
+
+    const {
+        onKnowledgeResourceClick,
+        onKnowledgeResourceEditClick,
+        onKnowledgeResourceCreateClick,
+        onKnowledgeResourceSaved,
+    } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
     })
 
     const lastUpdatedMutations = useMemo(() => {
@@ -321,6 +335,9 @@ const AIAgentSimplifiedFeedback = () => {
                                                 resource={resource}
                                                 shopName={shopName}
                                                 shopType={shopType}
+                                                onKnowledgeResourceClick={
+                                                    onKnowledgeResourceClick
+                                                }
                                             />
                                         ),
                                     )
@@ -365,6 +382,9 @@ const AIAgentSimplifiedFeedback = () => {
                         <CreateKnowledgeSection
                             shopName={shopName as string}
                             helpCenterId={storeConfiguration?.helpCenterId}
+                            onKnowledgeResourceCreateClick={
+                                onKnowledgeResourceCreateClick
+                            }
                         />
 
                         <Separator className={css.separator} />
@@ -407,6 +427,12 @@ const AIAgentSimplifiedFeedback = () => {
                                     shopType={shopType}
                                     onSubmitNewMissingKnowledge={
                                         onSubmitNewMissingKnowledge
+                                    }
+                                    onKnowledgeResourceEditClick={
+                                        onKnowledgeResourceEditClick
+                                    }
+                                    onKnowledgeResourceSaved={
+                                        onKnowledgeResourceSaved
                                     }
                                 />
                             </EditionManagerContextProvider>

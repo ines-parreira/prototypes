@@ -132,6 +132,7 @@ const mockFetchTranslationsForArticle = jest.fn()
 const mockGetTranslationForLocale = jest.fn()
 const mockCloseModal = jest.fn()
 const mockOnSubmitNewMissingKnowledge = jest.fn()
+const mockOnSaveClick = jest.fn()
 
 const useCurrentHelpCenterMock =
     require('pages/settings/helpCenter/hooks/useCurrentHelpCenter').default
@@ -151,6 +152,7 @@ describe('KnowledgeSourceArticleEditor', () => {
         isCreateMode: false,
         onClose: mockOnClose,
         onSubmitNewMissingKnowledge: mockOnSubmitNewMissingKnowledge,
+        onSaveClick: mockOnSaveClick,
     }
 
     const defaultEditionManagerState = {
@@ -213,6 +215,11 @@ describe('KnowledgeSourceArticleEditor', () => {
         useArticleValidationMock.mockReturnValue(defaultArticleValidationState)
         useEditionManagerMock.mockReturnValue(defaultEditionManagerState)
         useModalManagerMock.mockReturnValue(defaultModalManagerState)
+        mockOnSaveClick.mockClear()
+
+        mockCreateArticle.mockReset()
+        mockUpdateArticle.mockReset()
+        mockDeleteArticle.mockReset()
     })
 
     const renderComponent = (
@@ -383,6 +390,16 @@ describe('KnowledgeSourceArticleEditor', () => {
                 isCreateMode: true,
             }
 
+            const mockCreatedArticle = {
+                id: 123,
+                translation: {
+                    title: 'New Article',
+                    content: 'New content',
+                    locale: 'en-US',
+                    category_id: null,
+                },
+            }
+
             useArticleValidationMock.mockReturnValue({
                 ...defaultArticleValidationState,
                 canSaveArticle: true,
@@ -401,6 +418,13 @@ describe('KnowledgeSourceArticleEditor', () => {
                 },
             })
 
+            mockCreateArticle.mockImplementation(() => {
+                const mockCall = useFeedbackArticleActionsMock.mock.calls[0]
+                if (mockCall && mockCall[1]) {
+                    mockCall[1](mockCreatedArticle)
+                }
+            })
+
             renderComponent(createModeProps)
 
             const saveSpans = screen.getAllByText('Save & Publish')
@@ -412,6 +436,11 @@ describe('KnowledgeSourceArticleEditor', () => {
                     expect.anything(),
                     true,
                 )
+                expect(mockOnSaveClick).toHaveBeenCalledWith(
+                    '123',
+                    AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    true,
+                )
             })
         })
 
@@ -420,6 +449,13 @@ describe('KnowledgeSourceArticleEditor', () => {
                 ...defaultArticleValidationState,
                 canSaveArticle: true,
                 articleModified: true,
+            })
+
+            mockUpdateArticle.mockImplementation(() => {
+                const mockCall = useFeedbackArticleActionsMock.mock.calls[0]
+                if (mockCall && mockCall[2]) {
+                    mockCall[2](mockArticle)
+                }
             })
 
             renderComponent()
@@ -433,6 +469,11 @@ describe('KnowledgeSourceArticleEditor', () => {
                     expect.anything(),
                     true,
                 )
+                expect(mockOnSaveClick).toHaveBeenCalledWith(
+                    mockArticle.id.toString(),
+                    AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    false,
+                )
             })
         })
 
@@ -441,6 +482,13 @@ describe('KnowledgeSourceArticleEditor', () => {
                 ...defaultArticleValidationState,
                 canSaveArticle: true,
                 articleModified: true,
+            })
+
+            mockUpdateArticle.mockImplementation(() => {
+                const mockCall = useFeedbackArticleActionsMock.mock.calls[0]
+                if (mockCall && mockCall[2]) {
+                    mockCall[2](mockArticle)
+                }
             })
 
             renderComponent()
@@ -462,6 +510,11 @@ describe('KnowledgeSourceArticleEditor', () => {
             await waitFor(() => {
                 expect(mockUpdateArticle).toHaveBeenCalledWith(
                     expect.anything(),
+                    false,
+                )
+                expect(mockOnSaveClick).toHaveBeenCalledWith(
+                    mockArticle.id.toString(),
+                    AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                     false,
                 )
             })
