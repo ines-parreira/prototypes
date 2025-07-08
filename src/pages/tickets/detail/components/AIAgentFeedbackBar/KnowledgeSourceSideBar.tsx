@@ -15,7 +15,10 @@ import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentF
 
 import KnowledgeSourceArticleEditor from './KnowledgeSourceArticleEditor'
 import { ManageGuidanceForm } from './ManageGuidanceForm'
-import { AiAgentKnowledgeResourceTypeEnum } from './types'
+import {
+    AiAgentKnowledgeResourceTypeEnum,
+    SuggestedResourceValue,
+} from './types'
 
 type KnowledgeSourceSideBarProps = {
     articles: NonNullable<
@@ -27,6 +30,7 @@ type KnowledgeSourceSideBarProps = {
 
     shopName: string
     shopType: string
+    onSubmitNewMissingKnowledge: (resource: SuggestedResourceValue) => void
 }
 
 const KnowledgeSourceSideBar = ({
@@ -34,6 +38,7 @@ const KnowledgeSourceSideBar = ({
     guidanceArticles,
     shopName,
     shopType,
+    onSubmitNewMissingKnowledge,
 }: KnowledgeSourceSideBarProps) => {
     const { selectedResource, mode, closeModal, openEdit } =
         useKnowledgeSourceSideBar()
@@ -146,6 +151,9 @@ const KnowledgeSourceSideBar = ({
                             url={selectedResource.url}
                             guidance={selectedGuidance}
                             helpCenter={helpCenter}
+                            onSubmitNewMissingKnowledge={
+                                onSubmitNewMissingKnowledge
+                            }
                         />
                     )}
                 </Drawer>
@@ -156,6 +164,7 @@ const KnowledgeSourceSideBar = ({
                     article={selectedArticle}
                     isCreateMode={isCreateMode}
                     onClose={onClose}
+                    onSubmitNewMissingKnowledge={onSubmitNewMissingKnowledge}
                 />
             )}
         </>

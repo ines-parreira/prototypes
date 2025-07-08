@@ -9,7 +9,10 @@ import { ChoiceOption } from 'pages/tickets/detail/components/AIAgentFeedbackBar
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { Components } from 'rest_api/knowledge_service_api/client.generated'
 
-import { AiAgentKnowledgeResourceTypeEnum } from '../types'
+import {
+    AiAgentKnowledgeResourceTypeEnum,
+    SuggestedResourceValue,
+} from '../types'
 
 interface UseFeedbackActionsParams {
     upsertFeedback: ReturnType<typeof useUpsertFeedback>['mutateAsync']
@@ -159,92 +162,18 @@ export const useFeedbackActions = ({
         ],
     )
 
-    const onSubmitMissingKnowledge = useCallback(
-        async (choices: ChoiceOption[]) => {
+    const upsertMissingKnowledge = useCallback(
+        async (
+            getFeedbackToUpsert: () => Components.Schemas.FeedbackMutationDto[],
+        ) => {
             const upsertId = uuidv4()
             try {
                 setLoadingMutations((oldValue) => [
                     ...(oldValue ?? []),
                     upsertId,
                 ])
-                const feedbackToUpsert = choices.map((choice) => {
-                    const suggestedResource =
-                        enrichedData.suggestedResources.find((resource) => {
-                            switch (choice.type) {
-                                case 'ARTICLE':
-                                    return (
-                                        resource.parsedResource.resourceType ===
-                                            'ARTICLE' &&
-                                        resource.parsedResource.resourceId ===
-                                            choice.value &&
-                                        resource.parsedResource
-                                            .resourceSetId ===
-                                            storeConfiguration?.helpCenterId?.toString()
-                                    )
-                                case 'GUIDANCE':
-                                    return (
-                                        resource.parsedResource.resourceType ===
-                                            'GUIDANCE' &&
-                                        resource.parsedResource.resourceId ===
-                                            choice.value &&
-                                        resource.parsedResource
-                                            .resourceSetId ===
-                                            storeConfiguration?.guidanceHelpCenterId?.toString()
-                                    )
-                                case 'EXTERNAL_SNIPPET':
-                                    return (
-                                        resource.parsedResource.resourceType ===
-                                            'EXTERNAL_SNIPPET' &&
-                                        resource.parsedResource.resourceId ===
-                                            choice.value &&
-                                        resource.parsedResource
-                                            .resourceSetId ===
-                                            storeConfiguration?.snippetHelpCenterId?.toString()
-                                    )
-                                case 'FILE_EXTERNAL_SNIPPET':
-                                    return (
-                                        resource.parsedResource.resourceType ===
-                                            'FILE_EXTERNAL_SNIPPET' &&
-                                        resource.parsedResource.resourceId ===
-                                            choice.value &&
-                                        resource.parsedResource
-                                            .resourceSetId ===
-                                            storeConfiguration?.snippetHelpCenterId?.toString()
-                                    )
-                                default:
-                                    return (
-                                        resource.parsedResource.resourceId ===
-                                            choice.value &&
-                                        resource.parsedResource.resourceType ===
-                                            choice.type
-                                    )
-                            }
-                        })
 
-                    const feedbackValue =
-                        getSuggestedResourceFeedbackValue(choice)
-
-                    const executionId =
-                        suggestedResource?.feedback?.executionId ??
-                        feedback?.executions?.[0]?.executionId
-
-                    // should never happen, since we're showing that we're still processing the details of this conversation
-                    // if there are no executions
-                    if (!executionId) return
-
-                    return {
-                        id: suggestedResource?.feedback?.id,
-                        objectId: ticketId.toString(),
-                        objectType: 'TICKET',
-                        executionId,
-                        targetType: 'TICKET',
-                        targetId: ticketId.toString(),
-                        feedbackValue: !feedbackValue
-                            ? null
-                            : JSON.stringify(feedbackValue),
-                        feedbackType: 'SUGGESTED_RESOURCE',
-                    }
-                })
+                const feedbackToUpsert = getFeedbackToUpsert()
                 if (feedbackToUpsert.length > 0) {
                     await upsertFeedback({
                         feedbackToUpsert,
@@ -258,17 +187,136 @@ export const useFeedbackActions = ({
                 )
             }
         },
+        [upsertFeedback, setLoadingMutations],
+    )
+
+    const onSubmitMissingKnowledge = useCallback(
+        async (choices: ChoiceOption[]) => {
+            const getFeedbackToUpsert = () =>
+                choices
+                    .map((choice) => {
+                        const suggestedResource =
+                            enrichedData.suggestedResources.find((resource) => {
+                                switch (choice.type) {
+                                    case 'ARTICLE':
+                                        return (
+                                            resource.parsedResource
+                                                .resourceType === 'ARTICLE' &&
+                                            resource.parsedResource
+                                                .resourceId === choice.value &&
+                                            resource.parsedResource
+                                                .resourceSetId ===
+                                                storeConfiguration?.helpCenterId?.toString()
+                                        )
+                                    case 'GUIDANCE':
+                                        return (
+                                            resource.parsedResource
+                                                .resourceType === 'GUIDANCE' &&
+                                            resource.parsedResource
+                                                .resourceId === choice.value &&
+                                            resource.parsedResource
+                                                .resourceSetId ===
+                                                storeConfiguration?.guidanceHelpCenterId?.toString()
+                                        )
+                                    case 'EXTERNAL_SNIPPET':
+                                        return (
+                                            resource.parsedResource
+                                                .resourceType ===
+                                                'EXTERNAL_SNIPPET' &&
+                                            resource.parsedResource
+                                                .resourceId === choice.value &&
+                                            resource.parsedResource
+                                                .resourceSetId ===
+                                                storeConfiguration?.snippetHelpCenterId?.toString()
+                                        )
+                                    case 'FILE_EXTERNAL_SNIPPET':
+                                        return (
+                                            resource.parsedResource
+                                                .resourceType ===
+                                                'FILE_EXTERNAL_SNIPPET' &&
+                                            resource.parsedResource
+                                                .resourceId === choice.value &&
+                                            resource.parsedResource
+                                                .resourceSetId ===
+                                                storeConfiguration?.snippetHelpCenterId?.toString()
+                                        )
+                                    default:
+                                        return (
+                                            resource.parsedResource
+                                                .resourceId === choice.value &&
+                                            resource.parsedResource
+                                                .resourceType === choice.type
+                                        )
+                                }
+                            })
+
+                        const feedbackValue =
+                            getSuggestedResourceFeedbackValue(choice)
+
+                        const executionId =
+                            suggestedResource?.feedback?.executionId ??
+                            feedback?.executions?.[0]?.executionId
+
+                        // should never happen, since we're showing that we're still processing the details of this conversation
+                        // if there are no executions
+                        if (!executionId) return
+
+                        return {
+                            id: suggestedResource?.feedback?.id,
+                            objectId: ticketId.toString(),
+                            objectType: 'TICKET',
+                            executionId,
+                            targetType: 'TICKET',
+                            targetId: ticketId.toString(),
+                            feedbackValue: !feedbackValue
+                                ? null
+                                : JSON.stringify(feedbackValue),
+                            feedbackType: 'SUGGESTED_RESOURCE',
+                        }
+                    })
+                    .filter(Boolean) as Components.Schemas.FeedbackMutationDto[]
+
+            await upsertMissingKnowledge(getFeedbackToUpsert)
+        },
         [
             feedback,
             ticketId,
-            upsertFeedback,
             storeConfiguration,
             enrichedData,
             getSuggestedResourceFeedbackValue,
-            setLoadingMutations,
+            upsertMissingKnowledge,
         ],
     )
+
+    const onSubmitNewMissingKnowledge = useCallback(
+        async (resource: SuggestedResourceValue) => {
+            const getFeedbackToUpsert = () => {
+                const executionId = feedback?.executions?.[0]?.executionId
+
+                // should never happen, since we're showing that we're still processing the details of this conversation
+                // if there are no executions
+                if (!executionId) return []
+
+                return [
+                    {
+                        objectId: ticketId.toString(),
+                        objectType: 'TICKET',
+                        executionId,
+                        targetType: 'TICKET',
+                        targetId: ticketId.toString(),
+                        feedbackValue: JSON.stringify(resource),
+                        feedbackType: 'SUGGESTED_RESOURCE',
+                    },
+                ] as Components.Schemas.FeedbackMutationDto[]
+            }
+
+            await upsertMissingKnowledge(getFeedbackToUpsert)
+        },
+        [feedback, ticketId, upsertMissingKnowledge],
+    )
+
     return {
         onSubmitMissingKnowledge,
+        onSubmitNewMissingKnowledge,
     }
 }

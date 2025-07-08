@@ -54,6 +54,7 @@ type Props = {
 
     onChangesDiscard: () => void
     onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
+    customFooterContent?: React.ReactNode
 }
 
 const HelpCenterArticleModalAdvancedViewContent = ({
@@ -67,6 +68,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     onChangesDiscard,
     onCopyLinkToClipboard,
     articleMode,
+    customFooterContent,
 }: Props) => {
     const {
         setEditModal,
@@ -158,6 +160,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 requiredFields={requiredFieldsArticle}
                 onDiscard={onChangesDiscard}
                 articleMode={articleMode}
+                customContent={customFooterContent}
             />
         </span>
     )

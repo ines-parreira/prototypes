@@ -146,4 +146,35 @@ describe('<HelpCenterEditModalFooter />', () => {
 
         expect(mockedOnDiscard).toHaveBeenCalledTimes(1)
     })
+
+    it('should render customContent when present and not render rating', () => {
+        const customContent = <div>Custom Footer Content</div>
+
+        const { getByText, queryByText, queryByAltText } = render(
+            <HelpCenterEditModalFooter
+                {...props}
+                customContent={customContent}
+            />,
+        )
+
+        expect(getByText('Custom Footer Content')).toBeInTheDocument()
+
+        expect(queryByText('Rating:')).not.toBeInTheDocument()
+        expect(queryByAltText('star')).not.toBeInTheDocument()
+        expect(queryByAltText('up')).not.toBeInTheDocument()
+        expect(queryByAltText('down')).not.toBeInTheDocument()
+    })
+
+    it('should render rating when customContent is not present', () => {
+        const { getByText, getByAltText } = render(
+            <HelpCenterEditModalFooter {...props} />,
+        )
+
+        expect(getByText('Rating:')).toBeInTheDocument()
+        expect(getByAltText('star')).toBeInTheDocument()
+        expect(getByAltText('up')).toBeInTheDocument()
+        expect(getByAltText('down')).toBeInTheDocument()
+        expect(getByText('15')).toBeInTheDocument() // rating.up value
+        expect(getByText('2')).toBeInTheDocument() // rating.down value
+    })
 })

@@ -4,6 +4,7 @@ import { RootState } from 'state/types'
 
 import {
     getCounters,
+    getIsConsideredMissingKnowledge,
     getKnowledgeSourceArticleEditorState,
     getLastProcessedArticleId,
     getPendingClose,
@@ -12,6 +13,7 @@ import {
     knowledgeSourceArticleEditorSlice,
     resetState,
     setCounters,
+    setIsConsideredMissingKnowledge,
     setLastProcessedArticleId,
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
@@ -36,6 +38,7 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                 pendingDeleteLocaleOptionItem: undefined,
                 counters: undefined,
                 lastProcessedArticleId: null,
+                isConsideredMissingKnowledge: true,
             })
         })
     })
@@ -168,6 +171,36 @@ describe('knowledgeSourceArticleEditorSlice', () => {
         })
     })
 
+    describe('when setting isConsideredMissingKnowledge', () => {
+        it('should set isConsideredMissingKnowledge to true', () => {
+            const previousState = {
+                ...initialState,
+                isConsideredMissingKnowledge: false,
+            }
+
+            const state = knowledgeSourceArticleEditorSlice.reducer(
+                previousState,
+                setIsConsideredMissingKnowledge(true),
+            )
+
+            expect(state.isConsideredMissingKnowledge).toBe(true)
+        })
+
+        it('should set isConsideredMissingKnowledge to false', () => {
+            const previousState = {
+                ...initialState,
+                isConsideredMissingKnowledge: true,
+            }
+
+            const state = knowledgeSourceArticleEditorSlice.reducer(
+                previousState,
+                setIsConsideredMissingKnowledge(false),
+            )
+
+            expect(state.isConsideredMissingKnowledge).toBe(false)
+        })
+    })
+
     describe('when resetting state', () => {
         it('should reset all state properties to initial values', () => {
             const previousState = {
@@ -181,6 +214,7 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                 },
                 counters: { charCount: 200 },
                 lastProcessedArticleId: 456,
+                isConsideredMissingKnowledge: false,
             }
 
             const state = knowledgeSourceArticleEditorSlice.reducer(
@@ -206,6 +240,7 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                     },
                     counters: { charCount: 300 },
                     lastProcessedArticleId: 789,
+                    isConsideredMissingKnowledge: false,
                 }
                 const rootState = createMockRootState(mockState)
 
@@ -321,6 +356,40 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                 const result = getLastProcessedArticleId(rootState)
 
                 expect(result).toBeNull()
+            })
+        })
+
+        describe('when getting isConsideredMissingKnowledge', () => {
+            it('should return true when isConsideredMissingKnowledge is set to true', () => {
+                const mockState = {
+                    ...initialState,
+                    isConsideredMissingKnowledge: true,
+                }
+                const rootState = createMockRootState(mockState)
+
+                const result = getIsConsideredMissingKnowledge(rootState)
+
+                expect(result).toBe(true)
+            })
+
+            it('should return false when isConsideredMissingKnowledge is set to false', () => {
+                const mockState = {
+                    ...initialState,
+                    isConsideredMissingKnowledge: false,
+                }
+                const rootState = createMockRootState(mockState)
+
+                const result = getIsConsideredMissingKnowledge(rootState)
+
+                expect(result).toBe(false)
+            })
+
+            it('should return true by default (initial state)', () => {
+                const rootState = createMockRootState()
+
+                const result = getIsConsideredMissingKnowledge(rootState)
+
+                expect(result).toBe(true)
             })
         })
     })

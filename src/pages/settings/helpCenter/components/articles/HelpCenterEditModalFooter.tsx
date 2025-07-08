@@ -40,6 +40,7 @@ type Props = {
     counters?: { charCount: number }
     articleMode: ArticleMode
     hasOnePagerLayout?: boolean
+    customContent?: React.ReactNode
 }
 
 export const HelpCenterEditModalFooter: React.FC<Props> = ({
@@ -50,6 +51,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     counters,
     articleMode,
     hasOnePagerLayout,
+    customContent,
 }: Props) => {
     const [pendingDeleteArticle, setPendingDeleteArticle] = useState(false)
     const { isPassingRulesCheck } = useAbilityChecker()
@@ -181,36 +183,38 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                         Discard changes
                     </Button>
                 </div>
-                {rating && (
-                    <div className={css.rating}>
-                        <div className={css['rating-text']}>Rating:</div>
-                        <img
-                            className={css['rating-star']}
-                            alt="star"
-                            src={star}
-                        />
-                        <div>{ratingScore}%</div>
-                        <div className={css['rating-separator']}>|</div>
-                        <div className={css['rating-thumbs']}>
-                            <div>
-                                <img
-                                    alt="up"
-                                    className={css['rating-icon']}
-                                    src={up}
-                                />
-                                {rating.up}
-                            </div>
-                            <div>
-                                <img
-                                    alt="down"
-                                    className={css['rating-icon']}
-                                    src={down}
-                                />
-                                {rating.down}
-                            </div>
-                        </div>
-                    </div>
-                )}
+                {customContent
+                    ? customContent
+                    : rating && (
+                          <div className={css.rating}>
+                              <div className={css['rating-text']}>Rating:</div>
+                              <img
+                                  className={css['rating-star']}
+                                  alt="star"
+                                  src={star}
+                              />
+                              <div>{ratingScore}%</div>
+                              <div className={css['rating-separator']}>|</div>
+                              <div className={css['rating-thumbs']}>
+                                  <div>
+                                      <img
+                                          alt="up"
+                                          className={css['rating-icon']}
+                                          src={up}
+                                      />
+                                      {rating.up}
+                                  </div>
+                                  <div>
+                                      <img
+                                          alt="down"
+                                          className={css['rating-icon']}
+                                          src={down}
+                                      />
+                                      {rating.down}
+                                  </div>
+                              </div>
+                          </div>
+                      )}
             </div>
 
             <div className={css.footerWrapper}>

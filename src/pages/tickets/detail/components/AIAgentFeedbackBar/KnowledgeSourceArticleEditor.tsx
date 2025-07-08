@@ -36,18 +36,25 @@ import { useFeedbackArticleActions } from 'pages/tickets/detail/components/AIAge
 import { changeViewLanguage } from 'state/ui/helpCenter'
 import {
     getCounters,
+    getIsConsideredMissingKnowledge,
     getLastProcessedArticleId,
     getPendingClose,
     resetState,
     setCounters,
+    setIsConsideredMissingKnowledge,
     setLastProcessedArticleId,
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
 } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
+import { AddMissingKnowledgeCheckbox } from './AddMissingKnowledgeCheckbox'
 import { HelpCenterArticleDeleteModal } from './HelpCenterArticleDeleteModal'
 import { HelpCenterArticleDiscardModal } from './HelpCenterArticleDiscardModal'
-import { KnowledgePendingCloseType } from './types'
+import {
+    AiAgentKnowledgeResourceTypeEnum,
+    KnowledgePendingCloseType,
+    SuggestedResourceValue,
+} from './types'
 
 import css from './KnowledgeSourceArticleEditor.less'
 
@@ -55,6 +62,7 @@ type KnowledgeSourceArticleEditorProps = {
     article: Article | null
     isCreateMode: boolean
     onClose: () => void
+    onSubmitNewMissingKnowledge: (resource: SuggestedResourceValue) => void
 }
 
 const UNINITIALIZED_ARTICLE_ID = -1
@@ -63,6 +71,7 @@ const KnowledgeSourceArticleEditor = ({
     article,
     isCreateMode,
     onClose,
+    onSubmitNewMissingKnowledge,
 }: KnowledgeSourceArticleEditorProps) => {
     const dispatch = useAppDispatch()
     const helpCenter = useCurrentHelpCenter()
@@ -96,6 +105,9 @@ const KnowledgeSourceArticleEditor = ({
     const pendingClose = useAppSelector(getPendingClose)
     const counters = useAppSelector(getCounters)
     const lastProcessedArticleId = useAppSelector(getLastProcessedArticleId)
+    const isConsideredMissingKnowledge = useAppSelector(
+        getIsConsideredMissingKnowledge,
+    )
 
     const articleModal = useModalManager(MODALS.ARTICLE, { autoDestroy: false })
 
@@ -118,12 +130,31 @@ const KnowledgeSourceArticleEditor = ({
         articleModal,
     ])
 
+    const shouldAddToMissingKnowledge = useMemo(() => {
+        return isCreateMode && isConsideredMissingKnowledge
+    }, [isCreateMode, isConsideredMissingKnowledge])
+
     const onArticleCreateOrUpdate = useCallback(
         (article: Article) => {
             setSelectedArticle(article)
             setSelectedArticleLanguage(article.translation.locale)
+
+            if (shouldAddToMissingKnowledge) {
+                onSubmitNewMissingKnowledge({
+                    resourceId: article.id.toString(),
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceLocale: article.translation.locale,
+                    resourceSetId: helpCenter.id.toString(),
+                })
+            }
         },
-        [setSelectedArticle, setSelectedArticleLanguage],
+        [
+            setSelectedArticle,
+            setSelectedArticleLanguage,
+            helpCenter.id,
+            onSubmitNewMissingKnowledge,
+            shouldAddToMissingKnowledge,
+        ],
     )
 
     const onArticleDelete = useCallback(() => {
@@ -376,6 +407,21 @@ const KnowledgeSourceArticleEditor = ({
     const isEditorInBasicView =
         editModal.view === HelpCenterArticleModalView.BASIC
 
+    const footerContent = useMemo(() => {
+        if (isCreateMode) {
+            return (
+                <AddMissingKnowledgeCheckbox
+                    isChecked={isConsideredMissingKnowledge}
+                    onChange={(checked) =>
+                        dispatch(setIsConsideredMissingKnowledge(checked))
+                    }
+                />
+            )
+        }
+        // empty element to prevent rating from being displayed
+        return <></>
+    }, [isCreateMode, isConsideredMissingKnowledge, dispatch])
+
     const modalStyle = {
         width: '612px',
         maxWidth: '612px',
@@ -413,6 +459,7 @@ const KnowledgeSourceArticleEditor = ({
                             requiredFieldsArticle={requiredFieldsArticle}
                             autoFocus={autoFocus}
                             articleMode={articleMode}
+                            customFooterContent={footerContent}
                         />
                     )}
                     {!isEditorInBasicView && (
@@ -430,6 +477,7 @@ const KnowledgeSourceArticleEditor = ({
                             onCopyLinkToClipboard={onCopyLinkToClipboard}
                             autoFocus={autoFocus}
                             articleMode={articleMode}
+                            customFooterContent={footerContent}
                         />
                     )}
                 </HelpCenterEditModal>

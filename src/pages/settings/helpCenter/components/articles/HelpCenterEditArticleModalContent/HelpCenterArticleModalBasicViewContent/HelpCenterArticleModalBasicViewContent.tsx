@@ -74,6 +74,7 @@ type Props = {
 
     onChangesDiscard: () => void
     onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
+    customFooterContent?: React.ReactNode
 }
 
 const HelpCenterArticleModalBasicViewContent = ({
@@ -89,6 +90,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     onChangesDiscard,
     onCopyLinkToClipboard,
     articleMode,
+    customFooterContent,
 }: Props) => {
     const screenSize = useScreenSize()
     const { isPassingRulesCheck } = useAbilityChecker()
@@ -231,6 +233,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 articleMode={articleMode}
                 onDiscard={onChangesDiscard}
                 hasOnePagerLayout={hasOnePagerLayout}
+                customContent={customFooterContent}
             />
         </span>
     )

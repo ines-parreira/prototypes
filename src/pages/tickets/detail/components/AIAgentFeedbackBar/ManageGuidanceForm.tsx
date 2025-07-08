@@ -22,9 +22,13 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { Drawer } from 'pages/common/components/Drawer'
 import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import InputField from 'pages/common/forms/input/InputField'
+import { AddMissingKnowledgeCheckbox } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AddMissingKnowledgeCheckbox'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar.less'
-import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import {
+    AiAgentKnowledgeResourceTypeEnum,
+    SuggestedResourceValue,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 import { getGuidanceUrl } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { notify } from 'state/notifications/actions'
@@ -36,10 +40,15 @@ const FORM_ACTION_TYPE = {
     UPDATE: 'update',
 }
 
-const FORM_INITIAL_STATE = {
+interface ManageGuidanceFormFields extends GuidanceFormFields {
+    shouldAddToMissingKnowledge: boolean
+}
+
+const FORM_INITIAL_STATE: ManageGuidanceFormFields = {
     name: '',
     content: '',
     isVisible: true,
+    shouldAddToMissingKnowledge: true,
 }
 
 type ManageGuidanceFormProps = {
@@ -48,6 +57,7 @@ type ManageGuidanceFormProps = {
     url?: string
     helpCenter: HelpCenter
     guidance?: GuidanceArticle
+    onSubmitNewMissingKnowledge: (resource: SuggestedResourceValue) => void
 }
 
 export const ManageGuidanceForm = ({
@@ -56,6 +66,7 @@ export const ManageGuidanceForm = ({
     url,
     helpCenter,
     guidance,
+    onSubmitNewMissingKnowledge,
 }: ManageGuidanceFormProps) => {
     const { openPreview, closeModal, selectedResource } =
         useKnowledgeSourceSideBar()
@@ -77,6 +88,7 @@ export const ManageGuidanceForm = ({
                       name: guidance.title,
                       content: guidance.content,
                       isVisible: guidance.visibility === 'PUBLIC',
+                      shouldAddToMissingKnowledge: false,
                   }
                 : FORM_INITIAL_STATE,
         [guidance],
@@ -85,7 +97,7 @@ export const ManageGuidanceForm = ({
     const dispatch = useAppDispatch()
 
     const [formState, setFormState] =
-        useState<GuidanceFormFields>(initialFormState)
+        useState<ManageGuidanceFormFields>(initialFormState)
 
     const onNameChange = useCallback((value: string) => {
         setFormState((prevState) => ({ ...prevState, name: value }))
@@ -94,6 +106,16 @@ export const ManageGuidanceForm = ({
     const onContentChange = useCallback((value: string) => {
         setFormState((prevState) => ({ ...prevState, content: value }))
     }, [])
+
+    const onShouldAddToMissingKnowledgeChange = useCallback(
+        (checked: boolean) => {
+            setFormState((prevState) => ({
+                ...prevState,
+                shouldAddToMissingKnowledge: checked,
+            }))
+        },
+        [],
+    )
 
     const isFormDirty = useMemo(() => {
         const isDirty = !_isEqual(initialFormState, formState)
@@ -133,8 +155,9 @@ export const ManageGuidanceForm = ({
     } = useAiAgentOnboardingNotification({ shopName })
 
     const onSubmit = useCallback(
-        async (guidanceFormFields: GuidanceFormFields) => {
+        async (guidanceFormFields: ManageGuidanceFormFields) => {
             const locale = helpCenter.default_locale
+            const helpCenterId = helpCenter.id.toString()
 
             let newGuidance: LocalArticleTranslation | undefined
 
@@ -171,12 +194,21 @@ export const ManageGuidanceForm = ({
                 ),
                 knowledgeResourceType:
                     AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                helpCenterId: helpCenter.id.toString(),
+                helpCenterId: helpCenterId,
             }
 
             const newSelectedResource = {
                 ...selectedResource,
                 ...formattedNewSelectedResource,
+            }
+
+            if (guidanceFormFields.shouldAddToMissingKnowledge) {
+                onSubmitNewMissingKnowledge({
+                    resourceId: newGuidance?.article_id.toString() ?? '',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    resourceSetId: helpCenterId,
+                    resourceLocale: locale,
+                })
             }
 
             openPreview(newSelectedResource)
@@ -190,6 +222,7 @@ export const ManageGuidanceForm = ({
             helpCenter.default_locale,
             helpCenter.id,
             shopName,
+            onSubmitNewMissingKnowledge,
         ],
     )
 
@@ -324,6 +357,12 @@ export const ManageGuidanceForm = ({
                     }
                     closeButtonId="close-button"
                 >
+                    {actionType === FORM_ACTION_TYPE.CREATE && (
+                        <AddMissingKnowledgeCheckbox
+                            isChecked={formState.shouldAddToMissingKnowledge}
+                            onChange={onShouldAddToMissingKnowledgeChange}
+                        />
+                    )}
                     {url && (
                         <a href={url} target="_blank" rel="noopener noreferrer">
                             <IconButton

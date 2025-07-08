@@ -18,7 +18,10 @@ import { initialState as helpCenterUIState } from 'state/ui/helpCenter/reducer'
 import { initialState as knowledgeSourceArticleEditorState } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
 import KnowledgeSourceArticleEditor from './KnowledgeSourceArticleEditor'
-import { KnowledgePendingCloseType } from './types'
+import {
+    AiAgentKnowledgeResourceTypeEnum,
+    KnowledgePendingCloseType,
+} from './types'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock(
@@ -128,6 +131,7 @@ const mockSetSelectedExistingArticleTranslation = jest.fn()
 const mockFetchTranslationsForArticle = jest.fn()
 const mockGetTranslationForLocale = jest.fn()
 const mockCloseModal = jest.fn()
+const mockOnSubmitNewMissingKnowledge = jest.fn()
 
 const useCurrentHelpCenterMock =
     require('pages/settings/helpCenter/hooks/useCurrentHelpCenter').default
@@ -146,6 +150,7 @@ describe('KnowledgeSourceArticleEditor', () => {
         article: mockArticle,
         isCreateMode: false,
         onClose: mockOnClose,
+        onSubmitNewMissingKnowledge: mockOnSubmitNewMissingKnowledge,
     }
 
     const defaultEditionManagerState = {
@@ -198,6 +203,7 @@ describe('KnowledgeSourceArticleEditor', () => {
         jest.clearAllMocks()
 
         useCurrentHelpCenterMock.mockReturnValue(mockHelpCenter)
+        useFeedbackArticleActionsMock.mockReset()
         useFeedbackArticleActionsMock.mockReturnValue(
             defaultArticleActionsState,
         )
@@ -648,6 +654,226 @@ describe('KnowledgeSourceArticleEditor', () => {
             fireEvent.click(copyButton)
 
             expect(copyButton).toBeInTheDocument()
+        })
+    })
+
+    describe('when handling missing knowledge checkbox', () => {
+        const createModeProps = {
+            ...defaultProps,
+            article: null,
+            isCreateMode: true,
+        }
+
+        const storeWithCheckedMissingKnowledge = {
+            ...defaultStoreState,
+            ui: {
+                ...defaultStoreState.ui,
+                ticketAIAgentFeedback: {
+                    knowledgeSourceArticleEditor: {
+                        ...knowledgeSourceArticleEditorState,
+                        isConsideredMissingKnowledge: true,
+                    },
+                },
+            },
+        }
+
+        const storeWithUncheckedMissingKnowledge = {
+            ...defaultStoreState,
+            ui: {
+                ...defaultStoreState.ui,
+                ticketAIAgentFeedback: {
+                    knowledgeSourceArticleEditor: {
+                        ...knowledgeSourceArticleEditorState,
+                        isConsideredMissingKnowledge: false,
+                    },
+                },
+            },
+        }
+
+        it('renders AddMissingKnowledgeCheckbox when in create mode', () => {
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: {
+                    translation: {
+                        title: 'New Article',
+                        content: 'New content',
+                        locale: 'en-US',
+                        category_id: null,
+                    },
+                },
+            })
+
+            renderComponent(
+                createModeProps,
+                storeWithCheckedMissingKnowledge as any,
+            )
+
+            expect(
+                screen.getByLabelText('Use in similar requests'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render AddMissingKnowledgeCheckbox when in edit mode', () => {
+            renderComponent(defaultProps)
+
+            expect(
+                screen.queryByLabelText('Use in similar requests'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders checkbox as checked when isConsideredMissingKnowledge is true', () => {
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: {
+                    translation: {
+                        title: 'New Article',
+                        content: 'New content',
+                        locale: 'en-US',
+                        category_id: null,
+                    },
+                },
+            })
+
+            renderComponent(
+                createModeProps,
+                storeWithCheckedMissingKnowledge as any,
+            )
+
+            const checkbox = screen.getByLabelText('Use in similar requests')
+            expect(checkbox).toBeChecked()
+        })
+
+        it('renders checkbox as unchecked when isConsideredMissingKnowledge is false', () => {
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: {
+                    translation: {
+                        title: 'New Article',
+                        content: 'New content',
+                        locale: 'en-US',
+                        category_id: null,
+                    },
+                },
+            })
+
+            renderComponent(
+                createModeProps,
+                storeWithUncheckedMissingKnowledge as any,
+            )
+
+            const checkbox = screen.getByLabelText('Use in similar requests')
+            expect(checkbox).not.toBeChecked()
+        })
+
+        const setupArticleCreationTest = () => {
+            const mockCreateArticle = jest.fn()
+
+            useFeedbackArticleActionsMock.mockImplementation(
+                (templateKey: any, onCreateSuccess: any) => {
+                    return {
+                        ...defaultArticleActionsState,
+                        createArticle: mockCreateArticle.mockImplementation(
+                            () => {
+                                // Simulate successful article creation
+                                onCreateSuccess({
+                                    id: 123,
+                                    translation: {
+                                        locale: 'en-US',
+                                        title: 'New Article',
+                                        content: 'New content',
+                                    },
+                                })
+                            },
+                        ),
+                    }
+                },
+            )
+
+            useArticleValidationMock.mockReturnValue({
+                ...defaultArticleValidationState,
+                canSaveArticle: true,
+                articleModified: true,
+            })
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: {
+                    translation: {
+                        title: 'New Article',
+                        content: 'New content',
+                        locale: 'en-US',
+                        category_id: null,
+                    },
+                },
+            })
+
+            return { mockCreateArticle }
+        }
+
+        it('calls onSubmitNewMissingKnowledge when creating article with checkbox checked', async () => {
+            const { mockCreateArticle } = setupArticleCreationTest()
+
+            renderComponent(
+                createModeProps,
+                storeWithCheckedMissingKnowledge as any,
+            )
+
+            const saveSpans = screen.getAllByText('Save & Publish')
+            const mainSaveButton = saveSpans[0].closest('button')
+            fireEvent.click(mainSaveButton!)
+
+            await waitFor(() => {
+                expect(mockCreateArticle).toHaveBeenCalled()
+            })
+
+            expect(mockOnSubmitNewMissingKnowledge).toHaveBeenCalledWith({
+                resourceId: '123',
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                resourceLocale: 'en-US',
+                resourceSetId: mockHelpCenter.id.toString(),
+            })
+        })
+
+        it('does not call onSubmitNewMissingKnowledge when creating article with checkbox unchecked', async () => {
+            const { mockCreateArticle } = setupArticleCreationTest()
+
+            renderComponent(
+                createModeProps,
+                storeWithUncheckedMissingKnowledge as any,
+            )
+
+            const saveSpans = screen.getAllByText('Save & Publish')
+            const mainSaveButton = saveSpans[0].closest('button')
+            fireEvent.click(mainSaveButton!)
+
+            await waitFor(() => {
+                expect(mockCreateArticle).toHaveBeenCalled()
+            })
+
+            expect(mockOnSubmitNewMissingKnowledge).not.toHaveBeenCalled()
+        })
+
+        it('does not call onSubmitNewMissingKnowledge when updating existing article', async () => {
+            useArticleValidationMock.mockReturnValue({
+                ...defaultArticleValidationState,
+                canSaveArticle: true,
+                articleModified: true,
+            })
+
+            renderComponent(
+                defaultProps,
+                storeWithCheckedMissingKnowledge as any,
+            )
+
+            const saveSpans = screen.getAllByText('Save & Publish')
+            const mainSaveButton = saveSpans[0].closest('button')
+            fireEvent.click(mainSaveButton!)
+
+            await waitFor(() => {
+                expect(mockUpdateArticle).toHaveBeenCalled()
+            })
+
+            expect(mockOnSubmitNewMissingKnowledge).not.toHaveBeenCalled()
         })
     })
 })

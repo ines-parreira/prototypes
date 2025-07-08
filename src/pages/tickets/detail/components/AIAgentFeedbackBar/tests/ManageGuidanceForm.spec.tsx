@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import { LocaleCode } from 'models/helpCenter/types'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
@@ -16,6 +17,7 @@ import { assumeMock } from 'utils/testing'
 
 import { useKnowledgeSourceSideBar } from '../hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { ManageGuidanceForm } from '../ManageGuidanceForm'
+import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
 jest.mock('../utils', () => ({
     getGuidanceUrl: jest.fn(() => '/guidance/1'),
@@ -139,7 +141,49 @@ describe('ManageGuidanceForm', () => {
         default_locale: 'en',
     } as any
 
+    const onSubmitNewMissingKnowledgeMock = jest.fn()
+
+    const baseProps = {
+        shopName: 'Demo',
+        shopType: 'shopify' as const,
+        helpCenter,
+        onSubmitNewMissingKnowledge: onSubmitNewMissingKnowledgeMock,
+    }
+
+    const mockGuidanceArticle = {
+        id: 1,
+        title: 'Test Guidance Title',
+        content: 'Test guidance content',
+        visibility: 'PUBLIC' as const,
+        locale: 'en-US' as LocaleCode,
+        lastUpdated: '2023-10-01T00:00:00Z',
+        templateKey: '',
+    }
+
+    const mockGuidanceArticlesList = [
+        mockGuidanceArticle,
+        {
+            id: 2,
+            title: 'Guidance Article 2',
+            content: 'Content 2',
+            visibility: 'PUBLIC',
+            locale: 'en-US' as LocaleCode,
+            lastUpdated: '2023-10-01T00:00:00Z',
+            templateKey: '',
+        },
+        {
+            id: 3,
+            title: 'Guidance Article 3',
+            content: 'Content 3',
+            visibility: 'PUBLIC',
+            locale: 'en-US',
+            lastUpdated: '2023-10-01T00:00:00Z',
+            templateKey: '',
+        },
+    ]
+
     beforeEach(() => {
+        onSubmitNewMissingKnowledgeMock.mockClear()
         useAppDispatchMock.mockReturnValue(jest.fn())
         useUnsavedChangesModalMock.mockReturnValue({
             isOpen: false,
@@ -197,13 +241,7 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('renders the form and updates input fields', () => {
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         const nameInput = screen.getByTestId('name-input')
         const contentEditor = screen.getByTestId('editor')
@@ -218,13 +256,7 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('disables save button when fields are empty', () => {
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         const saveButton = screen.getByRole('button', {
             name: /create guidance/i,
@@ -234,13 +266,7 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('enables save button when both fields are filled', () => {
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         fireEvent.change(screen.getByTestId('name-input'), {
             target: { value: 'Returns' },
@@ -256,13 +282,7 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('submits form successfully', async () => {
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         fireEvent.change(screen.getByTestId('name-input'), {
             target: { value: 'FAQ' },
@@ -280,22 +300,12 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('confirms and triggers delete', async () => {
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-                guidance={{
-                    id: 123,
-                    title: 'Old title',
-                    content: 'Old content',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                }}
-            />,
-        )
+        const guidanceProps = {
+            ...baseProps,
+            guidance: mockGuidanceArticle,
+        }
+
+        render(<ManageGuidanceForm {...guidanceProps} />)
 
         expect(
             screen.queryByText(/Are you sure you want to delete/i),
@@ -332,13 +342,7 @@ describe('ManageGuidanceForm', () => {
             setHasUnsavedChangesRef: jest.fn(),
         })
 
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         fireEvent.change(screen.getByTestId('name-input'), {
             target: { value: 'FAQ' },
@@ -366,13 +370,7 @@ describe('ManageGuidanceForm', () => {
             closeModal: closeModalMock,
         })
 
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         expect(screen.getByTestId('name-input')).toHaveValue('')
 
@@ -410,13 +408,7 @@ describe('ManageGuidanceForm', () => {
             createGuidanceArticle: createGuidanceArticleMock,
         })
 
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         expect(screen.getByTestId('name-input')).toHaveValue('')
 
@@ -447,13 +439,7 @@ describe('ManageGuidanceForm', () => {
             setHasUnsavedChangesRef: jest.fn(),
         })
 
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         expect(screen.getByTestId('name-input')).toHaveValue('')
 
@@ -476,35 +462,7 @@ describe('ManageGuidanceForm', () => {
         const dispatchMock = jest.fn()
         const handleOnTriggerActivateAiAgentNotificationMock = jest.fn()
         useGuidanceAiSuggestionsMock.mockReturnValue({
-            guidanceArticles: [
-                {
-                    id: 1,
-                    title: 'Old title1',
-                    content: 'Old content1',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                },
-                {
-                    id: 2,
-                    title: 'Old title2',
-                    content: 'Old content2',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                },
-                {
-                    id: 3,
-                    title: 'Old title3',
-                    content: 'Old content3',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                },
-            ],
+            guidanceArticles: mockGuidanceArticlesList,
             isLoadingAiGuidances: false,
             isLoadingGuidanceArticleList: false,
         })
@@ -523,22 +481,13 @@ describe('ManageGuidanceForm', () => {
             openPreview: openPreviewMock,
         })
         useAppDispatchMock.mockReturnValue(dispatchMock)
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-                guidance={{
-                    id: 1,
-                    title: 'Old title',
-                    content: 'Old content',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                }}
-            />,
-        )
+
+        const guidanceProps = {
+            ...baseProps,
+            guidance: mockGuidanceArticle,
+        }
+
+        render(<ManageGuidanceForm {...guidanceProps} />)
 
         fireEvent.change(screen.getByTestId('name-input'), {
             target: { value: 'Updated' },
@@ -573,35 +522,7 @@ describe('ManageGuidanceForm', () => {
         const dispatchMock = jest.fn()
         const handleOnTriggerActivateAiAgentNotificationMock = jest.fn()
         useGuidanceAiSuggestionsMock.mockReturnValue({
-            guidanceArticles: [
-                {
-                    id: 1,
-                    title: 'Old title1',
-                    content: 'Old content1',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                },
-                {
-                    id: 2,
-                    title: 'Old title2',
-                    content: 'Old content2',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                },
-                {
-                    id: 3,
-                    title: 'Old title3',
-                    content: 'Old content3',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                },
-            ],
+            guidanceArticles: mockGuidanceArticlesList,
             isLoadingAiGuidances: false,
             isLoadingGuidanceArticleList: false,
         })
@@ -616,22 +537,13 @@ describe('ManageGuidanceForm', () => {
             openPreview: openPreviewMock,
         })
         useAppDispatchMock.mockReturnValue(dispatchMock)
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-                guidance={{
-                    id: 1,
-                    title: 'Old title',
-                    content: 'Old content',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                }}
-            />,
-        )
+
+        const guidanceProps = {
+            ...baseProps,
+            guidance: mockGuidanceArticle,
+        }
+
+        render(<ManageGuidanceForm {...guidanceProps} />)
 
         fireEvent.change(screen.getByTestId('name-input'), {
             target: { value: 'Updated' },
@@ -667,22 +579,12 @@ describe('ManageGuidanceForm', () => {
             openPreview: openPreviewMock,
         })
 
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-                guidance={{
-                    id: 1,
-                    title: 'Old title',
-                    content: 'Old content',
-                    visibility: 'PUBLIC',
-                    locale: 'en-US',
-                    lastUpdated: '2023-10-01T00:00:00Z',
-                    templateKey: '',
-                }}
-            />,
-        )
+        const guidanceProps = {
+            ...baseProps,
+            guidance: mockGuidanceArticle,
+        }
+
+        render(<ManageGuidanceForm {...guidanceProps} />)
 
         const closeButton = screen.getByText('keyboard_tab')
         fireEvent.click(closeButton)
@@ -696,18 +598,146 @@ describe('ManageGuidanceForm', () => {
             closeModal: closeModalMock,
         })
 
-        render(
-            <ManageGuidanceForm
-                shopName="Demo"
-                shopType="shopify"
-                helpCenter={helpCenter}
-            />,
-        )
+        render(<ManageGuidanceForm {...baseProps} />)
 
         const closeButton = screen.getByText('keyboard_tab')
         fireEvent.click(closeButton)
 
         expect(closeModalMock).toHaveBeenCalled()
+    })
+
+    it('should show the missing knowledge checkbox when creating guidance', () => {
+        render(<ManageGuidanceForm {...baseProps} />)
+
+        const checkbox = screen.getByText('Use in similar requests')
+        expect(checkbox).toBeInTheDocument()
+    })
+
+    it('should hide the missing knowledge checkbox when editing guidance', () => {
+        const guidanceProps = {
+            ...baseProps,
+            guidance: mockGuidanceArticle,
+        }
+
+        render(<ManageGuidanceForm {...guidanceProps} />)
+
+        const checkbox = screen.queryByText('Use in similar requests')
+        expect(checkbox).not.toBeInTheDocument()
+    })
+
+    it('should call onSubmitNewMissingKnowledge when checkbox is checked and form is submitted', async () => {
+        const createGuidanceArticleMock = jest.fn().mockResolvedValue({
+            translation: {
+                article_id: 123,
+                title: 'New Guidance',
+                content: 'Guidance content',
+            },
+        })
+
+        useGuidanceArticleMutationMock.mockReturnValue({
+            createGuidanceArticle: createGuidanceArticleMock,
+            isGuidanceArticleUpdating: false,
+        })
+
+        render(<ManageGuidanceForm {...baseProps} />)
+
+        fireEvent.change(screen.getByTestId('name-input'), {
+            target: { value: 'Test Guidance' },
+        })
+        fireEvent.change(screen.getByTestId('editor'), {
+            target: { value: 'Test content' },
+        })
+
+        const checkbox = screen.getByLabelText('Use in similar requests')
+        expect(checkbox).toBeChecked()
+
+        const saveButton = screen.getByRole('button', {
+            name: /create guidance/i,
+        })
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(onSubmitNewMissingKnowledgeMock).toHaveBeenCalledWith({
+                resourceId: '123',
+                resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                resourceSetId: '1',
+                resourceLocale: 'en',
+            })
+        })
+    })
+
+    it('should not call onSubmitNewMissingKnowledge when checkbox is unchecked', async () => {
+        const createGuidanceArticleMock = jest.fn().mockResolvedValue({
+            translation: {
+                article_id: 123,
+                title: 'New Guidance',
+                content: 'Guidance content',
+            },
+        })
+
+        useGuidanceArticleMutationMock.mockReturnValue({
+            createGuidanceArticle: createGuidanceArticleMock,
+            isGuidanceArticleUpdating: false,
+        })
+
+        render(<ManageGuidanceForm {...baseProps} />)
+
+        fireEvent.change(screen.getByTestId('name-input'), {
+            target: { value: 'Test Guidance' },
+        })
+        fireEvent.change(screen.getByTestId('editor'), {
+            target: { value: 'Test content' },
+        })
+
+        const checkbox = screen.getByLabelText('Use in similar requests')
+        fireEvent.click(checkbox)
+        expect(checkbox).not.toBeChecked()
+
+        const saveButton = screen.getByRole('button', {
+            name: /create guidance/i,
+        })
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(createGuidanceArticleMock).toHaveBeenCalled()
+        })
+
+        expect(onSubmitNewMissingKnowledgeMock).not.toHaveBeenCalled()
+    })
+
+    it('should not call onSubmitNewMissingKnowledge when editing existing guidance', async () => {
+        const updateGuidanceArticleMock = jest.fn().mockResolvedValue({
+            article_id: 1,
+            title: 'Updated',
+            content: 'Content',
+        })
+
+        useGuidanceArticleMutationMock.mockReturnValue({
+            updateGuidanceArticle: updateGuidanceArticleMock,
+            isGuidanceArticleUpdating: false,
+        })
+
+        const guidanceProps = {
+            ...baseProps,
+            guidance: mockGuidanceArticle,
+        }
+
+        render(<ManageGuidanceForm {...guidanceProps} />)
+
+        fireEvent.change(screen.getByTestId('name-input'), {
+            target: { value: 'Updated Guidance' },
+        })
+
+        const saveButton = screen.getByRole('button', {
+            name: /save changes/i,
+        })
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(updateGuidanceArticleMock).toHaveBeenCalled()
+        })
+
+        expect(onSubmitNewMissingKnowledgeMock).not.toHaveBeenCalled()
     })
 
     describe('Error Handling', () => {
@@ -770,6 +800,9 @@ describe('ManageGuidanceForm', () => {
                     shopName="Demo"
                     shopType="shopify"
                     helpCenter={helpCenter}
+                    onSubmitNewMissingKnowledge={
+                        onSubmitNewMissingKnowledgeMock
+                    }
                     guidance={{
                         id: 1,
                         title: 'Original Title',
@@ -839,6 +872,9 @@ describe('ManageGuidanceForm', () => {
                     shopName="Demo"
                     shopType="shopify"
                     helpCenter={helpCenter}
+                    onSubmitNewMissingKnowledge={
+                        onSubmitNewMissingKnowledgeMock
+                    }
                     guidance={{
                         id: 1,
                         title: 'Original Title',
@@ -909,6 +945,9 @@ describe('ManageGuidanceForm', () => {
                     shopName="Demo"
                     shopType="shopify"
                     helpCenter={helpCenter}
+                    onSubmitNewMissingKnowledge={
+                        onSubmitNewMissingKnowledgeMock
+                    }
                     guidance={{
                         id: 1,
                         title: 'Test Title',

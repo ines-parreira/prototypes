@@ -414,12 +414,8 @@ describe('useFeedbackActions', () => {
 
             // Should call setLoadingMutations twice (add and remove)
             expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
-            // Should call upsertFeedback with an empty array since all items return undefined due to missing executionId
-            expect(upsertFeedbackMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    feedbackToUpsert: [undefined], // The map returns undefined when executionId is missing
-                }),
-            )
+            // Should not call upsertFeedback since all items return undefined due to missing executionId
+            expect(upsertFeedbackMock).not.toHaveBeenCalled()
         })
 
         it('should handle existing loading mutations in finally block', async () => {
@@ -646,11 +642,7 @@ describe('useFeedbackActions', () => {
             expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
             // When all choices return undefined due to missing executionId,
             // feedbackToUpsert.filter will result in empty array and upsertFeedback won't be called
-            expect(upsertFeedbackMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    feedbackToUpsert: [undefined],
-                }),
-            )
+            expect(upsertFeedbackMock).not.toHaveBeenCalled()
         })
 
         it('should use storeWebsiteQuestions for STORE_WEBSITE_QUESTION_SNIPPET', async () => {
@@ -1394,6 +1386,196 @@ describe('useFeedbackActions', () => {
                     ],
                 }),
             )
+        })
+    })
+
+    describe('onSubmitNewMissingKnowledge', () => {
+        const mockTicketId = 123
+        const mockExecId = '987'
+
+        const upsertFeedbackMock = jest.fn()
+        const setLoadingMutationsMock = jest.fn()
+
+        const getBasicMockData = (
+            feedbackOverride?: Partial<MockFeedback>,
+        ) => ({
+            feedback: {
+                executions: [{ executionId: mockExecId }],
+                accountId: 1,
+                objectType: 'TICKET',
+                objectId: String(mockTicketId),
+                ...feedbackOverride,
+            } as MockFeedback,
+            storeConfiguration: {
+                helpCenterId: 456,
+                guidanceHelpCenterId: 789,
+                snippetHelpCenterId: 101,
+                trialModeActivatedDatetime: null,
+                previewModeActivatedDatetime: null,
+                storeName: 'Test Store',
+                shopType: 'test',
+            } as MockStoreConfig,
+            actions: [] as any[],
+            guidanceArticles: [] as any[],
+            articles: [] as any[],
+            sourceItems: [] as any[],
+            macros: [] as any[],
+            ingestedFiles: [] as any[],
+            storeWebsiteQuestions: [] as any[],
+            enrichedData: {
+                knowledgeResources: [],
+                freeForm: null,
+                suggestedResources: [],
+            } as any,
+        })
+
+        const renderHookWithMockData = (
+            mockData: ReturnType<typeof getBasicMockData>,
+        ) =>
+            renderHook(() =>
+                useFeedbackActions({
+                    upsertFeedback: upsertFeedbackMock,
+                    feedback: mockData.feedback,
+                    ticketId: mockTicketId,
+                    storeConfiguration: mockData.storeConfiguration,
+                    actions: mockData.actions,
+                    guidanceArticles: mockData.guidanceArticles,
+                    articles: mockData.articles,
+                    sourceItems: mockData.sourceItems,
+                    macros: mockData.macros,
+                    ingestedFiles: mockData.ingestedFiles,
+                    storeWebsiteQuestions: mockData.storeWebsiteQuestions,
+                    enrichedData: mockData.enrichedData,
+                    setLoadingMutations: setLoadingMutationsMock as any,
+                } as any),
+            )
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('should correctly process a new missing knowledge resource', async () => {
+            upsertFeedbackMock.mockResolvedValue({})
+
+            const mockResource = {
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                resourceId: 'new-article-1',
+                resourceSetId: '456',
+                resourceLocale: 'en-US',
+            }
+
+            const mockData = getBasicMockData()
+            const { result } = renderHookWithMockData(mockData)
+
+            await result.current.onSubmitNewMissingKnowledge(mockResource)
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+
+            expect(upsertFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            objectId: mockTicketId.toString(),
+                            objectType: 'TICKET',
+                            executionId: mockExecId,
+                            targetType: 'TICKET',
+                            targetId: mockTicketId.toString(),
+                            feedbackType: 'SUGGESTED_RESOURCE',
+                            feedbackValue: JSON.stringify(mockResource),
+                        }),
+                    ],
+                }),
+            )
+        })
+
+        it('should handle different resource types', async () => {
+            upsertFeedbackMock.mockResolvedValue({})
+
+            const guidanceResource = {
+                resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                resourceId: 'new-guidance-1',
+                resourceSetId: '789',
+                resourceLocale: 'en-US',
+            }
+
+            const mockData = getBasicMockData()
+            const { result } = renderHookWithMockData(mockData)
+
+            await result.current.onSubmitNewMissingKnowledge(guidanceResource)
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            feedbackValue: JSON.stringify(guidanceResource),
+                        }),
+                    ],
+                }),
+            )
+        })
+
+        it('should handle missing executionId', async () => {
+            upsertFeedbackMock.mockResolvedValue({})
+
+            const mockResource = {
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                resourceId: 'new-article-1',
+                resourceSetId: '456',
+                resourceLocale: 'en-US',
+            }
+
+            const mockData = getBasicMockData({ executions: [] })
+            const { result } = renderHookWithMockData(mockData)
+
+            await result.current.onSubmitNewMissingKnowledge(mockResource)
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).not.toHaveBeenCalled()
+        })
+
+        it('should handle errors gracefully', async () => {
+            console.error = jest.fn()
+
+            upsertFeedbackMock.mockRejectedValue(new Error('Test error'))
+
+            const mockResource = {
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                resourceId: 'new-article-1',
+                resourceSetId: '456',
+                resourceLocale: 'en-US',
+            }
+
+            const mockData = getBasicMockData()
+            const { result } = renderHookWithMockData(mockData)
+
+            await result.current.onSubmitNewMissingKnowledge(mockResource)
+
+            expect(console.error).toHaveBeenCalled()
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+        })
+
+        it('should handle undefined feedback', async () => {
+            upsertFeedbackMock.mockResolvedValue({})
+
+            const mockResource = {
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                resourceId: 'new-article-1',
+                resourceSetId: '456',
+                resourceLocale: 'en-US',
+            }
+
+            const mockData = {
+                ...getBasicMockData(),
+                feedback: undefined as any,
+            }
+            const { result } = renderHookWithMockData(mockData as any)
+
+            await result.current.onSubmitNewMissingKnowledge(mockResource)
+
+            expect(setLoadingMutationsMock).toHaveBeenCalledTimes(2)
+            expect(upsertFeedbackMock).not.toHaveBeenCalled()
         })
     })
 })

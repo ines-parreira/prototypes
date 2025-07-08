@@ -102,6 +102,7 @@ describe('KnowledgeSourceSideBar', () => {
         ] as any,
         shopName: 'Shop A',
         shopType: 'Retail',
+        onSubmitNewMissingKnowledge: jest.fn(),
     }
 
     const mockCloseModal = jest.fn()

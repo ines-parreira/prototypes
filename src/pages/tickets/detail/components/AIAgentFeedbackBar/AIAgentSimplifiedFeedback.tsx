@@ -231,21 +231,22 @@ const AIAgentSimplifiedFeedback = () => {
 
     useDebouncedEffect(handleFreeFormFeedbackChange, [freeFormFeedback], 1500)
 
-    const { onSubmitMissingKnowledge } = useFeedbackActions({
-        upsertFeedback,
-        feedback,
-        ticketId,
-        storeConfiguration,
-        actions,
-        guidanceArticles,
-        articles,
-        sourceItems,
-        macros,
-        ingestedFiles,
-        storeWebsiteQuestions,
-        enrichedData,
-        setLoadingMutations,
-    })
+    const { onSubmitMissingKnowledge, onSubmitNewMissingKnowledge } =
+        useFeedbackActions({
+            upsertFeedback,
+            feedback,
+            ticketId,
+            storeConfiguration,
+            actions,
+            guidanceArticles,
+            articles,
+            sourceItems,
+            macros,
+            ingestedFiles,
+            storeWebsiteQuestions,
+            enrichedData,
+            setLoadingMutations,
+        })
 
     const handleFeedbackInternalNoteChange = (value: string) => {
         if (
@@ -404,6 +405,9 @@ const AIAgentSimplifiedFeedback = () => {
                                     guidanceArticles={guidanceArticles}
                                     shopName={shopName}
                                     shopType={shopType}
+                                    onSubmitNewMissingKnowledge={
+                                        onSubmitNewMissingKnowledge
+                                    }
                                 />
                             </EditionManagerContextProvider>
                         </UnsavedChangesModalProvider>
