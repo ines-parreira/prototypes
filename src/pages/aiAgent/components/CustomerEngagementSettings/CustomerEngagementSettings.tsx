@@ -68,8 +68,8 @@ export const CustomerEngagementSettings = () => {
     const isConversationStartersFeatureEnabled =
         flags[FeatureFlagKey.ConversationStarters]
 
-    const isConvertFloatingChatInputFeatureEnabled =
-        flags[FeatureFlagKey.ConvertFloatingChatInput]
+    const isAiShoppingAssistantEnabled =
+        !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
     const isTriggerOnSearchEnabled =
         !!flags[FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery]
 
@@ -224,7 +224,7 @@ export const CustomerEngagementSettings = () => {
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
                         />
-                        {isConvertFloatingChatInputFeatureEnabled && (
+                        {isAiShoppingAssistantEnabled && (
                             <ConversationLauncherSettings
                                 gmv={gmv}
                                 isGmvLoading={isGmvLoading}

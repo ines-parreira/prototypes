@@ -58,7 +58,7 @@ export type RuleEngineData = {
     ticketView?: TicketViewData
     pageInteractions: PageInteractionsData | null
     isActivationEnabled: boolean
-    isConvertFloatingChatInputEnabled: boolean
+    isAiShoppingAssistantEnabled: boolean
     hasConversationStarters: boolean
     isAiSalesAgentHelpOnSearchTemplateQueryEnabled: boolean
 }

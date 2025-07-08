@@ -185,8 +185,8 @@ export const usePendingTasksRuleEngine = ({
     })
 
     const isActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation, false)
-    const isConvertFloatingChatInputEnabled = useFlag(
-        FeatureFlagKey.ConvertFloatingChatInput,
+    const isAiShoppingAssistantEnabled = !!useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
         false,
     )
     const hasConversationStarters = useFlag(
@@ -218,7 +218,7 @@ export const usePendingTasksRuleEngine = ({
                         ticketView: ticketViewData,
                         pageInteractions: pageInteractionsData,
                         isActivationEnabled,
-                        isConvertFloatingChatInputEnabled,
+                        isAiShoppingAssistantEnabled,
                         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
                         hasConversationStarters,
                         selfServiceChatChannels,
@@ -244,7 +244,7 @@ export const usePendingTasksRuleEngine = ({
         ticketViewData,
         pageInteractionsData,
         isActivationEnabled,
-        isConvertFloatingChatInputEnabled,
+        isAiShoppingAssistantEnabled,
         hasConversationStarters,
         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
         selfServiceChatChannels,

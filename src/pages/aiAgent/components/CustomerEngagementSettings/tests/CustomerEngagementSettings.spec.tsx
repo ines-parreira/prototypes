@@ -186,7 +186,7 @@ describe('CustomerEngagementSettings', () => {
 
         mockedUseFlags.mockReturnValue({
             [FeatureFlagKey.ConversationStarters]: true,
-            [FeatureFlagKey.ConvertFloatingChatInput]: true,
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
 
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -605,7 +605,7 @@ describe('CustomerEngagementSettings', () => {
         it('should still trigger Unsaved Changes modal even when toggle is visually disabled', async () => {
             mockedUseFlags.mockReturnValue({
                 [FeatureFlagKey.ConversationStarters]: false,
-                [FeatureFlagKey.ConvertFloatingChatInput]: false,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
             })
 
             const result = renderComponent()
@@ -632,7 +632,7 @@ describe('CustomerEngagementSettings', () => {
         it('should enable toggle when feature flag is enabled', async () => {
             mockedUseFlags.mockReturnValue({
                 [FeatureFlagKey.ConversationStarters]: true,
-                [FeatureFlagKey.ConvertFloatingChatInput]: true,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
 
             const result = renderComponent()
@@ -652,10 +652,10 @@ describe('CustomerEngagementSettings', () => {
             expect(result.getByText('Save changes?')).toBeInTheDocument()
         })
 
-        it('Should not render Floating Input settings when ConvertFloatingChatInput flag is disabled', () => {
+        it('Should not render Floating Input settings when AiShoppingAssistantEnabled flag is disabled', () => {
             mockedUseFlags.mockReturnValue({
                 [FeatureFlagKey.ConversationStarters]: false,
-                [FeatureFlagKey.ConvertFloatingChatInput]: false,
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
             })
 
             const result = renderComponent()

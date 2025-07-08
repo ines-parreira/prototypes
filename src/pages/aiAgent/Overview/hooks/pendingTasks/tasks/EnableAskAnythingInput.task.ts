@@ -30,7 +30,7 @@ export class EnableAskAnythingInputTask extends Task {
 
         return (
             isChatEnabled &&
-            data.isConvertFloatingChatInputEnabled &&
+            data.isAiShoppingAssistantEnabled &&
             data.aiAgentStoreConfiguration.scopes.includes(
                 AiAgentScope.Sales,
             ) &&

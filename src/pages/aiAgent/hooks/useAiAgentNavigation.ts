@@ -142,11 +142,8 @@ const useNavigationItems = (
     const isConversationStartersEnabled =
         !!flags[FeatureFlagKey.ConversationStarters]
 
-    const isSalesMetricsEnabled =
+    const isAiShoppingAssistantEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
-
-    const isConvertFloatingChatInputEnabled =
-        !!flags[FeatureFlagKey.ConvertFloatingChatInput]
 
     return useMemo<NavigationItem[]>(
         () =>
@@ -209,22 +206,21 @@ const useNavigationItems = (
                     title: SALES,
                     dataCanduId: 'ai-agent-navbar-sales',
                     items:
-                        isSalesMetricsEnabled ||
                         isConversationStartersEnabled ||
-                        isConvertFloatingChatInputEnabled
+                        isAiShoppingAssistantEnabled
                             ? ([
-                                  isSalesMetricsEnabled && {
+                                  isAiShoppingAssistantEnabled && {
                                       route: routes.analytics,
                                       title: ANALYTICS,
                                       exact: true,
                                   },
-                                  (isSalesMetricsEnabled ||
+                                  (isAiShoppingAssistantEnabled ||
                                       isConversationStartersEnabled) && {
                                       route: routes.salesStrategy,
                                       title: STRATEGY,
                                       exact: true,
                                   },
-                                  (isConvertFloatingChatInputEnabled ||
+                                  (isAiShoppingAssistantEnabled ||
                                       isConversationStartersEnabled) && {
                                       route: routes.customerEngagement,
                                       title: CUSTOMER_ENGAGEMENT,
@@ -244,9 +240,8 @@ const useNavigationItems = (
             isAiAgentOptimizeTabEnabled,
             isConversationStartersEnabled,
             isAiAgentScrapeStoreDomainEnabled,
-            isSalesMetricsEnabled,
             isGorgiasUser,
-            isConvertFloatingChatInputEnabled,
+            isAiShoppingAssistantEnabled,
             routes,
         ],
     )

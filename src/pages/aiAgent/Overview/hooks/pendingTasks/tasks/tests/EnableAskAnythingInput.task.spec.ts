@@ -29,7 +29,7 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isConvertFloatingChatInputEnabled: true,
+                isAiShoppingAssistantEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )
@@ -39,7 +39,7 @@ describe('EnableAskAnythingInputTask', () => {
     it('should not display the task when floating input is enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
-                .withoutFloatingChatInputConfiguration([
+                .withFloatingChatInputConfiguration([
                     AiAgentScope.Sales,
                     AiAgentScope.Support,
                 ])
@@ -52,7 +52,7 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isConvertFloatingChatInputEnabled: false,
+                isAiShoppingAssistantEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )
@@ -73,7 +73,7 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isConvertFloatingChatInputEnabled: false,
+                isAiShoppingAssistantEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )
@@ -97,7 +97,7 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isConvertFloatingChatInputEnabled: false,
+                isAiShoppingAssistantEnabled: false,
             }),
             buildRuleEngineRoutes(),
         )
@@ -121,7 +121,7 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isConvertFloatingChatInputEnabled: false,
+                isAiShoppingAssistantEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )

@@ -82,7 +82,6 @@ export enum FeatureFlagKey {
     ConversationStarters = 'conversation-starters',
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',
-    ConvertFloatingChatInput = 'convert-floating-chat-input',
     ConvertPerformanceView = 'convert-performance-view',
     CustomerTimelineDrawerUX = 'linear.task_SUPXP-3671.customer-timeline-drawer-ux',
     DefaultEmailAddress = 'default-email-address',

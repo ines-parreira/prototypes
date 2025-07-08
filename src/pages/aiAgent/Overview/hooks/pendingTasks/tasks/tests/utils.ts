@@ -15,7 +15,7 @@ export const buildRuleEngineData = (
     ticketView: {} as any,
     pageInteractions: {} as any,
     isActivationEnabled: false,
-    isConvertFloatingChatInputEnabled: false,
+    isAiShoppingAssistantEnabled: false,
     hasConversationStarters: false,
     isAiSalesAgentHelpOnSearchTemplateQueryEnabled: false,
     selfServiceChatChannels: [],
