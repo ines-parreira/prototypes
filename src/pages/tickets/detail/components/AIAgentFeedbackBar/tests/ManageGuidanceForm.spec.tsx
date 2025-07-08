@@ -135,6 +135,19 @@ const mockMapGuidanceFormFieldsToGuidanceArticle = jest.mocked(
     mapGuidanceFormFieldsToGuidanceArticle,
 )
 
+const createMockHooks = (overrides = {}) => {
+    const defaults = {
+        dispatchMock: jest.fn(),
+        handleOnTriggerActivateAiAgentNotificationMock: jest.fn(),
+        updateGuidanceArticleMock: jest.fn(),
+        createGuidanceArticleMock: jest.fn(),
+        closeUnsavedChangesModalMock: jest.fn(),
+        closeModalMock: jest.fn(),
+    }
+
+    return { ...defaults, ...overrides }
+}
+
 describe('ManageGuidanceForm', () => {
     const helpCenter = {
         id: 1,
@@ -184,6 +197,24 @@ describe('ManageGuidanceForm', () => {
         },
     ]
 
+    const mockCreateResponse = {
+        id: 1,
+        translation: {
+            title: 'New',
+            content: 'Content',
+            visibility_status: 'PUBLIC',
+            updated_datetime: '2023-10-01T00:00:00Z',
+        },
+    }
+
+    const mockUpdateResponse = {
+        article_id: 1,
+        title: 'Updated',
+        content: 'Content',
+        visibility_status: 'PRIVATE',
+        updated_datetime: '2023-11-01T00:00:00Z',
+    }
+
     beforeEach(() => {
         onSubmitNewMissingKnowledgeMock.mockClear()
         onSaveClickMock.mockClear()
@@ -227,8 +258,13 @@ describe('ManageGuidanceForm', () => {
 
         useKnowledgeSourceSideBarMock.mockReturnValue({
             openPreview: jest.fn(),
+            openEdit: jest.fn(),
             closeModal: jest.fn(),
             selectedResource: {},
+        })
+
+        mockHandleGuidanceDuplicateError.mockReturnValue({
+            isDuplicate: false,
         })
 
         useGuidanceAiSuggestionsMock.mockReturnValue({
@@ -361,8 +397,8 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('should handle discard changes within UnsavedChangesModal and reset form', async () => {
-        const closeUnsavedChangesModalMock = jest.fn()
-        const closeModalMock = jest.fn()
+        const { closeUnsavedChangesModalMock, closeModalMock } =
+            createMockHooks()
         useUnsavedChangesModalMock.mockReturnValue({
             isOpen: true,
             closeUnsavedChangesModal: closeUnsavedChangesModalMock,
@@ -392,15 +428,17 @@ describe('ManageGuidanceForm', () => {
         expect(screen.getByTestId('editor')).toHaveValue('')
     })
 
-    it('should handle save changes within UnsavedChangesModal', async () => {
-        const closeUnsavedChangesModalMock = jest.fn()
-        const createGuidanceArticleMock = jest.fn().mockResolvedValue({
-            translation: {
-                article_id: 1,
-                title: 'New',
-                content: 'Content',
-            },
+    it('should handle save changes within UnsavedChangesModal and create guidance without opening edit mode', async () => {
+        const {
+            closeUnsavedChangesModalMock,
+            createGuidanceArticleMock,
+            closeModalMock,
+        } = createMockHooks({
+            createGuidanceArticleMock: jest
+                .fn()
+                .mockResolvedValue(mockCreateResponse),
         })
+
         useUnsavedChangesModalMock.mockReturnValue({
             isOpen: true,
             closeUnsavedChangesModal: closeUnsavedChangesModalMock,
@@ -409,6 +447,11 @@ describe('ManageGuidanceForm', () => {
 
         useGuidanceArticleMutationMock.mockReturnValue({
             createGuidanceArticle: createGuidanceArticleMock,
+        })
+
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            closeModal: closeModalMock,
+            openEdit: jest.fn(),
         })
 
         render(<ManageGuidanceForm {...baseProps} />)
@@ -439,10 +482,71 @@ describe('ManageGuidanceForm', () => {
                 true,
             )
         })
+
+        // the modal should close but not open edit mode
+        await waitFor(() => {
+            expect(closeModalMock).toHaveBeenCalled()
+        })
+    })
+
+    it('should create guidance and open in edit mode when clicking Create Guidance button', async () => {
+        const { createGuidanceArticleMock } = createMockHooks({
+            createGuidanceArticleMock: jest
+                .fn()
+                .mockResolvedValue(mockCreateResponse),
+        })
+
+        const openEditMock = jest.fn()
+
+        useGuidanceArticleMutationMock.mockReturnValue({
+            createGuidanceArticle: createGuidanceArticleMock,
+            isGuidanceArticleUpdating: false,
+        })
+
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            closeModal: jest.fn(),
+            openEdit: openEditMock,
+        })
+
+        render(<ManageGuidanceForm {...baseProps} />)
+
+        fireEvent.change(screen.getByTestId('name-input'), {
+            target: { value: 'test' },
+        })
+        fireEvent.change(screen.getByTestId('editor'), {
+            target: { value: 'test content here.' },
+        })
+
+        const createButton = screen.getByRole('button', {
+            name: /create guidance/i,
+        })
+        fireEvent.click(createButton)
+
+        await waitFor(() => {
+            expect(createGuidanceArticleMock).toHaveBeenCalledWith({
+                content: 'test content here.',
+                locale: 'en',
+                templateKey: null,
+                title: 'test',
+                visibility: 'PUBLIC',
+            })
+        })
+
+        // should call openEdit with the created article data
+        await waitFor(() => {
+            expect(openEditMock).toHaveBeenCalledWith({
+                id: '1',
+                content: 'Content',
+                title: 'New',
+                url: '/guidance/1',
+                knowledgeResourceType: 'GUIDANCE',
+                helpCenterId: '1',
+            })
+        })
     })
 
     it('should handle keep editing changes within UnsavedChangesModal and preserve form values', async () => {
-        const closeUnsavedChangesModalMock = jest.fn()
+        const { closeUnsavedChangesModalMock } = createMockHooks()
         useUnsavedChangesModalMock.mockReturnValue({
             isOpen: true,
             closeUnsavedChangesModal: closeUnsavedChangesModalMock,
@@ -467,28 +571,28 @@ describe('ManageGuidanceForm', () => {
         expect(screen.getByTestId('editor')).toHaveValue('Some content here.')
     })
 
-    it('should update guidance ', async () => {
-        const openPreviewMock = jest.fn()
-        const dispatchMock = jest.fn()
-        const handleOnTriggerActivateAiAgentNotificationMock = jest.fn()
+    it('should update guidance', async () => {
+        const {
+            dispatchMock,
+            handleOnTriggerActivateAiAgentNotificationMock,
+            updateGuidanceArticleMock,
+        } = createMockHooks({
+            updateGuidanceArticleMock: jest
+                .fn()
+                .mockResolvedValue(mockUpdateResponse),
+        })
+
         useGuidanceAiSuggestionsMock.mockReturnValue({
             guidanceArticles: mockGuidanceArticlesList,
             isLoadingAiGuidances: false,
             isLoadingGuidanceArticleList: false,
         })
         useGuidanceArticleMutationMock.mockReturnValue({
-            updateGuidanceArticle: jest.fn().mockResolvedValue({
-                article_id: 1,
-                title: 'Updated',
-                content: 'Content',
-            }),
+            updateGuidanceArticle: updateGuidanceArticleMock,
         })
         useAiAgentOnboardingNotificationMock.mockReturnValue({
             handleOnTriggerActivateAiAgentNotification:
                 handleOnTriggerActivateAiAgentNotificationMock,
-        })
-        useKnowledgeSourceSideBarMock.mockReturnValue({
-            openPreview: openPreviewMock,
         })
         useAppDispatchMock.mockReturnValue(dispatchMock)
 
@@ -512,18 +616,20 @@ describe('ManageGuidanceForm', () => {
         fireEvent.click(saveButton)
 
         await waitFor(() => {
+            expect(updateGuidanceArticleMock).toHaveBeenCalledWith(
+                {
+                    content: 'Content',
+                    locale: 'en',
+                    templateKey: null,
+                    title: 'Updated',
+                    visibility: 'PUBLIC',
+                },
+                { articleId: 1, locale: 'en' },
+            )
             expect(dispatchMock).toHaveBeenCalled()
             expect(
                 handleOnTriggerActivateAiAgentNotificationMock,
             ).toHaveBeenCalled()
-            expect(openPreviewMock).toHaveBeenCalledWith({
-                content: 'Content',
-                helpCenterId: '1',
-                id: '1',
-                title: 'Updated',
-                knowledgeResourceType: 'GUIDANCE',
-                url: '/guidance/1',
-            })
             expect(onSaveClickMock).toHaveBeenCalledWith(
                 '1',
                 AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
@@ -532,24 +638,26 @@ describe('ManageGuidanceForm', () => {
         })
     })
 
-    it('should fallback empty strings on update if newGuidance is not returnd ', async () => {
-        const openPreviewMock = jest.fn()
-        const dispatchMock = jest.fn()
-        const handleOnTriggerActivateAiAgentNotificationMock = jest.fn()
+    it('should handle update when updateGuidanceArticle returns null and preserve original guidance state', async () => {
+        const {
+            dispatchMock,
+            handleOnTriggerActivateAiAgentNotificationMock,
+            updateGuidanceArticleMock,
+        } = createMockHooks({
+            updateGuidanceArticleMock: jest.fn().mockResolvedValue(null),
+        })
+
         useGuidanceAiSuggestionsMock.mockReturnValue({
             guidanceArticles: mockGuidanceArticlesList,
             isLoadingAiGuidances: false,
             isLoadingGuidanceArticleList: false,
         })
         useGuidanceArticleMutationMock.mockReturnValue({
-            updateGuidanceArticle: jest.fn().mockResolvedValue(null),
+            updateGuidanceArticle: updateGuidanceArticleMock,
         })
         useAiAgentOnboardingNotificationMock.mockReturnValue({
             handleOnTriggerActivateAiAgentNotification:
                 handleOnTriggerActivateAiAgentNotificationMock,
-        })
-        useKnowledgeSourceSideBarMock.mockReturnValue({
-            openPreview: openPreviewMock,
         })
         useAppDispatchMock.mockReturnValue(dispatchMock)
 
@@ -573,42 +681,30 @@ describe('ManageGuidanceForm', () => {
         fireEvent.click(saveButton)
 
         await waitFor(() => {
+            expect(updateGuidanceArticleMock).toHaveBeenCalledWith(
+                {
+                    content: 'Content',
+                    locale: 'en',
+                    templateKey: null,
+                    title: 'Updated',
+                    visibility: 'PUBLIC',
+                },
+                { articleId: 1, locale: 'en' },
+            )
             expect(dispatchMock).toHaveBeenCalled()
             expect(
                 handleOnTriggerActivateAiAgentNotificationMock,
             ).toHaveBeenCalled()
-            expect(openPreviewMock).toHaveBeenCalledWith({
-                content: '',
-                helpCenterId: '1',
-                id: '',
-                title: '',
-                knowledgeResourceType: 'GUIDANCE',
-                url: '/guidance/1',
-            })
-        })
-    })
-
-    it('should call openPreview if close button is clicked while editing', async () => {
-        const openPreviewMock = jest.fn()
-        useKnowledgeSourceSideBarMock.mockReturnValue({
-            openPreview: openPreviewMock,
         })
 
-        const guidanceProps = {
-            ...baseProps,
-            guidance: mockGuidanceArticle,
-        }
-
-        render(<ManageGuidanceForm {...guidanceProps} />)
-
-        const closeButton = screen.getByText('keyboard_tab')
-        fireEvent.click(closeButton)
-
-        expect(openPreviewMock).toHaveBeenCalled()
+        // Should still show "Save Changes" button since we're in update mode
+        expect(
+            screen.getByRole('button', { name: /save changes/i }),
+        ).toBeInTheDocument()
     })
 
     it('should call onClose if close button is clicked while creating', async () => {
-        const closeModalMock = jest.fn()
+        const { closeModalMock } = createMockHooks()
         useKnowledgeSourceSideBarMock.mockReturnValue({
             closeModal: closeModalMock,
         })
@@ -641,12 +737,10 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('should call onSubmitNewMissingKnowledge when checkbox is checked and form is submitted', async () => {
-        const createGuidanceArticleMock = jest.fn().mockResolvedValue({
-            translation: {
-                article_id: 123,
-                title: 'New Guidance',
-                content: 'Guidance content',
-            },
+        const { createGuidanceArticleMock } = createMockHooks({
+            createGuidanceArticleMock: jest
+                .fn()
+                .mockResolvedValue(mockCreateResponse),
         })
 
         useGuidanceArticleMutationMock.mockReturnValue({
@@ -673,7 +767,7 @@ describe('ManageGuidanceForm', () => {
 
         await waitFor(() => {
             expect(onSubmitNewMissingKnowledgeMock).toHaveBeenCalledWith({
-                resourceId: '123',
+                resourceId: '1',
                 resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                 resourceSetId: '1',
                 resourceLocale: 'en',
@@ -721,10 +815,10 @@ describe('ManageGuidanceForm', () => {
     })
 
     it('should not call onSubmitNewMissingKnowledge when editing existing guidance', async () => {
-        const updateGuidanceArticleMock = jest.fn().mockResolvedValue({
-            article_id: 1,
-            title: 'Updated',
-            content: 'Content',
+        const { updateGuidanceArticleMock } = createMockHooks({
+            updateGuidanceArticleMock: jest
+                .fn()
+                .mockResolvedValue(mockUpdateResponse),
         })
 
         useGuidanceArticleMutationMock.mockReturnValue({
@@ -756,12 +850,12 @@ describe('ManageGuidanceForm', () => {
     })
 
     describe('Error Handling', () => {
-        const mockDispatch = jest.fn()
+        const { dispatchMock } = createMockHooks()
 
         beforeEach(() => {
             jest.clearAllMocks()
-            mockDispatch.mockClear()
-            useAppDispatchMock.mockReturnValue(mockDispatch)
+            dispatchMock.mockClear()
+            useAppDispatchMock.mockReturnValue(dispatchMock)
 
             mockNotify.mockImplementation(
                 (notification) =>
@@ -827,7 +921,7 @@ describe('ManageGuidanceForm', () => {
             fireEvent.click(submitButton)
 
             await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalled()
+                expect(dispatchMock).toHaveBeenCalled()
             })
 
             expect(mockHandleGuidanceDuplicateError).toHaveBeenCalledWith(
@@ -888,7 +982,7 @@ describe('ManageGuidanceForm', () => {
             fireEvent.click(submitButton)
 
             await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalled()
+                expect(dispatchMock).toHaveBeenCalled()
             })
 
             expect(mockHandleGuidanceDuplicateError).toHaveBeenCalledWith(
@@ -902,7 +996,7 @@ describe('ManageGuidanceForm', () => {
                     'Guidance with identical instructions already exists in this help center',
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
+            expect(dispatchMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     type: 'NOTIFY',
                     status: NotificationStatus.Error,
@@ -946,7 +1040,7 @@ describe('ManageGuidanceForm', () => {
             fireEvent.click(submitButton)
 
             await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalled()
+                expect(dispatchMock).toHaveBeenCalled()
             })
 
             expect(mockHandleGuidanceDuplicateError).toHaveBeenCalledWith(
@@ -958,7 +1052,7 @@ describe('ManageGuidanceForm', () => {
                 error,
                 'Error during guidance article update.',
             )
-            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+            expect(dispatchMock).toHaveBeenCalledWith(expect.any(Function))
         })
     })
 })

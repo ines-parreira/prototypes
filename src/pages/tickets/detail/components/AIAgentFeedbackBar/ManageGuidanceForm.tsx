@@ -6,7 +6,7 @@ import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { HelpCenter, LocalArticleTranslation } from 'models/helpCenter/types'
+import { HelpCenter } from 'models/helpCenter/types'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
@@ -30,10 +30,11 @@ import {
     SuggestedResourceValue,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
-import { getGuidanceUrl } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { onApiError } from 'state/utils'
+
+import { getGuidanceUrl } from './utils'
 
 const FORM_ACTION_TYPE = {
     CREATE: 'create',
@@ -74,8 +75,7 @@ export const ManageGuidanceForm = ({
     onSubmitNewMissingKnowledge,
     onSaveClick,
 }: ManageGuidanceFormProps) => {
-    const { openPreview, closeModal, selectedResource } =
-        useKnowledgeSourceSideBar()
+    const { closeModal, openEdit } = useKnowledgeSourceSideBar()
     const {
         isOpen,
         openUnsavedChangesModal,
@@ -160,82 +160,97 @@ export const ManageGuidanceForm = ({
         handleOnTriggerActivateAiAgentNotification,
     } = useAiAgentOnboardingNotification({ shopName })
 
-    const onSubmit = useCallback(
-        async (guidanceFormFields: ManageGuidanceFormFields) => {
-            const locale = helpCenter.default_locale
-            const helpCenterId = helpCenter.id.toString()
+    const handleOnSubmitNewMissingKnowledge = useCallback(
+        (articleId: string) => {
+            onSubmitNewMissingKnowledge({
+                resourceId: articleId,
+                resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                resourceSetId: helpCenter.id.toString(),
+                resourceLocale: helpCenter.default_locale,
+            })
+        },
+        [helpCenter.default_locale, helpCenter.id, onSubmitNewMissingKnowledge],
+    )
 
-            let newGuidance: LocalArticleTranslation | undefined
+    const onSubmit = useCallback(
+        async (
+            guidanceFormFields: ManageGuidanceFormFields,
+            keepOpenForEditing: boolean,
+        ) => {
+            const locale = helpCenter.default_locale
 
             if (guidance) {
-                newGuidance = await updateGuidanceArticle(
+                await updateGuidanceArticle(
                     mapGuidanceFormFieldsToGuidanceArticle(
                         guidanceFormFields,
                         locale,
                     ),
                     { articleId: guidance.id, locale },
                 )
+
+                if (guidanceFormFields.shouldAddToMissingKnowledge) {
+                    handleOnSubmitNewMissingKnowledge(guidance.id.toString())
+                }
+
+                onSaveClick(
+                    guidance.id.toString(),
+                    AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    false,
+                )
             } else {
-                const article = await createGuidanceArticle(
+                const createdArticle = await createGuidanceArticle(
                     mapGuidanceFormFieldsToGuidanceArticle(
                         guidanceFormFields,
                         locale,
                     ),
                 )
 
-                newGuidance = article?.translation
-            }
+                if (createdArticle) {
+                    const articleId = createdArticle.id.toString()
 
-            const formattedNewSelectedResource = {
-                id: newGuidance?.article_id.toString() ?? '',
-                content: newGuidance?.content ?? '',
-                title: newGuidance?.title ?? '',
-                url: getGuidanceUrl(
-                    {
-                        id: Number(newGuidance?.article_id),
-                        name: newGuidance?.title ?? '',
-                    },
-                    '',
-                    shopName,
-                ),
-                knowledgeResourceType:
-                    AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                helpCenterId: helpCenterId,
-            }
+                    if (guidanceFormFields.shouldAddToMissingKnowledge) {
+                        handleOnSubmitNewMissingKnowledge(articleId)
+                    }
 
-            const newSelectedResource = {
-                ...selectedResource,
-                ...formattedNewSelectedResource,
-            }
+                    onSaveClick(
+                        articleId,
+                        AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        true,
+                    )
 
-            if (guidanceFormFields.shouldAddToMissingKnowledge) {
-                onSubmitNewMissingKnowledge({
-                    resourceId: newGuidance?.article_id.toString() ?? '',
-                    resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                    resourceSetId: helpCenterId,
-                    resourceLocale: locale,
-                })
-            }
+                    if (keepOpenForEditing) {
+                        const formattedNewSelectedResource = {
+                            id: articleId,
+                            content: createdArticle.translation.content,
+                            title: createdArticle.translation.title,
+                            url: getGuidanceUrl(
+                                {
+                                    id: Number(createdArticle.id),
+                                    name: createdArticle.translation.title,
+                                },
+                                '',
+                                shopName,
+                            ),
+                            knowledgeResourceType:
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                            helpCenterId: helpCenter.id.toString(),
+                        }
 
-            openPreview(newSelectedResource)
-            onSaveClick(
-                newGuidance?.article_id.toString() ?? '',
-                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                actionType === FORM_ACTION_TYPE.CREATE,
-            )
+                        openEdit(formattedNewSelectedResource)
+                    }
+                }
+            }
         },
         [
-            openPreview,
-            selectedResource,
+            openEdit,
             guidance,
             createGuidanceArticle,
             updateGuidanceArticle,
             helpCenter.default_locale,
-            helpCenter.id,
+            handleOnSubmitNewMissingKnowledge,
             shopName,
-            onSubmitNewMissingKnowledge,
+            helpCenter.id,
             onSaveClick,
-            actionType,
         ],
     )
 
@@ -278,61 +293,61 @@ export const ManageGuidanceForm = ({
         setFormState(initialFormState)
     }, [initialFormState])
 
-    const handleSubmit = useCallback(async () => {
-        try {
-            await onSubmit(formState)
-            const notificationMessage =
-                actionType === FORM_ACTION_TYPE.UPDATE
-                    ? 'Guidance successfully saved'
-                    : 'Guidance successfully created'
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: notificationMessage,
-                }),
-            )
+    const handleSubmit = useCallback(
+        async (keepOpenForEditing: boolean = true) => {
+            try {
+                await onSubmit(formState, keepOpenForEditing)
+                const notificationMessage =
+                    actionType === FORM_ACTION_TYPE.UPDATE
+                        ? 'Guidance successfully saved'
+                        : 'Guidance successfully created'
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: notificationMessage,
+                    }),
+                )
 
-            if (guidanceArticles.length >= 2) {
-                handleOnTriggerActivateAiAgentNotification()
-            }
-        } catch (error) {
-            const duplicateErrorResult = handleGuidanceDuplicateError(
-                error,
-                formState.name,
-            )
-
-            if (duplicateErrorResult.isDuplicate) {
-                void dispatch(notify(duplicateErrorResult.notification))
-                return
-            }
-
-            void dispatch(
-                onApiError(
+                if (guidanceArticles.length >= 2) {
+                    handleOnTriggerActivateAiAgentNotification()
+                }
+            } catch (error) {
+                const duplicateErrorResult = handleGuidanceDuplicateError(
                     error,
-                    `Error during guidance article ${actionType}.`,
-                ),
-            )
-        }
-    }, [
-        onSubmit,
-        formState,
-        actionType,
-        guidanceArticles.length,
-        dispatch,
-        handleOnTriggerActivateAiAgentNotification,
-    ])
+                    formState.name,
+                )
 
-    const guardUnsavedChanges = useCallback(
-        (callback: () => void) => {
-            if (isFormDirty) {
-                openUnsavedChangesModal()
-                return
+                if (duplicateErrorResult.isDuplicate) {
+                    void dispatch(notify(duplicateErrorResult.notification))
+                    return
+                }
+
+                void dispatch(
+                    onApiError(
+                        error,
+                        `Error during guidance article ${actionType}.`,
+                    ),
+                )
             }
-
-            callback()
         },
-        [isFormDirty, openUnsavedChangesModal],
+        [
+            onSubmit,
+            formState,
+            actionType,
+            guidanceArticles.length,
+            dispatch,
+            handleOnTriggerActivateAiAgentNotification,
+        ],
     )
+
+    const guardUnsavedChanges = useCallback(() => {
+        if (isFormDirty) {
+            openUnsavedChangesModal()
+            return
+        }
+
+        closeModal()
+    }, [isFormDirty, openUnsavedChangesModal, closeModal])
 
     const handleUnsavedChangesModalDiscard = useCallback(() => {
         resetForm()
@@ -344,10 +359,11 @@ export const ManageGuidanceForm = ({
         closeUnsavedChangesModal()
     }, [closeUnsavedChangesModal])
 
-    const handleUnsavedChangesModalSave = useCallback(() => {
+    const handleUnsavedChangesModalSave = useCallback(async () => {
         closeUnsavedChangesModal()
-        handleSubmit()
-    }, [closeUnsavedChangesModal, handleSubmit])
+        await handleSubmit(false)
+        closeModal()
+    }, [closeUnsavedChangesModal, handleSubmit, closeModal])
 
     return (
         <>
@@ -361,13 +377,7 @@ export const ManageGuidanceForm = ({
             <Drawer.Header>
                 Guidance
                 <Drawer.HeaderActions
-                    onClose={() =>
-                        guardUnsavedChanges(() =>
-                            actionType === FORM_ACTION_TYPE.UPDATE
-                                ? openPreview(selectedResource!)
-                                : closeModal(),
-                        )
-                    }
+                    onClose={guardUnsavedChanges}
                     closeButtonId="close-button"
                 >
                     {actionType === FORM_ACTION_TYPE.CREATE && (
@@ -414,16 +424,16 @@ export const ManageGuidanceForm = ({
                 </div>
             </Drawer.Content>
             <Drawer.Footer className={css.footer}>
-                <Button isDisabled={isSubmitDisabled} onClick={handleSubmit}>
+                <Button
+                    isDisabled={isSubmitDisabled}
+                    onClick={() => handleSubmit(true)}
+                >
                     {actionType === FORM_ACTION_TYPE.UPDATE
                         ? 'Save Changes'
                         : 'Create Guidance'}
                 </Button>
 
-                <Button
-                    intent="secondary"
-                    onClick={() => guardUnsavedChanges(closeModal)}
-                >
+                <Button intent="secondary" onClick={guardUnsavedChanges}>
                     Cancel
                 </Button>
 
