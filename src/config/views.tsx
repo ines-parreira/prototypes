@@ -17,6 +17,7 @@ import {
 import { trimWithEllipsisBeforeTheHighlight } from 'pages/common/components/Spotlight/helpers'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { getChannels } from 'services/channels'
+import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
 import { PRIORITIES, STATUSES } from 'tickets/common/config'
 import { fieldPath, getAST, getLanguageDisplayName, stripHTML } from 'utils'
 import { getMomentUtcISOString } from 'utils/date'
@@ -420,6 +421,10 @@ export const defaultTicketView = {
                     subject = `(${messageCount}) ${subject}`
                 }
 
+                const hasUndeliveredMessages: boolean = item.get(
+                    'last_sent_message_not_delivered',
+                )
+
                 const body = excerptHighlights
                     ? trimWithEllipsisBeforeTheHighlight(excerptHighlights)
                     : stripHTML(item.get('excerpt'))
@@ -432,7 +437,7 @@ export const defaultTicketView = {
                                 __html: sanitizeHtmlDefault(subject),
                             }}
                         />
-                        {!!body && (
+                        {!!body && !hasUndeliveredMessages && (
                             <div
                                 className="description skip-bold"
                                 dangerouslySetInnerHTML={{
@@ -440,6 +445,7 @@ export const defaultTicketView = {
                                 }}
                             />
                         )}
+                        {hasUndeliveredMessages && <FailedMessageLabel />}
                     </div>
                 )
             }

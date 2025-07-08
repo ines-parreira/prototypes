@@ -19,6 +19,7 @@ import RelativeTime from 'pages/common/components/RelativeTime'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import CheckBox from 'pages/common/forms/CheckBox'
+import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
 import { TicketCompact, TicketPartial } from '../types'
@@ -100,6 +101,8 @@ export default function Ticket({
               `Customer #${ticket.customer?.id}`
             : ''
 
+    const hasUndeliveredMessages = ticket?.last_sent_message_not_delivered
+
     return (
         <CSSTransition
             classNames={classNames}
@@ -175,12 +178,21 @@ export default function Ticket({
                                         <span className={css.unreadIndicator} />
                                     )}
                                 </header>
-                                <div className={css.subject}>
+                                <span className={css.subject}>
                                     {ticket.subject}
-                                </div>
-                                <div ref={excerptRef} className={css.excerpt}>
-                                    {ticket.excerpt}
-                                </div>
+                                </span>
+                                {!hasUndeliveredMessages && (
+                                    <div
+                                        ref={excerptRef}
+                                        className={css.excerpt}
+                                    >
+                                        {ticket.excerpt}
+                                    </div>
+                                )}
+                                {hasUndeliveredMessages && (
+                                    <FailedMessageLabel />
+                                )}
+
                                 {ticket.excerpt !== '' && (
                                     <Tooltip
                                         delay={450}

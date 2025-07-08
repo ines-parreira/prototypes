@@ -9,6 +9,7 @@ export type TicketPartial = {
     id: number
     updated_datetime: number
     cursor: string
+    last_sent_message_not_delivered?: boolean
 }
 
 export type TicketCompact = Pick<
@@ -21,6 +22,7 @@ export type TicketCompact = Pick<
     | 'is_unread'
     | 'last_message_datetime'
     | 'last_received_message_datetime'
+    | 'last_sent_message_not_delivered'
     | 'status'
     | 'subject'
     | 'updated_datetime'

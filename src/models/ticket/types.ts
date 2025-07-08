@@ -52,6 +52,7 @@ export type Ticket = {
     uri: string
     via: TicketVia
     reply_options?: TicketReplyOptions
+    last_sent_message_not_delivered?: boolean
 }
 
 export type TicketPartial = Pick<Ticket, 'id' | 'updated_datetime'> & {

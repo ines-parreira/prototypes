@@ -129,6 +129,109 @@ describe('Config: views', () => {
                     .tagName.toLocaleLowerCase(),
             ).toBe('em')
         })
+
+        it('should render the description when there are no undelivered messages', () => {
+            const ticketWithoutUndeliveredMessages = fromJS({
+                ...ticketFixtures.ticket,
+                messages_count: 1,
+                subject,
+                excerpt,
+                last_sent_message_not_delivered: false,
+            })
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>,
+                ) => ReactComponentElement<any>
+                render(
+                    cell(ViewField.Details, ticketWithoutUndeliveredMessages),
+                )
+            }
+
+            expect(screen.getByText(subject)).toBeInTheDocument()
+            expect(screen.getByText(excerpt)).toBeInTheDocument()
+            expect(
+                screen.queryByText('Last message not delivered'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render the description when last_sent_message_not_delivered is undefined', () => {
+            const ticketWithUndefinedUndeliveredMessages = fromJS({
+                ...ticketFixtures.ticket,
+                messages_count: 1,
+                subject,
+                excerpt,
+                last_sent_message_not_delivered: undefined,
+            })
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>,
+                ) => ReactComponentElement<any>
+                render(
+                    cell(
+                        ViewField.Details,
+                        ticketWithUndefinedUndeliveredMessages,
+                    ),
+                )
+            }
+
+            expect(screen.getByText(subject)).toBeInTheDocument()
+            expect(screen.getByText(excerpt)).toBeInTheDocument()
+            expect(
+                screen.queryByText('Last message not delivered'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render FailedMessageLabel when there are undelivered messages', () => {
+            const ticketWithUndeliveredMessages = fromJS({
+                ...ticketFixtures.ticket,
+                messages_count: 1,
+                subject,
+                excerpt,
+                last_sent_message_not_delivered: true,
+            })
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>,
+                ) => ReactComponentElement<any>
+                render(cell(ViewField.Details, ticketWithUndeliveredMessages))
+            }
+
+            expect(screen.getByText(subject)).toBeInTheDocument()
+            expect(
+                screen.getByText('Last message not delivered'),
+            ).toBeInTheDocument()
+            expect(screen.queryByText(excerpt)).not.toBeInTheDocument()
+        })
+
+        it('should render FailedMessageLabel with multiple messages when there are undelivered messages', () => {
+            const ticketWithUndeliveredMessages = fromJS({
+                ...ticketFixtures.ticket,
+                messages_count: 3,
+                subject,
+                excerpt,
+                last_sent_message_not_delivered: true,
+            })
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>,
+                ) => ReactComponentElement<any>
+                render(cell(ViewField.Details, ticketWithUndeliveredMessages))
+            }
+
+            expect(screen.getByText(`(3) ${subject}`)).toBeInTheDocument()
+            expect(
+                screen.getByText('Last message not delivered'),
+            ).toBeInTheDocument()
+            expect(screen.queryByText(excerpt)).not.toBeInTheDocument()
+        })
     })
 
     describe('baseView', () => {

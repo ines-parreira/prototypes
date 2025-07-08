@@ -134,4 +134,248 @@ describe('Ticket', () => {
 
         expect(onSelect).toHaveBeenCalledWith(1, true, false)
     })
+
+    it('should render excerpt when there are no undelivered messages', () => {
+        render(
+            <Ticket
+                {...defaultProps}
+                ticket={{
+                    ...defaultTicket,
+                    last_sent_message_not_delivered: false,
+                }}
+            />,
+        )
+        expect(
+            screen.getByText(defaultProps.ticket.excerpt!),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText('Last message not delivered'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render FailedMessageLabel when there are undelivered messages', () => {
+        render(
+            <Ticket
+                {...defaultProps}
+                ticket={{
+                    ...defaultTicket,
+                    last_sent_message_not_delivered: true,
+                }}
+            />,
+        )
+        expect(
+            screen.getByText('Last message not delivered'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText(defaultProps.ticket.excerpt!),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render excerpt when last_sent_message_not_delivered is undefined', () => {
+        render(
+            <Ticket
+                {...defaultProps}
+                ticket={{
+                    ...defaultTicket,
+                    last_sent_message_not_delivered: undefined,
+                }}
+            />,
+        )
+        expect(
+            screen.getByText(defaultProps.ticket.excerpt!),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText('Last message not delivered'),
+        ).not.toBeInTheDocument()
+    })
+
+    describe('customer logic', () => {
+        it('should render customer name when available', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        customer: {
+                            id: 123,
+                            name: 'John Smith',
+                            email: 'john@example.com',
+                        } as Customer,
+                    }}
+                />,
+            )
+            expect(screen.getByText('John Smith')).toBeInTheDocument()
+        })
+
+        it('should render customer email when name is not available', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        customer: {
+                            id: 123,
+                            name: '',
+                            email: 'john@example.com',
+                        } as Customer,
+                    }}
+                />,
+            )
+            expect(screen.getByText('john@example.com')).toBeInTheDocument()
+        })
+
+        it('should render customer id when name and email are not available', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        customer: {
+                            id: 123,
+                            name: '',
+                            email: '',
+                        } as Customer,
+                    }}
+                />,
+            )
+            expect(screen.getByText('Customer #123')).toBeInTheDocument()
+        })
+
+        it('should render empty string when customer is null', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        customer: null,
+                    }}
+                />,
+            )
+            expect(
+                document.getElementsByClassName('customer')[0],
+            ).toHaveTextContent('')
+        })
+
+        it('should render empty string when ticket has no channel property', () => {
+            const ticketWithoutChannel = {
+                id: 1,
+                is_unread: false,
+                subject: 'Subject',
+                excerpt: 'Excerpt',
+                customer: {
+                    id: 123,
+                    name: 'John Smith',
+                    email: 'john@example.com',
+                },
+            }
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithoutChannel as any}
+                />,
+            )
+            // Should render skeleton since 'channel' is not present
+            expect(screen.queryByText('John Smith')).not.toBeInTheDocument()
+        })
+
+        it('should render empty string when channel exists but customer is undefined', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        customer: null,
+                    }}
+                />,
+            )
+            expect(
+                document.getElementsByClassName('customer')[0],
+            ).toHaveTextContent('')
+        })
+    })
+
+    describe('hasUndeliveredMessages logic', () => {
+        it('should be true when last_sent_message_not_delivered is true', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        last_sent_message_not_delivered: true,
+                    }}
+                />,
+            )
+            expect(
+                screen.getByText('Last message not delivered'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultProps.ticket.excerpt!),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should be false when last_sent_message_not_delivered is false', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        last_sent_message_not_delivered: false,
+                    }}
+                />,
+            )
+            expect(
+                screen.getByText(defaultProps.ticket.excerpt!),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Last message not delivered'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should be falsy when last_sent_message_not_delivered is undefined', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        last_sent_message_not_delivered: undefined,
+                    }}
+                />,
+            )
+            expect(
+                screen.getByText(defaultProps.ticket.excerpt!),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Last message not delivered'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should be falsy when last_sent_message_not_delivered is not present', () => {
+            const ticketWithoutProperty = {
+                ...defaultTicket,
+            }
+            delete (ticketWithoutProperty as any)
+                .last_sent_message_not_delivered
+
+            render(<Ticket {...defaultProps} ticket={ticketWithoutProperty} />)
+            expect(
+                screen.getByText(defaultProps.ticket.excerpt!),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Last message not delivered'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should be falsy when ticket is undefined (testing optional chaining)', () => {
+            const ticketPartial = {
+                id: 1,
+                subject: 'Test Subject',
+                excerpt: 'Test Excerpt',
+            }
+
+            render(<Ticket {...defaultProps} ticket={ticketPartial as any} />)
+            expect(
+                screen.queryByText('Last message not delivered'),
+            ).not.toBeInTheDocument()
+        })
+    })
 })
