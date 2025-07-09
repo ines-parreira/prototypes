@@ -286,3 +286,195 @@ function TicketDetails({ ticketId }) {
     }, [ticketId])
 }
 ```
+
+# Integration Testing Best Practices
+
+## Mock Setup and Organization
+
+### Use SDK-generated mocks consistently
+
+- **Always use** `@gorgias/helpdesk-mocks` or the other mocks packages like `@gorgias/knowledge-service-mocks` for mocking API responses and handlers
+- **Never create manual mocks** for API calls - use the provided SDK mocks instead
+- **Follow naming conventions** for mocks:
+    - Component mocks: `mock<ComponentName>Component`
+    - Response body mocks: `mock<HandlerName>ResponseBody`
+    - Request handler mocks: `mock<HandlerName>Handler`
+
+### Server setup pattern
+
+```typescript
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(...localHandlers)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+```
+
+### Handler organization
+
+- **Define handlers at the top** of the test file for reusability
+- **Use descriptive names** for handler variables
+- **Group related handlers** together in arrays
+- **Override handlers per test** when needed for specific scenarios
+
+## Test Structure and Patterns
+
+### Component rendering setup
+
+```typescript
+const renderComponent = () => {
+    return render(
+        <MemoryRouter>
+            <Provider store={mocksStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <ThemeProvider>
+                        <YourComponent />
+                    </ThemeProvider>
+                </QueryClientProvider>
+            </Provider>
+        </MemoryRouter>,
+    )
+}
+```
+
+### Async testing patterns
+
+- **Always use `waitFor`** for async operations
+- **Wait for component to load** before making assertions
+- **Use `act()` for user interactions** that trigger state changes
+- **Test loading states** before testing final states
+
+### User interaction testing
+
+```typescript
+// Use userEvent for interactions
+act(() => {
+    userEvent.click(getByLabelText(/Some Label/))
+    userEvent.type(getByRole('textbox'), 'new value')
+})
+
+// Wait for async operations
+await waitFor(() => {
+    expect(getByText('Expected text')).toBeInTheDocument()
+})
+```
+
+## Mock Usage Patterns
+
+### Basic handler usage
+
+```typescript
+const mockGetCurrentUser = mockGetCurrentUserHandler()
+const mockUpdateCurrentUser = mockUpdateCurrentUserHandler()
+
+const localHandlers = [
+    mockGetCurrentUser.handler,
+    mockUpdateCurrentUser.handler,
+]
+```
+
+### Handler overrides for specific tests
+
+```typescript
+it('should handle specific scenario', async () => {
+    const { handler } = mockGetCurrentUserHandler(async () =>
+        HttpResponse.json({
+            ...mockGetCurrentUser.data,
+            role: { name: UserRole.GorgiasAgent },
+        }),
+    )
+    server.use(handler)
+
+    // Test implementation
+})
+```
+
+## Assertion Best Practices
+
+### Test visible outcomes
+
+- **Assert on UI elements** that users can see
+- **Test user interactions** and their effects
+- **Verify state changes** through observable behavior
+- **Avoid testing implementation details** unless necessary
+
+### Request assertion (when needed)
+
+```typescript
+const waitForUpdateCurrentUserRequest =
+    mockUpdateCurrentUser.waitForRequest(server)
+
+// Trigger action
+act(() => {
+    userEvent.click(getByLabelText(/Some Label/))
+    userEvent.type(getByRole('textbox'), 'new value')
+})
+
+await waitForUpdateCurrentUserRequest(async (request) => {
+    const body = await request.json()
+    expect(body).toEqual({
+        meta: { profile_picture_url: profilePictureUrl },
+    })
+})
+```
+
+## Test Organization
+
+### Group related tests
+
+```typescript
+describe('Personal informations section', () => {
+    it('should render with correct values', async () => {
+        // Test implementation
+    })
+
+    it('should handle disabled state', async () => {
+        // Test implementation
+    })
+})
+```
+
+### Test different user roles/scenarios
+
+```typescript
+it('should correctly disable inputs for a Gorgias agent', async () => {
+    const { handler } = mockGetCurrentUserHandler(async () =>
+        HttpResponse.json({
+            ...mockGetCurrentUser.data,
+            role: { name: UserRole.GorgiasAgent },
+        }),
+    )
+    server.use(handler)
+
+    // Test disabled state
+})
+```
+
+## Anti-patterns to Avoid
+
+- **Don't test implementation details** - focus on user-visible behavior
+- **Don't create manual mocks** for API calls - use SDK mocks
+- **Don't test internal state** - test observable outcomes
+- **Don't skip async operations** - always use `waitFor` for async behavior
+- **Don't test multiple concerns** in a single test - keep tests focused
+- **Don't rely on implementation-specific selectors** - use accessible selectors
+
+## File Organization
+
+- **Keep mocks at the top** of the test file
+- **Group related tests** in describe blocks
+- **Use descriptive test names** that explain the scenario
+- **Extract common setup** into helper functions
+- **Keep tests focused** on a single behavior or feature
