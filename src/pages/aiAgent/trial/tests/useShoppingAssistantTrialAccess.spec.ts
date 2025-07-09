@@ -155,7 +155,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
     })
@@ -171,7 +171,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true, // Has AI Agent on chat + all other conditions
                 canSeeTrialCTA: true,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
 
@@ -201,7 +201,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
 
@@ -218,7 +218,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // Only admins can see system banner
                 canSeeTrialCTA: false, // Only admins can see trial CTA
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
     })
@@ -252,7 +252,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // System banner only for Starter/Basic
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
 
@@ -270,7 +270,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: true, // Pro+ without feature flag can book demo
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
 
@@ -287,7 +287,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
     })
@@ -319,7 +319,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
 
@@ -349,7 +349,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
     })
@@ -378,7 +378,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // No AI Agent on chat
                 canSeeTrialCTA: true, // Trial CTA doesn't require AI Agent on chat
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
     })
@@ -398,7 +398,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
     })
@@ -417,7 +417,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
     })

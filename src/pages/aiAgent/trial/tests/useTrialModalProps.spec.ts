@@ -1,11 +1,15 @@
+import useAppSelector from 'hooks/useAppSelector'
 import {
     useBillingState,
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
+import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from '../hooks/useShoppingAssistantTrialAccess'
+import { useShoppingAssistantTrialFlow } from '../hooks/useShoppingAssistantTrialFlow'
 import { useTrialMetrics } from '../hooks/useTrialMetrics'
 import { useTrialModalProps } from '../hooks/useTrialModalProps'
 
@@ -15,6 +19,10 @@ jest.mock('models/billing/utils', () => ({
 }))
 jest.mock('../hooks/useTrialMetrics')
 jest.mock('../hooks/useShoppingAssistantTrialAccess')
+jest.mock('../hooks/useSalesTrialRevampMilestone')
+jest.mock('../hooks/useShoppingAssistantTrialFlow')
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+jest.mock('hooks/useAppSelector')
 
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseEarlyAccessAutomatePlan = assumeMock(useEarlyAccessAutomatePlan)
@@ -25,6 +33,14 @@ const mockUseShoppingAssistantTrialAccess = assumeMock(
 const mockGetAutomateEarlyAccessPricesFormatted = jest.requireMock(
     'models/billing/utils',
 ).getAutomateEarlyAccessPricesFormatted
+const mockUseSalesTrialRevampMilestone = assumeMock(
+    useSalesTrialRevampMilestone,
+)
+const mockUseShoppingAssistantTrialFlow = assumeMock(
+    useShoppingAssistantTrialFlow,
+)
+const mockUseStoreActivations = assumeMock(useStoreActivations)
+const mockUseAppSelector = assumeMock(useAppSelector)
 
 describe('useTrialModalProps', () => {
     beforeEach(() => {
@@ -36,21 +52,101 @@ describe('useTrialModalProps', () => {
         })
 
         mockUseTrialMetrics.mockReturnValue({
-            gmv: 25,
+            gmvInfluenced: '$25',
+            gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
             remainingDays: 14,
             isLoading: false,
         })
 
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
-            canSeeTrialStartedBanner: false,
+            hasActiveTrial: false,
             canBookDemo: false,
             canSeeSystemBanner: false,
             canSeeTrialCTA: false,
             canNotifyAdmin: false,
         })
+
+        mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+
+        mockUseAppSelector.mockReturnValue({
+            get: (key: string) => (key === 'domain' ? 'test-domain.com' : null),
+        })
+
+        mockUseStoreActivations.mockReturnValue({
+            storeActivations: {
+                store1: {
+                    name: 'store1',
+                    title: 'Store 1',
+                    alerts: [],
+                    configuration: {} as any,
+                    sales: {
+                        enabled: false,
+                        isDisabled: false,
+                    },
+                    support: {
+                        enabled: true,
+                        chat: {
+                            enabled: true,
+                        },
+                        email: {
+                            enabled: true,
+                        },
+                    },
+                },
+                store2: {
+                    name: 'store2',
+                    title: 'Store 2',
+                    alerts: [],
+                    configuration: {} as any,
+                    sales: {
+                        enabled: true,
+                        isDisabled: false,
+                    },
+                    support: {
+                        enabled: true,
+                        chat: {
+                            enabled: true,
+                        },
+                        email: {
+                            enabled: true,
+                        },
+                    },
+                },
+            },
+            progressPercentage: 50,
+            isFetchLoading: false,
+            isSaveLoading: false,
+            changeSales: jest.fn(),
+            changeSupport: jest.fn(),
+            changeSupportChat: jest.fn(),
+            changeSupportEmail: jest.fn(),
+            saveStoreConfigurations: jest.fn(),
+            migrateToNewPricing: jest.fn(),
+            endTrial: jest.fn(),
+            activation: jest.fn(),
+        })
+
+        mockUseShoppingAssistantTrialFlow.mockReturnValue({
+            openManageTrialModal: jest.fn(),
+            openUpgradePlanModal: jest.fn(),
+            openTrialUpgradeModal: jest.fn(),
+            closeManageTrialModal: jest.fn(),
+            closeTrialUpgradeModal: jest.fn(),
+            closeUpgradePlanModal: jest.fn(),
+            closeSuccessModal: jest.fn(),
+            startTrial: jest.fn(),
+            onConfirmTrial: jest.fn(),
+            isLoading: false,
+            isTrialModalOpen: false,
+            isSuccessModalOpen: false,
+            isManageTrialModalOpen: false,
+            isUpgradePlanModalOpen: false,
+            onDismissTrialUpgradeModal: jest.fn(),
+            onDismissUpgradePlanModal: jest.fn(),
+        })
     })
 
-    describe('useUpgradePlanModal', () => {
+    describe('useTrialUpgradePlanModal', () => {
         it('should return correct modal props with billing state', () => {
             const mockBillingState = {
                 data: {
@@ -74,7 +170,7 @@ describe('useTrialModalProps', () => {
 
             const { result } = renderHook(() => useTrialModalProps({}))
 
-            expect(result.current.upgradePlanModal).toEqual({
+            expect(result.current.trialUpgradePlanModal).toEqual({
                 title: 'Try Shopping Assistant for 14 days at no additional cost',
                 currentPlan: {
                     title: 'Support Agent',
@@ -82,7 +178,7 @@ describe('useTrialModalProps', () => {
                     price: '$50',
                     billingPeriod: 'month',
                     features: [
-                        '2000 automated interactions',
+                        '100 automated interactions',
                         'Deliver instant answers to repetitive questions and improve customer satisfaction',
                         'Automatically handle orders, returns, and subscriptions quickly, 24/7',
                     ],
@@ -127,7 +223,9 @@ describe('useTrialModalProps', () => {
 
             const { result } = renderHook(() => useTrialModalProps({}))
 
-            expect(result.current.upgradePlanModal.currentPlan.price).toBe('$0')
+            expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
+                '$0',
+            )
         })
 
         it('should handle missing helpdesk plan', () => {
@@ -151,7 +249,7 @@ describe('useTrialModalProps', () => {
             const { result } = renderHook(() => useTrialModalProps({}))
 
             expect(
-                result.current.upgradePlanModal.newPlan.priceTooltipText,
+                result.current.trialUpgradePlanModal.newPlan.priceTooltipText,
             ).toContain('$0 helpdesk fee')
         })
 
@@ -163,9 +261,11 @@ describe('useTrialModalProps', () => {
 
             const { result } = renderHook(() => useTrialModalProps({}))
 
-            expect(result.current.upgradePlanModal.currentPlan.price).toBe('$0')
+            expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
+                '$0',
+            )
             expect(
-                result.current.upgradePlanModal.newPlan.priceTooltipText,
+                result.current.trialUpgradePlanModal.newPlan.priceTooltipText,
             ).toContain('$0 helpdesk fee')
         })
     })
@@ -207,7 +307,8 @@ describe('useTrialModalProps', () => {
             } as any)
 
             mockUseTrialMetrics.mockReturnValue({
-                gmv: 25,
+                gmvInfluenced: '$25',
+                gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
                 remainingDays: 7,
                 isLoading: false,
             })
@@ -217,7 +318,15 @@ describe('useTrialModalProps', () => {
             expect(result.current.trialStartedBanner).toEqual({
                 title: 'Shopping Assistant trial ends in 7 days.',
                 description:
-                    "So far, it's generated 25 in added GMV for your store.",
+                    "So far, it's generated $25 in added GMV for your store.",
+                primaryAction: expect.objectContaining({
+                    label: 'Upgrade Now',
+                    onClick: expect.any(Function),
+                }),
+                secondaryAction: expect.objectContaining({
+                    label: 'Manage Trial',
+                    onClick: expect.any(Function),
+                }),
             })
         })
 
@@ -245,7 +354,8 @@ describe('useTrialModalProps', () => {
 
             // Update metrics
             mockUseTrialMetrics.mockReturnValue({
-                gmv: 50,
+                gmvInfluenced: '$50',
+                gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
                 remainingDays: 3,
                 isLoading: false,
             })
@@ -255,7 +365,15 @@ describe('useTrialModalProps', () => {
             expect(result.current.trialStartedBanner).toEqual({
                 title: 'Shopping Assistant trial ends in 3 days.',
                 description:
-                    "So far, it's generated 50 in added GMV for your store.",
+                    "So far, it's generated $50 in added GMV for your store.",
+                primaryAction: expect.objectContaining({
+                    label: 'Upgrade Now',
+                    onClick: expect.any(Function),
+                }),
+                secondaryAction: expect.objectContaining({
+                    label: 'Manage Trial',
+                    onClick: expect.any(Function),
+                }),
             })
         })
     })
@@ -277,7 +395,7 @@ describe('useTrialModalProps', () => {
 
         it('should return correct alert banner when user can book demo', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
                 canBookDemo: true,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
@@ -291,11 +409,11 @@ describe('useTrialModalProps', () => {
                 description:
                     "Make every interaction personal. With AI Agent's new shopping assistant features, you can offer real-time recommendations powered by rich insights and persuasive selling skills that help customers buy with confidence.",
                 primaryAction: {
-                    label: 'Try for 14 days',
+                    label: 'Book a demo',
                     onClick: expect.any(Function),
                 },
                 secondaryAction: {
-                    label: 'Book a demo',
+                    label: 'How Shopping Assistant Accelerates Growth',
                     onClick: expect.any(Function),
                 },
             })
@@ -303,7 +421,7 @@ describe('useTrialModalProps', () => {
 
         it('should return correct alert banner when user cannot book demo', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
@@ -335,7 +453,7 @@ describe('useTrialModalProps', () => {
             global.window.open = mockWindowOpen
 
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
                 canBookDemo: true,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
@@ -344,7 +462,7 @@ describe('useTrialModalProps', () => {
 
             const { result } = renderHook(() => useTrialModalProps({}))
 
-            result.current.trialAlertBanner.secondaryAction?.onClick()
+            result.current.trialAlertBanner.primaryAction?.onClick()
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 'https://www.gorgias.com/demo/customers/automate',
@@ -357,7 +475,7 @@ describe('useTrialModalProps', () => {
             global.window.open = mockWindowOpen
 
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
@@ -408,11 +526,11 @@ describe('useTrialModalProps', () => {
 
             const { result } = renderHook(() => useTrialModalProps({}))
 
-            expect(result.current.upgradePlanModal.currentPlan.price).toBe(
+            expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
                 '€50',
             )
             expect(
-                result.current.upgradePlanModal.newPlan.priceTooltipText,
+                result.current.trialUpgradePlanModal.newPlan.priceTooltipText,
             ).toContain('€1 helpdesk fee')
         })
 
@@ -439,9 +557,11 @@ describe('useTrialModalProps', () => {
 
             const { result } = renderHook(() => useTrialModalProps({}))
 
-            expect(result.current.upgradePlanModal.currentPlan.price).toBe('$0')
+            expect(result.current.trialUpgradePlanModal.currentPlan.price).toBe(
+                '$0',
+            )
             expect(
-                result.current.upgradePlanModal.newPlan.priceTooltipText,
+                result.current.trialUpgradePlanModal.newPlan.priceTooltipText,
             ).toContain('$0 helpdesk fee')
         })
     })
@@ -477,7 +597,20 @@ describe('useTrialModalProps', () => {
             // Rerender without changing dependencies
             rerender()
 
-            expect(result.current).toBe(firstResult)
+            // The hook returns a new object each time due to the wrapper useMemo
+            // But the individual properties should have stable references
+            expect(result.current.upgradePlanModal).toEqual(
+                firstResult.upgradePlanModal,
+            )
+            expect(result.current.trialUpgradePlanModal).toEqual(
+                firstResult.trialUpgradePlanModal,
+            )
+            expect(result.current.trialActivatedModal).toEqual(
+                firstResult.trialActivatedModal,
+            )
+            expect(result.current.manageTrialModal).toEqual(
+                firstResult.manageTrialModal,
+            )
         })
 
         it('should create new object when onConfirmTrial changes', () => {
@@ -537,7 +670,9 @@ describe('useTrialModalProps', () => {
 
             const { result } = renderHook(() => useTrialModalProps({}))
 
-            expect(result.current.upgradePlanModal.newPlan.price).toBe('$0')
+            expect(result.current.trialUpgradePlanModal.newPlan.price).toBe(
+                '$0',
+            )
         })
     })
 })

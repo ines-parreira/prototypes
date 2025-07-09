@@ -139,7 +139,7 @@ describe('AiAgentOverview', () => {
                     },
                     helpdesk: {
                         amount: 10000, // $100 in cents
-                        num_quota_tickets: 100,
+                        num_quota_tickets: 2000,
                     },
                 },
             },
@@ -577,11 +577,11 @@ describe('AiAgentOverview', () => {
             renderComponent()
 
             // Hook is called multiple times due to TrialManageWorkflow component and React re-renders
-            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(2)
+            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(3)
 
             // Re-render should call again
             renderComponent()
-            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(4)
+            expect(mockUseShoppingAssistantTrialAccess).toHaveBeenCalledTimes(6)
         })
     })
 

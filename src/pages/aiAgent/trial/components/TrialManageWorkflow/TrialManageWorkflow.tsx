@@ -1,7 +1,9 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { logEvent } from 'common/segment/segment'
+import { SegmentEvent } from 'common/segment/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
@@ -16,6 +18,8 @@ import {
     TrialEndingTomorrowModal,
 } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
+import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useOptOutPlan } from 'pages/aiAgent/trial/hooks/useOptOutPlan'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -24,31 +28,32 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './TrialManageWorkflow.less'
 
-export const TrialManageWorkflow = () => {
+export type TrialManageWorkflowProps = {
+    pageName: 'Strategy' | 'Engagement'
+}
+
+export const TrialManageWorkflow = ({ pageName }: TrialManageWorkflowProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const { trialStartedBanner, manageTrialModal } = useTrialModalProps({})
     const { storeActivations } = useStoreActivations()
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
+    const [showCanduDiv, setShowCanduDiv] = useState(false)
+
+    const { hasActiveTrial } = useShoppingAssistantTrialAccess()
 
     const { upgradePlan, isLoading: isUpgradePlanLoading } = useUpgradePlan()
-
-    const { canSeeTrialStartedBanner, canBookDemo } =
-        useShoppingAssistantTrialAccess()
 
     const accountDomain = currentAccount.get('domain')
 
     const {
-        openManageTrialModal,
         isManageTrialModalOpen,
         closeManageTrialModal,
+        isUpgradePlanModalOpen,
+        openTrialUpgradeModal,
+        closeUpgradePlanModal,
     } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
     })
-
-    const handleManageTrial = () => {
-        openManageTrialModal()
-    }
 
     const onOptOutClick = () => {
         closeManageTrialModal()
@@ -56,53 +61,42 @@ export const TrialManageWorkflow = () => {
     }
 
     const onUpgradeClick = useCallback(() => {
+        logEvent(SegmentEvent.PricingModalClicked, {
+            type: 'upgraded',
+        })
         upgradePlan()
         closeManageTrialModal()
     }, [upgradePlan, closeManageTrialModal])
 
-    const primaryAction = useMemo(() => {
-        if (canBookDemo) {
-            return {
-                label: 'Book a demo',
-                onClick: () => {
-                    window.open(
-                        'https://www.gorgias.com/demo/customers/automate',
-                        '_blank',
-                    )
-                },
-            }
-        }
+    const trialModalProps = useTrialModalProps({ pageName })
 
-        return {
-            label: isUpgradePlanLoading ? 'Upgrading...' : 'Upgrade Now',
-            isLoading: isUpgradePlanLoading,
-            onClick: onUpgradeClick,
+    const onCloseOptOutModal = () => {
+        setIsOptOutModalOpen(false)
+        setShowCanduDiv(true)
+    }
+
+    useEffect(() => {
+        if (hasActiveTrial) {
+            logEvent(SegmentEvent.TrialBannerSettingsViewed, {
+                type: pageName,
+            })
         }
-    }, [canBookDemo, isUpgradePlanLoading, onUpgradeClick])
+    }, [pageName, hasActiveTrial])
 
     return (
         <>
-            {canSeeTrialStartedBanner && (
-                <TrialAlertBanner
-                    {...trialStartedBanner}
-                    primaryAction={primaryAction}
-                    secondaryAction={{
-                        label: 'Manage Trial',
-                        onClick: handleManageTrial,
-                    }}
-                />
+            {hasActiveTrial && (
+                <TrialAlertBanner {...trialModalProps.trialStartedBanner} />
             )}
+
             {isManageTrialModalOpen && (
                 <TrialManageModal
+                    {...trialModalProps.manageTrialModal}
                     title="Manage Shopping Assistant trial"
-                    description={manageTrialModal.description}
-                    advantages={manageTrialModal.advantages}
-                    secondaryDescription={manageTrialModal.secondaryDescription}
                     onClose={closeManageTrialModal}
                     primaryAction={{
                         label: 'Upgrade Now',
-                        isLoading: isUpgradePlanLoading,
-                        onClick: onUpgradeClick,
+                        onClick: openTrialUpgradeModal,
                     }}
                     secondaryAction={{
                         label: 'Opt Out',
@@ -110,30 +104,68 @@ export const TrialManageWorkflow = () => {
                     }}
                 />
             )}
+            {isUpgradePlanModalOpen && (
+                <UpgradePlanModal
+                    {...trialModalProps.upgradePlanModal}
+                    onClose={closeUpgradePlanModal}
+                    onConfirm={onUpgradeClick}
+                    onDismiss={closeUpgradePlanModal}
+                    isLoading={isUpgradePlanLoading}
+                />
+            )}
             {isOptOutModalOpen && (
-                <TrialOptOutModal onClose={() => setIsOptOutModalOpen(false)} />
+                <TrialOptOutModal onClose={onCloseOptOutModal} />
             )}
 
             <TrialEndedModal />
             <TrialEndingTomorrowModal />
 
             {/* This is used to track the opt out feedback */}
-            <div data-candu-id="shopping-assistant-opt-out-feedback" />
+            {showCanduDiv && (
+                <div data-candu-id="shopping-assistant-opt-out-feedback" />
+            )}
         </>
     )
 }
 
 export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
+    const { optOutPlan, isLoading: isOptOutPlanLoading } = useOptOutPlan()
+
+    const onOptOutClick = () => {
+        logEvent(SegmentEvent.TrialOptOutModalClicked, {
+            CTA: 'Confirm',
+        })
+        optOutPlan(undefined, {
+            onSuccess: () => {
+                onClose()
+            },
+        })
+    }
+
+    const onDismissClick = () => {
+        logEvent(SegmentEvent.TrialOptOutModalClicked, {
+            CTA: 'Dismiss',
+        })
+        onClose()
+    }
+
+    const onCloseModal = () => {
+        logEvent(SegmentEvent.TrialOptOutModalClicked, {
+            CTA: 'Close',
+        })
+        onClose()
+    }
+
     return (
         <ModalWrapper
             isOpen
             size="lg"
-            toggle={onClose}
+            toggle={onCloseModal}
             fade
             centered
             contentClassName={css.modal}
         >
-            <ModalHeaderWrapper toggle={onClose}>
+            <ModalHeaderWrapper toggle={onCloseModal}>
                 Opt out of upgrade?
             </ModalHeaderWrapper>
             <ModalBodyWrapper>
@@ -149,7 +181,7 @@ export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
             </ModalBodyWrapper>
             <ModalFooterWrapper>
                 <Button
-                    onClick={onClose}
+                    onClick={onDismissClick}
                     fillStyle="ghost"
                     intent="secondary"
                     className={css.secondaryActionButton}
@@ -157,7 +189,15 @@ export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
                     Dismiss
                 </Button>
 
-                <Button className={css.primaryActionButton} onClick={onClose}>
+                <Button
+                    className={
+                        isOptOutPlanLoading
+                            ? undefined
+                            : css.primaryActionButton
+                    }
+                    onClick={onOptOutClick}
+                    isLoading={isOptOutPlanLoading}
+                >
                     Opt Out
                 </Button>
             </ModalFooterWrapper>

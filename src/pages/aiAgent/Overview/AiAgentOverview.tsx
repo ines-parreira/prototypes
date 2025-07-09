@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
@@ -17,7 +19,6 @@ import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
-import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -54,26 +55,32 @@ export const AiAgentOverview = () => {
     const { isOpen, isLoading, handleModalAction, modalContent } =
         useThankYouModal()
 
-    const {
-        canSeeTrialCTA: canSeeTrialRevamp,
-        canBookDemo,
-        canSeeTrialStartedBanner,
-    } = useShoppingAssistantTrialAccess()
+    const { canSeeTrialCTA, canBookDemo, hasActiveTrial } =
+        useShoppingAssistantTrialAccess()
 
     const { storeActivations } = useStoreActivations()
 
     const {
         startTrial,
         isLoading: isTrialRevampLoading,
-        isTrialModalOpen: isUpgradeModalOpen,
+        isTrialModalOpen: isTrialUpgradeModalOpen,
         isSuccessModalOpen,
-        closeUpgradeModal,
+        closeTrialUpgradeModal,
         closeSuccessModal,
         onConfirmTrial,
+        onDismissTrialUpgradeModal,
     } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
     })
+
+    useEffect(() => {
+        if ((canSeeTrialCTA || canBookDemo) && !hasActiveTrial) {
+            logEvent(SegmentEvent.TrialBannerOverviewViewed, {
+                type: canBookDemo ? 'Demo' : 'Trial',
+            })
+        }
+    }, [canSeeTrialCTA, canBookDemo, hasActiveTrial])
 
     const onConfirmModal = () => handleModalAction('confirm')
     const onCloseModal = () => handleModalAction('close')
@@ -90,19 +97,18 @@ export const AiAgentOverview = () => {
                     hasNoOnboardedStores ? null : activationButton
                 }
             />
-            {(canSeeTrialRevamp || canBookDemo) &&
-                !canSeeTrialStartedBanner && (
-                    <TrialAlertBanner {...trialModalProps.trialAlertBanner} />
-                )}
+            {(canSeeTrialCTA || canBookDemo) && !hasActiveTrial && (
+                <TrialAlertBanner {...trialModalProps.trialAlertBanner} />
+            )}
 
-            <TrialManageWorkflow />
-
-            {isUpgradeModalOpen && (
+            {isTrialUpgradeModalOpen && (
                 <UpgradePlanModal
-                    {...trialModalProps.upgradePlanModal}
-                    onClose={closeUpgradeModal}
+                    {...trialModalProps.trialUpgradePlanModal}
+                    onClose={closeTrialUpgradeModal}
                     onConfirm={startTrial}
+                    onDismiss={onDismissTrialUpgradeModal}
                     isLoading={isTrialRevampLoading}
+                    isTrial
                 />
             )}
 
@@ -112,6 +118,7 @@ export const AiAgentOverview = () => {
                     onConfirm={closeSuccessModal}
                 />
             )}
+
             <KpiSection
                 isOnNewPlan={isOnNewPlan}
                 showActivationModal={showActivationModal}

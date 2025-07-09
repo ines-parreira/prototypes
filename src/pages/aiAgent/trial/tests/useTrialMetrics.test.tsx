@@ -1,22 +1,41 @@
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
+import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
-import { ReportingGranularity } from 'models/reporting/types'
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { useGmvUsdOverTimeSeries } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
+import { useGmvInfluencedRateTrend } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedRateTrend'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useTrialMetrics } from '../hooks/useTrialMetrics'
 
 // Mock all dependencies
+jest.mock('hooks/reporting/useMetricPerDimension')
 jest.mock('hooks/useAppSelector')
+jest.mock('models/billing/queries')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
-jest.mock('pages/stats/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries')
+jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
+jest.mock('pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedRateTrend')
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils',
+    () => ({
+        formatAmount: jest.fn(),
+    }),
+)
 
+const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)
 const mockUseAppSelector = assumeMock(useAppSelector)
+const mockUseBillingState = assumeMock(useBillingState)
 const mockUseStoreActivations = assumeMock(useStoreActivations)
-const mockUseGmvUsdOverTimeSeries = assumeMock(useGmvUsdOverTimeSeries)
+const mockUseSalesTrialRevampMilestone = assumeMock(
+    useSalesTrialRevampMilestone,
+)
+const mockUseGmvInfluencedRateTrend = assumeMock(useGmvInfluencedRateTrend)
+const mockFormatAmount = jest.requireMock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils',
+).formatAmount
 
 describe('useTrialMetrics', () => {
     const mockStoreActivations = {
@@ -63,75 +82,85 @@ describe('useTrialMetrics', () => {
             isFetchLoading: false,
         } as any)
 
-        mockUseGmvUsdOverTimeSeries.mockReturnValue({
-            data: [
-                [
-                    { value: 1000, dateTime: '2023-11-01' },
-                    { value: 1500, dateTime: '2023-11-02' },
-                    { value: 2000, dateTime: '2023-11-03' },
+        mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+
+        mockUseMetricPerDimension.mockReturnValue({
+            data: {
+                allData: [
+                    { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
+                    { [AiSalesAgentOrdersMeasure.Gmv]: '1500' },
+                    { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
                 ],
-            ],
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
+            },
+            isFetching: false,
         } as any)
+
+        mockUseGmvInfluencedRateTrend.mockReturnValue({
+            data: { value: 25 },
+            isFetching: false,
+        } as any)
+
+        mockUseBillingState.mockReturnValue({
+            data: {
+                current_plans: {
+                    automate: {
+                        currency: 'USD',
+                    },
+                },
+            },
+        } as any)
+
+        mockFormatAmount.mockReturnValue('$4,500')
     })
 
     describe('basic functionality', () => {
         it('should calculate GMV correctly from time series data', () => {
             const { result } = renderHook(() => useTrialMetrics())
 
-            expect(result.current.gmv).toBe(4500) // 1000 + 1500 + 2000
+            expect(result.current.gmvInfluenced).toBe('$4,500') // formatted amount
             expect(result.current.isLoading).toBe(false)
         })
 
         it('should return 0 GMV when no data is available', () => {
-            mockUseGmvUsdOverTimeSeries.mockReturnValue({
+            mockUseMetricPerDimension.mockReturnValue({
                 data: undefined,
-                isLoading: false,
-                isError: false,
-                error: null,
-                refetch: jest.fn(),
+                isFetching: false,
             } as any)
+            mockFormatAmount.mockReturnValue('$0')
 
             const { result } = renderHook(() => useTrialMetrics())
 
-            expect(result.current.gmv).toBe(0)
+            expect(result.current.gmvInfluenced).toBe('$0')
         })
 
         it('should return 0 GMV when data is empty', () => {
-            mockUseGmvUsdOverTimeSeries.mockReturnValue({
-                data: [],
-                isLoading: false,
-                isError: false,
-                error: null,
-                refetch: jest.fn(),
+            mockUseMetricPerDimension.mockReturnValue({
+                data: { allData: [] },
+                isFetching: false,
             } as any)
+            mockFormatAmount.mockReturnValue('$0')
 
             const { result } = renderHook(() => useTrialMetrics())
 
-            expect(result.current.gmv).toBe(0)
+            expect(result.current.gmvInfluenced).toBe('$0')
         })
 
-        it('should handle null values in time series data', () => {
-            mockUseGmvUsdOverTimeSeries.mockReturnValue({
-                data: [
-                    [
-                        { value: 1000, dateTime: '2023-11-01' },
-                        { value: null, dateTime: '2023-11-02' },
-                        { value: 2000, dateTime: '2023-11-03' },
+        it('should handle null values in GMV data', () => {
+            mockFormatAmount.mockReturnValue('$3,000')
+            mockUseMetricPerDimension.mockReturnValue({
+                data: {
+                    allData: [
+                        { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
+                        { [AiSalesAgentOrdersMeasure.Gmv]: null },
+                        { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
                     ],
-                ],
-                isLoading: false,
-                isError: false,
-                error: null,
-                refetch: jest.fn(),
+                },
+                isFetching: false,
             } as any)
 
             const { result } = renderHook(() => useTrialMetrics())
 
-            expect(result.current.gmv).toBe(3000) // 1000 + 0 + 2000
+            expect(result.current.gmvInfluenced).toBe('$3,000') // formatted amount
         })
     })
 
@@ -139,19 +168,20 @@ describe('useTrialMetrics', () => {
         it('should pass correct store IDs to GMV query', () => {
             renderHook(() => useTrialMetrics())
 
-            expect(mockUseGmvUsdOverTimeSeries).toHaveBeenCalledWith(
+            expect(mockUseMetricPerDimension).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    storeIntegrations: {
-                        operator: LogicalOperatorEnum.ONE_OF,
-                        values: [1, 2], // IDs for store-1 and store-2
-                    },
+                    filters: expect.arrayContaining([
+                        expect.objectContaining({
+                            member: 'AiSalesAgentOrders.integrationId',
+                            operator: 'equals',
+                            values: ['1', '2'], // IDs for store-1 and store-2
+                        }),
+                    ]),
                 }),
-                'America/New_York',
-                ReportingGranularity.Day,
             )
         })
 
-        it('should pass undefined storeIntegrations when no activations exist', () => {
+        it('should not include integrationId filter when no activations exist', () => {
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: null,
                 isFetchLoading: false,
@@ -159,13 +189,11 @@ describe('useTrialMetrics', () => {
 
             renderHook(() => useTrialMetrics())
 
-            expect(mockUseGmvUsdOverTimeSeries).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    storeIntegrations: undefined,
-                }),
-                'America/New_York',
-                ReportingGranularity.Day,
+            const call = mockUseMetricPerDimension.mock.calls[0]
+            const integrationFilter = call[0].filters.find(
+                (f: any) => f.member === 'AiSalesAgentOrders.integrationId',
             )
+            expect(integrationFilter).toBeUndefined()
         })
 
         it('should filter out stores without matching integrations', () => {
@@ -184,15 +212,16 @@ describe('useTrialMetrics', () => {
 
             renderHook(() => useTrialMetrics())
 
-            expect(mockUseGmvUsdOverTimeSeries).toHaveBeenCalledWith(
+            expect(mockUseMetricPerDimension).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    storeIntegrations: {
-                        operator: LogicalOperatorEnum.ONE_OF,
-                        values: [1, 2], // Only store-1 and store-2
-                    },
+                    filters: expect.arrayContaining([
+                        expect.objectContaining({
+                            member: 'AiSalesAgentOrders.integrationId',
+                            operator: 'equals',
+                            values: ['1', '2'], // Only store-1 and store-2
+                        }),
+                    ]),
                 }),
-                expect.any(String),
-                expect.any(String),
             )
         })
     })
@@ -201,10 +230,10 @@ describe('useTrialMetrics', () => {
         it('should use timezone from selector', () => {
             renderHook(() => useTrialMetrics())
 
-            expect(mockUseGmvUsdOverTimeSeries).toHaveBeenCalledWith(
-                expect.any(Object),
-                'America/New_York',
-                ReportingGranularity.Day,
+            expect(mockUseMetricPerDimension).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    timezone: 'America/New_York',
+                }),
             )
         })
 
@@ -212,7 +241,8 @@ describe('useTrialMetrics', () => {
             // Clear all mocks to reset the mock implementation
             mockUseAppSelector.mockReset()
             mockUseStoreActivations.mockReset()
-            mockUseGmvUsdOverTimeSeries.mockReset()
+            mockUseMetricPerDimension.mockReset()
+            mockUseGmvInfluencedRateTrend.mockReset()
 
             mockUseAppSelector
                 .mockReturnValueOnce(mockStoreIntegrations) // getIntegrationsByTypes
@@ -223,20 +253,24 @@ describe('useTrialMetrics', () => {
                 isFetchLoading: false,
             } as any)
 
-            mockUseGmvUsdOverTimeSeries.mockReturnValue({
-                data: [],
-                isLoading: false,
-                isError: false,
-                error: null,
-                refetch: jest.fn(),
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+
+            mockUseMetricPerDimension.mockReturnValue({
+                data: { allData: [] },
+                isFetching: false,
+            } as any)
+
+            mockUseGmvInfluencedRateTrend.mockReturnValue({
+                data: { value: 25 },
+                isFetching: false,
             } as any)
 
             renderHook(() => useTrialMetrics())
 
-            expect(mockUseGmvUsdOverTimeSeries).toHaveBeenCalledWith(
-                expect.any(Object),
-                'UTC',
-                ReportingGranularity.Day,
+            expect(mockUseMetricPerDimension).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    timezone: 'UTC',
+                }),
             )
         })
     })
@@ -277,13 +311,21 @@ describe('useTrialMetrics', () => {
     })
 
     describe('loading state', () => {
-        it('should return loading state from useGmvUsdOverTimeSeries', () => {
-            mockUseGmvUsdOverTimeSeries.mockReturnValue({
+        it('should return loading state from useMetricPerDimension', () => {
+            mockUseMetricPerDimension.mockReturnValue({
                 data: undefined,
-                isLoading: true,
-                isError: false,
-                error: null,
-                refetch: jest.fn(),
+                isFetching: true,
+            } as any)
+
+            const { result } = renderHook(() => useTrialMetrics())
+
+            expect(result.current.isLoading).toBe(true)
+        })
+
+        it('should return loading state from useGmvInfluencedRateTrend', () => {
+            mockUseGmvInfluencedRateTrend.mockReturnValue({
+                data: undefined,
+                isFetching: true,
             } as any)
 
             const { result } = renderHook(() => useTrialMetrics())
@@ -293,16 +335,24 @@ describe('useTrialMetrics', () => {
     })
 
     describe('date range', () => {
-        it('should pass a 30-day period to the query', () => {
+        it('should pass a 14-day period to the query', () => {
             renderHook(() => useTrialMetrics())
 
-            const call = mockUseGmvUsdOverTimeSeries.mock.calls[0]
-            const period = call[0].period
+            const call = mockUseMetricPerDimension.mock.calls[0]
+            const filters = call[0].filters
+            const startFilter = filters.find(
+                (f: any) => f.member === 'AiSalesAgentOrders.periodStart',
+            )
+            const endFilter = filters.find(
+                (f: any) => f.member === 'AiSalesAgentOrders.periodEnd',
+            )
 
-            expect(period).toHaveProperty('start_datetime')
-            expect(period).toHaveProperty('end_datetime')
-            expect(typeof period.start_datetime).toBe('string')
-            expect(typeof period.end_datetime).toBe('string')
+            expect(startFilter).toBeDefined()
+            expect(endFilter).toBeDefined()
+            expect(startFilter?.operator).toBe('afterDate')
+            expect(endFilter?.operator).toBe('beforeDate')
+            expect(typeof startFilter?.values[0]).toBe('string')
+            expect(typeof endFilter?.values[0]).toBe('string')
         })
     })
 
@@ -312,6 +362,23 @@ describe('useTrialMetrics', () => {
 
             // Should be called at least twice - once for integrations, once for timezone
             expect(mockUseAppSelector).toHaveBeenCalledTimes(2)
+        })
+
+        it('should return gmvInfluencedRate from the trend hook', () => {
+            const { result } = renderHook(() => useTrialMetrics())
+
+            expect(result.current.gmvInfluencedRate).toBe(25)
+        })
+
+        it('should return 0 gmvInfluencedRate when no data', () => {
+            mockUseGmvInfluencedRateTrend.mockReturnValue({
+                data: undefined,
+                isFetching: false,
+            } as any)
+
+            const { result } = renderHook(() => useTrialMetrics())
+
+            expect(result.current.gmvInfluencedRate).toBe(0)
         })
     })
 })

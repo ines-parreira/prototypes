@@ -37,6 +37,7 @@ describe('UpgradePlanModal', () => {
         onConfirm: jest.fn(),
         currentPlan: mockCurrentPlan,
         newPlan: mockNewPlan,
+        onDismiss: jest.fn(),
     }
 
     afterEach(() => {
@@ -170,12 +171,12 @@ describe('UpgradePlanModal', () => {
         expect(mockOnConfirm).toHaveBeenCalledTimes(1)
     })
 
-    it('should call onClose when keep current plan button is clicked', async () => {
+    it('should call onDismiss when keep current plan button is clicked', async () => {
         const user = userEvent.setup()
-        const mockOnClose = jest.fn()
+        const mockOnDismiss = jest.fn()
         const props = {
             ...defaultProps,
-            onClose: mockOnClose,
+            onDismiss: mockOnDismiss,
         }
 
         render(<UpgradePlanModal {...props} />)
@@ -185,7 +186,7 @@ describe('UpgradePlanModal', () => {
         })
         await user.click(keepButton)
 
-        expect(mockOnClose).toHaveBeenCalledTimes(1)
+        expect(mockOnDismiss).toHaveBeenCalledTimes(1)
     })
 
     it('should call onClose when modal close button is clicked', async () => {

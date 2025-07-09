@@ -2,13 +2,17 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
+import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
-import { ReportingGranularity } from 'models/reporting/types'
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { gmvInfluencedQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getShoppingAssistantExpirationDays } from 'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useGmvUsdOverTimeSeries } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
+import { formatAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
+import { useGmvInfluencedRateTrend } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvInfluencedRateTrend'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -48,28 +52,37 @@ export const useTrialMetrics = () => {
         const now = moment()
 
         return {
-            from: now.clone().subtract(30, 'd').toISOString(),
+            from: now.clone().subtract(14, 'd').toISOString(),
             to: now.toISOString(),
         }
     }, [])
 
-    const { data, isLoading } = useGmvUsdOverTimeSeries(
-        {
-            period: {
-                end_datetime: to,
-                start_datetime: from,
-            },
-            storeIntegrations:
-                storeIds.length > 0
-                    ? {
-                          operator: LogicalOperatorEnum.ONE_OF,
-                          values: storeIds,
-                      }
-                    : undefined,
+    const filters = {
+        period: {
+            end_datetime: to,
+            start_datetime: from,
         },
-        timezone,
-        ReportingGranularity.Day,
-    )
+        storeIntegrations:
+            storeIds.length > 0
+                ? {
+                      operator: LogicalOperatorEnum.ONE_OF,
+                      values: storeIds,
+                  }
+                : undefined,
+    }
+
+    const currentPeriodQuery = gmvInfluencedQueryFactory(filters, timezone)
+
+    const { data: gmvInfluencedData, isFetching: isGmvInfluencedFetching } =
+        useMetricPerDimension(currentPeriodQuery)
+
+    const { data: gmvInfluencedRate, isFetching: isGmvInfluencedRateFetching } =
+        useGmvInfluencedRateTrend(filters, timezone)
+
+    const billingState = useBillingState()
+    const currentPlan = billingState?.data?.current_plans?.automate
+
+    const currency = currentPlan?.currency ?? 'USD'
 
     const remainingDays = useMemo(() => {
         if (!storeActivations) {
@@ -104,22 +117,25 @@ export const useTrialMetrics = () => {
         return remainingDays.length > 0 ? Math.min(...remainingDays) : 0
     }, [storeActivations, isRevampTrialMilestone0Enabled])
 
-    const gmv = useMemo(() => {
-        if (!data || !Array.isArray(data) || data.length === 0) {
+    const gmvInfluenced = useMemo(() => {
+        if (
+            !gmvInfluencedData ||
+            !gmvInfluencedData.allData ||
+            !Array.isArray(gmvInfluencedData.allData)
+        ) {
             return 0
         }
 
-        const timeSeriesData = data[0]
-        if (!Array.isArray(timeSeriesData)) {
-            return 0
-        }
-
-        return timeSeriesData.reduce((acc, curr) => acc + (curr.value || 0), 0)
-    }, [data])
+        return gmvInfluencedData.allData.reduce((acc, curr) => {
+            const gmvValue = curr[AiSalesAgentOrdersMeasure.Gmv]
+            return acc + (gmvValue ? parseFloat(gmvValue) : 0)
+        }, 0)
+    }, [gmvInfluencedData])
 
     return {
         remainingDays,
-        gmv,
-        isLoading,
+        gmvInfluenced: formatAmount(currency, gmvInfluenced),
+        gmvInfluencedRate: gmvInfluencedRate?.value || 0,
+        isLoading: isGmvInfluencedFetching || isGmvInfluencedRateFetching,
     }
 }

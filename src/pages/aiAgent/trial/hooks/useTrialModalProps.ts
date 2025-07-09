@@ -1,25 +1,44 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
+import { SegmentEvent } from 'common/segment'
+import { logEvent } from 'common/segment/segment'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     useBillingState,
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+
+const EXTERNAL_URLS = {
+    BOOK_DEMO: 'https://www.gorgias.com/demo/customers/automate',
+    SHOPPING_ASSISTANT_INFO: 'https://www.gorgias.com/ai-shopping-assistant',
+} as const
 
 export type TrialModalProps = {
+    trialUpgradePlanModal: Pick<
+        UpgradePlanModalProps,
+        'title' | 'currentPlan' | 'newPlan'
+    >
     upgradePlanModal: Pick<
         UpgradePlanModalProps,
         'title' | 'currentPlan' | 'newPlan'
     >
     trialActivatedModal: Pick<TrialActivatedModalProps, 'title'>
-    trialStartedBanner: Pick<TrialAlertBannerProps, 'title' | 'description'>
+    trialStartedBanner: Pick<
+        TrialAlertBannerProps,
+        'title' | 'description' | 'primaryAction' | 'secondaryAction'
+    >
     trialAlertBanner: Pick<
         TrialAlertBannerProps,
         'title' | 'description' | 'primaryAction' | 'secondaryAction'
@@ -30,7 +49,16 @@ export type TrialModalProps = {
     >
 }
 
-const useUpgradePlanModal = (): TrialModalProps['upgradePlanModal'] => {
+type PlanDetails = {
+    currentPlanAmount: number
+    currency: string
+    currentPlanAmountFormatted: string
+    helpdeskPlanTicketCost: string
+    earlyAccessPlanAmount: string
+    numQuotaTickets: number
+}
+
+const usePlanDetails = (): PlanDetails => {
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
     const { amount: earlyAccessPlanAmount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessAutomatePlanQuery.data)
@@ -40,80 +68,167 @@ const useUpgradePlanModal = (): TrialModalProps['upgradePlanModal'] => {
 
     const currentPlanAmount = (currentPlan?.amount ?? 0) / 100
     const currency = currentPlan?.currency ?? 'USD'
-
     const currentPlanAmountFormatted = formatAmount(currentPlanAmount, currency)
-
     const helpdeskPlanTicketCost = formatAmount(
         (helpdeskPlan?.amount ?? 0) /
             (helpdeskPlan?.num_quota_tickets ?? 1) /
             100,
         currency,
     )
+    const numQuotaTickets = helpdeskPlan?.num_quota_tickets ?? 1
 
-    return useMemo(
-        () => ({
-            title: 'Try Shopping Assistant for 14 days at no additional cost',
-            currentPlan: {
-                title: 'Support Agent',
-                description: 'Provide best-in-class automated support',
-                price: currentPlanAmountFormatted,
-                billingPeriod: 'month',
-                features: [
-                    '2000 automated interactions',
-                    'Deliver instant answers to repetitive questions and improve customer satisfaction',
-                    'Automatically handle orders, returns, and subscriptions quickly, 24/7',
-                ],
-                buttonText: 'Keep current plan',
-            },
-            newPlan: {
-                title: 'Support Agent and Shopping Assistant ',
-                description: 'Unlock full potential to drive more sales',
-                price: earlyAccessPlanAmount,
-                billingPeriod: 'month after trial ends',
-                features: [
-                    'Everything in Support Agent skills',
-                    'Proactively engage with customers to guide discovery',
-                    'Personalize recommendations with rich customer insights',
-                    'Intelligent upsell using customer input, not guesswork',
-                    'Offer discounts based on purchase intent',
-                ],
-                buttonText: 'Try for 14 days',
-                priceTooltipText: `Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a ${helpdeskPlanTicketCost} helpdesk fee.`,
-            },
-        }),
-        [
-            currentPlanAmountFormatted,
-            earlyAccessPlanAmount,
-            helpdeskPlanTicketCost,
+    return {
+        currentPlanAmount,
+        currency,
+        currentPlanAmountFormatted,
+        helpdeskPlanTicketCost,
+        earlyAccessPlanAmount,
+        numQuotaTickets,
+    }
+}
+
+const createPlanModalData = (
+    title: string,
+    planDetails: PlanDetails,
+    buttonTexts: { current: string; new: string },
+) => ({
+    title,
+    currentPlan: {
+        title: 'Support Agent',
+        description: 'Provide best-in-class automated support',
+        price: planDetails.currentPlanAmountFormatted,
+        billingPeriod: 'month',
+        features: [
+            `${planDetails.numQuotaTickets} automated interactions`,
+            'Deliver instant answers to repetitive questions and improve customer satisfaction',
+            'Automatically handle orders, returns, and subscriptions quickly, 24/7',
         ],
-    )
-}
+        buttonText: buttonTexts.current,
+    },
+    newPlan: {
+        title: 'Support Agent and Shopping Assistant ',
+        description: 'Unlock full potential to drive more sales',
+        price: planDetails.earlyAccessPlanAmount,
+        billingPeriod: 'month after trial ends',
+        features: [
+            'Everything in Support Agent skills',
+            'Proactively engage with customers to guide discovery',
+            'Personalize recommendations with rich customer insights',
+            'Intelligent upsell using customer input, not guesswork',
+            'Offer discounts based on purchase intent',
+        ],
+        buttonText: buttonTexts.new,
+        priceTooltipText: `Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a ${planDetails.helpdeskPlanTicketCost} helpdesk fee.`,
+    },
+})
 
-const useTrialActivatedModal = () => {
+const useUpgradePlanModal = (): TrialModalProps['upgradePlanModal'] => {
+    const planDetails = usePlanDetails()
+
     return useMemo(
-        () => ({
-            title: 'Trial activated',
-        }),
-        [],
+        () =>
+            createPlanModalData(
+                'Upgrade your AI Agent with new skills to drive more sales',
+                planDetails,
+                { current: 'Keep current plan', new: 'Upgrade AI Agent' },
+            ),
+        [planDetails],
     )
 }
 
-const useTrialStartedBanner = (): TrialModalProps['trialStartedBanner'] => {
-    const { remainingDays, gmv } = useTrialMetrics()
+const useTrialUpgradePlanModal =
+    (): TrialModalProps['trialUpgradePlanModal'] => {
+        const planDetails = usePlanDetails()
+
+        return useMemo(
+            () =>
+                createPlanModalData(
+                    'Try Shopping Assistant for 14 days at no additional cost',
+                    planDetails,
+                    { current: 'Keep current plan', new: 'Try for 14 days' },
+                ),
+            [planDetails],
+        )
+    }
+
+const useTrialActivatedModal = () => ({
+    title: 'Trial activated',
+})
+
+const useTrialStartedBanner = (
+    pageName?: 'Strategy' | 'Engagement',
+): TrialModalProps['trialStartedBanner'] => {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const { storeActivations } = useStoreActivations()
+
+    const trialMilestone = useSalesTrialRevampMilestone()
+
+    const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
+
+    const { remainingDays, gmvInfluenced, gmvInfluencedRate } =
+        useTrialMetrics()
+    const { canBookDemo } = useShoppingAssistantTrialAccess()
+    const accountDomain = currentAccount.get('domain')
+
+    const { openManageTrialModal, openUpgradePlanModal } =
+        useShoppingAssistantTrialFlow({
+            accountDomain,
+            storeActivations,
+        })
+
+    const handleManageTrial = useCallback(() => {
+        openManageTrialModal()
+    }, [openManageTrialModal])
+
+    const handleUpgradePlan = useCallback(() => {
+        logEvent(SegmentEvent.TrialBannerSettingsClicked, {
+            pageName,
+        })
+        openUpgradePlanModal()
+    }, [openUpgradePlanModal, pageName])
+
+    const secondaryAction = useMemo(() => {
+        if (!isRevampTrialMilestone1Enabled) {
+            return undefined
+        }
+
+        return {
+            label: 'Manage Trial',
+            onClick: handleManageTrial,
+        }
+    }, [handleManageTrial, isRevampTrialMilestone1Enabled])
+
+    const primaryAction = useMemo(() => {
+        if (canBookDemo) {
+            return {
+                label: 'Book a demo',
+                onClick: () => {
+                    window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+                },
+            }
+        }
+
+        return {
+            label: 'Upgrade Now',
+            onClick: handleUpgradePlan,
+        }
+    }, [canBookDemo, handleUpgradePlan])
 
     const description = useMemo(() => {
-        if (gmv > 0) {
-            return `So far, it's generated ${gmv} in added GMV for your store.`
+        if (gmvInfluencedRate > 0.01) {
+            return `So far, it's generated ${gmvInfluenced} in added GMV for your store.`
         }
         return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.`
-    }, [gmv])
+    }, [gmvInfluenced, gmvInfluencedRate])
 
     return useMemo(
         () => ({
             title: `Shopping Assistant trial ends in ${remainingDays} days.`,
             description,
+            primaryAction,
+            secondaryAction,
         }),
-        [remainingDays, description],
+        [remainingDays, description, primaryAction, secondaryAction],
     )
 }
 
@@ -125,71 +240,90 @@ const useTrialAlertBanner = ({
     const { canBookDemo } = useShoppingAssistantTrialAccess()
 
     const secondaryAction = useMemo(() => {
+        return {
+            label: 'How Shopping Assistant Accelerates Growth',
+            onClick: () => {
+                window.open(EXTERNAL_URLS.SHOPPING_ASSISTANT_INFO, '_blank')
+                logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
+                    CTA: 'Learn',
+                })
+            },
+        }
+    }, [])
+
+    const primaryAction = useMemo(() => {
         if (canBookDemo) {
             return {
                 label: 'Book a demo',
                 onClick: () => {
-                    window.open(
-                        'https://www.gorgias.com/demo/customers/automate',
-                        '_blank',
-                    )
+                    window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+                    logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
+                        CTA: 'Demo',
+                    })
                 },
             }
         }
 
         return {
-            label: 'How Shopping Assistant Accelerates Growth',
+            label: 'Try for 14 days',
             onClick: () => {
-                window.open(
-                    'https://www.gorgias.com/ai-shopping-assistant',
-                    '_blank',
-                )
+                onConfirmTrial?.()
+                logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
+                    CTA: 'Start Trial',
+                })
             },
         }
-    }, [canBookDemo])
+    }, [canBookDemo, onConfirmTrial])
 
     return useMemo(
         () => ({
             title: 'Drive more revenue with Shopping Assistant',
             description:
                 "Make every interaction personal. With AI Agent's new shopping assistant features, you can offer real-time recommendations powered by rich insights and persuasive selling skills that help customers buy with confidence.",
-            primaryAction: {
-                label: 'Try for 14 days',
-                onClick: onConfirmTrial ?? (() => {}),
-            },
+            primaryAction,
             secondaryAction,
         }),
-        [onConfirmTrial, secondaryAction],
+        [secondaryAction, primaryAction],
     )
 }
 
 const useTrialEndedModal = (): TrialModalProps['manageTrialModal'] => {
-    const { gmv } = useTrialMetrics()
+    const { gmvInfluenced, gmvInfluencedRate } = useTrialMetrics()
+    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
+    const earlyAccessPlanPrice =
+        (earlyAccessAutomatePlanQuery?.data?.amount ?? 0) / 100
+    const billingState = useBillingState()
+    const currentPlan = billingState?.data?.current_plans?.automate
+
+    const currentPlanAmount = (currentPlan?.amount ?? 0) / 100
+    const currency = currentPlan?.currency ?? 'USD'
+
+    const difference = earlyAccessPlanPrice - currentPlanAmount
 
     const description = useMemo(() => {
-        if (gmv > 0) {
-            return `Shopping Assistant boosted your GMV by +${gmv} during the trial. Keep the momentum going and turn even more visitors into buyers.`
+        if (gmvInfluencedRate > 0.01) {
+            return `Shopping Assistant boosted your GMV by +${gmvInfluenced} during the trial. Keep the momentum going and turn even more visitors into buyers.`
         }
         return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.`
-    }, [gmv])
+    }, [gmvInfluenced, gmvInfluencedRate])
 
     const advantages = useMemo(() => {
-        if (gmv > 0) {
-            return [`${gmv} GMV uplift`]
+        if (gmvInfluencedRate > 0.01) {
+            return [`${gmvInfluenced} GMV uplift`]
         }
         return [
             '10% average order value',
             '62% conversion rate',
             '1.5% revenue',
         ]
-    }, [gmv])
+    }, [gmvInfluenced, gmvInfluencedRate])
 
     const secondaryDescription = useMemo(() => {
-        if (gmv > 0) {
-            return `After your trial, your plan will increase by $X/month.`
+        if (gmvInfluencedRate > 0.01) {
+            return `After your trial, your plan will increase by ${formatAmount(difference, currency)}.`
         }
-        return `Typical results achieved by merchants. After upgrading, your plan will increase by $X/month.`
-    }, [gmv])
+        return `Typical results achieved by merchants. After upgrading, your plan will increase by ${formatAmount(difference, currency)}.`
+    }, [gmvInfluencedRate, difference, currency])
 
     return useMemo(
         () => ({
@@ -204,12 +338,15 @@ const useTrialEndedModal = (): TrialModalProps['manageTrialModal'] => {
 
 export const useTrialModalProps = ({
     onConfirmTrial,
+    pageName,
 }: {
     onConfirmTrial?: () => void
+    pageName?: 'Strategy' | 'Engagement'
 }): TrialModalProps => {
     const upgradePlanModal = useUpgradePlanModal()
+    const trialUpgradePlanModal = useTrialUpgradePlanModal()
     const trialActivatedModal = useTrialActivatedModal()
-    const trialStartedBanner = useTrialStartedBanner()
+    const trialStartedBanner = useTrialStartedBanner(pageName)
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })
@@ -218,6 +355,7 @@ export const useTrialModalProps = ({
     return useMemo(
         () => ({
             upgradePlanModal,
+            trialUpgradePlanModal,
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,
@@ -225,6 +363,7 @@ export const useTrialModalProps = ({
         }),
         [
             upgradePlanModal,
+            trialUpgradePlanModal,
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,

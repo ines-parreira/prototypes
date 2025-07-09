@@ -15,7 +15,6 @@ import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActiv
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
-import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -33,7 +32,6 @@ const AiSalesAgentSalesOverview = () => {
     useCleanStatsFilters()
     const history = useHistory()
     const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
-    const [isTrialModalRevampOpen, setIsTrialModalRevampOpen] = useState(false)
 
     const shouldDisplayPaywall =
         !useCanUseAiSalesAgent() && !atLeastOneStoreHasActiveTrial
@@ -71,11 +69,7 @@ const AiSalesAgentSalesOverview = () => {
         : canStartTrialOriginal || canStartTrialFromFeatureFlag
 
     const onStartTrialClicked = () => {
-        if (isShoppingAssistantTrialRevampEnabled) {
-            setIsTrialModalRevampOpen(true)
-        } else {
-            startTrialOriginal()
-        }
+        startTrialOriginal()
     }
 
     const { earlyAccessModal, showEarlyAccessModal } = useActivation({
@@ -102,47 +96,6 @@ const AiSalesAgentSalesOverview = () => {
     if (shouldDisplayPaywall) {
         return (
             <>
-                {isTrialModalRevampOpen && (
-                    <UpgradePlanModal
-                        title="Try Shopping Assistant for 14 days at no additional cost"
-                        onClose={() => {
-                            setIsTrialModalRevampOpen(false)
-                        }}
-                        onConfirm={() => {
-                            setIsTrialModalRevampOpen(false)
-                        }}
-                        currentPlan={{
-                            title: 'Support Agent',
-                            description:
-                                'Provide best-in-class automated support',
-                            price: '$450',
-                            billingPeriod: 'month',
-                            features: [
-                                '2000 automated interactions',
-                                'Deliver instant answers to repetitive questions and improve customer satisfaction',
-                                'Automatically handle orders, returns, and subscriptions quickly, 24/7',
-                            ],
-                            buttonText: 'Keep current plan',
-                        }}
-                        newPlan={{
-                            title: 'Support Agent and Shopping Assistant ',
-                            description:
-                                'Unlock full potential to drive more sales',
-                            price: '$530',
-                            billingPeriod: 'month after trial ends',
-                            features: [
-                                'Everything in Support Agent skills',
-                                'Proactively engage with customers to guide discovery',
-                                'Personalize recommendations with rich customer insights',
-                                'Intelligent upsell using customer input, not guesswork',
-                                'Offer discounts based on purchase intent',
-                            ],
-                            buttonText: 'Try for 14 days',
-                            priceTooltipText:
-                                'Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a $X.XX helpdesk fee.',
-                        }}
-                    />
-                )}
                 <AiAgentPaywallView
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >

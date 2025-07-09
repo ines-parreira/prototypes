@@ -121,11 +121,11 @@ describe('useShoppingAssistantTrialFlow', () => {
             )
 
             act(() => {
-                result.current.openUpgradeModal()
+                result.current.openTrialUpgradeModal()
             })
 
             expect(mockModalManager.openModal).toHaveBeenCalledWith(
-                'ShoppingAssistantUpgradeModal',
+                'ShoppingAssistantTrialUpgradeModal',
             )
         })
 
@@ -142,16 +142,16 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // First open the modal
             act(() => {
-                result.current.openUpgradeModal()
+                result.current.openTrialUpgradeModal()
             })
 
             // Then close it
             act(() => {
-                result.current.closeUpgradeModal()
+                result.current.closeTrialUpgradeModal()
             })
 
             expect(mockModalManager.closeModal).toHaveBeenCalledWith(
-                'ShoppingAssistantUpgradeModal',
+                'ShoppingAssistantTrialUpgradeModal',
             )
             expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
         })
@@ -226,11 +226,11 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // Open upgrade modal first
             act(() => {
-                result.current.openUpgradeModal()
+                result.current.openTrialUpgradeModal()
             })
 
             expect(mockModalManager.openModal).toHaveBeenCalledWith(
-                'ShoppingAssistantUpgradeModal',
+                'ShoppingAssistantTrialUpgradeModal',
             )
 
             // Start trial
@@ -251,7 +251,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // Check modal manager calls
             expect(mockModalManager.closeModal).toHaveBeenCalledWith(
-                'ShoppingAssistantUpgradeModal',
+                'ShoppingAssistantTrialUpgradeModal',
             )
             expect(mockModalManager.openModal).toHaveBeenCalledWith(
                 'ShoppingAssistantSuccessModal',
@@ -308,7 +308,7 @@ describe('useShoppingAssistantTrialFlow', () => {
             // Should not throw
             expect(() => {
                 act(() => {
-                    result.current.closeUpgradeModal()
+                    result.current.closeTrialUpgradeModal()
                 })
             }).not.toThrow()
 
@@ -340,9 +340,9 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // Call closeUpgradeModal multiple times
             act(() => {
-                result.current.closeUpgradeModal()
-                result.current.closeUpgradeModal()
-                result.current.closeUpgradeModal()
+                result.current.closeTrialUpgradeModal()
+                result.current.closeTrialUpgradeModal()
+                result.current.closeTrialUpgradeModal()
             })
 
             // Callback should be called once per closeUpgradeModal call
@@ -365,10 +365,10 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // 1. Open upgrade modal
             act(() => {
-                result.current.openUpgradeModal()
+                result.current.openTrialUpgradeModal()
             })
             expect(mockModalManager.openModal).toHaveBeenCalledWith(
-                'ShoppingAssistantUpgradeModal',
+                'ShoppingAssistantTrialUpgradeModal',
             )
 
             // 2. Start trial
@@ -384,7 +384,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // 4. Verify final state
             expect(mockModalManager.closeModal).toHaveBeenCalledWith(
-                'ShoppingAssistantUpgradeModal',
+                'ShoppingAssistantTrialUpgradeModal',
             )
             expect(mockModalManager.openModal).toHaveBeenCalledWith(
                 'ShoppingAssistantSuccessModal',

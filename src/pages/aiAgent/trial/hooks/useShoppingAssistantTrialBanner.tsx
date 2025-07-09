@@ -35,11 +35,6 @@ export const useShoppingAssistantTrialBanner = () => {
         [isTicketsPage, canSeeSystemBanner],
     )
 
-    const basePath = getAiAgentBasePath(
-        Object.values(storeActivations)[0]?.name,
-    )
-    const redirectionPath = `${basePath}/sales`
-
     const eventData = useMemo(
         () => ({
             accountId: currentAccount.get('id'),
@@ -50,19 +45,21 @@ export const useShoppingAssistantTrialBanner = () => {
         [currentAccount, currentUser, userRole],
     )
 
+    const basePath = getAiAgentBasePath(
+        Object.values(storeActivations)[0]?.name,
+    )
+    const redirectionPath = `${basePath}/sales`
+
     const onClick = useCallback(() => {
         history.push(redirectionPath)
-        logEvent(
-            SegmentEvent.AiAgentShoppingAssistantTrialSystemBannerClicked,
-            {
-                ...eventData,
-            },
-        )
+        logEvent(SegmentEvent.TrialSystemWideBannerCTAClicked, {
+            ...eventData,
+        })
     }, [history, redirectionPath, eventData])
 
     useEffect(() => {
         if (displayBanner) {
-            logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
+            logEvent(SegmentEvent.TrialSystemWideBannerViewed, {
                 ...eventData,
             })
             addBanner({

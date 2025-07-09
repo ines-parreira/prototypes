@@ -28,7 +28,7 @@ type ShoppingAssistantTrialAccess = {
     /** Whether the user can see the trial CTA (only for Admins) */
     canSeeTrialCTA: boolean
     /** Whether the trial has started or not */
-    canSeeTrialStartedBanner: boolean
+    hasActiveTrial: boolean
 }
 
 /**
@@ -64,7 +64,7 @@ export const useShoppingAssistantTrialAccess =
 
         // Hook must be called unconditionally due to React rules
         // We're checking trial history differently now, but keeping for compatibility
-        const hasAtLeastOneStoreHasActiveTrial = atLeastOneStoreHasActiveTrial(
+        const hasActiveTrial = atLeastOneStoreHasActiveTrial(
             storeConfigurations,
             isRevampTrialMilestone1Enabled,
             storeActivations,
@@ -97,7 +97,7 @@ export const useShoppingAssistantTrialAccess =
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             }
         }
 
@@ -139,7 +139,7 @@ export const useShoppingAssistantTrialAccess =
             isAdminUser &&
                 isOnUsd5Plan &&
                 isOnProPlusPlan &&
-                !isAiShoppingAssistantTrialMerchantsEnabled,
+                isAiShoppingAssistantTrialMerchantsEnabled === false, // Explicit check to false because the FF is undefined while loading
         )
 
         return {
@@ -147,6 +147,6 @@ export const useShoppingAssistantTrialAccess =
             canBookDemo,
             canSeeSystemBanner,
             canSeeTrialCTA,
-            canSeeTrialStartedBanner: hasAtLeastOneStoreHasActiveTrial,
+            hasActiveTrial,
         }
     }

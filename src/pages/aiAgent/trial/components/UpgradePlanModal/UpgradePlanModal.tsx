@@ -4,6 +4,8 @@ import classNames from 'classnames'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     ModalBodyWrapper,
     ModalHeaderWrapper,
@@ -29,10 +31,12 @@ export type UpgradePlanModalProps = {
     title: string
     onClose: () => void
     onConfirm: () => void
+    onDismiss: () => void
     currentPlan: PlanDetails
     newPlan: PlanDetails
     showTermsCheckbox?: boolean
     isLoading?: boolean
+    isTrial?: boolean
 }
 
 const PlanSection: React.FC<{
@@ -163,13 +167,21 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
     title,
     onClose,
     onConfirm,
+    onDismiss,
     currentPlan,
     newPlan,
     showTermsCheckbox = true,
     isLoading = false,
+    isTrial = false,
 }) => {
     const canduId = 'upgrade-plan-modal'
     const [isTermsChecked, setIsTermsChecked] = useState(false)
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.PricingModalViewed, {
+            type: isTrial ? 'Trial' : 'Upgrade',
+        })
+    })
 
     return (
         <ModalWrapper isOpen size="lg" toggle={onClose} fade centered>
@@ -191,7 +203,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                 <div className={css.currentPlan}>
                     <PlanSection
                         plan={currentPlan}
-                        onButtonClick={onClose}
+                        onButtonClick={onDismiss}
                         showTermsCheckbox={showTermsCheckbox}
                         buttonIntent="secondary"
                     />

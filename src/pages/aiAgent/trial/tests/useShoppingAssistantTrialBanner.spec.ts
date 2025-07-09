@@ -128,7 +128,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             canBookDemo: false,
             canSeeSystemBanner: false,
             canSeeTrialCTA: false,
-            canSeeTrialStartedBanner: false,
+            hasActiveTrial: false,
         })
     })
 
@@ -147,7 +147,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -173,7 +173,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -192,7 +192,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -211,7 +211,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // Hook returns false when conditions not met
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -239,7 +239,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
 
@@ -265,7 +265,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             renderHook(() => useShoppingAssistantTrialBanner())
 
             expect(mockLogEvent).toHaveBeenCalledWith(
-                segment.SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed,
+                segment.SegmentEvent.TrialSystemWideBannerViewed,
                 {
                     accountId: 123,
                     userId: 2,
@@ -306,7 +306,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
 
             rerender()
@@ -323,7 +323,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
 
             const { rerender } = renderHook(() =>
@@ -343,7 +343,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
 
             rerender()
@@ -364,7 +364,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                canSeeTrialStartedBanner: false,
+                hasActiveTrial: false,
             })
         })
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
@@ -25,6 +25,7 @@ import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSales
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -70,6 +71,9 @@ export const SalesPaywallMiddleware =
             trialModal.openModal(AI_TRIAL_MODAL_NAME, false)
         }
 
+        const { upgradePlan, isLoading: isUpgradePlanLoading } =
+            useUpgradePlan()
+
         const trialMilestone = useSalesTrialRevampMilestone()
         const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
@@ -97,9 +101,15 @@ export const SalesPaywallMiddleware =
             isLoading: isTrialRevampLoading,
             isTrialModalOpen,
             isSuccessModalOpen,
-            closeUpgradeModal,
+            closeTrialUpgradeModal,
             closeSuccessModal,
-            openUpgradeModal,
+            openTrialUpgradeModal,
+            openUpgradePlanModal,
+            closeUpgradePlanModal,
+            closeManageTrialModal,
+            isUpgradePlanModalOpen,
+            onDismissTrialUpgradeModal,
+            onDismissUpgradePlanModal,
         } = useShoppingAssistantTrialFlow({
             accountDomain,
             storeActivations,
@@ -107,7 +117,7 @@ export const SalesPaywallMiddleware =
 
         const onStartTrialClicked = () => {
             if (isShoppingAssistantTrialRevampEnabled) {
-                openUpgradeModal()
+                openTrialUpgradeModal()
             } else {
                 startTrialOriginal()
             }
@@ -120,6 +130,14 @@ export const SalesPaywallMiddleware =
                 displayTrialButton ||
                 canStartTrialFromFeatureFlag,
         })
+
+        const onUpgradePlanClicked = () => {
+            if (isShoppingAssistantTrialRevampEnabled) {
+                openUpgradePlanModal()
+            } else {
+                showEarlyAccessModal()
+            }
+        }
 
         const eventData = {
             accountId: currentAccount.get('id'),
@@ -149,6 +167,14 @@ export const SalesPaywallMiddleware =
 
         const trialModalProps = useTrialModalProps({})
 
+        const onUpgradeClick = useCallback(() => {
+            logEvent(SegmentEvent.PricingModalClicked, {
+                type: 'upgraded',
+            })
+            upgradePlan()
+            closeManageTrialModal()
+        }, [upgradePlan, closeManageTrialModal])
+
         if (!hasAutomate) {
             return (
                 <PaywallWrapper>
@@ -163,10 +189,12 @@ export const SalesPaywallMiddleware =
             <>
                 {isTrialModalOpen && (
                     <UpgradePlanModal
-                        {...trialModalProps.upgradePlanModal}
-                        onClose={closeUpgradeModal}
+                        {...trialModalProps.trialUpgradePlanModal}
+                        onClose={closeTrialUpgradeModal}
                         onConfirm={startRevampTrial}
+                        onDismiss={onDismissTrialUpgradeModal}
                         isLoading={isTrialRevampLoading}
+                        isTrial
                     />
                 )}
 
@@ -176,9 +204,18 @@ export const SalesPaywallMiddleware =
                         onConfirm={closeSuccessModal}
                     />
                 )}
+                {isUpgradePlanModalOpen && (
+                    <UpgradePlanModal
+                        {...trialModalProps.upgradePlanModal}
+                        onClose={closeUpgradePlanModal}
+                        onConfirm={onUpgradeClick}
+                        onDismiss={onDismissUpgradePlanModal}
+                        isLoading={isUpgradePlanLoading}
+                    />
+                )}
                 <PaywallWrapperComponent
                     showUpgradePaywall={showUpgradePaywall}
-                    showEarlyAccessModal={showEarlyAccessModal}
+                    showEarlyAccessModal={onUpgradePlanClicked}
                     displayTrialButton={displayTrialButton}
                     startTrial={() => {
                         logEvent(
@@ -240,6 +277,8 @@ const PaywallWrapperComponent = ({
             logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
                 ...eventData,
             })
+
+            logEvent(SegmentEvent.TrialLinkPaywallViewed)
         }
     }, [
         displayTrialButton,

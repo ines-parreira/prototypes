@@ -224,7 +224,7 @@ export const SalesSettings = () => {
                                     undefined
                                 }
                             />
-                            <TrialManageWorkflow />
+                            <TrialManageWorkflow pageName="Strategy" />
                         </div>
                         <section className={css.card}>
                             <div className={css.titleContainer}>
