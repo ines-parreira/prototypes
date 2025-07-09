@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -19,6 +20,7 @@ import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import { AiAgentNavbar } from '../AiAgentNavbar'
@@ -28,6 +30,7 @@ jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 const mockStore = configureMockStore()
 const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 const defaultStoreConfiguration = getStoreConfigurationFixture()
+const queryClient = mockQueryClient()
 
 jest.mock('launchdarkly-react-client-sdk')
 const mockUseFlags = jest.mocked(useFlags)
@@ -101,16 +104,18 @@ const defaultState: Partial<RootState> = {
 
 const renderNavbar = ({ store }: { store?: Partial<RootState> } = {}) =>
     render(
-        <Provider
-            store={mockStore({
-                ...defaultState,
-                ...store,
-            })}
-        >
-            <ThemeProvider>
-                <AiAgentNavbar />
-            </ThemeProvider>
-        </Provider>,
+        <QueryClientProvider client={queryClient}>
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    ...store,
+                })}
+            >
+                <ThemeProvider>
+                    <AiAgentNavbar />
+                </ThemeProvider>
+            </Provider>
+        </QueryClientProvider>,
         { wrapper },
     )
 
@@ -217,25 +222,17 @@ describe('<AiAgentNavbar />', () => {
         })
 
         it('should always render Overview menu item when flag', () => {
-            const { queryByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    })}
-                >
-                    <ThemeProvider>
-                        <AiAgentNavbar />
-                    </ThemeProvider>
-                </Provider>,
-                { wrapper },
-            )
+            const { queryByText } = renderNavbar({
+                store: {
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
+            })
 
             expect(queryByText('Overview')).toBeInTheDocument()
         })

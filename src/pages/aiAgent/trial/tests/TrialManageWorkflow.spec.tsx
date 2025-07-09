@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -10,6 +10,7 @@ import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanne
 import { TrialEndingTomorrowModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
 import { useOptOutPlan } from 'pages/aiAgent/trial/hooks/useOptOutPlan'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -27,8 +28,8 @@ jest.mock('pages/aiAgent/trial/components/TrialManageModal/TrialManageModal')
 jest.mock('pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal')
 jest.mock('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
 jest.mock('pages/aiAgent/trial/hooks/useOptOutPlan')
+jest.mock('pages/aiAgent/trial/hooks/useIsTrialStarted')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
-
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
@@ -71,6 +72,7 @@ describe('TrialManageWorkflow', () => {
         ;(useStoreActivations as jest.Mock).mockReturnValue({
             storeActivations: ['store1', 'store2'],
         })
+        ;(useIsTrialStarted as jest.Mock).mockReturnValue(false)
         ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
             hasActiveTrial: false,
             canSeeTrialStartedBanner: false,
@@ -133,12 +135,13 @@ describe('TrialManageWorkflow', () => {
             <div data-testid="trial-manage-modal">
                 <h2>{props.title}</h2>
                 <p>{props.description}</p>
-                <button onClick={props.primaryAction.onClick}>
-                    {props.primaryAction.label}
+                <button onClick={props.primaryAction?.onClick}>
+                    {props.primaryAction?.label || 'Upgrade Now'}
                 </button>
-                <button onClick={props.secondaryAction.onClick}>
-                    {props.secondaryAction.label}
+                <button onClick={props.secondaryAction?.onClick}>
+                    {props.secondaryAction?.label || 'Opt Out'}
                 </button>
+                <button onClick={props.onClose}>Close</button>
             </div>
         ))
         ;(TrialEndingTomorrowModal as jest.Mock).mockImplementation(() => null)
@@ -158,6 +161,7 @@ describe('TrialManageWorkflow', () => {
 
     describe('when user can see trial banner', () => {
         beforeEach(() => {
+            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
                 hasActiveTrial: true,
                 canSeeTrialStartedBanner: true,
@@ -172,10 +176,35 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('shows "Book a demo" as primary action when user can book demo', () => {
+            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
                 hasActiveTrial: true,
                 canSeeTrialStartedBanner: true,
                 canBookDemo: true,
+            })
+            // Mock the trial modal props to return the correct actions
+            ;(useTrialModalProps as jest.Mock).mockReturnValue({
+                trialStartedBanner: {
+                    title: 'Shopping Assistant trial ends in 5 days.',
+                    description:
+                        "So far, it's generated $25 in added GMV for your store.",
+                    primaryAction: {
+                        label: 'Book a demo',
+                        onClick: jest.fn(),
+                    },
+                    secondaryAction: {
+                        label: 'Manage Trial',
+                        onClick: jest.fn(),
+                    },
+                },
+                manageTrialModal: {
+                    description:
+                        'Shopping Assistant boosted your GMV by +$25 during the trial. Keep the momentum going and turn even more visitors into buyers.',
+                    advantages: ['$25 GMV uplift'],
+                    secondaryDescription:
+                        'After your trial, your plan will increase by $50.',
+                },
+                upgradePlanModal: {},
             })
 
             render(<TrialManageWorkflow pageName="Strategy" />)
@@ -208,6 +237,7 @@ describe('TrialManageWorkflow', () => {
                 },
                 upgradePlanModal: {},
             })
+            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
                 hasActiveTrial: true,
                 canSeeTrialStartedBanner: true,
@@ -325,14 +355,6 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('closes modal when onClose is triggered', async () => {
-            ;(TrialManageModal as jest.Mock).mockImplementation(
-                (props: any) => (
-                    <div data-testid="trial-manage-modal">
-                        <button onClick={props.onClose}>Close</button>
-                    </div>
-                ),
-            )
-
             const user = userEvent.setup()
             render(<TrialManageWorkflow pageName="Strategy" />)
 
@@ -355,6 +377,7 @@ describe('TrialManageWorkflow', () => {
     })
 
     it('passes correct props to TrialAlertBanner', () => {
+        ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
         ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
             hasActiveTrial: true,
             canSeeTrialStartedBanner: true,
@@ -407,6 +430,7 @@ describe('TrialManageWorkflow', () => {
 
     describe('useEffect logging', () => {
         it('logs TrialBannerSettingsViewed event when hasActiveTrial is true', () => {
+            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
                 hasActiveTrial: true,
                 canSeeTrialStartedBanner: true,
@@ -424,6 +448,7 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('logs TrialBannerSettingsViewed event with correct pageName for Engagement', () => {
+            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
                 hasActiveTrial: true,
                 canSeeTrialStartedBanner: true,
@@ -441,6 +466,7 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('does not log event when hasActiveTrial is false', () => {
+            ;(useIsTrialStarted as jest.Mock).mockReturnValue(false)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
                 hasActiveTrial: false,
                 canSeeTrialStartedBanner: false,
@@ -530,7 +556,11 @@ describe('TrialManageWorkflow', () => {
             const optOutButton = screen.getByText('Opt Out')
             await user.click(optOutButton)
 
-            expect(screen.getByText('Opt out of upgrade?')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Opt out of upgrade?'),
+                ).toBeInTheDocument()
+            })
         })
 
         it('calls optOutPlan and logs event when Opt Out is confirmed', async () => {
@@ -588,9 +618,12 @@ describe('TrialManageWorkflow', () => {
             const optOutButton = screen.getByText('Opt Out')
             await user.click(optOutButton)
 
-            // Click close button
-            const closeButton = screen.getByRole('button', { name: /close/i })
-            await user.click(closeButton)
+            // Click close button - use getAllByRole to get all close buttons and select the correct one
+            const closeButtons = screen.getAllByRole('button', {
+                name: /close/i,
+            })
+            // The second close button should be the one in the opt out modal
+            await user.click(closeButtons[1])
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 'ai-agent/trial-opt-out-modal-clicked',

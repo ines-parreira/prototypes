@@ -7,6 +7,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import useAppSelector from 'hooks/useAppSelector'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
     ModalBodyWrapper,
@@ -21,8 +22,8 @@ import {
 } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
 import { useOptOutPlan } from 'pages/aiAgent/trial/hooks/useOptOutPlan'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
@@ -32,16 +33,20 @@ import css from './TrialManageWorkflow.less'
 
 export type TrialManageWorkflowProps = {
     pageName: 'Strategy' | 'Engagement'
+    storeConfiguration?: StoreConfiguration
 }
 
-export const TrialManageWorkflow = ({ pageName }: TrialManageWorkflowProps) => {
+export const TrialManageWorkflow = ({
+    pageName,
+    storeConfiguration,
+}: TrialManageWorkflowProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations()
     const history = useHistory()
     const location = useLocation()
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
 
-    const { hasActiveTrial } = useShoppingAssistantTrialAccess()
+    const hasActiveTrial = useIsTrialStarted({ storeConfiguration })
 
     const { upgradePlan, isLoading: isUpgradePlanLoading } = useUpgradePlan()
 
@@ -69,7 +74,8 @@ export const TrialManageWorkflow = ({ pageName }: TrialManageWorkflowProps) => {
         })
         upgradePlan()
         closeManageTrialModal()
-    }, [upgradePlan, closeManageTrialModal])
+        closeUpgradePlanModal()
+    }, [upgradePlan, closeManageTrialModal, closeUpgradePlanModal])
 
     const trialModalProps = useTrialModalProps({ pageName })
 

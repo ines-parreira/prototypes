@@ -84,37 +84,60 @@ export const useTrialMetrics = () => {
 
     const currency = currentPlan?.currency ?? 'USD'
 
-    const remainingDays = useMemo(() => {
+    const { remainingDays, trialEndTime } = useMemo(() => {
         if (!storeActivations) {
-            return 0
+            return { remainingDays: 0, trialEndTime: null }
         }
 
-        const remainingDays = Object.values(storeActivations)
+        const trialData = Object.values(storeActivations)
             .map((storeConfig) => {
                 if (isRevampTrialMilestone0Enabled) {
-                    return (
+                    const salesDeactivatedDatetime =
+                        storeConfig.configuration.salesDeactivatedDatetime
+                    if (!salesDeactivatedDatetime) {
+                        return { days: Infinity, endTime: null }
+                    }
+
+                    const deactivatedDate = moment(salesDeactivatedDatetime)
+                    const days =
                         getShoppingAssistantExpirationDays(
-                            storeConfig.configuration.salesDeactivatedDatetime,
+                            salesDeactivatedDatetime,
                         ) || Infinity
-                    )
+
+                    return { days, endTime: deactivatedDate.toISOString() }
                 }
+
                 const trialStartDatetime =
                     storeConfig.configuration.sales?.trial.startDatetime
                 const trialEndDatetime =
                     storeConfig.configuration.sales?.trial.endDatetime
-                if (!trialStartDatetime || !trialEndDatetime) {
-                    return Infinity
-                }
-                const trialStartDate = moment(trialStartDatetime)
-                const trialEndDate = moment(trialEndDatetime)
-                const days = Math.round(
-                    trialEndDate.diff(trialStartDate, 'days', true),
-                )
-                return days
-            })
-            .filter((days) => days !== Infinity)
 
-        return remainingDays.length > 0 ? Math.min(...remainingDays) : 0
+                if (!trialStartDatetime || !trialEndDatetime) {
+                    return { days: Infinity, endTime: null }
+                }
+
+                const trialEndDate = moment(trialEndDatetime)
+                const now = moment()
+                const days = Math.max(
+                    0,
+                    Math.ceil(trialEndDate.diff(now, 'days', true)),
+                )
+
+                return { days, endTime: trialEndDate.toISOString() }
+            })
+            .filter((data) => data.days !== Infinity)
+
+        const minDaysData =
+            trialData.length > 0
+                ? trialData.reduce((min, current) =>
+                      current.days < min.days ? current : min,
+                  )
+                : { days: 0, endTime: null }
+
+        return {
+            remainingDays: minDaysData.days,
+            trialEndTime: minDaysData.endTime,
+        }
     }, [storeActivations, isRevampTrialMilestone0Enabled])
 
     const gmvInfluenced = useMemo(() => {
@@ -134,6 +157,7 @@ export const useTrialMetrics = () => {
 
     return {
         remainingDays,
+        trialEndTime,
         gmvInfluenced: formatAmount(currency, gmvInfluenced),
         gmvInfluencedRate: gmvInfluencedRate?.value || 0,
         isLoading: isGmvInfluencedFetching || isGmvInfluencedRateFetching,

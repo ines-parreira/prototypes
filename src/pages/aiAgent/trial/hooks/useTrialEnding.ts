@@ -1,59 +1,72 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import moment from 'moment'
+
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
+import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 
 const TRIAL_ENDED_DISMISSED_KEY = 'ai-agent-trial-ended-dismissed'
 const TRIAL_ENDING_TOMORROW_DISMISSED_KEY =
     'ai-agent-trial-ending-tomorrow-dismissed'
 
 export const useTrialEnding = () => {
-    const { storeActivations } = useStoreActivations()
+    const { remainingDays, trialEndTime } = useTrialMetrics()
+
+    const trialMilestone = useSalesTrialRevampMilestone()
+    const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
+
+    // Track dismissal state to trigger re-renders
+    const [isTrialEndedDismissed, setIsTrialEndedDismissed] = useState(
+        () => localStorage.getItem(TRIAL_ENDED_DISMISSED_KEY) === 'true',
+    )
+    const [isTrialEndingTomorrowDismissed, setIsTrialEndingTomorrowDismissed] =
+        useState(
+            () =>
+                localStorage.getItem(TRIAL_ENDING_TOMORROW_DISMISSED_KEY) ===
+                'true',
+        )
 
     const isTrialEnded = useMemo(() => {
-        const hasTrialEndedDismissed =
-            localStorage.getItem(TRIAL_ENDED_DISMISSED_KEY) === 'true'
-        if (hasTrialEndedDismissed) {
+        if (isTrialEndedDismissed || !isRevampTrialMilestone1Enabled) {
             return false
         }
 
-        const now = new Date()
-        return Object.values(storeActivations).some((storeActivation) => {
-            const endDatetime =
-                storeActivation.configuration?.sales?.trial.endDatetime
-            if (!endDatetime) return false
+        // If we have trialEndTime, use it for more precise calculation
+        if (trialEndTime) {
+            const now = moment()
+            const trialEndTimeMoment = moment(trialEndTime)
+            return trialEndTimeMoment.isBefore(now)
+        }
 
-            const endDate = new Date(endDatetime)
-            return endDate <= now
-        })
-    }, [storeActivations])
+        // Fallback to remainingDays logic
+        return remainingDays <= 0
+    }, [
+        isTrialEndedDismissed,
+        isRevampTrialMilestone1Enabled,
+        trialEndTime,
+        remainingDays,
+    ])
 
     const isTrialEndingTomorrow = useMemo(() => {
-        const hasTrialEndingTomorrowDismissed =
-            localStorage.getItem(TRIAL_ENDING_TOMORROW_DISMISSED_KEY) === 'true'
-        if (hasTrialEndingTomorrowDismissed) {
+        if (isTrialEndingTomorrowDismissed || !isRevampTrialMilestone1Enabled) {
             return false
         }
 
-        const now = new Date()
-        const tomorrow = new Date(now)
-        tomorrow.setDate(tomorrow.getDate() + 1)
-
-        return Object.values(storeActivations).some((storeActivation) => {
-            const endDatetime =
-                storeActivation.configuration?.sales?.trial.endDatetime
-            if (!endDatetime) return false
-
-            const endDate = new Date(endDatetime)
-            return endDate > now && endDate <= tomorrow
-        })
-    }, [storeActivations])
+        return remainingDays === 1
+    }, [
+        remainingDays,
+        isTrialEndingTomorrowDismissed,
+        isRevampTrialMilestone1Enabled,
+    ])
 
     const dismissTrialEnded = useCallback(() => {
         localStorage.setItem(TRIAL_ENDED_DISMISSED_KEY, 'true')
+        setIsTrialEndedDismissed(true)
     }, [])
 
     const dismissTrialEndingTomorrow = useCallback(() => {
         localStorage.setItem(TRIAL_ENDING_TOMORROW_DISMISSED_KEY, 'true')
+        setIsTrialEndingTomorrowDismissed(true)
     }, [])
 
     return {

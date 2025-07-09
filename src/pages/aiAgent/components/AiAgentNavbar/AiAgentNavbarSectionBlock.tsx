@@ -19,11 +19,7 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {
-    getAiSalesAgentTrialState,
-    TrialState,
-} from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
-import { getCurrentAutomatePlan } from 'state/billing/selectors'
+import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 
@@ -54,8 +50,6 @@ export const AiAgentNavbarSectionBlock = ({
         shopName,
         accountDomain,
     })
-    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-    const isOnUsd5Plan = currentAutomatePlan?.generation === 5
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
@@ -90,10 +84,8 @@ export const AiAgentNavbarSectionBlock = ({
                 return 'pending'
         }
     }, [onboardingState])
-    let trialState: TrialState | undefined
-    if (storeConfiguration) {
-        trialState = getAiSalesAgentTrialState(storeConfiguration)
-    }
+
+    const isTrialStarted = useIsTrialStarted({ storeConfiguration })
 
     const itemName = (item: NavigationItem) => {
         switch (item.title) {
@@ -101,7 +93,7 @@ export const AiAgentNavbarSectionBlock = ({
                 return (
                     <div className={css.item}>
                         {item.title}
-                        {trialState === TrialState.Trial && isOnUsd5Plan && (
+                        {isTrialStarted && (
                             <Badge
                                 className={css.trialBadge}
                                 type="light-success"

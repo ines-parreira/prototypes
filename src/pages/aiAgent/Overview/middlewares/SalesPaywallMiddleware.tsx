@@ -173,7 +173,8 @@ export const SalesPaywallMiddleware =
             })
             upgradePlan()
             closeManageTrialModal()
-        }, [upgradePlan, closeManageTrialModal])
+            closeUpgradePlanModal()
+        }, [upgradePlan, closeManageTrialModal, closeUpgradePlanModal])
 
         if (!hasAutomate) {
             return (

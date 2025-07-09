@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useBillingState,
@@ -42,6 +44,11 @@ const mockUseShoppingAssistantTrialFlow = assumeMock(
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseAppSelector = assumeMock(useAppSelector)
 
+// Helper function to generate trial end time based on remaining days
+const getTrialEndTime = (remainingDays: number): string => {
+    return moment().add(remainingDays, 'days').toISOString()
+}
+
 describe('useTrialModalProps', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -55,6 +62,7 @@ describe('useTrialModalProps', () => {
             gmvInfluenced: '$25',
             gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
             remainingDays: 14,
+            trialEndTime: getTrialEndTime(14),
             isLoading: false,
         })
 
@@ -310,6 +318,7 @@ describe('useTrialModalProps', () => {
                 gmvInfluenced: '$25',
                 gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
                 remainingDays: 7,
+                trialEndTime: getTrialEndTime(7),
                 isLoading: false,
             })
 
@@ -357,6 +366,7 @@ describe('useTrialModalProps', () => {
                 gmvInfluenced: '$50',
                 gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
                 remainingDays: 3,
+                trialEndTime: getTrialEndTime(3),
                 isLoading: false,
             })
 
