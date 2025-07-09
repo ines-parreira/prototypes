@@ -147,7 +147,7 @@ const useExtractDistinctHelpCenterFromResources = (
 /**
  * Fetches macro resources based on extracted resource data
  */
-const useMacroResources = (ticketId: number, queryEnabled = true) => {
+const useMacroResources = (queryEnabled: boolean) => {
     const macrosQuery = useGetAICompatibleMacros({
         enabled: queryEnabled,
         staleTime: DEFAULT_STALE_TIME,
@@ -162,14 +162,11 @@ const useMacroResources = (ticketId: number, queryEnabled = true) => {
 
     useEffect(() => {
         if (macrosQuery.hasNextPage) {
-            void macrosQuery.fetchNextPage({
-                pageParam: { ticket_id: ticketId },
-            })
+            void macrosQuery.fetchNextPage()
         }
     }, [
         macrosQuery.hasNextPage,
         macrosQuery.fetchNextPage,
-        ticketId,
         macrosQuery.data?.pageParams,
         macrosQuery,
     ])
@@ -631,7 +628,6 @@ export const useGetResourceData = ({
     faqHelpCenterIds,
     guidanceHelpCenterIds,
     snippetHelpCenterIds,
-    ticketId,
     shopName,
     shopType,
 }: {
@@ -639,7 +635,6 @@ export const useGetResourceData = ({
     faqHelpCenterIds: number[]
     guidanceHelpCenterIds: number[]
     snippetHelpCenterIds: number[]
-    ticketId: number
     shopName: string
     shopType: string
 }) => {
@@ -712,10 +707,8 @@ export const useGetResourceData = ({
         })
 
     // Fetch macros
-    const { macros, isLoading: isMacrosLoading } = useMacroResources(
-        ticketId,
-        queriesEnabled,
-    )
+    const { macros, isLoading: isMacrosLoading } =
+        useMacroResources(queriesEnabled)
 
     // Fetch actions
     const { actions, isLoading: isActionsLoading } = useActionResources(
@@ -754,10 +747,8 @@ export const useGetResourceData = ({
 export const useEnrichFeedbackData = ({
     data,
     storeConfiguration,
-    ticketId,
 }: {
     data?: Components.Schemas.FeedbackDto
-    ticketId: number
     storeConfiguration?: StoreConfiguration
 }) => {
     const shopName = storeConfiguration?.storeName ?? ''
@@ -785,7 +776,6 @@ export const useEnrichFeedbackData = ({
         faqHelpCenterIds: relatedHelpCenterData.faqHelpCenterIds,
         guidanceHelpCenterIds: relatedHelpCenterData.guidanceHelpCenterIds,
         snippetHelpCenterIds: relatedHelpCenterData.snippetHelpCenterIds,
-        ticketId,
         shopName: shopName,
         shopType: shopType,
     })
@@ -818,12 +808,10 @@ export const useEnrichFeedbackData = ({
 
 export const useGetResourcesReasoningMetadata = ({
     resources,
-    ticketId,
     storeConfiguration,
     queriesEnabled = true,
 }: {
     resources: KnowledgeReasoningResource[]
-    ticketId: number
     storeConfiguration?:
         | Paths.FindAiReasoningAiReasoning.Responses.$200['storeConfiguration']
         | null
@@ -878,7 +866,6 @@ export const useGetResourcesReasoningMetadata = ({
     } = useGetResourceData({
         queriesEnabled,
         ...relatedHelpCenterData,
-        ticketId,
         shopName,
         shopType,
     })

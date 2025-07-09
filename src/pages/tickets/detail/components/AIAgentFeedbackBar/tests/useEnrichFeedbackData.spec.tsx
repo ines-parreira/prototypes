@@ -715,7 +715,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -807,7 +806,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -857,7 +855,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -878,8 +875,12 @@ describe('useEnrichFeedbackData', () => {
         const mockFetchNextPage = jest.fn()
         ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
             data: {
-                pages: [{ data: { data: [] } }],
-                pageParams: [{ ticket_id: 123 }],
+                pages: [
+                    {
+                        data: { data: [] },
+                        meta: { next_cursor: 'next_cursor' },
+                    },
+                ],
             },
             isLoading: false,
             hasNextPage: true,
@@ -897,16 +898,13 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
         )
 
         // Verify that fetchNextPage was called due to hasNextPage being true
-        expect(mockFetchNextPage).toHaveBeenCalledWith({
-            pageParam: { ticket_id: 123 },
-        })
+        expect(mockFetchNextPage).toHaveBeenCalledWith()
     })
 
     it('should handle missing shopName when generating aiAgentRoutes', () => {
@@ -954,7 +952,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -984,7 +981,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -1005,7 +1001,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: undefined, // No data provided
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -1098,7 +1093,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -1146,7 +1140,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -1209,7 +1202,6 @@ describe('useEnrichFeedbackData', () => {
             () =>
                 useEnrichFeedbackData({
                     data: feedbackData,
-                    ticketId: 123,
                     storeConfiguration,
                 }),
             { wrapper },
@@ -1329,7 +1321,6 @@ describe('useGetResourcesReasoningMetadata', () => {
             () =>
                 useGetResourcesReasoningMetadata({
                     resources,
-                    ticketId: 123,
                     storeConfiguration: mockStoreConfiguration,
                     queriesEnabled: true,
                 }),
@@ -1435,7 +1426,6 @@ describe('useGetResourcesReasoningMetadata', () => {
             () =>
                 useGetResourcesReasoningMetadata({
                     resources,
-                    ticketId: 123,
                     storeConfiguration: mockStoreConfiguration,
                 }),
             { wrapper },
@@ -1500,7 +1490,6 @@ describe('useGetResourcesReasoningMetadata', () => {
             () =>
                 useGetResourcesReasoningMetadata({
                     resources,
-                    ticketId: 123,
                     storeConfiguration: mockStoreConfiguration,
                 }),
             { wrapper },
@@ -1514,7 +1503,6 @@ describe('useGetResourcesReasoningMetadata', () => {
             () =>
                 useGetResourcesReasoningMetadata({
                     resources,
-                    ticketId: 123,
                     storeConfiguration: mockStoreConfiguration,
                     queriesEnabled: false,
                 }),

@@ -166,7 +166,6 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                 (resource): resource is NonNullable<typeof resource> =>
                     resource !== null,
             ),
-            ticketId,
             storeConfiguration: messageAiReasoning?.storeConfiguration,
         })
 
