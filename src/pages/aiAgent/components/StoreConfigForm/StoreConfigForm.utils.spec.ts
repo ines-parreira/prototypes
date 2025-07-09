@@ -41,6 +41,10 @@ describe('getStoreConfigurationFromFormValues', () => {
         wizard: undefined,
         conversationBot: undefined,
         customFieldIds: [],
+        handoverEmail: null,
+        handoverMethod: null,
+        handoverEmailIntegrationId: null,
+        handoverHttpIntegrationId: null,
     }
 
     const formValues: ValidFormValues = {

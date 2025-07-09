@@ -37,6 +37,10 @@ export const getStoreConfigurationFormValuesFixture = (
         onCompletePathway: null,
     },
     customFieldIds: [],
+    handoverEmail: null,
+    handoverMethod: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
     ...props,
 })
 
@@ -78,5 +82,9 @@ export const getOnboardingWizardFormValuesFixture = (
     monitoredChatIntegrations: [],
     wizard: undefined,
     customFieldIds: null,
+    handoverEmail: null,
+    handoverMethod: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
     ...props,
 })

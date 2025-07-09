@@ -113,6 +113,11 @@ export type StoreConfiguration = {
             }
         }
     }
+
+    handoverMethod: string | null
+    handoverEmail: string | null
+    handoverEmailIntegrationId: number | null
+    handoverHttpIntegrationId: number | null
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -132,6 +137,10 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'emailChannelDeactivatedDatetime'
     | 'excludedTopics'
     | 'customFieldIds'
+    | 'handoverEmail'
+    | 'handoverEmailIntegrationId'
+    | 'handoverMethod'
+    | 'handoverHttpIntegrationId'
 > &
     WizardProps
 

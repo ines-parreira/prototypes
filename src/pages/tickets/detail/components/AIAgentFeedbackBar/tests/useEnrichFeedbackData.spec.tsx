@@ -119,6 +119,10 @@ const createMockStoreConfiguration = (
     isConversationStartersEnabled: false,
     isSalesHelpOnSearchEnabled: null,
     customFieldIds: [],
+    handoverMethod: null,
+    handoverEmail: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
     ...overrides,
 })
 

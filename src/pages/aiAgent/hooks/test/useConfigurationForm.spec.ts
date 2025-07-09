@@ -50,6 +50,10 @@ const INITIAL_FORM_VALUES: FormValues = {
     monitoredChatIntegrations: null,
     wizard: undefined,
     customFieldIds: null,
+    handoverMethod: null,
+    handoverEmail: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
 }
 
 jest.mock('models/helpCenter/queries')

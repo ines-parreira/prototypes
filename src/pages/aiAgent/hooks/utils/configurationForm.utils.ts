@@ -48,4 +48,8 @@ export const getFormValuesFromStoreConfiguration = (
         onCompletePathway: storeConfig.wizard.stepData.onCompletePathway,
     },
     customFieldIds: storeConfig.customFieldIds,
+    handoverMethod: storeConfig.handoverMethod,
+    handoverEmail: storeConfig.handoverEmail,
+    handoverEmailIntegrationId: storeConfig.handoverEmailIntegrationId,
+    handoverHttpIntegrationId: storeConfig.handoverHttpIntegrationId,
 })

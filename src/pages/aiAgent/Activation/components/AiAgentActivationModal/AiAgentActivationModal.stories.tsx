@@ -70,6 +70,10 @@ const dummyStoreActivation: StoreActivation = {
         salesPersuasionLevel: null,
         isConversationStartersEnabled: false,
         customFieldIds: [],
+        handoverEmail: null,
+        handoverMethod: null,
+        handoverEmailIntegrationId: null,
+        handoverHttpIntegrationId: null,
     },
 }
 const dummyStoreActivation2: StoreActivation = {

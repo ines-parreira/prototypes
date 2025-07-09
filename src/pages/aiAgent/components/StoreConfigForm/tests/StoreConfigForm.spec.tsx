@@ -387,6 +387,10 @@ describe('<StoreConfigForm />', () => {
         customFieldIds: [],
         salesDeactivatedDatetime: null,
         isSalesHelpOnSearchEnabled: false,
+        handoverEmail: null,
+        handoverMethod: null,
+        handoverEmailIntegrationId: null,
+        handoverHttpIntegrationId: null,
     }
 
     const initialFormValues: FormValues = {
@@ -415,6 +419,10 @@ describe('<StoreConfigForm />', () => {
         monitoredEmailIntegrations: [{ id: 1, email: MOCK_EMAIL_ADDRESS }],
         wizard: undefined,
         customFieldIds: [],
+        handoverEmail: null,
+        handoverMethod: null,
+        handoverEmailIntegrationId: null,
+        handoverHttpIntegrationId: null,
     }
 
     const defaultUseConfigurationFormValues = {

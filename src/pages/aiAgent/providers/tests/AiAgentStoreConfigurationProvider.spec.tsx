@@ -157,6 +157,10 @@ describe('AiAgentStoreConfigurationProvider', () => {
             monitoredChatIntegrations: [],
             excludedTopics: [],
             customFieldIds: [],
+            handoverEmail: null,
+            handoverEmailIntegrationId: null,
+            handoverMethod: null,
+            handoverHttpIntegrationId: null,
         }
 
         await act(

@@ -39,6 +39,10 @@ const VALID_FORM_VALUES: ValidFormValues = {
     monitoredChatIntegrations: [],
     wizard: undefined,
     customFieldIds: [],
+    handoverMethod: null,
+    handoverEmail: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
 }
 
 const DEFAULT_OPTIONS = {

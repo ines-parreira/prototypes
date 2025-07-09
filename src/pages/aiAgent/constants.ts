@@ -67,6 +67,10 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     helpCenterId: null,
     wizard: undefined,
     customFieldIds: null,
+    handoverEmail: null,
+    handoverMethod: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
 }
 
 export const DEFAULT_WIZARD_FORM_VALUES: WizardFormValues = {
@@ -170,6 +174,10 @@ export const INITIAL_FORM_VALUES = {
         email: 'bot@gorgias.com',
     },
     useEmailIntegrationSignature: true,
+    handoverEmail: null,
+    handoverMethod: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
 }
 
 export const PLAYGROUND_PROMPT_CONTENT: Record<PlaygroundPromptType, string> = {

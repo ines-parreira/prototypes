@@ -51,6 +51,10 @@ export type FormValues = {
     helpCenterId: number | null
     wizard: WizardFormValues | undefined
     customFieldIds: number[] | null
+    handoverMethod: string | null
+    handoverEmail: string | null
+    handoverEmailIntegrationId: number | null
+    handoverHttpIntegrationId: number | null
 }
 
 export type UpdateValue<FormValues> = <Key extends keyof FormValues>(

@@ -83,6 +83,10 @@ export const storeActivationFixture = (
             isSalesHelpOnSearchEnabled: false,
             ...overrides?.configuration,
             storeName: name,
+            handoverEmail: null,
+            handoverMethod: null,
+            handoverEmailIntegrationId: null,
+            handoverHttpIntegrationId: null,
         },
     }
 }

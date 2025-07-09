@@ -69,6 +69,10 @@ export const getStoreConfigurationFromFormValues = (
         monitoredChatIntegrations: formValues.monitoredChatIntegrations,
         wizard: formValues.wizard ? wizard : undefined,
         customFieldIds: formValues.customFieldIds ?? [],
+        handoverEmail: formValues.handoverEmail,
+        handoverMethod: formValues.handoverMethod,
+        handoverEmailIntegrationId: formValues.handoverEmailIntegrationId,
+        handoverHttpIntegrationId: formValues.handoverHttpIntegrationId,
     }
 }
 

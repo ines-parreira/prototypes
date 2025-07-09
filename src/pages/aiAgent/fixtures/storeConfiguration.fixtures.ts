@@ -50,5 +50,9 @@ export const getStoreConfigurationFixture = (
     customFieldIds: [],
     salesDeactivatedDatetime: null,
     isSalesHelpOnSearchEnabled: false,
+    handoverEmail: null,
+    handoverMethod: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
     ...props,
 })
