@@ -30,7 +30,7 @@ export class EnableSuggestedProductQuestionsTask extends Task {
 
         return (
             isChatEnabled &&
-            data.hasConversationStarters &&
+            data.isAiShoppingAssistantEnabled &&
             data.aiAgentStoreConfiguration.scopes.includes(
                 AiAgentScope.Sales,
             ) &&

@@ -189,10 +189,6 @@ export const usePendingTasksRuleEngine = ({
         FeatureFlagKey.AiShoppingAssistantEnabled,
         false,
     )
-    const hasConversationStarters = useFlag(
-        FeatureFlagKey.ConversationStarters,
-        false,
-    )
 
     const isAiSalesAgentHelpOnSearchTemplateQueryEnabled = useFlag(
         FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery,
@@ -220,7 +216,6 @@ export const usePendingTasksRuleEngine = ({
                         isActivationEnabled,
                         isAiShoppingAssistantEnabled,
                         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
-                        hasConversationStarters,
                         selfServiceChatChannels,
                         storeKnowledgeStatus: storeKnowledgeStatusData,
                     },
@@ -245,7 +240,6 @@ export const usePendingTasksRuleEngine = ({
         pageInteractionsData,
         isActivationEnabled,
         isAiShoppingAssistantEnabled,
-        hasConversationStarters,
         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
         selfServiceChatChannels,
         storeKnowledgeStatusData,

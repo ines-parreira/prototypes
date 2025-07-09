@@ -298,56 +298,6 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return ai-agent route for customer engagement when ai shopping assistant is disabled but conversation starters is enabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-                [FeatureFlagKey.ConversationStarters]: true,
-            })
-
-            const { result } = renderHook(() =>
-                useAiAgentNavigation({ shopName: 'my-shop' }),
-            )
-
-            const salesItems = result.current.navigationItems.find(
-                (item) => item.title === SALES,
-            )?.items
-
-            expect(salesItems).toEqual(
-                expect.arrayContaining([
-                    {
-                        route: '/app/ai-agent/shopify/my-shop/sales/customer-engagement',
-                        title: CUSTOMER_ENGAGEMENT,
-                        exact: true,
-                    },
-                ]),
-            )
-        })
-
-        it('should return ai-agent route for strategy when ai shopping assistant is disabled but conversation starters is enabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-                [FeatureFlagKey.ConversationStarters]: true,
-            })
-
-            const { result } = renderHook(() =>
-                useAiAgentNavigation({ shopName: 'my-shop' }),
-            )
-
-            const salesItems = result.current.navigationItems.find(
-                (item) => item.title === SALES,
-            )?.items
-
-            expect(salesItems).toEqual(
-                expect.arrayContaining([
-                    {
-                        route: '/app/ai-agent/shopify/my-shop/sales/strategy',
-                        title: STRATEGY,
-                        exact: true,
-                    },
-                ]),
-            )
-        })
-
         it('should not return ai-agent route for sales when ai shopping assistant is disabled', () => {
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),

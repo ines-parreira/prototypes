@@ -139,9 +139,6 @@ const useNavigationItems = (
     const isAiAgentScrapeStoreDomainEnabled =
         flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
-    const isConversationStartersEnabled =
-        !!flags[FeatureFlagKey.ConversationStarters]
-
     const isAiShoppingAssistantEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
 
@@ -205,29 +202,25 @@ const useNavigationItems = (
                     route: routes.sales,
                     title: SALES,
                     dataCanduId: 'ai-agent-navbar-sales',
-                    items:
-                        isConversationStartersEnabled ||
-                        isAiShoppingAssistantEnabled
-                            ? ([
-                                  isAiShoppingAssistantEnabled && {
-                                      route: routes.analytics,
-                                      title: ANALYTICS,
-                                      exact: true,
-                                  },
-                                  (isAiShoppingAssistantEnabled ||
-                                      isConversationStartersEnabled) && {
-                                      route: routes.salesStrategy,
-                                      title: STRATEGY,
-                                      exact: true,
-                                  },
-                                  (isAiShoppingAssistantEnabled ||
-                                      isConversationStartersEnabled) && {
-                                      route: routes.customerEngagement,
-                                      title: CUSTOMER_ENGAGEMENT,
-                                      exact: true,
-                                  },
-                              ].filter((x) => !!x) as NavigationItem[])
-                            : undefined,
+                    items: isAiShoppingAssistantEnabled
+                        ? ([
+                              isAiShoppingAssistantEnabled && {
+                                  route: routes.analytics,
+                                  title: ANALYTICS,
+                                  exact: true,
+                              },
+                              isAiShoppingAssistantEnabled && {
+                                  route: routes.salesStrategy,
+                                  title: STRATEGY,
+                                  exact: true,
+                              },
+                              isAiShoppingAssistantEnabled && {
+                                  route: routes.customerEngagement,
+                                  title: CUSTOMER_ENGAGEMENT,
+                                  exact: true,
+                              },
+                          ].filter((x) => !!x) as NavigationItem[])
+                        : undefined,
                 },
                 {
                     route: routes.test,
@@ -238,7 +231,6 @@ const useNavigationItems = (
         [
             isAiAgentKnowledgeTabEnabled,
             isAiAgentOptimizeTabEnabled,
-            isConversationStartersEnabled,
             isAiAgentScrapeStoreDomainEnabled,
             isGorgiasUser,
             isAiShoppingAssistantEnabled,

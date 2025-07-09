@@ -18,7 +18,7 @@ describe('EnableSuggestedProductQuestionsTask', () => {
         const task = new EnableSuggestedProductQuestionsTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                hasConversationStarters: true,
+                isAiShoppingAssistantEnabled: true,
                 storeKnowledgeStatus: {
                     has_public_resources: true,
                 } as any,
@@ -31,7 +31,7 @@ describe('EnableSuggestedProductQuestionsTask', () => {
         expect(task.display).toBe(true)
     })
 
-    it('should not display the task when suggested product questions is not enabled', () => {
+    it('should not display the task when suggested product questions is enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withSuggestedProductQuestions()
@@ -44,7 +44,7 @@ describe('EnableSuggestedProductQuestionsTask', () => {
         const task = new EnableSuggestedProductQuestionsTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                hasConversationStarters: true,
+                isAiShoppingAssistantEnabled: true,
                 storeKnowledgeStatus: {
                     has_public_resources: true,
                 } as any,
@@ -70,7 +70,7 @@ describe('EnableSuggestedProductQuestionsTask', () => {
         const task = new EnableSuggestedProductQuestionsTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                hasConversationStarters: true,
+                isAiShoppingAssistantEnabled: true,
                 storeKnowledgeStatus: {
                     has_public_resources: true,
                 } as any,
@@ -95,7 +95,7 @@ describe('EnableSuggestedProductQuestionsTask', () => {
         const task = new EnableSuggestedProductQuestionsTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                hasConversationStarters: true,
+                isAiShoppingAssistantEnabled: true,
                 storeKnowledgeStatus: {
                     has_public_resources: true,
                 } as any,
@@ -108,7 +108,7 @@ describe('EnableSuggestedProductQuestionsTask', () => {
         expect(task.display).toBe(false)
     })
 
-    it('should not display the task when user do not have the conversation starters flag', () => {
+    it('should not display the task when user do not have the ai shopping assistant flag', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withoutSuggestedProductQuestions()
@@ -121,7 +121,7 @@ describe('EnableSuggestedProductQuestionsTask', () => {
         const task = new EnableSuggestedProductQuestionsTask(
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
-                hasConversationStarters: false,
+                isAiShoppingAssistantEnabled: false,
                 storeKnowledgeStatus: {
                     has_public_resources: true,
                 } as any,

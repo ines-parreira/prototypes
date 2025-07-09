@@ -65,8 +65,6 @@ export const CustomerEngagementSettings = () => {
     )
 
     const flags = useFlags()
-    const isConversationStartersFeatureEnabled =
-        flags[FeatureFlagKey.ConversationStarters]
 
     const isAiShoppingAssistantEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
@@ -220,7 +218,7 @@ export const CustomerEngagementSettings = () => {
                             />
                         )}
                         <ConversationStartersSettings
-                            isEnabled={isConversationStartersFeatureEnabled}
+                            isEnabled={isAiShoppingAssistantEnabled}
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
                         />
