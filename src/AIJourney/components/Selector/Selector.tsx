@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback } from 'react'
 
 import classNames from 'classnames'
 
@@ -15,13 +15,10 @@ export const Selector = <T,>({
     value,
     onChange,
 }: SelectorProps<T>) => {
-    const [selectedOptionIndex, setSelectedOptionIndex] = useState(
-        options?.findIndex((option) => option === value),
-    )
+    const selectedOptionIndex = options?.findIndex((option) => option === value)
 
     const handleOptionChange = useCallback(
         (optionIndex: number) => {
-            setSelectedOptionIndex(optionIndex)
             onChange?.(options[optionIndex])
         },
         [options, onChange],

@@ -7,7 +7,7 @@ import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import { Client } from './client.generated'
 import OpenAPIDoc from './revenue-addon.openapi.json'
 
-function getGorgiasRevenueAddonApiBaseUrl(): string {
+export function getGorgiasRevenueAddonApiBaseUrl(): string {
     if (isProduction()) {
         return 'https://gorgias-convert.com'
     }

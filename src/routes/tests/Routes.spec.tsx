@@ -9,6 +9,7 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
@@ -774,6 +775,8 @@ describe('<Routes/>', () => {
     })
 
     describe('AiJourneyRoutes', () => {
+        const mockStore = configureMockStore([thunk])()
+
         beforeEach(() => {
             jest.spyOn(axios, 'request').mockImplementation((config) => {
                 // oxlint-disable-next-line no-console
@@ -812,15 +815,17 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <IntegrationsProvider>
-                        <TokenProvider>
-                            <Router history={history}>
-                                <Routes />
-                            </Router>
-                        </TokenProvider>
-                    </IntegrationsProvider>
-                </QueryClientProvider>,
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <IntegrationsProvider>
+                            <TokenProvider>
+                                <Router history={history}>
+                                    <Routes />
+                                </Router>
+                            </TokenProvider>
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             expect(
@@ -836,11 +841,13 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <Router history={history}>
-                        <Routes />
-                    </Router>
-                </QueryClientProvider>,
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             expect(screen.getByText('Activation step')).toBeInTheDocument()
