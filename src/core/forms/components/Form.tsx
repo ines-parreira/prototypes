@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import type {
     DetailedHTMLProps,
     FormHTMLAttributes,
@@ -48,18 +47,6 @@ export function Form<TFieldValues extends FieldValues>({
         errors: errors ? toFieldErrors(errors) : undefined,
         ...props,
     })
-
-    const {
-        formState: { isSubmitSuccessful },
-        reset,
-        getValues,
-    } = methods
-
-    useEffect(() => {
-        if (isSubmitSuccessful) {
-            reset(getValues())
-        }
-    }, [reset, getValues, isSubmitSuccessful])
 
     return (
         <FormProvider {...methods}>
