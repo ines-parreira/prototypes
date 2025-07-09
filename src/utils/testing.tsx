@@ -155,7 +155,7 @@ export const mockProductionEnvironment = () => {
 export const mockStagingEnvironment = () => {
     window.DEVELOPMENT = false
     window.STAGING = true
-    window.PRODUCTION = true
+    window.PRODUCTION = false
 }
 
 export const mockDevelopmentEnvironment = () => {

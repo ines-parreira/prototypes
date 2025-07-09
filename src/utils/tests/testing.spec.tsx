@@ -30,10 +30,10 @@ describe('testing', () => {
     })
 
     describe('mockStagingEnvironment', () => {
-        it('should set production to true, staging to true and development to false', () => {
+        it('should set production to false, staging to true and development to false', () => {
             mockStagingEnvironment()
             expect(window).toMatchObject({
-                PRODUCTION: true,
+                PRODUCTION: false,
                 STAGING: true,
                 DEVELOPMENT: false,
             })
