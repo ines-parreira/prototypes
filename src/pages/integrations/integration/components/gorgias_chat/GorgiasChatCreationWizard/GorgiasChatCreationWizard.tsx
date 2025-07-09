@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
 import { Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, Redirect } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardStatus,
@@ -33,18 +31,7 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
     loading,
     isUpdate,
 }) => {
-    const isAutomateStepEnabled =
-        useFlags()[FeatureFlagKey.ChatCreationWizardAutomateStep]
-
-    const steps = Object.values(GorgiasChatCreationWizardSteps).filter(
-        (step) => {
-            if (step === GorgiasChatCreationWizardSteps.Automate) {
-                return isAutomateStepEnabled
-            }
-
-            return true
-        },
-    )
+    const steps = Object.values(GorgiasChatCreationWizardSteps)
 
     const integrationId = integration.get('id')
 
@@ -59,11 +46,7 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
         GorgiasChatCreationWizardSteps.Basics,
     )
 
-    const initialStep =
-        !isAutomateStepEnabled &&
-        wizardStep === GorgiasChatCreationWizardSteps.Automate
-            ? GorgiasChatCreationWizardSteps.Installation
-            : wizardStep
+    const initialStep = wizardStep
 
     useEffect(() => {
         if (!isUpdate || integrationId) {
@@ -118,18 +101,14 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                                     integration={integration}
                                 />
                             </WizardStep>
-                            {isAutomateStepEnabled && (
-                                <WizardStep
-                                    name={
-                                        GorgiasChatCreationWizardSteps.Automate
-                                    }
-                                >
-                                    <GorgiasChatCreationWizardStepAutomate
-                                        isSubmitting={isSubmitting}
-                                        integration={integration}
-                                    />
-                                </WizardStep>
-                            )}
+                            <WizardStep
+                                name={GorgiasChatCreationWizardSteps.Automate}
+                            >
+                                <GorgiasChatCreationWizardStepAutomate
+                                    isSubmitting={isSubmitting}
+                                    integration={integration}
+                                />
+                            </WizardStep>
                             <WizardStep
                                 name={
                                     GorgiasChatCreationWizardSteps.Installation

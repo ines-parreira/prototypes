@@ -63,8 +63,6 @@ const GorgiasChatIntegrationListRow = ({
 
     const { chatStatus, isChatStatusLoading, isChatStatusError } =
         useGorgiasChatIntegrationStatusData(chat, isLoadingIntegrations)
-    const isChatCreationWizardEnabled =
-        useFlags()[FeatureFlagKey.ChatCreationWizard]
     const showUpdatePermissions =
         useFlags()[FeatureFlagKey.ChatScopeUpdateChatList]
     const integrationId: number = chat.get('id')
@@ -79,7 +77,6 @@ const GorgiasChatIntegrationListRow = ({
     const preferencesLink = `${baseLink}/${Tab.Preferences}`
     const installationLink = `${baseLink}/${Tab.Installation}`
     const editLink = `${baseLink}/${
-        isChatCreationWizardEnabled &&
         wizardStatus === GorgiasChatCreationWizardStatus.Draft
             ? Tab.CreateWizard
             : Tab.Appearance
@@ -256,9 +253,8 @@ const GorgiasChatIntegrationListRow = ({
                             )}
                             {chatStatus ===
                                 GorgiasChatStatusEnum.NOT_INSTALLED &&
-                                (!isChatCreationWizardEnabled ||
-                                    wizardStatus ===
-                                        GorgiasChatCreationWizardStatus.Published) && (
+                                wizardStatus ===
+                                    GorgiasChatCreationWizardStatus.Published && (
                                     <>
                                         <Tooltip
                                             autohide={false}
@@ -333,8 +329,7 @@ const GorgiasChatIntegrationListRow = ({
                 )}
             </BodyCell>
             <BodyCell size="smallest" innerClassName={css.lastColumn}>
-                {isChatCreationWizardEnabled &&
-                wizardStatus === GorgiasChatCreationWizardStatus.Draft ? (
+                {wizardStatus === GorgiasChatCreationWizardStatus.Draft ? (
                     <Link to={editLink} onClick={stopPropagation}>
                         Continue Setup
                     </Link>

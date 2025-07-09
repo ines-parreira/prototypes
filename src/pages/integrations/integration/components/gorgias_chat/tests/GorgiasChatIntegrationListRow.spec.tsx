@@ -78,9 +78,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatCreationWizard]: false,
-        }))
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
     })
 
     it('should render loading feedback if status is being fetched', () => {
@@ -160,9 +158,6 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     })
 
     it('should render "Continue Setup" link for draft chat', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatCreationWizard]: true,
-        }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
             'useGorgiasChatIntegrationStatusData',
@@ -200,7 +195,6 @@ describe('<GorgiasChatIntegrationListRow />', () => {
 
     it('should render "Update Permissions" link for chat with store integration requiring scope update', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatCreationWizard]: true,
             [FeatureFlagKey.ChatScopeUpdateChatList]: true,
         }))
         jest.spyOn(
@@ -290,9 +284,6 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     )
 
     it('should not render not installed popover if chat is draft', async () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatCreationWizard]: true,
-        }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
             'useGorgiasChatIntegrationStatusData',
@@ -331,9 +322,6 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     })
 
     it.skip('should render not installed popover if chat is published', async () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatCreationWizard]: true,
-        }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
             'useGorgiasChatIntegrationStatusData',

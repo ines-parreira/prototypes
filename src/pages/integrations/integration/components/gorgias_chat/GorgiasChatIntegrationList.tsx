@@ -29,9 +29,6 @@ type Props = {
 }
 
 function GorgiasChatIntegrationList({ integrations, loading }: Props) {
-    const isChatCreationWizardEnabled =
-        useFlags()[FeatureFlagKey.ChatCreationWizard]
-
     const longTypeDescription = (
         <div>
             Chat with your customers by adding our Chat widget on your website.
@@ -83,11 +80,7 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
                         history.push(
                             `/app/settings/channels/${
                                 IntegrationType.GorgiasChat
-                            }/new/${
-                                isChatCreationWizardEnabled
-                                    ? 'create-wizard'
-                                    : 'appearance'
-                            }`,
+                            }/new/create-wizard`,
                         )
                     }
                 >

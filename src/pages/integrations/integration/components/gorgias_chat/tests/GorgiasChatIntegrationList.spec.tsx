@@ -7,7 +7,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { RootState, StoreDispatch } from 'state/types'
 
 import {
@@ -78,9 +77,7 @@ describe('<GorgiasChatIntegrationList />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatCreationWizard]: false,
-        }))
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
     })
 
     it('should display correcty the list of chat integrations', () => {
