@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useHistory, useLocation } from 'react-router-dom'
+
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { logEvent } from 'common/segment/segment'
@@ -35,8 +37,9 @@ export type TrialManageWorkflowProps = {
 export const TrialManageWorkflow = ({ pageName }: TrialManageWorkflowProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations()
+    const history = useHistory()
+    const location = useLocation()
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
-    const [showCanduDiv, setShowCanduDiv] = useState(false)
 
     const { hasActiveTrial } = useShoppingAssistantTrialAccess()
 
@@ -72,7 +75,14 @@ export const TrialManageWorkflow = ({ pageName }: TrialManageWorkflowProps) => {
 
     const onCloseOptOutModal = () => {
         setIsOptOutModalOpen(false)
-        setShowCanduDiv(true)
+
+        // Add showOptOutFeedback=true to URL
+        const newUrlParams = new URLSearchParams(location.search)
+        newUrlParams.set('showOptOutFeedback', 'true')
+        history.push({
+            pathname: location.pathname,
+            search: newUrlParams.toString(),
+        })
     }
 
     useEffect(() => {
@@ -119,11 +129,6 @@ export const TrialManageWorkflow = ({ pageName }: TrialManageWorkflowProps) => {
 
             <TrialEndedModal />
             <TrialEndingTomorrowModal />
-
-            {/* This is used to track the opt out feedback */}
-            {showCanduDiv && (
-                <div data-candu-id="shopping-assistant-opt-out-feedback" />
-            )}
         </>
     )
 }

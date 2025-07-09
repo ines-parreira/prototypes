@@ -1,5 +1,6 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { useHistory, useLocation } from 'react-router-dom'
 
 // Import mocked modules
 import { logEvent } from 'common/segment/segment'
@@ -32,6 +33,12 @@ jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 
+// Mock React Router hooks
+jest.mock('react-router-dom', () => ({
+    useHistory: jest.fn(),
+    useLocation: jest.fn(),
+}))
+
 describe('TrialManageWorkflow', () => {
     const mockOpenManageTrialModal = jest.fn()
     const mockCloseManageTrialModal = jest.fn()
@@ -39,6 +46,9 @@ describe('TrialManageWorkflow', () => {
     const mockLogEvent = jest.fn()
     const mockOptOutPlan = jest.fn()
     const mockUpgradePlan = jest.fn()
+    const mockPush = jest.fn()
+    const mockUseHistory = useHistory as jest.Mock
+    const mockUseLocation = useLocation as jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -46,6 +56,15 @@ describe('TrialManageWorkflow', () => {
         // Mock window.open
         global.window.open = mockWindowOpen
         ;(logEvent as jest.Mock).mockImplementation(mockLogEvent)
+
+        // Mock React Router hooks
+        mockUseHistory.mockReturnValue({
+            push: mockPush,
+        })
+        mockUseLocation.mockReturnValue({
+            pathname: '/test-path',
+            search: '',
+        })
         ;(useAppSelector as jest.Mock).mockReturnValue({
             get: (key: string) => (key === 'domain' ? 'test-domain.com' : null),
         })
@@ -603,7 +622,7 @@ describe('TrialManageWorkflow', () => {
             expect(confirmOptOutButton).toBeInTheDocument()
         })
 
-        it('shows Candu tracking div after opt out modal is closed', async () => {
+        it('updates URL with showOptOutFeedback parameter after opt out modal is closed', async () => {
             const user = userEvent.setup()
             render(<TrialManageWorkflow pageName="Strategy" />)
 
@@ -617,15 +636,14 @@ describe('TrialManageWorkflow', () => {
             })
             await user.click(dismissButton)
 
-            // Check that the Candu tracking div is shown
-            expect(
-                document.querySelector(
-                    '[data-candu-id="shopping-assistant-opt-out-feedback"]',
-                ),
-            ).toBeInTheDocument()
+            // Check that URL is updated with showOptOutFeedback parameter
+            expect(mockPush).toHaveBeenCalledWith({
+                pathname: '/test-path',
+                search: 'showOptOutFeedback=true',
+            })
         })
 
-        it('calls onSuccess callback when optOutPlan succeeds', async () => {
+        it('calls onSuccess callback and updates URL when optOutPlan succeeds', async () => {
             const user = userEvent.setup()
             render(<TrialManageWorkflow pageName="Strategy" />)
 
@@ -650,6 +668,12 @@ describe('TrialManageWorkflow', () => {
             expect(
                 screen.queryByText('Opt out of upgrade?'),
             ).not.toBeInTheDocument()
+
+            // Check that URL is updated with showOptOutFeedback parameter
+            expect(mockPush).toHaveBeenCalledWith({
+                pathname: '/test-path',
+                search: 'showOptOutFeedback=true',
+            })
         })
     })
 
@@ -673,7 +697,7 @@ describe('TrialManageWorkflow', () => {
         })
     })
 
-    describe('Candu tracking div', () => {
+    describe('URL parameter handling', () => {
         beforeEach(() => {
             ;(useShoppingAssistantTrialFlow as jest.Mock).mockReturnValue({
                 openManageTrialModal: mockOpenManageTrialModal,
@@ -682,16 +706,15 @@ describe('TrialManageWorkflow', () => {
             })
         })
 
-        it('shows Candu tracking div after opt out modal is closed', async () => {
+        it('preserves existing URL parameters when adding showOptOutFeedback', async () => {
+            // Mock location with existing parameters
+            mockUseLocation.mockReturnValue({
+                pathname: '/test-path',
+                search: '?existingParam=value&anotherParam=test',
+            })
+
             const user = userEvent.setup()
             render(<TrialManageWorkflow pageName="Strategy" />)
-
-            // Initially should not show the tracking div
-            expect(
-                document.querySelector(
-                    '[data-candu-id="shopping-assistant-opt-out-feedback"]',
-                ),
-            ).not.toBeInTheDocument()
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
@@ -703,12 +726,11 @@ describe('TrialManageWorkflow', () => {
             })
             await user.click(dismissButton)
 
-            // Check that the Candu tracking div is shown
-            expect(
-                document.querySelector(
-                    '[data-candu-id="shopping-assistant-opt-out-feedback"]',
-                ),
-            ).toBeInTheDocument()
+            // Check that URL preserves existing parameters and adds new one
+            expect(mockPush).toHaveBeenCalledWith({
+                pathname: '/test-path',
+                search: 'existingParam=value&anotherParam=test&showOptOutFeedback=true',
+            })
         })
     })
 })
