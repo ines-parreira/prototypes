@@ -1,4 +1,3 @@
-import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -25,9 +24,9 @@ import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { getCurrentUser } from 'state/currentUser/selectors'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
 import { AIAgentPaywallFeatures } from '../../../types'
 import { SalesPaywallMiddleware } from '../SalesPaywallMiddleware'
@@ -123,25 +122,25 @@ jest.mock('pages/aiAgent/Activation/components/AIAgentTrialSuccessModal', () =>
 )
 
 const mockShopName = 'test-shop'
-const queryClient = mockQueryClient()
 
 const renderMiddleware = () => {
     const WrappedComponent = SalesPaywallMiddleware(MockChildComponent)
     const path = '/shops/:shopName/ai-agent/sales'
     const initialRoute = `/shops/${mockShopName}/ai-agent/sales`
 
-    return renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-            <Switch>
-                <Route path={path} render={() => <WrappedComponent />} />
-            </Switch>
-        </QueryClientProvider>,
-        { route: initialRoute },
+    return renderWithStoreAndQueryClientAndRouter(
+        <Switch>
+            <Route path={path} render={() => <WrappedComponent />} />
+        </Switch>,
+        {},
+        { route: initialRoute, path },
     )
 }
 
 jest.mock('hooks/useAppSelector')
-const useAppSelectorMock = assumeMock(useAppSelector)
+const useAppSelectorMock = useAppSelector as jest.MockedFunction<
+    typeof useAppSelector
+>
 
 const mockUseSalesTrialRevampMilestone =
     useSalesTrialRevampMilestone as jest.Mock
@@ -160,6 +159,39 @@ const mockUseTrialModalProps = useTrialModalProps as jest.Mock
 const mockUseUpgradePlan = useUpgradePlan as jest.Mock
 const mockLogEvent = logEvent as jest.Mock
 const mockUseModalManager = useModalManager as jest.Mock
+
+const setupUseAppSelectorMock = ({
+    hasAutomate = true,
+    currentUser = fromJS(user),
+    currentAccountDomain = 'test',
+    currentAutomatePlan = null,
+    userRole = 'admin',
+}: {
+    hasAutomate?: boolean
+    currentUser?: any
+    currentAccountDomain?: string
+    currentAutomatePlan?: any
+    userRole?: string
+} = {}) => {
+    useAppSelectorMock.mockImplementation((selector) => {
+        if (selector === getHasAutomate) {
+            return hasAutomate
+        }
+        if (selector === getCurrentUser) {
+            return currentUser
+        }
+        if (selector === getCurrentAccountState) {
+            return fromJS({ domain: currentAccountDomain })
+        }
+        if (selector === getCurrentAutomatePlan) {
+            return currentAutomatePlan
+        }
+        if (selector === getRoleName) {
+            return userRole
+        }
+        return undefined
+    })
+}
 
 describe('SalesPaywallMiddleware', () => {
     beforeEach(() => {
@@ -231,23 +263,11 @@ describe('SalesPaywallMiddleware', () => {
             closeModal: jest.fn(),
         })
         mockLogEvent.mockClear()
+        // Default useAppSelector mock
+        setupUseAppSelectorMock()
     })
     it('should render automate paywall when it doesnt has automate', () => {
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return false
-            }
-
-            if (selector === getCurrentUser) {
-                return fromJS(user)
-            }
-
-            if (selector === getCurrentAccountState) {
-                return fromJS({ domain: 'test' }) as Map<string, string>
-            }
-
-            return undefined
-        })
+        setupUseAppSelectorMock({ hasAutomate: false })
 
         renderMiddleware()
 
@@ -268,26 +288,9 @@ describe('SalesPaywallMiddleware', () => {
 
     describe('isAiShoppingAssistantEnabled', () => {
         it('should render upgrade paywall when it has automate + beta user not on generation 6 plan', () => {
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) {
-                    return true
-                }
-
-                if (selector === getCurrentUser) {
-                    return fromJS(user)
-                }
-
-                if (selector === getCurrentAccountState) {
-                    return fromJS({ domain: 'test' }) as Map<string, string>
-                }
-
-                if (selector === getCurrentAutomatePlan) {
-                    return {
-                        generation: 5,
-                    }
-                }
-
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
             })
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
@@ -320,26 +323,9 @@ describe('SalesPaywallMiddleware', () => {
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
                 [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) {
-                    return true
-                }
-
-                if (selector === getCurrentUser) {
-                    return fromJS(user)
-                }
-
-                if (selector === getCurrentAccountState) {
-                    return fromJS({ domain: 'test' }) as Map<string, string>
-                }
-
-                if (selector === getCurrentAutomatePlan) {
-                    return {
-                        generation: 6,
-                    }
-                }
-
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 6 },
             })
 
             renderMiddleware()
@@ -358,26 +344,9 @@ describe('SalesPaywallMiddleware', () => {
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
                 [FeatureFlagKey.AiSalesAgentBeta]: false,
             })
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) {
-                    return true
-                }
-
-                if (selector === getCurrentUser) {
-                    return fromJS(user)
-                }
-
-                if (selector === getCurrentAccountState) {
-                    return fromJS({ domain: 'test' }) as Map<string, string>
-                }
-
-                if (selector === getCurrentAutomatePlan) {
-                    return {
-                        generation: 6,
-                    }
-                }
-
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 6 },
             })
 
             renderMiddleware()
@@ -393,26 +362,9 @@ describe('SalesPaywallMiddleware', () => {
 
     describe('isAiShoppingAssistantEnabled false', () => {
         it('should render waitlist paywall when it has automate + beta user not on generation 6 plan', () => {
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) {
-                    return true
-                }
-
-                if (selector === getCurrentUser) {
-                    return fromJS(user)
-                }
-
-                if (selector === getCurrentAccountState) {
-                    return fromJS({ domain: 'test' }) as Map<string, string>
-                }
-
-                if (selector === getCurrentAutomatePlan) {
-                    return {
-                        generation: 5,
-                    }
-                }
-
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
             })
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
@@ -446,26 +398,9 @@ describe('SalesPaywallMiddleware', () => {
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
             [FeatureFlagKey.AiSalesAgentBeta]: true,
         })
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentUser) {
-                return fromJS(user)
-            }
-
-            if (selector === getCurrentAccountState) {
-                return fromJS({ domain: 'test' }) as Map<string, string>
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 5,
-                }
-            }
-
-            return undefined
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 5 },
         })
 
         mockFlags({
@@ -512,26 +447,9 @@ describe('SalesPaywallMiddleware', () => {
             canStartTrialFromFeatureFlag: false,
             shopName: 'test-shop',
         })
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentUser) {
-                return fromJS(user)
-            }
-
-            if (selector === getCurrentAccountState) {
-                return fromJS({ domain: 'test' }) as Map<string, string>
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 5,
-                }
-            }
-
-            return undefined
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 5 },
         })
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
@@ -584,26 +502,9 @@ describe('SalesPaywallMiddleware', () => {
             canStartTrialFromFeatureFlag: true,
             shopName: 'test-shop',
         })
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentUser) {
-                return fromJS(user)
-            }
-
-            if (selector === getCurrentAccountState) {
-                return fromJS({ domain: 'test' }) as Map<string, string>
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 5,
-                }
-            }
-
-            return undefined
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 5 },
         })
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
@@ -637,26 +538,9 @@ describe('SalesPaywallMiddleware', () => {
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
             [FeatureFlagKey.AiSalesAgentBeta]: true,
         })
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentUser) {
-                return fromJS(user)
-            }
-
-            if (selector === getCurrentAccountState) {
-                return fromJS({ domain: 'test' }) as Map<string, string>
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 6,
-                }
-            }
-
-            return undefined
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 6 },
         })
 
         renderMiddleware()
@@ -671,26 +555,9 @@ describe('SalesPaywallMiddleware', () => {
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
             [FeatureFlagKey.AiSalesAgentBeta]: false,
         })
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getHasAutomate) {
-                return true
-            }
-
-            if (selector === getCurrentUser) {
-                return fromJS(user)
-            }
-
-            if (selector === getCurrentAccountState) {
-                return fromJS({ domain: 'test' }) as Map<string, string>
-            }
-
-            if (selector === getCurrentAutomatePlan) {
-                return {
-                    generation: 6,
-                }
-            }
-
-            return undefined
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 6 },
         })
 
         renderMiddleware()
@@ -702,26 +569,9 @@ describe('SalesPaywallMiddleware', () => {
     it.each([{ generation: 5 }, { generation: 6 }])(
         'should render waitlist paywall when it has automate + any generation plan and not part of demo/alpha/beta',
         ({ generation }) => {
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) {
-                    return true
-                }
-
-                if (selector === getCurrentUser) {
-                    return fromJS(user)
-                }
-
-                if (selector === getCurrentAccountState) {
-                    return fromJS({ domain: 'test' }) as Map<string, string>
-                }
-
-                if (selector === getCurrentAutomatePlan) {
-                    return {
-                        generation,
-                    }
-                }
-
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation },
             })
             mockFlags({
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
@@ -757,14 +607,9 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
             })
             // Set up other mocks to hit the upgrade paywall
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getCurrentUser) return fromJS(user)
-                if (selector === getCurrentAccountState)
-                    return fromJS({ domain: 'test' })
-                if (selector === getCurrentAutomatePlan)
-                    return { generation: 5 }
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
             })
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
@@ -788,14 +633,9 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
             })
             // Set up other mocks to hit the upgrade paywall
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getCurrentUser) return fromJS(user)
-                if (selector === getCurrentAccountState)
-                    return fromJS({ domain: 'test' })
-                if (selector === getCurrentAutomatePlan)
-                    return { generation: 5 }
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
             })
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
@@ -837,14 +677,9 @@ describe('SalesPaywallMiddleware', () => {
             })
 
             // Set up other mocks to hit the upgrade paywall
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getCurrentUser) return fromJS(user)
-                if (selector === getCurrentAccountState)
-                    return fromJS({ domain: 'test' })
-                if (selector === getCurrentAutomatePlan)
-                    return { generation: 5 }
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
             })
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
@@ -879,14 +714,9 @@ describe('SalesPaywallMiddleware', () => {
                 shopName: 'test-shop',
             })
             // Set up other mocks to hit the upgrade paywall
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getCurrentUser) return fromJS(user)
-                if (selector === getCurrentAccountState)
-                    return fromJS({ domain: 'test' })
-                if (selector === getCurrentAutomatePlan)
-                    return { generation: 5 }
-                return undefined
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
             })
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,

@@ -1,11 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useUpgradePlan = () => {
     const { onUpgradePlanClick } = useActivation()
     const trialMilestone = useSalesTrialRevampMilestone()
+    const dispatch = useAppDispatch()
 
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
@@ -18,6 +22,23 @@ export const useUpgradePlan = () => {
                 return Promise.resolve()
             }
             return onUpgradePlanClick()
+        },
+        onSuccess: () => {
+            void dispatch(
+                notify({
+                    message:
+                        'Plan upgraded! Watch Shopping Assistant turn visitors into buyers.',
+                    status: NotificationStatus.Success,
+                }),
+            )
+        },
+        onError: () => {
+            void dispatch(
+                notify({
+                    message: 'Failed to upgrade plan. Please try again.',
+                    status: NotificationStatus.Error,
+                }),
+            )
         },
     })
 
