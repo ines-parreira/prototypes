@@ -6,38 +6,12 @@ on:
     - cron: '0 13 * * 5'
   workflow_dispatch: # Allow manual triggering
 
+permissions:
+  contents: write
+
 jobs:
-
-  workspace-vars:
-    name: Workspace vars
-    runs-on: gh-actions-small-runner-set
-    outputs:
-      node-version: '22'
-    steps:
-      - name: Workspace vars
-        run: echo "empty step"
-
-  install-dependencies:
-    name: Install dependencies
-    needs: workspace-vars
-    runs-on: gh-actions-large-runner-set
-    outputs:
-      cache-key: ${{ env.CACHE_KEY }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
-        id: install-dependencies
-        with:
-          node-version: ${{ needs.workspace-vars.outputs.node-version }}
-          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
   deprecation-analysis:
     name: Deprecation analysis
-    needs:
-      - workspace-vars
-      - install-dependencies
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.check-changes.outputs.changed }}
@@ -45,17 +19,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Restore cache
-        uses: actions/cache@v4
         with:
-          key: ${{ needs.install-dependencies.outputs.cache-key }}
-          path: node_modules
+          token: ${{ secrets.GH_BOT_FRONTEND_PKG_WRITE_TOKEN }}
 
       - name: Install node
         uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
-          node-version: ${{ needs.workspace-vars.outputs.node-version }}
+          node-version: '22'
+
+      - name: Set GitHub Packages auth token
+        shell: bash
+        run: |
+          echo '@gorgias:registry=https://npm.pkg.github.com/' >> .npmrc
+          echo '//npm.pkg.github.com/:_authToken=${{ secrets.GH_READ_PACKAGES_TOKEN }}' >> .npmrc
+  
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install
 
       - name: Run deprecation analysis
         run: pnpm platform:deprecated-analysis
@@ -71,60 +51,37 @@ jobs:
             echo "Changes detected in deprecation analysis results"
           fi
 
-  create-branch:
-    name: Create branch
-    needs: deprecation-analysis
-    if: needs.deprecation-analysis.outputs.changed == 'true'
-    runs-on: gh-actions-small-runner-set
-    outputs:
-      branch-name: ${{ steps.create-branch.outputs.branch-name }}
-      date-token: ${{ steps.set-date-token.outputs.date-token }}
-
-    steps:
-      - uses: actions/checkout@v4
-        name: Checkout
-
-      - id: resolve-main-commit
-        name: Resolve main commit
-        uses: gorgias/reusable-actions/.github/actions/resolve-commit@main
-        with:
-          github-token: ${{ secrets.GH_BOT_FRONTEND_PKG_WRITE_TOKEN }}
-          repo: ${{ github.repository }}
-          ref: main
-
       - id: set-date-token
         name: Set date
+        if: steps.check-changes.outputs.changed == 'true'
         run: echo "date-token=$(date +'%m-%d')" >> "$GITHUB_OUTPUT"
 
-      - id: create-branch
-        name: Create branch
-        uses: gorgias/reusable-actions/.github/actions/create-branch@main
-        with:
-          github-token: ${{ secrets.GH_BOT_FRONTEND_PKG_WRITE_TOKEN }}
-          sha: ${{ steps.resolve-main-commit.outputs.sha }}
-          repo: ${{ github.repository }}
-          branch-name: update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
+      - id: setup-git
+        name: Setup git
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+            git config --global --add safe.directory $(pwd)
+            git config --global user.name "gorgias-bot-frontend"
+            git config --global user.email "engineering-sre+frontend@gorgias.com"
 
-
-  open-pr:
-    name: Open PR
-    runs-on: gh-actions-small-runner-set
-    needs:
-      - deprecation-analysis
-      - create-branch
-    if: needs.deprecation-analysis.outputs.changed == 'true'
-    steps:
-      - uses: actions/checkout@v4
-        name: Checkout
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+            git checkout -b update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
+            git add scripts/deprecated-monitoring/deprecated.snapshot.json
+            git commit -m "chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ steps.set-date-token.outputs.date-token }}"
+            git push --force --set-upstream origin update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
 
       - name: Open PR
+        if: steps.check-changes.outputs.changed == 'true'
         uses: gorgias/reusable-actions/.github/actions/open-pr@main
         with:
           github-token: ${{ secrets.GH_BOT_FRONTEND_PKG_WRITE_TOKEN }}
           repo: ${{ github.repository }}
           base: main
-          head: ${{ needs.create-branch.outputs.branch-name }}
-          title: 'chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ needs.create-branch.outputs.date-token }}'
+          head: update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
+          title: 'chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ steps.set-date-token.outputs.date-token }}'
           body: |
             ### Changes
 
