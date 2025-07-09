@@ -1,4 +1,4 @@
-import { MouseEvent, RefObject } from 'react'
+import { MouseEvent } from 'react'
 
 import cn from 'classnames'
 
@@ -8,17 +8,13 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
-import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
+import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import {
     AiAgentBinaryFeedbackEnum,
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import {
-    knowledgeResourceShouldBeLink,
-    mapToKnowledgeSourceType,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
+import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 
 const OPEN_IN_NEW_TAB_ICON = 'open_in_new'
 const THUMB_DOWN = 'thumb_down'
@@ -108,31 +104,37 @@ const KnowledgeSourceFeedback = ({
 
     return (
         <div className={css.source}>
-            <KnowledgeSourcePopover {...popoverProps} onClick={onClick}>
-                {(ref, eventHandlers) => (
+            <KnowledgeSourceRenderer
+                id={`source-feedback-${resource.resource.resourceId}-${resource.resource.resourceType}`}
+                resourceType={
+                    resource.resource
+                        .resourceType as AiAgentKnowledgeResourceTypeEnum
+                }
+                title={
+                    resource.metadata?.title || resource.resource?.resourceTitle
+                }
+                content={resource.metadata?.content}
+                url={resource.metadata?.url}
+                helpCenterId={resource.resource.resourceSetId}
+                shopName={shopName}
+                shopType={shopType}
+                isDeleted={isDeleted}
+                onClick={onClick}
+                className={css.sourceName}
+                renderCustomContent={({ icon, title: renderedTitle }) => (
                     <a
                         href={isLink && !isDeleted ? href : undefined}
+                        id={`knowledge-source-${resource.resource.id}`}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className={cn(css.sourceName, {
+                        className={cn(css.sourceLink, {
                             [css.deleted]: isDeleted,
                             [css.hasLink]: !!href || !!openPreview,
                         })}
-                        ref={ref as RefObject<HTMLAnchorElement>}
-                        id={`knowledge-source-${resource.resource.id}`}
                         onClick={onClick}
-                        {...(!isDeleted && eventHandlers)}
                     >
-                        <KnowledgeSourceIcon
-                            type={mapToKnowledgeSourceType(
-                                resource.resource
-                                    .resourceType as AiAgentKnowledgeResourceTypeEnum,
-                            )}
-                        />
-                        <span>
-                            {resource.metadata?.title ||
-                                resource.resource?.resourceTitle}
-                        </span>
+                        {icon}
+                        <span>{renderedTitle}</span>
                         {!!href && (
                             <i
                                 className={cn(
@@ -143,16 +145,9 @@ const KnowledgeSourceFeedback = ({
                                 {OPEN_IN_NEW_TAB_ICON}
                             </i>
                         )}
-                        {isDeleted && (
-                            <Tooltip
-                                target={`knowledge-source-${resource.resource.id}`}
-                            >
-                                Knowledge has been deleted
-                            </Tooltip>
-                        )}
                     </a>
                 )}
-            </KnowledgeSourcePopover>
+            />
             <ThumbButton
                 id={resource.resource.id}
                 tooltip={THUMB_UP_TOOLTIP}

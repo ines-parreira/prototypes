@@ -110,6 +110,23 @@
         }
     }
 
+    .sourceLink {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        width: 100%;
+        color: var(--neutral-grey-6);
+        text-decoration: none;
+
+        &:hover {
+            color: var(--neutral-grey-6);
+        }
+
+        &:visited {
+            color: var(--neutral-grey-6);
+        }
+    }
+
     .negativeFeedback,
     .positiveFeedback {
         cursor: default !important;
@@ -193,17 +210,6 @@
                 &:hover {
                     color: var(--main-primary);
                     cursor: pointer;
-                }
-            }
-
-            .badge {
-                background-color: var(--neutral-grey-3);
-                color: var(--neutral-grey-6);
-                padding: 0;
-                :global {
-                    .material-icons {
-                        font-size: 12px;
-                    }
                 }
             }
 

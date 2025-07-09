@@ -4,10 +4,16 @@ import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { UIActions } from 'state/ui/ticketAIAgentFeedback/types'
@@ -17,6 +23,12 @@ import { AiAgentReasoning, parseReasoningResources } from '../AiAgentReasoning'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
+jest.mock('common/navigation/hooks/useNavBar/useNavBar')
+jest.mock('core/flags')
+jest.mock('split-ticket-view-toggle')
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
+)
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon',
     () => ({
@@ -61,6 +73,35 @@ jest.mock(
 )
 
 jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer',
+    () => ({
+        __esModule: true,
+        default: ({
+            resourceType,
+            iconClassName,
+            title,
+            url,
+            onClick,
+        }: any) => (
+            <div
+                data-testid={`knowledge-source-popover-${resourceType}`}
+                data-title={title}
+                data-url={url}
+                onClick={onClick}
+                style={{ cursor: onClick ? 'pointer' : 'default' }}
+            >
+                <span
+                    data-testid={`knowledge-source-icon-${resourceType}`}
+                    className={iconClassName}
+                >
+                    {resourceType}
+                </span>
+            </div>
+        ),
+    }),
+)
+
+jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData',
     () => ({
         useGetResourcesReasoningMetadata: jest.fn(),
@@ -78,6 +119,10 @@ jest.mock('models/knowledgeService/queries', () => ({
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useAppSelectorMock = assumeMock(useAppSelector)
+const useNavBarMock = assumeMock(useNavBar)
+const useFlagMock = assumeMock(useFlag)
+const useSplitTicketViewMock = assumeMock(useSplitTicketView)
+const useKnowledgeSourceSideBarMock = assumeMock(useKnowledgeSourceSideBar)
 const mockUseGetMessageAiReasoning = assumeMock(useGetMessageAiReasoning)
 const mockUseGetResourcesReasoningMetadata = assumeMock(
     useGetResourcesReasoningMetadata,
@@ -111,6 +156,27 @@ describe('AiAgentReasoning', () => {
             return undefined
         })
 
+        useNavBarMock.mockReturnValue({
+            navBarDisplay: 'open',
+            setNavBarDisplay: jest.fn(),
+        } as any)
+
+        useFlagMock.mockReturnValue(true)
+
+        useSplitTicketViewMock.mockReturnValue({
+            isEnabled: true,
+            setIsEnabled: jest.fn(),
+        } as any)
+
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            openPreview: jest.fn(),
+            selectedResource: null,
+            mode: null,
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        } as any)
+
         mockUseGetMessageAiReasoning.mockReturnValue({
             data: {
                 reasoning: [
@@ -124,7 +190,62 @@ describe('AiAgentReasoning', () => {
                     },
                     {
                         responseType: 'TASK',
-                        value: 'Sales {{ARTICLE::16::13608}} Support {{GUIDANCE::26665::1045245}} {{ACTION::01J7KWHHMDY3H5S174D89VG7S3}} {{MACRO::45::67890}} {{FILE_EXTERNAL_SNIPPET::78::12345}} {{EXTERNAL_SNIPPET::89::54321}} {{ORDER::99::98765::#98765}}',
+                        value: 'Sales <<<ARTICLE::16::13608>>> Support <<<GUIDANCE::26665::1045245>>> <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> <<<MACRO::67890>>> <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> <<<ORDER::98765>>>',
+                    },
+                ],
+                resources: [
+                    {
+                        resourceType: 'ARTICLE',
+                        resourceId: '13608',
+                        resourceSetId: '16',
+                        resourceTitle: 'Test Article',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
+                    {
+                        resourceType: 'GUIDANCE',
+                        resourceId: '1045245',
+                        resourceSetId: '26665',
+                        resourceTitle: 'Test Guidance',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
+                    {
+                        resourceType: 'ACTION',
+                        resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
+                        resourceTitle: 'Test Action',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
+                    {
+                        resourceType: 'MACRO',
+                        resourceId: '67890',
+                        resourceTitle: 'Test Macro',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
+                    {
+                        resourceType: 'FILE_EXTERNAL_SNIPPET',
+                        resourceId: '12345',
+                        resourceSetId: '78',
+                        resourceTitle: 'Test File Snippet',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
+                    {
+                        resourceType: 'EXTERNAL_SNIPPET',
+                        resourceId: '54321',
+                        resourceSetId: '89',
+                        resourceTitle: 'Test External Snippet',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
+                    {
+                        resourceType: 'ORDER',
+                        resourceId: '98765',
+                        resourceTitle: '#98765',
+                        resourceLocale: 'en',
+                        taskIds: [],
                     },
                 ],
                 storeConfiguration: {
@@ -190,7 +311,9 @@ describe('AiAgentReasoning', () => {
         return render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <AiAgentReasoning messageId={1} {...props} />
+                    <KnowledgeSourceSideBarProvider>
+                        <AiAgentReasoning messageId={1} {...props} />
+                    </KnowledgeSourceSideBarProvider>
                 </Provider>
             </QueryClientProvider>,
         )
@@ -282,7 +405,9 @@ describe('AiAgentReasoning', () => {
                         }
                     >
                         <Provider store={mockStore({})}>
-                            <AiAgentReasoning messageId={1} />
+                            <KnowledgeSourceSideBarProvider>
+                                <AiAgentReasoning messageId={1} />
+                            </KnowledgeSourceSideBarProvider>
                         </Provider>
                     </QueryClientProvider>,
                 )
@@ -404,6 +529,166 @@ describe('AiAgentReasoning', () => {
         })
     })
 
+    describe('Knowledge source click handling', () => {
+        beforeEach(() => {
+            // Mock window.open
+            Object.defineProperty(window, 'open', {
+                value: jest.fn(),
+                writable: true,
+            })
+        })
+
+        afterEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('should open link in new tab when isLink is true and resourceUrl exists', () => {
+            const mockWindowOpen = jest.fn()
+            window.open = mockWindowOpen
+
+            // Mock the flag to make resources behave as links
+            useFlagMock.mockImplementation((flag) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.EnableKnowledgeManagementFromTicketView
+                ) {
+                    return false // This will make knowledgeResourceShouldBeLink return true
+                }
+                return false
+            })
+
+            renderComponent()
+            expandComponent()
+
+            // Find and click a knowledge source
+            const knowledgeSourcePopovers = screen.getAllByTestId(
+                /knowledge-source-popover-/,
+            )
+            expect(knowledgeSourcePopovers.length).toBeGreaterThan(0)
+
+            fireEvent.click(knowledgeSourcePopovers[0])
+
+            expect(mockWindowOpen).toHaveBeenCalledWith(
+                'https://artemisathletix.gorgias.help/en-us/articles/13608-cheirosa-68-beija-flor-perfume-mist-guide',
+                '_blank',
+            )
+        })
+
+        it('should call openPreview when enableKnowledgeManagementFromTicketView is true and isLink is false', () => {
+            const mockOpenPreview = jest.fn()
+
+            // Mock the hook to return our mock function
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                openPreview: mockOpenPreview,
+                selectedResource: null,
+                mode: null,
+                openEdit: jest.fn(),
+                openCreate: jest.fn(),
+                closeModal: jest.fn(),
+            })
+
+            // Mock the flag to enable knowledge management
+            useFlagMock.mockImplementation((flag) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.EnableKnowledgeManagementFromTicketView
+                ) {
+                    return true
+                }
+                return false
+            })
+
+            renderComponent()
+            expandComponent()
+
+            // Find and click a knowledge source
+            const knowledgeSourcePopovers = screen.getAllByTestId(
+                /knowledge-source-popover-/,
+            )
+            expect(knowledgeSourcePopovers.length).toBeGreaterThan(0)
+
+            fireEvent.click(knowledgeSourcePopovers[0])
+
+            expect(mockOpenPreview).toHaveBeenCalledWith({
+                id: '13608',
+                url: 'https://artemisathletix.gorgias.help/en-us/articles/13608-cheirosa-68-beija-flor-perfume-mist-guide',
+                title: 'Cheirosa 68 Beija Flor™ Perfume Mist - Product Guide',
+                content: 'Product guide content',
+                knowledgeResourceType: 'ARTICLE',
+                helpCenterId: '16',
+            })
+        })
+
+        it('should not call window.open when resourceUrl is empty', () => {
+            const mockWindowOpen = jest.fn()
+            window.open = mockWindowOpen
+
+            // Mock resource data with empty URL
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [
+                    {
+                        title: 'Sales Documentation',
+                        content: 'This is sales documentation content.',
+                        url: '', // Empty URL
+                        isDeleted: false,
+                    },
+                ],
+                isLoading: false,
+            })
+
+            useFlagMock.mockImplementation((flag) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.EnableKnowledgeManagementFromTicketView
+                ) {
+                    return false
+                }
+                return false
+            })
+
+            renderComponent()
+            expandComponent()
+
+            // Find and click a knowledge source
+            const knowledgeSourcePopovers = screen.getAllByTestId(
+                /knowledge-source-popover-/,
+            )
+            if (knowledgeSourcePopovers.length > 0) {
+                fireEvent.click(knowledgeSourcePopovers[0])
+                expect(mockWindowOpen).not.toHaveBeenCalled()
+            }
+        })
+
+        it('should not have click handler when resource is deleted', () => {
+            const mockWindowOpen = jest.fn()
+            window.open = mockWindowOpen
+
+            // Mock resource data with deleted resource
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [
+                    {
+                        title: 'Sales Documentation',
+                        content: 'This is sales documentation content.',
+                        url: 'https://example.com/article1',
+                        isDeleted: true, // Resource is deleted
+                    },
+                ],
+                isLoading: false,
+            })
+
+            renderComponent()
+            expandComponent()
+
+            // Find knowledge source - it should not be clickable
+            const knowledgeSourcePopovers = screen.queryAllByTestId(
+                /knowledge-source-popover-/,
+            )
+            // Deleted resources should not render any knowledge sources
+            expect(knowledgeSourcePopovers.length).toBe(0)
+            expect(mockWindowOpen).not.toHaveBeenCalled()
+        })
+    })
+
     describe('Props handling', () => {
         it('should handle messageId of 0', () => {
             renderComponent({ messageId: 0 })
@@ -447,6 +732,7 @@ describe('AiAgentReasoning', () => {
                             value: 'Task details without any resource references',
                         },
                     ],
+                    resources: [],
                     storeConfiguration: {
                         shopName: 'Test Shop',
                         shopType: 'shopify',
@@ -481,6 +767,7 @@ describe('AiAgentReasoning', () => {
                             value: 'Some outcome',
                         },
                     ],
+                    resources: [],
                     storeConfiguration: {
                         shopName: 'Test Shop',
                         shopType: 'shopify',
@@ -515,6 +802,7 @@ describe('AiAgentReasoning', () => {
                             value: 'Some outcome',
                         },
                     ],
+                    resources: [],
                     storeConfiguration: {
                         shopName: 'Test Shop',
                         shopType: 'shopify',
@@ -549,6 +837,7 @@ describe('AiAgentReasoning', () => {
                             value: 'Some outcome',
                         },
                     ],
+                    resources: [],
                     storeConfiguration: {
                         shopName: 'Test Shop',
                         shopType: 'shopify',
@@ -583,6 +872,7 @@ describe('AiAgentReasoning', () => {
                             value: 'Some outcome',
                         },
                     ],
+                    resources: [],
                     storeConfiguration: {
                         shopName: 'Test Shop',
                         shopType: 'shopify',
@@ -647,7 +937,17 @@ describe('AiAgentReasoning', () => {
                         },
                         {
                             responseType: 'TASK',
-                            value: 'Test {{ARTICLE::16::13608}} content',
+                            value: 'Test <<<ARTICLE::16::13608>>> content',
+                        },
+                    ],
+                    resources: [
+                        {
+                            resourceType: 'ARTICLE',
+                            resourceId: '13608',
+                            resourceSetId: '16',
+                            resourceTitle: 'Test Article',
+                            resourceLocale: 'en',
+                            taskIds: [],
                         },
                     ],
                 },
@@ -689,100 +989,159 @@ describe('AiAgentReasoning', () => {
     })
 
     describe('parseReasoningResources function', () => {
+        const mockResources = [
+            {
+                resourceType: 'ARTICLE' as const,
+                resourceId: '13608',
+                resourceSetId: '16',
+                resourceTitle: 'Test Article',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+            {
+                resourceType: 'GUIDANCE' as const,
+                resourceId: '1045245',
+                resourceSetId: '26665',
+                resourceTitle: 'Test Guidance',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+            {
+                resourceType: 'ACTION' as const,
+                resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
+                resourceSetId: '',
+                resourceTitle: 'Test Action',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+            {
+                resourceType: 'MACRO' as const,
+                resourceId: '67890',
+                resourceSetId: '',
+                resourceTitle: 'Test Macro',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+            {
+                resourceType: 'FILE_EXTERNAL_SNIPPET' as const,
+                resourceId: '12345',
+                resourceSetId: '78',
+                resourceTitle: 'Test File Snippet',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+            {
+                resourceType: 'EXTERNAL_SNIPPET' as const,
+                resourceId: '54321',
+                resourceSetId: '89',
+                resourceTitle: 'Test External Snippet',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+            {
+                resourceType: 'ORDER' as const,
+                resourceId: '98765',
+                resourceSetId: '',
+                resourceTitle: '#98765',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+        ]
+
         const expectedArticleResource = {
             resourceType: 'ARTICLE',
             resourceId: '13608',
             resourceSetId: '16',
+            resourceTitle: 'Test Article',
         }
 
         const expectedGuidanceResource = {
             resourceType: 'GUIDANCE',
             resourceId: '1045245',
             resourceSetId: '26665',
+            resourceTitle: 'Test Guidance',
         }
 
         const expectedActionResource = {
             resourceType: 'ACTION',
             resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
+            resourceTitle: 'Test Action',
         }
 
         const expectedMacroResource = {
             resourceType: 'MACRO',
             resourceId: '67890',
-            resourceSetId: '45',
+            resourceTitle: 'Test Macro',
         }
 
         const expectedFileExternalSnippetResource = {
             resourceType: 'FILE_EXTERNAL_SNIPPET',
             resourceId: '12345',
             resourceSetId: '78',
+            resourceTitle: 'Test File Snippet',
         }
 
         const expectedExternalSnippetResource = {
             resourceType: 'EXTERNAL_SNIPPET',
             resourceId: '54321',
             resourceSetId: '89',
+            resourceTitle: 'Test External Snippet',
         }
 
         const expectedOrderResource = {
             resourceType: 'ORDER',
             resourceId: '98765',
-            resourceSetId: '99',
             resourceTitle: '#98765',
         }
 
         it.each([
             [
                 'ARTICLE',
-                'Some text {{ARTICLE::16::13608}} more text',
+                'Some text <<<ARTICLE::16::13608>>> more text',
                 [expectedArticleResource],
             ],
             [
                 'GUIDANCE',
-                'Text with {{GUIDANCE::26665::1045245}} guidance',
+                'Text with <<<GUIDANCE::26665::1045245>>> guidance',
                 [expectedGuidanceResource],
             ],
             [
                 'ACTION',
-                'Action {{ACTION::01J7KWHHMDY3H5S174D89VG7S3}} here',
+                'Action <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> here',
                 [expectedActionResource],
             ],
             [
                 'MACRO',
-                'Macro {{MACRO::45::67890}} content',
+                'Macro <<<MACRO::67890>>> content',
                 [expectedMacroResource],
             ],
             [
                 'FILE_EXTERNAL_SNIPPET',
-                'File {{FILE_EXTERNAL_SNIPPET::78::12345}} snippet',
+                'File <<<FILE_EXTERNAL_SNIPPET::78::12345>>> snippet',
                 [expectedFileExternalSnippetResource],
             ],
             [
                 'EXTERNAL_SNIPPET',
-                'External {{EXTERNAL_SNIPPET::89::54321}} snippet',
+                'External <<<EXTERNAL_SNIPPET::89::54321>>> snippet',
                 [expectedExternalSnippetResource],
             ],
-            [
-                'ORDER',
-                'Order {{ORDER::99::98765::#98765}} data',
-                [expectedOrderResource],
-            ],
+            ['ORDER', 'Order <<<ORDER::98765>>> data', [expectedOrderResource]],
         ])(
             'should parse %s resources correctly',
             (resourceType, content, expected) => {
-                const result = parseReasoningResources(content)
+                const result = parseReasoningResources(content, mockResources)
                 expect(result).toEqual(expected)
             },
         )
 
         it('should parse all resource types in a single string', () => {
             const content = `
-                Test {{ARTICLE::16::13608}} {{GUIDANCE::26665::1045245}} 
-                {{ACTION::01J7KWHHMDY3H5S174D89VG7S3}} {{MACRO::45::67890}} 
-                {{FILE_EXTERNAL_SNIPPET::78::12345}} {{EXTERNAL_SNIPPET::89::54321}} 
-                {{ORDER::99::98765::#98765}}
+                Test <<<ARTICLE::16::13608>>> <<<GUIDANCE::26665::1045245>>> 
+                <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> <<<MACRO::67890>>> 
+                <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> 
+                <<<ORDER::98765>>>
             `
-            const result = parseReasoningResources(content)
+            const result = parseReasoningResources(content, mockResources)
 
             expect(result).toHaveLength(7)
             expect(result[0]).toEqual(expectedArticleResource)
@@ -796,30 +1155,30 @@ describe('AiAgentReasoning', () => {
 
         it('should return empty array when no resources found', () => {
             const content = 'This is just plain text with no resources'
-            const result = parseReasoningResources(content)
+            const result = parseReasoningResources(content, mockResources)
 
             expect(result).toEqual([])
         })
 
         it('should return empty array for empty string', () => {
             const content = ''
-            const result = parseReasoningResources(content)
+            const result = parseReasoningResources(content, mockResources)
 
             expect(result).toEqual([])
         })
 
         it('should handle malformed resource patterns', () => {
             const content =
-                'Text {{INVALID::FORMAT}} and {{UNKNOWN::TYPE::123}} more text'
-            const result = parseReasoningResources(content)
+                'Text <<<INVALID::FORMAT>>> and <<<UNKNOWN::TYPE::123>>> more text'
+            const result = parseReasoningResources(content, mockResources)
 
             expect(result).toEqual([])
         })
 
         it('should handle duplicate resources', () => {
             const content =
-                'Text {{ARTICLE::16::13608}} and {{ARTICLE::16::13608}} again'
-            const result = parseReasoningResources(content)
+                'Text <<<ARTICLE::16::13608>>> and <<<ARTICLE::16::13608>>> again'
+            const result = parseReasoningResources(content, mockResources)
 
             expect(result).toEqual([
                 expectedArticleResource,

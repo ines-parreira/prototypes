@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import ReactMarkdown from 'react-markdown'
-import rehypeRaw from 'rehype-raw'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
@@ -13,14 +13,14 @@ import {
     ReasoningResponseType,
     useGetMessageAiReasoning,
 } from 'models/knowledgeService/queries'
-import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
-import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
-import { mapToKnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { getTicketState } from 'state/ticket/selectors'
 import { changeActiveTab, getActiveTab } from 'state/ui/ticketAIAgentFeedback'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+
+import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { AiAgentReasoningContent } from './AiReasoningContent'
 
 import css from './AiAgentReasoning.less'
 
@@ -31,62 +31,52 @@ type AiAgentReasoningProps = {
 
 export const parseReasoningResources = (
     content: string,
+    resources: NonNullable<
+        ReturnType<typeof useGetMessageAiReasoning>['data']
+    >['resources'],
 ): KnowledgeReasoningResource[] => {
-    return (content.match(/\{\{[^}]+\}\}/g) || [])
+    return (content.match(/<<<(.*?)>>>/g) || [])
         .map((resourceString) => {
             const stringParts = resourceString
-                .replace('{{', '')
-                .replace('}}', '')
+                .replace('<<<', '')
+                .replace('>>>', '')
                 .split('::')
+            let metadata
+
             switch (stringParts[0]) {
-                case 'ARTICLE':
+                case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
+                case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
+                case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
+                case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
+                case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET:
+                    metadata = resources.find(
+                        (resource) =>
+                            resource.resourceId === stringParts[2] &&
+                            resource.resourceType ===
+                                (stringParts[0] as AiAgentKnowledgeResourceTypeEnum) &&
+                            resource.resourceSetId === stringParts[1],
+                    )
                     return {
                         resourceType:
                             stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
                         resourceId: stringParts[2],
                         resourceSetId: stringParts[1],
+                        resourceTitle: metadata?.resourceTitle,
                     }
-                case 'GUIDANCE':
-                    return {
-                        resourceType:
-                            stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
-                        resourceId: stringParts[2],
-                        resourceSetId: stringParts[1],
-                    }
-                case 'ACTION':
+                case AiAgentKnowledgeResourceTypeEnum.ACTION:
+                case AiAgentKnowledgeResourceTypeEnum.MACRO:
+                case AiAgentKnowledgeResourceTypeEnum.ORDER:
+                    metadata = resources.find(
+                        (resource) =>
+                            resource.resourceId === stringParts[1] &&
+                            resource.resourceType ===
+                                (stringParts[0] as AiAgentKnowledgeResourceTypeEnum),
+                    )
                     return {
                         resourceType:
                             stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
                         resourceId: stringParts[1],
-                    }
-                case 'MACRO':
-                    return {
-                        resourceType:
-                            stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
-                        resourceId: stringParts[2],
-                        resourceSetId: stringParts[1],
-                    }
-                case 'FILE_EXTERNAL_SNIPPET':
-                    return {
-                        resourceType:
-                            stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
-                        resourceId: stringParts[2],
-                        resourceSetId: stringParts[1],
-                    }
-                case 'EXTERNAL_SNIPPET':
-                    return {
-                        resourceType:
-                            stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
-                        resourceId: stringParts[2],
-                        resourceSetId: stringParts[1],
-                    }
-                case 'ORDER':
-                    return {
-                        resourceType:
-                            stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
-                        resourceId: stringParts[2],
-                        resourceSetId: stringParts[1],
-                        resourceTitle: stringParts[3],
+                        resourceTitle: metadata?.resourceTitle,
                     }
                 default:
                     return null
@@ -107,6 +97,11 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
 
     const activeTab = useAppSelector(getActiveTab)
     const dispatch = useAppDispatch()
+
+    const enableKnowledgeManagementFromTicketView = useFlag(
+        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
+    )
+    const { openPreview } = useKnowledgeSourceSideBar()
 
     const { data: messageAiReasoning, refetch: refetchMessageAiReasoning } =
         useGetMessageAiReasoning(
@@ -146,18 +141,37 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                 }
             }
 
-            const content = `**Reasoning:**\n\n${outcomeReasoning?.value}\n\n&nbsp;\n\n**Full details:**\n\n${fullDetailsReasoning?.map((resource) => resource.value.replace(/\\n/g, '\n\n')).join('\n\n')}\n\n&nbsp;\n\n**Outcome:**\n\n ${responseReasoning?.value}`
+            const content = `**Reasoning:**\n\n${responseReasoning?.value}\n\n&nbsp;\n\n**Full details:**\n\n${fullDetailsReasoning?.map((resource) => resource.value.replace(/\\n/g, '\n\n')).join('\n\n')}\n\n&nbsp;\n\n**Outcome:**\n\n ${outcomeReasoning?.value}`
 
             return {
                 reasoningContent: content,
-                reasoningResources: parseReasoningResources(content),
+                reasoningResources: [
+                    ...parseReasoningResources(
+                        outcomeReasoning.value,
+                        messageAiReasoning.resources,
+                    ),
+                    ...fullDetailsReasoning.flatMap((taskReasoning) =>
+                        parseReasoningResources(
+                            taskReasoning.value,
+                            messageAiReasoning.resources.filter((resource) =>
+                                resource.taskIds.includes(
+                                    taskReasoning.targetId,
+                                ),
+                            ),
+                        ),
+                    ),
+                    ...parseReasoningResources(
+                        responseReasoning.value,
+                        messageAiReasoning.resources,
+                    ),
+                ],
             }
         }
         return {
             reasoningContent: null,
             reasoningResources: [],
         }
-    }, [messageAiReasoning?.reasoning])
+    }, [messageAiReasoning?.reasoning, messageAiReasoning?.resources])
 
     const { data, isLoading: isResourcesReasoningMetadataLoading } =
         useGetResourcesReasoningMetadata({
@@ -179,99 +193,6 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
             }
         }
     }, [reasoningContent, state, isResourcesReasoningMetadataLoading])
-
-    const renderContentWithIcons = useMemo(() => {
-        if (reasoningContent === null) return null
-        const resourceMatches = reasoningContent.match(/\{\{[^}]+\}\}/g) || []
-
-        if (resourceMatches.length === 0) {
-            return (
-                <div className={css.contentWithIcons}>
-                    <ReactMarkdown>{reasoningContent}</ReactMarkdown>
-                </div>
-            )
-        }
-
-        let processedContent = reasoningContent
-        resourceMatches.forEach((match, index) => {
-            processedContent = processedContent.replace(
-                match,
-                `<kbd id="${index}" />`,
-            )
-        })
-
-        return (
-            <div className={css.contentWithIcons}>
-                <ReactMarkdown
-                    rehypePlugins={[rehypeRaw]}
-                    components={{
-                        p: ({ children }) => (
-                            <div style={{ marginBottom: '4px' }}>
-                                {children}
-                            </div>
-                        ),
-                        kbd: ({ id }: { id?: string }) => {
-                            const index = parseInt(id as string)
-                            const resource = reasoningResources[index]
-                            const resourceData = data[index]
-
-                            if (
-                                !resource ||
-                                !resourceData ||
-                                'isDeleted' in resourceData
-                            ) {
-                                return null
-                            }
-
-                            return (
-                                <span key={`resource-${index}`}>
-                                    <KnowledgeSourcePopover
-                                        id={resource.resourceId}
-                                        knowledgeResourceType={
-                                            resource.resourceType
-                                        }
-                                        url={resourceData.url ?? ''}
-                                        title={resourceData.title}
-                                        content={resourceData.content}
-                                        shopName={
-                                            messageAiReasoning
-                                                ?.storeConfiguration
-                                                ?.shopName ?? ''
-                                        }
-                                        shopType={
-                                            messageAiReasoning
-                                                ?.storeConfiguration
-                                                ?.shopType ?? ''
-                                        }
-                                    >
-                                        {(ref, eventHandlers) => (
-                                            <span ref={ref} {...eventHandlers}>
-                                                <KnowledgeSourceIcon
-                                                    type={mapToKnowledgeSourceType(
-                                                        resource.resourceType,
-                                                    )}
-                                                    badgeIconClassname={
-                                                        css.knowledgeSourceIcon
-                                                    }
-                                                />
-                                            </span>
-                                        )}
-                                    </KnowledgeSourcePopover>
-                                </span>
-                            )
-                        },
-                    }}
-                >
-                    {processedContent}
-                </ReactMarkdown>
-            </div>
-        )
-    }, [
-        reasoningContent,
-        reasoningResources,
-        data,
-        messageAiReasoning?.storeConfiguration,
-    ])
 
     const handleToggleExpansion = useCallback(() => {
         if (state === 'collapsed') {
@@ -369,7 +290,16 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                     [css.loading]: isLoading,
                 })}
             >
-                {renderContentWithIcons}
+                <AiAgentReasoningContent
+                    reasoningContent={reasoningContent}
+                    reasoningResources={reasoningResources}
+                    data={data}
+                    storeConfiguration={messageAiReasoning?.storeConfiguration}
+                    enableKnowledgeManagementFromTicketView={
+                        enableKnowledgeManagementFromTicketView
+                    }
+                    openPreview={openPreview}
+                />
             </div>
         )
     }

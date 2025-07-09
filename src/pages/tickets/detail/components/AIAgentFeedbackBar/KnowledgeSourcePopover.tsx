@@ -29,6 +29,7 @@ type KnowledgeSourcePopoverProps = {
     onClick?: (e: React.MouseEvent) => void
     shopName: string
     shopType: string
+    forceShowBody?: boolean
 }
 
 const KnowledgeSourcePopover = ({
@@ -40,6 +41,7 @@ const KnowledgeSourcePopover = ({
     onClick,
     shopName,
     shopType,
+    forceShowBody = false,
 }: KnowledgeSourcePopoverProps) => {
     const triggerRef = useRef<HTMLElement>(null)
     const [isOpen, setIsOpen] = useState(false)
@@ -59,7 +61,7 @@ const KnowledgeSourcePopover = ({
             href: url ?? '',
             popoverTitle: title || '',
             body:
-                showBody && content
+                (showBody || forceShowBody) && content
                     ? parseKnowledgeResourceContent(
                           stripHTML(content)!,
                           guidanceVariables,
@@ -67,7 +69,14 @@ const KnowledgeSourcePopover = ({
                       )
                     : null,
         }
-    }, [url, title, content, knowledgeResourceType, guidanceActions])
+    }, [
+        url,
+        title,
+        content,
+        knowledgeResourceType,
+        guidanceActions,
+        forceShowBody,
+    ])
 
     const openPopover = useCallback(() => {
         clearTimeout()

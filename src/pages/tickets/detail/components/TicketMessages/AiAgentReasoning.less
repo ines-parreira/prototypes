@@ -25,7 +25,8 @@
     .container {
         width: 100%;
         min-width: 380px;
-        padding: var(--layout-spacing-s);
+        padding-block: var(--layout-spacing-s);
+        padding-inline: var(--layout-spacing-xs);
         margin-top: var(--layout-spacing-s);
         border-radius: 12px;
         border: 1px solid transparent;
@@ -62,6 +63,7 @@
     }
 
     .title {
+        padding-inline: var(--layout-spacing-xs);
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xxs);
@@ -137,6 +139,7 @@
     }
 
     .body {
+        padding-inline: var(--layout-spacing-xs);
         .caption-regular();
         max-height: 0;
         opacity: 0;
@@ -152,12 +155,30 @@
         }
 
         &.expanded {
-            max-height: 1000px;
+            max-height: 600px;
             opacity: 1;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: var(--neutral-grey-3);
+                border-radius: 3px;
+            }
+
+            scrollbar-width: thin;
+            scrollbar-color: var(--neutral-grey-3) transparent;
         }
     }
 
     .footer {
+        padding-inline: var(--layout-spacing-xs);
         display: flex;
         gap: var(--layout-spacing-xxs);
         align-items: center;
@@ -202,6 +223,18 @@
     .knowledgeSourceIcon {
         vertical-align: middle;
         background-color: var(--neutral-grey-2);
+    }
+
+    .markdownParagraph {
+        margin-bottom: 4px;
+        min-height: 16px;
+        display: block;
+        line-height: 16px;
+        .childParagraph {
+            display: inline;
+            vertical-align: bottom;
+            line-height: 16px;
+        }
     }
 }
 

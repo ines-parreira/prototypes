@@ -1005,7 +1005,24 @@
             },
             "GuidancesHydrateResponseDto": {
                 "type": "object",
-                "additionalProperties": { "type": "string" }
+                "properties": {
+                    "hydrated_guidances": {
+                        "type": "object",
+                        "additionalProperties": { "type": "string" }
+                    },
+                    "actions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "id": { "type": "string" }
+                            },
+                            "required": ["name", "id"]
+                        }
+                    }
+                },
+                "required": ["hydrated_guidances", "actions"]
             },
             "FeedbackMutationDto": {
                 "discriminator": { "propertyName": "feedbackType" },
@@ -2008,9 +2025,61 @@
                             "snippetHelpCenterId"
                         ],
                         "nullable": true
+                    },
+                    "resources": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "resourceId": {
+                                    "type": "string",
+                                    "description": "Resource identifier"
+                                },
+                                "resourceType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ORDER",
+                                        "GUIDANCE",
+                                        "ACTION",
+                                        "ARTICLE",
+                                        "MACRO",
+                                        "EXTERNAL_SNIPPET",
+                                        "FILE_EXTERNAL_SNIPPET",
+                                        "STORE_WEBSITE_QUESTION_SNIPPET"
+                                    ],
+                                    "description": "Resource type"
+                                },
+                                "resourceSetId": {
+                                    "type": "string",
+                                    "description": "Resource set ID"
+                                },
+                                "resourceLocale": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "description": "Resource locale"
+                                },
+                                "resourceTitle": {
+                                    "type": "string",
+                                    "description": "Resource title"
+                                },
+                                "taskIds": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "description": "Task identifiers"
+                                }
+                            },
+                            "required": [
+                                "resourceId",
+                                "resourceType",
+                                "resourceSetId",
+                                "resourceLocale",
+                                "resourceTitle",
+                                "taskIds"
+                            ]
+                        }
                     }
                 },
-                "required": ["reasoning"]
+                "required": ["reasoning", "resources"]
             }
         }
     },

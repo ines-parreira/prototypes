@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -55,6 +55,21 @@ jest.mock(
     'pages/tickets/detail/components/TicketMessages/AiAgentReasoning',
     () => ({
         AiAgentReasoning: jest.fn(() => <div>AiAgentReasoning</div>),
+    }),
+)
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider',
+    () => ({
+        KnowledgeSourceSideBarProvider: ({
+            children,
+        }: {
+            children: React.ReactNode
+        }) => (
+            <div data-testid="knowledge-source-sidebar-provider">
+                {children}
+            </div>
+        ),
     }),
 )
 

@@ -80,6 +80,40 @@ declare namespace Components {
                  */
                 snippetHelpCenterId: number
             } | null
+            resources: {
+                /**
+                 * Resource identifier
+                 */
+                resourceId: string
+                /**
+                 * Resource type
+                 */
+                resourceType:
+                    | 'ORDER'
+                    | 'GUIDANCE'
+                    | 'ACTION'
+                    | 'ARTICLE'
+                    | 'MACRO'
+                    | 'EXTERNAL_SNIPPET'
+                    | 'FILE_EXTERNAL_SNIPPET'
+                    | 'STORE_WEBSITE_QUESTION_SNIPPET'
+                /**
+                 * Resource set ID
+                 */
+                resourceSetId: string
+                /**
+                 * Resource locale
+                 */
+                resourceLocale: string | null
+                /**
+                 * Resource title
+                 */
+                resourceTitle: string
+                /**
+                 * Task identifiers
+                 */
+                taskIds: string[]
+            }[]
         }
         export interface EarliestExecutionDto {
             /**
@@ -804,7 +838,13 @@ declare namespace Components {
             } | null
         }
         export interface GuidancesHydrateResponseDto {
-            [name: string]: string
+            hydrated_guidances: {
+                [name: string]: string
+            }
+            actions: {
+                name: string
+                id: string
+            }[]
         }
         export interface KnowledgeResourceDto {
             id: number
