@@ -170,6 +170,7 @@ describe('KnowledgeSourceArticleEditor', () => {
         },
         selectedTemplateKey: null,
         setSelectedTemplateKey: mockSetSelectedTemplateKey,
+        isFullscreenEditModal: false,
     }
 
     const defaultArticleTranslationsState = {
@@ -927,6 +928,59 @@ describe('KnowledgeSourceArticleEditor', () => {
             })
 
             expect(mockOnSubmitNewMissingKnowledge).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('when handling fullscreen modal styles', () => {
+        it('renders modal without custom inline styles when isFullscreenEditModal is true', () => {
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                isFullscreenEditModal: true,
+            })
+
+            const { container } = renderComponent()
+
+            const modalElement = container.querySelector('.modal')
+
+            expect(modalElement).toBeInTheDocument()
+            expect(modalElement).not.toHaveStyle('width: 612px')
+            expect(modalElement).not.toHaveStyle('right: -612px')
+        })
+
+        it('renders modal with custom inline styles when isFullscreenEditModal is false and modal is opened', () => {
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                isFullscreenEditModal: false,
+                editModal: {
+                    isOpened: true,
+                    view: HelpCenterArticleModalView.BASIC,
+                },
+            })
+
+            const { container } = renderComponent()
+
+            const modalElement = container.querySelector('.modal')
+
+            expect(modalElement).toBeInTheDocument()
+            expect(modalElement).toHaveStyle('width: 612px')
+        })
+
+        it('renders modal with custom inline styles without transform when isFullscreenEditModal is false and modal is not opened', () => {
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                isFullscreenEditModal: false,
+                editModal: {
+                    isOpened: false,
+                    view: HelpCenterArticleModalView.BASIC,
+                },
+            })
+
+            const { container } = renderComponent()
+
+            const modalElement = container.querySelector('.modal')
+
+            expect(modalElement).toBeInTheDocument()
+            expect(modalElement).toHaveStyle('width: 612px')
         })
     })
 })

@@ -96,6 +96,7 @@ const KnowledgeSourceArticleEditor = ({
         editModal,
         selectedTemplateKey,
         setSelectedTemplateKey,
+        isFullscreenEditModal,
     } = useEditionManager()
 
     const {
@@ -452,14 +453,16 @@ const KnowledgeSourceArticleEditor = ({
         return <></>
     }, [isCreateMode, isConsideredMissingKnowledge, dispatch])
 
-    const modalStyle = {
-        width: '612px',
-        maxWidth: '612px',
-        right: '-612px',
-        ...(editModal.isOpened && {
-            transform: 'translateX(-612px)',
-        }),
-    }
+    const modalStyle = isFullscreenEditModal
+        ? undefined
+        : {
+              width: '612px',
+              maxWidth: '612px',
+              right: '-612px',
+              ...(editModal.isOpened && {
+                  transform: 'translateX(-612px)',
+              }),
+          }
 
     return (
         <>
