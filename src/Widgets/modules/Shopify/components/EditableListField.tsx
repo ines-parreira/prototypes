@@ -6,6 +6,7 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useId from 'hooks/useId'
+import useSaveTagsInTicketDraft from 'hooks/useSaveTagsInTicketDraft'
 import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
@@ -48,6 +49,12 @@ export function EditableListField({
 
     const id = useId()
     const tooltipTargetID = 'editable-list-' + id + '-tooltip-target'
+
+    const { saveTagsInDraft } = useSaveTagsInTicketDraft(
+        data_source,
+        integrationId,
+        widget_resource_ids?.target_id,
+    )
 
     const _updateState = (selectedOptions: string) => {
         let formatedValues: SelectedValues[] = []
@@ -132,6 +139,7 @@ export function EditableListField({
             payload,
         })
         setSyncedValues(tagsListStr)
+        saveTagsInDraft(tagsListStr)
     }
 
     return (
