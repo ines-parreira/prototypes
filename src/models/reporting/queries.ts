@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { Query, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 
 import { appQueryClient } from 'api/queryClient'
@@ -15,11 +15,18 @@ import {
     ReportingResponse,
 } from 'models/reporting/types'
 
+const stopOnError = (query: Pick<Query, 'state'>) =>
+    query.state.status !== 'error'
+
 const defaultOptions = {
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes
     retry: doNotRetry40xAnd5xxErrors,
-}
+    refetchOnWindowFocus: stopOnError,
+    retryOnMount: false,
+    refetchOnMount: stopOnError,
+    refetchOnReconnect: stopOnError,
+} as const
 
 export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
     ReportingResponse<TData>
