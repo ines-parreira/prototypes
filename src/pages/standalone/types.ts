@@ -3,7 +3,7 @@ export enum HelpdeskIntegrationOptions {
     INTERCOM = 'intercom',
 }
 
-export type HepldeskIntegrationRequiredFields = {
+export type HelpdeskIntegrationRequiredFields = {
     label: string
     slug: string
     secret: boolean
@@ -11,7 +11,8 @@ export type HepldeskIntegrationRequiredFields = {
 
 export type HelpdeskIntegrationProperties = {
     schema: string
-    requiredFields: Record<string, HepldeskIntegrationRequiredFields>
+    requiredFields: Record<string, HelpdeskIntegrationRequiredFields>
+    label: string
 }
 
 export type HelpdeskIntegration = Record<

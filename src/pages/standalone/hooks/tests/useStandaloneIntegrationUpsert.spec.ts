@@ -12,7 +12,7 @@ import {
     HANDOVER_INTEGRATION_NAME_PREFIX,
     TICKET_HANDOVER_TRIGGER,
 } from 'pages/standalone/constants'
-import { useStandaloneIntegrationCreate } from 'pages/standalone/hooks/useStandaloneIntegrationCreate'
+import { useStandaloneIntegrationUpsert } from 'pages/standalone/hooks/useStandaloneIntegrationUpsert'
 import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationById } from 'state/integrations/selectors'
@@ -47,15 +47,15 @@ describe('useStandaloneIntegrationCreate', () => {
 
         const onCreateSuccess = jest.fn()
         const { result } = renderHook(() =>
-            useStandaloneIntegrationCreate(
+            useStandaloneIntegrationUpsert(
                 null,
                 { subdomain: 'test-domain', basicAuth: 'test-auth' },
                 onCreateSuccess,
             ),
         )
 
-        expect(result.current).toHaveProperty('create')
-        expect(typeof result.current.create).toBe('function')
+        expect(result.current).toHaveProperty('upsert')
+        expect(typeof result.current.upsert).toBe('function')
     })
 
     it('should create a new Zendesk integration', () => {
@@ -69,7 +69,7 @@ describe('useStandaloneIntegrationCreate', () => {
             (_, __, ___, callback) => {
                 callback({
                     ok: true,
-                    data: { id: 123 },
+                    id: 123,
                 })
             },
         )
@@ -79,19 +79,19 @@ describe('useStandaloneIntegrationCreate', () => {
         const testBasicToken = 'test-auth'
 
         const { result } = renderHook(() =>
-            useStandaloneIntegrationCreate(
+            useStandaloneIntegrationUpsert(
                 null,
                 { subdomain: testSubdomain, basicToken: testBasicToken },
                 onCreateSuccess,
             ),
         ) // Call the create function
-        result.current.create(HelpdeskIntegrationOptions.ZENDESK)
+        result.current.upsert(HelpdeskIntegrationOptions.ZENDESK)
 
         // Verify updateOrCreateIntegration was called with correct params
         expect(updateOrCreateIntegrationMock).toHaveBeenCalledWith(
             expect.any(Object), // fromJS object
             undefined,
-            undefined,
+            true,
             expect.any(Function),
         )
 
@@ -150,7 +150,7 @@ describe('useStandaloneIntegrationCreate', () => {
             (data, _, __, callback) => {
                 callback({
                     ok: true,
-                    data: { id: 456 },
+                    id: 456,
                 })
             },
         )
@@ -159,7 +159,7 @@ describe('useStandaloneIntegrationCreate', () => {
         const testAccessToken = 'test-token'
 
         const { result } = renderHook(() =>
-            useStandaloneIntegrationCreate(
+            useStandaloneIntegrationUpsert(
                 null,
                 { accessToken: testAccessToken },
                 onCreateSuccess,
@@ -167,7 +167,7 @@ describe('useStandaloneIntegrationCreate', () => {
         )
 
         // Call the create function
-        result.current.create(HelpdeskIntegrationOptions.INTERCOM)
+        result.current.upsert(HelpdeskIntegrationOptions.INTERCOM)
 
         // Get the first argument (the integration object)
         const callArg = updateOrCreateIntegrationMock.mock.calls[0][0]
@@ -226,7 +226,7 @@ describe('useStandaloneIntegrationCreate', () => {
             (data, _, __, callback) => {
                 callback({
                     ok: true,
-                    data: { id: 789 },
+                    id: 789,
                 })
             },
         )
@@ -236,7 +236,7 @@ describe('useStandaloneIntegrationCreate', () => {
         const testBasicToken = 'updated-auth'
 
         const { result } = renderHook(() =>
-            useStandaloneIntegrationCreate(
+            useStandaloneIntegrationUpsert(
                 789,
                 { subdomain: testSubdomain, basicToken: testBasicToken },
                 onCreateSuccess,
@@ -244,7 +244,7 @@ describe('useStandaloneIntegrationCreate', () => {
         )
 
         // Call the create function
-        result.current.create(HelpdeskIntegrationOptions.ZENDESK)
+        result.current.upsert(HelpdeskIntegrationOptions.ZENDESK)
 
         // Get the first argument (the integration object)
         const callArg = updateOrCreateIntegrationMock.mock.calls[0][0]
@@ -303,7 +303,7 @@ describe('useStandaloneIntegrationCreate', () => {
         )
 
         const { result } = renderHook(() =>
-            useStandaloneIntegrationCreate(
+            useStandaloneIntegrationUpsert(
                 null,
                 { subdomain: 'test-domain', basicToken: 'test-auth' },
                 onCreateSuccess,
@@ -311,7 +311,7 @@ describe('useStandaloneIntegrationCreate', () => {
         )
 
         // Call the create function
-        result.current.create(HelpdeskIntegrationOptions.ZENDESK)
+        result.current.upsert(HelpdeskIntegrationOptions.ZENDESK)
 
         // Verify updateOrCreateIntegration was called
         expect(updateOrCreateIntegrationMock).toHaveBeenCalled()
@@ -343,16 +343,102 @@ describe('useStandaloneIntegrationCreate', () => {
         const onCreateSuccess = jest.fn()
 
         const { result } = renderHook(() =>
-            useStandaloneIntegrationCreate(null, {}, onCreateSuccess),
+            useStandaloneIntegrationUpsert(null, {}, onCreateSuccess),
         )
 
         // Call the create function
-        result.current.create('unsupported-integration')
+        result.current.upsert('unsupported-integration')
 
         // Verify updateOrCreateIntegration was not called
         expect(updateOrCreateIntegrationMock).not.toHaveBeenCalled()
 
         // Verify onCreateSuccess was not called
         expect(onCreateSuccess).not.toHaveBeenCalled()
+    })
+
+    describe('currentIntegrationType', () => {
+        it('should return ZENDESK as default when no integration exists', () => {
+            // Mock the selector to return null (no existing integration)
+            useAppSelectorMock.mockReturnValue(null)
+
+            const onCreateSuccess = jest.fn()
+            const { result } = renderHook(() =>
+                useStandaloneIntegrationUpsert(null, {}, onCreateSuccess),
+            )
+
+            // Check the default value of currentIntegrationType
+            expect(result.current.currentIntegrationType).toBe(
+                HelpdeskIntegrationOptions.ZENDESK,
+            )
+        })
+
+        it('should extract integration type from integration name when it exists', () => {
+            // Create a mock integration with a valid handover integration name
+            const mockIntegration = fromJS({
+                id: 123,
+                name: `${HANDOVER_INTEGRATION_NAME_PREFIX}${HelpdeskIntegrationOptions.INTERCOM}`,
+            })
+
+            // Mock the selector to return the existing integration
+            const selectorFn = jest.fn().mockReturnValue(mockIntegration)
+            getIntegrationByIdMock.mockReturnValue(selectorFn)
+            useAppSelectorMock.mockImplementation((fn) => fn())
+
+            const onCreateSuccess = jest.fn()
+            const { result } = renderHook(() =>
+                useStandaloneIntegrationUpsert(123, {}, onCreateSuccess),
+            )
+
+            // Check that it correctly extracts the INTERCOM part from the name
+            expect(result.current.currentIntegrationType).toBe(
+                HelpdeskIntegrationOptions.INTERCOM,
+            )
+        })
+
+        it('should handle integration with non-standard name format', () => {
+            // Create a mock integration with a non-standard name (without prefix)
+            const mockIntegration = fromJS({
+                id: 456,
+                name: 'Some Random Integration',
+            })
+
+            // Mock the selector to return the existing integration
+            const selectorFn = jest.fn().mockReturnValue(mockIntegration)
+            getIntegrationByIdMock.mockReturnValue(selectorFn)
+            useAppSelectorMock.mockImplementation((fn) => fn())
+
+            const onCreateSuccess = jest.fn()
+            const { result } = renderHook(() =>
+                useStandaloneIntegrationUpsert(456, {}, onCreateSuccess),
+            )
+
+            // Should return the default ZENDESK value if name doesn't match expected format
+            expect(result.current.currentIntegrationType).toBe(
+                HelpdeskIntegrationOptions.ZENDESK,
+            )
+        })
+
+        it('should handle integration with empty name', () => {
+            // Create a mock integration with empty name
+            const mockIntegration = fromJS({
+                id: 789,
+                name: '',
+            })
+
+            // Mock the selector to return the existing integration
+            const selectorFn = jest.fn().mockReturnValue(mockIntegration)
+            getIntegrationByIdMock.mockReturnValue(selectorFn)
+            useAppSelectorMock.mockImplementation((fn) => fn())
+
+            const onCreateSuccess = jest.fn()
+            const { result } = renderHook(() =>
+                useStandaloneIntegrationUpsert(789, {}, onCreateSuccess),
+            )
+
+            // Should return the default ZENDESK value if name is empty
+            expect(result.current.currentIntegrationType).toBe(
+                HelpdeskIntegrationOptions.ZENDESK,
+            )
+        })
     })
 })

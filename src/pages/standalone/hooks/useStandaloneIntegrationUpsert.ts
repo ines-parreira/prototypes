@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { fromJS } from 'immutable'
 
@@ -6,51 +6,21 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import intercomSchema from 'pages/standalone/assets/httpSchemas/ticket-intercom.json'
-import zendeskSchema from 'pages/standalone/assets/httpSchemas/ticket-zendesk.json'
 import {
     HANDOVER_DEFAULT_CONTENT_TYPE,
     HANDOVER_DEFAULT_METHOD,
     HANDOVER_INTEGRATION_NAME_PREFIX,
+    INTEGRATIONS_MAPPING,
     TICKET_HANDOVER_TRIGGER,
 } from 'pages/standalone/constants'
 import {
-    HelpdeskIntegration,
     HelpdeskIntegrationOptions,
     HTTPIntegrationPayload,
 } from 'pages/standalone/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationById } from 'state/integrations/selectors'
 
-const integrationsMapping: HelpdeskIntegration = {
-    zendesk: {
-        schema: JSON.stringify(zendeskSchema),
-        requiredFields: {
-            subdomain: {
-                label: 'Subdomain',
-                slug: 'subdomain',
-                secret: false,
-            },
-            basicAuth: {
-                label: 'Basic Auth Token',
-                slug: 'basicAuth',
-                secret: true,
-            },
-        },
-    },
-    intercom: {
-        schema: JSON.stringify(intercomSchema),
-        requiredFields: {
-            authToken: {
-                label: 'Auth Bearer Token',
-                slug: 'authToken',
-                secret: true,
-            },
-        },
-    },
-}
-
-export const useStandaloneIntegrationCreate = (
+export const useStandaloneIntegrationUpsert = (
     currentIntegrationId: number | null,
     requiredFieldsValues: Record<string, string>,
     onCreateSuccess: (integrationId: number) => void,
@@ -60,15 +30,15 @@ export const useStandaloneIntegrationCreate = (
         getIntegrationById(currentIntegrationId ? currentIntegrationId : -1),
     )
 
-    const create = useCallback(
+    const upsert = useCallback(
         (targetIntegration: string) => {
-            if (!(targetIntegration in integrationsMapping)) {
+            if (!(targetIntegration in INTEGRATIONS_MAPPING)) {
                 console.error(`Invalid integration type: ${targetIntegration}`)
                 return
             }
 
             let schema =
-                integrationsMapping[
+                INTEGRATIONS_MAPPING[
                     targetIntegration as HelpdeskIntegrationOptions
                 ].schema
 
@@ -106,21 +76,31 @@ export const useStandaloneIntegrationCreate = (
                 updateOrCreateIntegration(
                     fromJS(httpIntegration),
                     undefined,
-                    undefined,
+                    true,
                     (resp: any) => {
-                        if (!resp.ok || !resp.data?.id) {
+                        if (!resp.id) {
                             console.error(
                                 `Failed to create integration: ${resp.error}`,
                             )
                             return
                         }
-                        const integrationId = resp.data.id
-                        onCreateSuccess(integrationId)
+                        onCreateSuccess(resp.id)
                     },
                 ),
             )
         },
         [requiredFieldsValues, onCreateSuccess, integration, dispatch],
     )
-    return { create }
+
+    const currentIntegrationType = useMemo(
+        () =>
+            integration && integration.get('name')
+                ? (integration
+                      .get('name')
+                      .split(HANDOVER_INTEGRATION_NAME_PREFIX)[1] ??
+                  HelpdeskIntegrationOptions.ZENDESK)
+                : HelpdeskIntegrationOptions.ZENDESK,
+        [integration],
+    )
+    return { upsert, currentIntegrationType }
 }
