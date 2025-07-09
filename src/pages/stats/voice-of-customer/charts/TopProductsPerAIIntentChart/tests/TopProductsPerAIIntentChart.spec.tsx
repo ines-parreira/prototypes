@@ -6,7 +6,7 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'pages/stats/common/components/NoDataAvailable'
 import { TopProductsPerAIIntentChart } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentChart'
-import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable'
+import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerIntentTable'
 import { assumeMock } from 'utils/testing'
 
 jest.mock(
@@ -16,7 +16,7 @@ const useGetCustomTicketsFieldsDefinitionDataMock = assumeMock(
     useGetCustomTicketsFieldsDefinitionData,
 )
 jest.mock(
-    'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable',
+    'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerIntentTable',
 )
 const TopProductsPerIntentTableMock = assumeMock(TopProductsPerIntentTable)
 

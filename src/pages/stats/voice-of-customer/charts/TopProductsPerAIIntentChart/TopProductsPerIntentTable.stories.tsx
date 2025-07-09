@@ -27,7 +27,7 @@ import { customFieldsTicketCountWithSortQueryFactory } from 'models/reporting/qu
 import { ticketCountForIntentQueryFactory } from 'models/reporting/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { EnrichmentFields } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable'
+import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerIntentTable'
 import { DEFAULT_SORTING_DIRECTION } from 'pages/stats/voice-of-customer/constants'
 import {
     filtersSlice,
@@ -267,7 +267,7 @@ appQueryClient.setQueryData(
 )
 
 const storyConfig: Meta = {
-    title: 'Stats/VoiceOfCustomer/TopProductsPerIntent',
+    title: 'Stats/VoiceOfCustomer/TopProductsPerIntentTable',
     component: TopProductsPerIntentTable,
     parameters: {
         chromatic: { disableSnapshot: false },

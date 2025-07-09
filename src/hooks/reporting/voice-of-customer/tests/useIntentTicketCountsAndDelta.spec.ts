@@ -10,7 +10,7 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { ReportingGranularity } from 'models/reporting/types'
-import { TopProductsPerIntentColumn } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
+import { TopIntentsColumns } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -95,7 +95,7 @@ describe('formatTicketCountData', () => {
 describe('useIntentTicketCountsAndDelta', () => {
     const mockIntentCustomFieldId = 123
     const mockOrder = {
-        column: TopProductsPerIntentColumn.Intent,
+        column: TopIntentsColumns.Intent,
         direction: OrderDirection.Asc,
     }
 

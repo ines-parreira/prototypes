@@ -3,13 +3,8 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
-    DEFAULT_BADGE_TEXT,
-    TREND_BADGE_FORMAT,
-} from 'pages/stats/common/components/TrendBadge'
-import { formatMetricTrend } from 'pages/stats/common/utils'
-import {
     LeadColumn,
-    TopProductsPerIntentColumn,
+    TopIntentsColumns,
 } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { DEFAULT_SORTING_VALUE } from 'pages/stats/voice-of-customer/constants'
 
@@ -32,25 +27,13 @@ export const formatProductsPerIntentsTableData = (
     }))
 }
 
-export const getColumnsSortingValue = (column: TopProductsPerIntentColumn) => {
+export const getColumnsSortingValue = (column: TopIntentsColumns) => {
     switch (column) {
-        case TopProductsPerIntentColumn.Intent:
+        case TopIntentsColumns.Intent:
             return TicketCustomFieldsDimension.TicketCustomFieldsValue
-        case TopProductsPerIntentColumn.TicketVolume:
+        case TopIntentsColumns.TicketVolume:
             return TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         default:
             return DEFAULT_SORTING_VALUE
-    }
-}
-
-export const formatTrendData = (value?: number, prevValue?: number) => {
-    const { formattedTrend, sign = 0 } =
-        value != null && prevValue != null
-            ? formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
-            : { formattedTrend: null }
-
-    return {
-        trend: formattedTrend || DEFAULT_BADGE_TEXT,
-        sign,
     }
 }

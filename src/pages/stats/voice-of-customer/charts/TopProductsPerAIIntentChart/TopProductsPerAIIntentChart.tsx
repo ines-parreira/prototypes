@@ -4,7 +4,7 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
-import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable'
+import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerIntentTable'
 import {
     ProductInsightsChart,
     ProductInsightsChartConfig,

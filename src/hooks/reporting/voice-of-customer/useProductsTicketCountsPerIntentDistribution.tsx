@@ -9,21 +9,25 @@ import { getPreviousPeriod } from 'utils/reporting'
 
 export const PRODUCTS_PER_INTENT_LIMIT = 5
 
+export type ProductTicketCountsPerIntentItem = {
+    name: string
+    value: number
+    prevValue: number
+    productId: string
+    productUrl: string
+}
+
+export type ProductsTicketCountsPerIntentDistributionResult = {
+    data: ProductTicketCountsPerIntentItem[]
+    isFetching: boolean
+    isError: boolean
+}
+
 export const useProductsTicketCountsPerIntentDistribution = (
     intentCustomFieldId: number,
     intentsCustomFieldValueString: string,
     sorting?: OrderDirection,
-): {
-    data: {
-        name: string
-        value: number
-        prevValue: number
-        productId: string
-        productUrl: string
-    }[]
-    isFetching: boolean
-    isError: boolean
-} => {
+): ProductsTicketCountsPerIntentDistributionResult => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const { data, isFetching, isError } =

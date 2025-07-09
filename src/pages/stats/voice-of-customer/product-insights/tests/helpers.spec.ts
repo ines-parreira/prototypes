@@ -3,15 +3,13 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { DEFAULT_BADGE_TEXT } from 'pages/stats/common/components/TrendBadge'
 import {
     LeadColumn,
-    TopProductsPerIntentColumn,
+    TopIntentsColumns,
 } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { DEFAULT_SORTING_VALUE } from 'pages/stats/voice-of-customer/constants'
 import {
     formatProductsPerIntentsTableData,
-    formatTrendData,
     getColumnsSortingValue,
 } from 'pages/stats/voice-of-customer/product-insights/helpers'
 import { assumeMock } from 'utils/testing'
@@ -131,53 +129,19 @@ describe('formatTableData', () => {
 
 describe('getColumnsSortingValue', () => {
     it('should return TicketCustomFieldsValue for Intent column', () => {
-        const result = getColumnsSortingValue(TopProductsPerIntentColumn.Intent)
+        const result = getColumnsSortingValue(TopIntentsColumns.Intent)
         expect(result).toBe(TicketCustomFieldsDimension.TicketCustomFieldsValue)
     })
 
     it('should return TicketCustomFieldsTicketCount for Volume column', () => {
-        const result = getColumnsSortingValue(
-            TopProductsPerIntentColumn.TicketVolume,
-        )
+        const result = getColumnsSortingValue(TopIntentsColumns.TicketVolume)
         expect(result).toBe(
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         )
     })
 
     it('should return DEFAULT_SORTING_VALUE for unknown column', () => {
-        const result = getColumnsSortingValue(
-            'unknown' as TopProductsPerIntentColumn,
-        )
+        const result = getColumnsSortingValue('unknown' as TopIntentsColumns)
         expect(result).toBe(DEFAULT_SORTING_VALUE)
-    })
-})
-
-describe('formatTrendData', () => {
-    it('should return correct trend and sign for positive trend', () => {
-        const result = formatTrendData(200, 100)
-        expect(result.trend).toBe('100%')
-        expect(result.sign).toBeGreaterThanOrEqual(0)
-    })
-
-    it('should return correct trend and sign for negative trend', () => {
-        const result = formatTrendData(50, 100)
-        expect(result.trend).toBe('50%')
-        expect(result.sign).toBeLessThanOrEqual(0)
-    })
-
-    it('should return correct trend and sign for zero trend', () => {
-        const result = formatTrendData(100, 100)
-        expect(result.trend).toBe('0%')
-        expect(result.sign).toBe(0)
-    })
-
-    it('should return default badge text when values are null', () => {
-        const result = formatTrendData(null as any, null as any)
-        expect(result.trend).toBe(DEFAULT_BADGE_TEXT)
-    })
-
-    it('should return default badge text when values are undefined', () => {
-        const result = formatTrendData(undefined as any, undefined as any)
-        expect(result.trend).toBe(DEFAULT_BADGE_TEXT)
     })
 })

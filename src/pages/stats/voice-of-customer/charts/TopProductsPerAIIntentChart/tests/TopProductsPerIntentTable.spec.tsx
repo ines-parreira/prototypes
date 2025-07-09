@@ -9,12 +9,13 @@ import { useProductsTicketCountsPerIntentDistribution } from 'hooks/reporting/vo
 import { useNotify } from 'hooks/useNotify'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
+import { DEFAULT_BADGE_TEXT } from 'pages/stats/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
-    TopProductsPerIntentColumn,
+    TopIntentsColumns,
     TopProductsPerIntentColumnConfig,
 } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
-import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentTable'
+import { TopProductsPerIntentTable } from 'pages/stats/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerIntentTable'
 import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
@@ -147,8 +148,7 @@ describe('TopProductsPerIntentTable', () => {
         render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
         const headerCell = screen.getByText(
-            TopProductsPerIntentColumnConfig[TopProductsPerIntentColumn.Intent]
-                .title,
+            TopProductsPerIntentColumnConfig[TopIntentsColumns.Intent].title,
         )
 
         await act(async () => {
@@ -180,6 +180,48 @@ describe('TopProductsPerIntentTable', () => {
 
         const negativeTrend = screen.getByText('20%')
         expect(negativeTrend).toBeInTheDocument()
+    })
+
+    it('should render intent delta fallback', () => {
+        const mockData = [
+            {
+                category: 'intent1',
+                value: '5',
+                prevValue: '0',
+            },
+        ]
+        useIntentTicketCountsAndDeltaMock.mockReturnValue({
+            data: mockData,
+            isFetching: false,
+            isError: false,
+        })
+
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
+
+        const trendPlaceholder = screen.getByText(DEFAULT_BADGE_TEXT)
+        expect(trendPlaceholder).toBeInTheDocument()
+    })
+
+    it('should render product delta fallback', () => {
+        const mockProductData = [
+            {
+                name: 'iPhone 15',
+                value: 25,
+                prevValue: 0,
+                productId: 'product-1',
+                productUrl: 'https://example.com/iphone.jpg',
+            },
+        ]
+        useProductsTicketCountsPerIntentDistributionMock.mockReturnValue({
+            data: mockProductData,
+            isFetching: false,
+            isError: false,
+        })
+
+        render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
+
+        const trendPlaceholder = screen.getByText(DEFAULT_BADGE_TEXT)
+        expect(trendPlaceholder).toBeInTheDocument()
     })
 
     it('should check the expanded row data', async () => {
