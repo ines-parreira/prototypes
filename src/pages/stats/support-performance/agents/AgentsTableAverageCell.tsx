@@ -3,6 +3,7 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import css from 'pages/stats/support-performance/agents/AgentsSummaryRow.less'
 import {
     AgentsColumnConfig,
     averageTooltip,
@@ -34,7 +35,11 @@ export const AgentsTableAverageCell = ({
     if (column === AgentsTableColumn.AgentName) {
         return (
             <>
-                {AGENT_SUMMARY_CELL_LABEL} <HintTooltip {...averageTooltip} />
+                {AGENT_SUMMARY_CELL_LABEL}
+                <HintTooltip
+                    {...averageTooltip}
+                    className={css.leadCellTooltip}
+                />
             </>
         )
     }

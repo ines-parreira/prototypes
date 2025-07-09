@@ -3,6 +3,7 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import css from 'pages/stats/support-performance/agents/AgentsSummaryRow.less'
 import { AgentsColumnConfig } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableColumn } from 'state/ui/stats/types'
 
@@ -28,7 +29,8 @@ export const AgentsTableTotalsCell = ({
     if (column === AgentsTableColumn.AgentName) {
         return (
             <>
-                {AGENT_TOTAL_ROW_LABEL} <HintTooltip {...tooltip} />
+                {AGENT_TOTAL_ROW_LABEL}
+                <HintTooltip {...tooltip} className={css.leadCellTooltip} />
             </>
         )
     }

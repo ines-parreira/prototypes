@@ -39,10 +39,7 @@ export default function ChartCard({
                 <div className={css.title}>
                     <span>{title}</span>
                     {hint && (
-                        <HintTooltip
-                            className={`${css.tooltipIcon}`}
-                            {...hint}
-                        />
+                        <HintTooltip className={css.tooltipIcon} {...hint} />
                     )}
                 </div>
                 <div className={css.chartsActionMenu}>
