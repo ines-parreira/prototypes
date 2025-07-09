@@ -12,6 +12,7 @@ import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModa
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
 import { useOptOutPlan } from 'pages/aiAgent/trial/hooks/useOptOutPlan'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -33,6 +34,7 @@ jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
+jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
 
 // Mock React Router hooks
 jest.mock('react-router-dom', () => ({
@@ -50,6 +52,8 @@ describe('TrialManageWorkflow', () => {
     const mockPush = jest.fn()
     const mockUseHistory = useHistory as jest.Mock
     const mockUseLocation = useLocation as jest.Mock
+    const mockUseSalesTrialRevampMilestone =
+        useSalesTrialRevampMilestone as jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -119,6 +123,9 @@ describe('TrialManageWorkflow', () => {
                 upgradePlanModal: {},
             }
         })
+        ;(useSalesTrialRevampMilestone as jest.Mock).mockReturnValue(
+            'milestone-1',
+        )
 
         // Mock components to render test content
         ;(TrialAlertBanner as jest.Mock).mockImplementation((props: any) => (
@@ -151,6 +158,22 @@ describe('TrialManageWorkflow', () => {
     it('does not render any components when user cannot see trial banner', () => {
         render(<TrialManageWorkflow pageName="Strategy" />)
 
+        expect(
+            screen.queryByTestId('trial-alert-banner'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('trial-manage-modal'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('returns undefined and renders nothing when trial milestone is off', () => {
+        mockUseSalesTrialRevampMilestone.mockReturnValue('off')
+
+        const { container } = render(
+            <TrialManageWorkflow pageName="Strategy" />,
+        )
+
+        expect(container.firstChild).toBeNull()
         expect(
             screen.queryByTestId('trial-alert-banner'),
         ).not.toBeInTheDocument()

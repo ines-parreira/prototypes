@@ -29,6 +29,8 @@ import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
+import { useSalesTrialRevampMilestone } from '../../hooks/useSalesTrialRevampMilestone'
+
 import css from './TrialManageWorkflow.less'
 
 export type TrialManageWorkflowProps = {
@@ -98,6 +100,9 @@ export const TrialManageWorkflow = ({
             })
         }
     }, [pageName, hasActiveTrial])
+
+    const trialMilestone = useSalesTrialRevampMilestone()
+    if (trialMilestone === 'off') return undefined
 
     return (
         <>
