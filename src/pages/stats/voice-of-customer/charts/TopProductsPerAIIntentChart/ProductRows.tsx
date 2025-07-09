@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react'
+
 import classNames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
@@ -75,6 +77,11 @@ export const ProductRows = ({
     )
 }
 
+const contentCellInnerStyle: CSSProperties = {
+    marginLeft: 0,
+    paddingLeft: 'var(--layout-spacing-m)',
+}
+
 export const ProductCell = ({
     column,
     entityId,
@@ -139,6 +146,7 @@ export const ProductCell = ({
                     isLeadColumn={isLeadColumn}
                     level={level}
                     hasChildren={false}
+                    innerStyle={contentCellInnerStyle}
                 >
                     <DrillDownModalTrigger
                         highlighted
@@ -161,6 +169,7 @@ export const ProductCell = ({
                     isLeadColumn={isLeadColumn}
                     level={level}
                     hasChildren={false}
+                    innerStyle={contentCellInnerStyle}
                 >
                     <TrendIcon sign={sign} />
                     {formattedTrend || DEFAULT_BADGE_TEXT}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { CSSProperties, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -71,6 +71,11 @@ export const IntentRows = ({
     )
 }
 
+const contentCellInnerStyle: CSSProperties = {
+    marginLeft: 0,
+    paddingLeft: 'var(--layout-spacing-m)',
+}
+
 const IntentCell = ({
     column,
     entityId,
@@ -130,6 +135,7 @@ const IntentCell = ({
                     isLeadColumn={isLeadColumn}
                     level={level}
                     hasChildren={false}
+                    innerStyle={contentCellInnerStyle}
                 >
                     <DrillDownModalTrigger
                         highlighted
@@ -151,6 +157,7 @@ const IntentCell = ({
                     isLeadColumn={isLeadColumn}
                     level={level}
                     hasChildren={false}
+                    innerStyle={contentCellInnerStyle}
                 >
                     <TrendIcon sign={sign} />
                     {formattedTrend || DEFAULT_BADGE_TEXT}
