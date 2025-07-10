@@ -35,6 +35,7 @@ jest.mock(
 )
 jest.mock('pages/settings/helpCenter/providers/EditionManagerContext')
 jest.mock('hooks/useModalManager')
+jest.mock('./hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar')
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
@@ -133,6 +134,7 @@ const mockGetTranslationForLocale = jest.fn()
 const mockCloseModal = jest.fn()
 const mockOnSubmitNewMissingKnowledge = jest.fn()
 const mockOnSaveClick = jest.fn()
+const mockOpenEdit = jest.fn()
 
 const useCurrentHelpCenterMock =
     require('pages/settings/helpCenter/hooks/useCurrentHelpCenter').default
@@ -145,6 +147,8 @@ const useArticleValidationMock =
 const useEditionManagerMock =
     require('pages/settings/helpCenter/providers/EditionManagerContext').useEditionManager
 const useModalManagerMock = require('hooks/useModalManager').useModalManager
+const useKnowledgeSourceSideBarMock =
+    require('./hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar').useKnowledgeSourceSideBar
 
 describe('KnowledgeSourceArticleEditor', () => {
     const defaultProps = {
@@ -202,6 +206,10 @@ describe('KnowledgeSourceArticleEditor', () => {
         closeModal: mockCloseModal,
     }
 
+    const defaultKnowledgeSourceSideBarState = {
+        openEdit: mockOpenEdit,
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -216,11 +224,15 @@ describe('KnowledgeSourceArticleEditor', () => {
         useArticleValidationMock.mockReturnValue(defaultArticleValidationState)
         useEditionManagerMock.mockReturnValue(defaultEditionManagerState)
         useModalManagerMock.mockReturnValue(defaultModalManagerState)
+        useKnowledgeSourceSideBarMock.mockReturnValue(
+            defaultKnowledgeSourceSideBarState,
+        )
         mockOnSaveClick.mockClear()
 
         mockCreateArticle.mockReset()
         mockUpdateArticle.mockReset()
         mockDeleteArticle.mockReset()
+        mockOpenEdit.mockClear()
     })
 
     const renderComponent = (
@@ -393,9 +405,11 @@ describe('KnowledgeSourceArticleEditor', () => {
 
             const mockCreatedArticle = {
                 id: 123,
+                help_center_id: mockHelpCenter.id,
                 translation: {
                     title: 'New Article',
                     content: 'New content',
+                    slug: 'new-article',
                     locale: 'en-US',
                     category_id: null,
                 },
@@ -442,6 +456,15 @@ describe('KnowledgeSourceArticleEditor', () => {
                     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                     true,
                 )
+                expect(mockOpenEdit).toHaveBeenCalledWith({
+                    id: '123',
+                    knowledgeResourceType:
+                        AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    url: 'http://acme.gorgias.docker:4000/en-US/new-article-123',
+                    content: 'New content',
+                    title: 'New Article',
+                    helpCenterId: mockHelpCenter.id.toString(),
+                })
             })
         })
 
@@ -831,6 +854,7 @@ describe('KnowledgeSourceArticleEditor', () => {
                                 // Simulate successful article creation
                                 onCreateSuccess({
                                     id: 123,
+                                    help_center_id: mockHelpCenter.id,
                                     translation: {
                                         locale: 'en-US',
                                         title: 'New Article',
@@ -981,6 +1005,75 @@ describe('KnowledgeSourceArticleEditor', () => {
 
             expect(modalElement).toBeInTheDocument()
             expect(modalElement).toHaveStyle('width: 612px')
+        })
+    })
+
+    describe('when handling loading state condition', () => {
+        beforeEach(() => {
+            useArticleTranslationsMock.mockReturnValue({
+                ...defaultArticleTranslationsState,
+                isFetchingArticleTranslations: false,
+            })
+        })
+
+        it('shows loading when not in create mode and article is null', () => {
+            const propsWithNullArticle = {
+                ...defaultProps,
+                article: null,
+                isCreateMode: false,
+            }
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: null,
+            })
+
+            const { container } = renderComponent(propsWithNullArticle)
+
+            const loadingElement = container.querySelector(
+                '.icon-circle-o-notch',
+            )
+            expect(loadingElement).toBeInTheDocument()
+        })
+
+        it('does not show loading when not in create mode and article has id', () => {
+            const propsWithArticleWithId = {
+                ...defaultProps,
+                article: mockArticle,
+                isCreateMode: false,
+            }
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: mockArticle,
+            })
+
+            const { container } = renderComponent(propsWithArticleWithId)
+
+            const loadingElement = container.querySelector(
+                '.icon-circle-o-notch',
+            )
+            expect(loadingElement).not.toBeInTheDocument()
+        })
+
+        it('does not show loading when in create mode regardless of article state', () => {
+            const propsInCreateMode = {
+                ...defaultProps,
+                article: null,
+                isCreateMode: true,
+            }
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: null,
+            })
+
+            const { container } = renderComponent(propsInCreateMode)
+
+            const loadingElement = container.querySelector(
+                '.icon-circle-o-notch',
+            )
+            expect(loadingElement).not.toBeInTheDocument()
         })
     })
 })

@@ -1,10 +1,19 @@
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { Action, Guidance, Knowledge } from 'models/aiAgentFeedback/types'
+import {
+    Article,
+    ArticleWithLocalTranslationAndRating,
+    HelpCenter,
+} from 'models/helpCenter/types'
 import { TicketMessage } from 'models/ticket/types'
 import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { replaceGuidanceVariablesPlaceholdersWithLabels } from 'pages/common/draftjs/plugins/guidance-variables/utils'
 import { replaceActionPlaceholdersWithLabels } from 'pages/common/draftjs/plugins/guidanceActions/utils'
+import {
+    getArticleUrl,
+    getHelpCenterDomain,
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getLDClient } from 'utils/launchDarkly'
 
@@ -39,6 +48,20 @@ export const getGuidanceUrl = (
     const flags = getLDClient().allFlags()
     const aiAgentRoutes = getAiAgentNavigationRoutes(shopName, flags)
     return aiAgentRoutes.guidanceArticleEdit(guidance.id)
+}
+
+export const getHelpCenterArticleUrl = (
+    article: Article | ArticleWithLocalTranslationAndRating,
+    helpCenter: HelpCenter,
+) => {
+    return getArticleUrl({
+        domain: getHelpCenterDomain(helpCenter),
+        locale: article.translation.locale,
+        slug: article.translation.slug,
+        articleId: article.id,
+        unlistedId: article.translation.article_unlisted_id,
+        isUnlisted: article.translation.visibility_status === 'UNLISTED',
+    })
 }
 
 export const getActionUrl = (

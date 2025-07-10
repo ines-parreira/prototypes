@@ -50,11 +50,13 @@ import {
 import { AddMissingKnowledgeCheckbox } from './AddMissingKnowledgeCheckbox'
 import { HelpCenterArticleDeleteModal } from './HelpCenterArticleDeleteModal'
 import { HelpCenterArticleDiscardModal } from './HelpCenterArticleDiscardModal'
+import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgePendingCloseType,
     SuggestedResourceValue,
 } from './types'
+import { getHelpCenterArticleUrl } from './utils'
 
 import css from './KnowledgeSourceArticleEditor.less'
 
@@ -84,6 +86,8 @@ const KnowledgeSourceArticleEditor = ({
     const nextActionRef = useRef<(() => void) | (() => Promise<void>) | null>(
         null,
     )
+
+    const { openEdit } = useKnowledgeSourceSideBar()
 
     const {
         selectedCategoryId,
@@ -172,8 +176,17 @@ const KnowledgeSourceArticleEditor = ({
                 AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 true,
             )
+
+            openEdit({
+                id: article.id.toString(),
+                knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                url: getHelpCenterArticleUrl(article, helpCenter),
+                content: article.translation.content,
+                title: article.translation.title,
+                helpCenterId: article.help_center_id.toString(),
+            })
         },
-        [onSaveClick, onArticleCreateOrUpdate],
+        [onSaveClick, onArticleCreateOrUpdate, helpCenter, openEdit],
     )
 
     const onArticleUpdate = useCallback(
@@ -468,7 +481,10 @@ const KnowledgeSourceArticleEditor = ({
         <>
             <div className={css.root}>
                 <HelpCenterEditModal
-                    isLoading={isFetchingArticleTranslations}
+                    isLoading={
+                        isFetchingArticleTranslations ||
+                        (!isCreateMode && !article?.id)
+                    }
                     portalRootId="root"
                     onBackdropClick={onDiscardChangesAttempt}
                     transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}

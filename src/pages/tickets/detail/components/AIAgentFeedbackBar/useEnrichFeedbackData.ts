@@ -17,10 +17,6 @@ import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArti
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import {
-    getArticleUrl,
-    getHelpCenterDomain,
-} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {
     AiAgentFeedbackTypeEnum,
     AiAgentKnowledgeResourceTypeEnum,
     FreeForm,
@@ -33,6 +29,8 @@ import {
     Paths,
 } from 'rest_api/knowledge_service_api/client.generated'
 import { getLDClient } from 'utils/launchDarkly'
+
+import { getHelpCenterArticleUrl } from './utils'
 
 const DEFAULT_STALE_TIME = 10 * 60 * 1000
 const DEFAULT_CACHE_TIME = 10 * 60 * 1000
@@ -276,15 +274,7 @@ export const getResourceMetadata = (
             const articleUrl =
                 helpCenter &&
                 article &&
-                getArticleUrl({
-                    domain: getHelpCenterDomain(helpCenter),
-                    locale: article.translation.locale,
-                    slug: article.translation.slug,
-                    articleId: article.id,
-                    unlistedId: article.translation.article_unlisted_id,
-                    isUnlisted:
-                        article.translation.visibility_status === 'UNLISTED',
-                })
+                getHelpCenterArticleUrl(article, helpCenter)
 
             return article
                 ? {

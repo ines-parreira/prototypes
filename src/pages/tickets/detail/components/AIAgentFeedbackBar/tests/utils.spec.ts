@@ -2,9 +2,12 @@ import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { Knowledge } from 'models/aiAgentFeedback/types'
+import { HelpCenter } from 'models/helpCenter/types'
+import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import {
+    getHelpCenterArticleUrl,
     getHelpCenterIdByResourceType,
     getKnowledgeResourceTypeLabel,
     getKnowledgeUrl,
@@ -61,6 +64,25 @@ describe('getKnowledgeUrl', () => {
         } as Knowledge
         const result = getKnowledgeUrl(knowledge, shopType, shopName)
         expect(result).toBe(`/app/settings/macros/123`)
+    })
+})
+
+describe('getHelpCenterArticleUrl', () => {
+    it('should return the article URL for Article type', () => {
+        const helpCenter = {
+            id: 3,
+            name: 'Test Help Center',
+            subdomain: 'test',
+            locale: 'en-US',
+        } as unknown as HelpCenter
+
+        const result = getHelpCenterArticleUrl(
+            getSingleArticleEnglish,
+            helpCenter,
+        )
+        expect(result).toBe(
+            'http://test.gorgias.docker:4000/en-US/uncategorized-article-18',
+        )
     })
 })
 
