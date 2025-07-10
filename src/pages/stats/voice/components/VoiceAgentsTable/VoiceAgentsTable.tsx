@@ -182,6 +182,11 @@ export const VoiceAgentsTable = () => {
                                                 isSortingMetricLoading:
                                                     isSortingLoading,
                                                 bodyCellProps: {
+                                                    className:
+                                                        index === 0 &&
+                                                        isTableScrolled
+                                                            ? css.withShadow
+                                                            : '',
                                                     justifyContent:
                                                         index === 0
                                                             ? 'left'
