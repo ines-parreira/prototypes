@@ -66,8 +66,9 @@ const AiShoppingAssistantExpireBanner: React.FC<
         [deactiveDatetime],
     )
 
+    if (isTrialRevampEnabled) return null
+
     if (
-        isTrialRevampEnabled ||
         days === undefined ||
         days < 0 ||
         !(bypassPlanCheck || !hasNewAutomatePlan)

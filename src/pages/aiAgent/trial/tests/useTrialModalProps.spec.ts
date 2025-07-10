@@ -386,6 +386,159 @@ describe('useTrialModalProps', () => {
                 }),
             })
         })
+
+        describe('remainingDays text formatting', () => {
+            beforeEach(() => {
+                mockUseBillingState.mockReturnValue({
+                    data: {
+                        current_plans: {
+                            automate: { amount: 5000, currency: 'USD' },
+                            helpdesk: { amount: 10000, num_quota_tickets: 100 },
+                        },
+                    },
+                } as any)
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: { amount: 9900 },
+                } as any)
+            })
+
+            it('should display "is ending today" when remainingDays is 0', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    remainingDays: 0,
+                    trialEndTime: getTrialEndTime(0),
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useTrialModalProps({}))
+
+                expect(result.current.trialStartedBanner.title).toBe(
+                    'Shopping Assistant trial is ending today.',
+                )
+            })
+
+            it('should display "is ending today" when remainingDays is negative', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    remainingDays: -1,
+                    trialEndTime: getTrialEndTime(-1),
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useTrialModalProps({}))
+
+                expect(result.current.trialStartedBanner.title).toBe(
+                    'Shopping Assistant trial is ending today.',
+                )
+            })
+
+            it('should display "ends in 1 day" when remainingDays is 1', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    remainingDays: 1,
+                    trialEndTime: getTrialEndTime(1),
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useTrialModalProps({}))
+
+                expect(result.current.trialStartedBanner.title).toBe(
+                    'Shopping Assistant trial ends in 1 day.',
+                )
+            })
+
+            it('should display "ends in X days" when remainingDays is greater than 1', () => {
+                const testCases = [
+                    { remainingDays: 2, expected: 'ends in 2 days' },
+                    { remainingDays: 5, expected: 'ends in 5 days' },
+                    { remainingDays: 10, expected: 'ends in 10 days' },
+                    { remainingDays: 14, expected: 'ends in 14 days' },
+                    { remainingDays: 30, expected: 'ends in 30 days' },
+                ]
+
+                testCases.forEach(({ remainingDays, expected }) => {
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.05,
+                        remainingDays,
+                        trialEndTime: getTrialEndTime(remainingDays),
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHook(() => useTrialModalProps({}))
+
+                    expect(result.current.trialStartedBanner.title).toBe(
+                        `Shopping Assistant trial ${expected}.`,
+                    )
+                })
+            })
+
+            it('should handle edge case with very large remainingDays', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    remainingDays: 365,
+                    trialEndTime: getTrialEndTime(365),
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useTrialModalProps({}))
+
+                expect(result.current.trialStartedBanner.title).toBe(
+                    'Shopping Assistant trial ends in 365 days.',
+                )
+            })
+
+            it('should update title text when remainingDays changes dynamically', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    remainingDays: 5,
+                    trialEndTime: getTrialEndTime(5),
+                    isLoading: false,
+                })
+
+                const { result, rerender } = renderHook(() =>
+                    useTrialModalProps({}),
+                )
+
+                // Initial state
+                expect(result.current.trialStartedBanner.title).toBe(
+                    'Shopping Assistant trial ends in 5 days.',
+                )
+
+                // Update to 1 day
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    remainingDays: 1,
+                    trialEndTime: getTrialEndTime(1),
+                    isLoading: false,
+                })
+                rerender()
+
+                expect(result.current.trialStartedBanner.title).toBe(
+                    'Shopping Assistant trial ends in 1 day.',
+                )
+
+                // Update to 0 days
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    remainingDays: 0,
+                    trialEndTime: getTrialEndTime(0),
+                    isLoading: false,
+                })
+                rerender()
+
+                expect(result.current.trialStartedBanner.title).toBe(
+                    'Shopping Assistant trial is ending today.',
+                )
+            })
+        })
     })
 
     describe('useTrialAlertBanner', () => {

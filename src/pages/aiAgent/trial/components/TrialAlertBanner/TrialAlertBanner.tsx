@@ -8,7 +8,7 @@ import css from './TrialAlertBanner.less'
 
 type Action = {
     label: string
-    disabled?: boolean
+    isDisabled?: boolean
     isLoading?: boolean
     variant?: 'primary' | 'secondary'
     onClick: () => void
@@ -58,6 +58,7 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                                         ? undefined
                                         : css.primaryActionButton
                                 }
+                                isDisabled={primaryAction.isDisabled}
                                 isLoading={primaryAction.isLoading}
                             >
                                 {primaryAction.label}
@@ -108,6 +109,7 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                                     : css.primaryActionButton
                             }
                             isLoading={primaryAction.isLoading}
+                            isDisabled={primaryAction.isDisabled}
                         >
                             {primaryAction.label}
                         </Button>
@@ -123,6 +125,7 @@ export const TrialAlertBanner: FC<TrialAlertBannerProps> = ({
                                     : css.secondaryActionButton
                             }
                             isLoading={secondaryAction.isLoading}
+                            isDisabled={secondaryAction.isDisabled}
                         >
                             {secondaryAction.label}
                         </Button>

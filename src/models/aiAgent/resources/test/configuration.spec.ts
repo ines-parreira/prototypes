@@ -28,6 +28,8 @@ import {
     getStoreConfiguration,
     getStoresConfigurations,
     getWelcomePageAcknowledged,
+    optOutSalesTrialUpgrade,
+    startSalesTrial,
     updateOnboardingData,
     upsertAccountConfiguration,
     upsertAiAgentStoreHandoverConfiguration,
@@ -53,8 +55,8 @@ describe('Configuration', () => {
     })
 
     afterAll(() => {
-        authServer.reset()
-        apiServer.reset()
+        authServer.restore()
+        apiServer.restore()
     })
 
     describe('getAccountConfiguration', () => {
@@ -539,10 +541,12 @@ describe('Configuration', () => {
                 const mockData = [{ id: 1, name: 'Test Onboarding' }]
                 const shopName = 'TestShop'
 
-                // 🔹 FIX: Ensure mock request includes correct params
-                apiServer
-                    .onGet('/onboardings', { params: { shop_name: shopName } }) // Incorrect approach
-                    .reply(200, mockData)
+                apiServer.onGet('/onboardings').reply((config) => {
+                    if (config.params?.shop_name === shopName) {
+                        return [200, mockData]
+                    }
+                    return [404]
+                })
 
                 const res = await getOnboardingDataByShopName(shopName)
                 expect(res).toEqual(mockData)
@@ -551,9 +555,7 @@ describe('Configuration', () => {
             it('should handle an error correctly', async () => {
                 const shopName = 'NonExistentShop'
 
-                apiServer
-                    .onGet('/onboardings', { params: { shop_name: shopName } })
-                    .reply(400)
+                apiServer.onGet('/onboardings').reply(400)
 
                 await expect(
                     getOnboardingDataByShopName(shopName),
@@ -789,6 +791,85 @@ describe('Configuration', () => {
                     }),
                 ).rejects.toThrow('Request failed with status code 500')
             })
+        })
+    })
+
+    describe('startSalesTrial', () => {
+        const gorgiasDomain = 'test-domain'
+        const storeType = 'shopify'
+        const storeName = 'test-store'
+
+        beforeEach(() => {
+            apiServer.restore()
+            apiServer = new MockAdapter(apiClient)
+        })
+
+        it('should resolve with the correct data on success', async () => {
+            const mockResponse = { success: true, message: 'Trial started' }
+
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/sales/${storeType}/${storeName}/start-trial`,
+                )
+                .reply(200, mockResponse)
+
+            const result = await startSalesTrial(
+                gorgiasDomain,
+                storeType,
+                storeName,
+            )
+
+            expect(result).toEqual(mockResponse)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/sales/${storeType}/${storeName}/start-trial`,
+                )
+                .reply(400)
+
+            await expect(
+                startSalesTrial(gorgiasDomain, storeType, storeName),
+            ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('optOutSalesTrialUpgrade', () => {
+        const gorgiasDomain = 'test-domain'
+
+        beforeEach(() => {
+            apiServer.restore()
+            apiServer = new MockAdapter(apiClient)
+        })
+
+        it('should resolve with the correct data on success', async () => {
+            const mockResponse = {
+                success: true,
+                message: 'Opted out successfully',
+            }
+
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/sales/opt-out-trial-upgrade`,
+                )
+                .reply(200, mockResponse)
+
+            const result = await optOutSalesTrialUpgrade(gorgiasDomain)
+
+            expect(result).toEqual(mockResponse)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/sales/opt-out-trial-upgrade`,
+                )
+                .reply(400)
+
+            await expect(
+                optOutSalesTrialUpgrade(gorgiasDomain),
+            ).rejects.toThrow('Request failed with status code 400')
         })
     })
 })

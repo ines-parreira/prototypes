@@ -321,3 +321,25 @@ export const upsertAiAgentStoreHandoverConfiguration = async (
 
     return response.data
 }
+
+/**
+ * Sales endpoints
+ */
+
+export const startSalesTrial = async (
+    gorgiasDomain: string,
+    storeType: string,
+    storeName: string,
+) => {
+    const response = await apiClient.post(
+        `/config/accounts/${gorgiasDomain}/sales/${storeType}/${storeName}/start-trial`,
+    )
+    return response.data
+}
+
+export const optOutSalesTrialUpgrade = async (gorgiasDomain: string) => {
+    const response = await apiClient.post(
+        `/config/accounts/${gorgiasDomain}/sales/opt-out-trial-upgrade`,
+    )
+    return response.data
+}

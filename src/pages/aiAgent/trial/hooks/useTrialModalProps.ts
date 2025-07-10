@@ -211,8 +211,10 @@ const useTrialStartedBanner = (
         return {
             label: 'Upgrade Now',
             onClick: handleUpgradePlan,
+            // TMP: Disable upgrade now for Milestone 1 while we're working on the Upgrade API
+            isDisabled: isRevampTrialMilestone1Enabled,
         }
-    }, [canBookDemo, handleUpgradePlan])
+    }, [canBookDemo, handleUpgradePlan, isRevampTrialMilestone1Enabled])
 
     const description = useMemo(() => {
         if (gmvInfluencedRate > 0.01) {
@@ -221,14 +223,21 @@ const useTrialStartedBanner = (
         return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.`
     }, [gmvInfluenced, gmvInfluencedRate])
 
+    const trialEndsText =
+        remainingDays <= 0
+            ? 'is ending today'
+            : remainingDays === 1
+              ? 'ends in 1 day'
+              : `ends in ${remainingDays} days`
+
     return useMemo(
         () => ({
-            title: `Shopping Assistant trial ends in ${remainingDays} days.`,
+            title: `Shopping Assistant trial ${trialEndsText}.`,
             description,
             primaryAction,
             secondaryAction,
         }),
-        [remainingDays, description, primaryAction, secondaryAction],
+        [trialEndsText, description, primaryAction, secondaryAction],
     )
 }
 

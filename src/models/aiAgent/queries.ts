@@ -1,8 +1,14 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+    UseQueryOptions,
+} from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     createOnboardingNotificationState,
     createStoreConfiguration,
@@ -14,6 +20,8 @@ import {
     getStoreConfiguration,
     getStoresConfigurations,
     getWelcomePageAcknowledged,
+    optOutSalesTrialUpgrade,
+    startSalesTrial,
     upsertAccountConfiguration,
     upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
@@ -30,6 +38,7 @@ import {
 } from 'models/aiAgentPlayground/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { Paths } from 'rest_api/help_center_api/client.generated'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { MutationOverrides } from 'types/query'
 
 import { getAIGeneratedGuidances } from './resources/guidances'
@@ -498,6 +507,51 @@ export const useUpsertStoreHandoverConfiguration = (
     return useMutation({
         mutationFn: (params) =>
             upsertAiAgentStoreHandoverConfiguration(...params),
+        ...overrides,
+    })
+}
+
+// Sales endpoints
+export const useStartSalesTrialMutation = (
+    overrides?: Omit<
+        MutationOverrides<(storeName: string) => unknown>,
+        'mutationFn'
+    >,
+) => {
+    const queryClient = useQueryClient()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    return useMutation({
+        mutationFn: ([storeName]) =>
+            startSalesTrial(accountDomain, 'shopify', storeName),
+        onSuccess: () => {
+            // Invalidate store configurations to refresh trial state
+            void queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.all(),
+            })
+        },
+        ...overrides,
+    })
+}
+
+export const useOptOutSalesTrialUpgradeMutation = (
+    overrides?: MutationOverrides<() => unknown>,
+) => {
+    const queryClient = useQueryClient()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    return useMutation({
+        mutationFn: () => optOutSalesTrialUpgrade(accountDomain),
+        onSuccess: () => {
+            // Invalidate store configurations to refresh trial state
+            void queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.all(),
+            })
+        },
         ...overrides,
     })
 }

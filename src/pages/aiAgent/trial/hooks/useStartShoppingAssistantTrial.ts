@@ -1,8 +1,12 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory } from 'react-router'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    storeConfigurationKeys,
+    useStartSalesTrialMutation,
+} from 'models/aiAgent/queries'
 import { upsertStoreConfiguration } from 'models/aiAgent/resources/configuration'
 import { AiAgentScope } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
@@ -11,6 +15,8 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+
+import { useSalesTrialRevampMilestone } from './useSalesTrialRevampMilestone'
 
 type Params = {
     accountDomain: string
@@ -23,6 +29,11 @@ export const useStartShoppingAssistantTrial = () => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const flags = useFlags()
+    const queryClient = useQueryClient()
+
+    const milestone = useSalesTrialRevampMilestone()
+
+    const startSalesTrialMutation = useStartSalesTrialMutation()
 
     return useMutation<void, Error, Params>(
         // Ideally this should take only a single storeActivation as parameter so that we could remove the protective check on stores.length === 1
@@ -58,19 +69,33 @@ export const useStartShoppingAssistantTrial = () => {
                 throw new Error("Invalid Chat - can't start trial")
             }
 
-            await upsertStoreConfiguration(accountDomain, {
-                ...store.configuration,
-                scopes: [AiAgentScope.Support, AiAgentScope.Sales],
-                salesDeactivatedDatetime: new Date(
-                    Date.now() + TRIAL_DURATION,
-                ).toISOString(),
-                salesPersuasionLevel: PersuasionLevel.Educational,
-                salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
-                salesDiscountMax: null,
-                chatChannelDeactivatedDatetime: null,
-            })
+            if (milestone === 'milestone-1') {
+                await startSalesTrialMutation.mutateAsync([store.name])
+            } else {
+                await upsertStoreConfiguration(accountDomain, {
+                    ...store.configuration,
+                    scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                    salesDeactivatedDatetime: new Date(
+                        Date.now() + TRIAL_DURATION,
+                    ).toISOString(),
+                    salesPersuasionLevel: PersuasionLevel.Educational,
+                    salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
+                    salesDiscountMax: null,
+                    chatChannelDeactivatedDatetime: null,
+                })
+            }
         },
         {
+            onSuccess: () => {
+                // For non-milestone-1, invalidate store configurations.
+                // For milestone-1, it's already done in the useStartSalesTrialMutation
+                if (milestone !== 'milestone-1') {
+                    // Refresh the store activations cache
+                    queryClient.invalidateQueries({
+                        queryKey: storeConfigurationKeys.all(),
+                    })
+                }
+            },
             onError: () => {
                 void dispatch(
                     notify({

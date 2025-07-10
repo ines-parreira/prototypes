@@ -27,7 +27,7 @@ export const useTrialMetrics = () => {
     )
     const trialMilestone = useSalesTrialRevampMilestone()
 
-    const isRevampTrialMilestone0Enabled = trialMilestone === 'milestone-0'
+    const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
     const { storeActivations } = useStoreActivations()
 
     const storeIds = useMemo(() => {
@@ -50,28 +50,38 @@ export const useTrialMetrics = () => {
 
     const { from, to } = useMemo(() => {
         const now = moment()
+        // TODO: ⚠️ The rounded below has been done to mitigate an infinite query to /api/reporting initiated by this hook. This mitigation is not ideal and just temporary.
+        // -------
+        // Round to the nearest hour to make the query stable for longer periods
+        const roundedNow = now.clone().startOf('hour')
 
         return {
-            from: now.clone().subtract(14, 'd').toISOString(),
-            to: now.toISOString(),
+            from: roundedNow.clone().subtract(14, 'd').toISOString(),
+            to: roundedNow.toISOString(),
         }
     }, [])
 
-    const filters = {
-        period: {
-            end_datetime: to,
-            start_datetime: from,
-        },
-        storeIntegrations:
-            storeIds.length > 0
-                ? {
-                      operator: LogicalOperatorEnum.ONE_OF,
-                      values: storeIds,
-                  }
-                : undefined,
-    }
+    const filters = useMemo(
+        () => ({
+            period: {
+                end_datetime: to,
+                start_datetime: from,
+            },
+            storeIntegrations:
+                storeIds.length > 0
+                    ? {
+                          operator: LogicalOperatorEnum.ONE_OF,
+                          values: storeIds,
+                      }
+                    : undefined,
+        }),
+        [to, from, storeIds],
+    )
 
-    const currentPeriodQuery = gmvInfluencedQueryFactory(filters, timezone)
+    const currentPeriodQuery = useMemo(
+        () => gmvInfluencedQueryFactory(filters, timezone),
+        [filters, timezone],
+    )
 
     const { data: gmvInfluencedData, isFetching: isGmvInfluencedFetching } =
         useMetricPerDimension(currentPeriodQuery)
@@ -89,41 +99,43 @@ export const useTrialMetrics = () => {
             return { remainingDays: 0, trialEndTime: null }
         }
 
+        // Use the stable 'to' date we already calculated above
+        const now = moment(to)
+
         const trialData = Object.values(storeActivations)
             .map((storeConfig) => {
-                if (isRevampTrialMilestone0Enabled) {
-                    const salesDeactivatedDatetime =
-                        storeConfig.configuration.salesDeactivatedDatetime
-                    if (!salesDeactivatedDatetime) {
+                if (isRevampTrialMilestone1Enabled) {
+                    const trialStartDatetime =
+                        storeConfig.configuration.sales?.trial.startDatetime
+                    const trialEndDatetime =
+                        storeConfig.configuration.sales?.trial.endDatetime
+
+                    if (!trialStartDatetime || !trialEndDatetime) {
                         return { days: Infinity, endTime: null }
                     }
 
-                    const deactivatedDate = moment(salesDeactivatedDatetime)
-                    const days =
-                        getShoppingAssistantExpirationDays(
-                            salesDeactivatedDatetime,
-                        ) || Infinity
+                    const trialEndDate = moment(trialEndDatetime)
+                    const days = Math.max(
+                        0,
+                        Math.round(trialEndDate.diff(now, 'days', true)),
+                    )
 
-                    return { days, endTime: deactivatedDate.toISOString() }
+                    return { days, endTime: trialEndDate.toISOString() }
                 }
 
-                const trialStartDatetime =
-                    storeConfig.configuration.sales?.trial.startDatetime
-                const trialEndDatetime =
-                    storeConfig.configuration.sales?.trial.endDatetime
-
-                if (!trialStartDatetime || !trialEndDatetime) {
+                const salesDeactivatedDatetime =
+                    storeConfig.configuration.salesDeactivatedDatetime
+                if (!salesDeactivatedDatetime) {
                     return { days: Infinity, endTime: null }
                 }
 
-                const trialEndDate = moment(trialEndDatetime)
-                const now = moment()
-                const days = Math.max(
-                    0,
-                    Math.ceil(trialEndDate.diff(now, 'days', true)),
-                )
+                const deactivatedDate = moment(salesDeactivatedDatetime)
+                const days =
+                    getShoppingAssistantExpirationDays(
+                        salesDeactivatedDatetime,
+                    ) || Infinity
 
-                return { days, endTime: trialEndDate.toISOString() }
+                return { days, endTime: deactivatedDate.toISOString() }
             })
             .filter((data) => data.days !== Infinity)
 
@@ -138,7 +150,7 @@ export const useTrialMetrics = () => {
             remainingDays: minDaysData.days,
             trialEndTime: minDaysData.endTime,
         }
-    }, [storeActivations, isRevampTrialMilestone0Enabled])
+    }, [storeActivations, isRevampTrialMilestone1Enabled, to])
 
     const gmvInfluenced = useMemo(() => {
         if (

@@ -97,6 +97,7 @@ export const TrialManageModal = ({
                                     : css.secondaryActionButton
                             }
                             isLoading={secondaryAction.isLoading}
+                            isDisabled={secondaryAction.isDisabled}
                         >
                             {secondaryAction.label}
                         </Button>

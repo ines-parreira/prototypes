@@ -1,11 +1,9 @@
 import { useMemo } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useModalManager } from 'hooks/useModalManager'
-import { storeConfigurationKeys } from 'models/aiAgent/queries'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
@@ -61,7 +59,6 @@ export const useShoppingAssistantTrialFlow = ({
     const manageTrialModal = useModalManager(MANAGE_TRIAL_MODAL_NAME, {
         autoDestroy: false,
     })
-    const queryClient = useQueryClient()
     const history = useHistory()
 
     const shopName = useMemo(
@@ -84,11 +81,6 @@ export const useShoppingAssistantTrialFlow = ({
             },
             {
                 onSuccess: () => {
-                    // Refresh the store activations cache
-                    queryClient.invalidateQueries({
-                        queryKey: storeConfigurationKeys.all(),
-                    })
-
                     // Close upgrade modal and open success modal
                     trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
                     successModal.openModal(SUCCESS_MODAL_NAME)

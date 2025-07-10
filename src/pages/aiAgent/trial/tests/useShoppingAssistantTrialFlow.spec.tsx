@@ -6,7 +6,6 @@ import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
-import { storeConfigurationKeys } from 'models/aiAgent/queries'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { assumeMock } from 'utils/testing'
 
@@ -208,11 +207,6 @@ describe('useShoppingAssistantTrialFlow', () => {
         })
 
         it('should handle successful trial start', async () => {
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries',
-            )
-
             const { result } = renderHook(
                 () =>
                     useShoppingAssistantTrialFlow({
@@ -242,11 +236,6 @@ describe('useShoppingAssistantTrialFlow', () => {
             const onSuccessCallback = mockMutateAsync.mock.calls[0][1].onSuccess
             await act(async () => {
                 await onSuccessCallback()
-            })
-
-            // Check that queries were invalidated
-            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                queryKey: storeConfigurationKeys.all(),
             })
 
             // Check modal manager calls

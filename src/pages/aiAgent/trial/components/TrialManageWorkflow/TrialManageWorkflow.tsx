@@ -7,6 +7,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import useAppSelector from 'hooks/useAppSelector'
+import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
@@ -23,7 +24,6 @@ import {
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
-import { useOptOutPlan } from 'pages/aiAgent/trial/hooks/useOptOutPlan'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
@@ -118,6 +118,8 @@ export const TrialManageWorkflow = ({
                     primaryAction={{
                         label: 'Upgrade Now',
                         onClick: openTrialUpgradeModal,
+                        // TMP: Disable upgrade now for Milestone 1 while we're working on the Upgrade API
+                        isDisabled: trialMilestone === 'milestone-1',
                     }}
                     secondaryAction={{
                         label: 'Opt Out',
@@ -145,17 +147,17 @@ export const TrialManageWorkflow = ({
 }
 
 export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
-    const { optOutPlan, isLoading: isOptOutPlanLoading } = useOptOutPlan()
+    const optOutMutation = useOptOutSalesTrialUpgradeMutation({
+        onSuccess: () => {
+            onClose()
+        },
+    })
 
     const onOptOutClick = () => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Confirm',
         })
-        optOutPlan(undefined, {
-            onSuccess: () => {
-                onClose()
-            },
-        })
+        optOutMutation.mutate([])
     }
 
     const onDismissClick = () => {
@@ -207,12 +209,12 @@ export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
 
                 <Button
                     className={
-                        isOptOutPlanLoading
+                        optOutMutation.isLoading
                             ? undefined
                             : css.primaryActionButton
                     }
                     onClick={onOptOutClick}
-                    isLoading={isOptOutPlanLoading}
+                    isLoading={optOutMutation.isLoading}
                 >
                     Opt Out
                 </Button>

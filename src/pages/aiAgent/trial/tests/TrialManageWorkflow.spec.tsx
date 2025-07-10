@@ -5,13 +5,13 @@ import { useHistory, useLocation } from 'react-router-dom'
 // Import mocked modules
 import { logEvent } from 'common/segment/segment'
 import useAppSelector from 'hooks/useAppSelector'
+import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialEndingTomorrowModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
-import { useOptOutPlan } from 'pages/aiAgent/trial/hooks/useOptOutPlan'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -28,8 +28,8 @@ jest.mock('pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner')
 jest.mock('pages/aiAgent/trial/components/TrialManageModal/TrialManageModal')
 jest.mock('pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal')
 jest.mock('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
-jest.mock('pages/aiAgent/trial/hooks/useOptOutPlan')
 jest.mock('pages/aiAgent/trial/hooks/useIsTrialStarted')
+jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
@@ -47,7 +47,7 @@ describe('TrialManageWorkflow', () => {
     const mockCloseManageTrialModal = jest.fn()
     const mockWindowOpen = jest.fn()
     const mockLogEvent = jest.fn()
-    const mockOptOutPlan = jest.fn()
+    const mockOptOutMutate = jest.fn()
     const mockUpgradePlan = jest.fn()
     const mockPush = jest.fn()
     const mockUseHistory = useHistory as jest.Mock
@@ -91,10 +91,13 @@ describe('TrialManageWorkflow', () => {
             upgradePlan: mockUpgradePlan,
             isLoading: false,
         })
-        ;(useOptOutPlan as jest.Mock).mockReturnValue({
-            optOutPlan: mockOptOutPlan,
-            isLoading: false,
-        })
+        ;(useOptOutSalesTrialUpgradeMutation as jest.Mock).mockImplementation(
+            (options?: any) => ({
+                mutate: mockOptOutMutate,
+                isLoading: false,
+                onSuccess: options?.onSuccess,
+            }),
+        )
         ;(useTrialModalProps as jest.Mock).mockImplementation(() => {
             const { canBookDemo } = (
                 useShoppingAssistantTrialAccess as jest.Mock
@@ -606,9 +609,7 @@ describe('TrialManageWorkflow', () => {
                     CTA: 'Confirm',
                 },
             )
-            expect(mockOptOutPlan).toHaveBeenCalledWith(undefined, {
-                onSuccess: expect.any(Function),
-            })
+            expect(mockOptOutMutate).toHaveBeenCalledWith([])
         })
 
         it('logs event when Dismiss is clicked', async () => {
@@ -657,10 +658,12 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('shows loading state when optOutPlan is loading', async () => {
-            ;(useOptOutPlan as jest.Mock).mockReturnValue({
-                optOutPlan: mockOptOutPlan,
+            ;(
+                useOptOutSalesTrialUpgradeMutation as jest.Mock
+            ).mockImplementation(() => ({
+                mutate: mockOptOutMutate,
                 isLoading: true,
-            })
+            }))
 
             const user = userEvent.setup()
             render(<TrialManageWorkflow pageName="Strategy" />)
@@ -700,6 +703,19 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('calls onSuccess callback and updates URL when optOutPlan succeeds', async () => {
+            let onSuccessCallback: (() => void) | undefined
+
+                // Set up the mock to capture the onSuccess callback
+            ;(
+                useOptOutSalesTrialUpgradeMutation as jest.Mock
+            ).mockImplementation((options?: any) => {
+                onSuccessCallback = options?.onSuccess
+                return {
+                    mutate: mockOptOutMutate,
+                    isLoading: false,
+                }
+            })
+
             const user = userEvent.setup()
             render(<TrialManageWorkflow pageName="Strategy" />)
 
@@ -714,10 +730,9 @@ describe('TrialManageWorkflow', () => {
             await user.click(confirmOptOutButton)
 
             // Simulate success callback
-            const optOutCall = mockOptOutPlan.mock.calls[0]
-            const onSuccess = optOutCall[1].onSuccess
+            expect(onSuccessCallback).toBeDefined()
             act(() => {
-                onSuccess()
+                onSuccessCallback?.()
             })
 
             // Modal should be closed (opt out of upgrade text should not be visible)
