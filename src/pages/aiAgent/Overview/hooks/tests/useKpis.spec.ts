@@ -26,6 +26,7 @@ describe('useKpis', () => {
     it('should return metrics from individual hooks', () => {
         const { result } = renderHook(() =>
             useKpis({
+                automationRateFilters: filters,
                 filters,
                 timezone,
                 aiAgentUserId: 123,

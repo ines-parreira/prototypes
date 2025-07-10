@@ -125,6 +125,39 @@ describe('KpiSection', () => {
             ).not.toBeInTheDocument()
             expect(screen.queryByText('100')).toBeInTheDocument()
         })
+
+        it('calls useKpis with correct filters', () => {
+            jest.useFakeTimers().setSystemTime(new Date('2024-03-30T00:00:00Z'))
+
+            useKpisMock.mockReturnValue({
+                metrics: [
+                    {
+                        isLoading: true,
+                        title: `My ${aiAgentType} metric`,
+                        hint: { title: `My ${aiAgentType} hint` },
+                    },
+                ],
+            })
+
+            renderComponent()
+
+            expect(useKpisMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    automationRateFilters: {
+                        period: {
+                            start_datetime: '2024-03-02T00:00:00Z',
+                            end_datetime: '2024-03-27T23:59:59Z',
+                        },
+                    },
+                    filters: {
+                        period: {
+                            start_datetime: '2024-03-02T00:00:00Z',
+                            end_datetime: '2024-03-30T23:59:59Z',
+                        },
+                    },
+                }),
+            )
+        })
     })
 
     describe('View Full Report button', () => {

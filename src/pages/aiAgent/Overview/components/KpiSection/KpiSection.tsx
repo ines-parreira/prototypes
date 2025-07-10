@@ -9,7 +9,6 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppSelector from 'hooks/useAppSelector'
-import { StatsFilters } from 'models/stat/types'
 import { Kpi } from 'pages/aiAgent/components/Kpi/Kpi'
 import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
 import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
@@ -19,6 +18,7 @@ import {
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { STATS_ROUTES } from 'routes/constants'
 import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
@@ -80,20 +80,33 @@ const Kpis = ({
     showEarlyAccessModal: () => void
     showActivationModal: () => void
 }) => {
-    const filters: StatsFilters = useMemo(
-        () => ({
-            period: {
-                start_datetime: moment()
-                    .subtract(28, 'days')
-                    .startOf('day')
-                    .format(),
-                end_datetime: moment().endOf('day').format(),
+    const { automationRateFilters, filters } = useMemo(() => {
+        const start_datetime = moment()
+            .subtract(28, 'days')
+            .startOf('day')
+            .format()
+
+        return {
+            automationRateFilters: {
+                period: {
+                    start_datetime,
+                    end_datetime: moment()
+                        .subtract(3, 'days')
+                        .endOf('day')
+                        .format(),
+                },
             },
-        }),
-        [],
-    )
+            filters: {
+                period: {
+                    start_datetime,
+                    end_datetime: moment().endOf('day').format(),
+                },
+            },
+        }
+    }, [])
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
     const { metrics } = useKpis({
+        automationRateFilters,
         filters,
         timezone: userTimezone,
         aiAgentType,
@@ -139,7 +152,14 @@ export const KpiSection = ({
                     <div className={css.title}>
                         <CardTitle>AI Agent performance</CardTitle>
                     </div>
-                    <div className={css.subtitle}>Data from last 28 days</div>
+                    <div className={css.subtitle}>
+                        Data from last 28 days
+                        <IconTooltip className={css.iconTooltip}>
+                            Data for the past 72 hours is not included in these
+                            metrics, as interactions are considered automated
+                            after 72 hours have passed without a customer reply.
+                        </IconTooltip>
+                    </div>
                 </div>
 
                 <KpiContainer isLoading />
@@ -165,7 +185,14 @@ export const KpiSection = ({
                         </NavLink>
                     )}
                 </div>
-                <div className={css.subtitle}>Data from last 28 days</div>
+                <div className={css.subtitle}>
+                    Data from last 28 days
+                    <IconTooltip className={css.iconTooltip}>
+                        Data for the past 72 hours is not included in these
+                        metrics, as interactions are considered automated after
+                        72 hours have passed without a customer reply.
+                    </IconTooltip>
+                </div>
             </div>
 
             <Kpis

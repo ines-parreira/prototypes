@@ -125,7 +125,7 @@ export type TrendMetric =
     | AiSalesAgentChart.AiSalesDiscountRateApplied
     | AiSalesAgentChart.AiSalesAverageDiscount
 
-type AiSalesMetricConfig = {
+export type AiSalesMetricConfig = {
     title: string
     hint: TooltipData
     useTrend: MetricTrendHook

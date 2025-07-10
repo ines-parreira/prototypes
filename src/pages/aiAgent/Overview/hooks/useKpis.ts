@@ -6,6 +6,7 @@ import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInflue
 import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 
 export const useKpis = ({
+    automationRateFilters,
     filters,
     timezone,
     aiAgentType,
@@ -14,6 +15,7 @@ export const useKpis = ({
     showEarlyAccessModal,
     showActivationModal,
 }: {
+    automationRateFilters: StatsFilters
     filters: StatsFilters
     timezone: string
     aiAgentType?: AiAgentType
@@ -22,8 +24,11 @@ export const useKpis = ({
     showEarlyAccessModal: () => void
     showActivationModal: () => void
 }) => {
-    const coverageRate = useCoverageRate(filters, timezone)
-    const automationRate = useAiAgentAutomationRate(filters, timezone)
+    const coverageRate = useCoverageRate(automationRateFilters, timezone)
+    const automationRate = useAiAgentAutomationRate(
+        automationRateFilters,
+        timezone,
+    )
     const gmvInfluenced = useGmvInfluenced({
         filters: filters,
         timezone: timezone,

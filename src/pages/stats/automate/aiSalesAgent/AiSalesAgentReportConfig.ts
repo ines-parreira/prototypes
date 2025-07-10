@@ -7,6 +7,7 @@ import {
 } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import AiSalesAgentTrendCard from 'pages/stats/automate/aiSalesAgent/charts/AiSalesAgentTrendCard'
 import GmvInfluencedOverTimeChart from 'pages/stats/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
+import SuccessRateTrendCard from 'pages/stats/automate/aiSalesAgent/charts/SuccessRateTrendCard'
 import TopProductRecommendationTable from 'pages/stats/automate/aiSalesAgent/charts/TopProductRecommendationTable'
 import { fetchTopProductRecommendationsReportData } from 'pages/stats/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
@@ -133,7 +134,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
                 AiSalesAgentMetricConfig[
                     AiSalesAgentChart.AiSalesAgentSuccessRate
                 ].hint.title,
-            chartComponent: AiSalesAgentTrendCard,
+            chartComponent: SuccessRateTrendCard,
             csvProducer: [],
         },
         [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
