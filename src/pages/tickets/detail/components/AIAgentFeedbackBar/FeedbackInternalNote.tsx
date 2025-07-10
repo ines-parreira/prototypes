@@ -1,30 +1,52 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import TextArea from 'gorgias-design-system/Input/TextArea'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 type FeedbackInternalNoteProps = {
-    onChange: (value: string) => void
-    value: string
+    onDebouncedChange: (value: string) => void
+    initialValue?: string
     lastUpdated?: string
     isMutationLoading?: boolean
 }
 
 const FeedbackInternalNote = ({
-    onChange,
-    value,
+    onDebouncedChange,
+    initialValue,
     isMutationLoading,
     lastUpdated,
 }: FeedbackInternalNoteProps) => {
-    const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            onChange(e as unknown as string)
+    const [value, setValue] = useState(initialValue || null)
+    useEffect(() => {
+        setValue(initialValue || '')
+    }, [initialValue])
+
+    useDebouncedEffect(
+        () => {
+            if (
+                value !== (initialValue || '') &&
+                value !== null &&
+                onDebouncedChange
+            ) {
+                onDebouncedChange(value)
+            }
         },
-        [onChange],
+        [value],
+        1500,
+    )
+
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLTextAreaElement> | string) => {
+            // Handle both event object and string value
+            const newValue = typeof e === 'string' ? e : e.target.value
+            setValue(newValue)
+        },
+        [],
     )
 
     return (
@@ -53,7 +75,7 @@ const FeedbackInternalNote = ({
                 isValid
                 rows={1}
                 onChange={handleChange}
-                value={value}
+                value={value ?? ''}
             />
         </div>
     )

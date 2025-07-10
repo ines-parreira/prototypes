@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { Button, Separator } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
@@ -40,7 +39,6 @@ import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constan
 import { getViewsState } from 'state/views/selectors'
 
 const AIAgentSimplifiedFeedback = () => {
-    const [freeFormFeedback, setFreeFormFeedback] = useState('')
     const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
     const viewsState = useAppSelector(getViewsState)
@@ -53,7 +51,6 @@ const AIAgentSimplifiedFeedback = () => {
 
     const [loadingFreeFormMutation, setLoadingFreeFormMutation] =
         useState<boolean>()
-    const dirtyRef = useRef(false)
     const prevLoadingRef = useRef(true)
 
     const ticket = useAppSelector(getTicketState)
@@ -197,53 +194,43 @@ const AIAgentSimplifiedFeedback = () => {
         }
     }, [isLoadingEnrichedData, isInitialLoad])
 
-    useEffect(() => {
-        if (loadingFreeFormMutation) return
-        if (
-            enrichedData.freeForm?.feedback?.feedbackValue !==
-                freeFormFeedback &&
-            !dirtyRef.current
-        ) {
-            setFreeFormFeedback(
-                enrichedData.freeForm?.feedback?.feedbackValue ?? '',
-            )
-        }
-    }, [enrichedData.freeForm, freeFormFeedback, loadingFreeFormMutation])
+    const handleFreeFormFeedbackChange = useCallback(
+        async (value: string) => {
+            setLoadingFreeFormMutation(true)
 
-    const handleFreeFormFeedbackChange = useCallback(async () => {
-        if (!dirtyRef.current) return
+            const executionId =
+                enrichedData.freeForm?.executionId ??
+                feedback?.executions?.[0]?.executionId
 
-        dirtyRef.current = false
+            // should never happen, since we're showing that we're still processing the details of this conversation
+            // if there are no executions
+            if (!executionId) return
 
-        setLoadingFreeFormMutation(true)
+            await upsertFeedback({
+                feedbackToUpsert: [
+                    {
+                        id: enrichedData.freeForm?.feedback?.id,
+                        objectId: ticketId.toString(),
+                        objectType: 'TICKET',
+                        executionId: executionId,
+                        targetType: 'TICKET',
+                        targetId: ticketId.toString(),
+                        feedbackValue: value,
+                        feedbackType: 'TICKET_FREEFORM',
+                    },
+                ],
+            })
 
-        const executionId =
-            enrichedData.freeForm?.executionId ??
-            feedback?.executions?.[0]?.executionId
-
-        // should never happen, since we're showing that we're still processing the details of this conversation
-        // if there are no executions
-        if (!executionId) return
-
-        await upsertFeedback({
-            feedbackToUpsert: [
-                {
-                    id: enrichedData.freeForm?.feedback?.id,
-                    objectId: ticketId.toString(),
-                    objectType: 'TICKET',
-                    executionId: executionId,
-                    targetType: 'TICKET',
-                    targetId: ticketId.toString(),
-                    feedbackValue: freeFormFeedback,
-                    feedbackType: 'TICKET_FREEFORM',
-                },
-            ],
-        })
-
-        setLoadingFreeFormMutation(false)
-    }, [freeFormFeedback, ticketId, upsertFeedback, enrichedData, feedback])
-
-    useDebouncedEffect(handleFreeFormFeedbackChange, [freeFormFeedback], 1500)
+            setLoadingFreeFormMutation(false)
+        },
+        [
+            ticketId,
+            upsertFeedback,
+            enrichedData.freeForm?.executionId,
+            enrichedData.freeForm?.feedback?.id,
+            feedback?.executions,
+        ],
+    )
 
     const { onSubmitMissingKnowledge, onSubmitNewMissingKnowledge } =
         useFeedbackActions({
@@ -261,19 +248,6 @@ const AIAgentSimplifiedFeedback = () => {
             enrichedData,
             setLoadingMutations,
         })
-
-    const handleFeedbackInternalNoteChange = (value: string) => {
-        if (
-            (!value && !enrichedData.freeForm?.feedback?.feedbackValue) ||
-            value === enrichedData.freeForm?.feedback?.feedbackValue ||
-            value === freeFormFeedback
-        ) {
-            return
-        }
-
-        dirtyRef.current = true
-        setFreeFormFeedback(value)
-    }
 
     const helpCenter = useMemo(() => {
         if (!helpCenters || !selectedResource) return null
@@ -389,9 +363,12 @@ const AIAgentSimplifiedFeedback = () => {
 
                         <Separator className={css.separator} />
                         <FeedbackInternalNote
-                            onChange={handleFeedbackInternalNoteChange}
+                            onDebouncedChange={handleFreeFormFeedbackChange}
                             isMutationLoading={loadingFreeFormMutation}
-                            value={freeFormFeedback}
+                            initialValue={
+                                enrichedData.freeForm?.feedback
+                                    ?.feedbackValue ?? ''
+                            }
                             lastUpdated={
                                 enrichedData.freeForm?.feedback?.updatedDatetime
                             }
