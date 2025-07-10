@@ -1,3 +1,7 @@
+import { BusinessHoursCreate, Timezone } from '@gorgias/helpdesk-types'
+
+import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from './constants'
+
 export function convertToAmPm(time24: string): string {
     const [hours, minutes] = time24.split(':').map(Number)
     const date = new Date()
@@ -8,4 +12,19 @@ export function convertToAmPm(time24: string): string {
         minute: '2-digit',
         hour12: true,
     }).format(date)
+}
+
+export const getCreateBusinessHoursFormDefaultValues = (
+    timezone: string = 'UTC',
+): Partial<BusinessHoursCreate> => {
+    return {
+        name: '',
+        business_hours_config: {
+            business_hours: [DEFAULT_BUSINESS_HOURS_SCHEDULE],
+            timezone: timezone as Timezone,
+        },
+        assigned_integrations: {
+            assign_integrations: [],
+        },
+    }
 }

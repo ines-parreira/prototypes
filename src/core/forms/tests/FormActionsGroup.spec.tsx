@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 
-import ActionsGroup from '../ActionsGroup'
+import FormActionsGroup from '../components/FormActionsGroup'
 
-describe('ActionsGroup', () => {
+describe('FormActionsGroup', () => {
     it('should render children', () => {
-        render(<ActionsGroup>Child</ActionsGroup>)
+        render(<FormActionsGroup>Child</FormActionsGroup>)
 
         expect(screen.getByText('Child')).toBeInTheDocument()
     })

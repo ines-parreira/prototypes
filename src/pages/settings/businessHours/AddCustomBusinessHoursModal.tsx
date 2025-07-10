@@ -1,5 +1,11 @@
+import {
+    BusinessHoursCreate,
+    useCreateBusinessHours,
+} from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { FormSubmitButton } from 'core/forms'
+import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -7,7 +13,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SectionHeader from 'pages/common/components/SectionHeader/SectionHeader'
 
 import AddCustomBusinessHoursModalGeneralSection from './AddCustomBusinessHoursModalGeneralSection'
-import CustomBusinessHoursForm from './CustomBusinessHoursForm'
+import CreateCustomBusinessHoursForm from './CreateCustomBusinessHoursForm'
 import CustomBusinessHoursIntegrationsTable from './CustomBusinessHoursIntegrationsTable'
 import FormSectionCard from './FormSectionCard'
 
@@ -22,6 +28,29 @@ export default function AddCustomBusinessHoursModal({
     isOpen,
     onClose,
 }: Props) {
+    const notify = useNotify()
+
+    const { mutate: createBusinessHours, isLoading } = useCreateBusinessHours({
+        mutation: {
+            onSuccess: (response) => {
+                notify.success(
+                    `'${response.data.name}' business hours were successfully created.`,
+                )
+
+                onClose()
+            },
+            onError: () => {
+                notify.error(
+                    "We couldn't save your preferences. Please try again.",
+                )
+            },
+        },
+    })
+
+    const handleSubmit = (values: BusinessHoursCreate) => {
+        createBusinessHours({ data: values })
+    }
+
     return (
         <Modal
             isOpen={isOpen}
@@ -30,7 +59,7 @@ export default function AddCustomBusinessHoursModal({
             className={css.temporaryClassName}
             isClosable={false}
         >
-            <CustomBusinessHoursForm onSubmit={onClose}>
+            <CreateCustomBusinessHoursForm onSubmit={handleSubmit}>
                 <ModalHeader title="Add Custom Business Hours" />
                 <ModalBody className={css.modalBody}>
                     <FormSectionCard>
@@ -50,9 +79,11 @@ export default function AddCustomBusinessHoursModal({
                     <Button intent="secondary" onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button onClick={onClose}>Add Business Hours</Button>
+                    <FormSubmitButton isLoading={isLoading}>
+                        Add Business Hours
+                    </FormSubmitButton>
                 </ModalActionsFooter>
-            </CustomBusinessHoursForm>
+            </CreateCustomBusinessHoursForm>
         </Modal>
     )
 }

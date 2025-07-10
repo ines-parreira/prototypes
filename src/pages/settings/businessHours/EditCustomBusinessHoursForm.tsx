@@ -3,7 +3,7 @@ import { noop } from 'lodash'
 import SectionHeader from 'pages/common/components/SectionHeader/SectionHeader'
 import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
 
-import CustomBusinessHoursForm from './CustomBusinessHoursForm'
+import CreateCustomBusinessHoursForm from './CreateCustomBusinessHoursForm'
 import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields'
 import EditCustomBusinessHoursActions from './EditCustomBusinessHoursActions'
 import FormSectionCard from './FormSectionCard'
@@ -12,7 +12,7 @@ import css from './EditCustomBusinessHoursForm.less'
 
 export default function EditCustomBusinessHoursForm() {
     return (
-        <CustomBusinessHoursForm onSubmit={noop}>
+        <CreateCustomBusinessHoursForm onSubmit={noop}>
             <div className={css.formContent}>
                 <FormSectionCard>
                     <SectionHeader
@@ -36,6 +36,6 @@ export default function EditCustomBusinessHoursForm() {
                 </FormSectionCard>
                 <EditCustomBusinessHoursActions />
             </div>
-        </CustomBusinessHoursForm>
+        </CreateCustomBusinessHoursForm>
     )
 }

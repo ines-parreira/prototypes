@@ -32,9 +32,8 @@ export default function CustomBusinessHoursIntegrationsTable({
             <TableWrapper className={css.table}>
                 <TableHead>
                     <HeaderCell size="smallest">
-                        <FormField
-                            name="assigned_integrations.assign_all"
-                            field={CheckBoxField}
+                        <CheckBoxField
+                            value={false}
                             aria-label="Select all integrations"
                             isDisabled={isLoading}
                         />

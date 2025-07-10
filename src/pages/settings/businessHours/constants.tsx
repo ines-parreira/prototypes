@@ -61,16 +61,6 @@ export const DEFAULT_BUSINESS_HOURS_SCHEDULE = {
     to_time: '23:59',
 }
 
-export const CUSTOM_BUSINESS_HOURS_DEFAULT_VALUES = {
-    business_hours_config: {
-        business_hours: [DEFAULT_BUSINESS_HOURS_SCHEDULE],
-    },
-    assigned_integrations: {
-        assign_all: false,
-        assign_integrations: [],
-    },
-}
-
 export const mockedBusinessHours: BusinessHoursList = {
     id: 1,
     name: 'US - Product support',

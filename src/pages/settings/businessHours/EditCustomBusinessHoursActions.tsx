@@ -4,21 +4,21 @@ import { Link } from 'react-router-dom'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FormSubmitButton } from 'core/forms'
-import Actions from 'pages/common/components/Actions/Actions'
-import ActionsGroup from 'pages/common/components/Actions/ActionsGroup'
+import FormActions from 'core/forms/components/FormActions'
+import FormActionsGroup from 'core/forms/components/FormActionsGroup'
 import ConfirmButtonWithModal from 'pages/common/components/button/ConfirmButtonWithModal'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
 
 export default function EditCustomBusinessHoursActions() {
     return (
-        <Actions>
-            <ActionsGroup>
+        <FormActions>
+            <FormActionsGroup>
                 <FormSubmitButton>Save changes</FormSubmitButton>
                 <Link to={BUSINESS_HOURS_BASE_URL}>
                     <Button intent="secondary">Cancel</Button>
                 </Link>
-            </ActionsGroup>
+            </FormActionsGroup>
             <ConfirmButtonWithModal
                 intent="destructive"
                 fillStyle="ghost"
@@ -45,6 +45,6 @@ export default function EditCustomBusinessHoursActions() {
             >
                 Delete business hours
             </ConfirmButtonWithModal>
-        </Actions>
+        </FormActions>
     )
 }

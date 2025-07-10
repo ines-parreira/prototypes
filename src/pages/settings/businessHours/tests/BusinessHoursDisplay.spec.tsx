@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { renderWithStore } from 'utils/testing'
 
-import { SETTING_TYPE_BUSINESS_HOURS } from '../../../../state/currentAccount/constants'
 import BusinessHoursDisplay from '../BusinessHoursDisplay'
 
 const renderComponent = ({

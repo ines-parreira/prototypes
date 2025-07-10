@@ -1,8 +1,7 @@
 import classNames from 'classnames'
 
-import { SelectField } from '@gorgias/merchant-ui-kit'
-
 import { FormField } from 'core/forms'
+import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
 import { getMomentTimezoneNames } from 'utils/date'
 
 import css from './CustomBusinessHoursGeneralFields.less'
@@ -20,7 +19,7 @@ export default function CustomBusinessHoursGeneralFields({
         >
             <FormField
                 className={css.field}
-                name="business_hours_config.name"
+                name="name"
                 label="Name"
                 isRequired
             />
@@ -28,7 +27,7 @@ export default function CustomBusinessHoursGeneralFields({
                 <FormField
                     name="business_hours_config.timezone"
                     label="Timezone"
-                    field={SelectField}
+                    field={SelectDropdownField}
                     options={getMomentTimezoneNames()}
                     isRequired
                 />
