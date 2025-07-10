@@ -12,7 +12,10 @@ import {
     useJourneys,
     useUpdateJourney,
 } from 'AIJourney/queries'
+import { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useListProducts } from 'models/integration/queries'
+import { IntegrationDataItem } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -21,6 +24,7 @@ import {
     FollowUpField,
     MaximumDiscountField,
     PhoneNumberField,
+    ProductSelectField,
     TestSMSField,
 } from './fields'
 
@@ -61,6 +65,23 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         },
     )
 
+    const integrationDataItemsResponse = useListProducts(
+        currentIntegration?.id ?? 0,
+        !!currentIntegration?.id,
+        { limit: 5 },
+        { refetchOnWindowFocus: false, refetchOnMount: false },
+    )
+
+    const products = useMemo(() => {
+        const data = integrationDataItemsResponse?.data?.pages?.reduce(
+            (acc, page) => [...acc, ...page.data.data],
+            [] as IntegrationDataItem<Product>[],
+        )
+        return (data || [])
+            .filter((item) => !!item.data.image && !!item.data.title)
+            .map((item) => item.data)
+    }, [integrationDataItemsResponse])
+
     const createNewJourney = useCreateNewJourney()
     const updateJourney = useUpdateJourney()
 
@@ -77,6 +98,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         journeyParams?.sms_sender_number || '',
     )
     const [testSmsNumber, setTestSmsNumber] = useState('')
+    const [selectedProduct, setSelectedProduct] = useState({} as Product)
 
     useEffect(() => {
         if (journeyParams) {
@@ -104,6 +126,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const handleTestSmsNumberChange = (newValue: string) => {
         setTestSmsNumber(newValue)
+    }
+
+    const handleProductSelectChange = (newValue: Product) => {
+        setSelectedProduct(newValue)
     }
 
     const handleCreate = async () => {
@@ -204,7 +230,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const isDiscountFieldValid = isDiscountEnabled ? !!discountValue : true
 
     const shouldDisableButton = isActivationStep
-        ? !testSmsNumber
+        ? !selectedProduct || !testSmsNumber
         : !isDiscountFieldValid || !followUpValue || !phoneNumberValue
 
     return (
@@ -216,6 +242,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                 </div>
                 {isActivationStep ? (
                     <>
+                        <ProductSelectField
+                            options={products}
+                            onChange={handleProductSelectChange}
+                        />
                         <TestSMSField
                             value={testSmsNumber}
                             onChange={handleTestSmsNumberChange}

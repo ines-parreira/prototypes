@@ -7,6 +7,9 @@ import thunk from 'redux-thunk'
 
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
+import { shopifyProductResult } from 'fixtures/shopify'
+import { useListProducts } from 'models/integration/queries'
+import { assumeMock } from 'utils/testing'
 
 import { OnboardingCard } from './OnboardingCard'
 
@@ -43,6 +46,9 @@ const mockUseCreateNewJourney = require('AIJourney/queries')
     .useCreateNewJourney as jest.Mock
 const mockUseUpdateJourney = require('AIJourney/queries')
     .useUpdateJourney as jest.Mock
+
+jest.mock('models/integration/queries')
+const useListProductsMock = assumeMock(useListProducts)
 
 describe('<OnboardingCard />', () => {
     const mockStore = configureMockStore([thunk])()
@@ -83,6 +89,18 @@ describe('<OnboardingCard />', () => {
             isError: false,
             isLoading: false,
         }))
+
+        useListProductsMock.mockReturnValue({
+            data: {
+                pages: [
+                    {
+                        data: {
+                            data: shopifyProductResult(),
+                        },
+                    },
+                ],
+            },
+        } as any)
     })
 
     afterEach(() => {

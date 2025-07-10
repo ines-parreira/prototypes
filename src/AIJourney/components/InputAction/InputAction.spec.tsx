@@ -20,7 +20,7 @@ describe('<InputAction />', () => {
         render(<Wrapper />)
         const input = screen.getByRole('textbox')
         await userEvent.type(input, 'abc123')
-        expect(input).toHaveValue('123')
+        expect(input).toHaveValue('(123) ___-____')
     })
 
     it('removes leading zeros on blur', () => {
@@ -28,7 +28,7 @@ describe('<InputAction />', () => {
         render(<InputAction value="00123" onChange={onChange} />)
         const input = screen.getByRole('textbox')
         fireEvent.blur(input)
-        expect(onChange).toHaveBeenCalledWith('123')
+        expect(onChange).toHaveBeenCalledWith('(123) ___-____')
     })
 
     it('disables button when input is empty', () => {
@@ -93,5 +93,29 @@ describe('<InputAction />', () => {
         input.dispatchEvent(validEvent)
 
         expect(preventDefaultCount).toBe(4)
+    })
+
+    it('formats input as a US phone number while typing', async () => {
+        function Wrapper() {
+            const [value, setValue] = useState('')
+            return <InputAction value={value} onChange={setValue} />
+        }
+        render(<Wrapper />)
+        const input = screen.getByRole('textbox')
+
+        await userEvent.type(input, '1234567890')
+        expect(input).toHaveValue('(123) 456-7890')
+    })
+
+    it('handles incomplete input gracefully', async () => {
+        function Wrapper() {
+            const [value, setValue] = useState('')
+            return <InputAction value={value} onChange={setValue} />
+        }
+        render(<Wrapper />)
+        const input = screen.getByRole('textbox')
+
+        await userEvent.type(input, '12345')
+        expect(input).toHaveValue('(123) 45_-____')
     })
 })

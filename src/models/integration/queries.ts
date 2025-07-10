@@ -130,18 +130,25 @@ export const useGetProductsByIdsFromIntegration = (
     })
 }
 
-export const useListProducts = (integrationId: number, enabled = true) => {
+export const useListProducts = (
+    integrationId: number,
+    enabled = true,
+    params?: {},
+    queryParams?: {},
+) => {
     const dispatch = useAppDispatch()
     const response = useInfiniteQuery({
         queryKey: ['integration', 'shopify', integrationId, 'products', 'list'],
         queryFn: async ({ pageParam }) =>
             fetchIntegrationProducts(integrationId, {
                 cursor: pageParam,
+                ...params,
             }),
         getNextPageParam: (lastPage) => {
             return lastPage.data.meta.next_cursor
         },
         enabled,
+        ...queryParams,
     })
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -11,29 +11,70 @@ type InputActionProps = {
     onChange?: (value: string) => void
 }
 
+const createUnderscores = (count: number): string => {
+    return '_'.repeat(count)
+}
+
+const getCursorPosition = (digits: string) => {
+    const length = digits.length
+
+    if (length === 0) return 1 // After opening parenthesis
+    if (length <= 3) return length + 1 // Within area code, after last digit
+    if (length <= 6) return length + 3 // After ") " and within exchange
+    return length + 4 // After ") " and "-"
+}
+
 export const InputAction = ({
     value,
     onChange = () => {},
 }: InputActionProps) => {
     const [isSending, setIsSending] = useState(false)
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    const placeholder = '(___) ___-____'
+
+    const formatPhoneNumber = (value: string) => {
+        const digits = value.replace(/\D/g, '')
+
+        if (digits.length <= 3) {
+            return `(${digits}${createUnderscores(3 - digits.length)}) ___-____`
+        } else if (digits.length <= 6) {
+            return `(${digits.slice(0, 3)}) ${digits.slice(3)}${createUnderscores(3 - digits.slice(3).length)}-____`
+        }
+        return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}${createUnderscores(4 - digits.slice(6, 10).length)}`
+    }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const input = e.target
-        const newValue = input.value.replace(/\D/g, '')
+        const digits = input.value.replace(/\D/g, '')
 
-        if (newValue.length > 20) return
+        if (digits.length > 10) return
 
-        onChange(newValue)
+        const formattedValue = formatPhoneNumber(digits)
+        onChange(formattedValue)
+
+        const newCursorPosition = getCursorPosition(digits)
+
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.setSelectionRange(
+                    newCursorPosition,
+                    newCursorPosition,
+                )
+            }
+        }, 0)
     }
 
     const handleOnBlur = (e: ChangeEvent<HTMLInputElement>) => {
         const input = e.target
-        let newValue = input.value
+        const digits = input.value.replace(/\D/g, '')
 
-        newValue = newValue.replace(/^0+(?=\d)/, '')
+        // Remove leading zeros
+        const cleanedDigits = digits.replace(/^0+(?=\d)/, '')
 
-        if (newValue !== input.value) {
-            onChange(newValue)
+        if (cleanedDigits !== digits) {
+            const formattedValue = formatPhoneNumber(cleanedDigits)
+            onChange(formattedValue)
         }
     }
 
@@ -57,12 +98,13 @@ export const InputAction = ({
     return (
         <div className={css.inputActionContainer}>
             <input
+                ref={inputRef}
                 className={css.input}
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
                 value={value}
-                maxLength={20}
+                placeholder={placeholder}
                 onChange={handleChange}
                 onBlur={handleOnBlur}
                 onKeyDown={(evt) =>
