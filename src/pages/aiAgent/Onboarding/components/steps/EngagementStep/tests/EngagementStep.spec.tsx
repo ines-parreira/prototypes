@@ -136,9 +136,15 @@ describe('EngagementStep', () => {
         jest.clearAllMocks()
     })
 
-    it('renders the main title and form sections', () => {
+    it('renders the main title and form sections', async () => {
         renderWithProviders()
-        expect(screen.getByText(/engage your customers/i)).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/engage your customers/i),
+            ).toBeInTheDocument()
+        })
+
         expect(
             screen.getByText(/Send tailored messages after searches/i),
         ).toBeInTheDocument()
@@ -152,6 +158,13 @@ describe('EngagementStep', () => {
 
     it.skip('shows confirmation popup when all toggles are off and next is clicked', async () => {
         renderWithProviders()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/engage your customers/i),
+            ).toBeInTheDocument()
+        })
+
         // Turn off all toggles (simulate user interaction)
         const toggles = screen.getAllByRole('checkbox')
         toggles.forEach((toggle) => {
@@ -177,6 +190,13 @@ describe('EngagementStep', () => {
 
     it('calls goToStep when back is clicked', async () => {
         renderWithProviders()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/engage your customers/i),
+            ).toBeInTheDocument()
+        })
+
         const backButton = screen.getByRole('button', { name: /Back/i })
 
         act(() => {
@@ -190,6 +210,12 @@ describe('EngagementStep', () => {
 
     it('calls updateOnboarding when toggles are changed and Next is clicked', async () => {
         renderWithProviders()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/engage your customers/i),
+            ).toBeInTheDocument()
+        })
 
         const toggles = screen.getAllByRole('checkbox')
         expect(toggles.length).toBeGreaterThan(0)
