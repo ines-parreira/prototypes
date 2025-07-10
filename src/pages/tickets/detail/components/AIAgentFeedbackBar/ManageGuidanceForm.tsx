@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import _isEqual from 'lodash/isEqual'
+import _omit from 'lodash/omit'
 
 import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
@@ -124,7 +125,11 @@ export const ManageGuidanceForm = ({
     )
 
     const isFormDirty = useMemo(() => {
-        const isDirty = !_isEqual(initialFormState, formState)
+        // we don't include checkbox as a change that would block modal closing
+        const isDirty = !_isEqual(
+            _omit(initialFormState, 'shouldAddToMissingKnowledge'),
+            _omit(formState, 'shouldAddToMissingKnowledge'),
+        )
         return isDirty
     }, [initialFormState, formState])
 
