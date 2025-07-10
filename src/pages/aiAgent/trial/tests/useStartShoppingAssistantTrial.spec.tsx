@@ -193,7 +193,7 @@ describe('useStartShoppingAssistantTrial', () => {
     describe('mutation execution', () => {
         it('should start trial for single store with valid chat integration (milestone-0)', async () => {
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 
@@ -218,7 +218,7 @@ describe('useStartShoppingAssistantTrial', () => {
             jest.spyOn(Date, 'now').mockReturnValue(mockDate.getTime())
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 
@@ -241,7 +241,7 @@ describe('useStartShoppingAssistantTrial', () => {
             mockStartSalesTrialMutateAsync.mockResolvedValue({ success: true })
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 
@@ -271,7 +271,7 @@ describe('useStartShoppingAssistantTrial', () => {
             }
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 
@@ -310,7 +310,7 @@ describe('useStartShoppingAssistantTrial', () => {
             }
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 
@@ -357,7 +357,7 @@ describe('useStartShoppingAssistantTrial', () => {
             }
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 
@@ -371,7 +371,7 @@ describe('useStartShoppingAssistantTrial', () => {
             upsertStoreConfiguration.mockRejectedValue(error)
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 
@@ -387,7 +387,8 @@ describe('useStartShoppingAssistantTrial', () => {
 
             const { result, queryClient } =
                 renderHookWithStoreAndQueryClientProvider(
-                    () => useStartShoppingAssistantTrial(),
+                    () =>
+                        useStartShoppingAssistantTrial({ onError: jest.fn() }),
                     defaultState,
                 )
             const invalidateQueriesSpy = jest.spyOn(
@@ -410,7 +411,8 @@ describe('useStartShoppingAssistantTrial', () => {
 
             const { result, queryClient } =
                 renderHookWithStoreAndQueryClientProvider(
-                    () => useStartShoppingAssistantTrial(),
+                    () =>
+                        useStartShoppingAssistantTrial({ onError: jest.fn() }),
                     defaultState,
                 )
             const invalidateQueriesSpy = jest.spyOn(
@@ -431,7 +433,7 @@ describe('useStartShoppingAssistantTrial', () => {
             upsertStoreConfiguration.mockRejectedValue(error)
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useStartShoppingAssistantTrial(),
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 defaultState,
             )
 

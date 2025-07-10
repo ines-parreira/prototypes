@@ -16,7 +16,10 @@ import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePla
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import {
+    TrialMetrics,
+    useTrialMetrics,
+} from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -156,6 +159,7 @@ const useTrialActivatedModal = () => ({
 })
 
 const useTrialStartedBanner = (
+    trialMetrics: TrialMetrics,
     pageName?: 'Strategy' | 'Engagement',
 ): TrialModalProps['trialStartedBanner'] => {
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -165,8 +169,7 @@ const useTrialStartedBanner = (
 
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
-    const { remainingDays, gmvInfluenced, gmvInfluencedRate } =
-        useTrialMetrics()
+    const { remainingDays, gmvInfluenced, gmvInfluencedRate } = trialMetrics
     const { canBookDemo } = useShoppingAssistantTrialAccess()
     const accountDomain = currentAccount.get('domain')
 
@@ -296,8 +299,10 @@ const useTrialAlertBanner = ({
     )
 }
 
-const useTrialEndedModal = (): TrialModalProps['manageTrialModal'] => {
-    const { gmvInfluenced, gmvInfluencedRate } = useTrialMetrics()
+const useTrialEndedModal = (
+    trialMetrics: TrialMetrics,
+): TrialModalProps['manageTrialModal'] => {
+    const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
     const earlyAccessPlanPrice =
         (earlyAccessAutomatePlanQuery?.data?.amount ?? 0) / 100
@@ -352,14 +357,15 @@ export const useTrialModalProps = ({
     onConfirmTrial?: () => void
     pageName?: 'Strategy' | 'Engagement'
 }): TrialModalProps => {
+    const trialMetrics = useTrialMetrics()
     const upgradePlanModal = useUpgradePlanModal()
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
     const trialActivatedModal = useTrialActivatedModal()
-    const trialStartedBanner = useTrialStartedBanner(pageName)
+    const trialStartedBanner = useTrialStartedBanner(trialMetrics, pageName)
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })
-    const manageTrialModal = useTrialEndedModal()
+    const manageTrialModal = useTrialEndedModal(trialMetrics)
 
     return useMemo(
         () => ({

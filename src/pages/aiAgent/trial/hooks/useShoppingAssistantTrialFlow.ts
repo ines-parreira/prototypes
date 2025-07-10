@@ -68,7 +68,11 @@ export const useShoppingAssistantTrialFlow = ({
     const { routes } = useAiAgentNavigation({ shopName })
 
     const { mutateAsync: triggerTrialMutation, isLoading } =
-        useStartShoppingAssistantTrial()
+        useStartShoppingAssistantTrial({
+            onError: () => {
+                trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
+            },
+        })
 
     const startTrial = () => {
         logEvent(SegmentEvent.PricingModalClicked, {

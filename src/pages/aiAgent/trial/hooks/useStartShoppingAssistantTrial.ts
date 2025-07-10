@@ -25,7 +25,11 @@ type Params = {
 
 const TRIAL_DURATION = 14 * 24 * 60 * 60 * 1000
 
-export const useStartShoppingAssistantTrial = () => {
+export const useStartShoppingAssistantTrial = ({
+    onError,
+}: {
+    onError?: () => void
+}) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const flags = useFlags()
@@ -66,6 +70,7 @@ export const useStartShoppingAssistantTrial = () => {
                     }),
                 )
                 history.push(routes.settingsChannels)
+                onError?.()
                 throw new Error("Invalid Chat - can't start trial")
             }
 
