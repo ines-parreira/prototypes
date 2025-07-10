@@ -5,10 +5,12 @@ import { assumeMock } from 'utils/testing'
 
 import AddCustomBusinessHoursModal from '../AddCustomBusinessHoursModal'
 import CustomBusinessHours from '../CustomBusinessHours'
+import ListCustomBusinessHours from '../ListCustomBusinessHours'
 
 jest.mock('../AddCustomBusinessHoursModal')
-
 const AddBusinessHoursModalMock = assumeMock(AddCustomBusinessHoursModal)
+jest.mock('../ListCustomBusinessHours')
+const ListCustomBusinessHoursMock = assumeMock(ListCustomBusinessHours)
 
 const renderComponent = () => {
     return render(<CustomBusinessHours />)
@@ -21,6 +23,9 @@ describe('CustomBusinessHours', () => {
                 {isOpen ? 'MODAL_OPEN' : 'MODAL_CLOSED'}
                 <button onClick={onClose}>Close Modal</button>
             </div>
+        ))
+        ListCustomBusinessHoursMock.mockImplementation(() => (
+            <div>ListCustomBusinessHours</div>
         ))
     })
 
@@ -61,5 +66,11 @@ describe('CustomBusinessHours', () => {
         fireEvent.click(closeButton)
 
         expect(screen.getByText('MODAL_CLOSED')).toBeInTheDocument()
+    })
+
+    it('should render the list of custom business hours', () => {
+        renderComponent()
+
+        expect(screen.getByText('ListCustomBusinessHours')).toBeInTheDocument()
     })
 })

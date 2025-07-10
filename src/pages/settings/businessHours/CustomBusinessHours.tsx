@@ -4,6 +4,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 
 import SectionHeader from '../../common/components/SectionHeader/SectionHeader'
 import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'
+import ListCustomBusinessHours from './ListCustomBusinessHours'
 
 import css from './CustomBusinessHours.less'
 
@@ -25,6 +26,8 @@ export default function CustomBusinessHours() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
             />
+
+            <ListCustomBusinessHours />
         </div>
     )
 }

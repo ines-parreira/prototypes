@@ -17,4 +17,13 @@ describe('<StoreDisplayName />', () => {
             getIconFromType(type),
         )
     })
+
+    it('should render the component with name only if type is not an integration type', () => {
+        const name = 'Test Store'
+        const type = 'not-an-integration-type'
+        render(<StoreDisplayName name={name} type={type} />)
+
+        expect(screen.getByText(name)).toBeInTheDocument()
+        expect(screen.queryByAltText(name)).not.toBeInTheDocument()
+    })
 })

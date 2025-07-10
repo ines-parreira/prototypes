@@ -1,7 +1,14 @@
+@import (reference) '~css/typography';
+
 :local {
     .table {
         table-layout: fixed;
+
+        th {
+            .caption-allcaps();
+        }
     }
+
     .businessHoursColumn {
         width: 40%;
         overflow: hidden;

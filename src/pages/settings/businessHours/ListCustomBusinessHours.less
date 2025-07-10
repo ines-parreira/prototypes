@@ -1,0 +1,65 @@
+:local {
+    @import (reference) '~css/typography';
+
+    .table {
+        table-layout: fixed;
+
+        th {
+            .caption-allcaps();
+        }
+    }
+
+    .nameScheduleColumn {
+        width: 47%;
+        overflow: hidden;
+    }
+
+    .nameScheduleContent {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .schedule {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .integrationColumn {
+        width: 25%;
+    }
+
+    .linkedIntegration {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .integrationLabel {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .timezoneColumn {
+        width: 18%;
+    }
+
+    .actionsColumn {
+        width: 10%;
+    }
+
+    .actionsColumnContent {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .pagination {
+        margin-top: var(--layout-spacing-m);
+    }
+}

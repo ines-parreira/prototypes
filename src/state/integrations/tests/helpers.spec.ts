@@ -368,4 +368,18 @@ describe('integrations helpers', () => {
             ).toBe(true)
         })
     })
+
+    describe('isIntegrationType', () => {
+        it('should return true if type is an integration type', () => {
+            expect(helpers.isIntegrationType(IntegrationType.Shopify)).toBe(
+                true,
+            )
+        })
+
+        it('should return false if type is not an integration type', () => {
+            expect(helpers.isIntegrationType('not-an-integration-type')).toBe(
+                false,
+            )
+        })
+    })
 })

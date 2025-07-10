@@ -39,6 +39,10 @@ export const getIconFromType = (type: IntegrationType): string => {
     return filePath === '' ? '' : assetsUrl(filePath)
 }
 
+export const isIntegrationType = (type: string): type is IntegrationType => {
+    return Object.values(IntegrationType).includes(type as IntegrationType)
+}
+
 /**
  * Fetch integration data items that match given product IDs
  */
