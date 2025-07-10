@@ -7,6 +7,8 @@ export const TICKET_HANDOVER_TRIGGER = 'ticket-handed-over'
 export const HANDOVER_DEFAULT_METHOD = 'POST'
 export const HANDOVER_DEFAULT_CONTENT_TYPE = 'application/json'
 export const HANDOVER_INTEGRATION_NAME_PREFIX = 'AIAgentHandoverWebhook::'
+export const EMAIL_INTEGRATION_PATH = '/app/settings/channels/email/new'
+
 export const INTEGRATIONS_MAPPING: HelpdeskIntegration = {
     zendesk: {
         schema: JSON.stringify(zendeskSchema),
@@ -35,4 +37,10 @@ export const INTEGRATIONS_MAPPING: HelpdeskIntegration = {
         },
         label: 'Intercom',
     },
+}
+
+export enum HandoverMethods {
+    EMAIL = 'email',
+    GORGIAS = 'gorgias',
+    WEBHOOK = 'webhook',
 }

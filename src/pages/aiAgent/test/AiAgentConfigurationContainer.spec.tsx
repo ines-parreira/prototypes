@@ -106,6 +106,12 @@ jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
     }),
 }))
 
+jest.mock('pages/standalone/components/HandoverConfigurationDrawer', () => ({
+    HandoverConfigurationDrawer: () => (
+        <div data-testid="mocked-handover-drawer"></div>
+    ),
+}))
+
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',
 )

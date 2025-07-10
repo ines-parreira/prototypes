@@ -42,7 +42,7 @@ type Props = {
     suffix?: ReactNode
 } & Omit<HTMLAttributes<HTMLDivElement>, 'prefix'>
 
-type SelectInputBoxContextState = {
+export type SelectInputBoxContextState = {
     onBlur: (event?: FocusEvent) => void
 }
 

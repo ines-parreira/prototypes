@@ -146,6 +146,13 @@ jest.mock(
     }),
 )
 
+// Mock the HandoverConfigurationDrawer component
+jest.mock('pages/standalone/components/HandoverConfigurationDrawer', () => ({
+    HandoverConfigurationDrawer: () => (
+        <div data-testid="mocked-handover-drawer"></div>
+    ),
+}))
+
 // mocking the prompt modal
 jest.mock('../FormComponents/StoreConfigUnsavedChangesPrompt', () => ({
     StoreConfigUnsavedChangesPrompt: () => (

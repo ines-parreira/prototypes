@@ -317,7 +317,18 @@ describe('useStandaloneIntegrationCreate', () => {
         expect(updateOrCreateIntegrationMock).toHaveBeenCalled()
 
         // Get the first argument (the integration object)
-        const callArg = updateOrCreateIntegrationMock.mock.calls[0][0]
+        var callArg = updateOrCreateIntegrationMock.mock.calls[0][0]
+
+        // Basic check that we have the right structure
+        expect(callArg.get('http').get('url')).toBe(
+            'https://test-domain.zendesk.com/api/v2/tickets',
+        )
+
+        // Verify updateOrCreateIntegration was called
+        expect(updateOrCreateIntegrationMock).toHaveBeenCalled()
+
+        // Get the first argument (the integration object)
+        callArg = updateOrCreateIntegrationMock.mock.calls[0][0]
 
         // Basic check that we have the right structure
         expect(callArg.get('http').get('url')).toBe(

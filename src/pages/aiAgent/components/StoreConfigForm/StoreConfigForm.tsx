@@ -70,6 +70,7 @@ import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/Setting
 import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import ListField from 'pages/common/forms/ListField'
 import history from 'pages/history'
+import { HandoverConfigurationDrawer } from 'pages/standalone/components/HandoverConfigurationDrawer'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -325,6 +326,10 @@ export const StoreConfigForm = ({
         updateStoreConfiguration,
         updateValue,
     })
+
+    const standaloneFFEnabled =
+        !!flags[FeatureFlagKey.StandaloneHandoverCapabilities]
+    const [isHandoverDrawerOpen, setIsHandoverDrawerOpen] = useState(false)
 
     const isHandoffToggled = isHandoffEnabled(
         formValues.silentHandover !== null
@@ -900,6 +905,22 @@ export const StoreConfigForm = ({
                                             }}
                                             toggleName="toggle-ai-agent-handover"
                                         />
+                                        {standaloneFFEnabled && (
+                                            <SettingsFeatureRow
+                                                title="Handover method"
+                                                description="Choose the method for which AI Agent will handover tickets."
+                                                type={'badge'}
+                                                badgeText={
+                                                    formValues.handoverMethod ??
+                                                    'gorgias'
+                                                }
+                                                onClick={() =>
+                                                    setIsHandoverDrawerOpen(
+                                                        true,
+                                                    )
+                                                }
+                                            />
+                                        )}
                                         <SettingsFeatureRow
                                             title="Prevent AI Agent from answering specific tickets"
                                             description="Configure the Prevent AI Agent from answering rule
@@ -981,6 +1002,13 @@ export const StoreConfigForm = ({
                 isOpen={isAiAgentConfigurationModalOpen}
                 onClose={onCloseAiAgentConfigurationModal}
                 onShowMe={onShowMeAiAgentConfigurationModal}
+            />
+            <HandoverConfigurationDrawer
+                isOpen={isHandoverDrawerOpen}
+                onClose={() => setIsHandoverDrawerOpen(false)}
+                shopName={shopName}
+                shopType={shopType}
+                faqHelpcenters={faqHelpCenters}
             />
         </>
     )
