@@ -1,22 +1,19 @@
 import React, { useMemo } from 'react'
 
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
-import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
-import useAppSelector from 'hooks/useAppSelector'
+import { MISSING_AI_AGENT_USER_ID } from 'hooks/reporting/automate/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { FilterKey } from 'models/stat/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 export function AutomatedInteractionsMetricCard({
     chartId,
     dashboard,
 }: DashboardChartProps) {
-    const { userTimezone } = useAutomateFilters()
-
-    const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
+    const { cleanStatsFilters: statsFilters, userTimezone } = useStatsFilters()
 
     const aiAgentUserId = useAIAgentUserId()
 
@@ -25,7 +22,7 @@ export function AutomatedInteractionsMetricCard({
             ...statsFilters,
             [FilterKey.Agents]: {
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [Number(aiAgentUserId)],
+                values: [aiAgentUserId ?? MISSING_AI_AGENT_USER_ID],
             },
         }),
         [aiAgentUserId, statsFilters],

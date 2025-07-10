@@ -99,6 +99,8 @@ export type WorkflowStepMetricsMap = {
     [flowStepId: string]: WorkflowStepMetrics
 }
 
+export const MISSING_AI_AGENT_USER_ID = -1
+
 export const AutomateEventType = {
     TRACK_ORDER: 'track_order',
     QUICK_RESPONSE_STARTED: 'quick_response_started',

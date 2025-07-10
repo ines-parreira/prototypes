@@ -27,23 +27,47 @@ import {
     activeParams,
     CustomFieldSelect,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
-export default function AutomateAiAgentStatsReport() {
-    const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
-    const { userTimezone } = useAutomateFilters()
-    const [isNoActivityAlertDismissed, setIsNoActivityAlertDismissed] =
-        useState(false)
+const NoActivityBanner = ({
+    isNoActivityAlertDismissed,
+    setIsNoActivityAlertDismissed,
+}: {
+    isNoActivityAlertDismissed: boolean
+    setIsNoActivityAlertDismissed: (dismiss: boolean) => void
+}) => {
+    return (
+        !isNoActivityAlertDismissed && (
+            <div style={{ padding: '24px' }}>
+                <Alert
+                    type={AlertType.Info}
+                    icon
+                    onClose={() => setIsNoActivityAlertDismissed(true)}
+                >
+                    There is no activity during the selected time period. AI
+                    Agent may have been disabled or not set up during this time.
+                </Alert>
+            </div>
+        )
+    )
+}
 
-    const aiAgentUserId = useAIAgentUserId()
-
+const NoActivityBannerComponent = ({
+    aiAgentUserId,
+    isNoActivityAlertDismissed,
+    setIsNoActivityAlertDismissed,
+}: {
+    aiAgentUserId: number
+    isNoActivityAlertDismissed: boolean
+    setIsNoActivityAlertDismissed: (dismiss: boolean) => void
+}) => {
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const statsFiltersWithAiAgent = useMemo(
         () => ({
             ...statsFilters,
             [FilterKey.Agents]: {
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [Number(aiAgentUserId)],
+                values: [aiAgentUserId],
             },
         }),
         [aiAgentUserId, statsFilters],
@@ -60,6 +84,31 @@ export default function AutomateAiAgentStatsReport() {
         userTimezone,
     )
 
+    const showNoActivityAlert =
+        !automatedInteractionTrend.isFetching &&
+        !automatedInteractionTrend.data?.value
+
+    return (
+        showNoActivityAlert &&
+        !isNoActivityAlertDismissed && (
+            <NoActivityBanner
+                isNoActivityAlertDismissed={isNoActivityAlertDismissed}
+                setIsNoActivityAlertDismissed={setIsNoActivityAlertDismissed}
+            />
+        )
+    )
+}
+
+export default function AutomateAiAgentStatsReport() {
+    const { statsFilters } = useAutomateFilters()
+    const [isNoActivityAlertDismissed, setIsNoActivityAlertDismissed] =
+        useState(false)
+
+    useEffect(() => {
+        setIsNoActivityAlertDismissed(false)
+    }, [statsFilters.period.end_datetime, statsFilters.period.start_datetime])
+    const aiAgentUserId = useAIAgentUserId()
+
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const getGridCellSize = useGridSize()
 
@@ -70,14 +119,6 @@ export default function AutomateAiAgentStatsReport() {
         () => activeFields.some(isAiAgentCustomField),
         [activeFields],
     )
-
-    const showNoActivityAlert =
-        !automatedInteractionTrend.isFetching &&
-        !automatedInteractionTrend.data?.value
-
-    useEffect(() => {
-        setIsNoActivityAlertDismissed(false)
-    }, [statsFilters.period.end_datetime, statsFilters.period.start_datetime])
 
     return (
         <AiAgentStatsFilters>
@@ -91,20 +132,22 @@ export default function AutomateAiAgentStatsReport() {
                     )
                 }
             >
-                {showNoActivityAlert && !isNoActivityAlertDismissed && (
-                    <div style={{ padding: '24px' }}>
-                        <Alert
-                            type={AlertType.Info}
-                            icon
-                            onClose={() => setIsNoActivityAlertDismissed(true)}
-                        >
-                            There is no activity during the selected time
-                            period. AI Agent may have been disabled or not set
-                            up during this time.
-                        </Alert>
-                    </div>
+                {aiAgentUserId ? (
+                    <NoActivityBannerComponent
+                        aiAgentUserId={aiAgentUserId}
+                        isNoActivityAlertDismissed={isNoActivityAlertDismissed}
+                        setIsNoActivityAlertDismissed={
+                            setIsNoActivityAlertDismissed
+                        }
+                    />
+                ) : (
+                    <NoActivityBanner
+                        isNoActivityAlertDismissed={isNoActivityAlertDismissed}
+                        setIsNoActivityAlertDismissed={
+                            setIsNoActivityAlertDismissed
+                        }
+                    />
                 )}
-
                 <DashboardSection>
                     <DashboardGridCell
                         size={getGridCellSize(12)}

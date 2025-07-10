@@ -441,7 +441,7 @@ describe('getDrillDownQuery', () => {
     const aiInsightsMetrics: DrillDownMetric[] = [
         {
             metricName: AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
-            perAgentId: '1',
+            perAgentId: 1,
             intentFieldId: 1,
             outcomeFieldId: 2,
             intentFieldValues: undefined,
@@ -449,7 +449,7 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
-            perAgentId: '1',
+            perAgentId: 1,
             intentFieldId: 1,
             outcomeFieldId: 2,
             intentFieldValues: ['value'],
@@ -457,14 +457,16 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: AIInsightsMetric.TicketDrillDownPerCoverageRate,
-            perAgentId: '1',
-            customFieldId: 1,
-            customFieldValue: null,
+            outcomeFieldId: 2,
+            intentFieldId: 1,
+            integrationIds: ['chat::123'],
         },
         {
             metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
-            customFieldId: 1,
-            customFieldValue: ['value'],
+            outcomeFieldId: 2,
+            intentFieldId: 1,
+            intentFieldValues: ['value'],
+            integrationIds: ['chat::123'],
         },
     ]
 
@@ -1549,7 +1551,7 @@ describe('getDrillDownMetric', () => {
                 intentFieldId: 1,
                 intentFieldValues: null,
                 outcomeFieldId: 2,
-                perAgentId: '1',
+                perAgentId: 1,
                 integrationIds: ['chat::123'],
             },
             expectedValues: {

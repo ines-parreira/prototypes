@@ -186,7 +186,7 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    assigneeUserId?: string,
+    assigneeUserId?: number,
     intentCustomFieldId?: number,
     outcomeCustomFieldId?: number,
     integrationIds?: string[],

@@ -485,7 +485,7 @@ export const coverageRateTicketDrillDownQueryFactory = (
 export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    perAgentId: string,
+    perAgentId: number,
     intentFieldId?: number,
     outcomeFieldId?: number,
     sorting?: OrderDirection,

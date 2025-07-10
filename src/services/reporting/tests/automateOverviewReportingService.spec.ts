@@ -249,7 +249,7 @@ describe('reporting', () => {
         const granularity = ReportingGranularity.Day
         const context = {
             isAutomateNonFilteredDenominatorInAutomationRate: false,
-            aiAgentUserId: '123',
+            aiAgentUserId: 123,
         }
         const fileName = getCsvFileNameWithDates(
             statsFilters.period,
@@ -294,7 +294,7 @@ describe('reporting', () => {
         const granularity = ReportingGranularity.Day
         const context = {
             isAutomateNonFilteredDenominatorInAutomationRate: false,
-            aiAgentUserId: '123',
+            aiAgentUserId: 123,
         }
         const fileName = getCsvFileNameWithDates(
             statsFilters.period,

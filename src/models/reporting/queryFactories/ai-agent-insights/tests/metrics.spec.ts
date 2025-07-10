@@ -127,7 +127,7 @@ describe('AI Agent metrics', () => {
                 sorting: OrderDirection.Asc,
                 outcomeFieldId,
                 intentFieldId,
-                assigneeUserId: '1',
+                assigneeUserId: 1,
             }),
         ).toEqual({
             dimensions: [

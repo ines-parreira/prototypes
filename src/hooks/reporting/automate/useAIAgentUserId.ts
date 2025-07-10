@@ -21,8 +21,8 @@ export const useAIAgentUser = (): User | undefined => {
     )
 }
 
-export const useAIAgentUserId = (): string | undefined => {
+export const useAIAgentUserId = (): number | undefined => {
     const aiAgentUser = useAIAgentUser()
 
-    return aiAgentUser?.id?.toString()
+    return aiAgentUser?.id
 }

@@ -34,6 +34,6 @@ describe('useAiAgentUserId', () => {
             ),
         })
 
-        expect(result.current).toEqual(String(aiAgent.id))
+        expect(result.current).toEqual(aiAgent.id)
     })
 })

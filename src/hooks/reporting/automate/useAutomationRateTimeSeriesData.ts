@@ -148,12 +148,12 @@ export const useAutomationRateTimeSeriesData = (
     )
 }
 
-export const fetchAutomationRateTimeSeriesData = (
+export const fetchAutomationRateTimeSeriesData = async (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) => {
     const onlyPeriodFilter = { [FilterKey.Period]: filters.period }
 

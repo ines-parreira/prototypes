@@ -8,6 +8,7 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
 import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
@@ -20,6 +21,9 @@ import { KpiSection } from '../KpiSection'
 
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeMock = assumeMock(useAiAgentTypeForAccount)
+
+jest.mock('hooks/reporting/automate/useAIAgentUserId')
+const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 
 jest.mock('pages/aiAgent/Overview/hooks/useKpis')
 const useKpisMock = assumeMock(useKpis)
@@ -57,6 +61,10 @@ const renderComponent = (history: History = createMemoryHistory()) => {
 }
 
 describe('KpiSection', () => {
+    beforeEach(() => {
+        useAIAgentUserIdMock.mockReturnValue(123)
+    })
+
     describe.each([
         { aiAgentType: 'sales' as const },
         { aiAgentType: 'support' as const },

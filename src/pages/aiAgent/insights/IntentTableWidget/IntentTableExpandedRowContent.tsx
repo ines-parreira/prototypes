@@ -82,8 +82,6 @@ export const IntentTableExpandedRowContent: React.FC<
                     intentFieldId: intentCustomFieldId ?? null,
                     outcomeFieldId: outcomeCustomFieldId ?? null,
                     integrationIds: integrationIds,
-                    customFieldId: null,
-                    customFieldValue: null,
                 }
             case IntentTableColumn.AvgCustomerSatisfaction:
                 if (

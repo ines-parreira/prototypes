@@ -74,11 +74,11 @@ export const useTrendFromMultipleMetricsTrendPerDimension = <
 >(
     filters: StatsFilters,
     timezone: string,
-    dimensionId: string | undefined,
+    dimensionId: number | undefined,
     queryFactory: (
         filters: StatsFilters,
         timezone: string,
-        dimensionId: string | undefined,
+        dimensionId: number | undefined,
     ) => ReportingQuery<TCube>,
     metric: Metric,
 ) => {
@@ -104,11 +104,11 @@ export const fetchTrendFromMultipleMetricsTrendPerDimension = <
 >(
     filters: StatsFilters,
     timezone: string,
-    dimensionId: string | undefined,
+    dimensionId: number | undefined,
     queryFactory: (
         filters: StatsFilters,
         timezone: string,
-        dimensionId: string | undefined,
+        dimensionId: number | undefined,
     ) => ReportingQuery<TCube>,
     metric: Metric,
 ) => {
@@ -219,7 +219,7 @@ export const fetchAllAutomatedInteractionsByAutoResponders = (
 export const useBillableTicketsExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
@@ -231,7 +231,7 @@ export const useBillableTicketsExcludingAIAgent = (
 export const fetchBillableTicketsExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) =>
     fetchTrendFromMultipleMetricsTrendPerDimension(
         filters,
@@ -244,7 +244,7 @@ export const fetchBillableTicketsExcludingAIAgent = (
 export const useFirstResponseTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
@@ -257,7 +257,7 @@ export const useFirstResponseTimeExcludingAIAgent = (
 export const fetchFirstResponseTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) =>
     fetchTrendFromMultipleMetricsTrendPerDimension(
         filters,
@@ -270,7 +270,7 @@ export const fetchFirstResponseTimeExcludingAIAgent = (
 export const useResolutionTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
@@ -283,7 +283,7 @@ export const useResolutionTimeExcludingAIAgent = (
 export const fetchResolutionTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) =>
     fetchTrendFromMultipleMetricsTrendPerDimension(
         filters,

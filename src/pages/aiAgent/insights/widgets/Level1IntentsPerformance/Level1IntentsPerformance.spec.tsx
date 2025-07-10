@@ -4,28 +4,30 @@ import { render, screen } from '@testing-library/react'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
+import { MISSING_AI_AGENT_USER_ID } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
+import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
+import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
 import { assumeMock } from 'utils/testing'
 
-import { IntentsPerformance } from '../IntentsPerformance/IntentsPerformance'
-import { Level1IntentsPerformance } from './Level1IntentsPerformance'
-
-jest.mock('../IntentsPerformance/IntentsPerformance', () => ({
-    IntentsPerformance: jest.fn(() => <></>),
-}))
+jest.mock(
+    'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance',
+)
+const IntentPerformanceMock = assumeMock(IntentsPerformance)
 
 jest.mock('hooks/reporting/automate/useAIAgentInsightsDataset')
 const useAIAgentMetricsMock = useAIAgentMetrics as jest.Mock
 
 jest.mock('hooks/reporting/automate/useAutomateFilters')
-const useNewAutomateFiltersMock = useAutomateFilters as jest.Mock
+const useAutomateFiltersMock = useAutomateFilters as jest.Mock
 
-jest.mock('state/stats/selectors')
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
+const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
     () => ({
@@ -76,8 +78,12 @@ const coverageTrend = {
 }
 
 describe('OptimizeContainer', () => {
+    const aiAgentUserId = 123
+    const shopName = 'shopName'
+
     beforeEach(() => {
-        useNewAutomateFiltersMock.mockReturnValue({ userTimezone: 'UTC' })
+        useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
+        useAutomateFiltersMock.mockReturnValue({ userTimezone: 'UTC' })
 
         useAppSelectorMock.mockReturnValueOnce({
             period: {
@@ -95,8 +101,21 @@ describe('OptimizeContainer', () => {
             aiAgentSuccessRate,
             coverageTrend,
         })
+
         render(<Level1IntentsPerformance />)
-        expect(IntentsPerformance).toHaveBeenCalledWith(
+
+        expect(useAIAgentMetrics).toHaveBeenCalledWith(
+            {
+                period: {
+                    start_datetime: '2024-12-13T00:00:00.000',
+                    end_datetime: '2024-12-20T00:00:00.000',
+                },
+            },
+            'UTC',
+            shopName,
+            aiAgentUserId,
+        )
+        expect(IntentPerformanceMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 period: {
                     start_datetime: '2024-12-13T00:00:00.000',
@@ -125,6 +144,30 @@ describe('OptimizeContainer', () => {
         )
     })
 
+    it('passes placeholder Ai Agent id when the Bot is missing', () => {
+        useAIAgentUserIdMock.mockReturnValue(undefined)
+        useAIAgentMetricsMock.mockReturnValueOnce({
+            aiAgentAutomatedInteractionTrend,
+            aiAgentCSAT,
+            aiAgentSuccessRate,
+            coverageTrend,
+        })
+
+        render(<Level1IntentsPerformance />)
+
+        expect(useAIAgentMetrics).toHaveBeenCalledWith(
+            {
+                period: {
+                    start_datetime: '2024-12-13T00:00:00.000',
+                    end_datetime: '2024-12-20T00:00:00.000',
+                },
+            },
+            'UTC',
+            shopName,
+            MISSING_AI_AGENT_USER_ID,
+        )
+    })
+
     it('renders the component correctly with loading and error', () => {
         useAIAgentMetricsMock.mockReturnValueOnce({
             aiAgentAutomatedInteractionTrend: {
@@ -150,8 +193,10 @@ describe('OptimizeContainer', () => {
                 isLoading: true,
             },
         })
+
         render(<Level1IntentsPerformance />)
-        expect(IntentsPerformance).toHaveBeenCalledWith(
+
+        expect(IntentPerformanceMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 period: {
                     start_datetime: '2024-12-13T00:00:00.000',
@@ -215,6 +260,7 @@ describe('OptimizeContainer', () => {
             })
 
             render(<Level1IntentsPerformance />)
+
             expect(
                 screen.queryByText(
                     'There are no AI Agent interactions for the selected date range.',
@@ -238,6 +284,7 @@ describe('OptimizeContainer', () => {
             })
 
             render(<Level1IntentsPerformance />)
+
             expect(
                 screen.getByText(
                     'There are no AI Agent interactions for the selected date range.',
@@ -261,6 +308,7 @@ describe('OptimizeContainer', () => {
             })
 
             render(<Level1IntentsPerformance />)
+
             expect(
                 screen.getByText(
                     'There are no AI Agent interactions for the selected date range.',

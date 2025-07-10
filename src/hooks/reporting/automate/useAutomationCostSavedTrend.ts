@@ -44,7 +44,7 @@ export const fetchAutomationCostSavedTrend: MetricTrendFetch = async (
     statsFilters: StatsFilters,
     userTimezone: string,
     _isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    _aiAgentUserId: string | undefined,
+    _aiAgentUserId: number | undefined,
     costSavedPerInteraction: number,
 ) => {
     return fetchFilteredAutomatedInteractions(statsFilters, userTimezone).then(

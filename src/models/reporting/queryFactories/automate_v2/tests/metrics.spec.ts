@@ -24,7 +24,7 @@ describe('Automate metrics', () => {
 
     describe('billableTicketDatasetExcludingAIAgentQueryFactory', () => {
         it('filters out tickets resolved by AI agent', () => {
-            const aiAgentUserId = '4000'
+            const aiAgentUserId = 4000
             expect(
                 billableTicketDatasetExcludingAIAgentQueryFactory(
                     filters,

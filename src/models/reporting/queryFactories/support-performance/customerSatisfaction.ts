@@ -63,7 +63,7 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
     sorting?: OrderDirection
     intentFieldId?: number
     outcomeFieldId?: number
-    aiAgentUserId?: string
+    aiAgentUserId?: number
     integrationIds?: string[]
     intentIds?: string[] | null
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
@@ -79,7 +79,7 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
                   {
                       member: TicketMember.AssigneeUserId,
                       operator: ReportingFilterOperator.Equals,
-                      values: [aiAgentUserId],
+                      values: [String(aiAgentUserId)],
                   },
               ]
             : []),

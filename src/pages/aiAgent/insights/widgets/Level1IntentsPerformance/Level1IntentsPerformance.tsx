@@ -6,6 +6,7 @@ import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGet
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
+import { MISSING_AI_AGENT_USER_ID } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -23,16 +24,17 @@ export const Level1IntentsPerformance = () => {
         shopName: string
     }>()
 
+    const aiAgentUserId = useAIAgentUserId()
     const { userTimezone } = useAutomateFilters()
     const aiAgentMetrics = useAIAgentMetrics(
         pageStatsFilters,
         userTimezone,
         shopName,
+        aiAgentUserId ?? MISSING_AI_AGENT_USER_ID,
     )
 
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
-    const aiAgentUserId = useAIAgentUserId()
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
@@ -67,9 +69,9 @@ export const Level1IntentsPerformance = () => {
                         trend: aiAgentMetrics.coverageTrend,
                         interpretAs: 'more-is-better',
                         metricFormat: 'decimal-to-percent-precision-1',
-                        drillDownMetric:
-                            AIInsightsMetric.TicketDrillDownPerCoverageRate,
-                        drillDownMetricAdditionalData: {
+                        metricData: {
+                            metricName:
+                                AIInsightsMetric.TicketDrillDownPerCoverageRate,
                             intentFieldId: intentCustomFieldId,
                             outcomeFieldId: outcomeCustomFieldId,
                             integrationIds: integrationIds,
@@ -103,16 +105,17 @@ export const Level1IntentsPerformance = () => {
                         trend: aiAgentMetrics.aiAgentCSAT,
                         interpretAs: 'more-is-better',
                         metricFormat: 'decimal-precision-1',
-                        drillDownMetric:
-                            AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
-                        drillDownMetricAdditionalData: {
-                            perAgentId: aiAgentUserId,
-                            intentFieldId: intentCustomFieldId,
-                            outcomeFieldId: outcomeCustomFieldId,
-                            integrationIds: integrationIds,
-                            customFieldId: null,
-                            customFieldValue: null,
-                        },
+                        metricData: aiAgentUserId
+                            ? {
+                                  title: 'Customer satisfaction',
+                                  metricName:
+                                      AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                                  perAgentId: aiAgentUserId,
+                                  intentFieldId: intentCustomFieldId,
+                                  outcomeFieldId: outcomeCustomFieldId,
+                                  integrationIds: integrationIds,
+                              }
+                            : undefined,
                     },
                 ]}
             />

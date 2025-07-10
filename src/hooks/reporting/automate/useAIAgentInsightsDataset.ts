@@ -2,6 +2,23 @@ import { useMemo } from 'react'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
+    useAiAgentAutomatedInteractionsCountTrends,
+    useAiAgentAutomatedTicketsCountTrends,
+    useAIAgentResourcePerTicket,
+    useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
+    useAiAgentTickets,
+    useAIAgentTicketsWithIntent,
+    useCustomerSatisfactionMetricPerIntentLevel,
+    useGetTicketIntentsForTicketIds,
+    useTotalAiAgentTicketsByCustomField,
+} from 'hooks/reporting/automate/aiAgentMetrics'
+import {
+    getAiAgentCoverageRate,
+    getAiAgentSuccessRate,
+} from 'hooks/reporting/automate/automateStatsCalculatedTrends'
+import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'hooks/reporting/automate/types'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import {
     calculateAiAgentKnowledgeResourcePerIntent,
     enrichWithSuccessRate,
     enrichWithSuccessRateUpliftOpportunity,
@@ -41,33 +58,14 @@ import {
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getPreviousPeriod } from 'utils/reporting'
 
-import {
-    useAiAgentAutomatedInteractionsCountTrends,
-    useAiAgentAutomatedTicketsCountTrends,
-    useAIAgentResourcePerTicket,
-    useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
-    useAiAgentTickets,
-    useAIAgentTicketsWithIntent,
-    useCustomerSatisfactionMetricPerIntentLevel,
-    useGetTicketIntentsForTicketIds,
-    useTotalAiAgentTicketsByCustomField,
-} from './aiAgentMetrics'
-import {
-    getAiAgentCoverageRate,
-    getAiAgentSuccessRate,
-} from './automateStatsCalculatedTrends'
-import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from './types'
-import { useAIAgentUserId } from './useAIAgentUserId'
-
 export const useAIAgentMetrics = (
     filters: StatsFilters,
     timezone: string,
     shopName: string,
+    aiAgentUserId: number,
 ): Record<any, MetricTrend> => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
-
-    const aiAgentUserId = useAIAgentUserId()
 
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
@@ -76,7 +74,7 @@ export const useAIAgentMetrics = (
             [FilterKey.Period]: filters.period,
             [FilterKey.Agents]: {
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [Number(aiAgentUserId)],
+                values: [aiAgentUserId],
             },
             [FilterKey.Channels]: {
                 values: AI_AGENT_TICKETS_CHANNELS,

@@ -15,19 +15,9 @@ import {
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TooltipData } from 'pages/stats/types'
 import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
-import {
-    AIInsightsMetrics,
-    DrillDownMetric,
-} from 'state/ui/stats/drillDownSlice'
-import {
-    AIInsightsMetric,
-    AutoQAMetric,
-    SatisfactionMetric,
-    SlaMetric,
-} from 'state/ui/stats/types'
+import { AIInsightsMetrics } from 'state/ui/stats/drillDownSlice'
 
 import css from './IntentPerformance.less'
 
@@ -42,13 +32,7 @@ export type IntentsPerformanceProps = {
         hint?: TooltipData
         metricFormat?: MetricTrendFormat
         tip?: ReactNode
-        drillDownMetric?:
-            | OverviewMetric
-            | SlaMetric
-            | AutoQAMetric
-            | SatisfactionMetric
-            | AIInsightsMetric
-        drillDownMetricAdditionalData?: Partial<AIInsightsMetrics>
+        metricData?: AIInsightsMetrics
     }>
 }
 
@@ -128,16 +112,10 @@ export const IntentsPerformance = ({
                                 )
                             }
                         >
-                            {config.drillDownMetric ? (
+                            {config.metricData ? (
                                 <DrillDownModalTrigger
                                     enabled={!!config.trend.data?.value}
-                                    metricData={
-                                        {
-                                            title: config.title,
-                                            metricName: config.drillDownMetric,
-                                            ...config.drillDownMetricAdditionalData,
-                                        } as DrillDownMetric
-                                    }
+                                    metricData={config.metricData}
                                     segmentEventName={
                                         SegmentEvent.AiAgentTicketDrilldownClicked
                                     }

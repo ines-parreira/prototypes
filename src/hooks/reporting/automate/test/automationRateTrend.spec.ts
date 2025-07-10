@@ -92,7 +92,7 @@ describe('AutomationRateTrend', () => {
         },
     }
     const timezone = 'UTC'
-    const aiAgentUserId = '4000'
+    const aiAgentUserId = 4000
 
     const filteredAutomatedInteractions = {
         value: 10021,

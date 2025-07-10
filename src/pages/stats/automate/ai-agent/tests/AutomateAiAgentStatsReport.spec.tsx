@@ -9,10 +9,13 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { agents } from 'fixtures/agents'
 import { GreyArea } from 'hooks/reporting/automate/types'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
-import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
 import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
@@ -22,7 +25,6 @@ import { useReportChartRestrictions } from 'pages/stats/report-chart-restriction
 import { TicketDistributionChart } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import { TwoDimensionalDataItem } from 'pages/stats/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
@@ -34,9 +36,6 @@ jest.mock(
             fn(),
 )
 
-jest.mock('state/stats/selectors')
-const getStatsFiltersWithLogicalOperatorsMock =
-    getStatsFiltersWithLogicalOperators as unknown as jest.Mock
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
@@ -47,12 +46,11 @@ const getSelectedCustomFieldMock =
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTrendMock = useAutomateMetricsTrend as jest.Mock
 
-jest.mock('hooks/reporting/automate/useAutomateFilters', () => ({
-    useAutomateFilters: () => ({
-        userTimezone: 'UTC',
-        granularity: 'day',
-    }),
-}))
+jest.mock('hooks/reporting/automate/useAutomateFilters')
+const useAutomateFiltersMock = assumeMock(useAutomateFilters)
+
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('hooks/reporting/automate/utils')
 const calculateGreyAreaMock = assumeMock(calculateGreyArea)
@@ -64,7 +62,7 @@ jest.mock('pages/stats/automate/overview/utils')
 const getTimeSeriesFormattedDataMock = assumeMock(getTimeSeriesFormattedData)
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
-const useAIAgentUserIdMock = useAIAgentUserId as jest.Mock
+const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
@@ -145,8 +143,6 @@ jest.mock('pages/stats/common/AnalyticsFooter', () => ({
 jest.mock('pages/stats/automate/ai-agent/AiAgentStatsFilters')
 const AiAgentStatsFiltersMock = assumeMock(AiAgentStatsFilters)
 
-LineChartMock.mockImplementation(() => <div>line-chart</div>)
-
 describe('AutomateAiAgentStatsReport', () => {
     const renderComponent = ({
         statsFilters = {
@@ -169,7 +165,7 @@ describe('AutomateAiAgentStatsReport', () => {
             { label: 'My custom field', managed_type: null },
         ],
         customFieldsIsLoading = false,
-        aiAgentUserId = '5',
+        aiAgentUserId = 5,
         automatedInteractionByEventTypesTimeSeriesData = [
             { label: 'AI Agent', values: [{ x: '5', y: 10 }] },
         ],
@@ -178,14 +174,14 @@ describe('AutomateAiAgentStatsReport', () => {
             to: moment(new Date('2024-09-20')),
         },
     }: {
-        statsFilters?: StatsFiltersWithLogicalOperator
+        statsFilters?: StatsFilters
         automatedInteractionTrend?: MetricTrend
         customFields?: Array<{
             label: string
             managed_type: string | null
         }>
         customFieldsIsLoading?: boolean
-        aiAgentUserId?: string
+        aiAgentUserId?: number
         automatedInteractionByEventTypesTimeSeriesData?: TwoDimensionalDataItem[]
         greyArea?: GreyArea | null
     } = {}) => {
@@ -202,11 +198,20 @@ describe('AutomateAiAgentStatsReport', () => {
         AiAgentStatsFiltersMock.mockImplementation(({ children }: any) => (
             <>{children}</>
         ))
+        LineChartMock.mockImplementation(() => <div>line-chart</div>)
 
         calculateGreyAreaMock.mockReturnValue(greyArea)
 
-        getStatsFiltersWithLogicalOperatorsMock.mockReturnValue(statsFilters)
-
+        useAutomateFiltersMock.mockReturnValue({
+            userTimezone: 'UTC',
+            granularity: ReportingGranularity.Day,
+            statsFilters,
+        })
+        useStatsFiltersMock.mockReturnValue({
+            userTimezone: 'UTC',
+            granularity: ReportingGranularity.Day,
+            cleanStatsFilters: statsFilters,
+        })
         getSelectedCustomFieldMock.mockReturnValue({
             id: '1',
             label: 'AI Agent Contact Reason',
@@ -247,7 +252,7 @@ describe('AutomateAiAgentStatsReport', () => {
     }
 
     it('should correctly render AI Agent related stats', () => {
-        renderComponent()
+        renderComponent({ aiAgentUserId: 123 })
 
         expect(screen.queryByText('stats-page')).toBeInTheDocument()
         expect(screen.queryByText('filters-panel')).toBeInTheDocument()
@@ -334,6 +339,7 @@ describe('AutomateAiAgentStatsReport', () => {
 
     it('should show an alert if there is not activity in a certain period', () => {
         renderComponent({
+            aiAgentUserId: 123,
             automatedInteractionTrend: {
                 isFetching: false,
                 isError: false,
@@ -341,6 +347,31 @@ describe('AutomateAiAgentStatsReport', () => {
                     value: 0,
                     prevValue: 140,
                 },
+            },
+        })
+
+        expect(
+            screen.queryByText(
+                'There is no activity during the selected time period. AI Agent may have been disabled or not set up during this time.',
+            ),
+        ).toBeInTheDocument()
+
+        userEvent.click(screen.getByLabelText('Close Icon'))
+
+        expect(
+            screen.queryByText(
+                'There is no activity during the selected time period. AI Agent may have been disabled or not set up during this time.',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should show an alert if no data returned', () => {
+        renderComponent({
+            aiAgentUserId: 123,
+            automatedInteractionTrend: {
+                isFetching: false,
+                isError: false,
+                data: undefined,
             },
         })
 
@@ -376,6 +407,7 @@ describe('AutomateAiAgentStatsReport', () => {
 
     it('should render the chart without grey area when calculateGreyArea returns undefined', () => {
         renderComponent({
+            aiAgentUserId: 123,
             greyArea: null,
             automatedInteractionByEventTypesTimeSeriesData: [
                 { label: 'AI Agent', values: [{ x: '5', y: 10 }] },

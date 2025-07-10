@@ -59,7 +59,7 @@ describe('decreaseInFirstResponseTimeTrend', () => {
         channels: withDefaultLogicalOperator(['email']),
     }
     const timezone = 'UTC'
-    const aIAgentUserId = '4000'
+    const aIAgentUserId = 4000
     const filteredAutomatedInteractions = {
         data: {
             value: 123,

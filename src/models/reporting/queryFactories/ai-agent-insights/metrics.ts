@@ -23,6 +23,7 @@ import {
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { AI_AGENT_TICKETS_CHANNELS } from 'models/reporting/queryFactories/ai-agent-insights/utils'
 import {
     aiAgentTicketsDefaultFilters,
     recommendedResourceDatasetDefaultFilters,
@@ -40,8 +41,6 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-import { AI_AGENT_TICKETS_CHANNELS } from './utils'
-
 export const customerSatisfactionPerIntentLevelQueryFactory = ({
     filters,
     timezone,
@@ -54,17 +53,17 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
-    assigneeUserId?: string
+    assigneeUserId?: number
     intentFieldId?: number
     outcomeFieldId?: number
     integrationIds?: string[]
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
-    const customFiledFilters = []
+    const ticketAssigneeFilter = []
     if (assigneeUserId) {
-        customFiledFilters.push({
+        ticketAssigneeFilter.push({
             member: TicketMember.AssigneeUserId,
             operator: ReportingFilterOperator.Equals,
-            values: [assigneeUserId],
+            values: [String(assigneeUserId)],
         })
     }
 
@@ -85,7 +84,7 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
                 TicketStatsFiltersMembers,
                 filters,
             ),
-            ...(customFiledFilters ? customFiledFilters : []),
+            ...ticketAssigneeFilter,
             {
                 member: TicketMember.CustomField,
                 operator: ReportingFilterOperator.StartsWith,

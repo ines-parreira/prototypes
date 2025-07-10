@@ -70,27 +70,28 @@ const getTicketChannelsStoreIntegrationsMock = assumeMock(
 )
 const useIsSingleStoreMock = assumeMock(useIsSingleStore)
 
-const statsFilters: StatsFilters = {
-    period: {
-        start_datetime: moment()
-            .add(1 * 7, 'day')
-            .format('YYYY-MM-DDT00:00:00.000'),
-        end_datetime: moment()
-            .add(3 * 7, 'day')
-            .format('YYYY-MM-DDT23:50:59.999'),
-    },
-}
-
-const shopName = 'test-shop'
-
 describe('useAiAgentInsightsDataset', () => {
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: moment()
+                .add(1 * 7, 'day')
+                .format('YYYY-MM-DDT00:00:00.000'),
+            end_datetime: moment()
+                .add(3 * 7, 'day')
+                .format('YYYY-MM-DDT23:50:59.999'),
+        },
+    }
+
+    const shopName = 'test-shop'
+    const aiAgentUserId = 4000
+
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
 
-        useAIAgentUserIdMock.mockReturnValue('2')
+        useAIAgentUserIdMock.mockReturnValue(2)
         getTicketChannelsStoreIntegrationsMock.mockReturnValue(['1'])
     })
 
@@ -165,7 +166,13 @@ describe('useAiAgentInsightsDataset', () => {
 
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
-                () => useAIAgentMetrics(statsFilters, timezone, shopName),
+                () =>
+                    useAIAgentMetrics(
+                        statsFilters,
+                        timezone,
+                        shopName,
+                        aiAgentUserId,
+                    ),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -262,7 +269,13 @@ describe('useAiAgentInsightsDataset', () => {
 
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
-                () => useAIAgentMetrics(statsFilters, timezone, shopName),
+                () =>
+                    useAIAgentMetrics(
+                        statsFilters,
+                        timezone,
+                        shopName,
+                        aiAgentUserId,
+                    ),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>

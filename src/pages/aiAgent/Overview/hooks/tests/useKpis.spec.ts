@@ -28,6 +28,7 @@ describe('useKpis', () => {
             useKpis({
                 filters,
                 timezone,
+                aiAgentUserId: 123,
                 aiAgentType: 'mixed',
                 showActivationModal: () => {},
                 showEarlyAccessModal: () => {},

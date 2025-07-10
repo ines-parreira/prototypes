@@ -85,7 +85,7 @@ export const fetchAutomationRateTrend = async (
     filters: StatsFilters,
     timezone: string,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ) => {
     return Promise.all([
         fetchFilteredAutomatedInteractions(filters, timezone),

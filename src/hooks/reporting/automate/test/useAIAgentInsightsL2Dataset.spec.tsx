@@ -107,7 +107,7 @@ describe('useAiAgentInsightsL2Dataset', () => {
             isLoading: false,
         } as any)
 
-        useAIAgentUserIdMock.mockReturnValue('2')
+        useAIAgentUserIdMock.mockReturnValue(2)
         mockUseParams.mockReturnValue({
             shopType: 'shopify',
             shopName: shopName,

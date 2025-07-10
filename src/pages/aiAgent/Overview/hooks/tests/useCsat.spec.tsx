@@ -21,15 +21,15 @@ const useGetStoresConfigurationForAccountMock = assumeMock(
     useGetStoresConfigurationForAccount,
 )
 
-const timezone = 'UTC'
-const filters: StatsFilters = {
-    period: {
-        start_datetime: '2025-02-06T16:55:37.914Z',
-        end_datetime: '2025-01-09T16:56:07.727Z',
-    },
-}
-
 describe('useCsat', () => {
+    const aiAgentUserId = 4000
+    const timezone = 'UTC'
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-02-06T16:55:37.914Z',
+            end_datetime: '2025-01-09T16:56:07.727Z',
+        },
+    }
     const defaultState = {
         currentUser: fromJS(user),
         currentAccount: fromJS(account),
@@ -42,7 +42,7 @@ describe('useCsat', () => {
     } as RootState
 
     const renderUseCsat = (filters: StatsFilters, timezone: string) =>
-        renderHook(() => useCsat(filters, timezone), {
+        renderHook(() => useCsat(filters, timezone, aiAgentUserId), {
             wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),

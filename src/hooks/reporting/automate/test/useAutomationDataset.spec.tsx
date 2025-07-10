@@ -142,7 +142,7 @@ describe('useAutomationDatasetV2', () => {
                 .format('YYYY-MM-DDT23:50:59.999'),
         },
     }
-    const aIAgentUserId = '4000'
+    const aIAgentUserId = 4000
 
     it('useAutomateMetricsTimeseriesV2', () => {
         useAIAgentUserIdMock.mockReturnValue(aIAgentUserId)

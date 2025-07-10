@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppSelector from 'hooks/useAppSelector'
 import { StatsFilters } from 'models/stat/types'
 import { Kpi } from 'pages/aiAgent/components/Kpi/Kpi'
@@ -68,11 +69,13 @@ const KpiContainer = ({
 
 const Kpis = ({
     aiAgentType,
+    aiAgentUserId,
     isOnNewPlan,
     showEarlyAccessModal,
     showActivationModal,
 }: {
     aiAgentType?: AiAgentType
+    aiAgentUserId: number
     isOnNewPlan: boolean
     showEarlyAccessModal: () => void
     showActivationModal: () => void
@@ -94,6 +97,7 @@ const Kpis = ({
         filters,
         timezone: userTimezone,
         aiAgentType,
+        aiAgentUserId,
         isOnNewPlan,
         showEarlyAccessModal,
         showActivationModal,
@@ -113,6 +117,7 @@ export const KpiSection = ({
     showActivationModal,
 }: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
+    const aiAgentUserId = useAIAgentUserId()
     const hasAnalytics = useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
 
     const analyticsLink = useMemo(() => {
@@ -127,7 +132,7 @@ export const KpiSection = ({
         return `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
     }, [isLoading, aiAgentType])
 
-    if (isLoading) {
+    if (isLoading || !aiAgentUserId) {
         return (
             <OverviewCard>
                 <div className={css.titleWrapper}>
@@ -165,6 +170,7 @@ export const KpiSection = ({
 
             <Kpis
                 aiAgentType={aiAgentType}
+                aiAgentUserId={aiAgentUserId}
                 showActivationModal={showActivationModal}
                 showEarlyAccessModal={showEarlyAccessModal}
                 isOnNewPlan={isOnNewPlan}

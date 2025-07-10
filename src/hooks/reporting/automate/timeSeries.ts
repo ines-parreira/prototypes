@@ -64,7 +64,7 @@ export function useBillableTicketDatasetTimeSeries(
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    aiAgentUserId?: string,
+    aiAgentUserId?: number,
 ) {
     return useTimeSeries(
         billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
@@ -80,7 +80,7 @@ export function fetchBillableTicketDatasetTimeSeries(
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    aiAgentUserId?: string,
+    aiAgentUserId?: number,
 ) {
     return fetchTimeSeries(
         billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(

@@ -70,7 +70,7 @@ export const billableTicketDatasetQueryFactory = (
 export const billableTicketDatasetExcludingAIAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId?: string,
+    aiAgentUserId?: number,
 ): ReportingQuery<BillableTicketDatasetCube> => ({
     measures: [
         BillableTicketDatasetMeasure.BillableTicketCount,
@@ -86,7 +86,7 @@ export const billableTicketDatasetExcludingAIAgentQueryFactory = (
                   {
                       member: BillableTicketDatasetDimension.ResolvedByAgentUserId,
                       operator: ReportingFilterOperator.NotEquals,
-                      values: [aiAgentUserId],
+                      values: [String(aiAgentUserId)],
                   },
               ]
             : []),

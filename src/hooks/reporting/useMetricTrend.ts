@@ -42,7 +42,7 @@ export type MetricTrendFetch = (
     statsFilters: StatsFilters,
     timezone: string,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
     costSavedPerInteraction: number,
 ) => Promise<MetricTrend>
 

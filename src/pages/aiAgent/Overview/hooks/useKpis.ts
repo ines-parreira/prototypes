@@ -9,6 +9,7 @@ export const useKpis = ({
     filters,
     timezone,
     aiAgentType,
+    aiAgentUserId,
     isOnNewPlan,
     showEarlyAccessModal,
     showActivationModal,
@@ -16,6 +17,7 @@ export const useKpis = ({
     filters: StatsFilters
     timezone: string
     aiAgentType?: AiAgentType
+    aiAgentUserId: number
     isOnNewPlan: boolean
     showEarlyAccessModal: () => void
     showActivationModal: () => void
@@ -30,7 +32,7 @@ export const useKpis = ({
         showEarlyAccessModal: showEarlyAccessModal,
         showActivationModal: showActivationModal,
     })
-    const csat = useCsat(filters, timezone)
+    const csat = useCsat(filters, timezone, aiAgentUserId)
 
     return {
         metrics: [coverageRate, automationRate, gmvInfluenced, csat],

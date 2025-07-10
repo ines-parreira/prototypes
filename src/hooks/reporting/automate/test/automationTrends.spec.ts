@@ -318,7 +318,7 @@ describe('automationTrends', () => {
         })
 
         describe('billableTickets', () => {
-            const aiAgentUserId = '4000'
+            const aiAgentUserId = 4000
             const billableTicketCount = { value: 123, prevValue: 456 }
             const totalFirstResponseTime = { value: 789, prevValue: 654 }
             const totalResolutionTime = { value: 543, prevValue: 987 }

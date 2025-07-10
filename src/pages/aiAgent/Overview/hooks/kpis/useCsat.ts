@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import useAppSelector from 'hooks/useAppSelector'
 import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
@@ -13,7 +12,11 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 import { getPreviousPeriod } from 'utils/reporting'
 
-export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
+export const useCsat = (
+    filters: StatsFilters,
+    timezone: string,
+    aiAgentUserId: number,
+): KpiMetric => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const stores = useAppSelector(getStoreIntegrations)
@@ -36,15 +39,13 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
         [storeConfigurations],
     )
 
-    const aiAgentUserId = useAIAgentUserId()
-
     const result = useMultipleMetricsTrends(
         customerSatisfactionQueryFactory(
             {
                 [FilterKey.Period]: filters.period,
                 [FilterKey.Agents]: {
                     operator: LogicalOperatorEnum.ONE_OF,
-                    values: [Number(aiAgentUserId)],
+                    values: [aiAgentUserId],
                 },
             },
             timezone,
@@ -54,7 +55,7 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
                 [FilterKey.Period]: getPreviousPeriod(filters.period),
                 [FilterKey.Agents]: {
                     operator: LogicalOperatorEnum.ONE_OF,
-                    values: [Number(aiAgentUserId)],
+                    values: [aiAgentUserId],
                 },
             },
             timezone,

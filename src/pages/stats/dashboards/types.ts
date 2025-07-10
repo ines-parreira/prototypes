@@ -137,7 +137,7 @@ export type ReportFetch = (
         integrations: Integration[]
         getAgentDetails: (id: number) => User | undefined
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
-        aiAgentUserId: string | undefined
+        aiAgentUserId: number | undefined
         campaignsReportContext: CampaignReportContext
         tagResultsSelection: TagSelection
     },

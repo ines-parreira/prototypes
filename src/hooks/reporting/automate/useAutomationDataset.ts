@@ -69,7 +69,7 @@ export const fetchAutomateMetricsTimeSeries = async (
     timezone: string,
     granularity: ReportingGranularity,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined,
+    aiAgentUserId: number | undefined,
 ): Promise<CalculatedTimeSeries> => {
     return Promise.all([
         fetchAutomationDatasetByEventTypeTimeSeries(

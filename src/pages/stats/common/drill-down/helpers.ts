@@ -298,8 +298,8 @@ export const getDrillDownQuery = (
                 coverageRateTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
-                    metricData.outcomeFieldId || -1,
-                    metricData.intentFieldId || -1,
+                    metricData.outcomeFieldId,
+                    metricData.intentFieldId,
                     sorting,
                     metricData.integrationIds,
                 )

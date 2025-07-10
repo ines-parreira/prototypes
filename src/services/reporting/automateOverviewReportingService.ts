@@ -194,7 +194,7 @@ export const fetchAutomatePerformanceReport = async (
     granularity: ReportingGranularity,
     context: {
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
-        aiAgentUserId: string | undefined
+        aiAgentUserId: number | undefined
     },
 ) => {
     return fetchAutomateMetricsTimeSeries(
@@ -276,7 +276,7 @@ export const fetchPerformanceByFeatureReport = async (
     granularity: ReportingGranularity,
     context: {
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
-        aiAgentUserId: string | undefined
+        aiAgentUserId: number | undefined
     },
 ) => {
     const fileName = getCsvFileNameWithDates(

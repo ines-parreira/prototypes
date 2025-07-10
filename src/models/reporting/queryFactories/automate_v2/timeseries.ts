@@ -81,7 +81,7 @@ export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    aiAgentUserId?: string,
+    aiAgentUserId?: number,
 ): TimeSeriesQuery<BillableTicketDatasetCube> => ({
     measures: [BillableTicketDatasetMeasure.BillableTicketCount],
     dimensions: [],
@@ -100,7 +100,7 @@ export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
                   {
                       member: BillableTicketDatasetDimension.ResolvedByAgentUserId,
                       operator: ReportingFilterOperator.NotEquals,
-                      values: [aiAgentUserId],
+                      values: [String(aiAgentUserId)],
                   },
               ]
             : []),
