@@ -7,6 +7,7 @@ import {
     useBillingState,
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
+import { Cadence } from 'models/billing/types'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
@@ -20,6 +21,7 @@ import {
     TrialMetrics,
     useTrialMetrics,
 } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -59,11 +61,13 @@ type PlanDetails = {
     helpdeskPlanTicketCost: string
     earlyAccessPlanAmount: string
     numQuotaTickets: number
+    currentPlanCadence: Cadence
+    earlyAccessPlanCadence: Cadence
 }
 
 const usePlanDetails = (): PlanDetails => {
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
-    const { amount: earlyAccessPlanAmount } =
+    const { amount: earlyAccessPlanAmount, cadence: earlyAccessPlanCadence } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessAutomatePlanQuery.data)
     const billingState = useBillingState()
     const currentPlan = billingState?.data?.current_plans?.automate
@@ -71,6 +75,7 @@ const usePlanDetails = (): PlanDetails => {
 
     const currentPlanAmount = (currentPlan?.amount ?? 0) / 100
     const currency = currentPlan?.currency ?? 'USD'
+    const currentPlanCadence = currentPlan?.cadence ?? Cadence.Month
     const currentPlanAmountFormatted = formatAmount(currentPlanAmount, currency)
     const helpdeskPlanTicketCost = formatAmount(
         (helpdeskPlan?.amount ?? 0) /
@@ -82,10 +87,12 @@ const usePlanDetails = (): PlanDetails => {
 
     return {
         currentPlanAmount,
+        currentPlanCadence,
         currency,
         currentPlanAmountFormatted,
         helpdeskPlanTicketCost,
         earlyAccessPlanAmount,
+        earlyAccessPlanCadence,
         numQuotaTickets,
     }
 }
@@ -100,7 +107,7 @@ const createPlanModalData = (
         title: 'Support Agent',
         description: 'Provide best-in-class automated support',
         price: planDetails.currentPlanAmountFormatted,
-        billingPeriod: 'month',
+        billingPeriod: planDetails.currentPlanCadence,
         features: [
             `${planDetails.numQuotaTickets} automated interactions`,
             'Deliver instant answers to repetitive questions and improve customer satisfaction',
@@ -112,7 +119,7 @@ const createPlanModalData = (
         title: 'Support Agent and Shopping Assistant ',
         description: 'Unlock full potential to drive more sales',
         price: planDetails.earlyAccessPlanAmount,
-        billingPeriod: 'month after trial ends',
+        billingPeriod: `${planDetails.earlyAccessPlanCadence} after trial ends`,
         features: [
             'Everything in Support Agent skills',
             'Proactively engage with customers to guide discovery',
@@ -164,13 +171,15 @@ const useTrialStartedBanner = (
 ): TrialModalProps['trialStartedBanner'] => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations()
+    const { upgradePlan, isLoading: isUpgradePlanLoading } = useUpgradePlan()
 
     const trialMilestone = useSalesTrialRevampMilestone()
 
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
     const { remainingDays, gmvInfluenced, gmvInfluencedRate } = trialMetrics
-    const { canBookDemo } = useShoppingAssistantTrialAccess()
+    const { canBookDemo, hasOptedOut, hasActiveTrial } =
+        useShoppingAssistantTrialAccess()
     const accountDomain = currentAccount.get('domain')
 
     const { openManageTrialModal, openUpgradePlanModal } =
@@ -184,22 +193,38 @@ const useTrialStartedBanner = (
     }, [openManageTrialModal])
 
     const handleUpgradePlan = useCallback(() => {
-        logEvent(SegmentEvent.TrialBannerSettingsClicked, {
-            pageName,
-        })
-        openUpgradePlanModal()
-    }, [openUpgradePlanModal, pageName])
+        if (hasOptedOut || !hasActiveTrial) {
+            logEvent(SegmentEvent.TrialBannerSettingsClicked, {
+                pageName,
+            })
+            openUpgradePlanModal()
+        } else {
+            upgradePlan()
+        }
+    }, [
+        openUpgradePlanModal,
+        pageName,
+        hasOptedOut,
+        upgradePlan,
+        hasActiveTrial,
+    ])
 
     const secondaryAction = useMemo(() => {
-        if (!isRevampTrialMilestone1Enabled) {
+        if (!isRevampTrialMilestone1Enabled || hasOptedOut) {
             return undefined
         }
 
         return {
             label: 'Manage Trial',
             onClick: handleManageTrial,
+            isLoading: isUpgradePlanLoading,
         }
-    }, [handleManageTrial, isRevampTrialMilestone1Enabled])
+    }, [
+        handleManageTrial,
+        isRevampTrialMilestone1Enabled,
+        hasOptedOut,
+        isUpgradePlanLoading,
+    ])
 
     const primaryAction = useMemo(() => {
         if (canBookDemo) {
@@ -214,10 +239,9 @@ const useTrialStartedBanner = (
         return {
             label: 'Upgrade Now',
             onClick: handleUpgradePlan,
-            // TMP: Disable upgrade now for Milestone 1 while we're working on the Upgrade API
-            isDisabled: isRevampTrialMilestone1Enabled,
+            isLoading: isUpgradePlanLoading,
         }
-    }, [canBookDemo, handleUpgradePlan, isRevampTrialMilestone1Enabled])
+    }, [canBookDemo, handleUpgradePlan, isUpgradePlanLoading])
 
     const description = useMemo(() => {
         if (gmvInfluencedRate > 0.01) {

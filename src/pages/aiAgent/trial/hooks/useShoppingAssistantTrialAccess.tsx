@@ -7,7 +7,10 @@ import {
     useStoreActivations,
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { atLeastOneStoreHasActiveTrial } from 'pages/aiAgent/trial/utils/utils'
+import {
+    atLeastOneStoreHasActiveTrial,
+    atLeastOneStoreHasOptedOut,
+} from 'pages/aiAgent/trial/utils/utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -29,6 +32,8 @@ type ShoppingAssistantTrialAccess = {
     canSeeTrialCTA: boolean
     /** Whether the trial has started or not */
     hasActiveTrial: boolean
+    /** Whether the user has opted out of the plan upgrade */
+    hasOptedOut: boolean
 }
 
 /**
@@ -70,6 +75,12 @@ export const useShoppingAssistantTrialAccess =
             storeActivations,
         )
 
+        // Check if at least one store has opted out of the trial
+        const hasOptedOut = atLeastOneStoreHasOptedOut(
+            storeConfigurations,
+            isRevampTrialMilestone1Enabled,
+        )
+
         // User is an admin
         const isAdminUser = isAdmin(currentUser)
 
@@ -98,6 +109,7 @@ export const useShoppingAssistantTrialAccess =
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             }
         }
 
@@ -148,5 +160,6 @@ export const useShoppingAssistantTrialAccess =
             canSeeSystemBanner,
             canSeeTrialCTA,
             hasActiveTrial,
+            hasOptedOut,
         }
     }

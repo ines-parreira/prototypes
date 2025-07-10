@@ -83,7 +83,8 @@ export const SalesPaywallMiddleware =
 
         const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
-        const { canSeeTrialCTA } = useShoppingAssistantTrialAccess()
+        const { canSeeTrialCTA, hasOptedOut, hasActiveTrial } =
+            useShoppingAssistantTrialAccess()
 
         const {
             canStartTrial: canStartTrialOriginal,
@@ -123,7 +124,11 @@ export const SalesPaywallMiddleware =
 
         const onStartTrialClicked = () => {
             if (isShoppingAssistantTrialRevampEnabled) {
-                openTrialUpgradeModal()
+                if (hasOptedOut || !hasActiveTrial) {
+                    openTrialUpgradeModal()
+                } else {
+                    startRevampTrial()
+                }
             } else {
                 startTrialOriginal()
             }
@@ -136,14 +141,6 @@ export const SalesPaywallMiddleware =
                 displayTrialButton ||
                 canStartTrialFromFeatureFlag,
         })
-
-        const onUpgradePlanClicked = () => {
-            if (isShoppingAssistantTrialRevampEnabled) {
-                openUpgradePlanModal()
-            } else {
-                showEarlyAccessModal()
-            }
-        }
 
         const eventData = {
             accountId: currentAccount.get('id'),
@@ -181,6 +178,18 @@ export const SalesPaywallMiddleware =
             closeManageTrialModal()
             closeUpgradePlanModal()
         }, [upgradePlan, closeManageTrialModal, closeUpgradePlanModal])
+
+        const onUpgradePlanClicked = () => {
+            if (isShoppingAssistantTrialRevampEnabled) {
+                if (hasOptedOut || !hasActiveTrial) {
+                    openUpgradePlanModal()
+                } else {
+                    onUpgradeClick()
+                }
+            } else {
+                showEarlyAccessModal()
+            }
+        }
 
         if (!hasAutomate) {
             return (
@@ -297,8 +306,6 @@ const PaywallWrapperComponent = ({
         eventData,
     ])
 
-    const trialMilestone = useSalesTrialRevampMilestone()
-
     if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
         return (
             <PaywallWrapper>
@@ -309,8 +316,6 @@ const PaywallWrapperComponent = ({
                         <Button
                             size="medium"
                             onClick={showEarlyAccessModal}
-                            // TMP: Disable upgrade now for Milestone 1 while we're working on the Upgrade API
-                            isDisabled={trialMilestone === 'milestone-1'}
                             className={css.upgradeButton}
                         >
                             Upgrade Now

@@ -22,7 +22,6 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from '../hooks/useShoppingAssistantTrialAccess'
-import { atLeastOneStoreHasActiveTrial } from '../utils/utils'
 
 // Mock dependencies
 jest.mock('launchdarkly-react-client-sdk', () => ({
@@ -33,7 +32,6 @@ jest.mock('hooks/useAppSelector')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('../hooks/useSalesTrialRevampMilestone')
-jest.mock('../utils/utils')
 
 // Mock utility functions
 jest.mock('utils', () => ({
@@ -52,9 +50,6 @@ const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseStoreConfigurations = assumeMock(useStoreConfigurations)
 const mockUseSalesTrialRevampMilestone = assumeMock(
     useSalesTrialRevampMilestone,
-)
-const mockAtLeastOneStoreHasActiveTrial = assumeMock(
-    atLeastOneStoreHasActiveTrial,
 )
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
@@ -113,7 +108,6 @@ describe('useShoppingAssistantTrialAccess', () => {
         })
 
         mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-        mockAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
         mockUseStoreActivations.mockReturnValue({
             storeActivations: mockStoreActivations,
             progressPercentage: 50,
@@ -156,6 +150,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
     })
@@ -172,6 +167,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: true, // Has AI Agent on chat + all other conditions
                 canSeeTrialCTA: true,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
 
@@ -202,6 +198,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
 
@@ -219,6 +216,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false, // Only admins can see system banner
                 canSeeTrialCTA: false, // Only admins can see trial CTA
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
     })
@@ -253,6 +251,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false, // System banner only for Starter/Basic
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
 
@@ -271,6 +270,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
 
@@ -288,6 +288,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
     })
@@ -320,6 +321,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
 
@@ -350,6 +352,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
     })
@@ -379,6 +382,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false, // No AI Agent on chat
                 canSeeTrialCTA: true, // Trial CTA doesn't require AI Agent on chat
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
     })
@@ -399,6 +403,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
     })
@@ -418,6 +423,285 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
+            })
+        })
+    })
+
+    describe('hasOptedOut scenarios', () => {
+        beforeEach(() => {
+            // Reset to default admin user on starter plan for these tests
+            mockIsAdmin.mockReturnValue(true)
+            mockIsTeamLead.mockReturnValue(false)
+            // Set milestone to milestone-1 so the utility functions check for optOut
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === getCurrentUser) {
+                    return mockUser
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return { generation: 5 }
+                }
+                if (selector === getCurrentHelpdeskPlan) {
+                    return { tier: HelpdeskPlanTier.STARTER }
+                }
+                if (selector === getCurrentAccountState) {
+                    return mockAccount
+                }
+                return undefined
+            })
+        })
+
+        describe('when user has opted out of trial', () => {
+            it('should return hasOptedOut: true when store configurations have optOutDatetime', () => {
+                const storeConfigurationsWithOptOut = [
+                    getStoreConfigurationFixture({
+                        storeName: 'Test Store',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: {
+                            trial: {
+                                startDatetime: null,
+                                endDatetime: null,
+                                account: {
+                                    plannedUpgradeDatetime: null,
+                                    optInDatetime: null,
+                                    optOutDatetime: '2023-11-01T00:00:00.000Z',
+                                    actualUpgradeDatetime: null,
+                                    actualTerminationDatetime: null,
+                                },
+                            },
+                        },
+                    }),
+                ]
+
+                mockUseStoreConfigurations.mockReturnValue({
+                    storeConfigurations: storeConfigurationsWithOptOut,
+                    storeNames: ['Test Store'],
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useShoppingAssistantTrialAccess(),
+                )
+
+                expect(result.current).toEqual({
+                    canNotifyAdmin: false,
+                    canBookDemo: false,
+                    canSeeSystemBanner: true,
+                    canSeeTrialCTA: true,
+                    hasActiveTrial: false,
+                    hasOptedOut: true,
+                })
+            })
+
+            it('should return hasOptedOut: true when at least one store has opted out', () => {
+                const storeConfigurationsWithMixedOptStatus = [
+                    getStoreConfigurationFixture({
+                        storeName: 'Store 1',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: undefined, // No trial data
+                    }),
+                    getStoreConfigurationFixture({
+                        storeName: 'Store 2',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: {
+                            trial: {
+                                startDatetime: null,
+                                endDatetime: null,
+                                account: {
+                                    plannedUpgradeDatetime: null,
+                                    optInDatetime: null,
+                                    optOutDatetime: '2023-11-01T00:00:00.000Z',
+                                    actualUpgradeDatetime: null,
+                                    actualTerminationDatetime: null,
+                                },
+                            },
+                        },
+                    }),
+                ]
+
+                mockUseStoreConfigurations.mockReturnValue({
+                    storeConfigurations: storeConfigurationsWithMixedOptStatus,
+                    storeNames: ['Store 1', 'Store 2'],
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useShoppingAssistantTrialAccess(),
+                )
+
+                expect(result.current.hasOptedOut).toBe(true)
+            })
+        })
+
+        describe('when user has opted out with mixed store statuses', () => {
+            it('should return hasOptedOut: true when different stores have different statuses', () => {
+                const storeConfigurationsWithBothStatuses = [
+                    getStoreConfigurationFixture({
+                        storeName: 'Store with OptIn',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: {
+                            trial: {
+                                startDatetime: null,
+                                endDatetime: null,
+                                account: {
+                                    plannedUpgradeDatetime: null,
+                                    optInDatetime: '2023-11-01T00:00:00.000Z',
+                                    optOutDatetime: null,
+                                    actualUpgradeDatetime: null,
+                                    actualTerminationDatetime: null,
+                                },
+                            },
+                        },
+                    }),
+                    getStoreConfigurationFixture({
+                        storeName: 'Store with OptOut',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: {
+                            trial: {
+                                account: {
+                                    plannedUpgradeDatetime: null,
+                                    optInDatetime: null,
+                                    optOutDatetime: '2023-11-02T00:00:00.000Z',
+                                    actualUpgradeDatetime: null,
+                                    actualTerminationDatetime: null,
+                                },
+                                startDatetime: null,
+                                endDatetime: null,
+                            },
+                        },
+                    }),
+                ]
+
+                mockUseStoreConfigurations.mockReturnValue({
+                    storeConfigurations: storeConfigurationsWithBothStatuses,
+                    storeNames: ['Store with OptIn', 'Store with OptOut'],
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useShoppingAssistantTrialAccess(),
+                )
+
+                expect(result.current.hasOptedOut).toBe(true)
+            })
+        })
+
+        describe('when revamp trial is disabled', () => {
+            it('should always return hasOptedOut: false regardless of store configurations', () => {
+                mockUseSalesTrialRevampMilestone.mockReturnValue('off')
+
+                const storeConfigurationsWithOptIn = [
+                    getStoreConfigurationFixture({
+                        storeName: 'Test Store',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: {
+                            trial: {
+                                account: {
+                                    plannedUpgradeDatetime: null,
+                                    optInDatetime: '2023-11-01T00:00:00.000Z',
+                                    optOutDatetime: '2023-11-02T00:00:00.000Z',
+                                    actualUpgradeDatetime: null,
+                                    actualTerminationDatetime: null,
+                                },
+                                startDatetime: null,
+                                endDatetime: null,
+                            },
+                        },
+                    }),
+                ]
+
+                mockUseStoreConfigurations.mockReturnValue({
+                    storeConfigurations: storeConfigurationsWithOptIn,
+                    storeNames: ['Test Store'],
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useShoppingAssistantTrialAccess(),
+                )
+
+                expect(result.current.hasOptedOut).toBe(false)
+            })
+        })
+
+        describe('edge cases', () => {
+            it('should handle empty store configurations', () => {
+                mockUseStoreConfigurations.mockReturnValue({
+                    storeConfigurations: [],
+                    storeNames: [],
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useShoppingAssistantTrialAccess(),
+                )
+
+                expect(result.current.hasOptedOut).toBe(false)
+            })
+
+            it('should handle store configurations without sales data', () => {
+                const storeConfigurationsWithoutSales = [
+                    getStoreConfigurationFixture({
+                        storeName: 'Test Store',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: undefined,
+                    }),
+                ]
+
+                mockUseStoreConfigurations.mockReturnValue({
+                    storeConfigurations: storeConfigurationsWithoutSales,
+                    storeNames: ['Test Store'],
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useShoppingAssistantTrialAccess(),
+                )
+
+                expect(result.current.hasOptedOut).toBe(false)
+            })
+
+            it('should handle store configurations with incomplete trial data', () => {
+                const storeConfigurationsWithIncompleteData = [
+                    getStoreConfigurationFixture({
+                        storeName: 'Test Store',
+                        shopType: 'shopify',
+                        monitoredChatIntegrations: [1, 2],
+                        sales: {
+                            trial: {
+                                startDatetime: null,
+                                endDatetime: null,
+                                account: {
+                                    plannedUpgradeDatetime: null,
+                                    optInDatetime: null,
+                                    optOutDatetime: null,
+                                    actualUpgradeDatetime: null,
+                                    actualTerminationDatetime: null,
+                                },
+                            },
+                        },
+                    }),
+                ]
+
+                mockUseStoreConfigurations.mockReturnValue({
+                    storeConfigurations: storeConfigurationsWithIncompleteData,
+                    storeNames: ['Test Store'],
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useShoppingAssistantTrialAccess(),
+                )
+
+                expect(result.current.hasOptedOut).toBe(false)
             })
         })
     })

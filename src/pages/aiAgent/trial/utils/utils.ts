@@ -15,3 +15,17 @@ export const atLeastOneStoreHasActiveTrial = (
         (storeConfiguration) => storeConfiguration.sales?.trial.startDatetime,
     )
 }
+
+export const atLeastOneStoreHasOptedOut = (
+    storeConfigurations: StoreConfiguration[],
+    isRevampTrialEnabled: boolean,
+) => {
+    if (!isRevampTrialEnabled) {
+        return false
+    }
+
+    return storeConfigurations.some(
+        (storeConfiguration) =>
+            storeConfiguration.sales?.trial.account.optOutDatetime,
+    )
+}

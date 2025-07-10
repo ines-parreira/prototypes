@@ -214,6 +214,7 @@ export function getAutomateEarlyAccessPricesFormatted(
     const amountAfterDiscountPrice = (plan?.amount_after_discount ?? 0) / 100
     const discountPrice = (plan?.discount ?? 0) / 100
     const currency = plan?.currency ?? 'usd'
+    const cadence = plan?.cadence ?? Cadence.Month
 
     return {
         amount: formatAmount(amountPrice, currency),
@@ -223,6 +224,7 @@ export function getAutomateEarlyAccessPricesFormatted(
         ),
         discount:
             discountPrice > 0 ? formatAmount(discountPrice, currency) : null,
+        cadence,
     }
 }
 

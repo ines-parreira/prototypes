@@ -19,6 +19,9 @@ export const useUpgradePlan = () => {
                 // TODO: Implement the new upgrade plan logic
                 // For now, simulate loading with a delay
                 await new Promise((resolve) => setTimeout(resolve, 1500))
+                alert(
+                    'The upgrade API is not connected yet. It will be by the end of the week.',
+                )
                 return Promise.resolve()
             }
             return onUpgradePlanClick()

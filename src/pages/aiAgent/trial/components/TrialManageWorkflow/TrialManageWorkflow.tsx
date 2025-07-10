@@ -118,8 +118,6 @@ export const TrialManageWorkflow = ({
                     primaryAction={{
                         label: 'Upgrade Now',
                         onClick: openTrialUpgradeModal,
-                        // TMP: Disable upgrade now for Milestone 1 while we're working on the Upgrade API
-                        isDisabled: trialMilestone === 'milestone-1',
                     }}
                     secondaryAction={{
                         label: 'Opt Out',

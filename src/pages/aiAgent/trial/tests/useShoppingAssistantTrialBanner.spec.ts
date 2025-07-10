@@ -129,6 +129,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             canSeeSystemBanner: false,
             canSeeTrialCTA: false,
             hasActiveTrial: false,
+            hasOptedOut: false,
         })
     })
 
@@ -148,6 +149,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -174,6 +176,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -193,6 +196,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -212,6 +216,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: false, // Hook returns false when conditions not met
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -240,6 +245,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
 
@@ -307,6 +313,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
 
             rerender()
@@ -324,6 +331,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
 
             const { rerender } = renderHook(() =>
@@ -344,6 +352,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
 
             rerender()
@@ -365,6 +374,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
+                hasOptedOut: false,
             })
         })
 
