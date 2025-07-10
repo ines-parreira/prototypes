@@ -52,6 +52,7 @@ export type RuleEngineData = {
     actions?: ActionsData
     aiAgentPlaygroundExecutions?: AiAgentPlaygroundExecutionsData
     emailIntegrations?: EmailIntegrationsData
+    alreadyUsedEmailIntegrationsIds?: number[]
     shopifyIntegration?: ShopifyPermissionsData
     chatIntegrationsStatus?: ChatIntegrationsStatusData
     selfServiceChatChannels: SelfServiceChatChannel[]

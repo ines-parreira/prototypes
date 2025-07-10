@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { runRuleEngine } from './ruleEngine'
@@ -114,6 +115,9 @@ export const usePendingTasksRuleEngine = ({
 
     const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()
 
+    const alreadyUsedEmailIntegrationsIds =
+        useGetAlreadyUsedEmailIntegrationIds(storeName)
+
     const { data: shopifyPermissionsData } = useShopifyPermissionsData({
         storeName,
     })
@@ -218,6 +222,7 @@ export const usePendingTasksRuleEngine = ({
                         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
                         selfServiceChatChannels,
                         storeKnowledgeStatus: storeKnowledgeStatusData,
+                        alreadyUsedEmailIntegrationsIds,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -243,6 +248,7 @@ export const usePendingTasksRuleEngine = ({
         isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
         selfServiceChatChannels,
         storeKnowledgeStatusData,
+        alreadyUsedEmailIntegrationsIds,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     if (shouldFakeTasks) {

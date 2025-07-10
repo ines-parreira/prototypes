@@ -13,18 +13,28 @@ export class SetUpYourEmailTask extends Task {
     }
 
     protected isAvailable(data: RuleEngineData): boolean {
-        return !!data?.emailIntegrations
+        return !!data?.aiAgentStoreConfiguration
     }
 
-    // No email integration has been set up yet (excluding default)
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        // TODO: add condition "Email selected in onboarding settings is other provider" when settings API is connected
-        return !(data.emailIntegrations ?? []).filter(
-            (emailIntegration) => !emailIntegration.isDefault,
-        ).length
+        return !data.aiAgentStoreConfiguration.monitoredEmailIntegrations.length
     }
 
-    protected getFeatureUrl(): string {
-        return '/app/settings/channels/email/new/onboarding'
+    protected getFeatureUrl({
+        data,
+        routes,
+    }: {
+        data: RuleEngineData
+        routes: RuleEngineRoutes
+    }): string {
+        const hasAvailableEmailIntegrations = !!data.emailIntegrations?.find(
+            ({ id }) => {
+                return !data.alreadyUsedEmailIntegrationsIds?.includes(id)
+            },
+        )
+
+        return hasAvailableEmailIntegrations
+            ? routes.aiAgentRoutes.settingsChannels
+            : '/app/settings/channels/email/new/onboarding'
     }
 }

@@ -1,6 +1,7 @@
 import moment from 'moment/moment'
 
 import { AiAgentScope } from 'models/aiAgent/types'
+import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
 import { ShopifyPermissionsDataFixture } from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { assumeMock } from 'utils/testing'
@@ -88,6 +89,10 @@ jest.mock('../useFetchPageInteractionsData', () => ({
 const useFetchPageInteractionsDataMock = assumeMock(
     useFetchPageInteractionsData,
 )
+jest.mock('pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds')
+const useGetAlreadyUsedEmailIntegrationIdsMock = assumeMock(
+    useGetAlreadyUsedEmailIntegrationIds,
+)
 
 jest.mock('../useTicketViewData', () => ({
     useTicketViewData: jest.fn(),
@@ -146,6 +151,8 @@ describe('usePendingTasksRuleEngine', () => {
             .withoutEmailIntegrations()
             .build(),
     })
+
+    useGetAlreadyUsedEmailIntegrationIdsMock.mockReturnValue([])
 
     useShopifyPermissionsDataMock.mockReturnValue({
         data: ShopifyPermissionsDataFixture.start()
