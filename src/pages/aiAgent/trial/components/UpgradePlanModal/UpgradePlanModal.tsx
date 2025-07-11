@@ -63,20 +63,26 @@ const PlanSection: React.FC<{
     const priceContainerRef = useRef<HTMLDivElement>(null)
 
     const termsLabel = (
-        <span className={css.checkboxLabel}>
+        <span className={classNames(css.checkboxLabel)}>
             I agree to the updated pricing and terms associated with this
             upgrade, as outlined in{' '}
             <a
                 href="https://www.gorgias.com/legal/terms-of-service"
                 target="_blank"
                 rel="noreferrer"
-                className={css.termsLink}
+                className={
+                    isNewPlan && !isTermsChecked
+                        ? css.termsLinkError
+                        : css.termsLink
+                }
             >
                 Gorgias terms
             </a>
             .
         </span>
     )
+
+    const isDisabled = isNewPlan && showTermsCheckbox && !isTermsChecked
 
     return (
         <>
@@ -114,9 +120,7 @@ const PlanSection: React.FC<{
 
             <div className={css.checkboxContainer}>
                 <Button
-                    isDisabled={
-                        isNewPlan && showTermsCheckbox && !isTermsChecked
-                    }
+                    isDisabled={isLoading || isDisabled}
                     isLoading={isLoading}
                     onClick={onButtonClick}
                     intent={buttonIntent}
@@ -137,7 +141,11 @@ const PlanSection: React.FC<{
                             value={isNewPlan ? isTermsChecked : true}
                             onChange={isNewPlan ? onTermsChange! : () => {}}
                             label={termsLabel}
-                            className={css.checkboxField}
+                            className={
+                                isNewPlan && !isTermsChecked
+                                    ? css.checkboxFieldError
+                                    : css.checkboxField
+                            }
                         />
                     </div>
                 )}
