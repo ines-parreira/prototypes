@@ -390,5 +390,40 @@ describe('<Form />', () => {
                 )
             })
         })
+
+        it('resets form values after successful submission', async () => {
+            render(
+                <Form
+                    onValidSubmit={onSubmit}
+                    defaultValues={{ name: 'initial' }}
+                >
+                    <FormField name="name" label="Name" />
+                    <FormSubmitButton />
+                </Form>,
+            )
+
+            const button = screen.getByRole('button', { name: 'Save Changes' })
+            expect(button).toBeAriaDisabled()
+
+            fireEvent.change(screen.getByLabelText('Name'), {
+                target: { value: 'changed' },
+            })
+
+            expect(button).toBeAriaEnabled()
+
+            fireEvent.click(button)
+
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { name: 'changed' },
+                    expect.any(Object),
+                )
+            })
+
+            const input = screen.getByLabelText('Name') as HTMLInputElement
+            expect(input.value).toBe('changed')
+            /* button should be disabled again because the dirty state is reset */
+            expect(button).toBeAriaDisabled()
+        })
     })
 })
