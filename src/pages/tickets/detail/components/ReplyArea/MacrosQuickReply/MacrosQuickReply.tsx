@@ -73,24 +73,27 @@ export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
                 Suggested macros
             </div>
             <div className={css.macros}>
-                {macros.map((macro, macroRank: number) => (
-                    <MacroButton
-                        macro={macro}
-                        applyMacro={() => {
-                            void applyMacro(macro)
-                            logEvent(SegmentEvent.MacrosQuickReplySent, {
-                                ...baseSegmentPayload,
-                                macro_id: macro.id,
-                                macro_rank: macroRank + 1,
-                            })
-                        }}
-                        key={macro.id}
-                        onHover={_debounce(
-                            () => buttonHandleHover(macro.id, macroRank + 1),
-                            500,
-                        )}
-                    />
-                ))}
+                {macros
+                    .filter((macro) => macro?.id)
+                    .map((macro, macroRank: number) => (
+                        <MacroButton
+                            macro={macro}
+                            applyMacro={() => {
+                                void applyMacro(macro)
+                                logEvent(SegmentEvent.MacrosQuickReplySent, {
+                                    ...baseSegmentPayload,
+                                    macro_id: macro.id,
+                                    macro_rank: macroRank + 1,
+                                })
+                            }}
+                            key={macro.id}
+                            onHover={_debounce(
+                                () =>
+                                    buttonHandleHover(macro.id, macroRank + 1),
+                                500,
+                            )}
+                        />
+                    ))}
             </div>
         </div>
     )
