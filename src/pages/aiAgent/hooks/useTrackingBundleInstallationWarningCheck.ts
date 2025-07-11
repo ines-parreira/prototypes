@@ -23,11 +23,16 @@ export const useTrackingBundleInstallationWarningCheck = ({
 
     const hasShoppingAssistant =
         !!useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const hasTrackingBundleWarningBanner =
+        !!useFlags()[
+            FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner
+        ]
 
     const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
 
     const enabled =
+        hasTrackingBundleWarningBanner &&
         hasShoppingAssistant &&
         (canUseAiSalesAgent || atLeastOneStoreHasActiveTrial)
 

@@ -72,6 +72,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     beforeEach(() => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            [FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner]: true,
         })
 
         mockUseShopifyIntegrations.mockReturnValue([
@@ -240,6 +241,32 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
                 },
                 {
                     shop_integration_id: STORE_2_CHAT_INTEGRATION_ID_2,
+                    last_loaded_datetime: new Date(),
+                },
+            ],
+        } as any)
+
+        const { result } = renderHook(() =>
+            useTrackingBundleInstallationWarningCheck({}),
+        )
+
+        expect(result.current.uninstalledChatIntegrationId).toBeUndefined()
+    })
+
+    it('should return undefined with uninstalled chat integrations but tracking banner disabled', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            [FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner]: false,
+        })
+
+        mockUseListBundles.mockReturnValueOnce({
+            data: [
+                {
+                    shop_integration_id: STORE_1_INTEGRATION_ID,
+                    last_loaded_datetime: new Date(),
+                },
+                {
+                    shop_integration_id: STORE_2_CHAT_INTEGRATION_ID,
                     last_loaded_datetime: new Date(),
                 },
             ],
