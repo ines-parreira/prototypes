@@ -217,6 +217,7 @@ describe('useTrialModalProps', () => {
                         automate: {
                             amount: 5000, // $50 in cents
                             currency: 'USD',
+                            num_quota_tickets: 100,
                         },
                         helpdesk: {
                             amount: 10000, // $100 in cents

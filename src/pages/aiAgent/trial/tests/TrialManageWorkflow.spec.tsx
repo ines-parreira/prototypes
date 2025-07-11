@@ -609,7 +609,9 @@ describe('TrialManageWorkflow', () => {
                     CTA: 'Confirm',
                 },
             )
-            expect(mockOptOutMutate).toHaveBeenCalledWith([])
+            expect(mockOptOutMutate).toHaveBeenCalledWith([], {
+                onSuccess: expect.any(Function),
+            })
         })
 
         it('logs event when Dismiss is clicked', async () => {
@@ -705,15 +707,9 @@ describe('TrialManageWorkflow', () => {
         it('calls onSuccess callback and updates URL when optOutPlan succeeds', async () => {
             let onSuccessCallback: (() => void) | undefined
 
-                // Set up the mock to capture the onSuccess callback
-            ;(
-                useOptOutSalesTrialUpgradeMutation as jest.Mock
-            ).mockImplementation((options?: any) => {
+            // Set up the mock to capture the onSuccess callback from mutate call
+            mockOptOutMutate.mockImplementation((_data: any, options?: any) => {
                 onSuccessCallback = options?.onSuccess
-                return {
-                    mutate: mockOptOutMutate,
-                    isLoading: false,
-                }
             })
 
             const user = userEvent.setup()
@@ -789,7 +785,9 @@ describe('TrialManageWorkflow', () => {
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
-            await user.click(optOutButton)
+            await act(async () => {
+                await user.click(optOutButton)
+            })
 
             // Click dismiss to close modal
             const dismissButton = screen.getByRole('button', {

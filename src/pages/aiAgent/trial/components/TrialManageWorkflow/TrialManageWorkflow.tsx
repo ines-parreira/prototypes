@@ -145,17 +145,17 @@ export const TrialManageWorkflow = ({
 }
 
 export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
-    const optOutMutation = useOptOutSalesTrialUpgradeMutation({
-        onSuccess: () => {
-            onClose()
-        },
-    })
+    const optOutMutation = useOptOutSalesTrialUpgradeMutation()
 
     const onOptOutClick = () => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Confirm',
         })
-        optOutMutation.mutate([])
+        optOutMutation.mutate([], {
+            onSuccess: () => {
+                onClose()
+            },
+        })
     }
 
     const onDismissClick = () => {

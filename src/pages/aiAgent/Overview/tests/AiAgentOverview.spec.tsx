@@ -136,6 +136,7 @@ describe('AiAgentOverview', () => {
                     automate: {
                         amount: 45000, // $450 in cents
                         currency: 'USD',
+                        num_quota_tickets: 2000,
                     },
                     helpdesk: {
                         amount: 10000, // $100 in cents

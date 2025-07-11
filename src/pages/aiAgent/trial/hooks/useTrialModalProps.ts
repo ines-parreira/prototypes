@@ -83,7 +83,7 @@ const usePlanDetails = (): PlanDetails => {
             100,
         currency,
     )
-    const numQuotaTickets = helpdeskPlan?.num_quota_tickets ?? 1
+    const numQuotaTickets = currentPlan?.num_quota_tickets ?? 1
 
     return {
         currentPlanAmount,
