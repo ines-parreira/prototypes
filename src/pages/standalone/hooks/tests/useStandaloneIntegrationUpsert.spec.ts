@@ -335,6 +335,17 @@ describe('useStandaloneIntegrationCreate', () => {
             'https://test-domain.zendesk.com/api/v2/tickets',
         )
 
+        // Verify updateOrCreateIntegration was called
+        expect(updateOrCreateIntegrationMock).toHaveBeenCalled()
+
+        // Get the first argument (the integration object)
+        callArg = updateOrCreateIntegrationMock.mock.calls[0][0]
+
+        // Basic check that we have the right structure
+        expect(callArg.get('http').get('url')).toBe(
+            'https://test-domain.zendesk.com/api/v2/tickets',
+        )
+
         // Verify error was logged
         expect(consoleErrorSpy).toHaveBeenCalledWith(
             'Failed to create integration: Something went wrong',

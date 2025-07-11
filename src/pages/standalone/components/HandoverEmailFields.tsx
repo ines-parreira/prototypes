@@ -4,6 +4,7 @@ import { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
+import { IntegrationType } from 'models/integration/types'
 import InputField from 'pages/common/forms/input/InputField'
 import {
     EmailItem,
@@ -19,15 +20,32 @@ export const HandoverEmailFields: FC<{
     selectableEmailIntegrations: EmailItem[]
     email: string
     errors: FieldErrors<HandoverFormValues>
+    onEmailIntegrationCtaClick?: (
+        integrationUrl: string,
+        integrationType: IntegrationType,
+    ) => void
 }> = ({
     setValue,
     emailIntegration,
     selectableEmailIntegrations,
     email,
     errors,
+    onEmailIntegrationCtaClick,
 }) => {
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
     const emailFieldRef = useRef<HTMLInputElement | null>(null)
+
+    const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault()
+        if (onEmailIntegrationCtaClick) {
+            onEmailIntegrationCtaClick(
+                EMAIL_INTEGRATION_PATH,
+                IntegrationType.Email,
+            )
+        } else {
+            window.open(EMAIL_INTEGRATION_PATH, '_blank')
+        }
+    }
 
     return (
         <div className={css.container}>
@@ -46,7 +64,7 @@ export const HandoverEmailFields: FC<{
                         hasError={!!errors.emailIntegration}
                         error={errors.emailIntegration?.message}
                     />
-                    <a href={EMAIL_INTEGRATION_PATH} className={css.link}>
+                    <a className={css.link} onClick={onClick}>
                         <small>
                             {"Don't see the email you want? Click here"}
                         </small>

@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
@@ -12,9 +15,12 @@ export const useSteps = ({
     shopName: string
     isStoreSelected?: boolean
 }) => {
+    const flags = useFlags()
     const { integration } = useShopifyIntegrationAndScope(shopName)
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
     const scopes = useAiAgentScopesForAutomationPlan()
+    const handoverEnabled =
+        !!flags[FeatureFlagKey.StandaloneHandoverCapabilities]
 
     // Step configuration array
     const steps = useMemo(
@@ -45,7 +51,7 @@ export const useSteps = ({
             },
             {
                 step: WizardStepEnum.HANDOVER,
-                condition: false, // TODO: Put it to true when ready to show
+                condition: handoverEnabled,
             },
             {
                 step: WizardStepEnum.KNOWLEDGE,
@@ -58,6 +64,7 @@ export const useSteps = ({
             defaultIntegration,
             isStoreSelected,
             scopes,
+            handoverEnabled,
         ],
     )
 

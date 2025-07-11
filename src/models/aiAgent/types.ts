@@ -297,6 +297,10 @@ export type OnboardingData = {
     isConversationStartersEnabled?: boolean
     isSalesHelpOnSearchEnabled?: boolean
     isAskAnythingInputEnabled?: boolean
+    handoverMethod?: string
+    handoverEmail?: string | null
+    handoverEmailIntegrationId?: number | null
+    handoverHttpIntegrationId?: number | null
 }
 
 export type SalesSettingsData = {

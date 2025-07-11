@@ -22,6 +22,10 @@ export const defaultOnboardingData = (
     emailIntegrationIds: [],
     chatIntegrationIds: [],
     currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
+    handoverMethod: 'email',
+    handoverEmail: null,
+    handoverEmailIntegrationId: null,
+    handoverHttpIntegrationId: null,
 })
 
 export const useGetOnboardingData = (shopName?: string) => {
