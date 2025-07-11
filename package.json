@@ -31,7 +31,7 @@
         "test:update": "jest -u",
         "test:watch": "jest --watch",
         "test:ci": "run-s quality test:ci:cover",
-        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 jest --coverage --ci --maxWorkers=20% --testTimeout=10000",
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=20% --testTimeout=10000",
         "patch-package": "patch-package",
         "postinstall": "run-p patch-package oxlint:bridge",
         "build": "run-s build:clean build:app build:sharedWorker",
