@@ -686,10 +686,10 @@ describe('ConversationLauncherSettings', () => {
             )
 
             expect(
-                screen.getByText('Customize placeholder text'),
+                screen.getByText('Placeholder text', { selector: 'div' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByPlaceholderText('Enter custom value'),
+                screen.getByPlaceholderText('Need help?'),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: 'Update' }),
@@ -772,8 +772,7 @@ describe('ConversationLauncherSettings', () => {
                 </Wrapper>,
             )
 
-            const placeholderInput =
-                screen.getByPlaceholderText('Enter custom value')
+            const placeholderInput = screen.getByPlaceholderText('Need help?')
             fireEvent.change(placeholderInput, {
                 target: { value: 'New placeholder' },
             })

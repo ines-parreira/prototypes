@@ -508,7 +508,7 @@ describe('CustomerEngagementSettings', () => {
             click(floatingInputToggle)
 
             // Clear the textarea
-            const textarea = result.getByPlaceholderText('Enter custom value')
+            const textarea = result.getByPlaceholderText('Need help?')
             fireEvent.change(textarea, { target: { value: '' } })
 
             // Click update in drawer

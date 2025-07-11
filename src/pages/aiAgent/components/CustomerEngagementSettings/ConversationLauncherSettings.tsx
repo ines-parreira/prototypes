@@ -183,7 +183,7 @@ export const ConversationLauncherAdvancedSettings = ({
                             )}
                         >
                             <div className={css.allDevicesSwitch}>
-                                Customize placeholder text
+                                Placeholder text
                             </div>
                             <p className={css.placeholderTextDescription}>
                                 Choose what text customers see in the Ask
@@ -214,7 +214,7 @@ export const ConversationLauncherAdvancedSettings = ({
                                             needHelpText: event,
                                         }))
                                     }}
-                                    placeholder={'Enter custom value'}
+                                    placeholder={'Need help?'}
                                     key={needHelpKey}
                                     autoFocus={false}
                                     rows={1}
