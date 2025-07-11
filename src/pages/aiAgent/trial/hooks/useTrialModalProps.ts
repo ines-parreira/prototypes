@@ -101,6 +101,7 @@ const createPlanModalData = (
     title: string,
     planDetails: PlanDetails,
     buttonTexts: { current: string; new: string },
+    isTrial = false,
 ) => ({
     title,
     currentPlan: {
@@ -119,7 +120,7 @@ const createPlanModalData = (
         title: 'Support Agent and Shopping Assistant ',
         description: 'Unlock full potential to drive more sales',
         price: planDetails.earlyAccessPlanAmount,
-        billingPeriod: `${planDetails.earlyAccessPlanCadence} after trial ends`,
+        billingPeriod: `${planDetails.earlyAccessPlanCadence}${isTrial ? ' after trial ends' : ''}`,
         features: [
             'Everything in Support Agent skills',
             'Proactively engage with customers to guide discovery',
@@ -156,6 +157,7 @@ const useTrialUpgradePlanModal =
                     'Try Shopping Assistant for 14 days at no additional cost',
                     planDetails,
                     { current: 'Keep current plan', new: 'Try for 14 days' },
+                    true,
                 ),
             [planDetails],
         )

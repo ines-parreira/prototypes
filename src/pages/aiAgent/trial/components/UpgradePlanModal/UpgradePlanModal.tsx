@@ -48,6 +48,7 @@ const PlanSection: React.FC<{
     onTermsChange?: (checked: boolean) => void
     buttonIntent?: 'primary' | 'secondary'
     isLoading?: boolean
+    isTrial?: boolean
 }> = ({
     plan,
     isNewPlan = false,
@@ -198,6 +199,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                         isTermsChecked={isTermsChecked}
                         onTermsChange={setIsTermsChecked}
                         isLoading={isLoading}
+                        isTrial={isTrial}
                     />
                 </div>
                 <div className={css.currentPlan}>

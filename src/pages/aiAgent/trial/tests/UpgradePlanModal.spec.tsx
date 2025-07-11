@@ -21,7 +21,7 @@ describe('UpgradePlanModal', () => {
         title: 'Premium Plan',
         description: 'Unlock advanced features',
         price: '$599',
-        billingPeriod: 'month after trial',
+        billingPeriod: 'month after trial ends',
         priceTooltipText: 'Price includes all premium features',
         features: [
             'Premium Feature 1',
@@ -71,7 +71,7 @@ describe('UpgradePlanModal', () => {
 
         // Check that both prices are present (but not within specific sections due to complex DOM structure)
         expect(screen.getByText('$599')).toBeInTheDocument()
-        expect(screen.getByText('/ month after trial')).toBeInTheDocument()
+        expect(screen.getByText('/ month after trial ends')).toBeInTheDocument()
         expect(screen.getByText('$299')).toBeInTheDocument()
         expect(screen.getByText('/ month')).toBeInTheDocument()
     })
