@@ -210,6 +210,7 @@ describe('SalesPaywallMiddleware', () => {
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
             canStartTrial: false,
+            hasTrialExpired: false,
         })
         mockUseFlag.mockReturnValue(false)
         mockUseFlags.mockReturnValue({})
@@ -439,6 +440,7 @@ describe('SalesPaywallMiddleware', () => {
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
             canStartTrial: false,
+            hasTrialExpired: false,
         })
         // Mock the original trial hook to return canStartTrial: true
         mockUseActivateAiAgentTrial.mockReturnValue({
@@ -494,6 +496,7 @@ describe('SalesPaywallMiddleware', () => {
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
             canStartTrial: false,
+            hasTrialExpired: false,
         })
         // Mock the original trial hook to return canStartTrialFromFeatureFlag: true
         mockUseActivateAiAgentTrial.mockReturnValue({
@@ -607,6 +610,7 @@ describe('SalesPaywallMiddleware', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
+                hasTrialExpired: false,
             })
             // Set up other mocks to hit the upgrade paywall
             setupUseAppSelectorMock({
@@ -633,6 +637,7 @@ describe('SalesPaywallMiddleware', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
+                hasTrialExpired: false,
             })
             // Set up other mocks to hit the upgrade paywall
             setupUseAppSelectorMock({
@@ -659,6 +664,7 @@ describe('SalesPaywallMiddleware', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
+                hasTrialExpired: false,
             })
 
             const mockOpenTrialUpgradeModal = jest.fn()
@@ -985,6 +991,7 @@ describe('SalesPaywallMiddleware', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
+                hasTrialExpired: false,
             })
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
         })
@@ -1172,6 +1179,7 @@ describe('SalesPaywallMiddleware', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
+                hasTrialExpired: false,
             })
 
             renderMiddleware()
@@ -1183,6 +1191,20 @@ describe('SalesPaywallMiddleware', () => {
             expect(mockLogEvent).not.toHaveBeenCalledWith(
                 'ai-agent/trial-link-paywall-viewed',
             )
+        })
+
+        it('should handle hasTrialExpired property correctly', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: false,
+                canStartTrial: false,
+                hasTrialExpired: true,
+            })
+
+            renderMiddleware()
+
+            expect(
+                screen.queryByTestId('mock-child-component'),
+            ).not.toBeInTheDocument()
         })
     })
 })

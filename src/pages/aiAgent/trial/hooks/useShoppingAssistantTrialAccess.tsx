@@ -10,6 +10,8 @@ import {
 import {
     atLeastOneStoreHasActiveTrial,
     atLeastOneStoreHasOptedOut,
+    currentStoreHasOptedOut,
+    isTrialExpired,
 } from 'pages/aiAgent/trial/utils/utils'
 import {
     getCurrentAutomatePlan,
@@ -33,7 +35,11 @@ type ShoppingAssistantTrialAccess = {
     /** Whether the trial has started or not */
     hasActiveTrial: boolean
     /** Whether the user has opted out of the plan upgrade */
-    hasOptedOut: boolean
+    hasCurrentStoreOptedOut: boolean
+    /** Whether at least one store has opted out of the trial */
+    hasMinOneStoreOptedOut: boolean
+    /** Whether the trial has expired */
+    hasTrialExpired: boolean
 }
 
 /**
@@ -75,11 +81,20 @@ export const useShoppingAssistantTrialAccess =
             storeActivations,
         )
 
+        // Check if current store has opted out of the trial
+        const hasCurrentStoreOptedOut = currentStoreHasOptedOut(
+            storeActivations,
+            isRevampTrialMilestone1Enabled,
+        )
+
         // Check if at least one store has opted out of the trial
-        const hasOptedOut = atLeastOneStoreHasOptedOut(
+        const hasMinOneStoreOptedOut = atLeastOneStoreHasOptedOut(
             storeConfigurations,
             isRevampTrialMilestone1Enabled,
         )
+
+        // Check if the trial has expired
+        const hasTrialExpired = isTrialExpired(storeActivations)
 
         // User is an admin
         const isAdminUser = isAdmin(currentUser)
@@ -109,7 +124,9 @@ export const useShoppingAssistantTrialAccess =
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             }
         }
 
@@ -160,6 +177,8 @@ export const useShoppingAssistantTrialAccess =
             canSeeSystemBanner,
             canSeeTrialCTA,
             hasActiveTrial,
-            hasOptedOut,
+            hasCurrentStoreOptedOut,
+            hasMinOneStoreOptedOut,
+            hasTrialExpired,
         }
     }

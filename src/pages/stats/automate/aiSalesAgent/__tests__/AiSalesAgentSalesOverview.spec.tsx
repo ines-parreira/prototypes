@@ -256,7 +256,9 @@ describe('AiSalesAgentSalesOverview', () => {
             canSeeSystemBanner: false,
             canSeeTrialCTA: false, // Default to false, will override in specific tests
             hasActiveTrial: false,
-            hasOptedOut: false,
+            hasCurrentStoreOptedOut: false,
+            hasMinOneStoreOptedOut: false,
+            hasTrialExpired: false,
         })
 
         // Mock useFlag

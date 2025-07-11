@@ -150,7 +150,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
     })
@@ -167,7 +169,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: true, // Has AI Agent on chat + all other conditions
                 canSeeTrialCTA: true,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
 
@@ -198,7 +202,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
 
@@ -216,7 +222,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false, // Only admins can see system banner
                 canSeeTrialCTA: false, // Only admins can see trial CTA
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
     })
@@ -251,7 +259,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false, // System banner only for Starter/Basic
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
 
@@ -270,7 +280,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
 
@@ -288,7 +300,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
     })
@@ -321,7 +335,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
 
@@ -352,7 +368,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
     })
@@ -382,7 +400,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false, // No AI Agent on chat
                 canSeeTrialCTA: true, // Trial CTA doesn't require AI Agent on chat
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
     })
@@ -403,7 +423,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
     })
@@ -423,7 +445,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 hasActiveTrial: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
         })
     })
@@ -454,7 +478,7 @@ describe('useShoppingAssistantTrialAccess', () => {
 
         describe('when user has opted out of trial', () => {
             it('should return hasOptedOut: true when store configurations have optOutDatetime', () => {
-                const storeConfigurationsWithOptOut = [
+                const storeConfigurationWithOptOut =
                     getStoreConfigurationFixture({
                         storeName: 'Test Store',
                         shopType: 'shopify',
@@ -472,11 +496,32 @@ describe('useShoppingAssistantTrialAccess', () => {
                                 },
                             },
                         },
-                    }),
-                ]
+                    })
+
+                const mockStoreActivationsWithOptOut = {
+                    store1: {
+                        ...storeActivationFixture({ storeName: 'Test Store' }),
+                        configuration: storeConfigurationWithOptOut,
+                    },
+                }
+
+                mockUseStoreActivations.mockReturnValue({
+                    storeActivations: mockStoreActivationsWithOptOut,
+                    progressPercentage: 50,
+                    isFetchLoading: false,
+                    isSaveLoading: false,
+                    changeSales: jest.fn(),
+                    changeSupport: jest.fn(),
+                    changeSupportChat: jest.fn(),
+                    changeSupportEmail: jest.fn(),
+                    saveStoreConfigurations: jest.fn(),
+                    migrateToNewPricing: jest.fn(),
+                    endTrial: jest.fn(),
+                    activation: jest.fn(),
+                })
 
                 mockUseStoreConfigurations.mockReturnValue({
-                    storeConfigurations: storeConfigurationsWithOptOut,
+                    storeConfigurations: [storeConfigurationWithOptOut],
                     storeNames: ['Test Store'],
                     isLoading: false,
                 })
@@ -491,40 +536,67 @@ describe('useShoppingAssistantTrialAccess', () => {
                     canSeeSystemBanner: true,
                     canSeeTrialCTA: true,
                     hasActiveTrial: false,
-                    hasOptedOut: true,
+                    hasCurrentStoreOptedOut: true,
+                    hasMinOneStoreOptedOut: true,
+                    hasTrialExpired: false,
                 })
             })
 
             it('should return hasOptedOut: true when at least one store has opted out', () => {
-                const storeConfigurationsWithMixedOptStatus = [
-                    getStoreConfigurationFixture({
-                        storeName: 'Store 1',
-                        shopType: 'shopify',
-                        monitoredChatIntegrations: [1, 2],
-                        sales: undefined, // No trial data
-                    }),
-                    getStoreConfigurationFixture({
-                        storeName: 'Store 2',
-                        shopType: 'shopify',
-                        monitoredChatIntegrations: [1, 2],
-                        sales: {
-                            trial: {
-                                startDatetime: null,
-                                endDatetime: null,
-                                account: {
-                                    plannedUpgradeDatetime: null,
-                                    optInDatetime: null,
-                                    optOutDatetime: '2023-11-01T00:00:00.000Z',
-                                    actualUpgradeDatetime: null,
-                                    actualTerminationDatetime: null,
-                                },
+                const storeConfig1 = getStoreConfigurationFixture({
+                    storeName: 'Store 1',
+                    shopType: 'shopify',
+                    monitoredChatIntegrations: [1, 2],
+                    sales: undefined, // No trial data
+                })
+
+                const storeConfig2 = getStoreConfigurationFixture({
+                    storeName: 'Store 2',
+                    shopType: 'shopify',
+                    monitoredChatIntegrations: [1, 2],
+                    sales: {
+                        trial: {
+                            startDatetime: null,
+                            endDatetime: null,
+                            account: {
+                                plannedUpgradeDatetime: null,
+                                optInDatetime: null,
+                                optOutDatetime: '2023-11-01T00:00:00.000Z',
+                                actualUpgradeDatetime: null,
+                                actualTerminationDatetime: null,
                             },
                         },
-                    }),
-                ]
+                    },
+                })
+
+                const mockStoreActivationsWithMixed = {
+                    store1: {
+                        ...storeActivationFixture({ storeName: 'Store 1' }),
+                        configuration: storeConfig1,
+                    },
+                    store2: {
+                        ...storeActivationFixture({ storeName: 'Store 2' }),
+                        configuration: storeConfig2,
+                    },
+                }
+
+                mockUseStoreActivations.mockReturnValue({
+                    storeActivations: mockStoreActivationsWithMixed,
+                    progressPercentage: 50,
+                    isFetchLoading: false,
+                    isSaveLoading: false,
+                    changeSales: jest.fn(),
+                    changeSupport: jest.fn(),
+                    changeSupportChat: jest.fn(),
+                    changeSupportEmail: jest.fn(),
+                    saveStoreConfigurations: jest.fn(),
+                    migrateToNewPricing: jest.fn(),
+                    endTrial: jest.fn(),
+                    activation: jest.fn(),
+                })
 
                 mockUseStoreConfigurations.mockReturnValue({
-                    storeConfigurations: storeConfigurationsWithMixedOptStatus,
+                    storeConfigurations: [storeConfig1, storeConfig2],
                     storeNames: ['Store 1', 'Store 2'],
                     isLoading: false,
                 })
@@ -533,53 +605,85 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasOptedOut).toBe(true)
+                expect(result.current.hasMinOneStoreOptedOut).toBe(true)
             })
         })
 
         describe('when user has opted out with mixed store statuses', () => {
             it('should return hasOptedOut: true when different stores have different statuses', () => {
-                const storeConfigurationsWithBothStatuses = [
-                    getStoreConfigurationFixture({
-                        storeName: 'Store with OptIn',
-                        shopType: 'shopify',
-                        monitoredChatIntegrations: [1, 2],
-                        sales: {
-                            trial: {
-                                startDatetime: null,
-                                endDatetime: null,
-                                account: {
-                                    plannedUpgradeDatetime: null,
-                                    optInDatetime: '2023-11-01T00:00:00.000Z',
-                                    optOutDatetime: null,
-                                    actualUpgradeDatetime: null,
-                                    actualTerminationDatetime: null,
-                                },
+                const storeConfigWithOptIn = getStoreConfigurationFixture({
+                    storeName: 'Store with OptIn',
+                    shopType: 'shopify',
+                    monitoredChatIntegrations: [1, 2],
+                    sales: {
+                        trial: {
+                            startDatetime: null,
+                            endDatetime: null,
+                            account: {
+                                plannedUpgradeDatetime: null,
+                                optInDatetime: '2023-11-01T00:00:00.000Z',
+                                optOutDatetime: null,
+                                actualUpgradeDatetime: null,
+                                actualTerminationDatetime: null,
                             },
                         },
-                    }),
-                    getStoreConfigurationFixture({
-                        storeName: 'Store with OptOut',
-                        shopType: 'shopify',
-                        monitoredChatIntegrations: [1, 2],
-                        sales: {
-                            trial: {
-                                account: {
-                                    plannedUpgradeDatetime: null,
-                                    optInDatetime: null,
-                                    optOutDatetime: '2023-11-02T00:00:00.000Z',
-                                    actualUpgradeDatetime: null,
-                                    actualTerminationDatetime: null,
-                                },
-                                startDatetime: null,
-                                endDatetime: null,
+                    },
+                })
+
+                const storeConfigWithOptOut = getStoreConfigurationFixture({
+                    storeName: 'Store with OptOut',
+                    shopType: 'shopify',
+                    monitoredChatIntegrations: [1, 2],
+                    sales: {
+                        trial: {
+                            account: {
+                                plannedUpgradeDatetime: null,
+                                optInDatetime: null,
+                                optOutDatetime: '2023-11-02T00:00:00.000Z',
+                                actualUpgradeDatetime: null,
+                                actualTerminationDatetime: null,
                             },
+                            startDatetime: null,
+                            endDatetime: null,
                         },
-                    }),
-                ]
+                    },
+                })
+
+                const mockStoreActivationsWithBothStatuses = {
+                    store1: {
+                        ...storeActivationFixture({
+                            storeName: 'Store with OptIn',
+                        }),
+                        configuration: storeConfigWithOptIn,
+                    },
+                    store2: {
+                        ...storeActivationFixture({
+                            storeName: 'Store with OptOut',
+                        }),
+                        configuration: storeConfigWithOptOut,
+                    },
+                }
+
+                mockUseStoreActivations.mockReturnValue({
+                    storeActivations: mockStoreActivationsWithBothStatuses,
+                    progressPercentage: 50,
+                    isFetchLoading: false,
+                    isSaveLoading: false,
+                    changeSales: jest.fn(),
+                    changeSupport: jest.fn(),
+                    changeSupportChat: jest.fn(),
+                    changeSupportEmail: jest.fn(),
+                    saveStoreConfigurations: jest.fn(),
+                    migrateToNewPricing: jest.fn(),
+                    endTrial: jest.fn(),
+                    activation: jest.fn(),
+                })
 
                 mockUseStoreConfigurations.mockReturnValue({
-                    storeConfigurations: storeConfigurationsWithBothStatuses,
+                    storeConfigurations: [
+                        storeConfigWithOptIn,
+                        storeConfigWithOptOut,
+                    ],
                     storeNames: ['Store with OptIn', 'Store with OptOut'],
                     isLoading: false,
                 })
@@ -588,7 +692,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasOptedOut).toBe(true)
+                expect(result.current.hasMinOneStoreOptedOut).toBe(true)
             })
         })
 
@@ -627,7 +731,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasOptedOut).toBe(false)
+                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
             })
         })
 
@@ -643,7 +747,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasOptedOut).toBe(false)
+                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
             })
 
             it('should handle store configurations without sales data', () => {
@@ -666,7 +770,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasOptedOut).toBe(false)
+                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
             })
 
             it('should handle store configurations with incomplete trial data', () => {
@@ -701,7 +805,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasOptedOut).toBe(false)
+                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
             })
         })
     })

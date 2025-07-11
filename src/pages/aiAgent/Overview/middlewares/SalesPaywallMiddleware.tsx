@@ -56,11 +56,18 @@ export const SalesPaywallMiddleware =
         const { storeActivations } = useStoreActivations()
 
         const trialMilestone = useSalesTrialRevampMilestone()
+        const {
+            canSeeTrialCTA,
+            hasMinOneStoreOptedOut,
+            hasActiveTrial,
+            hasTrialExpired,
+        } = useShoppingAssistantTrialAccess()
+
         const currentStoreHasActiveTrial =
             trialMilestone === 'milestone-1'
                 ? Object.values(storeActivations).some(
                       (store) => store.configuration.sales?.trial.startDatetime,
-                  )
+                  ) && !hasTrialExpired
                 : atLeastOneStoreHasActiveTrialOnSpecificStores(
                       storeActivations,
                   )
@@ -82,9 +89,6 @@ export const SalesPaywallMiddleware =
             useUpgradePlan()
 
         const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
-
-        const { canSeeTrialCTA, hasOptedOut, hasActiveTrial } =
-            useShoppingAssistantTrialAccess()
 
         const {
             canStartTrial: canStartTrialOriginal,
@@ -124,7 +128,7 @@ export const SalesPaywallMiddleware =
 
         const onStartTrialClicked = () => {
             if (isShoppingAssistantTrialRevampEnabled) {
-                if (hasOptedOut || !hasActiveTrial) {
+                if (hasMinOneStoreOptedOut || !hasActiveTrial) {
                     openTrialUpgradeModal()
                 } else {
                     startRevampTrial()
@@ -181,7 +185,7 @@ export const SalesPaywallMiddleware =
 
         const onUpgradePlanClicked = () => {
             if (isShoppingAssistantTrialRevampEnabled) {
-                if (hasOptedOut || !hasActiveTrial) {
+                if (hasMinOneStoreOptedOut || !hasActiveTrial) {
                     openUpgradePlanModal()
                 } else {
                     onUpgradeClick()

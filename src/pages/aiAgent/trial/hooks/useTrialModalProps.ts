@@ -180,8 +180,12 @@ const useTrialStartedBanner = (
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
     const { remainingDays, gmvInfluenced, gmvInfluencedRate } = trialMetrics
-    const { canBookDemo, hasOptedOut, hasActiveTrial } =
-        useShoppingAssistantTrialAccess()
+    const {
+        canBookDemo,
+        hasMinOneStoreOptedOut,
+        hasCurrentStoreOptedOut,
+        hasActiveTrial,
+    } = useShoppingAssistantTrialAccess()
     const accountDomain = currentAccount.get('domain')
 
     const { openManageTrialModal, openUpgradePlanModal } =
@@ -195,7 +199,7 @@ const useTrialStartedBanner = (
     }, [openManageTrialModal])
 
     const handleUpgradePlan = useCallback(() => {
-        if (hasOptedOut || !hasActiveTrial) {
+        if (hasMinOneStoreOptedOut || !hasActiveTrial) {
             logEvent(SegmentEvent.TrialBannerSettingsClicked, {
                 pageName,
             })
@@ -206,13 +210,13 @@ const useTrialStartedBanner = (
     }, [
         openUpgradePlanModal,
         pageName,
-        hasOptedOut,
+        hasMinOneStoreOptedOut,
         upgradePlan,
         hasActiveTrial,
     ])
 
     const secondaryAction = useMemo(() => {
-        if (!isRevampTrialMilestone1Enabled || hasOptedOut) {
+        if (!isRevampTrialMilestone1Enabled || hasCurrentStoreOptedOut) {
             return undefined
         }
 
@@ -224,7 +228,7 @@ const useTrialStartedBanner = (
     }, [
         handleManageTrial,
         isRevampTrialMilestone1Enabled,
-        hasOptedOut,
+        hasCurrentStoreOptedOut,
         isUpgradePlanLoading,
     ])
 

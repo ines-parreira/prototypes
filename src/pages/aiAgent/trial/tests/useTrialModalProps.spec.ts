@@ -121,7 +121,9 @@ describe('useTrialModalProps', () => {
             canSeeSystemBanner: false,
             canSeeTrialCTA: false,
             canNotifyAdmin: false,
-            hasOptedOut: false,
+            hasCurrentStoreOptedOut: false,
+            hasMinOneStoreOptedOut: false,
+            hasTrialExpired: false,
         })
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
@@ -641,7 +643,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 canNotifyAdmin: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -670,7 +674,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 canNotifyAdmin: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -705,7 +711,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 canNotifyAdmin: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -730,7 +738,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 canNotifyAdmin: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -800,7 +810,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 canNotifyAdmin: false,
-                hasOptedOut: true,
+                hasCurrentStoreOptedOut: true,
+                hasMinOneStoreOptedOut: true,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -841,7 +853,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 canNotifyAdmin: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -891,7 +905,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
                 canNotifyAdmin: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -1081,7 +1097,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: true,
                 canNotifyAdmin: false,
-                hasOptedOut: true,
+                hasCurrentStoreOptedOut: true,
+                hasMinOneStoreOptedOut: true,
+                hasTrialExpired: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -1101,7 +1119,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: true,
                 canNotifyAdmin: false,
-                hasOptedOut: false,
+                hasCurrentStoreOptedOut: false,
+                hasMinOneStoreOptedOut: false,
+                hasTrialExpired: false,
             })
 
             const { result, rerender } = renderHookWithRouter(() =>
@@ -1116,7 +1136,9 @@ describe('useTrialModalProps', () => {
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: true,
                 canNotifyAdmin: false,
-                hasOptedOut: true,
+                hasCurrentStoreOptedOut: true,
+                hasMinOneStoreOptedOut: true,
+                hasTrialExpired: false,
             })
 
             rerender()
