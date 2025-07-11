@@ -529,3 +529,5 @@ export type MoneyAmount = {
 export type ProductWithAiAgentStatus = Product & {
     is_used_by_ai_agent: boolean
 }
+
+export type ReturnStatus = 'PartialReturn' | 'FullReturn'

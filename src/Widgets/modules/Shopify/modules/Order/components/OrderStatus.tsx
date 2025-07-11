@@ -1,9 +1,12 @@
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     FinancialStatus,
     FulfillmentStatus,
+    ReturnStatus,
 } from 'constants/integrations/types/shopify'
+import { useFlag } from 'core/flags'
 import { humanizeString } from 'utils'
 
 type FulfillmentBadgeProps = {
@@ -14,18 +17,17 @@ type FinancialBadgeProps = {
     financialStatus: FinancialStatus
 }
 
-type InfluencedByAIBadgeProps = {
+type Props = {
+    fulfillmentStatus: FulfillmentStatus
+    financialStatus: FinancialStatus
     isInfluencedByAI: boolean
+    isCancelled: boolean
+    returnsStatus: ReturnStatus | null
 }
-
-type Props = FulfillmentBadgeProps &
-    FinancialBadgeProps &
-    InfluencedByAIBadgeProps & {
-        isCancelled: boolean
-    } & InfluencedByAIBadgeProps
 
 type FulfillmentValues = Map<FulfillmentStatus | null, [ColorType, string]>
 type FinancialValues = Map<FinancialStatus, ColorType>
+type ReturnValues = Map<ReturnStatus, [ColorType, string]>
 
 const fulfillmentValues: FulfillmentValues = new Map([
     [FulfillmentStatus.Fulfilled, ['success', 'Fulfilled']],
@@ -44,20 +46,47 @@ const financialValues: FinancialValues = new Map([
     [FinancialStatus.Voided, 'error'],
 ])
 
+const returnedValues: ReturnValues = new Map([
+    ['PartialReturn', ['error', 'Partially Returned']],
+    ['FullReturn', ['error', 'Returned']],
+])
+
 export default function OrderStatus({
     fulfillmentStatus,
     financialStatus,
     isCancelled,
     isInfluencedByAI,
+    returnsStatus,
 }: Props) {
+    const showReturnsStatusForOrders = useFlag(
+        FeatureFlagKey.ShowReturnsStatusForOrders,
+        false,
+    )
+
     return (
         <>
             {isCancelled && <CancelledBadge />}
             <FinancialBadge financialStatus={financialStatus} />
             <FulfillmentBadge fulfillmentStatus={fulfillmentStatus} />
+            {showReturnsStatusForOrders && returnsStatus && (
+                <ReturnsBadge returnsStatus={returnsStatus} />
+            )}
             {isInfluencedByAI && <InfluencedByAIBadge />}
         </>
     )
+}
+
+export function ReturnsBadge({
+    returnsStatus,
+}: {
+    returnsStatus: ReturnStatus
+}) {
+    if (!returnsStatus) {
+        return null
+    }
+
+    const [type, label] = returnedValues.get(returnsStatus) || []
+    return <Badge type={type}>{label}</Badge>
 }
 
 function FulfillmentBadge({ fulfillmentStatus }: FulfillmentBadgeProps) {

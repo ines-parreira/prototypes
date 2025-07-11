@@ -38,6 +38,7 @@ import { CopyButton, StaticField } from 'Widgets/modules/Template/modules/Field'
 import { CustomizationContext } from '../../Template'
 import { ShopifyContext } from '../contexts/ShopifyContext'
 import { getShopifyResourceIds } from '../helpers/getShopifyResourceIds'
+import { calculateReturnsStatus } from './Order.helpers'
 
 import css from './Order.less'
 
@@ -310,6 +311,7 @@ function TitleWrapper({ children, source }: TitleWrapperProps) {
                     financialStatus={
                         source.get('financial_status') as FinancialStatus
                     }
+                    returnsStatus={calculateReturnsStatus(source.toJS())}
                     isCancelled={!!isOrderCancelled}
                     isInfluencedByAI={isInfluencedByAI}
                 />

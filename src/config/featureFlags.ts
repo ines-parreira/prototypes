@@ -160,4 +160,5 @@ export enum FeatureFlagKey {
     UseLiveVoiceUpdates = 'use-live-voice-updates',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    ShowReturnsStatusForOrders = 'linear.project_shopify_orders.show_returns',
 }
