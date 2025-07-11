@@ -22,6 +22,7 @@ import {
     getWelcomePageAcknowledged,
     optOutSalesTrialUpgrade,
     startSalesTrial,
+    upgradeSalesSubscription,
     upsertAccountConfiguration,
     upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
@@ -548,6 +549,26 @@ export const useOptOutSalesTrialUpgradeMutation = (
         mutationFn: () => optOutSalesTrialUpgrade(accountDomain),
         onSuccess: () => {
             // Invalidate store configurations to refresh trial state
+            void queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.all(),
+            })
+        },
+        ...overrides,
+    })
+}
+
+export const useUpgradeSalesSubscriptionMutation = (
+    overrides?: MutationOverrides<() => unknown>,
+) => {
+    const queryClient = useQueryClient()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    return useMutation({
+        mutationFn: () => upgradeSalesSubscription(accountDomain),
+        onSuccess: () => {
+            // Invalidate store configurations to refresh subscription state
             void queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.all(),
             })

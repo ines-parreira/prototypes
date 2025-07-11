@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useUpgradeSalesSubscriptionMutation } from 'models/aiAgent/queries'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { notify } from 'state/notifications/actions'
@@ -17,6 +18,10 @@ jest.mock('@tanstack/react-query', () => ({
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
+jest.mock('models/aiAgent/queries', () => ({
+    useUpgradeSalesSubscriptionMutation: jest.fn(),
+}))
+
 jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
     useActivation: jest.fn(),
 }))
@@ -32,6 +37,9 @@ jest.mock('state/notifications/actions', () => ({
 const useMutationMock = assumeMock(useMutation)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useActivationMock = assumeMock(useActivation)
+const useUpgradeSalesSubscriptionMutationMock = assumeMock(
+    useUpgradeSalesSubscriptionMutation,
+)
 const useSalesTrialRevampMilestoneMock = assumeMock(
     useSalesTrialRevampMilestone,
 )
@@ -42,10 +50,20 @@ describe('useUpgradePlan', () => {
     const mockOnUpgradePlanClick = jest.fn()
     const mockMutate = jest.fn()
     const mockMutateAsync = jest.fn()
+    const mockUpgradeSalesSubscriptionMutateAsync = jest.fn()
 
     const mockMutationResult = {
         mutate: mockMutate,
         mutateAsync: mockMutateAsync,
+        isLoading: false,
+        error: null,
+        isSuccess: false,
+        isError: false,
+    }
+
+    const mockUpgradeSalesSubscriptionResult = {
+        mutateAsync: mockUpgradeSalesSubscriptionMutateAsync,
+        mutate: jest.fn(),
         isLoading: false,
         error: null,
         isSuccess: false,
@@ -67,6 +85,9 @@ describe('useUpgradePlan', () => {
             earlyAccessModal: {} as any,
         })
         useSalesTrialRevampMilestoneMock.mockReturnValue('off')
+        useUpgradeSalesSubscriptionMutationMock.mockReturnValue(
+            mockUpgradeSalesSubscriptionResult as any,
+        )
         useMutationMock.mockReturnValue({
             ...mockMutationResult,
             data: undefined,
@@ -78,6 +99,7 @@ describe('useUpgradePlan', () => {
         } as any)
 
         mockOnUpgradePlanClick.mockResolvedValue(undefined)
+        mockUpgradeSalesSubscriptionMutateAsync.mockResolvedValue(undefined)
     })
 
     afterEach(() => {
@@ -132,20 +154,18 @@ describe('useUpgradePlan', () => {
             expect(mockOnUpgradePlanClick).toHaveBeenCalledTimes(1)
         })
 
-        it('should simulate loading with delay when milestone is milestone-1', async () => {
+        it('should call upgradeSalesSubscription when milestone is milestone-1', async () => {
             useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
 
             renderHook(() => useUpgradePlan())
 
             const mutationOptions = useMutationMock.mock.calls[0][0] as any
             const mutationFn = mutationOptions.mutationFn
-            const mutationPromise = mutationFn()
+            await mutationFn()
 
-            // Fast forward time to simulate the delay
-            jest.advanceTimersByTime(1500)
-
-            await mutationPromise
-
+            expect(
+                mockUpgradeSalesSubscriptionMutateAsync,
+            ).toHaveBeenCalledWith([])
             expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
         })
 
@@ -159,6 +179,21 @@ describe('useUpgradePlan', () => {
             const mutationFn = mutationOptions.mutationFn
 
             await expect(mutationFn()).rejects.toThrow('Upgrade failed')
+        })
+
+        it('should handle upgradeSalesSubscription errors when milestone is milestone-1', async () => {
+            const error = new Error('Subscription upgrade failed')
+            mockUpgradeSalesSubscriptionMutateAsync.mockRejectedValue(error)
+            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
+
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const mutationFn = mutationOptions.mutationFn
+
+            await expect(mutationFn()).rejects.toThrow(
+                'Subscription upgrade failed',
+            )
         })
     })
 

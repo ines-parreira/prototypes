@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useUpgradeSalesSubscriptionMutation } from 'models/aiAgent/queries'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { notify } from 'state/notifications/actions'
@@ -13,16 +14,13 @@ export const useUpgradePlan = () => {
 
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
+    const upgradeSalesSubscriptionMutation =
+        useUpgradeSalesSubscriptionMutation()
+
     const upgradePlanMutation = useMutation({
         mutationFn: async () => {
             if (isRevampTrialMilestone1Enabled) {
-                // TODO: Implement the new upgrade plan logic
-                // For now, simulate loading with a delay
-                await new Promise((resolve) => setTimeout(resolve, 1500))
-                alert(
-                    'The upgrade API is not connected yet. It will be by the end of the week.',
-                )
-                return Promise.resolve()
+                return upgradeSalesSubscriptionMutation.mutateAsync([])
             }
             return onUpgradePlanClick()
         },
@@ -38,7 +36,7 @@ export const useUpgradePlan = () => {
         onError: () => {
             void dispatch(
                 notify({
-                    message: 'Failed to upgrade plan. Please try again.',
+                    message: 'Failed to upgrade plan. Please try again later.',
                     status: NotificationStatus.Error,
                 }),
             )

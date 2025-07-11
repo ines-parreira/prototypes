@@ -343,3 +343,10 @@ export const optOutSalesTrialUpgrade = async (gorgiasDomain: string) => {
     )
     return response.data
 }
+
+export const upgradeSalesSubscription = async (gorgiasDomain: string) => {
+    const response = await apiClient.post(
+        `/config/accounts/${gorgiasDomain}/sales/upgrade-subscription`,
+    )
+    return response.data
+}
