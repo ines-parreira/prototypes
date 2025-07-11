@@ -1,6 +1,11 @@
-import { BusinessHoursCreate, Timezone } from '@gorgias/helpdesk-types'
+import {
+    BusinessHoursCreate,
+    BusinessHoursDetails,
+    Timezone,
+} from '@gorgias/helpdesk-types'
 
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from './constants'
+import { EditCustomBusinessHoursFormValues } from './types'
 
 export function convertToAmPm(time24: string): string {
     const [hours, minutes] = time24.split(':').map(Number)
@@ -26,5 +31,41 @@ export const getCreateBusinessHoursFormDefaultValues = (
         assigned_integrations: {
             assign_integrations: [],
         },
+    }
+}
+
+export const getEditCustomBusinessHoursDefaultValues = (
+    businessHours: BusinessHoursDetails,
+): EditCustomBusinessHoursFormValues => {
+    return {
+        name: businessHours.name,
+        business_hours_config: businessHours.business_hours_config,
+        previous_assigned_integrations:
+            businessHours.assigned_integrations ?? [],
+        assigned_integrations: {
+            assign_integrations: businessHours.assigned_integrations ?? [],
+            unassign_integrations: [],
+        },
+        temporary_assigned_integrations: [],
+    }
+}
+
+export const getIntegrationsChangeSummary = (
+    previouslyAssignedIntegrations: number[],
+    currentlyAssignedIntegrations: number[],
+): {
+    newIntegrations: number[]
+    removedIntegrations: number[]
+} => {
+    const newIntegrations = currentlyAssignedIntegrations.filter(
+        (integration) => !previouslyAssignedIntegrations.includes(integration),
+    )
+    const removedIntegrations = previouslyAssignedIntegrations.filter(
+        (integration) => !currentlyAssignedIntegrations.includes(integration),
+    )
+
+    return {
+        newIntegrations,
+        removedIntegrations,
     }
 }

@@ -1,41 +1,92 @@
-import { noop } from 'lodash'
+import { noop, omit } from 'lodash'
 
-import SectionHeader from 'pages/common/components/SectionHeader/SectionHeader'
+import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
+import { validateBusinessHoursDetails } from '@gorgias/helpdesk-validators'
+
+import { Form, toFormErrors } from 'core/forms'
+import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import {
+    SettingsCard,
+    SettingsCardContent,
+    SettingsCardHeader,
+    SettingsCardTitle,
+} from 'pages/common/components/SettingsCard'
 import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
 
-import CreateCustomBusinessHoursForm from './CreateCustomBusinessHoursForm'
 import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields'
 import EditCustomBusinessHoursActions from './EditCustomBusinessHoursActions'
-import FormSectionCard from './FormSectionCard'
+import EditCustomBusinessHoursIntegrationsSection from './EditCustomBusinessHoursIntegrationsSection'
+import { EditCustomBusinessHoursFormValues } from './types'
+import { getEditCustomBusinessHoursDefaultValues } from './utils'
 
 import css from './EditCustomBusinessHoursForm.less'
 
-export default function EditCustomBusinessHoursForm() {
+type Props = {
+    businessHours: BusinessHoursDetails
+}
+
+export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
     return (
-        <CreateCustomBusinessHoursForm onSubmit={noop}>
+        <Form<EditCustomBusinessHoursFormValues>
+            mode="all"
+            defaultValues={getEditCustomBusinessHoursDefaultValues(
+                businessHours,
+            )}
+            onValidSubmit={noop}
+            validator={(values) => {
+                const relevantValues = omit(values, [
+                    'previous_assigned_integrations',
+                    'temporary_assigned_integrations',
+                ])
+                return toFormErrors(
+                    validateBusinessHoursDetails(relevantValues),
+                )
+            }}
+        >
             <div className={css.formContent}>
-                <FormSectionCard>
-                    <SectionHeader
-                        title="General"
-                        description="Edit the title and the timezone for your custom business hours."
-                    />
-                    <CustomBusinessHoursGeneralFields horizontal />
-                </FormSectionCard>
-                <FormSectionCard>
-                    <SectionHeader
-                        title="Schedule"
-                        description="Add one or multiple time ranges to create your custom schedule."
-                    />
-                    <TimeScheduleField name="business_hours_config.business_hours" />
-                </FormSectionCard>
-                <FormSectionCard>
-                    <SectionHeader
-                        title="Integrations"
-                        description="Remove or assign one or multiple integrations for your custom business hours."
-                    />
-                </FormSectionCard>
+                <SettingsCard>
+                    <SettingsCardHeader>
+                        <SettingsCardTitle>General</SettingsCardTitle>
+                        <p>
+                            Edit the title and the timezone for your custom
+                            business hours.
+                        </p>
+                    </SettingsCardHeader>
+
+                    <SettingsCardContent>
+                        <CustomBusinessHoursGeneralFields horizontal />
+                    </SettingsCardContent>
+                </SettingsCard>
+
+                <SettingsCard>
+                    <SettingsCardHeader>
+                        <SettingsCardTitle>Schedule</SettingsCardTitle>
+                        <p>
+                            Add one or multiple time ranges to create your
+                            custom schedule.
+                        </p>
+                    </SettingsCardHeader>
+                    <SettingsCardContent>
+                        <TimeScheduleField name="business_hours_config.business_hours" />
+                    </SettingsCardContent>
+                </SettingsCard>
+
+                <SettingsCard>
+                    <SettingsCardHeader>
+                        <SettingsCardTitle>Integrations</SettingsCardTitle>
+                        <p>
+                            Remove or assign one or multiple integrations for
+                            your custom business hours.
+                        </p>
+                    </SettingsCardHeader>
+                    <SettingsCardContent>
+                        <EditCustomBusinessHoursIntegrationsSection />
+                    </SettingsCardContent>
+                </SettingsCard>
                 <EditCustomBusinessHoursActions />
+                {/* TODO: add onSave */}
+                <FormUnsavedChangesPrompt onSave={noop} />
             </div>
-        </CreateCustomBusinessHoursForm>
+        </Form>
     )
 }

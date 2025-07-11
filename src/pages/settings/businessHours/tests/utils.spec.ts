@@ -1,7 +1,11 @@
+import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
+
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from '../constants'
 import {
     convertToAmPm,
     getCreateBusinessHoursFormDefaultValues,
+    getEditCustomBusinessHoursDefaultValues,
+    getIntegrationsChangeSummary,
 } from '../utils'
 
 describe('utils', () => {
@@ -50,6 +54,68 @@ describe('utils', () => {
                 assigned_integrations: {
                     assign_integrations: [],
                 },
+            })
+        })
+    })
+
+    describe('getEditCustomBusinessHoursDefaultValues', () => {
+        it('returns correct default values when assigned_integrations is an array', () => {
+            const initialData = {
+                assigned_integrations: [1, 2, 3],
+            }
+
+            const result = getEditCustomBusinessHoursDefaultValues(
+                initialData as BusinessHoursDetails,
+            )
+
+            expect(result).toEqual({
+                // saves original state in previous_assigned_integrations
+                previous_assigned_integrations: [1, 2, 3],
+                assigned_integrations: {
+                    // populates assign_integrations with the original state
+                    assign_integrations: [1, 2, 3],
+                    unassign_integrations: [],
+                },
+                temporary_assigned_integrations: [],
+            })
+        })
+
+        it('returns correct default values when assigned_integrations is not defined', () => {
+            const initialData = {
+                assigned_integrations: undefined,
+            }
+
+            const result = getEditCustomBusinessHoursDefaultValues(
+                initialData as BusinessHoursDetails,
+            )
+
+            expect(result).toEqual({
+                previous_assigned_integrations: [],
+                assigned_integrations: {
+                    assign_integrations: [],
+                    unassign_integrations: [],
+                },
+                temporary_assigned_integrations: [],
+            })
+        })
+    })
+
+    describe('getIntegrationsChangeSummary', () => {
+        it('returns correct summary when there are no new integrations', () => {
+            const result = getIntegrationsChangeSummary([1, 2, 3], [1, 2, 3])
+
+            expect(result).toEqual({
+                newIntegrations: [],
+                removedIntegrations: [],
+            })
+        })
+
+        it('returns correct summary when there are added and removed integrations', () => {
+            const result = getIntegrationsChangeSummary([1, 2, 3, 4], [1, 2, 5])
+
+            expect(result).toEqual({
+                newIntegrations: [5],
+                removedIntegrations: [3, 4],
             })
         })
     })
