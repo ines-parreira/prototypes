@@ -138,8 +138,8 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
         <RealtimeProvider
             publishKey={window.PUBNUB_PUBLISH_KEY}
             subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
-            presenceTimeout={5}
-            heartbeatInterval={2}
+            presenceTimeout={15}
+            heartbeatInterval={3.5}
             subscriptionWorkerUrl={pubNubWorkerUrl}
             subscriptionWorkerUnsubscribeOfflineClients={true}
             subscriptionWorkerOfflineClientsCheckInterval={5}

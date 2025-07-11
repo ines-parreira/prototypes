@@ -190,8 +190,8 @@ importers:
         specifier: ^0.35.3
         version: 0.35.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/realtime':
-        specifier: ^0.18.1
-        version: 0.18.1(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        specifier: ^0.18.2
+        version: 0.18.2(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.52.1(react@18.2.0))
@@ -2646,8 +2646,8 @@ packages:
       react-dom: ^17
       reactstrap: ^8.9.0
 
-  '@gorgias/realtime@0.18.1':
-    resolution: {integrity: sha512-0o68jGLUHrEa0ef3dlL4v664n1gl1Y0STX2CBYqo9JOHc+4rTE7rF+IpQWu+bPfzoSFJzP2hhKwX2Kb2Ux3NZA==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.18.1/44248c7f49c39e217797d65b82ef2fb37b1b2460}
+  '@gorgias/realtime@0.18.2':
+    resolution: {integrity: sha512-d+7O9a+Bj+Jd3lMCYmvorx83DGl8QKI+ndu8MzxRQ7y15fKIA2ZJ8IFUMecNtOXwixSameG58DP63bqpUrUN5g==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.18.2/18dae27f4f09aeabb2ef12975bd75cafc5e9674d}
     engines: {node: '>=18'}
     peerDependencies:
       '@tanstack/react-query': 4.36.1
@@ -9566,8 +9566,8 @@ packages:
       '@types/pubnub': ^7.0.0
       pubnub: ^7.0.1
 
-  pubnub@9.7.0:
-    resolution: {integrity: sha512-8rY6aQ71A5xGfxOBGehJ5H7yDG0HA6JF8Tr+dqbQ3n7fZcklg3aP0+sAsHkYCmNDSSxDU+4nz45OoS69akly9A==}
+  pubnub@9.8.0:
+    resolution: {integrity: sha512-fyocbz63nccNxDt1PUoS4rq2elyzLbM+kPbJhbRZgssO9Mhx8ilfRJa+cRMZtxmzplgXt88DenMob3doNY7flQ==}
 
   pump@3.0.3:
     resolution: {integrity: sha512-todwxLMY7/heScKmntwQG8CXVkWUOdYxIvY2s0VWAAMh/nd8SoYiRaKjlr7+iCs984f2P8zvrfWcDDYVb73NfA==}
@@ -13675,15 +13675,15 @@ snapshots:
       react-loading-skeleton: 3.5.0(react@18.2.0)
       reactstrap: 8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
-  '@gorgias/realtime@0.18.1(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/realtime@0.18.2(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@gorgias/events': 0.7.0
       '@gorgias/helpdesk-queries': 0.7.20(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       lodash-es: 4.17.21
       path-to-regexp: 8.2.0
-      pubnub: 9.7.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))
-      pubnub-react: 3.0.2(@types/pubnub@7.4.2)(pubnub@9.7.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0)))
+      pubnub: 9.8.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))
+      pubnub-react: 3.0.2(@types/pubnub@7.4.2)(pubnub@9.8.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0)))
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
@@ -22329,13 +22329,13 @@ snapshots:
       randombytes: 2.1.0
       safe-buffer: 5.2.1
 
-  pubnub-react@3.0.2(@types/pubnub@7.4.2)(pubnub@9.7.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))):
+  pubnub-react@3.0.2(@types/pubnub@7.4.2)(pubnub@9.8.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))):
     dependencies:
       '@types/pubnub': 7.4.2
-      pubnub: 9.7.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))
+      pubnub: 9.8.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0))
       ts-invariant: 0.10.3
 
-  pubnub@9.7.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0)):
+  pubnub@9.8.0(encoding@0.1.13)(react-native@0.78.0(@babel/core@7.26.9)(@babel/preset-env@7.10.2(@babel/core@7.26.9))(@types/react@18.2.67)(react@18.2.0)):
     dependencies:
       agentkeepalive: 3.5.3
       buffer: 6.0.3
