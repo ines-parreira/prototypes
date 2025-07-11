@@ -1,0 +1,43 @@
+---
+alwaysApply: true
+---
+
+# Avoid Unnecessary Comments
+
+- **Write self-documenting code** with clear variable names, function names, and structure
+- **Only add comments for complex business logic** that cannot be made clear through code alone
+- **Avoid commenting obvious code** - if the code is self-explanatory, no comment is needed
+- **Prefer descriptive names over comments** - use `calculateTotalWithTax()` instead of `calculateTotal() // includes tax`
+- **When comments are needed**, explain the "why" not the "what" - focus on business reasoning, not code mechanics
+- **Keep comments up-to-date** - outdated comments are worse than no comments
+- **Use JSDoc/TSDoc only for public APIs** and complex function signatures
+
+## Examples
+
+**Good (no comment needed):**
+
+```typescript
+const isUserEligibleForDiscount =
+    user.hasActiveSubscription && user.totalSpent > 1000
+```
+
+**Good (comment for complex business logic):**
+
+```typescript
+// Apply legacy discount rules for customers who signed up before 2023
+// These customers get 15% off regardless of current subscription status
+const legacyDiscount = user.signupDate < new Date('2023-01-01') ? 0.15 : 0
+```
+
+**Bad (obvious comment):**
+
+```typescript
+const total = price + tax // Calculate total by adding price and tax
+```
+
+```typescript
+// Check that the tooltip content is displayed
+expect(tooltip).toHaveTextContent(
+    'Macros are suggested based on your previous macro usage.',
+)
+```
