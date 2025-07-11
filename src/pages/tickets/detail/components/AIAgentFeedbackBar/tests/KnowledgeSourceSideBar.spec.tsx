@@ -119,6 +119,7 @@ describe('KnowledgeSourceSideBar', () => {
     const mockCloseModal = jest.fn()
     const mockOpenEdit = jest.fn()
     const mockSetEditModal = jest.fn()
+    const mockSetSelectedArticle = jest.fn()
     const mockGetHasUnsavedChanges = jest.fn(() => false)
     const mockOpenUnsavedChangesModal = jest.fn()
     const mockIsPassingRulesCheck = jest.fn()
@@ -151,6 +152,7 @@ describe('KnowledgeSourceSideBar', () => {
 
         useEditionManagerMock.mockReturnValue({
             setEditModal: mockSetEditModal,
+            setSelectedArticle: mockSetSelectedArticle,
         })
 
         useAbilityCheckerMock.mockReturnValue({
@@ -214,6 +216,10 @@ describe('KnowledgeSourceSideBar', () => {
         expect(screen.getByTestId('mock-article-editor')).toBeInTheDocument()
         expect(screen.getByText('Mode: CREATE')).toBeInTheDocument()
         expect(screen.getByText('Article ID: 1')).toBeInTheDocument()
+        expect(mockSetSelectedArticle).toHaveBeenCalledWith({
+            ...testArticle,
+            position: 0,
+        })
     })
 
     it('renders article editor in edit mode for articles when user has permission', () => {
@@ -229,6 +235,10 @@ describe('KnowledgeSourceSideBar', () => {
         expect(screen.getByTestId('mock-article-editor')).toBeInTheDocument()
         expect(screen.getByText('Mode: EDIT')).toBeInTheDocument()
         expect(screen.getByText('Article ID: 1')).toBeInTheDocument()
+        expect(mockSetSelectedArticle).toHaveBeenCalledWith({
+            ...testArticle,
+            position: 0,
+        })
     })
 
     it('does not render article editor when user lacks update permission', () => {
@@ -250,6 +260,42 @@ describe('KnowledgeSourceSideBar', () => {
             screen.queryByTestId('mock-article-editor'),
         ).not.toBeInTheDocument()
         expect(screen.getByTestId('mock-drawer')).toBeInTheDocument()
+        expect(mockSetSelectedArticle).not.toHaveBeenCalled()
+    })
+
+    it('does not render article editor when selectedResource is guidance type in edit mode', () => {
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            selectedResource: guidanceResource,
+            mode: KnowledgeSourceSideBarMode.EDIT,
+            closeModal: mockCloseModal,
+            openEdit: mockOpenEdit,
+        })
+
+        render(<KnowledgeSourceSideBar {...baseProps} />)
+
+        expect(
+            screen.queryByTestId('mock-article-editor'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByTestId('mock-drawer')).toBeInTheDocument()
+        expect(screen.getByTestId('mock-manage-guidance')).toBeInTheDocument()
+        expect(mockSetSelectedArticle).not.toHaveBeenCalled()
+    })
+
+    it('does not render article editor when selectedResource is null', () => {
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            selectedResource: null,
+            mode: KnowledgeSourceSideBarMode.EDIT,
+            closeModal: mockCloseModal,
+            openEdit: mockOpenEdit,
+        })
+
+        render(<KnowledgeSourceSideBar {...baseProps} />)
+
+        expect(
+            screen.queryByTestId('mock-article-editor'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByTestId('mock-drawer')).toBeInTheDocument()
+        expect(mockSetSelectedArticle).not.toHaveBeenCalled()
     })
 
     it('sets edit modal when article editor should display', () => {
@@ -304,6 +350,7 @@ describe('KnowledgeSourceSideBar', () => {
         expect(screen.getByTestId('mock-article-editor')).toBeInTheDocument()
         expect(screen.getByText('Mode: CREATE')).toBeInTheDocument()
         expect(screen.getByText('Article ID: none')).toBeInTheDocument()
+        expect(mockSetSelectedArticle).not.toHaveBeenCalled()
     })
 
     it('does not render preview or manage form if mode is undefined', () => {

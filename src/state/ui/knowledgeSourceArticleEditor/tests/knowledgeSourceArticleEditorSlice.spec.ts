@@ -6,7 +6,6 @@ import {
     getCounters,
     getIsConsideredMissingKnowledge,
     getKnowledgeSourceArticleEditorState,
-    getLastProcessedArticleId,
     getPendingClose,
     getPendingDeleteLocaleOptionItem,
     initialState,
@@ -14,7 +13,6 @@ import {
     resetState,
     setCounters,
     setIsConsideredMissingKnowledge,
-    setLastProcessedArticleId,
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
 } from '../knowledgeSourceArticleEditorSlice'
@@ -37,7 +35,6 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                 pendingClose: null,
                 pendingDeleteLocaleOptionItem: undefined,
                 counters: undefined,
-                lastProcessedArticleId: null,
                 isConsideredMissingKnowledge: true,
             })
         })
@@ -144,33 +141,6 @@ describe('knowledgeSourceArticleEditorSlice', () => {
         })
     })
 
-    describe('when setting last processed article id', () => {
-        it('should set last processed article id', () => {
-            const articleId = 123
-
-            const state = knowledgeSourceArticleEditorSlice.reducer(
-                initialState,
-                setLastProcessedArticleId(articleId),
-            )
-
-            expect(state.lastProcessedArticleId).toBe(articleId)
-        })
-
-        it('should set last processed article id to null', () => {
-            const previousState = {
-                ...initialState,
-                lastProcessedArticleId: 123,
-            }
-
-            const state = knowledgeSourceArticleEditorSlice.reducer(
-                previousState,
-                setLastProcessedArticleId(null),
-            )
-
-            expect(state.lastProcessedArticleId).toBeNull()
-        })
-    })
-
     describe('when setting isConsideredMissingKnowledge', () => {
         it('should set isConsideredMissingKnowledge to true', () => {
             const previousState = {
@@ -213,7 +183,6 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                     canBeDeleted: true,
                 },
                 counters: { charCount: 200 },
-                lastProcessedArticleId: 456,
                 isConsideredMissingKnowledge: false,
             }
 
@@ -239,7 +208,6 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                         canBeDeleted: false,
                     },
                     counters: { charCount: 300 },
-                    lastProcessedArticleId: 789,
                     isConsideredMissingKnowledge: false,
                 }
                 const rootState = createMockRootState(mockState)
@@ -333,29 +301,6 @@ describe('knowledgeSourceArticleEditorSlice', () => {
                 const result = getCounters(rootState)
 
                 expect(result).toBeUndefined()
-            })
-        })
-
-        describe('when getting last processed article id', () => {
-            it('should return last processed article id when set', () => {
-                const articleId = 999
-                const mockState = {
-                    ...initialState,
-                    lastProcessedArticleId: articleId,
-                }
-                const rootState = createMockRootState(mockState)
-
-                const result = getLastProcessedArticleId(rootState)
-
-                expect(result).toBe(articleId)
-            })
-
-            it('should return null when last processed article id is not set', () => {
-                const rootState = createMockRootState()
-
-                const result = getLastProcessedArticleId(rootState)
-
-                expect(result).toBeNull()
             })
         })
 

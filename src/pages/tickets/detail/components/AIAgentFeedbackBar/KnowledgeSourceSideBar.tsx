@@ -56,7 +56,7 @@ const KnowledgeSourceSideBar = ({
     const { getHasUnsavedChanges, openUnsavedChangesModal } =
         useUnsavedChangesModal()
     const helpCenter = useCurrentHelpCenter()
-    const { setEditModal } = useEditionManager()
+    const { setEditModal, setSelectedArticle } = useEditionManager()
     const { isPassingRulesCheck } = useAbilityChecker()
 
     const canUpdateArticle = isPassingRulesCheck(({ can }) =>
@@ -78,6 +78,12 @@ const KnowledgeSourceSideBar = ({
         [selectedResource?.id],
     )
 
+    const shouldDisplayArticleEditor =
+        (isEditMode || isCreateMode) &&
+        canUpdateArticle &&
+        selectedResource?.knowledgeResourceType ===
+            AiAgentKnowledgeResourceTypeEnum.ARTICLE
+
     const selectedGuidance = useMemo(
         () =>
             guidanceArticles.find(
@@ -93,23 +99,24 @@ const KnowledgeSourceSideBar = ({
         if (articleIndex === -1) {
             return null
         }
+
         return {
             ...articles[articleIndex],
             position: Math.max(articleIndex, 0),
         }
     }, [articles, selectedResourceIdAsNumber])
 
+    useEffect(() => {
+        if (shouldDisplayArticleEditor && selectedArticle) {
+            setSelectedArticle(selectedArticle)
+        }
+    }, [shouldDisplayArticleEditor, selectedArticle, setSelectedArticle])
+
     const resourceUpdatedAt = useMemo(() => {
         return (
             selectedGuidance?.lastUpdated || selectedArticle?.updated_datetime
         )
     }, [selectedGuidance?.lastUpdated, selectedArticle?.updated_datetime])
-
-    const shouldDisplayArticleEditor =
-        (isEditMode || isCreateMode) &&
-        canUpdateArticle &&
-        selectedResource?.knowledgeResourceType ===
-            AiAgentKnowledgeResourceTypeEnum.ARTICLE
 
     useEffect(() => {
         if (!!mode && shouldDisplayArticleEditor) {

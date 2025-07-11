@@ -36,6 +36,8 @@ jest.mock(
 jest.mock('pages/settings/helpCenter/providers/EditionManagerContext')
 jest.mock('hooks/useModalManager')
 jest.mock('./hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar')
+jest.mock('hooks/useAppDispatch')
+jest.mock('state/ui/helpCenter')
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
@@ -122,6 +124,7 @@ const mockOnClose = jest.fn()
 const mockCreateArticle = jest.fn()
 const mockUpdateArticle = jest.fn()
 const mockDeleteArticle = jest.fn()
+const mockDeleteArticleTranslation = jest.fn()
 const mockSetSelectedArticle = jest.fn()
 const mockSetSelectedArticleLanguage = jest.fn()
 const mockSetIsEditorCodeViewActive = jest.fn()
@@ -135,6 +138,8 @@ const mockCloseModal = jest.fn()
 const mockOnSubmitNewMissingKnowledge = jest.fn()
 const mockOnSaveClick = jest.fn()
 const mockOpenEdit = jest.fn()
+const mockDispatch = jest.fn()
+const mockChangeViewLanguage = jest.fn()
 
 const useCurrentHelpCenterMock =
     require('pages/settings/helpCenter/hooks/useCurrentHelpCenter').default
@@ -149,6 +154,8 @@ const useEditionManagerMock =
 const useModalManagerMock = require('hooks/useModalManager').useModalManager
 const useKnowledgeSourceSideBarMock =
     require('./hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar').useKnowledgeSourceSideBar
+const useAppDispatchMock = require('hooks/useAppDispatch').default
+const { changeViewLanguage } = require('state/ui/helpCenter')
 
 describe('KnowledgeSourceArticleEditor', () => {
     const defaultProps = {
@@ -193,6 +200,7 @@ describe('KnowledgeSourceArticleEditor', () => {
         createArticle: mockCreateArticle,
         updateArticle: mockUpdateArticle,
         deleteArticle: mockDeleteArticle,
+        deleteArticleTranslation: mockDeleteArticleTranslation,
     }
 
     const defaultArticleValidationState = {
@@ -227,11 +235,14 @@ describe('KnowledgeSourceArticleEditor', () => {
         useKnowledgeSourceSideBarMock.mockReturnValue(
             defaultKnowledgeSourceSideBarState,
         )
+        useAppDispatchMock.mockReturnValue(mockDispatch)
+        changeViewLanguage.mockReturnValue(mockChangeViewLanguage)
         mockOnSaveClick.mockClear()
 
         mockCreateArticle.mockReset()
         mockUpdateArticle.mockReset()
         mockDeleteArticle.mockReset()
+        mockDeleteArticleTranslation.mockReset()
         mockOpenEdit.mockClear()
     })
 
@@ -320,6 +331,74 @@ describe('KnowledgeSourceArticleEditor', () => {
             const mainSaveButton = saveSpans[0].closest('button')
             expect(mainSaveButton).toBeInTheDocument()
             expect(mainSaveButton).toHaveAttribute('aria-disabled', 'false')
+        })
+
+        it('does not create new article when article has id', () => {
+            const createModePropsWithArticleId = {
+                ...defaultProps,
+                article: mockArticle,
+                isCreateMode: true,
+            }
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: null,
+            })
+
+            renderComponent(createModePropsWithArticleId)
+
+            expect(mockSetSelectedArticle).not.toHaveBeenCalled()
+        })
+
+        it('creates new article with category from modal params when categoryId is provided', () => {
+            useModalManagerMock.mockReturnValue({
+                ...defaultModalManagerState,
+                getParams: jest.fn().mockReturnValue({ categoryId: 42 }),
+            })
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: null,
+            })
+
+            renderComponent(createModeProps)
+
+            expect(mockSetSelectedArticle).toHaveBeenCalled()
+            expect(mockSetSelectedCategoryId).toHaveBeenCalledWith(42)
+        })
+
+        it('creates new article with null category when modal params return null', () => {
+            useModalManagerMock.mockReturnValue({
+                ...defaultModalManagerState,
+                getParams: jest.fn().mockReturnValue(null),
+            })
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: null,
+            })
+
+            renderComponent(createModeProps)
+
+            expect(mockSetSelectedArticle).toHaveBeenCalled()
+            expect(mockSetSelectedCategoryId).toHaveBeenCalledWith(null)
+        })
+
+        it('creates new article with null category when modal params have no categoryId', () => {
+            useModalManagerMock.mockReturnValue({
+                ...defaultModalManagerState,
+                getParams: jest.fn().mockReturnValue({}),
+            })
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: null,
+            })
+
+            renderComponent(createModeProps)
+
+            expect(mockSetSelectedArticle).toHaveBeenCalled()
+            expect(mockSetSelectedCategoryId).toHaveBeenCalledWith(null)
         })
     })
 
@@ -573,6 +652,57 @@ describe('KnowledgeSourceArticleEditor', () => {
             })
         })
 
+        it('calls deleteArticleTranslation when translation deletion is confirmed and dispatches state changes', async () => {
+            mockDeleteArticleTranslation.mockImplementation(() => {
+                const mockCall = useFeedbackArticleActionsMock.mock.calls[0]
+                if (mockCall && mockCall[4]) {
+                    mockCall[4]() // Call onArticleTranslationDelete
+                }
+            })
+
+            const mockAction = {
+                type: 'CHANGE_VIEW_LANGUAGE',
+                payload: mockHelpCenter.default_locale,
+            }
+            changeViewLanguage.mockImplementation(() => mockAction)
+
+            const storeWithPendingDeleteLocale = {
+                ...defaultStoreState,
+                ui: {
+                    ...defaultStoreState.ui,
+                    ticketAIAgentFeedback: {
+                        knowledgeSourceArticleEditor: {
+                            ...knowledgeSourceArticleEditorState,
+                            pendingDeleteLocaleOptionItem: {
+                                value: 'en-US',
+                                label: 'English - USA',
+                                text: 'English Translation',
+                            },
+                        },
+                    },
+                },
+            }
+
+            renderComponent(defaultProps, storeWithPendingDeleteLocale as any)
+
+            const confirmButton = screen.getByText('Delete English Translation')
+            fireEvent.click(confirmButton)
+
+            await waitFor(() => {
+                expect(mockDeleteArticleTranslation).toHaveBeenCalledWith(
+                    mockArticle.id,
+                    'en-US',
+                )
+                expect(changeViewLanguage).toHaveBeenCalledWith(
+                    mockHelpCenter.default_locale,
+                )
+                expect(mockDispatch).toHaveBeenCalledWith(mockAction)
+                expect(mockSetSelectedArticleLanguage).toHaveBeenCalledWith(
+                    mockHelpCenter.default_locale,
+                )
+            })
+        })
+
         it('does not show delete button for new articles', () => {
             const createModeProps = {
                 ...defaultProps,
@@ -677,29 +807,6 @@ describe('KnowledgeSourceArticleEditor', () => {
     })
 
     describe('when handling article state updates', () => {
-        it('updates article state when article prop changes', () => {
-            const { rerender } = renderComponent()
-
-            const updatedArticle = {
-                ...mockArticle,
-                translation: {
-                    ...mockArticle.translation,
-                    title: 'Updated Title',
-                },
-            }
-
-            rerender(
-                <Provider store={mockStore(defaultStoreState)}>
-                    <KnowledgeSourceArticleEditor
-                        {...defaultProps}
-                        article={updatedArticle}
-                    />
-                </Provider>,
-            )
-
-            expect(mockSetSelectedArticle).toHaveBeenCalledWith(updatedArticle)
-        })
-
         it('resets state when switching from edit to create mode', () => {
             const { rerender } = renderComponent()
 

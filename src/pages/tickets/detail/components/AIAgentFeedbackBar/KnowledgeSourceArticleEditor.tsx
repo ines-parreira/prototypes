@@ -37,12 +37,10 @@ import { changeViewLanguage } from 'state/ui/helpCenter'
 import {
     getCounters,
     getIsConsideredMissingKnowledge,
-    getLastProcessedArticleId,
     getPendingClose,
     resetState,
     setCounters,
     setIsConsideredMissingKnowledge,
-    setLastProcessedArticleId,
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
 } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
@@ -72,8 +70,6 @@ type KnowledgeSourceArticleEditorProps = {
     ) => void
 }
 
-const UNINITIALIZED_ARTICLE_ID = -1
-
 const KnowledgeSourceArticleEditor = ({
     article,
     isCreateMode,
@@ -86,6 +82,7 @@ const KnowledgeSourceArticleEditor = ({
     const nextActionRef = useRef<(() => void) | (() => Promise<void>) | null>(
         null,
     )
+    const articleModal = useModalManager(MODALS.ARTICLE, { autoDestroy: false })
 
     const { openEdit } = useKnowledgeSourceSideBar()
 
@@ -103,6 +100,20 @@ const KnowledgeSourceArticleEditor = ({
         isFullscreenEditModal,
     } = useEditionManager()
 
+    if (isCreateMode && !article?.id && !selectedArticle) {
+        const categoryFromModalParams =
+            articleModal.getParams()?.categoryId ?? null
+
+        setSelectedArticle({
+            translation: getNewArticleTranslation(
+                selectedArticleLanguage,
+                categoryFromModalParams,
+            ),
+        })
+
+        setSelectedCategoryId(categoryFromModalParams)
+    }
+
     const {
         selectedTranslation,
         getTranslationForLocale,
@@ -115,12 +126,10 @@ const KnowledgeSourceArticleEditor = ({
 
     const pendingClose = useAppSelector(getPendingClose)
     const counters = useAppSelector(getCounters)
-    const lastProcessedArticleId = useAppSelector(getLastProcessedArticleId)
+
     const isConsideredMissingKnowledge = useAppSelector(
         getIsConsideredMissingKnowledge,
     )
-
-    const articleModal = useModalManager(MODALS.ARTICLE, { autoDestroy: false })
 
     const closeModal = useCallback(() => {
         onClose()
@@ -206,33 +215,10 @@ const KnowledgeSourceArticleEditor = ({
         closeModal()
     }, [setSelectedArticle, closeModal])
 
-    const onArticleTranslationDelete = useCallback(
-        (localeCode: LocaleCode) => {
-            dispatch(changeViewLanguage(helpCenter.default_locale))
-            setSelectedArticleLanguage(helpCenter.default_locale)
-
-            // to save an additional API call, we update the article's available_locales after the specific translation is deleted
-            setSelectedArticle((prevSelectedArticle) =>
-                prevSelectedArticle
-                    ? {
-                          ...prevSelectedArticle,
-                          available_locales:
-                              'available_locales' in prevSelectedArticle
-                                  ? prevSelectedArticle.available_locales.filter(
-                                        (locale) => locale !== localeCode,
-                                    )
-                                  : [],
-                      }
-                    : prevSelectedArticle,
-            )
-        },
-        [
-            dispatch,
-            helpCenter.default_locale,
-            setSelectedArticleLanguage,
-            setSelectedArticle,
-        ],
-    )
+    const onArticleTranslationDelete = useCallback(() => {
+        dispatch(changeViewLanguage(helpCenter.default_locale))
+        setSelectedArticleLanguage(helpCenter.default_locale)
+    }, [dispatch, helpCenter.default_locale, setSelectedArticleLanguage])
 
     const {
         isLoading,
@@ -278,48 +264,6 @@ const KnowledgeSourceArticleEditor = ({
             dispatch(setCounters({ charCount }))
         }
     }
-
-    const createNewArticle = useCallback(() => {
-        const categoryFromModalParams =
-            articleModal.getParams()?.categoryId ?? null
-
-        setSelectedArticle({
-            translation: getNewArticleTranslation(
-                selectedArticleLanguage,
-                categoryFromModalParams,
-            ),
-        })
-
-        setSelectedCategoryId(categoryFromModalParams)
-    }, [
-        selectedArticleLanguage,
-        setSelectedArticle,
-        setSelectedCategoryId,
-        articleModal,
-    ])
-
-    useEffect(() => {
-        const articleId = article && 'id' in article ? article.id : null
-        if (!isCreateMode && articleId !== lastProcessedArticleId) {
-            dispatch(setLastProcessedArticleId(articleId))
-            setSelectedArticle(article)
-        }
-        if (
-            isCreateMode &&
-            articleId === null &&
-            lastProcessedArticleId !== UNINITIALIZED_ARTICLE_ID
-        ) {
-            dispatch(setLastProcessedArticleId(UNINITIALIZED_ARTICLE_ID))
-            createNewArticle()
-        }
-    }, [
-        article,
-        setSelectedArticle,
-        isCreateMode,
-        createNewArticle,
-        lastProcessedArticleId,
-        dispatch,
-    ])
 
     useEffect(() => {
         if (!selectedTranslation || !selectedArticle) {

@@ -8,7 +8,6 @@ export type KnowledgeSourceArticleEditorState = {
     pendingClose: KnowledgePendingCloseType | null
     pendingDeleteLocaleOptionItem: OptionItem | undefined
     counters: { charCount: number } | undefined
-    lastProcessedArticleId: number | null
     isConsideredMissingKnowledge: boolean
 }
 
@@ -16,7 +15,6 @@ export const initialState: KnowledgeSourceArticleEditorState = {
     pendingClose: null,
     pendingDeleteLocaleOptionItem: undefined,
     counters: undefined,
-    lastProcessedArticleId: null,
     isConsideredMissingKnowledge: true,
 }
 
@@ -42,9 +40,6 @@ export const knowledgeSourceArticleEditorSlice = createSlice({
         ) {
             state.counters = action.payload
         },
-        setLastProcessedArticleId(state, action: PayloadAction<number | null>) {
-            state.lastProcessedArticleId = action.payload
-        },
         setIsConsideredMissingKnowledge(state, action: PayloadAction<boolean>) {
             state.isConsideredMissingKnowledge = action.payload
         },
@@ -53,7 +48,6 @@ export const knowledgeSourceArticleEditorSlice = createSlice({
             state.pendingDeleteLocaleOptionItem =
                 initialState.pendingDeleteLocaleOptionItem
             state.counters = initialState.counters
-            state.lastProcessedArticleId = initialState.lastProcessedArticleId
             state.isConsideredMissingKnowledge =
                 initialState.isConsideredMissingKnowledge
         },
@@ -64,7 +58,6 @@ export const {
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
     setCounters,
-    setLastProcessedArticleId,
     setIsConsideredMissingKnowledge,
     resetState,
 } = knowledgeSourceArticleEditorSlice.actions
@@ -81,10 +74,6 @@ export const getPendingDeleteLocaleOptionItem = (state: RootState) =>
 
 export const getCounters = (state: RootState) =>
     state.ui.ticketAIAgentFeedback.knowledgeSourceArticleEditor.counters
-
-export const getLastProcessedArticleId = (state: RootState) =>
-    state.ui.ticketAIAgentFeedback.knowledgeSourceArticleEditor
-        .lastProcessedArticleId
 
 export const getIsConsideredMissingKnowledge = (state: RootState) =>
     state.ui.ticketAIAgentFeedback.knowledgeSourceArticleEditor

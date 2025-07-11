@@ -517,6 +517,7 @@ export const useArticlesActions = () => {
                 })
 
                 dispatch(removeLocaleFromArticle({ articleId, locale }))
+                invalidateArticlesQuery()
                 invalidateArticleTranslationsQuery(articleId)
 
                 setIsLoading(false)
@@ -526,7 +527,13 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
-        [client, dispatch, helpCenterId, invalidateArticleTranslationsQuery],
+        [
+            client,
+            dispatch,
+            helpCenterId,
+            invalidateArticleTranslationsQuery,
+            invalidateArticlesQuery,
+        ],
     )
 
     const cloneArticle = useCallback(

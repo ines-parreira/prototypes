@@ -534,6 +534,18 @@ describe('useArticlesActions()', () => {
                 queryKey: ['help-center', 1, 'articles', 1, 'translations'],
             })
         })
+
+        it('invalidates the articles query', async () => {
+            const { result } = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.deleteArticleTranslation(1, 'en-US')
+
+            expect(mockInvalidateQueries).toHaveBeenCalledWith({
+                queryKey,
+            })
+        })
     })
 
     describe('cloneArticle()', () => {
