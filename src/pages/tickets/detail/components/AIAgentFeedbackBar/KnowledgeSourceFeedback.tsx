@@ -129,7 +129,7 @@ const KnowledgeSourceFeedback = ({
                         rel="noreferrer noopener"
                         className={cn(css.sourceLink, {
                             [css.deleted]: isDeleted,
-                            [css.hasLink]: !!href || !!openPreview,
+                            [css.hasLink]: !isDeleted,
                         })}
                         onClick={onClick}
                     >

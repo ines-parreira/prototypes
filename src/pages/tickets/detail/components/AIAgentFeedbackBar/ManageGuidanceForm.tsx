@@ -385,12 +385,6 @@ export const ManageGuidanceForm = ({
                     onClose={guardUnsavedChanges}
                     closeButtonId="close-button"
                 >
-                    {actionType === FORM_ACTION_TYPE.CREATE && (
-                        <AddMissingKnowledgeCheckbox
-                            isChecked={formState.shouldAddToMissingKnowledge}
-                            onChange={onShouldAddToMissingKnowledgeChange}
-                        />
-                    )}
                     {url && (
                         <a href={url} target="_blank" rel="noopener noreferrer">
                             <IconButton
@@ -441,7 +435,12 @@ export const ManageGuidanceForm = ({
                 <Button intent="secondary" onClick={guardUnsavedChanges}>
                     Cancel
                 </Button>
-
+                {actionType === FORM_ACTION_TYPE.CREATE && (
+                    <AddMissingKnowledgeCheckbox
+                        isChecked={formState.shouldAddToMissingKnowledge}
+                        onChange={onShouldAddToMissingKnowledgeChange}
+                    />
+                )}
                 {guidance && (
                     <ConfirmButton
                         className={css.deleteButton}

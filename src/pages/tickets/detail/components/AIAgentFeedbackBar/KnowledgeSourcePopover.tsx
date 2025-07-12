@@ -111,7 +111,15 @@ const KnowledgeSourcePopover = ({
                     className={css.popoverWrapper}
                 >
                     <a
-                        href={!href || !!onClick ? undefined : href}
+                        href={
+                            !href ||
+                            [
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                            ].includes(knowledgeResourceType)
+                                ? undefined
+                                : href
+                        }
                         target="_blank"
                         rel="noreferrer noopener"
                         className={css.popover}
