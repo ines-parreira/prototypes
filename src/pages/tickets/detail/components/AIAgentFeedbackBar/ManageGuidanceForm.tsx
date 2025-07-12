@@ -11,6 +11,7 @@ import { HelpCenter } from 'models/helpCenter/types'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
+import guidanceFormCss from 'pages/aiAgent/components/GuidanceForm/GuidanceForm.less'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
@@ -408,7 +409,7 @@ export const ManageGuidanceForm = ({
                     value={formState.name}
                     maxLength={135}
                 />
-                <div>
+                <div className={guidanceFormCss.editorContainer}>
                     <GuidanceEditor
                         content={formState.content}
                         handleUpdateContent={onContentChange}
