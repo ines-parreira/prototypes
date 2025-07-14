@@ -65,7 +65,7 @@ jest.mock(
             onEditorReady,
         }: {
             value?: string
-            onChange: (content: string, charCount?: number) => void
+            onChange: (content: string) => void
             onEditorReady?: (content: string) => void
         }) {
             React.useEffect(() => {
@@ -79,8 +79,7 @@ jest.mock(
                     value={value}
                     onChange={(e) => {
                         const content = e.target.value
-                        const charCount = content.length
-                        onChange(content, charCount)
+                        onChange(content)
                     }}
                     data-testid="content-editor"
                 />

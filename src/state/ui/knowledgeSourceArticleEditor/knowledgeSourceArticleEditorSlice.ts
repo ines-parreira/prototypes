@@ -34,12 +34,6 @@ export const knowledgeSourceArticleEditorSlice = createSlice({
         ) {
             state.pendingDeleteLocaleOptionItem = action.payload
         },
-        setCounters(
-            state,
-            action: PayloadAction<{ charCount: number } | undefined>,
-        ) {
-            state.counters = action.payload
-        },
         setIsConsideredMissingKnowledge(state, action: PayloadAction<boolean>) {
             state.isConsideredMissingKnowledge = action.payload
         },
@@ -57,7 +51,6 @@ export const knowledgeSourceArticleEditorSlice = createSlice({
 export const {
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
-    setCounters,
     setIsConsideredMissingKnowledge,
     resetState,
 } = knowledgeSourceArticleEditorSlice.actions

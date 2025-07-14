@@ -11,7 +11,6 @@ import {
     initialState,
     knowledgeSourceArticleEditorSlice,
     resetState,
-    setCounters,
     setIsConsideredMissingKnowledge,
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
@@ -111,33 +110,6 @@ describe('knowledgeSourceArticleEditorSlice', () => {
             )
 
             expect(state.pendingDeleteLocaleOptionItem).toBeUndefined()
-        })
-    })
-
-    describe('when setting counters', () => {
-        it('should set counters with char count', () => {
-            const counters = { charCount: 150 }
-
-            const state = knowledgeSourceArticleEditorSlice.reducer(
-                initialState,
-                setCounters(counters),
-            )
-
-            expect(state.counters).toEqual(counters)
-        })
-
-        it('should set counters to undefined', () => {
-            const previousState = {
-                ...initialState,
-                counters: { charCount: 150 },
-            }
-
-            const state = knowledgeSourceArticleEditorSlice.reducer(
-                previousState,
-                setCounters(undefined),
-            )
-
-            expect(state.counters).toBeUndefined()
         })
     })
 

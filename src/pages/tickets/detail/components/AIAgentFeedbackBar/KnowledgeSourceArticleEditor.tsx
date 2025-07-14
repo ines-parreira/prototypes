@@ -35,11 +35,9 @@ import { useArticleValidation } from 'pages/tickets/detail/components/AIAgentFee
 import { useFeedbackArticleActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackArticleActions'
 import { changeViewLanguage } from 'state/ui/helpCenter'
 import {
-    getCounters,
     getIsConsideredMissingKnowledge,
     getPendingClose,
     resetState,
-    setCounters,
     setIsConsideredMissingKnowledge,
     setPendingClose,
     setPendingDeleteLocaleOptionItem,
@@ -125,7 +123,6 @@ const KnowledgeSourceArticleEditor = ({
     )
 
     const pendingClose = useAppSelector(getPendingClose)
-    const counters = useAppSelector(getCounters)
 
     const isConsideredMissingKnowledge = useAppSelector(
         getIsConsideredMissingKnowledge,
@@ -244,10 +241,7 @@ const KnowledgeSourceArticleEditor = ({
         })
 
     const hasDefaultLayout = helpCenter.layout === HELP_CENTER_DEFAULT_LAYOUT
-    const onArticleChange = (
-        { content }: { content: string },
-        charCount?: number,
-    ) => {
+    const onArticleChange = ({ content }: { content: string }) => {
         setSelectedArticle((prevSelectedArticle) =>
             prevSelectedArticle?.translation
                 ? {
@@ -259,10 +253,6 @@ const KnowledgeSourceArticleEditor = ({
                   }
                 : prevSelectedArticle,
         )
-
-        if (typeof charCount === 'number') {
-            dispatch(setCounters({ charCount }))
-        }
     }
 
     useEffect(() => {
@@ -437,7 +427,6 @@ const KnowledgeSourceArticleEditor = ({
                     {isEditorInBasicView && (
                         <HelpCenterArticleModalBasicViewContent
                             canSaveArticle={canSaveArticle}
-                            counters={counters}
                             onArticleChange={onArticleChange}
                             onEditorReady={onEditorReady}
                             onArticleLanguageSelect={
