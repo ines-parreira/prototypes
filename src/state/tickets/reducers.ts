@@ -51,7 +51,7 @@ export default function reducer(
             // "something new"
             const ticketIndex = (
                 state.get('items', fromJS([])) as List<any>
-            ).findIndex(
+            )?.findIndex(
                 (item: Map<any, any>) => item.get('id') === action.ticketId,
             )
 
