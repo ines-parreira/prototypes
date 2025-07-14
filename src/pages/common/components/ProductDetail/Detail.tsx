@@ -44,7 +44,10 @@ export default function Detail(props: ProductDetail) {
                         <Slides screenshots={screenshots} />
                     )}
                 </section>
-                {!infocard?.isHidden && <InfoCard {...props.infocard} />}
+
+                {!infocard.isHidden && (
+                    <InfoCard {...{ ...props.infocard, type: props.type }} />
+                )}
             </main>
         </>
     )

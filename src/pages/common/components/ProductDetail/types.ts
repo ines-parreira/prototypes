@@ -28,6 +28,7 @@ export type Infocard = {
 }
 
 export type ProductDetail = {
+    type?: string
     title: string
     image?: string
     icon?: string
