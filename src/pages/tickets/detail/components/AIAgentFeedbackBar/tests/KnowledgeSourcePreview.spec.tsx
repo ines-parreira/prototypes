@@ -50,7 +50,9 @@ describe('KnowledgeSourcePreview', () => {
         render(<KnowledgeSourcePreview {...defaultProps} />)
 
         expect(screen.getByText('Test Title')).toBeInTheDocument()
-        expect(screen.getByText('This is a test content.')).toBeInTheDocument()
+        expect(
+            screen.getByText('<p>This is a test content.</p>'),
+        ).toBeInTheDocument()
     })
 
     it('renders knowledge type', () => {

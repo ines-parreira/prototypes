@@ -5,14 +5,13 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { Drawer } from 'pages/common/components/Drawer'
-import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar.less'
+import { KnowledgeSourcePreviewContentRenderer } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreviewContentRenderer'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import {
-    getKnowledgeResourceTypeLabel,
-    parseKnowledgeResourceContent,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
+import { getKnowledgeResourceTypeLabel } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { formatDatetime } from 'utils'
 import { sanitizeHtmlDefault, unescapeAmpAndDollarEntities } from 'utils/html'
+
+import css from './KnowledgeSourceSideBar.less'
 
 type KnowledgeSourcePreviewProps = {
     onClose: () => void
@@ -50,10 +49,8 @@ const KnowledgeSourcePreview = ({
         shopType,
     )
 
-    const htmlContent = parseKnowledgeResourceContent(
-        unescapeAmpAndDollarEntities(sanitizeHtmlDefault(content)),
-        guidanceVariables,
-        guidanceActions,
+    const processedContent = unescapeAmpAndDollarEntities(
+        sanitizeHtmlDefault(content),
     )
 
     return (
@@ -92,10 +89,11 @@ const KnowledgeSourcePreview = ({
                     </div>
                 )}
                 <h1 className={css.title}>{title}</h1>
-                <div
-                    dangerouslySetInnerHTML={{
-                        __html: htmlContent,
-                    }}
+                <KnowledgeSourcePreviewContentRenderer
+                    content={processedContent}
+                    guidanceVariables={guidanceVariables}
+                    guidanceActions={guidanceActions}
+                    shopName={shopName}
                 />
             </Drawer.Content>
         </>
