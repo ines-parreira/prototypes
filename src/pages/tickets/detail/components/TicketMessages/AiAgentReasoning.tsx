@@ -43,7 +43,10 @@ export const parseReasoningResources = (
                 .split('::')
             let metadata
 
-            switch (stringParts[0]) {
+            const resourceType =
+                stringParts[0].toUpperCase() as AiAgentKnowledgeResourceTypeEnum
+
+            switch (resourceType) {
                 case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
                 case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
                 case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
@@ -52,13 +55,11 @@ export const parseReasoningResources = (
                     metadata = resources.find(
                         (resource) =>
                             resource.resourceId === stringParts[2] &&
-                            resource.resourceType ===
-                                (stringParts[0] as AiAgentKnowledgeResourceTypeEnum) &&
+                            resource.resourceType === resourceType &&
                             resource.resourceSetId === stringParts[1],
                     )
                     return {
-                        resourceType:
-                            stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
+                        resourceType,
                         resourceId: stringParts[2],
                         resourceSetId: stringParts[1],
                         resourceTitle: metadata?.resourceTitle,
@@ -69,12 +70,10 @@ export const parseReasoningResources = (
                     metadata = resources.find(
                         (resource) =>
                             resource.resourceId === stringParts[1] &&
-                            resource.resourceType ===
-                                (stringParts[0] as AiAgentKnowledgeResourceTypeEnum),
+                            resource.resourceType === resourceType,
                     )
                     return {
-                        resourceType:
-                            stringParts[0] as AiAgentKnowledgeResourceTypeEnum,
+                        resourceType,
                         resourceId: stringParts[1],
                         resourceTitle: metadata?.resourceTitle,
                     }

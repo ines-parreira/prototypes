@@ -13,6 +13,7 @@ import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
@@ -108,6 +109,66 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/tickets/detail/components/AIAgentFeedbackBar/utils', () => ({
+    knowledgeResourceShouldBeLink: jest.fn(() => true),
+}))
+
+jest.mock('utils/html', () => ({
+    sanitizeHtmlDefault: jest.fn((content: string) => content),
+}))
+
+// Mock ReactMarkdown to properly handle custom components
+jest.mock('react-markdown', () => {
+    return function MockReactMarkdown({
+        children,
+        components,
+    }: {
+        children: string
+        components?: any
+        [key: string]: any
+    }) {
+        // Simulate the processing that would happen in real ReactMarkdown
+        let processedContent = children
+
+        // Find all <<<...>>> patterns and replace with <kbd> elements
+        const resourceMatches = processedContent.match(/<<<(.*?)>>>/g) || []
+        resourceMatches.forEach((match, index) => {
+            processedContent = processedContent.replace(
+                match,
+                `<kbd id="${index}"></kbd>`,
+            )
+        })
+
+        // Parse the processed content and render custom components
+        if (components?.kbd && processedContent.includes('<kbd')) {
+            const parts = processedContent.split(/<kbd id="(\d+)"><\/kbd>/)
+            const elements = []
+
+            for (let i = 0; i < parts.length; i++) {
+                const part = parts[i]
+
+                // Check if this part is a kbd id (numeric string from regex capture group)
+                if (i % 2 === 1 && part.match(/^\d+$/)) {
+                    const id = part
+                    elements.push(components.kbd({ id, key: `kbd-${id}` }))
+                } else if (part) {
+                    // Only add non-empty text parts
+                    elements.push(<span key={`text-${i}`}>{part}</span>)
+                }
+            }
+
+            return <div data-testid="react-markdown">{elements}</div>
+        }
+
+        return (
+            <div
+                data-testid="react-markdown"
+                dangerouslySetInnerHTML={{ __html: processedContent }}
+            />
+        )
+    }
+})
+
 jest.mock('models/knowledgeService/queries', () => ({
     useGetMessageAiReasoning: jest.fn(),
     ReasoningResponseType: {
@@ -127,6 +188,9 @@ const mockUseGetMessageAiReasoning = assumeMock(useGetMessageAiReasoning)
 const mockUseGetResourcesReasoningMetadata = assumeMock(
     useGetResourcesReasoningMetadata,
 )
+const mockKnowledgeResourceShouldBeLink = jest.mocked(
+    knowledgeResourceShouldBeLink,
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -139,8 +203,10 @@ describe('AiAgentReasoning', () => {
         jest.useFakeTimers()
         jest.clearAllMocks()
 
+        mockKnowledgeResourceShouldBeLink.mockReturnValue(true)
+
         useAppDispatchMock.mockReturnValue(mockDispatch)
-        useAppSelectorMock.mockImplementation((selector) => {
+        useAppSelectorMock.mockImplementation((selector: any) => {
             if (
                 selector.name === 'getTicketState' ||
                 selector.toString().includes('getTicketState')
@@ -263,36 +329,43 @@ describe('AiAgentReasoning', () => {
                     title: 'Cheirosa 68 Beija Flor™ Perfume Mist - Product Guide',
                     content: 'Product guide content',
                     url: 'https://artemisathletix.gorgias.help/en-us/articles/13608-cheirosa-68-beija-flor-perfume-mist-guide',
+                    isDeleted: false,
                 },
                 {
                     title: 'Customer Service Guidelines',
                     content: 'Service guidelines content',
                     url: 'https://example.com/guidance',
+                    isDeleted: false,
                 },
                 {
                     title: 'Action Guide',
                     content: 'Action content',
                     url: 'https://example.com/action',
+                    isDeleted: false,
                 },
                 {
                     title: 'Support Macro',
                     content: 'Macro content',
                     url: 'https://example.com/macro',
+                    isDeleted: false,
                 },
                 {
                     title: 'File Snippet',
                     content: 'File snippet content',
                     url: 'https://example.com/file',
+                    isDeleted: false,
                 },
                 {
                     title: 'External Reference',
                     content: 'External content',
                     url: 'https://example.com/external',
+                    isDeleted: false,
                 },
                 {
                     title: 'Order #98765',
                     content: 'Order details',
                     url: '/app/orders/98765/details',
+                    isDeleted: false,
                 },
             ],
             isLoading: false,
@@ -597,6 +670,8 @@ describe('AiAgentReasoning', () => {
                 }
                 return false
             })
+
+            mockKnowledgeResourceShouldBeLink.mockReturnValue(false)
 
             renderComponent()
             expandComponent()

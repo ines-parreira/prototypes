@@ -9,6 +9,8 @@ import KnowledgeSourcePopover from './KnowledgeSourcePopover'
 import { AiAgentKnowledgeResourceTypeEnum } from './types'
 import { mapToKnowledgeSourceType } from './utils'
 
+import css from './KnowledgeSourceRenderer.less'
+
 type KnowledgeSourceRendererProps = {
     id: string
     resourceType: AiAgentKnowledgeResourceTypeEnum
@@ -76,7 +78,7 @@ const KnowledgeSourceRenderer = ({
             {(ref, eventHandlers) => (
                 <span
                     ref={ref as RefObject<HTMLSpanElement>}
-                    className={cn(className, {
+                    className={cn(css.knowledgeIconContainer, className, {
                         deleted: isDeleted,
                     })}
                     id={tooltipId}

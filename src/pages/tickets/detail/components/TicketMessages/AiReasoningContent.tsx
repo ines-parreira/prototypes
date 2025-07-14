@@ -61,7 +61,7 @@ export const AiAgentReasoningContent = ({
             const escapedPattern = `<<<${sanitizedContent}>>>`
             processedContent = processedContent.replace(
                 new RegExp(escapedPattern, 'g'),
-                `<kbd id="${index}" />`,
+                `<kbd id="${index}"></kbd>`,
             )
         }
     })
