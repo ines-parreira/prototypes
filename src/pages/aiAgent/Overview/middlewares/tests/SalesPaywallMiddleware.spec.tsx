@@ -1232,7 +1232,6 @@ describe('SalesPaywallMiddleware', () => {
 
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -1342,7 +1341,6 @@ describe('SalesPaywallMiddleware', () => {
 
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -1390,7 +1388,6 @@ describe('SalesPaywallMiddleware', () => {
 
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -1420,7 +1417,6 @@ describe('SalesPaywallMiddleware', () => {
 
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -1464,7 +1460,6 @@ describe('SalesPaywallMiddleware', () => {
 
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -1549,7 +1544,6 @@ describe('SalesPaywallMiddleware', () => {
 
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
