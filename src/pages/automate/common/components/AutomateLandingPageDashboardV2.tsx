@@ -5,10 +5,12 @@ import { useHistory } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
-import { useTicketHandleTimeTrend } from 'hooks/reporting/metricTrends'
+import { useAutomateMetricsTrend } from 'domains/reporting/hooks/automate/useAutomationDataset'
+import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import useAppSelector from 'hooks/useAppSelector'
-import { StatsFilters } from 'models/stat/types'
 import {
     AutomatedInteractionsMetric,
     AutomationRateMetric,
@@ -19,8 +21,6 @@ import { AutomateSavingsCard } from 'pages/automate/common/components/AutomateSa
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import Button from 'pages/common/components/button/Button'
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
-import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
-import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { getAgentCostsSettings } from 'state/currentAccount/selectors'
 import { getTimezone } from 'state/currentUser/selectors'
 

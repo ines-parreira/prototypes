@@ -1,4 +1,4 @@
-import { TooltipData } from 'pages/stats/types'
+import { TooltipData } from 'domains/reporting/pages/types'
 
 export const DECREASE_IN_RESOLUTION_TIME = 'Decrease in resolution time'
 export const AUTOMATION_RATE_LABEL = 'Automation rate'

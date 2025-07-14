@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
-import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { averageOrderValuePreviewQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'models/stat/types'
-import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { averageOrderValuePreviewQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 
 const fakeAverageOrderValue = 150
 

@@ -3,8 +3,8 @@ import { Skeleton } from '@gorgias/merchant-ui-kit'
 import {
     skeletonColumnsWidth,
     VoiceCallTableColumnName,
-} from 'pages/stats/voice/components/VoiceCallTable/constants'
-import { useVoiceQueueContext } from 'pages/stats/voice/hooks/useVoiceQueueContext'
+} from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { useVoiceQueueContext } from 'domains/reporting/pages/voice/hooks/useVoiceQueueContext'
 
 export const LOADING_TEST_ID = 'voice-queue-label-loading'
 

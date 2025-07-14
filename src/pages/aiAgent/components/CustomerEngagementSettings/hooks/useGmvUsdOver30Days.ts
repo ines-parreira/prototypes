@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { useGmvUsdOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
-import { ReportingGranularity } from 'models/reporting/types'
-import { useGmvUsdOverTimeSeries } from 'pages/stats/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getTimezone } from 'state/currentUser/selectors'
 
 export const useGmvUsdOver30Days = (storeIntegration?: number) => {

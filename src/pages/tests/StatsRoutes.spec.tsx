@@ -15,10 +15,10 @@ import {
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { VOICE_OVERVIEW_PAGE_TITLE } from 'domains/reporting/pages/voice/constants/voiceOverview'
+import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import * as billingFixtures from 'fixtures/billing'
 import { user } from 'fixtures/users'
-import { VOICE_OVERVIEW_PAGE_TITLE } from 'pages/stats/voice/constants/voiceOverview'
-import { StatsRoutes } from 'routes/StatsRoutes'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
@@ -40,25 +40,25 @@ jest.mock(
         ),
 )
 
-jest.mock('pages/stats/common/StatsNavbarContainer', () => () => (
+jest.mock('domains/reporting/pages/common/StatsNavbarContainer', () => () => (
     <div>Navbar</div>
 ))
 jest.mock(
     'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner',
     () => () => <div>ScriptTagMigrationBanner</div>,
 )
-jest.mock('pages/stats/voice/pages/VoiceOverview', () => () => (
+jest.mock('domains/reporting/pages/voice/pages/VoiceOverview', () => () => (
     <div>Voice Overview</div>
 ))
-jest.mock('pages/stats/voice/pages/VoiceAgents', () => () => (
+jest.mock('domains/reporting/pages/voice/pages/VoiceAgents', () => () => (
     <div>Voice Agents</div>
 ))
 jest.mock(
-    'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport',
+    'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport',
     () => () => <div>AI Agent Stats</div>,
 )
 jest.mock(
-    'pages/stats/automate/ai-agent/AiAgentStatsFilters',
+    'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters',
     () =>
         ({ children }: { children?: ReactNode }) =>
             children,

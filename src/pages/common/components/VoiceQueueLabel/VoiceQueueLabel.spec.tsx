@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 
 import { VoiceQueue } from '@gorgias/helpdesk-queries'
 
-import { VoiceQueueContext } from 'pages/stats/voice/components/VoiceQueue/VoiceQueueContext'
+import { VoiceQueueContext } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueContext'
 
 import VoiceQueueLabel, { LOADING_TEST_ID } from './VoiceQueueLabel'
 

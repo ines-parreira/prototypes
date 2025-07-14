@@ -13,9 +13,9 @@ import {
 } from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
+import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'
-import { HintTooltip } from 'pages/stats/common/HintTooltip'
 
 import {
     RING_TIME_MAX_VALUE,

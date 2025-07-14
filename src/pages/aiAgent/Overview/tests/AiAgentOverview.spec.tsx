@@ -11,6 +11,8 @@ import configureMockStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
+import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import {
@@ -21,9 +23,7 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
-import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
-import { initialState } from 'state/ui/stats/filtersSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 

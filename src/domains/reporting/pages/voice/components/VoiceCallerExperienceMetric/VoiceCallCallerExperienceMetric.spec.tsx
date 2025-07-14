@@ -1,0 +1,179 @@
+import React from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import * as DrillDownModalTrigger from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
+import VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import {
+    AVERAGE_TALK_TIME_METRIC_TITLE,
+    AVERAGE_WAIT_TIME_METRIC_TITLE,
+} from 'domains/reporting/pages/voice/constants/voiceOverview'
+import { useVoiceCallAverageTimeTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend'
+import { VoiceMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
+import { assumeMock, mockStore } from 'utils/testing'
+
+jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend')
+const mockUseVoiceCallAverageTimeTrend = assumeMock(
+    useVoiceCallAverageTimeTrend,
+)
+
+const DrillDownModalTriggerSpy = jest.spyOn(
+    DrillDownModalTrigger,
+    'DrillDownModalTrigger',
+)
+
+const averageWaitTimeMetricData = {
+    metricName: VoiceMetric.AverageWaitTime,
+    title: AVERAGE_WAIT_TIME_METRIC_TITLE,
+}
+
+const averageTalkTimeMetricData = {
+    metricName: VoiceMetric.AverageTalkTime,
+    title: AVERAGE_TALK_TIME_METRIC_TITLE,
+}
+
+const defaultTrendValue = {
+    data: {
+        prevValue: 10,
+        value: 15,
+    },
+    isError: false,
+    isFetching: false,
+}
+
+describe('<VoiceCallCallerExperienceMetric />', () => {
+    const store = mockStore({} as any)
+
+    const renderComponent = (
+        trendValue: MetricTrend,
+        metricData: VoiceMetrics = averageWaitTimeMetricData,
+    ) => {
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: '2021-02-03T23:59:59.999Z',
+                start_datetime: '2021-02-03T00:00:00.000Z',
+            },
+        }
+        mockUseVoiceCallAverageTimeTrend.mockReturnValue(trendValue)
+
+        return render(
+            <Provider store={store}>
+                <VoiceCallCallerExperienceMetric
+                    metricTrend={trendValue}
+                    title={'Total duration'}
+                    hint={'Total duration of the call'}
+                    statsFilters={statsFilters}
+                    metricData={metricData}
+                />
+            </Provider>,
+        )
+    }
+
+    beforeEach(() => {
+        store.clearActions()
+    })
+
+    it('should render', async () => {
+        const trendValue = {
+            data: {
+                prevValue: 10,
+                value: 15,
+            },
+            isError: false,
+            isFetching: false,
+        }
+
+        const { getByText, container } = renderComponent(trendValue)
+
+        expect(getByText('Total duration')).toBeInTheDocument()
+        expect(getByText('arrow_upward')).toBeInTheDocument()
+        expect(getByText('50%')).toHaveClass('negative')
+        expect(getByText('15s')).toBeInTheDocument()
+        fireEvent.mouseOver(getByText('50%'))
+        await waitFor(() => {
+            expect(container.querySelector('.tooltip')).toBeInTheDocument()
+            expect(
+                document.querySelector('.tooltip-inner')?.textContent,
+            ).toEqual(
+                `Vs. ${formatMetricValue(
+                    trendValue.data.prevValue,
+                )} on Jan 1st, 2024`,
+            )
+        })
+    })
+
+    it('should render no data', () => {
+        const trendValue = {
+            data: undefined,
+            isError: false,
+            isFetching: false,
+        }
+
+        const { getByText } = renderComponent(trendValue)
+
+        expect(getByText('Total duration')).toBeInTheDocument()
+        expect(getByText('-')).toBeInTheDocument()
+        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: false,
+            }),
+            {},
+        )
+    })
+
+    it('should render null values', () => {
+        const trendValue = {
+            data: {
+                prevValue: null,
+                value: null,
+            },
+            isError: false,
+            isFetching: false,
+        }
+
+        const { getByText } = renderComponent(trendValue)
+
+        expect(getByText('Total duration')).toBeInTheDocument()
+        expect(getByText('-')).toBeInTheDocument()
+    })
+
+    it('should be clickable when value is a number', () => {
+        const trendValue = {
+            data: {
+                prevValue: 10,
+                value: 15,
+            },
+            isError: false,
+            isFetching: false,
+        }
+
+        renderComponent(trendValue)
+
+        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: true,
+            }),
+            {},
+        )
+    })
+
+    it.each([averageWaitTimeMetricData, averageTalkTimeMetricData])(
+        'should pass correct props to DrillDownModalTrigger',
+        (metric) => {
+            renderComponent(defaultTrendValue, metric)
+
+            expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    enabled: true,
+                    metricData: metric,
+                }),
+                {},
+            )
+        },
+    )
+})

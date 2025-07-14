@@ -1,9 +1,9 @@
 import { Card } from '@gorgias/analytics-ui-kit'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
+import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
+import { TooltipData } from 'domains/reporting/pages/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
-import { TooltipData } from 'pages/stats/types'
 
 import {
     AIArticleRecommendationItem,

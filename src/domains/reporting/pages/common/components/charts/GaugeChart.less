@@ -1,0 +1,58 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens.less';
+@import (reference) '~css/typography';
+
+:local {
+    .chart {
+        border-radius: 4px;
+        display: flex;
+        gap: 1px;
+        height: 16px;
+        margin-bottom: var(--layout-spacing-s);
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .legend {
+        float: right;
+    }
+
+    .tooltip {
+        :global .tooltip-inner {
+            background-color: var(--neutral-grey-0);
+            border: 1px solid var(--neutral-grey-1);
+            color: var(--indigo);
+            font-size: 14px;
+            padding: var(--layout-spacing-s);
+            box-shadow: none;
+        }
+
+        :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
+            border-top-color: var(--neutral-grey-1) !important;
+        }
+
+        :global .bs-tooltip-auto[x-placement^='top'] .arrow::after {
+            content: '';
+            margin-top: 0;
+            border-width: 0.4rem 0.4rem 0;
+            position: absolute;
+            top: -1px;
+            border-color: var(--neutral-grey-0) transparent transparent
+                transparent;
+            border-style: solid;
+        }
+    }
+
+    .noData {
+        .body-regular();
+        text-align: center;
+        color: var(--neutral-grey-5);
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .noDataTitle {
+        font-weight: @body-semibold-font-weight;
+    }
+}

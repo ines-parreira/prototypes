@@ -6,19 +6,19 @@ import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
-import { initialState as statsInitialState } from 'state/stats/statsSlice'
-import { initialState as filtersInitialState } from 'state/ui/stats/filtersSlice'
+import { initialState as statsInitialState } from 'domains/reporting/state/stats/statsSlice'
+import { initialState as filtersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentAnalytics } from '../AiAgentAnalytics'
 
 jest.mock(
-    'pages/stats/automate/aiSalesAgent/components/SalesOverview',
+    'domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview',
     () => () => <div>Sales Overview</div>,
 )
 
-jest.mock('pages/stats/DefaultStatsFilters', () => ({
+jest.mock('domains/reporting/pages/DefaultStatsFilters', () => ({
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))

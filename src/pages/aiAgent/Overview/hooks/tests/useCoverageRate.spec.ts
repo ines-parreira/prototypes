@@ -1,8 +1,8 @@
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
+import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
-import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
-import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { StatsFilters } from 'models/stat/types'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useCoverageRate } from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
 import { assumeMock } from 'utils/testing'
@@ -11,10 +11,10 @@ import { renderHook } from 'utils/testing/renderHook'
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
-jest.mock('hooks/reporting/useMultipleMetricsTrend')
+jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
 
-jest.mock('hooks/reporting/automate/useAutomationRateTrend')
+jest.mock('domains/reporting/hooks/automate/useAutomationRateTrend')
 const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
 
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate')

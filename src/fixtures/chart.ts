@@ -3,7 +3,7 @@ import moment from 'moment-timezone'
 import {
     OneDimensionalDataItem,
     TwoDimensionalDataItem,
-} from 'pages/stats/types'
+} from 'domains/reporting/pages/types'
 
 export const ticketsCreatedDataItem: TwoDimensionalDataItem = {
     label: 'Tickets created',

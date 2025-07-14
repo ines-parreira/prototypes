@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { getRGB } from 'gorgias-design-system/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
@@ -16,7 +17,6 @@ import TopProductsCard from 'pages/aiAgent/Onboarding/components/TopProductsCard
 import TrackerCircleCard from 'pages/aiAgent/Onboarding/components/TrackerCircleCard/TrackerCircleCard'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
 import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
-import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { compactInteger } from 'utils'
 

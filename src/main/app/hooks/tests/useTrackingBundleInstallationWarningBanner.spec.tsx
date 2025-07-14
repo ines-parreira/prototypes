@@ -1,10 +1,12 @@
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
-import { useWarningBannerIsDisplayed } from 'pages/stats/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
+import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useTrackingBundleInstallationWarningBanner } from '../useTrackingBundleInstallationWarningBanner'
 
-jest.mock('pages/stats/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed')
+jest.mock(
+    'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed',
+)
 const mockUseWarningBannerIsDisplayed = jest.mocked(useWarningBannerIsDisplayed)
 
 const mockedAddBanner = jest.fn<unknown, [ContextBanner]>()

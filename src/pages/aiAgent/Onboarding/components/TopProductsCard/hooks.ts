@@ -1,17 +1,17 @@
 import { useMemo } from 'react'
 
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
-import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
-} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { topProductRecommendationsQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
-import { isFilterWithLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { StatsFilters } from 'models/stat/types'
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { topProductRecommendationsQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { isFilterWithLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { mapMetrics } from 'domains/reporting/utils/reporting'
+import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { mockedProducts } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
-import { mapMetrics } from 'utils/reporting'
 
 let useTopProductsImplementation = ({
     filters,

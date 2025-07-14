@@ -3,16 +3,16 @@ import React from 'react'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { campaignWithABGroup } from 'fixtures/abGroup'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { useGetTableStat } from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import { assumeMock, renderWithStore } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
 import VariantsList from '../VariantList'
 
-jest.mock('pages/stats/convert/hooks/stats/useGetTableStat')
+jest.mock('domains/reporting/pages/convert/hooks/stats/useGetTableStat')
 const useGetTableStatMock = assumeMock(useGetTableStat)
 
 describe('<VariantsList />', () => {

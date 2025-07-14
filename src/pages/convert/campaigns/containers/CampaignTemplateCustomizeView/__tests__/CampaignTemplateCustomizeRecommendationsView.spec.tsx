@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import routerDom, { BrowserRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import { campaign } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'
 import { utmConfiguration } from 'fixtures/utmConfiguration'
@@ -16,7 +17,6 @@ import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampai
 import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import { CART_ABANDONMENT } from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import { assumeMock } from 'utils/testing'
 
 import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
@@ -28,7 +28,7 @@ jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 
-jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
+jest.mock('domains/reporting/pages/convert/hooks/useConvertGeneralSettings')
 const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

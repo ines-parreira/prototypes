@@ -7,18 +7,18 @@ import { shallowEqual } from 'react-redux'
 import {
     fetchMetricPerDimension,
     ReportingMetricItem,
-} from 'hooks/reporting/useMetricPerDimension'
+} from 'domains/reporting/hooks/useMetricPerDimension'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { reportingKeys } from 'domains/reporting/models/queries'
+import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
-import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { reportingKeys } from 'models/reporting/queries'
-import { gmvInfluencedQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getShoppingAssistantExpirationDays } from 'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { formatAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 

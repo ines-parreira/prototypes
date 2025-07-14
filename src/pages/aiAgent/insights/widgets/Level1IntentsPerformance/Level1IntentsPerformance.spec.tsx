@@ -1,12 +1,10 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
+import { useAIAgentMetrics } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
+import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { MISSING_AI_AGENT_USER_ID } from 'domains/reporting/hooks/automate/utils'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
-import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
-import { MISSING_AI_AGENT_USER_ID } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
 import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
@@ -17,17 +15,20 @@ jest.mock(
 )
 const IntentPerformanceMock = assumeMock(IntentsPerformance)
 
-jest.mock('hooks/reporting/automate/useAIAgentInsightsDataset')
+jest.mock('domains/reporting/hooks/automate/useAIAgentInsightsDataset')
 const useAIAgentMetricsMock = useAIAgentMetrics as jest.Mock
 
-jest.mock('hooks/reporting/automate/useAutomateFilters')
+jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 const useAutomateFiltersMock = useAutomateFilters as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-jest.mock('hooks/reporting/automate/useAIAgentUserId')
+jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
+
+jest.mock('domains/reporting/state/stats/selectors')
+
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
     () => ({

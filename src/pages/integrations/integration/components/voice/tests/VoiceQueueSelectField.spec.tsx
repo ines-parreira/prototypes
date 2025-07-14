@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 
-import { useVoiceQueueSearch } from 'hooks/reporting/common/useVoiceQueueSearch'
+import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
@@ -24,7 +24,7 @@ jest.mock(
         }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
-jest.mock('hooks/reporting/common/useVoiceQueueSearch')
+jest.mock('domains/reporting/hooks/common/useVoiceQueueSearch')
 const useVoiceQueueSearchMock = assumeMock(useVoiceQueueSearch)
 
 const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)

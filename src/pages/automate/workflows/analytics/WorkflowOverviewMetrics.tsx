@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 import moment from 'moment'
 
-import { WorkflowTrendMetrics } from 'hooks/reporting/automate/types'
-import { MetricTrend } from 'hooks/reporting/useMetricTrend'
-import { Period } from 'models/stat/types'
+import { WorkflowTrendMetrics } from 'domains/reporting/hooks/automate/types'
+import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import { Period } from 'domains/reporting/models/stat/types'
+import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { comparedPeriodString } from 'domains/reporting/pages/common/utils'
 import { getTrendPropsToPercent } from 'pages/automate/automate-metrics/utils'
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import { comparedPeriodString } from 'pages/stats/common/utils'
 
 import {
     displayMetric,

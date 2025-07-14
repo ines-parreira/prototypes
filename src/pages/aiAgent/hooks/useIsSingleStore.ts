@@ -1,5 +1,5 @@
+import { getStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-import { getStoreIntegrations } from 'state/stats/selectors'
 
 /**
  * Custom hook to check if the current account has a single store

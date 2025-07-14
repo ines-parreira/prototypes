@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import cn from 'classnames'
 
+import { CampaignSettingType } from 'domains/reporting/pages/convert/components/CampaignTableStats/constants'
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SettingRequest } from 'models/convert/settings/types'
 import Button from 'pages/common/components/button/Button'
@@ -19,8 +21,6 @@ import {
     DisclaimerSettings,
 } from 'pages/convert/settings/types'
 import settingsCss from 'pages/settings/settings.less'
-import { CampaignSettingType } from 'pages/stats/convert/components/CampaignTableStats/constants'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { toJS } from 'utils'

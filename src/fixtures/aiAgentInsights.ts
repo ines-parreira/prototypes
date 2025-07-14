@@ -1,7 +1,7 @@
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
+} from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 
 export const emptyMetric = {
     isFetching: false,

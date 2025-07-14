@@ -1,4 +1,4 @@
-import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
 // First data point is 2025-04-10, so 25 days ago
 // Multiplier -> 365 / 25 = 14.6

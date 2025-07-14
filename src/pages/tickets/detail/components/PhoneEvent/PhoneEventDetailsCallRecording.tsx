@@ -1,6 +1,7 @@
 import { Map } from 'immutable'
 
-import { formatDuration } from '../../../../stats/common/utils'
+import { formatDuration } from 'domains/reporting/pages/common/utils'
+
 import DownloadableDeletableRecording from './DownloadableDeletableRecording'
 
 type OwnProps = {

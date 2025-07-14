@@ -1,23 +1,23 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { SegmentEvent } from 'common/segment'
-import { MetricTrend } from 'hooks/reporting/useMetricTrend'
-import { useGridSize } from 'hooks/useGridSize'
-import type { Period } from 'models/stat/types'
-import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
-import MetricCard from 'pages/stats/common/components/MetricCard'
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
-import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
-import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { Period } from 'domains/reporting/models/stat/types'
+import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
+import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import {
     formatMetricValue,
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
-} from 'pages/stats/common/utils'
-import { TooltipData } from 'pages/stats/types'
-import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
-import { AIInsightsMetrics } from 'state/ui/stats/drillDownSlice'
+} from 'domains/reporting/pages/common/utils'
+import { TooltipData } from 'domains/reporting/pages/types'
+import { getBadgeTooltipForPreviousPeriod } from 'domains/reporting/pages/utils'
+import { AIInsightsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { useGridSize } from 'hooks/useGridSize'
 
 import css from './IntentPerformance.less'
 

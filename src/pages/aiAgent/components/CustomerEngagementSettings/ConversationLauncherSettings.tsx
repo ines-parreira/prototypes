@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 import { Button, CheckBoxField, Label } from '@gorgias/merchant-ui-kit'
 
-import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'

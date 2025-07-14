@@ -1,0 +1,154 @@
+import { FunctionComponent } from 'react'
+
+import {
+    defaultEnrichmentFields,
+    DrillDownDataHook,
+    useEnrichedDrillDownData,
+} from 'domains/reporting/hooks/useDrillDownData'
+import { EnrichmentFields } from 'domains/reporting/models/types'
+import { AiInsightsMetricConfig } from 'domains/reporting/pages/automate/AiInsightsMetricConfig'
+import { AiSalesAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
+import {
+    ConvertDrillDownRowData,
+    formatTicketDrillDownRowData,
+    TicketDrillDownRowData,
+    VoiceCallDrillDownRowData,
+} from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
+import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
+import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
+import {
+    ColumnConfig,
+    Domain,
+} from 'domains/reporting/pages/common/drill-down/types'
+import { ConvertDrillDownConfig } from 'domains/reporting/pages/convert/constants/CampaignsDrillDownConfig'
+import {
+    SatisfactionAverageSurveyScoreMetricConfig,
+    SatisfactionMetricConfig,
+} from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionMetricsConfig'
+import { SlaMetricConfig } from 'domains/reporting/pages/sla/SlaConfig'
+import { AgentsColumnConfig } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
+import {
+    AutoQAAgentsColumnConfig,
+    AutoQAAgentsTableColumn,
+} from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { TrendCardConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
+import { ChannelColumnConfig } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
+import {
+    OverviewMetric,
+    OverviewMetricConfig,
+} from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import { TagsMetricConfig } from 'domains/reporting/pages/ticket-insights/tags/TagsMetricConfig'
+import { TicketFieldsMetricConfig } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
+import { TicketVolumeConfig } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/ticketVolumeConfig'
+import { ProductInsightsColumnWithDrillDownConfig } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
+import {
+    VoiceOfCustomerMetricWithDrillDown,
+    VoiceOfCustomerMetricWithDrillDownConfig,
+} from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
+import { VoiceDrillDownConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceDrillDownConfig'
+import {
+    AgentMetricColumn,
+    DrillDownMetric,
+    ProductMetricColumn,
+} from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { ProductsPerTicketColumn } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
+import {
+    AgentsTableColumn,
+    AIInsightsMetric,
+    AutoQAMetric,
+    ChannelsTableColumns,
+    ProductInsightsTableColumns,
+    SatisfactionAverageSurveyScoreMetric,
+    SatisfactionMetric,
+    SlaMetric,
+    TagsMetric,
+    TicketFieldsMetric,
+} from 'domains/reporting/state/ui/stats/types'
+
+export type DrillDownHook = DrillDownDataHook<
+    TicketDrillDownRowData | ConvertDrillDownRowData | VoiceCallDrillDownRowData
+>
+
+export type DomainConfig<T extends string> = {
+    drillDownHook: DrillDownHook
+    tableComponent: FunctionComponent<{
+        metricData: DrillDownMetric
+        columnConfig: ColumnConfig
+    }>
+    infoBarObjectType: string
+    isMetricDataDownloadable: boolean
+    modalTriggerTooltipText: string
+    metricsConfig: Record<T, MetricConfig>
+}
+
+type MetricConfig = {
+    showMetric: boolean
+    domain: Domain
+}
+
+const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
+    useEnrichedDrillDownData(
+        getDrillDownQuery(metricData),
+        metricData,
+        defaultEnrichmentFields,
+        formatTicketDrillDownRowData,
+        EnrichmentFields.TicketId,
+    )
+
+const TicketDrillDownConfig: DomainConfig<
+    | OverviewMetric
+    | AgentsTableColumn
+    | AgentMetricColumn
+    | ChannelsTableColumns
+    | AutoQAAgentsTableColumn
+    | AutoQAMetric
+    | SatisfactionMetric
+    | SatisfactionAverageSurveyScoreMetric
+    | SlaMetric
+    | TagsMetric
+    | TicketFieldsMetric
+    | AIInsightsMetric
+    | ProductMetricColumn
+    | VoiceOfCustomerMetricWithDrillDown
+    | ProductInsightsTableColumns.ReturnMentions
+    | ProductsPerTicketColumn.TicketVolume
+> = {
+    drillDownHook: useTicketDrillDownHook,
+    tableComponent: TicketDrillDownTableContent,
+    infoBarObjectType: 'tickets',
+    isMetricDataDownloadable: true,
+    modalTriggerTooltipText: 'Click to view tickets',
+    metricsConfig: {
+        ...OverviewMetricConfig,
+        ...AgentsColumnConfig,
+        ...ChannelColumnConfig,
+        ...AutoQAAgentsColumnConfig,
+        ...TrendCardConfig,
+        ...SatisfactionMetricConfig,
+        ...SatisfactionAverageSurveyScoreMetricConfig,
+        ...SlaMetricConfig,
+        ...TagsMetricConfig,
+        ...TicketFieldsMetricConfig,
+        ...AiInsightsMetricConfig,
+        ...ProductInsightsColumnWithDrillDownConfig,
+        ...VoiceOfCustomerMetricWithDrillDownConfig,
+        ...TicketVolumeConfig,
+    },
+}
+
+export const DomainsConfig = {
+    [Domain.Convert]: ConvertDrillDownConfig,
+    [Domain.Ticket]: TicketDrillDownConfig,
+    [Domain.Voice]: VoiceDrillDownConfig,
+    [Domain.AiSalesAgent]: AiSalesAgentDrillDownConfig,
+}
+
+export const MetricsConfig: Record<
+    DrillDownMetric['metricName'],
+    MetricConfig
+> = {
+    ...TicketDrillDownConfig.metricsConfig,
+    ...ConvertDrillDownConfig.metricsConfig,
+    ...VoiceDrillDownConfig.metricsConfig,
+    ...AiSalesAgentDrillDownConfig.metricsConfig,
+}

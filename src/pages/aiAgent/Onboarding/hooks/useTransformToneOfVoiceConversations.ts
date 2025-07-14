@@ -7,10 +7,11 @@ import moment from 'moment/moment'
 
 import { AttachmentEnum } from 'common/types'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { TransformToneOfVoiceConversation } from 'models/aiAgent/types'
-import { StatsFilters } from 'models/stat/types'
 import {
     PreviewId,
     PRODUCT_RECOMMENDATION_MESSAGE_ID,
@@ -22,7 +23,6 @@ import {
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTimezone } from 'state/currentUser/selectors'
 

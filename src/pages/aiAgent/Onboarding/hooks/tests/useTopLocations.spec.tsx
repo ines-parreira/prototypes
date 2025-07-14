@@ -1,20 +1,20 @@
 import { fromJS } from 'immutable'
 
-import { shopifyIntegration } from 'fixtures/integrations'
-import { useMetric } from 'hooks/reporting/useMetric'
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
-import useAppSelector from 'hooks/useAppSelector'
+import { useMetric } from 'domains/reporting/hooks/useMetric'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
-} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { shopifyIntegration } from 'fixtures/integrations'
+import useAppSelector from 'hooks/useAppSelector'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useTopLocations } from '../useTopLocations'
 
 jest.mock('hooks/useAppSelector')
-jest.mock('hooks/reporting/useMetricPerDimension')
-jest.mock('hooks/reporting/useMetric')
+jest.mock('domains/reporting/hooks/useMetricPerDimension')
+jest.mock('domains/reporting/hooks/useMetric')
 
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseMetricPerDimension = useMetricPerDimension as jest.Mock

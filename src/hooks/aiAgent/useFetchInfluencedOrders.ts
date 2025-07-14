@@ -6,10 +6,13 @@ import {
     AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersFilterMember,
-} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { usePostReporting } from 'models/reporting/queries'
-import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
-import { formatReportingQueryDate } from 'utils/reporting'
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { usePostReporting } from 'domains/reporting/models/queries'
+import {
+    ReportingFilterOperator,
+    ReportingQuery,
+} from 'domains/reporting/models/types'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 import { useCanUseAiSalesAgent } from './useCanUseAiSalesAgent'
 

@@ -12,8 +12,16 @@ import { useParams } from 'react-router-dom'
 
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
-import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
+import { useAIAgentInsightsDataset } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
+import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
+import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
+import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
+import {
+    getPaginatedIntents,
+    isSortingMetricLoading,
+    pageSet,
+} from 'domains/reporting/state/ui/stats/insightsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -29,14 +37,6 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ChartCard from 'pages/stats/common/components/ChartCard'
-import css from 'pages/stats/common/components/Table/BreakdownTable.less'
-import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import {
-    getPaginatedIntents,
-    isSortingMetricLoading,
-    pageSet,
-} from 'state/ui/stats/insightsSlice'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 import { useIntentQuery } from './hooks/useIntentQuery'

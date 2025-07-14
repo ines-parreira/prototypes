@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { useVoiceQueueSearch } from 'hooks/reporting/common/useVoiceQueueSearch'
+import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import useId from 'hooks/useId'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

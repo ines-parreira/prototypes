@@ -1,0 +1,63 @@
+import { TicketStatus } from 'business/types/ticket'
+import {
+    TicketQAScoreCubeWithJoins,
+    TicketQAScoreMeasure,
+} from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    ReportingFilterOperator,
+    ReportingQuery,
+} from 'domains/reporting/models/types'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    perDimensionQueryFactory,
+    statsFiltersToReportingFilters,
+    TicketStatsFiltersMembers,
+} from 'domains/reporting/utils/reporting'
+import { OrderDirection } from 'models/api/types'
+
+export const languageProficiencyQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
+    measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
+    dimensions: [],
+    segments: [],
+    filters: [
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+        {
+            member: TicketDimension.Status,
+            operator: ReportingFilterOperator.Equals,
+            values: [TicketStatus.Closed],
+        },
+    ],
+    timezone,
+    ...(sorting
+        ? {
+              order: [
+                  [
+                      TicketQAScoreMeasure.AverageLanguageProficiencyScore,
+                      sorting,
+                  ],
+              ],
+          }
+        : {}),
+})
+
+export const languageProficiencyPerAgentQueryFactory = perDimensionQueryFactory(
+    languageProficiencyQueryFactory,
+    TicketDimension.AssigneeUserId,
+)
+
+export const languageProficiencyDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
+    ...languageProficiencyQueryFactory(filters, timezone, sorting),
+    measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
+    dimensions: [TicketDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+})

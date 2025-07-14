@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
 
+import GaugeAddon from 'domains/reporting/pages/common/components/charts/GaugeAddon'
+import { DistributionCategoryCell } from 'domains/reporting/pages/ticket-insights/components/DistributionCategoryCell'
 import { OrderDirection } from 'models/api/types'
-import GaugeAddon from 'pages/stats/common/components/charts/GaugeAddon'
-import { DistributionCategoryCell } from 'pages/stats/ticket-insights/components/DistributionCategoryCell'
 
 import BodyCell from './cells/BodyCell'
 import HeaderCell from './cells/HeaderCell'

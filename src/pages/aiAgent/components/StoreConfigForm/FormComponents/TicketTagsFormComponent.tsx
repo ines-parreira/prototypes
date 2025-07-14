@@ -3,10 +3,10 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { filter } from 'lodash'
 import { Link } from 'react-router-dom'
 
+import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import { Value } from 'pages/common/forms/SelectField/types'
-import SelectFilter from 'pages/stats/common/SelectFilter'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import { notUndefined } from 'utils/types'
 

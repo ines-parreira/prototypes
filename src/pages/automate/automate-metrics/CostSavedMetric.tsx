@@ -1,7 +1,7 @@
-import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
-import MetricCard from 'pages/stats/common/components/MetricCard'
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import { formatCurrency } from 'pages/stats/common/utils'
+import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
+import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { formatCurrency } from 'domains/reporting/pages/common/utils'
 
 import { COST_SAVED } from './constants'
 import { BaseAutomateMetricProps } from './types'

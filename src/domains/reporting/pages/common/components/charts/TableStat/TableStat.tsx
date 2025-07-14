@@ -1,0 +1,683 @@
+import React, { Component, ReactText } from 'react'
+
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import _isFunction from 'lodash/isFunction'
+import _trim from 'lodash/trim'
+import _truncate from 'lodash/truncate'
+import moment from 'moment-timezone'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Table } from 'reactstrap'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import expandDown from 'assets/img/infobar/expand-down.svg'
+import expandUp from 'assets/img/infobar/expand-up-blue.svg'
+import {
+    SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
+    SATISFACTION_SURVEY_MAX_SCORE,
+    SATISFACTION_SURVEY_MIN_SCORE,
+    SELF_SERVICE_WORKFLOWS_PERFORMANCE,
+    StatConfigCallbacks,
+    StatMap,
+    StatValueType,
+    TICKET_MAX_SUBJECT_LENGTH,
+} from 'domains/reporting/config/stats'
+import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import DistributionVariantStat, {
+    DistributionStatVariant,
+} from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
+import ProductCell from 'domains/reporting/pages/common/components/charts/TableStat/cells/ProductCell'
+import css from 'domains/reporting/pages/common/components/charts/TableStat/TableStat.less'
+import TicketDetailsStat from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
+import StatDifference from 'domains/reporting/pages/common/components/StatDifference'
+import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'
+import {
+    formatComparedPeriodString,
+    formatCurrency,
+    formatDuration,
+} from 'domains/reporting/pages/common/utils'
+import { Integration, StoreIntegration } from 'models/integration/types'
+import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import withRouter from 'pages/common/utils/withRouter'
+
+type OwnProps = {
+    data: Map<any, any>
+    config: StatMap
+    meta: Map<any, any>
+    name?: string
+    context: {
+        tagColors: Map<any, any> | null
+    }
+    integrations?: Integration[]
+    selfServiceConfigurations?: SelfServiceConfiguration[]
+    workflowConfigurations?: WorkflowConfigurationShallow[]
+    statsFilters?: LegacyStatsFilters
+}
+
+type State = {
+    expanded: boolean
+}
+
+export class TableStat extends Component<
+    OwnProps & RouteComponentProps,
+    State
+> {
+    state = {
+        expanded: false,
+    }
+
+    _getTooltipId = (axis: Map<any, any>) =>
+        `${(axis.get('name') as string)
+            .replace(/%/g, 'percent')
+            .replace(/ /g, '-')}-tooltip`
+
+    _getShopTypeAndShopName = (shopIntegrationId: number) => {
+        const shopIntegration = this.props.integrations?.find(
+            (integration) => integration.id === shopIntegrationId,
+        ) as Maybe<StoreIntegration>
+
+        if (!shopIntegration) {
+            return [null, null] as const
+        }
+
+        return [
+            shopIntegration.type,
+            getShopNameFromStoreIntegration(shopIntegration),
+        ] as const
+    }
+
+    // Render a table cell depending on its value type (percent, date, delta, etc.)
+    _renderCell = (
+        line: List<any>,
+        metric: Map<any, any>,
+        lineIndex: number,
+        metricIndex: number,
+    ) => {
+        const { meta, config, context, data } = this.props
+        const axis = data.getIn(['axes', 'x', metricIndex]) as Map<any, any>
+        const type = axis.get('type')
+        const callbackData = {
+            line,
+            value: metric.get('value'),
+            lineIndex,
+            metricIndex,
+            axis: axis.toJS(),
+        }
+        const callbackContext = {
+            tagColors: context.tagColors,
+        }
+
+        let callback = config.getIn([
+            'callbacks',
+            'cell',
+        ]) as StatConfigCallbacks['cell']
+        if (!_isFunction(callback)) {
+            callback = ({ value }) => value
+        }
+
+        switch (type) {
+            case StatValueType.Issues: {
+                const value = (metric.get('value') as Map<any, any>).sort(
+                    (a, b) => b - a,
+                )
+                return (
+                    <div>
+                        {value
+                            .map((count: string, issue: string) => {
+                                const translatedIssue = (
+                                    REASONS_DROPDOWN_OPTIONS as SelectableOption[]
+                                ).find(
+                                    (option) => option.value === issue,
+                                )?.label
+
+                                return (
+                                    <div key={issue}>
+                                        {translatedIssue || issue} ({count})
+                                    </div>
+                                )
+                            })
+                            .toArray()}
+                    </div>
+                )
+            }
+            case StatValueType.TicketDetails: {
+                const details = (
+                    metric.get('details') as Map<any, any>
+                )?.toJS() as Partial<Record<string, number>>
+                return (
+                    <div className="fit-cell">
+                        <TicketDetailsStat
+                            agentId={line.getIn(['0', 'value', 'id'])}
+                            agentName={line.getIn(['0', 'value', 'name'])}
+                            openTickets={
+                                callback(
+                                    callbackData,
+                                    callbackContext,
+                                ) as number
+                            }
+                            channelsBreakdown={details}
+                        />
+                    </div>
+                )
+            }
+            case StatValueType.OnlineTime: {
+                const tooltipId = `${this._getTooltipId(axis)}-${lineIndex}`
+                const value = Math.floor(metric.get('value', 2) / 60) * 60
+
+                return (
+                    <div>
+                        <div
+                            className={classnames(css.statusDot, {
+                                [css.isOnline]: metric.getIn([
+                                    'extra',
+                                    'isOnline',
+                                ]),
+                            })}
+                            id={tooltipId}
+                        />
+                        {(metric.getIn(['extra', 'firstSession']) ||
+                            metric.getIn(['extra', 'lastSession'])) && (
+                            <Tooltip target={tooltipId}>
+                                {metric.getIn(['extra', 'timezone']) && (
+                                    <>
+                                        <b>Timezone </b>
+                                        {metric.getIn(['extra', 'timezone'])}
+                                        <br />
+                                    </>
+                                )}
+                                {metric.getIn(['extra', 'lastSession']) ? (
+                                    <>
+                                        Session ended at{' '}
+                                        {moment(
+                                            metric.getIn([
+                                                'extra',
+                                                'lastSession',
+                                            ]),
+                                        ).format('hh:mm a')}
+                                    </>
+                                ) : metric.getIn(['extra', 'firstSession']) ? (
+                                    <>
+                                        Session started at{' '}
+                                        {moment(
+                                            metric.getIn([
+                                                'extra',
+                                                'firstSession',
+                                            ]),
+                                        ).format('hh:mm a')}
+                                    </>
+                                ) : null}
+                            </Tooltip>
+                        )}
+                        <span
+                            className={!value ? css.emptyDuration : undefined}
+                        >
+                            {callback(
+                                {
+                                    ...callbackData,
+                                    value: value
+                                        ? formatDuration(value)
+                                        : 'No information',
+                                },
+                                context,
+                            )}
+                        </span>
+                    </div>
+                )
+            }
+            case StatValueType.OnlineState: {
+                const isOnlineOrOffline = metric.getIn([
+                    'extra',
+                    'isOnline',
+                ]) as boolean
+
+                return (
+                    <div>
+                        <Badge type={isOnlineOrOffline ? 'success' : 'grey'}>
+                            {isOnlineOrOffline ? 'Online' : 'Offline'}
+                        </Badge>
+                    </div>
+                )
+            }
+            case StatValueType.User: {
+                return (
+                    <div>
+                        <div className={css.userName}>
+                            {metric.getIn(['value', 'name'])
+                                ? callback(
+                                      {
+                                          ...callbackData,
+                                          value: metric.getIn([
+                                              'value',
+                                              'name',
+                                          ]),
+                                      },
+                                      context,
+                                  )
+                                : callback(
+                                      { ...callbackData, value: 'Unassigned' },
+                                      context,
+                                  )}
+                        </div>
+                    </div>
+                )
+            }
+            case StatValueType.Delta: {
+                const previousStartDatetime = moment(
+                    meta.get('previous_start_datetime'),
+                )
+                const previousEndDatetime = moment(
+                    meta.get('previous_end_datetime'),
+                )
+
+                const tooltipDelta = formatComparedPeriodString(
+                    previousStartDatetime,
+                    previousEndDatetime,
+                )
+
+                const id = `difference-${lineIndex}`
+
+                return (
+                    <span>
+                        <span id={id}>
+                            <StatDifference
+                                label={(
+                                    callback as StatConfigCallbacks<ReactText>['cell']
+                                )(callbackData, callbackContext)}
+                                value={metric.get('value')}
+                                moreIsBetter={config.getIn([
+                                    'tableOptions',
+                                    'moreIsBetter',
+                                ])}
+                                isPercentage={config.getIn([
+                                    'tableOptions',
+                                    'isDeltaPercentage',
+                                ])}
+                            />
+                        </span>
+                        <Tooltip placement="top" target={id}>
+                            {tooltipDelta}
+                        </Tooltip>
+                    </span>
+                )
+            }
+            case StatValueType.SatisfactionScore: {
+                return (
+                    <DistributionVariantStat
+                        minValue={SATISFACTION_SURVEY_MIN_SCORE}
+                        maxValue={SATISFACTION_SURVEY_MAX_SCORE}
+                        currentValue={metric.get('value')}
+                        variant={DistributionStatVariant.Star}
+                    />
+                )
+            }
+            case StatValueType.Percent: {
+                return callback(
+                    {
+                        ...callbackData,
+                        value: `${metric.get('value') as number}%`,
+                    },
+                    callbackContext,
+                )
+            }
+            case StatValueType.QuickResponseAutomationRate: {
+                const value = metric.get('value') as number
+                const [shopType, shopName] = this._getShopTypeAndShopName(
+                    metric.get('shop_integration_id'),
+                )
+
+                if (!shopType || !shopName) {
+                    return `${value}%`
+                }
+
+                return (
+                    <div className={css.flexAlignCenter}>
+                        <div className={css.percentageValue}>{value}% </div>
+                    </div>
+                )
+            }
+            case StatValueType.ArticleRecommendationAutomationRate: {
+                const value = metric.get('value') as number
+                // TODO: Put threshold again when defined
+                const hasLowAutomationRate = false // value < 40
+                const tooltipId = `${StatValueType.ArticleRecommendationAutomationRate}-${lineIndex}-tooltip`
+
+                return (
+                    <>
+                        {value}%{' '}
+                        {hasLowAutomationRate && (
+                            <>
+                                <span
+                                    className={classnames(
+                                        'material-icons',
+                                        css.lowAutomationRateIcon,
+                                    )}
+                                    id={tooltipId}
+                                >
+                                    error
+                                </span>
+                                <Tooltip placement="top" target={tooltipId}>
+                                    Review tickets to ensure relevant <br />
+                                    questions are addressed by this article
+                                </Tooltip>
+                            </>
+                        )}
+                    </>
+                )
+            }
+            case StatValueType.WorkflowName: {
+                const value = metric.get('value') as string
+
+                return (
+                    this.props.workflowConfigurations?.find(
+                        (configuration) => configuration.id === value,
+                    )?.name ?? value
+                )
+            }
+            case StatValueType.WorkflowAutomationRate: {
+                const value = metric.get('value') as number
+                const [shopType, shopName] = this._getShopTypeAndShopName(
+                    metric.get('shop_integration_id'),
+                )
+                const configurationId = metric.get('configuration_id') as string
+                const workflowConfiguration =
+                    this.props.workflowConfigurations?.find(
+                        (configuration) => configuration.id === configurationId,
+                    )
+
+                if (!workflowConfiguration || !shopType || !shopName) {
+                    return `${value}%`
+                }
+
+                const workflowMode = 'analytics'
+
+                const period = this.props.statsFilters?.period
+
+                return (
+                    <div className={css.flexAlignCenter}>
+                        <span className={css.percentageValue}>{value}%</span>
+                        <Link
+                            to={{
+                                pathname: `/app/automation/${shopType}/${shopName}/flows/${workflowMode}/${configurationId}`,
+                                search: `?start_datetime=${period?.start_datetime}&end_datetime=${period?.end_datetime}`,
+                                state: {
+                                    from: 'stats-automate-performance-by-features',
+                                },
+                            }}
+                        >
+                            Analyze Flow
+                        </Link>
+                    </div>
+                )
+            }
+            case StatValueType.Date: {
+                return (
+                    <div className="fit-cell">
+                        <DatetimeLabel dateTime={metric.get('value')} />
+                    </div>
+                )
+            }
+            case StatValueType.Currency: {
+                return formatCurrency(
+                    metric.get('value'),
+                    metric.get('currency'),
+                ) as string
+            }
+            case StatValueType.CustomerLink: {
+                return (
+                    <Link
+                        to={`/app/customer/${
+                            metric.get('customer_id') as string
+                        }`}
+                        className="fit-cell"
+                    >
+                        {metric.get('customer_name') || 'Go to customer'}
+                    </Link>
+                )
+            }
+            case StatValueType.SatisfactionSurveyLink: {
+                return (
+                    <Link
+                        to={`/app/ticket/${
+                            metric.get('ticket_id') as string
+                        }#satisfactionSurvey`}
+                    >
+                        {_truncate(
+                            _trim(metric.get('comment')) || 'Go to ticket',
+                            {
+                                length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
+                            },
+                        )}
+                    </Link>
+                )
+            }
+            case StatValueType.TicketLink: {
+                return (
+                    <Link
+                        to={`/app/ticket/${metric.get('ticket_id') as string}`}
+                    >
+                        {_truncate(
+                            metric.get('subject') ||
+                                `Ticket #${metric.get('ticket_id') as string}`,
+                            { length: TICKET_MAX_SUBJECT_LENGTH },
+                        )}
+                    </Link>
+                )
+            }
+            case StatValueType.Product: {
+                return (
+                    <ProductCell
+                        name={metric.getIn(['value', 'name'])}
+                        imageUrl={metric.getIn(['value', 'image_url'])}
+                    />
+                )
+            }
+            case StatValueType.TitleWithLink: {
+                return (
+                    <>
+                        {metric.getIn(['value', 'title'])}{' '}
+                        <a
+                            className={classnames(
+                                'material-icons-outlined',
+                                css.openArticle,
+                            )}
+                            href={metric.getIn(['value', 'url'])}
+                            target={'_blank'}
+                            rel="noreferrer"
+                        >
+                            open_in_new
+                        </a>
+                    </>
+                )
+            }
+            case StatValueType.QuickResponseTitle: {
+                const value = metric.get('value') as number
+                const [shopType, shopName] = this._getShopTypeAndShopName(
+                    metric.get('shop_integration_id'),
+                )
+
+                if (!shopType || !shopName) {
+                    return value
+                }
+
+                return <>{value}</>
+            }
+            default:
+                return callback(callbackData, callbackContext)
+        }
+    }
+
+    filterLinesByExistingWorkflows = (lines: List<List<Map<any, any>>>) => {
+        return lines.filter((line) => {
+            return !line!.some((metric) => {
+                const type = metric!.get('type') as string
+                const value = metric!.get('value') as string
+                if (type === StatValueType.WorkflowName) {
+                    return !this.props.workflowConfigurations?.some(
+                        (configuration) => configuration.id === value,
+                    )
+                }
+                return false
+            })
+        })
+    }
+
+    // Render the table
+    render() {
+        const { data, config } = this.props
+        const showLines = config.getIn(['tableOptions', 'showLines'])
+        const { expanded } = this.state
+
+        const initialLines = data.get('lines') as List<List<Map<any, any>>>
+        const filteredLines =
+            this.props.name === SELF_SERVICE_WORKFLOWS_PERFORMANCE
+                ? this.filterLinesByExistingWorkflows(initialLines)
+                : initialLines
+
+        const lines = filteredLines
+            .map((line, lineIdx) => (
+                <tr key={lineIdx}>
+                    {line!.toArray().map((metric, metricIdx) => {
+                        const type = data.getIn([
+                            'axes',
+                            'x',
+                            metricIdx,
+                            'type',
+                        ]) as string
+                        return (
+                            <td
+                                key={metricIdx}
+                                className={classnames(
+                                    css.lineCell,
+                                    css[`${type}`],
+                                    'link-full-td',
+                                )}
+                            >
+                                <span
+                                    className={classnames(
+                                        css['cell-wrapper'],
+                                        'cell-content',
+                                    )}
+                                >
+                                    {this._renderCell(
+                                        line!,
+                                        metric!,
+                                        lineIdx!,
+                                        metricIdx!,
+                                    )}
+                                </span>
+                            </td>
+                        )
+                    })}
+                </tr>
+            ))
+            .toList()
+
+        const displayExpandButton = showLines && lines.size > showLines
+
+        return filteredLines.isEmpty() ? (
+            <div className="text-muted">There is no data for this period.</div>
+        ) : (
+            <>
+                <Table hover className={css.table}>
+                    <thead>
+                        <tr>
+                            {(data.getIn(['axes', 'x']) as List<Map<any, any>>)
+                                .toArray()
+                                .map((axe, index) => {
+                                    const tableName = this.props.name
+                                    const axisId = `${this._getTooltipId(axe!)}${
+                                        tableName ? `-${tableName}` : ''
+                                    }`
+                                    return (
+                                        <th
+                                            key={index}
+                                            className={
+                                                css[
+                                                    `${axe!.get('type') as string}`
+                                                ]
+                                            }
+                                        >
+                                            <span
+                                                className={css['cell-wrapper']}
+                                            >
+                                                {(
+                                                    axe!.get('name') as string
+                                                ).toUpperCase()}
+
+                                                {config.getIn([
+                                                    'axisHelpers',
+                                                    axe!.get('name'),
+                                                ]) && (
+                                                    <span
+                                                        className={
+                                                            css.axisHelperIcon
+                                                        }
+                                                    >
+                                                        <StatsHelpIcon
+                                                            id={axisId}
+                                                        />
+                                                        <Tooltip
+                                                            placement="top"
+                                                            target={axisId}
+                                                        >
+                                                            {config.getIn([
+                                                                'axisHelpers',
+                                                                axe!.get(
+                                                                    'name',
+                                                                ),
+                                                            ])}
+                                                        </Tooltip>
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </th>
+                                    )
+                                })}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {showLines && !expanded
+                            ? lines.slice(0, showLines).toArray()
+                            : lines.toArray()}
+                    </tbody>
+                </Table>
+                {displayExpandButton && (
+                    <button
+                        onClick={() =>
+                            this.setState({ expanded: !this.state.expanded })
+                        }
+                        className={css.showLinesButton}
+                    >
+                        {expanded ? (
+                            <div>
+                                <img
+                                    src={expandUp}
+                                    alt="Contract"
+                                    className="mr-3"
+                                />
+                                Show less
+                            </div>
+                        ) : (
+                            <div>
+                                <img
+                                    src={expandDown}
+                                    alt="Expand"
+                                    className="mr-3"
+                                />
+                                Show More
+                            </div>
+                        )}
+                    </button>
+                )}
+            </>
+        )
+    }
+}
+
+export default withRouter(TableStat)

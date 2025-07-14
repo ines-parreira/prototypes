@@ -10,14 +10,19 @@ import { act, renderHook } from 'utils/testing/renderHook'
 import { IntentTableColumn } from '../../types'
 import { useIntentQuery } from '../useIntentQuery'
 
-jest.mock('hooks/reporting/support-performance/useStatsFilters', () => ({
-    useStatsFilters: jest.fn().mockReturnValue({
-        cleanStatsFilters: { period: { from: '2025-01-01', to: '2025-01-31' } },
-        userTimezone: 'UTC',
+jest.mock(
+    'domains/reporting/hooks/support-performance/useStatsFilters',
+    () => ({
+        useStatsFilters: jest.fn().mockReturnValue({
+            cleanStatsFilters: {
+                period: { from: '2025-01-01', to: '2025-01-31' },
+            },
+            userTimezone: 'UTC',
+        }),
     }),
-}))
+)
 
-jest.mock('hooks/reporting/automate/useAIAgentInsightsDataset', () => ({
+jest.mock('domains/reporting/hooks/automate/useAIAgentInsightsDataset', () => ({
     useAIAgentInsightsDataset: jest.fn().mockReturnValue({
         data: [{ id: '1', name: 'Test Intent' }],
         isFetching: false,

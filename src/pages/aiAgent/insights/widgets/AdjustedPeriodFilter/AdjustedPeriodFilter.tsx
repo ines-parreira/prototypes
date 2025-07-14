@@ -3,19 +3,15 @@ import { useEffect, useMemo, useState } from 'react'
 import moment, { Moment } from 'moment/moment'
 import { useParams } from 'react-router-dom'
 
-import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
-import { aiAgentTouchedTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
+import { aiAgentTouchedTicketTotalCountQueryFactory } from 'domains/reporting/models/queryFactories/ai-agent-insights/metrics'
+import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'
 import {
     dateInPastFromStartOfToday,
     endOfToday,
-} from 'pages/stats/common/utils'
+} from 'domains/reporting/pages/common/utils'
 import {
     getNewSetOfRanges,
     LAST_MONTH,
@@ -29,9 +25,16 @@ import {
     PAST_YEAR,
     TODAY,
     YESTERDAY,
-} from 'pages/stats/constants'
-import { getPageStatsFilters } from 'state/stats/selectors'
-import { defaultStatsFilters, setStatsFilters } from 'state/stats/statsSlice'
+} from 'domains/reporting/pages/constants'
+import { getPageStatsFilters } from 'domains/reporting/state/stats/selectors'
+import {
+    defaultStatsFilters,
+    setStatsFilters,
+} from 'domains/reporting/state/stats/statsSlice'
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 
 const HOURS_TO_REMOVE = 72
 const L3_INTENTS_START_DATE = '2025-04-02'

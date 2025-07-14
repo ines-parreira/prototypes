@@ -1,7 +1,7 @@
 import { reducer as notificationsReducer } from 'reapop'
 import { combineReducers } from 'redux'
 
-import { statsSlice } from 'state/stats/statsSlice'
+import { statsSlice } from 'domains/reporting/state/stats/statsSlice'
 
 import agentsReducer from './agents/reducers'
 import authsReducer from './auths/reducers'

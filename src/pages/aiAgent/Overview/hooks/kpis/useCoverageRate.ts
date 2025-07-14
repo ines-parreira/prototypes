@@ -1,18 +1,18 @@
 import { useMemo } from 'react'
 
-import { getAiAgentCoverageRate } from 'hooks/reporting/automate/automateStatsCalculatedTrends'
-import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
-import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import { StatsFilters } from 'models/stat/types'
+import { getAiAgentCoverageRate } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
+import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
+import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import { customFieldsTicketTotalCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useAllTickets } from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
 import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/AutomationRateMetric'
-import { getPreviousPeriod } from 'utils/reporting'
 
 export const useCoverageRate = (
     filters: StatsFilters,

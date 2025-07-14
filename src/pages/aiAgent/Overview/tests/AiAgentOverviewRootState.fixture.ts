@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable'
 
+import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
+import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { Integration, IntegrationType } from 'models/integration/types'
-import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
-import { initialState } from 'state/ui/stats/filtersSlice'
 
 import { IntegrationFixture } from './Integration.fixture'
 

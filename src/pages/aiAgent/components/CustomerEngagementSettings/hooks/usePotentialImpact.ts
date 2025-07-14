@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
-import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
 export const lowerImpactMultiplier = 0.8
 export const upperImpactMultiplier = 1.2

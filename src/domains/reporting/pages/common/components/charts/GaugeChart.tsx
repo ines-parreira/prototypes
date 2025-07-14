@@ -1,0 +1,151 @@
+import { useMemo, useRef } from 'react'
+
+import colors from '@gorgias/design-tokens/tokens/colors'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import css from 'domains/reporting/pages/common/components/charts/GaugeChart.less'
+import Legend from 'domains/reporting/pages/common/components/charts/Legend'
+import {
+    DEFAULT_LOCALE,
+    formatNumber,
+} from 'domains/reporting/pages/common/utils'
+import { OneDimensionalDataItem } from 'domains/reporting/pages/types'
+
+const STAT_COLORS = Object.freeze([
+    colors.classic.main.variations.primary_3.value,
+    colors.classic.feedback.variations.error_3.value,
+    colors.classic.feedback.variations.warning_3.value,
+    colors.classic.accessory.purple_text.value,
+    colors.classic.neutral.grey_5.value,
+])
+
+type Props = {
+    className?: string
+    data: OneDimensionalDataItem[]
+    restLabel?: string
+}
+
+export default function GaugeChart({
+    className,
+    data,
+    restLabel = 'Others',
+}: Props) {
+    const total = useMemo(
+        () => data.reduce((acc, { value }) => acc + value, 0),
+        [data],
+    )
+    const displayItems = useMemo(() => {
+        if (data.length <= STAT_COLORS.length) {
+            return data.map((item, index) => ({
+                ...item,
+                color: STAT_COLORS[index],
+            }))
+        }
+        const sortedItems = [...data].sort((a, b) => b.value - a.value)
+        const displayLabels = sortedItems
+            .slice(0, STAT_COLORS.length - 1)
+            .map((item) => item.label)
+        return [
+            ...data.reduce(
+                (acc, item) => {
+                    if (displayLabels.includes(item.label)) {
+                        acc.push({
+                            ...item,
+                            color: STAT_COLORS[acc.length],
+                        })
+                    }
+                    return acc
+                },
+                [] as (OneDimensionalDataItem & { color: string })[],
+            ),
+            {
+                label: restLabel,
+                value: sortedItems
+                    .slice(STAT_COLORS.length - 1)
+                    .reduce((acc, item) => acc + item.value, 0),
+                color: STAT_COLORS[STAT_COLORS.length - 1],
+            },
+        ]
+    }, [data, restLabel])
+    const orderedItems = useMemo(() => {
+        return [...displayItems].sort((a, b) => b.value - a.value)
+    }, [displayItems])
+
+    return (
+        <div className={className}>
+            {orderedItems.length > 0 ? (
+                <>
+                    <div className={css.chart}>
+                        {orderedItems.map((item) => (
+                            <BarSegment
+                                key={item.label}
+                                total={total}
+                                {...item}
+                            />
+                        ))}
+                    </div>
+                    <Legend
+                        className={css.legend}
+                        items={displayItems.map(({ label, color }) => ({
+                            label,
+                            color,
+                        }))}
+                    />
+                </>
+            ) : (
+                <div className={css.noData}>
+                    <p className={css.noDataTitle}>
+                        No data available for the selected period
+                    </p>
+                    <p>Try filtering for another date range to get results.</p>
+                </div>
+            )}
+        </div>
+    )
+}
+
+type BarSegmentProps = {
+    color: string
+    value: number
+    total: number
+    label: string
+}
+
+function BarSegment({ color, label, value, total }: BarSegmentProps) {
+    const ref = useRef<HTMLDivElement>(null)
+    return (
+        <>
+            <div
+                ref={ref}
+                title={label}
+                style={{
+                    backgroundColor: color,
+                    flexGrow: value / total,
+                }}
+            />
+            <Tooltip target={ref} className={css.tooltip} aria-label={label}>
+                <TooltipContent label={label} value={value} total={total} />
+            </Tooltip>
+        </>
+    )
+}
+
+type TooltipContentProps = {
+    label: string
+    value: number
+    total: number
+}
+const TooltipContent = ({ label, value, total }: TooltipContentProps) => {
+    return (
+        <>
+            {label}:{' '}
+            <strong>
+                {formatNumber(value)} (
+                {new Intl.NumberFormat(DEFAULT_LOCALE, {
+                    maximumFractionDigits: 0,
+                }).format((value / total) * 100)}
+                %)
+            </strong>
+        </>
+    )
+}

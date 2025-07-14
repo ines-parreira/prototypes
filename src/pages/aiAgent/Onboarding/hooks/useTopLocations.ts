@@ -2,20 +2,20 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
-import { useMetric } from 'hooks/reporting/useMetric'
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
-import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import { useMetric } from 'domains/reporting/hooks/useMetric'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
-} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
     topLocationsRecommendationsQueryFactory,
     totalNumberOfOrderQueryFactory,
-} from 'models/reporting/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'models/stat/types'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+} from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import useAppSelector from 'hooks/useAppSelector'
+import { ShopifyIntegration } from 'models/integration/types'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 

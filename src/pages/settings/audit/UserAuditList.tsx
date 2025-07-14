@@ -8,6 +8,8 @@ import { Table } from 'reactstrap'
 
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
+import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
+import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -25,8 +27,6 @@ import {
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
-import PeriodPicker from 'pages/stats/common/PeriodPicker'
-import SelectFilter from 'pages/stats/common/SelectFilter'
 import { getHumanAgents } from 'state/agents/selectors'
 import { auditLogEventsFetched } from 'state/entities/auditLogEvents/actions'
 import { getAuditLogEvents } from 'state/entities/auditLogEvents/selectors'

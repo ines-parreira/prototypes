@@ -9,18 +9,18 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import { StatsFilters } from 'models/stat/types'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-jest.mock('hooks/reporting/useMetricTrend')
+jest.mock('domains/reporting/hooks/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
 
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')

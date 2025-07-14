@@ -1,0 +1,81 @@
+import {
+    TicketProductsEnrichedDimension,
+    TicketProductsEnrichedMeasure,
+} from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
+import {
+    TicketCubeWithJoins,
+    TicketDimension,
+} from 'domains/reporting/models/cubes/TicketCube'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    ReportingFilterOperator,
+    ReportingQuery,
+} from 'domains/reporting/models/types'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    NotSpamNorTrashedTicketsFilter,
+    statsFiltersToReportingFilters,
+    TicketMessagesEnrichedFirstResponseTimesMembers,
+} from 'domains/reporting/utils/reporting'
+import { OrderDirection } from 'models/api/types'
+
+export const ticketsWithProductsQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => ({
+    measures: [TicketProductsEnrichedMeasure.TicketCount],
+    dimensions: [],
+    timezone,
+    segments: [],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(
+            TicketMessagesEnrichedFirstResponseTimesMembers,
+            statsFilters,
+        ),
+    ],
+    ...(sorting
+        ? {
+              order: [[TicketProductsEnrichedMeasure.TicketCount, sorting]],
+          }
+        : {}),
+})
+
+export const ticketCountPerProductQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => ({
+    ...ticketsWithProductsQueryFactory(statsFilters, timezone, sorting),
+    dimensions: [
+        TicketProductsEnrichedDimension.ProductId,
+        TicketProductsEnrichedDimension.StoreId,
+    ],
+})
+
+export const ticketCountForProductDrillDownQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    productId: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const baseQuery = ticketsWithProductsQueryFactory(
+        statsFilters,
+        timezone,
+        sorting,
+    )
+
+    baseQuery.filters.push({
+        member: TicketProductsEnrichedDimension.ProductId,
+        operator: ReportingFilterOperator.Equals,
+        values: [productId],
+    })
+
+    return {
+        ...baseQuery,
+        dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
+    }
+}

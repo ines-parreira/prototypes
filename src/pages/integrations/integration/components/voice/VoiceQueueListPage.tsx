@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { useInfiniteListVoiceQueues } from 'hooks/reporting/common/useInfiniteListVoiceQueues'
+import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 

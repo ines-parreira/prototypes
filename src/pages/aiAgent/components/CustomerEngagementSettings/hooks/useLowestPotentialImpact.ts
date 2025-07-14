@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     computeRoundedPotentialImpact,
     getCurrencyFormatter,

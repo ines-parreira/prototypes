@@ -1,0 +1,123 @@
+import { TicketMessageSourceType } from 'business/types/ticket'
+import {
+    HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageDimension,
+    HelpdeskMessageMeasure,
+    HelpdeskMessageMember,
+} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'domains/reporting/models/cubes/TicketCube'
+import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+    ReportingQuery,
+    TimeSeriesQuery,
+} from 'domains/reporting/models/types'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    formatReportingQueryDate,
+    getFilterDateRange,
+    HelpdeskTicketsRepliedStatsFiltersMembers,
+    NotSpamNorTrashedTicketsFilter,
+    perDimensionQueryFactory,
+    PublicAndMessageViaFilter,
+    statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
+} from 'domains/reporting/utils/reporting'
+import { OrderDirection } from 'models/api/types'
+
+export const ticketsRepliedQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    measures: [HelpdeskMessageMeasure.TicketCount],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        {
+            member: HelpdeskMessageMember.SentDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: getFilterDateRange(filters.period),
+        },
+        {
+            member: TicketMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
+        },
+        {
+            member: TicketMember.PeriodEnd,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [formatReportingQueryDate(filters.period.end_datetime)],
+        },
+        {
+            member: TicketMember.Channel,
+            operator: ReportingFilterOperator.NotEquals,
+            values: [TicketMessageSourceType.InternalNote],
+        },
+        ...PublicAndMessageViaFilter,
+        ...statsFiltersToReportingFilters(
+            HelpdeskTicketsRepliedStatsFiltersMembers,
+            filters,
+        ),
+    ],
+    ...(sorting
+        ? {
+              order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
+          }
+        : {}),
+})
+
+export const ticketsRepliedTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    sorting?: OrderDirection,
+): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...ticketsRepliedQueryFactory(filters, timezone, sorting),
+    timeDimensions: [
+        {
+            dimension: HelpdeskMessageDimension.SentDatetime,
+            granularity,
+            dateRange: getFilterDateRange(filters.period),
+        },
+    ],
+})
+
+export const ticketsRepliedMetricPerAgentQueryFactory =
+    perDimensionQueryFactory(
+        ticketsRepliedQueryFactory,
+        TicketDimension.MessageSenderId,
+    )
+
+export const ticketsRepliedMetricPerChannelQueryFactory =
+    perDimensionQueryFactory(ticketsRepliedQueryFactory, CHANNEL_DIMENSION)
+
+export const ticketsRepliedMetricPerTicketDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    const baseQuery = ticketsRepliedQueryFactory(filters, timezone, sorting)
+    return {
+        ...baseQuery,
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketDimension.CreatedDatetime,
+            ...baseQuery.dimensions,
+        ],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [[TicketDimension.CreatedDatetime, sorting]],
+              }
+            : {}),
+    }
+}

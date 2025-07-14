@@ -7,7 +7,8 @@ import { NavLink } from 'react-router-dom'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
+import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import { Kpi } from 'pages/aiAgent/components/Kpi/Kpi'
 import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
@@ -20,7 +21,6 @@ import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { STATS_ROUTES } from 'routes/constants'
-import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 import css from './KpiSection.less'
 

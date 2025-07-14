@@ -1,16 +1,16 @@
 import { useMemo } from 'react'
 
-import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
+import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
+import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
-import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import { FilterKey, StatsFilters } from 'models/stat/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
-import { getPreviousPeriod } from 'utils/reporting'
 
 export const useCsat = (
     filters: StatsFilters,

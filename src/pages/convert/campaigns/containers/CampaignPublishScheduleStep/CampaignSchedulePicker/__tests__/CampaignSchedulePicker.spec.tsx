@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { initialState } from 'state/stats/statsSlice'
+import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { userEvent } from 'utils/testing/userEvent'
 

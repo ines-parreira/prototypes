@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
 
+import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { HelpCenter } from 'models/helpCenter/types'
 import { StoreIntegration } from 'models/integration/types'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import StatsPage from 'pages/stats/common/layout/StatsPage'
 
 import {
     AllRecommendationsStatus,

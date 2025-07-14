@@ -1,0 +1,91 @@
+import {
+    TicketCubeWithJoins,
+    TicketDimension,
+    TicketMember,
+    TicketSegment,
+} from 'domains/reporting/models/cubes/TicketCube'
+import {
+    TicketMessagesDimension,
+    TicketMessagesMeasure,
+    TicketMessagesMember,
+    TicketMessagesSegment,
+} from 'domains/reporting/models/cubes/TicketMessagesCube'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    ReportingFilterOperator,
+    ReportingQuery,
+} from 'domains/reporting/models/types'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    formatReportingQueryDate,
+    NotSpamNorTrashedTicketsFilter,
+    statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
+    TicketStatsFiltersMembers,
+} from 'domains/reporting/utils/reporting'
+import { OrderDirection } from 'models/api/types'
+import { subtractDaysFromDate } from 'utils/date'
+
+export const MESSAGES_MAX_DAYS_INTO_THE_PAST = 180
+
+export const messagesPerTicketQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const hardPeriodStart = formatReportingQueryDate(
+        subtractDaysFromDate(
+            filters.period.start_datetime,
+            MESSAGES_MAX_DAYS_INTO_THE_PAST,
+        ),
+    )
+    return {
+        measures: [TicketMessagesMeasure.MessagesAverage],
+        dimensions: [],
+        timezone,
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters,
+            ),
+            {
+                member: TicketMessagesMember.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [hardPeriodStart],
+            },
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [hardPeriodStart],
+            },
+        ],
+        segments: [
+            TicketSegment.ClosedTickets,
+            TicketMessagesSegment.ConversationStarted,
+        ],
+    }
+}
+
+export const messagesPerTicketDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const baseQuery = messagesPerTicketQueryFactory(filters, timezone)
+    return {
+        ...baseQuery,
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketMessagesDimension.MessagesCount,
+            ...baseQuery.dimensions,
+        ],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [[TicketMessagesDimension.MessagesCount, sorting]],
+              }
+            : {}),
+    }
+}

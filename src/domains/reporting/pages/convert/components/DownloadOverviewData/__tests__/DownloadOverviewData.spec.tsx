@@ -1,0 +1,158 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
+import DownloadOverviewData from 'domains/reporting/pages/convert/components/DownloadOverviewData/DownloadOverviewData'
+import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
+import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
+import { campaign } from 'fixtures/campaign'
+import { shopifyIntegration } from 'fixtures/integrations'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock, flushPromises } from 'utils/testing'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const queryClient = mockQueryClient()
+
+jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
+const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
+
+jest.mock('domains/reporting/pages/convert/hooks/stats/useGetTableStat')
+const useGetTableStatMock = assumeMock(useGetTableStat)
+
+jest.mock('utils/file', () => ({
+    ...jest.requireActual<Record<string, unknown>>('utils/file'),
+    saveZippedFiles: jest.fn(),
+}))
+const mockSavezippedFiles = assumeMock(saveZippedFiles)
+
+export const exampleResponseData = {
+    [campaign.id]: {
+        campaignSalesCount: 1,
+        clickThroughRate: 2.6497695852534564,
+        clicks: 23,
+        clicksConversionRate: 4.3478260869565215,
+        clicksConverted: 1,
+        clicksRate: 2.6497695852534564,
+        clicksRevenue: 39.28,
+        discountCodesRevenue: 0,
+        discountCodesUsed: 0,
+        engagement: 23,
+        impressions: 868,
+        ticketsConversionRate: 0,
+        ticketsConverted: 0,
+        ticketsCreated: 0,
+        ticketsCreationRate: 0,
+        ticketsRevenue: 0,
+        totalConversionRate: 4.3478260869565215,
+        totalRevenue: 39.28,
+        totalRevenueShare: 0.8184782721940342,
+    },
+}
+
+const renderComponent = () => {
+    render(
+        <Provider store={mockStore({})}>
+            <QueryClientProvider client={queryClient}>
+                <DownloadOverviewData />
+            </QueryClientProvider>
+        </Provider>,
+    )
+}
+
+describe('<DownloadOverviewData />', () => {
+    beforeEach(() => {
+        jest.useFakeTimers().setSystemTime(new Date('2024-09-23T00:00:00Z'))
+
+        useCampaignStatsFiltersMock.mockReturnValue({
+            selectedPeriod: {
+                start_datetime: '2024-01-01T00:00:00.000Z',
+                end_datetime: '2024-01-31T23:59:59.999Z',
+            },
+            selectedIntegrations: [shopifyIntegration.id],
+            selectedCampaignsOperator: LogicalOperatorEnum.ONE_OF,
+            selectedCampaignIds: [],
+            campaigns: [campaign],
+        } as any)
+
+        useGetTableStatMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {},
+        })
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
+    })
+
+    it('renders', () => {
+        // render
+        renderComponent()
+
+        const button = screen.getByRole('button', {
+            name: DOWNLOAD_DATA_BUTTON_LABEL,
+        })
+        expect(button).toBeAriaEnabled()
+    })
+
+    it('button is disabled when data is loading', () => {
+        useGetTableStatMock.mockReturnValue({
+            isFetching: true,
+            isError: false,
+            data: {},
+        })
+
+        renderComponent()
+
+        const button = screen.getByRole('button', {
+            name: DOWNLOAD_DATA_BUTTON_LABEL,
+        })
+        expect(button).toBeAriaDisabled()
+
+        act(() => {
+            fireEvent.click(button)
+        })
+
+        expect(mockSavezippedFiles).not.toBeCalled()
+    })
+
+    it('user click `download data` button', async () => {
+        useGetTableStatMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: exampleResponseData,
+        })
+
+        renderComponent()
+
+        const button = screen.getByRole('button', {
+            name: DOWNLOAD_DATA_BUTTON_LABEL,
+        })
+
+        act(() => {
+            fireEvent.click(button)
+        })
+
+        jest.runAllTimers()
+        await flushPromises()
+
+        const mockedCSV =
+            '"Campaign name","Status","Total revenue","Impressions","Engagement","Click-through rate","Orders","Total conversion rate","Tickets created","Tickets creation rate","Tickets converted","Tickets conversion rate","Revenue generated by tickets","Clicks","Click rate","Clicks converted","Clicks conversion rate","Revenue generated by campaign clicks","Discount codes used","Revenue generated by discount codes"\r\n"Welcome to the internet","active","39.28","868","23","2.65%","1","4.35%","0","0%","0","0%","0","23","2.65%","1","4.35%","39.28","0","0"'
+
+        await waitFor(() => {
+            expect(mockSavezippedFiles).toBeCalledTimes(1)
+            expect(mockSavezippedFiles).toBeCalledWith(
+                { 'performance-2024-09-23.csv': mockedCSV },
+                'campaign-performance-2024-09-23',
+            )
+        })
+    })
+})

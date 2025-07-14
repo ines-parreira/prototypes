@@ -1,9 +1,9 @@
 import { Provider } from 'react-redux'
 
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
-import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { StatsFilters } from 'models/stat/types'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { assumeMock, mockStore } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -22,7 +22,7 @@ const filters: StatsFilters = {
     },
 }
 
-jest.mock('hooks/reporting/useMetricPerDimension')
+jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)
 
 const renderHookWithWrapper = (hook: typeof useGetAverageOrderValue) => {

@@ -4,8 +4,8 @@ import moment from 'moment-timezone'
 import {
     WorkflowStepMetrics,
     WorkflowStepMetricsMap,
-} from 'hooks/reporting/automate/utils'
-import { Period } from 'models/stat/types'
+} from 'domains/reporting/hooks/automate/utils'
+import { Period } from 'domains/reporting/models/stat/types'
 import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import { last7DaysStatsFilters } from 'pages/automate/common/utils/last7DaysStatsFilters'
 

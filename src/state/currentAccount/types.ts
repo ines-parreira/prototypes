@@ -1,7 +1,6 @@
 import { Map } from 'immutable'
 
 import { TicketChannel } from 'business/types/ticket'
-import { BannerNotificationFromBackend } from 'state/notifications/types'
 import {
     AgentsTableColumn,
     AgentsTableRow,
@@ -10,7 +9,8 @@ import {
     TableColumnSet,
     TableRowSet,
     TableSetting,
-} from 'state/ui/stats/types'
+} from 'domains/reporting/state/ui/stats/types'
+import { BannerNotificationFromBackend } from 'state/notifications/types'
 
 export type CurrentAccountState = Map<any, any>
 

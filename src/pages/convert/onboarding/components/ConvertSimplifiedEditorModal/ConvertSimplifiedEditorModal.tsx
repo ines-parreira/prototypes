@@ -13,6 +13,7 @@ import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { GorgiasChatIntegration } from 'models/integration/types'
@@ -52,7 +53,6 @@ import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/tran
 import { transformCampaignAttachmentsToDetails } from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import SimpleCampaignEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/SimpleCampaignEditor'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { setNewMessageForChatCampaign } from 'state/newMessage/actions'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'

@@ -17,7 +17,7 @@ jest.mock('../hooks/useGetCustomTicketsFieldsDefinitionData', () => ({
     }),
 }))
 
-jest.mock('hooks/reporting/automate/useAIAgentUserId', () => ({
+jest.mock('domains/reporting/hooks/automate/useAIAgentUserId', () => ({
     useAIAgentUserId: jest.fn().mockReturnValue('789'),
 }))
 
@@ -41,7 +41,7 @@ jest.mock('../IntentTableCells', () => ({
 }))
 
 jest.mock(
-    'pages/stats/common/components/Table/TableWithNestedRowsCell',
+    'domains/reporting/pages/common/components/Table/TableWithNestedRowsCell',
     () => ({
         TableWithNestedRowsCell: ({
             children,

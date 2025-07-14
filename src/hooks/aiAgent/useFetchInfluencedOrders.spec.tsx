@@ -6,9 +6,9 @@ import { useFlag } from 'core/flags'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersFilterMember,
-} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { postReporting } from 'models/reporting/resources'
-import { ReportingFilterOperator } from 'models/reporting/types'
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { postReporting } from 'domains/reporting/models/resources'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -18,7 +18,7 @@ import {
     useFetchInfluencedOrders,
 } from './useFetchInfluencedOrders'
 
-jest.mock('models/reporting/resources')
+jest.mock('domains/reporting/models/resources')
 const mockPostReporting = jest.mocked(postReporting)
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => ({

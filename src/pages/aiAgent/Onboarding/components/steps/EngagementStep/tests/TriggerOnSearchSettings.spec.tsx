@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     TRIGGER_ON_SEARCH_ESTIMATED_INFLUENCED_GMV,
     TriggerOnSearchSettings,

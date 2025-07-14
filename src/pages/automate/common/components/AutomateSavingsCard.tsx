@@ -3,10 +3,13 @@ import React, { useRef } from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
+import {
+    formatCurrency,
+    formatMetricValue,
+} from 'domains/reporting/pages/common/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import { HintTooltip } from 'pages/stats/common/HintTooltip'
-import { formatCurrency, formatMetricValue } from 'pages/stats/common/utils'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasAgentPrivileges, isAdmin } from 'utils'
 

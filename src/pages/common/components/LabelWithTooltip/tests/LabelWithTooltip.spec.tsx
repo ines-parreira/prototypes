@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
-jest.mock('state/ui/stats/actions', () => ({
+jest.mock('domains/reporting/state/ui/stats/actions', () => ({
     statFiltersClean: jest.fn(() => () => ({})),
     statFiltersDirty: jest.fn(() => () => ({})),
 }))

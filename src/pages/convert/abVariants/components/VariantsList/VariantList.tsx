@@ -6,6 +6,11 @@ import { Link } from 'react-router-dom'
 
 import { Badge } from '@gorgias/merchant-ui-kit'
 
+import { SharedDimension } from 'domains/reporting/pages/convert/clients/constants'
+import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
+import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
+import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
+import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { ABGroup } from 'models/convert/campaign/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -29,11 +34,6 @@ import { generateVariantName } from 'pages/convert/abVariants/utils/generateVari
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import { SharedDimension } from 'pages/stats/convert/clients/constants'
-import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
-import { useGetTableStat } from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 
 import DataCell from './components/DataCell'
 

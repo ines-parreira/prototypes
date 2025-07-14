@@ -48,7 +48,7 @@ jest.mock('pages/aiAgent/insights/IntentTableWidget/IntentTableWidget', () => ({
     IntentTableWidget: jest.fn(() => <div>IntentTableWidget</div>),
 }))
 
-jest.mock('pages/stats/common/drill-down/DrillDownModal', () => ({
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => <></>),
 }))
 

@@ -5,10 +5,10 @@ import { screen } from '@testing-library/react'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
-import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ReportingGranularity } from 'models/reporting/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
@@ -19,12 +19,12 @@ import {
 } from './AdjustedPeriodFilter'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('pages/stats/common/filters/PeriodFilter', () => ({
+jest.mock('domains/reporting/pages/common/filters/PeriodFilter', () => ({
     PeriodFilter: jest.fn(() => <>Date</>),
 }))
-jest.mock('hooks/reporting/automate/useAutomateFilters')
+jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 
-jest.mock('hooks/reporting/useMetricPerDimension', () => ({
+jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(() => ({
         data: {
             allData: [{ ticket_count: 500 }],

@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux'
 
+import { useAverageDiscountPercentage } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageDiscountPercentage'
+import { useAverageOrdersPerDayTrend } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { mockedAverageOrders } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValue'
 import { useGetRepeatRate } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRate'
-import { useAverageDiscountPercentage } from 'pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage'
-import { useAverageOrdersPerDayTrend } from 'pages/stats/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { assumeMock, mockStore } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -13,10 +13,14 @@ import { useGetKnowledgePreviewData } from '../useGetKnowledgePreviewData'
 
 const store = mockStore({})
 
-jest.mock('pages/stats/automate/aiSalesAgent/useAverageOrdersPerDayTrend')
+jest.mock(
+    'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend',
+)
 const mockUseAverageOrdersPerDayTrend = assumeMock(useAverageOrdersPerDayTrend)
 
-jest.mock('pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage')
+jest.mock(
+    'domains/reporting/pages/automate/aiSalesAgent/useAverageDiscountPercentage',
+)
 const useAverageDiscountPercentageMock = assumeMock(
     useAverageDiscountPercentage,
 )

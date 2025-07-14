@@ -1,27 +1,9 @@
 # CRM Reporting scope @gorgias/crm-reporting
 
 src/assets/css/stats @gorgias/crm-reporting
+src/domains/reporting @gorgias/crm-reporting
 src/assets/img/paywalls/screens/chat_stats.png @gorgias/crm-reporting
 src/assets/img/presentationals/satisfaction-survey-stats.png @gorgias/crm-reporting
-src/assets/img/stats @gorgias/crm-reporting
-src/config/stats.less @gorgias/crm-reporting
-src/config/stats.tsx @gorgias/crm-reporting
-src/fixtures/chart.ts @gorgias/crm-reporting
-src/fixtures/stats.ts @gorgias/crm-reporting
-src/hooks/reporting @gorgias/crm-reporting
-src/models/stat @gorgias/crm-reporting
-src/models/reporting @gorgias/crm-reporting
-src/pages/stats @gorgias/crm-reporting
-src/routes/StatsRoutes.tsx @gorgias/crm-reporting
-src/routes/tests/StatsRoutes.tsx @gorgias/crm-reporting
-src/services/supportPerformanceTipService.ts @gorgias/crm-reporting
-src/services/tests/supportPerformanceTipService.ts @gorgias/crm-reporting
-src/services/reporting @gorgias/crm-reporting
-src/state/entities/stats @gorgias/crm-reporting
-src/state/stats @gorgias/crm-reporting
-src/state/ui/stats @gorgias/crm-reporting
-src/utils/reporting.ts @gorgias/crm-reporting
-src/utils/tests/reporting.spec.ts @gorgias/crm-reporting
 
 # Conv AI Orchestration scope
 src/pages/aiAgent/ @gorgias/conv-ai-orchestration
@@ -31,7 +13,7 @@ src/pages/standalone/ @gorgias/conv-ai-orchestration
 
 src/pages/automate @gorgias/conv-ai-expansion
 src/models/selfServiceConfiguration @gorgias/conv-ai-expansion
-src/pages/stats/self-service @gorgias/conv-ai-expansion
+src/domains/reporting/pages/self-service @gorgias/conv-ai-expansion
 src/state/entities/selfServiceConfigurations @gorgias/conv-ai-expansion
 src/state/ui/selfServiceConfigurations @gorgias/conv-ai-expansion
 
@@ -57,10 +39,10 @@ src/models/contactForm @gorgias/conv-ai-expansion
 
 src/models/convert @gorgias/marketing-suite
 src/pages/convert @gorgias/marketing-suite
-src/pages/stats/convert @gorgias/marketing-suite
-src/pages/stats/automate/aiSalesAgent @gorgias/marketing-suite
-src/models/reporting/cubes/ai-sales-agent @gorgias/marketing-suite
-src/models/reporting/queryFactories/ai-sales-agent @gorgias/marketing-suite
+src/domains/reporting/pages/convert @gorgias/marketing-suite
+src/domains/reporting/pages/automate/aiSalesAgent @gorgias/marketing-suite
+src/domains/reporting/models/cubes/ai-sales-agent @gorgias/marketing-suite
+src/domains/reporting/models/queryFactories/ai-sales-agent @gorgias/marketing-suite
 src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/marketing-suite
 src/pages/aiAgent/Onboarding/ @gorgias/marketing-suite
 src/pages/aiAgent/Activation/ @gorgias/marketing-suite
@@ -146,12 +128,12 @@ src/pages/settings/new_billing @gorgias/crm-growth
 src/state/billing @gorgias/crm-growth
 
 # Conv AI: Knowledge & Insights scope @gorgias/conv-ai-knowledge-insights
-src/hooks/reporting/automate/ @gorgias/conv-ai-knowledge-insights
-src/models/reporting/queryFactories/automate/ @gorgias/conv-ai-knowledge-insights
-src/models/reporting/queryFactories/automate_v2/ @gorgias/conv-ai-knowledge-insights
-src/models/reporting/cubes/automate/ @gorgias/conv-ai-knowledge-insights
-src/models/reporting/cubes/automate_v2/ @gorgias/conv-ai-knowledge-insights
-src/pages/stats/Automate* @gorgias/conv-ai-knowledge-insights
+src/domains/reporting/hooks/automate/ @gorgias/conv-ai-knowledge-insights
+src/domains/reporting/models/queryFactories/automate/ @gorgias/conv-ai-knowledge-insights
+src/domains/reporting/models/queryFactories/automate_v2/ @gorgias/conv-ai-knowledge-insights
+src/domains/reporting/models/cubes/automate/ @gorgias/conv-ai-knowledge-insights
+src/domains/reporting/models/cubes/automate_v2/ @gorgias/conv-ai-knowledge-insights
+src/domains/reporting/pages/Automate* @gorgias/conv-ai-knowledge-insights
 src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/conv-ai-knowledge-insights
 src/pages/aiAgent/components/Knowledge/ @gorgias/conv-ai-knowledge-insights
 

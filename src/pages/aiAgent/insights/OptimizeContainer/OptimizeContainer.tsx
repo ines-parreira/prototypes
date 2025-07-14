@@ -1,13 +1,13 @@
 import moment, { Moment } from 'moment'
 import { useParams } from 'react-router-dom'
 
-import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
+import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { OPTIMIZE } from 'pages/aiAgent/constants'
 import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
 import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
-import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 
 import css from './OptimizeContainer.less'
 

@@ -11,8 +11,8 @@ import {
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
+import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
-import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
@@ -43,7 +43,7 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
 
 jest.mock(
-    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
     }),

@@ -1,0 +1,343 @@
+import React from 'react'
+
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { useTagsTicketCount } from 'domains/reporting/hooks/metricsPerPeriod'
+import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
+import {
+    filterTimeSeriesWithSelectedTags,
+    useTagsTimeSeries,
+} from 'domains/reporting/hooks/ticket-insights/useTagsTimeSeries'
+import { useTagsTicketCountTimeSeries } from 'domains/reporting/hooks/timeSeries'
+import {
+    TicketTagsEnrichedDimension,
+    TicketTagsEnrichedMeasure,
+} from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { getTagName } from 'domains/reporting/pages/ticket-insights/tags/helpers'
+import {
+    defaultStatsFilters,
+    initialState,
+} from 'domains/reporting/state/stats/statsSlice'
+import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
+import { ticketInsightsSlice } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import { TagsState } from 'state/entities/tags/types'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
+import { renderHook } from 'utils/testing/renderHook'
+
+const mockStore = configureMockStore([thunk])
+
+jest.mock('domains/reporting/hooks/timeSeries')
+const useTagsTicketCountTimeSeriesMock = assumeMock(
+    useTagsTicketCountTimeSeries,
+)
+jest.mock('domains/reporting/hooks/metricsPerPeriod')
+const useTagsTicketCountMock = assumeMock(useTagsTicketCount)
+
+describe('useTagsTimeSeries', () => {
+    const fakeTagName = 'fake-tag-name'
+    const anotherTagName = 'fake-tag-name'
+    const tagId = 1010
+    const anotherTagId = 1011
+
+    const defaultState = {
+        stats: initialState,
+        ui: {
+            stats: {
+                [ticketInsightsSlice.name]: {
+                    selectedCustomField: { id: 2 },
+                },
+                filters: {
+                    ...uiStatsInitialState,
+                },
+            },
+        },
+        entities: {
+            tags: {
+                [tagId]: {
+                    created_datetime: '2022-01-01T12:00:00.000000+00:00',
+                    decoration: {
+                        color: '#FF0000',
+                    },
+                    deleted_datetime: null,
+                    description: 'This is a fake tag',
+                    id: tagId,
+                    name: fakeTagName,
+                    uri: '/api/tags/123/',
+                    usage: 80,
+                },
+                [anotherTagId]: {
+                    created_datetime: '2022-01-01T12:00:00.000000+00:00',
+                    decoration: {
+                        color: '#FF0000',
+                    },
+                    deleted_datetime: null,
+                    description: 'This is a fake tag',
+                    id: anotherTagId,
+                    name: anotherTagName,
+                    uri: '/api/tags/123/',
+                    usage: 80,
+                },
+            } as TagsState,
+        },
+    } as RootState
+
+    describe('useTagsTimeSeries', () => {
+        beforeEach(() => {
+            useTagsTicketCountTimeSeriesMock.mockReturnValue({
+                data: {
+                    [tagId]: [
+                        [
+                            { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                            { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                            { dateTime: '2023-04-09T00:00:00.000', value: 20 },
+                        ],
+                    ],
+                    [anotherTagId]: [
+                        [
+                            { dateTime: '2023-04-07T00:00:00.000', value: 11 },
+                            { dateTime: '2023-04-08T00:00:00.000', value: 16 },
+                            { dateTime: '2023-04-09T00:00:00.000', value: 21 },
+                        ],
+                    ],
+                },
+                isFetching: false,
+            } as any)
+
+            useTagsTicketCountMock.mockReturnValue({
+                data: {
+                    value: [
+                        {
+                            [TicketTagsEnrichedDimension.TagId]:
+                                String(anotherTagId),
+                            [TicketTagsEnrichedMeasure.TicketCount]: '35',
+                        },
+                        {
+                            [TicketTagsEnrichedDimension.TagId]: String(tagId),
+                            [TicketTagsEnrichedMeasure.TicketCount]: '45',
+                        },
+                    ],
+                    prevValue: [
+                        {
+                            [TicketTagsEnrichedDimension.TagId]: String(tagId),
+                            [TicketTagsEnrichedMeasure.TicketCount]: '25',
+                        },
+                        {
+                            [TicketTagsEnrichedDimension.TagId]:
+                                String(anotherTagId),
+                            [TicketTagsEnrichedMeasure.TicketCount]: '15',
+                        },
+                    ],
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return tags trend', () => {
+            const { result } = renderHook(() => useTagsTimeSeries(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                data: [
+                    [
+                        { dateTime: '2023-04-07T00:00:00.000', value: 11 },
+                        { dateTime: '2023-04-08T00:00:00.000', value: 16 },
+                        { dateTime: '2023-04-09T00:00:00.000', value: 21 },
+                    ],
+                    [
+                        { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                        { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                        { dateTime: '2023-04-09T00:00:00.000', value: 20 },
+                    ],
+                ],
+                granularity: ReportingGranularity.Hour,
+                legendInfo: {
+                    labels: [fakeTagName, anotherTagName],
+                    tooltips: [fakeTagName, anotherTagName],
+                },
+                legendDatasetVisibility: { 0: true, 1: true },
+            })
+        })
+
+        it('should return sorted tags trend with tag id instead of name', () => {
+            const tagId = '1010'
+            const state = {
+                ...defaultState,
+                entities: {
+                    tags: {
+                        '1616': {
+                            created_datetime:
+                                '2022-01-01T12:00:00.000000+00:00',
+                            decoration: {
+                                color: '#FF0000',
+                            },
+                            deleted_datetime: null,
+                            description: 'This is a fake tag',
+                            id: 1616,
+                            name: fakeTagName,
+                            uri: '/api/tags/123/',
+                            usage: 80,
+                        },
+                    },
+                },
+            } as unknown as RootState
+
+            const { result } = renderHook(() => useTagsTimeSeries(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(state)}>{children}</Provider>
+                ),
+            })
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                data: [
+                    [
+                        { dateTime: '2023-04-07T00:00:00.000', value: 11 },
+                        { dateTime: '2023-04-08T00:00:00.000', value: 16 },
+                        { dateTime: '2023-04-09T00:00:00.000', value: 21 },
+                    ],
+                    [
+                        { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                        { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                        { dateTime: '2023-04-09T00:00:00.000', value: 20 },
+                    ],
+                ],
+                granularity: ReportingGranularity.Hour,
+                legendInfo: {
+                    labels: [
+                        getTagName({ id: anotherTagId.toString() }),
+                        getTagName({ id: tagId }),
+                    ],
+                    tooltips: [
+                        getTagName({ id: anotherTagId.toString() }),
+                        getTagName({ id: tagId }),
+                    ],
+                },
+                legendDatasetVisibility: { 0: true, 1: true },
+            })
+        })
+
+        it('should return no data if no time series were returned', () => {
+            useTagsTicketCountTimeSeriesMock.mockReturnValue({
+                data: undefined,
+                isFetching: false,
+            } as any)
+
+            const { result } = renderHook(() => useTagsTimeSeries(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            })
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                data: [],
+                granularity: ReportingGranularity.Hour,
+                legendInfo: {
+                    labels: [],
+                    tooltips: [],
+                },
+                legendDatasetVisibility: {},
+            })
+        })
+    })
+
+    describe('filterTimeSeriesWithSelectedTags', () => {
+        const firstTagId = 525510
+        const secondTagId = 658573
+
+        const data = {
+            [firstTagId.toString()]: [
+                [
+                    {
+                        dateTime: '2024-12-16T00:00:00.000',
+                        value: 0,
+                        label: 'TicketTagsEnriched.ticketCount',
+                    },
+                ],
+            ],
+            [secondTagId.toString()]: [
+                [
+                    {
+                        dateTime: '2024-12-16T00:00:00.000',
+                        value: 0,
+                        label: 'TicketTagsEnriched.ticketCount',
+                    },
+                ],
+            ],
+            '533271': [
+                [
+                    {
+                        dateTime: '2024-12-16T00:00:00.000',
+                        value: 0,
+                        label: 'TicketTagsEnriched.ticketCount',
+                    },
+                ],
+            ],
+        }
+
+        const statsFilters = {
+            ...defaultStatsFilters,
+            tags: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [firstTagId, secondTagId],
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ],
+        }
+
+        it('should return filtered data if tagResultsSelection is equal to TagSelection.excludeTags', () => {
+            const { result } = renderHook(
+                () =>
+                    filterTimeSeriesWithSelectedTags({
+                        data,
+                        statsFilters,
+                        tagResultsSelection: TagSelection.excludeTags,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider
+                            store={mockStore({
+                                ...defaultState,
+                                ui: {
+                                    stats: {
+                                        [ticketInsightsSlice.name]: {
+                                            selectedCustomField: { id: 2 },
+                                        },
+                                        filters: {
+                                            ...uiStatsInitialState,
+                                            tagResultsSelection:
+                                                TagSelection.excludeTags,
+                                        },
+                                    },
+                                },
+                            })}
+                        >
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                [firstTagId.toString()]: data[firstTagId.toString()],
+                [secondTagId.toString()]: data[secondTagId.toString()],
+            })
+        })
+    })
+})

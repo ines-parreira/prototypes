@@ -1,12 +1,12 @@
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
-import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { StatsFilters } from 'models/stat/types'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-jest.mock('hooks/reporting/useMultipleMetricsTrend')
+jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')

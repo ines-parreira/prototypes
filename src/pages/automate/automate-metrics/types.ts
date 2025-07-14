@@ -1,5 +1,5 @@
-import { MetricTrend } from 'hooks/reporting/useMetricTrend'
-import { DashboardChartProps } from 'pages/stats/dashboards/types'
+import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 export interface BaseAutomateMetricProps extends DashboardChartProps {
     trend: MetricTrend

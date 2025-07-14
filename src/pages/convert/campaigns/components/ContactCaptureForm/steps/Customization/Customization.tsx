@@ -9,6 +9,7 @@ import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import InputField from 'pages/common/forms/input/InputField'
 import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
 import { StepProps } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
@@ -16,7 +17,6 @@ import { transformTransitoryToAttachment } from 'pages/convert/campaigns/compone
 import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './Customization.less'

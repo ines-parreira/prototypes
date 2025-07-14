@@ -3,21 +3,21 @@ import { waitFor } from '@testing-library/react'
 import moment from 'moment'
 
 import { Product } from 'constants/integrations/types/shopify'
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
-import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
-} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { StatsFilters } from 'models/stat/types'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import useTopProducts from '../hooks'
 
-jest.mock('hooks/reporting/useMetricPerDimension')
+jest.mock('domains/reporting/hooks/useMetricPerDimension')
 jest.mock('models/integration/queries')
 
 const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)

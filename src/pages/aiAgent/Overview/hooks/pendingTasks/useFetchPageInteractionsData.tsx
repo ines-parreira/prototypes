@@ -4,10 +4,10 @@ import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { usePostReporting } from 'domains/reporting/models/queries'
+import { getPageInteractionsCountAfterDate } from 'domains/reporting/pages/convert/clients/PageInteractionsCubeQueries'
+import { CubeData } from 'domains/reporting/pages/convert/clients/types'
 import useAppSelector from 'hooks/useAppSelector'
-import { usePostReporting } from 'models/reporting/queries'
-import { getPageInteractionsCountAfterDate } from 'pages/stats/convert/clients/PageInteractionsCubeQueries'
-import { CubeData } from 'pages/stats/convert/clients/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
 type Args = {

@@ -1,6 +1,6 @@
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 
 export const TICKET_FIELD_ID_NOT_AVAILABLE = -1
 

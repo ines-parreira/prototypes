@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { useAIAgentInsightsDataset } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { OrderDirection } from 'models/api/types'
 
 import { IntentTableColumn } from '../types'

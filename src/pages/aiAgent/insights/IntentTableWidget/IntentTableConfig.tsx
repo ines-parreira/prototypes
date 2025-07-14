@@ -1,25 +1,25 @@
 import { useEffect } from 'react'
 
-import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import usePrevious from 'hooks/usePrevious'
-import { opposite, OrderDirection } from 'models/api/types'
-import { StatsFilters } from 'models/stat/types'
-import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import {
-    isExtraLargeScreen,
-    isMediumOrSmallScreen,
-} from 'pages/common/utils/mobile'
-import { MetricValueFormat } from 'pages/stats/common/utils'
-import { TooltipData } from 'pages/stats/types'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import { TooltipData } from 'domains/reporting/pages/types'
 import {
     DEFAULT_SORTING_DIRECTION,
     getIntentSorting,
     sortingLoaded,
     sortingLoading,
     sortingSet,
-} from 'state/ui/stats/insightsSlice'
+} from 'domains/reporting/state/ui/stats/insightsSlice'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import usePrevious from 'hooks/usePrevious'
+import { opposite, OrderDirection } from 'models/api/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import {
+    isExtraLargeScreen,
+    isMediumOrSmallScreen,
+} from 'pages/common/utils/mobile'
 
 export const TableColumnsOrder: IntentTableColumn[] = [
     IntentTableColumn.IntentName,

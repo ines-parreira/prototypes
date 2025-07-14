@@ -5,6 +5,7 @@ import { ThunkDispatch } from 'redux-thunk'
 import { Tag } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
+import { StatsState } from 'domains/reporting/state/stats/statsSlice'
 import { LegacyPaginationMeta, OrderDirection } from 'models/api/types'
 import { Customer } from 'models/customer/types'
 import {
@@ -28,7 +29,6 @@ import { TicketEvent } from 'models/ticket/types'
 import { EntityType, ViewType } from 'models/view/types'
 import { InTicketSuggestionState } from 'state/entities/rules/types'
 import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
-import { StatsState } from 'state/stats/statsSlice'
 
 import { BillingContact } from './billing/types'
 import { AccountSetting } from './currentAccount/types'

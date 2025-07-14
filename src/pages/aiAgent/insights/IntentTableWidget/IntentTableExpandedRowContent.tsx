@@ -2,11 +2,11 @@ import React from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
+import { TableWithNestedRowsCell } from 'domains/reporting/pages/common/components/Table/TableWithNestedRowsCell'
+import { AIInsightsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { AIInsightsMetric } from 'domains/reporting/state/ui/stats/types'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
-import { TableWithNestedRowsCell } from 'pages/stats/common/components/Table/TableWithNestedRowsCell'
-import { AIInsightsMetrics } from 'state/ui/stats/drillDownSlice'
-import { AIInsightsMetric } from 'state/ui/stats/types'
 
 import { useGetCustomTicketsFieldsDefinitionData } from './hooks/useGetCustomTicketsFieldsDefinitionData'
 import {

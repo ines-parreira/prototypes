@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
+import { useShopifyIntegrations } from 'domains/reporting/pages/convert/hooks/useShopifyIntegrations'
 import { ShopifyIntegration } from 'models/integration/types'
-import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
 
 export const CURRENCY_USD = 'USD'
 

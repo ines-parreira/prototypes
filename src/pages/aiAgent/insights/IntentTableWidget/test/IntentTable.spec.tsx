@@ -8,9 +8,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
+import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { pageSet } from 'domains/reporting/state/ui/stats/insightsSlice'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { INTENT_LEVEL } from 'hooks/reporting/automate/utils'
-import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     IntentTable,
@@ -24,19 +25,19 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { pageSet } from 'state/ui/stats/insightsSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = jest.mocked(useAppSelector)
 
-jest.mock('hooks/reporting/support-performance/useStatsFilters')
+jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 
-jest.mock('hooks/reporting/automate/useAIAgentUserId')
+jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(
-    require('hooks/reporting/automate/useAIAgentUserId').useAIAgentUserId,
+    require('domains/reporting/hooks/automate/useAIAgentUserId')
+        .useAIAgentUserId,
 )
 
 jest.mock(

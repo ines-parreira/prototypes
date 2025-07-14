@@ -14,7 +14,7 @@ import AutomateLandingPage from '../AutomateLandingPage'
 
 jest.mock('hooks/useCallbackRef', () => jest.fn(() => [null, jest.fn()]))
 jest.mock('hooks/candu/useInjectStyleToCandu', () => jest.fn())
-jest.mock('pages/stats/common/drill-down/DrillDownModal', () => ({
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     __esModule: true,
     DrillDownModal: () => <div>DrillDownModal</div>,
 }))

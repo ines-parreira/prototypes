@@ -5,9 +5,10 @@ import { render, screen } from '@testing-library/react'
 import InfoIconWithTooltip from '../InfoIconWithTooltip'
 
 // Mocking the StatsHelpIcon component
-jest.mock('../../../../stats/common/components/StatsHelpIcon', () => () => (
-    <div data-testid="stats-help-icon" />
-))
+jest.mock(
+    'domains/reporting/pages/common/components/StatsHelpIcon',
+    () => () => <div data-testid="stats-help-icon" />,
+)
 
 // Mocking the Tooltip component
 jest.mock('@gorgias/merchant-ui-kit', () => ({

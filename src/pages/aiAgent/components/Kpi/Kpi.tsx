@@ -4,15 +4,15 @@ import cn from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
-import MetricCard from 'pages/stats/common/components/MetricCard'
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
+import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import {
     formatMetricValue,
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
-} from 'pages/stats/common/utils'
-import { TooltipData } from 'pages/stats/types'
+} from 'domains/reporting/pages/common/utils'
+import { TooltipData } from 'domains/reporting/pages/types'
 
 import css from './Kpi.less'
 

@@ -17,16 +17,16 @@ import { IntegrationsProvider, TokenProvider } from 'AIJourney/providers'
 import { logPageChange } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
+import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
+import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
-import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import Routes from 'routes/Routes'
-import { StatsRoutes } from 'routes/StatsRoutes'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -118,7 +118,7 @@ jest.mock('pages/aiAgent/AiAgentSales', () => ({
     AiAgentSales: () => <div>AiAgentSales</div>,
 }))
 
-jest.mock('routes/StatsRoutes')
+jest.mock('domains/reporting/routes/StatsRoutes')
 const StatsRoutesMock = assumeMock(StatsRoutes)
 
 jest.mock('pages/common/components/Loader/Loader', () => () => (
@@ -138,7 +138,7 @@ jest.mock('pages/aiAgent/AiAgentAnalytics', () => ({
 }))
 
 jest.mock(
-    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
     }),
@@ -177,7 +177,7 @@ const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
-jest.mock('pages/stats/report-chart-restrictions/ProtectedRoute')
+jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
 
 ;(useAllIntegrations as jest.Mock).mockReturnValue({

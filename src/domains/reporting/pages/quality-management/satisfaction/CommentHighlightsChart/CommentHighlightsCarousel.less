@@ -1,0 +1,157 @@
+@import '../../../../../../../node_modules/.pnpm/slick-carousel@1.6.0/node_modules/slick-carousel/slick/slick.css';
+@import '../../../../../../../node_modules/.pnpm/slick-carousel@1.6.0/node_modules/slick-carousel/slick/slick-theme.css';
+@import (reference) '~css/typography.less';
+@import '~css/new/icons';
+
+@offset: 50%;
+@margin: 70px;
+
+:local {
+    .commentHighlightCarousel {
+        :global {
+            .slick-slide {
+                min-height: 210px;
+            }
+
+            .slick-arrow {
+                z-index: 1;
+                opacity: 1;
+                display: flex !important;
+                .material-icons();
+                .heading-section-regular();
+            }
+
+            .slick-dots {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                bottom: initial;
+
+                li {
+                    width: auto;
+                    margin: 0;
+                    padding: 0 2px;
+                }
+            }
+
+            .slick-active {
+                :local {
+                    .styledDot:before {
+                        width: 20px;
+                        background: var(--neutral-grey-4);
+                    }
+                }
+            }
+            .slick-arrow.slick-disabled {
+                color: var(--neutral-grey-3);
+                background-color: unset;
+            }
+
+            .slick-prev,
+            .slick-next {
+                top: initial;
+                bottom: -5px;
+                height: 32px;
+                width: 32px;
+            }
+
+            .slick-prev:before,
+            .slick-next:before {
+                display: none;
+            }
+
+            .slick-prev {
+                left: @offset;
+                transform: translateX(-@margin);
+            }
+
+            .slick-next {
+                right: @offset;
+                transform: translateX(@margin);
+            }
+        }
+
+        .styledDot {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .styledDot:before {
+            content: '';
+            display: block;
+            border-radius: 40px;
+            height: 6px;
+            width: 6px;
+            background: var(--neutral-grey-3);
+            transition: all ease 200ms;
+        }
+
+        .wrapper {
+            display: flex !important;
+            flex-direction: column;
+            gap: var(--layout-spacing-xs);
+            margin-bottom: var(--layout-spacing-xs);
+        }
+
+        .assignee {
+            display: flex;
+            align-items: center;
+            gap: var(--layout-spacing-xxs);
+            .body-semibold();
+        }
+
+        .infoWrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--layout-spacing-xs);
+            padding: var(--layout-spacing-s);
+            padding-top: var(--layout-spacing-xs);
+        }
+
+        .ticketDetails {
+            display: flex;
+            align-items: center;
+            gap: var(--layout-spacing-xs);
+        }
+
+        .details {
+            display: flex !important;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: var(--layout-spacing-xs);
+        }
+
+        .starRating {
+            span {
+                display: flex !important;
+            }
+        }
+
+        .separator {
+            height: 16px;
+        }
+
+        .commentWrapper {
+            padding: var(--layout-spacing-s);
+            border-radius: 4px;
+            border: 1px solid var(--neutral-grey-2);
+            background: var(--neutral-grey-1);
+            display: flex;
+            flex-direction: column;
+            gap: var(--layout-spacing-xs);
+            margin-right: var(--layout-spacing-l);
+
+            .customerName {
+                .body-medium();
+            }
+        }
+
+        .avatar {
+            background: var(--neutral-grey-2);
+            .caption-semibold();
+            color: var(--neutral-grey-4);
+        }
+    }
+}

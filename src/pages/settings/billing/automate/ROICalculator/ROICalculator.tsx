@@ -10,16 +10,19 @@ import {
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
     useTicketHandleTimeTrend,
-} from 'hooks/reporting/metricTrends'
+} from 'domains/reporting/hooks/metricTrends'
+import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
+import {
+    formatCurrency,
+    formatMetricValue,
+} from 'domains/reporting/pages/common/utils'
+import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import { useGetCostPerAutomatedInteraction } from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
 import { useGetCostPerBillableTicket } from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { HintTooltip } from 'pages/stats/common/HintTooltip'
-import { formatCurrency, formatMetricValue } from 'pages/stats/common/utils'
-import { DEFAULT_TIMEZONE } from 'pages/stats/constants'
 import { getAvailableAutomatePlans } from 'state/billing/selectors'
 import { getTimezone } from 'state/currentUser/selectors'
 

@@ -1,0 +1,173 @@
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { TicketChannel } from 'business/types/ticket'
+import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
+import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { userPerformanceOverview } from 'fixtures/stats'
+import { teams } from 'fixtures/teams'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
+
+jest.mock('domains/reporting/hooks/useStatResource')
+jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
+jest.mock(
+    'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter',
+    () =>
+        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+            <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
+        ),
+)
+jest.mock(
+    'pages/common/components/FeaturePaywall/FeaturePaywall',
+    () =>
+        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
+            return <div>Paywall for {feature}</div>
+        },
+)
+jest.mock(
+    'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
+    () => ({
+        DrillDownModal: () => null,
+    }),
+)
+jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
+jest.mock(
+    'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
+    () => () => <div>ChannelsStatsFilter</div>,
+)
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const useStatResourceMock = useStatResource as jest.MockedFunction<
+    typeof useStatResource
+>
+
+describe('LiveAgents', () => {
+    const defaultState = {
+        currentAccount: fromJS(account),
+        stats: {
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                agents: withDefaultLogicalOperator([agents[0].id]),
+            },
+        },
+        agents: fromJS({
+            all: agents,
+        }),
+        teams: fromJS({
+            all: teams,
+        }),
+        entities: {
+            tags: {},
+        },
+        ui: {
+            stats: { filters: uiFiltersInitialState },
+        },
+    } as RootState
+
+    beforeEach(() => {
+        useStatResourceMock.mockReturnValue([null, true, _noop])
+    })
+
+    it('should render the filters and stats when stats filters are defined', () => {
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        const { container } = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.queryByText('ONLINE STATUS')).toBeInTheDocument()
+    })
+
+    it('should render the paywall when the current account has no user live statistics feature', () => {
+        const store = mockStore({
+            ...defaultState,
+            currentAccount: defaultState.currentAccount.setIn(
+                ['features', AccountFeature.UsersLiveStatistics, 'enabled'],
+                false,
+            ),
+        })
+        const { container } = render(
+            <Provider store={store}>
+                <LiveAgents />
+            </Provider>,
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should fetch prev and next page when navigation buttons are clicked', () => {
+        const store = mockStore({
+            ...defaultState,
+            stats: {
+                filters: {
+                    period: {
+                        start_datetime: '2021-02-03T00:00:00.000Z',
+                        end_datetime: '2021-02-03T23:59:59.999Z',
+                    },
+                },
+            },
+        })
+        const fetchPage = jest.fn()
+        useStatResourceMock.mockImplementation(() => {
+            return [
+                {
+                    ...userPerformanceOverview,
+                    meta: {
+                        ...userPerformanceOverview.meta,
+                        prev_cursor: 'prev-cursor',
+                        next_cursor: 'next-cursor',
+                    },
+                },
+                false,
+                fetchPage,
+            ]
+        })
+
+        const { getByText } = renderWithRouter(
+            <Provider store={store}>
+                <LiveAgents />
+            </Provider>,
+        )
+        fireEvent.click(getByText('keyboard_arrow_left'))
+        fireEvent.click(getByText('keyboard_arrow_right'))
+
+        expect(fetchPage.mock.calls).toMatchSnapshot()
+    })
+
+    it('should render the filters and stats with online status instead of online time', () => {
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        const { getByText } = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(getByText('ONLINE STATUS')).toBeInTheDocument()
+        expect(screen.queryByText('ONLINE TIME')).not.toBeInTheDocument()
+    })
+})

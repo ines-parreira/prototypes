@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { formatCurrency } from 'domains/reporting/pages/common/utils'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
-import { formatCurrency } from 'pages/stats/common/utils'
 
 import css from './TopProductItem.less'
 

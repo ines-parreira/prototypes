@@ -8,12 +8,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { initialState } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { IntegrationType } from 'models/integration/constants'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 import { RootState, StoreDispatch } from 'state/types'
-import { initialState } from 'state/ui/stats/drillDownSlice'
 import { assumeMock } from 'utils/testing'
 
 import { useAIArticlePublishedPreviewUrl } from '../../hooks/useAIArticlePublishedPreviewUrl'

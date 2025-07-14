@@ -1,7 +1,7 @@
-import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import { StatsFilters } from 'models/stat/types'
-import { getPreviousPeriod } from 'utils/reporting'
+import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useAllTickets = (filters: StatsFilters, timezone: string) => {
     return useMultipleMetricsTrends(

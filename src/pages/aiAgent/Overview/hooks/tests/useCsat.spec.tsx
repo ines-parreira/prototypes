@@ -1,19 +1,19 @@
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { IntegrationType } from 'models/integration/constants'
-import { StatsFilters } from 'models/stat/types'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { RootState } from 'state/types'
 import { assumeMock, mockStore } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
-jest.mock('hooks/reporting/useMultipleMetricsTrend')
+jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
 
 jest.mock('models/aiAgent/queries')

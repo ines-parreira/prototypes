@@ -1,0 +1,68 @@
+import React from 'react'
+
+import { act, render, screen, waitFor } from '@testing-library/react'
+
+import {
+    PERCENTAGE_LABEL,
+    TOTAL_COUNT_LABEL,
+} from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'
+import { TicketInsightsValueModeSwitch } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
+import { toggleValueMode } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import { ValueMode } from 'domains/reporting/state/ui/stats/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import { assumeMock } from 'utils/testing'
+import { userEvent } from 'utils/testing/userEvent'
+
+jest.mock('hooks/useAppSelector')
+jest.mock('domains/reporting/state/ui/stats/ticketInsightsSlice')
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+
+const useAppSelectorMock = useAppSelector as jest.Mock
+const useAppDispatchMock = useAppDispatch as jest.Mock
+const toggleValueModeMock = assumeMock(toggleValueMode)
+
+describe('<TicketInsightsValueModeSwitch />', () => {
+    const dispatch: jest.Mock = jest.fn()
+
+    beforeEach(() => {
+        useAppDispatchMock.mockReturnValue(dispatch)
+    })
+
+    it('should render TotalCount mode as active when selected', () => {
+        useAppSelectorMock.mockReturnValue(ValueMode.TotalCount)
+
+        render(<TicketInsightsValueModeSwitch />)
+
+        expect(
+            screen.getByRole('radio', { name: TOTAL_COUNT_LABEL }),
+        ).toBeChecked()
+    })
+
+    it('should render Percentage mode as active when selected', () => {
+        useAppSelectorMock.mockReturnValue(ValueMode.Percentage)
+
+        render(<TicketInsightsValueModeSwitch />)
+
+        expect(
+            screen.getByRole('radio', { name: PERCENTAGE_LABEL }),
+        ).toBeChecked()
+    })
+
+    it('should dispatch mode toggle action on click', async () => {
+        useAppSelectorMock.mockReturnValue(ValueMode.TotalCount)
+
+        render(<TicketInsightsValueModeSwitch />)
+
+        act(() => {
+            const radioButton = screen.getByRole('radio', {
+                name: PERCENTAGE_LABEL,
+            })
+            userEvent.click(radioButton)
+        })
+
+        await waitFor(() => {
+            expect(toggleValueModeMock).toHaveBeenCalled()
+        })
+    })
+})

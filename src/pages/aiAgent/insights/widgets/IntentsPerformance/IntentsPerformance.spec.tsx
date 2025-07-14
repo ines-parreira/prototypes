@@ -2,17 +2,17 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { MetricTrendFormat } from 'pages/stats/common/utils'
-import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { assumeMock } from 'utils/testing'
 
 import { IntentsPerformance } from './IntentsPerformance'
 
-jest.mock('hooks/reporting/support-performance/useStatsFilters')
+jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('hooks/useGridSize', () => ({
     useGridSize: jest.fn(),
 }))

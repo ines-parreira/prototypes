@@ -1,5 +1,4 @@
 import { TicketChannel } from 'business/types/ticket'
-import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
 import {
     LegacyStatsFilters,
     OneDimensionalChart,
@@ -7,7 +6,8 @@ import {
     Stat,
     StatType,
     TwoDimensionalChart,
-} from 'models/stat/types'
+} from 'domains/reporting/models/stat/types'
+import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
 import {
     ARTICLE_RECOMMENDATION,
     FLOWS,

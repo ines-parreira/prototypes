@@ -13,6 +13,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { AttachmentEnum } from 'common/types'
 import { User, UserRole } from 'config/types/user'
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import {
     campaign as campaignFixture,
     campaignProductRecommendationAttachment,
@@ -27,7 +28,6 @@ import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPrevi
 import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import { CampaignScheduleModeEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
@@ -53,7 +53,7 @@ jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
-jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
+jest.mock('domains/reporting/pages/convert/hooks/useConvertGeneralSettings')
 jest.mock('models/convert/campaign/queries')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection,

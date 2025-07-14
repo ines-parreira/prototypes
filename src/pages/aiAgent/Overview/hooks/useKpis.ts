@@ -1,4 +1,4 @@
-import { StatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useCoverageRate } from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'

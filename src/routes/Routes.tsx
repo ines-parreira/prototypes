@@ -20,6 +20,12 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
+import RevenueCampaignsStats from 'domains/reporting/pages/convert/pages/CampaignsStats'
+import CampaignStatsPaywallView from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
+import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
+import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
+import { VoiceOfCustomerRoutes } from 'domains/reporting/routes/VoiceOfCustomerRoutes'
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
 //
@@ -106,10 +112,6 @@ import CanduContent from 'pages/onboarding/CanduContent'
 import ReferralContent from 'pages/referral/ReferralContent'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
-import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
-import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
-import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import CreateShopifyCharge from 'pages/tasks/detail/CreateShopifyCharge'
 import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBillingIntegration'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
@@ -121,8 +123,6 @@ import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
-import { StatsRoutes } from 'routes/StatsRoutes'
-import { VoiceOfCustomerRoutes } from 'routes/VoiceOfCustomerRoutes'
 
 export default function Routes() {
     return (

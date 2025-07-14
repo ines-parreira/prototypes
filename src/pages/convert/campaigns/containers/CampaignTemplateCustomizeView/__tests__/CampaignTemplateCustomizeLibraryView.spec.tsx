@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import routerDom, { BrowserRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import { campaign } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'
 import { utmConfiguration } from 'fixtures/utmConfiguration'
@@ -19,7 +20,6 @@ import { LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS } from 'pages/convert/campaign
 import { SCHEDULE_LIMITED_TIME_OFFER } from 'pages/convert/campaigns/templates/library/scheduledLimitedTimeOffer'
 import { SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD } from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import { assumeMock } from 'utils/testing'
 
 import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
@@ -47,7 +47,7 @@ const useCreateCampaignMock = assumeMock(useCreateCampaign)
 jest.mock('pages/convert/campaigns/hooks/useUpdateCampaign')
 const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
 
-jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
+jest.mock('domains/reporting/pages/convert/hooks/useConvertGeneralSettings')
 const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 
 jest.mock('react-router-dom', () => ({

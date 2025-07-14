@@ -2,12 +2,19 @@ import { AxiosError } from 'axios'
 import { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
+import { AgentsTableViews } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
+import { ChannelsTableViews } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
+import { ProductInsightsTableViews } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
+import {
+    AgentsTableColumn,
+    AgentsTableRow,
+    ChannelsTableColumns,
+    ProductInsightsTableColumns,
+    TableView,
+} from 'domains/reporting/state/ui/stats/types'
 import { getAccountSettings } from 'models/account/resources'
 import client from 'models/api/resources'
 import { GorgiasApiError, isGorgiasApiError } from 'models/api/types'
-import { AgentsTableViews } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import { ChannelsTableViews } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import { ProductInsightsTableViews } from 'pages/stats/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import GorgiasApi from 'services/gorgiasApi'
 import { ProductData, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
@@ -24,13 +31,6 @@ import {
 import { notify } from 'state/notifications/actions'
 import { Notification, NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
-import {
-    AgentsTableColumn,
-    AgentsTableRow,
-    ChannelsTableColumns,
-    ProductInsightsTableColumns,
-    TableView,
-} from 'state/ui/stats/types'
 
 export const updateAccount =
     (values: Account) =>

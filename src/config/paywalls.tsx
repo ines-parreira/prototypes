@@ -1,13 +1,13 @@
 import React, { ReactElement, ReactNode } from 'react'
 
 import {
+    GORGIAS_AUTOMATE_BADGE,
+    PAGE_TITLE_AUTOMATE_PAYWALL,
+} from 'domains/reporting/pages/self-service/constants'
+import {
     PaywallTheme,
     UpgradeType,
 } from 'pages/common/components/Paywall/Paywall'
-import {
-    GORGIAS_AUTOMATE_BADGE,
-    PAGE_TITLE_AUTOMATE_PAYWALL,
-} from 'pages/stats/self-service/constants'
 import { AccountFeature } from 'state/currentAccount/types'
 import { assetsUrl } from 'utils'
 

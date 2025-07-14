@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import { useWarningBannerIsDisplayed } from 'pages/stats/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
+import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
 
 export function useTrackingBundleInstallationWarningBanner() {
     const { addBanner, removeBanner } = useBanners()

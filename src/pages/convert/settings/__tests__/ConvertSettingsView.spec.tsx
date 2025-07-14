@@ -30,9 +30,15 @@ jest.mock('pages/convert/bundles/hooks/useGetConvertBundle', () => ({
     }),
 }))
 
-jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings', () => ({
-    useConvertGeneralSettings: () => ({ data: undefined, isLoading: false }),
-}))
+jest.mock(
+    'domains/reporting/pages/convert/hooks/useConvertGeneralSettings',
+    () => ({
+        useConvertGeneralSettings: () => ({
+            data: undefined,
+            isLoading: false,
+        }),
+    }),
+)
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 const useIsConvertSubscriberMock = assumeMock(useIsConvertSubscriber)

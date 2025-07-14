@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import { createMemoryHistory, History } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -8,12 +6,12 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
+import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
+import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
-import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
-import { initialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -22,7 +20,7 @@ import { KpiSection } from '../KpiSection'
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeMock = assumeMock(useAiAgentTypeForAccount)
 
-jest.mock('hooks/reporting/automate/useAIAgentUserId')
+jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 
 jest.mock('pages/aiAgent/Overview/hooks/useKpis')

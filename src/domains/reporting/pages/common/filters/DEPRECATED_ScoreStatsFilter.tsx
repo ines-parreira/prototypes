@@ -1,0 +1,76 @@
+import React, { ComponentProps, useCallback, useMemo } from 'react'
+
+import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
+import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
+import useAppDispatch from 'hooks/useAppDispatch'
+
+type Props = {
+    value: LegacyStatsFilters['score']
+    minValue: number
+    maxValue: number
+    isDescending?: boolean
+}
+
+export const scoreStatsFilterLabels = {
+    plural: 'scores',
+    singular: 'score',
+}
+/**
+ * @deprecated
+ * @date 2024-10-21
+ * @type feature-component
+ */
+export function DEPRECATED_ScoreStatsFilter({
+    value = [],
+    minValue,
+    maxValue,
+    isDescending,
+}: Props) {
+    const dispatch = useAppDispatch()
+
+    const scores = useMemo(() => {
+        return Array.from(
+            { length: maxValue - minValue + 1 },
+            (value, index) => {
+                const scoreValue = isDescending
+                    ? maxValue - index
+                    : index + minValue
+                return {
+                    value: scoreValue.toString(),
+                    label:
+                        Array(minValue + scoreValue - 1)
+                            .fill('★')
+                            .join('') +
+                        Array(maxValue - scoreValue)
+                            .fill('☆')
+                            .join(''),
+                }
+            },
+        )
+    }, [minValue, maxValue, isDescending])
+
+    const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
+        useCallback(
+            (values) => {
+                dispatch(mergeStatsFilters({ score: values as string[] }))
+            },
+            [dispatch],
+        )
+
+    return (
+        <SelectFilter
+            {...scoreStatsFilterLabels}
+            onChange={handleFilterChange}
+            value={value}
+        >
+            {scores.map((score) => (
+                <SelectFilter.Item
+                    key={score.value}
+                    label={score.label}
+                    value={score.value}
+                />
+            ))}
+        </SelectFilter>
+    )
+}

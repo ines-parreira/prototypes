@@ -1,0 +1,112 @@
+import {
+    HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageDimension,
+    HelpdeskMessageMeasure,
+    HelpdeskMessageMember,
+} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'domains/reporting/models/cubes/TicketCube'
+import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+    ReportingQuery,
+    TimeSeriesQuery,
+} from 'domains/reporting/models/types'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    formatReportingQueryDate,
+    getFilterDateRange,
+    HelpdeskMessagesStatsFiltersMembers,
+    NotSpamNorTrashedTicketsFilter,
+    perDimensionQueryFactory,
+    PublicAndMessageViaFilter,
+    statsFiltersToReportingFilters,
+    TicketDrillDownFilter,
+} from 'domains/reporting/utils/reporting'
+import { OrderDirection } from 'models/api/types'
+
+export const messagesSentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    measures: [HelpdeskMessageMeasure.MessageCount],
+    dimensions: [],
+    timezone,
+    filters: [
+        {
+            member: TicketMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
+        },
+        {
+            member: TicketMember.PeriodEnd,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [formatReportingQueryDate(filters.period.end_datetime)],
+        },
+        {
+            member: HelpdeskMessageMember.SentDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: getFilterDateRange(filters.period),
+        },
+        ...NotSpamNorTrashedTicketsFilter,
+        ...PublicAndMessageViaFilter,
+        ...statsFiltersToReportingFilters(
+            HelpdeskMessagesStatsFiltersMembers,
+            filters,
+        ),
+    ],
+    ...(sorting
+        ? {
+              order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+          }
+        : {}),
+})
+
+export const messagesSentTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...messagesSentQueryFactory(filters, timezone),
+    timeDimensions: [
+        {
+            dimension: HelpdeskMessageDimension.SentDatetime,
+            granularity,
+            dateRange: getFilterDateRange(filters.period),
+        },
+    ],
+})
+
+export const messagesSentMetricPerAgentQueryFactory = perDimensionQueryFactory(
+    messagesSentQueryFactory,
+    HelpdeskMessageDimension.SenderId,
+)
+
+export const messagesSentMetricPerChannelQueryFactory =
+    perDimensionQueryFactory(messagesSentQueryFactory, CHANNEL_DIMENSION)
+
+export const messagesSentMetricPerTicketDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    const baseQuery = messagesSentQueryFactory(filters, timezone)
+
+    return {
+        ...baseQuery,
+        measures: [HelpdeskMessageMeasure.MessageCount],
+        dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+              }
+            : {}),
+    }
+}

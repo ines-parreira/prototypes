@@ -1,0 +1,493 @@
+import React from 'react'
+
+import { render } from '@testing-library/react'
+
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+
+import { isLiveCallRinging } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
+import VoiceCallActivity from 'domains/reporting/pages/voice/components/VoiceCallActivity/VoiceCallActivity'
+import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
+import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
+import { assumeMock } from 'utils/testing'
+
+jest.mock('models/voiceCall/utils')
+jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
+
+const useCustomerDetailsSpy = jest.spyOn(voiceCallHooks, 'useCustomerDetails')
+const useAgentDetailsSpy = jest.spyOn(voiceCallHooks, 'useAgentDetails')
+
+const isFinalVoiceCallStatusMock = assumeMock(isFinalVoiceCallStatus)
+const isLiveCallRingingMock = assumeMock(isLiveCallRinging)
+
+describe('VoiceCallActivity', () => {
+    it('should render completed inbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(true)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Completed,
+            direction: 'inbound',
+        } as VoiceCallSummary
+
+        const { getByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('called')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
+    })
+
+    it('should render waiting inbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(true)
+
+        const voiceCall = {
+            agentId: null,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Ringing,
+            direction: 'inbound',
+        } as VoiceCallSummary
+
+        const { getByText, queryByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        // no other "call" text should be present except for the icon
+        expect(queryByText(RegExp('^(?!.*call_received).*call.*'))).toBeNull()
+        expect(useAgentDetailsSpy).not.toHaveBeenCalled()
+    })
+
+    it('should render "ringing agent" inbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(true)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Ringing,
+            direction: 'inbound',
+        } as VoiceCallSummary
+
+        const { getByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('calling')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
+    })
+
+    it('should render missed inbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(true)
+        isLiveCallRingingMock.mockReturnValue(false)
+
+        const voiceCall = {
+            agentId: null,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Missed,
+            direction: 'inbound',
+        } as VoiceCallSummary
+
+        const { getByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('called')).toBeInTheDocument()
+        expect(useAgentDetailsSpy).not.toHaveBeenCalled()
+    })
+
+    it('should render ongoing inbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(false)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Connected,
+            direction: 'inbound',
+        } as VoiceCallSummary
+
+        const { getByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_received')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('on call with')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
+    })
+
+    it.each([
+        {
+            agentHookData: undefined,
+            phoneNumberDestination: '+123456789',
+            expectedLabel: '+123456789',
+        },
+        {
+            agentHookData: undefined,
+            phoneNumberDestination: null,
+            expectedLabel: 'Unknown agent',
+        },
+    ])(
+        'should render inbound call activity with agent data missing',
+        ({ agentHookData, phoneNumberDestination, expectedLabel }) => {
+            useCustomerDetailsSpy.mockReturnValue({
+                customer: 'Customer Name',
+            } as any)
+            useAgentDetailsSpy.mockReturnValue({
+                data: { name: agentHookData },
+            } as any)
+            isFinalVoiceCallStatusMock.mockReturnValue(true)
+
+            const voiceCall = {
+                agentId: 1,
+                customerId: 2,
+                phoneNumberSource: '123',
+                phoneNumberDestination: phoneNumberDestination,
+                status: VoiceCallStatus.Missed,
+                direction: 'inbound',
+            } as VoiceCallSummary
+
+            const { getByText } = render(
+                <VoiceCallActivity voiceCall={voiceCall} />,
+            )
+
+            const icon = getByText('call_received')
+            expect(icon).toBeInTheDocument()
+            expect(getByText('Customer Name')).toBeInTheDocument()
+            expect(getByText('called')).toBeInTheDocument()
+            expect(getByText(expectedLabel)).toBeInTheDocument()
+        },
+    )
+
+    it.each([
+        {
+            customerId: '2',
+            customerName: undefined,
+            customerHookData: undefined,
+            phoneNumberSource: '+123456789',
+            expectedLabel: '+123456789',
+        },
+        {
+            customerId: null,
+            customerName: undefined,
+            customerHookData: 'test',
+            phoneNumberSource: 'phone number source',
+            expectedLabel: 'phone number source',
+        },
+        {
+            customerId: null,
+            customerName: undefined,
+            customerHookData: 'test',
+            phoneNumberSource: null,
+            expectedLabel: 'Unknown customer',
+        },
+        {
+            customerId: 1,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberSource: null,
+            expectedLabel: 'NameProp',
+        },
+        {
+            customerId: null,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberSource: '123',
+            expectedLabel: 'NameProp',
+        },
+    ])(
+        'should render inbound call activity with customer data missing',
+        ({
+            customerHookData,
+            customerId,
+            phoneNumberSource,
+            expectedLabel,
+            customerName,
+        }) => {
+            useCustomerDetailsSpy.mockReturnValue({
+                customer: customerHookData,
+            } as any)
+            useAgentDetailsSpy.mockReturnValue({
+                data: { name: 'Agent Name' },
+            } as any)
+
+            const voiceCall = {
+                agentId: null,
+                customerName: customerName,
+                customerId: customerId,
+                phoneNumberDestination: '+123456789',
+                phoneNumberSource: phoneNumberSource,
+                status: VoiceCallStatus.Missed,
+                direction: 'inbound',
+            } as VoiceCallSummary
+
+            const { getByText } = render(
+                <VoiceCallActivity voiceCall={voiceCall} />,
+            )
+
+            const icon = getByText('call_received')
+            expect(icon).toBeInTheDocument()
+            expect(getByText(expectedLabel)).toBeInTheDocument()
+        },
+    )
+
+    it('should render outbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Completed,
+            direction: 'outbound',
+        } as VoiceCallSummary
+
+        const { getByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_made')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('called')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
+    })
+
+    it('should render outbound ringing call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(true)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Ringing,
+            direction: 'outbound',
+        } as VoiceCallSummary
+
+        const { getByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_made')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('calling')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
+    })
+
+    it('should render ongoing outbound call activity', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+        isFinalVoiceCallStatusMock.mockReturnValue(false)
+        isLiveCallRingingMock.mockReturnValue(false)
+
+        const voiceCall = {
+            agentId: 1,
+            customerId: 2,
+            phoneNumberSource: '123',
+            phoneNumberDestination: '456',
+            status: VoiceCallStatus.Connected,
+            direction: 'outbound',
+        } as VoiceCallSummary
+
+        const { getByText } = render(
+            <VoiceCallActivity voiceCall={voiceCall} />,
+        )
+
+        const icon = getByText('call_made')
+        expect(icon).toBeInTheDocument()
+        expect(getByText('Customer Name')).toBeInTheDocument()
+        expect(getByText('on call with')).toBeInTheDocument()
+        expect(getByText('Agent Name')).toBeInTheDocument()
+    })
+
+    it.each([
+        {
+            agentId: '2',
+            agentHookData: undefined,
+            phoneNumberSource: '+123456789',
+            expectedLabel: '+123456789',
+        },
+        {
+            agentId: null,
+            agentHookData: 'test',
+            phoneNumberSource: 'phone number source',
+            expectedLabel: 'phone number source',
+        },
+        {
+            agentId: null,
+            agentHookData: 'test',
+            phoneNumberSource: null,
+            expectedLabel: 'Unknown agent',
+        },
+    ])(
+        `should render outbound call activity with agent data missing`,
+        ({ agentHookData, agentId, phoneNumberSource, expectedLabel }) => {
+            useCustomerDetailsSpy.mockReturnValue({
+                customer: 'Customer Name',
+            } as any)
+            useAgentDetailsSpy.mockReturnValue({
+                data: { name: agentHookData },
+            } as any)
+            isFinalVoiceCallStatusMock.mockReturnValue(true)
+
+            const voiceCall = {
+                agentId: agentId,
+                customerId: 2,
+                phoneNumberSource: phoneNumberSource,
+                phoneNumberDestination: '456',
+                status: VoiceCallStatus.Completed,
+                direction: 'outbound',
+            } as VoiceCallSummary
+
+            const { getByText } = render(
+                <VoiceCallActivity voiceCall={voiceCall} />,
+            )
+
+            expect(getByText(expectedLabel)).toBeInTheDocument()
+        },
+    )
+
+    it.each([
+        {
+            customerId: '2',
+            customerName: undefined,
+            customerHookData: undefined,
+            phoneNumberDestination: '+123456789',
+            expectedLabel: '+123456789',
+        },
+        {
+            customerId: null,
+            customerName: undefined,
+            customerHookData: 'test',
+            phoneNumberDestination: 'phone number destination',
+            expectedLabel: 'phone number destination',
+        },
+        {
+            customerId: null,
+            customerName: undefined,
+            customerHookData: 'test',
+            phoneNumberDestination: null,
+            expectedLabel: 'Unknown customer',
+        },
+        {
+            customerId: 1,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberDestination: null,
+            expectedLabel: 'NameProp',
+        },
+        {
+            customerId: null,
+            customerName: 'NameProp',
+            customerHookData: 'test',
+            phoneNumberDestination: '123',
+            expectedLabel: 'NameProp',
+        },
+    ])(
+        `should render outbound call activity with customer data missing`,
+        ({
+            customerHookData,
+            customerId,
+            phoneNumberDestination,
+            expectedLabel,
+            customerName,
+        }) => {
+            useCustomerDetailsSpy.mockReturnValue({
+                customer: customerHookData,
+            } as any)
+            useAgentDetailsSpy.mockReturnValue({
+                data: { name: 'Agent Name' },
+            } as any)
+
+            const voiceCall = {
+                agentId: 1,
+                customerId: customerId,
+                customerName: customerName,
+                phoneNumberSource: '123',
+                phoneNumberDestination: phoneNumberDestination,
+                status: VoiceCallStatus.Completed,
+                direction: 'outbound',
+            } as VoiceCallSummary
+
+            const { getByText } = render(
+                <VoiceCallActivity voiceCall={voiceCall} />,
+            )
+
+            expect(getByText(expectedLabel)).toBeInTheDocument()
+        },
+    )
+})

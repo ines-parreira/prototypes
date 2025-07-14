@@ -20,6 +20,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import { User } from 'config/types/user'
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -49,7 +50,6 @@ import { transformAttachmentsToContactCaptureForms } from 'pages/convert/campaig
 import { transformAttachmentsToProductRecommendations } from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import {
     deleteAttachment,
     setNewMessageForChatCampaign,

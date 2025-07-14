@@ -2,6 +2,8 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { createAccountSetting, updateAccountSetting } from 'models/account'
@@ -14,8 +16,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { formatValue } from 'pages/settings/billing/automate/ROICalculator/utils'
-import { HintTooltip } from 'pages/stats/common/HintTooltip'
-import { formatMetricValue } from 'pages/stats/common/utils'
 import { submitSettingSuccess } from 'state/currentAccount/actions'
 import { getAgentCostsSettings } from 'state/currentAccount/selectors'
 import {

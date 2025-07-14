@@ -3,7 +3,7 @@ import React from 'react'
 import { screen } from '@testing-library/dom'
 import { render } from '@testing-library/react'
 
-import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { COST_SAVED } from 'pages/automate/automate-metrics/constants'
 import { CostSavedMetric } from 'pages/automate/automate-metrics/CostSavedMetric'
 

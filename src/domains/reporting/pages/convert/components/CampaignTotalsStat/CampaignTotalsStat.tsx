@@ -1,0 +1,47 @@
+import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import {
+    CampaignsLegacyChart,
+    CampaignsLegacyReportConfig,
+} from 'domains/reporting/pages/convert/campaigns/CampaignsLegacyReportConfig'
+import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
+
+const FIRST_ROW_SIZE = 6
+const GRID_SIZE = 4
+
+// Deprecated: it will be deleted soon
+export const CampaignTotalsStat = () => {
+    return (
+        <>
+            <DashboardGridCell size={FIRST_ROW_SIZE}>
+                <DashboardComponent
+                    config={CampaignsLegacyReportConfig}
+                    chart={CampaignsLegacyChart.CampaignRevenueKPIChart}
+                />
+            </DashboardGridCell>
+            <DashboardGridCell size={FIRST_ROW_SIZE}>
+                <DashboardComponent
+                    config={CampaignsLegacyReportConfig}
+                    chart={CampaignsLegacyChart.InfluencedRevenueShareKPIChart}
+                />
+            </DashboardGridCell>
+            <DashboardGridCell size={GRID_SIZE}>
+                <DashboardComponent
+                    config={CampaignsLegacyReportConfig}
+                    chart={CampaignsLegacyChart.ImpressionsKPIChart}
+                />
+            </DashboardGridCell>
+            <DashboardGridCell size={GRID_SIZE}>
+                <DashboardComponent
+                    config={CampaignsLegacyReportConfig}
+                    chart={CampaignsLegacyChart.EngagementKPIChart}
+                />
+            </DashboardGridCell>
+            <DashboardGridCell size={GRID_SIZE}>
+                <DashboardComponent
+                    config={CampaignsLegacyReportConfig}
+                    chart={CampaignsLegacyChart.CampaignsSalesCountKPIChart}
+                />
+            </DashboardGridCell>
+        </>
+    )
+}

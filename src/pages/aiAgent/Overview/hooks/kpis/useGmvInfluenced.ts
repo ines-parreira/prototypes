@@ -1,14 +1,14 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import { gmvInfluencedQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'models/stat/types'
+import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGmvInfluencedCtaButton } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluencedCtaButton'
 import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
-import { getPreviousPeriod } from 'utils/reporting'
 
 export const useGmvInfluenced = ({
     filters,

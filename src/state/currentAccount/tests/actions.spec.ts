@@ -3,6 +3,11 @@ import { fromJS, Map } from 'immutable'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {
+    AgentsTableColumn,
+    ChannelsTableColumns,
+    ProductInsightsTableColumns,
+} from 'domains/reporting/state/ui/stats/types'
 import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
@@ -23,11 +28,6 @@ import { AccountSetting, AccountSettingType } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { StoreDispatch } from 'state/types'
-import {
-    AgentsTableColumn,
-    ChannelsTableColumns,
-    ProductInsightsTableColumns,
-} from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 type MockedRootState = {

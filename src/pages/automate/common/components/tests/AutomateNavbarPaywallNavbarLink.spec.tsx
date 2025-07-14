@@ -3,13 +3,13 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { assumeMock } from 'utils/testing'
 
 import AutomateNavbarPaywallNavbarLink from '../AutomateNavbarPaywallNavbarLink'
 
 jest.mock(
-    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
     }),

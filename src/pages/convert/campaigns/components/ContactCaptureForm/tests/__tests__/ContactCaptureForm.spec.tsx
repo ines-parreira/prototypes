@@ -6,12 +6,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { UserRole } from 'config/types/user'
+import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import { user } from 'fixtures/users'
 import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import { Customization } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
 import { PostSubmissionMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
-import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import useListTags from 'tags/useListTags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
@@ -29,7 +29,7 @@ const store = mockStore({
 })
 const mockUseListTags = useListTags as jest.Mock
 
-jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
+jest.mock('domains/reporting/pages/convert/hooks/useConvertGeneralSettings')
 const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 
 describe('ContactForm test suite', () => {
