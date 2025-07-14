@@ -127,7 +127,7 @@ export const ImportZendeskDataList = (
                             key={idx}
                             onClick={() => {
                                 history.push(
-                                    `/app/settings/import-data/zendesk/${integration.id}`,
+                                    `/app/settings/import-zendesk/zendesk/${integration.id}`,
                                 )
                             }}
                         >

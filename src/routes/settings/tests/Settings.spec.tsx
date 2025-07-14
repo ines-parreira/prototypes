@@ -28,7 +28,8 @@ import { ContactForm } from '../ContactForm'
 import { Convert } from '../Convert'
 import { CustomFields } from '../CustomFields'
 import { HelpCenter } from '../HelpCenter'
-import { Import } from '../Import'
+import { ImportEmailsRoute } from '../ImportEmailsRoute'
+import { ImportZendeskRoute } from '../ImportZendeskRoute'
 import { Integrations } from '../Integrations'
 import { Macros } from '../Macros'
 import { PhoneNumbers } from '../PhoneNumbers'
@@ -138,137 +139,143 @@ const testingMap = [
     {
         callOrder: 9,
         exact: undefined,
-        path: `${basePath}/import-data`,
-        component: Import,
+        path: `${basePath}/import-zendesk`,
+        component: ImportZendeskRoute,
     },
     {
         callOrder: 10,
+        exact: undefined,
+        path: `${basePath}/import-email`,
+        component: ImportEmailsRoute,
+    },
+    {
+        callOrder: 11,
         exact: undefined,
         path: `${basePath}/integrations`,
         component: Integrations,
     },
     {
-        callOrder: 11,
+        callOrder: 12,
         exact: undefined,
         path: `${basePath}/phone-numbers`,
         component: PhoneNumbers,
     },
     {
-        callOrder: 12,
+        callOrder: 13,
         exact: undefined,
         path: `${basePath}/macros`,
         component: Macros,
     },
     {
-        callOrder: 13,
+        callOrder: 14,
         exact: undefined,
         path: `${basePath}/rules`,
         component: Rules,
     },
     {
-        callOrder: 14,
+        callOrder: 15,
         exact: undefined,
         path: `${basePath}/sla`,
         component: SLA,
     },
     {
-        callOrder: 15,
+        callOrder: 16,
         exact: undefined,
         path: `${basePath}/teams`,
         component: Teams,
     },
     {
-        callOrder: 16,
+        callOrder: 17,
         exact: undefined,
         path: `${basePath}/users`,
         component: Users,
     },
     {
-        callOrder: 17,
+        callOrder: 18,
         exact: true,
         path: `${basePath}/profile`,
         component: YourProfileContainer,
     },
     {
-        callOrder: 18,
+        callOrder: 19,
         exact: true,
         path: `${basePath}/notifications`,
         component: NotificationsSettings,
     },
     {
-        callOrder: 19,
+        callOrder: 20,
         exact: true,
         path: `${basePath}/password-2fa`,
         component: PasswordAnd2FA,
     },
     {
-        callOrder: 20,
+        callOrder: 21,
         exact: true,
         path: `${basePath}/api`,
         component: APIView,
     },
     {
-        callOrder: 21,
+        callOrder: 22,
         exact: true,
         path: `${basePath}/audit`,
         component: UserAuditList,
     },
     {
-        callOrder: 22,
+        callOrder: 23,
         exact: true,
         path: `${basePath}/manage-tags`,
         component: ManageTags,
     },
     {
-        callOrder: 23,
+        callOrder: 24,
         exact: true,
         path: `${basePath}/access`,
         component: Access,
     },
     {
-        callOrder: 24,
+        callOrder: 25,
         exact: false,
         path: `${basePath}/business-hours`,
         component: BusinessHoursPage,
     },
     {
-        callOrder: 25,
+        callOrder: 26,
         exact: undefined,
         path: `${basePath}/sidebar`,
         component: SidebarSettings,
     },
     {
-        callOrder: 26,
+        callOrder: 27,
         exact: true,
         path: `${basePath}/ticket-assignment`,
         component: TicketAssignment,
     },
     {
-        callOrder: 27,
+        callOrder: 28,
         exact: true,
         path: `${basePath}/auto-merge`,
         component: AutoMergeSettings,
     },
     {
-        callOrder: 28,
+        callOrder: 29,
         exact: undefined,
         path: `${basePath}/automate`,
         component: PaywalledAutomate,
     },
     {
-        callOrder: 29,
+        callOrder: 30,
         exact: undefined,
         path: `${basePath}/article-recommendations/:shopType?/:shopName?`,
         component: PaywalledArticleRecommendations,
     },
     {
-        callOrder: 30,
+        callOrder: 31,
         exact: undefined,
         path: `${basePath}/flows/:shopType?/:shopName?`,
         component: PaywalledFlows,
     },
     {
-        callOrder: 31,
+        callOrder: 32,
         exact: undefined,
         path: `${basePath}/order-management/:shopType?/:shopName?`,
         component: PaywalledOrderManagement,

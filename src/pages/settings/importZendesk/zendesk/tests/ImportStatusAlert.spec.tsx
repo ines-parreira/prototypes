@@ -4,13 +4,13 @@ import React from 'react'
 import { render } from '@testing-library/react'
 
 import { ZendeskIntegrationMeta } from 'models/integration/types'
-import ImportStatusAlert from 'pages/settings/importData/zendesk/ImportStatusAlert'
+import ImportStatusAlert from 'pages/settings/importZendesk/zendesk/ImportStatusAlert'
 import {
     failedImport,
     pendingImport,
     rateLimitedImport,
     successImport,
-} from 'pages/settings/importData/zendesk/tests/fixtures'
+} from 'pages/settings/importZendesk/zendesk/tests/fixtures'
 
 const renderComponent = (integrationMeta: ZendeskIntegrationMeta) => {
     return render(<ImportStatusAlert integrationMeta={integrationMeta} />)

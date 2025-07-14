@@ -149,7 +149,7 @@ describe('<ImportZendeskDataList/>', () => {
             const row = getByRole('row')
             fireEvent.click(row)
             expect(history.push).toBeCalledWith(
-                `/app/settings/import-data/zendesk/${successImport.id}`,
+                `/app/settings/import-zendesk/zendesk/${successImport.id}`,
             )
             expect(getByText('Completed on 11/27/2020 06:19 PM')).toBeDefined()
         })

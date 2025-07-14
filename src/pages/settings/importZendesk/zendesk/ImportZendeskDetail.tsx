@@ -103,7 +103,7 @@ export const ImportZendeskDetail = ({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/import-data">
+                            <Link to="/app/settings/import-zendesk">
                                 Import data
                             </Link>
                         </BreadcrumbItem>

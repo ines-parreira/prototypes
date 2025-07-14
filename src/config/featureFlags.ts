@@ -110,6 +110,7 @@ export enum FeatureFlagKey {
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterOnePager = 'help-center-one-pager',
     HelpCenterSubjectLines = 'help-center-subject-lines',
+    HistoricalImports = 'linear.project_historical-imports',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
     MacroArchives = 'macro-archives',
     MacroForwardByEmail = 'macro-forward-by-email',

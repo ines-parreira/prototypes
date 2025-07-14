@@ -10,7 +10,7 @@ import {
 } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ZendeskIntegration } from 'models/integration/types'
-import { ImportStatus } from 'pages/settings/importData/zendesk/types'
+import { ImportStatus } from 'pages/settings/importZendesk/zendesk/types'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 export const useZendeskImportFailedBanner = () => {
@@ -30,7 +30,7 @@ export const useZendeskImportFailedBanner = () => {
         [zendeskIntegrations],
     )
 
-    const url = `/app/settings/import-data/zendesk/${failedIntegration?.id}`
+    const url = `/app/settings/import-zendesk/zendesk/${failedIntegration?.id}`
 
     const banner = useMemo(
         () => ({

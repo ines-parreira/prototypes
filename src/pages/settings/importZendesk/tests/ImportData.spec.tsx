@@ -9,7 +9,7 @@ import { fetchIntegrations } from 'state/integrations/actions'
 import { RootState } from 'state/types'
 import { assumeMock, mockStore } from 'utils/testing'
 
-import ImportData from '../ImportData'
+import ImportZendesk from '../ImportZendesk'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -23,11 +23,11 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
     <div>Loader</div>
 ))
 
-describe('<ImportData />', () => {
+describe('<ImportZendesk />', () => {
     const renderComponent = (state: RootState) =>
         render(
             <Provider store={mockStore(state)}>
-                <ImportData />
+                <ImportZendesk />
             </Provider>,
         )
 

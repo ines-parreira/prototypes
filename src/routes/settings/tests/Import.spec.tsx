@@ -5,13 +5,13 @@ import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import ImportData from 'pages/settings/importData/ImportData'
-import ImportZendeskCreate from 'pages/settings/importData/zendesk/ImportZendeskCreate'
-import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendeskDetail'
+import ImportZendesk from 'pages/settings/importZendesk/ImportZendesk'
+import ImportZendeskCreate from 'pages/settings/importZendesk/zendesk/ImportZendeskCreate'
+import ImportZendeskDetail from 'pages/settings/importZendesk/zendesk/ImportZendeskDetail'
 import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
-import { Import } from '../Import'
+import { ImportZendeskRoute } from '../ImportZendeskRoute'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
@@ -28,9 +28,9 @@ const mockedRoute = Route as jest.Mock
 const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
-const basePath = 'import-data'
+const basePath = 'import-zendesk'
 
-describe('Import', () => {
+describe('Import Zendesk', () => {
     beforeEach(() => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
@@ -42,7 +42,7 @@ describe('Import', () => {
             {
                 callOrder: 0,
                 path: basePath + '/',
-                component: ImportData,
+                component: ImportZendesk,
             },
         ],
         [
@@ -62,12 +62,12 @@ describe('Import', () => {
     ])(
         'should call renderer and Route with correct props',
         ({ callOrder, path, component }) => {
-            render(<Import />)
+            render(<ImportZendeskRoute />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
                 {
-                    roleParams: [ADMIN_ROLE, PageSection.ImportData],
+                    roleParams: [ADMIN_ROLE, PageSection.ImportZendesk],
                 },
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([

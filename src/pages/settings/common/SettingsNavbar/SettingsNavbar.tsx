@@ -41,6 +41,10 @@ const SettingsNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const integrations = useStoreIntegrations()
     const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
+    const isEmailImportEnabled = useFlag(
+        FeatureFlagKey.HistoricalImports,
+        false,
+    )
 
     const [expandedCategories, setExpandedCategories] =
         useLocalStorage<AccordionValues>(
@@ -299,9 +303,16 @@ const SettingsNavbar = () => {
                             text="REST API"
                             requiredRole={ADMIN_ROLE}
                         />
+                        {isEmailImportEnabled && (
+                            <Item
+                                to="import-email"
+                                text="Email Import"
+                                requiredRole={ADMIN_ROLE}
+                            />
+                        )}
                         <Item
-                            to="import-data"
-                            text="Import data"
+                            to="import-zendesk"
+                            text="Zendesk import"
                             requiredRole={ADMIN_ROLE}
                         />
                     </Navigation.SectionContent>

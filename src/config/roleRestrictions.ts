@@ -33,7 +33,12 @@ export const roleRestrictionConfigs: Record<
         pageHeader: SectionPageHeader.CustomerFields,
     },
     [PageSection.HelpCenter]: { pageHeader: SectionPageHeader.HelpCenter },
-    [PageSection.ImportData]: { pageHeader: SectionPageHeader.ImportData },
+    [PageSection.ImportZendesk]: {
+        pageHeader: SectionPageHeader.ImportZendesk,
+    },
+    [PageSection.ImportEmail]: {
+        pageHeader: SectionPageHeader.ImportEmail,
+    },
     [PageSection.ImportPhoneNumber]: {
         pageHeader: SectionPageHeader.ImportPhoneNumber,
     },

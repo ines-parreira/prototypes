@@ -1,12 +1,13 @@
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { IntegrationType } from 'models/integration/types'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import { fetchIntegrations } from 'state/integrations/actions'
@@ -17,7 +18,7 @@ import ImportZendeskDataList from './zendesk/ImportZendeskDataList'
 
 import css from '../settings.less'
 
-const ImportData = () => {
+const ImportZendesk = () => {
     const dispatch = useAppDispatch()
     const zendeskIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Zendesk),
@@ -36,13 +37,15 @@ const ImportData = () => {
         void dispatch(fetchIntegrations())
     })
 
-    return loading ? (
-        <Loader />
-    ) : (
+    if (loading) {
+        return <Loader />
+    }
+
+    return (
         <div className="full-width">
             <PageHeader title="Import data">
                 <Link
-                    to="/app/settings/import-data/zendesk"
+                    to="/app/settings/import-zendesk/zendesk"
                     className="float-right"
                 >
                     <Button>Add account</Button>
@@ -68,7 +71,7 @@ const ImportData = () => {
                     </LinkAlert>
                     {zendeskIntegrations.length === 0 ? (
                         <span>
-                            {`You don't have any imports at the moment`}
+                            {"You don't have any imports at the moment"}
                         </span>
                     ) : (
                         <ImportZendeskDataList />
@@ -79,4 +82,4 @@ const ImportData = () => {
     )
 }
 
-export default ImportData
+export default ImportZendesk

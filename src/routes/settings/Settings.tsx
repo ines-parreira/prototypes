@@ -42,7 +42,8 @@ import { Convert } from './Convert'
 import { CustomFields } from './CustomFields'
 import { HelpCenter } from './HelpCenter'
 import { renderAppSettings } from './helpers/settingsRenderer'
-import { Import } from './Import'
+import { ImportEmailsRoute } from './ImportEmailsRoute'
+import { ImportZendeskRoute } from './ImportZendeskRoute'
 import { Integrations } from './Integrations'
 import { Macros } from './Macros'
 import { PhoneNumbers } from './PhoneNumbers'
@@ -116,8 +117,11 @@ export function SettingRoutes() {
                 <Route path={`${path}/help-center`}>
                     <HelpCenter />
                 </Route>
-                <Route path={`${path}/import-data`}>
-                    <Import />
+                <Route path={`${path}/import-zendesk`}>
+                    <ImportZendeskRoute />
+                </Route>
+                <Route path={`${path}/import-email`}>
+                    <ImportEmailsRoute />
                 </Route>
                 <Route path={`${path}/integrations`}>
                     <Integrations />

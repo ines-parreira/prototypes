@@ -1,6 +1,6 @@
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
-import { ImportStatus } from 'pages/settings/importData/zendesk/types'
+import { ImportStatus } from 'pages/settings/importZendesk/zendesk/types'
 import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -94,7 +94,7 @@ describe('useZendeskImportFailedBanner', () => {
 
         onclick = mockedAddBanner.mock.calls[0][0].CTA.onClick()
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/settings/import-data/zendesk/1',
+            '/app/settings/import-zendesk/zendesk/1',
         )
     })
 
