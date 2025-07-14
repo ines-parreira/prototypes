@@ -30,25 +30,25 @@ type FinancialValues = Map<FinancialStatus, ColorType>
 type ReturnValues = Map<ReturnStatus, [ColorType, string]>
 
 const fulfillmentValues: FulfillmentValues = new Map([
-    [FulfillmentStatus.Fulfilled, ['success', 'Fulfilled']],
-    [FulfillmentStatus.Partial, ['grey', 'Partially fulfilled']],
-    [FulfillmentStatus.Restocked, ['warning', 'Restocked']],
-    [null, ['grey', 'Unfulfilled']],
+    [FulfillmentStatus.Fulfilled, ['light-success', 'Fulfilled']],
+    [FulfillmentStatus.Partial, ['light-grey', 'Partially fulfilled']],
+    [FulfillmentStatus.Restocked, ['light-warning', 'Restocked']],
+    [null, ['light-grey', 'Unfulfilled']],
 ])
 
 const financialValues: FinancialValues = new Map([
-    [FinancialStatus.Pending, 'grey'],
-    [FinancialStatus.Authorized, 'grey'],
-    [FinancialStatus.PartiallyPaid, 'classic'],
-    [FinancialStatus.Paid, 'success'],
-    [FinancialStatus.PartiallyRefunded, 'warning'],
-    [FinancialStatus.Refunded, 'warning'],
-    [FinancialStatus.Voided, 'error'],
+    [FinancialStatus.Pending, 'light-grey'],
+    [FinancialStatus.Authorized, 'light-grey'],
+    [FinancialStatus.PartiallyPaid, 'light-success'],
+    [FinancialStatus.Paid, 'light-success'],
+    [FinancialStatus.PartiallyRefunded, 'light-warning'],
+    [FinancialStatus.Refunded, 'light-error'],
+    [FinancialStatus.Voided, 'light-error'],
 ])
 
 const returnedValues: ReturnValues = new Map([
-    ['PartialReturn', ['error', 'Partially Returned']],
-    ['FullReturn', ['error', 'Returned']],
+    ['PartialReturn', ['light-warning', 'Partially Returned']],
+    ['FullReturn', ['light-error', 'Returned']],
 ])
 
 export default function OrderStatus({
@@ -108,7 +108,7 @@ function FinancialBadge({ financialStatus }: FinancialBadgeProps) {
 }
 
 function CancelledBadge() {
-    return <Badge type={'error'}>Cancelled</Badge>
+    return <Badge type={'light-error'}>Cancelled</Badge>
 }
 
 function InfluencedByAIBadge() {
