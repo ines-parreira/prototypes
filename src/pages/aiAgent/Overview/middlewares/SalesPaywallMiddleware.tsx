@@ -154,17 +154,15 @@ export const SalesPaywallMiddleware =
             storeName: shopName || '',
         }
 
-        const isAiSalesBetaUser = !!flags[FeatureFlagKey.AiSalesAgentBeta]
         const isAiSalesAlphaDemoUser =
             !!flags[FeatureFlagKey.AiSalesAgentBypassPlanCheck]
 
         const showUpgradePaywall =
-            isAiSalesBetaUser &&
             !hasNewAutomatePlan &&
             !currentStoreHasActiveTrial &&
             !isAiSalesAlphaDemoUser
         const showSalesSettings =
-            (isAiSalesBetaUser && hasNewAutomatePlan) ||
+            hasNewAutomatePlan ||
             isAiSalesAlphaDemoUser ||
             currentStoreHasActiveTrial
 

@@ -175,7 +175,6 @@ export const useStoreActivations = ({
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
     const pageName = window.location.pathname
 
-    const isAiSalesBetaUser = !!flags[FeatureFlagKey.AiSalesAgentBeta]
     const hasAiAgentNewActivationXp =
         !!flags[FeatureFlagKey.AiAgentNewActivationXp]
     const aiSalesAgentEmailEnabled =
@@ -272,7 +271,6 @@ export const useStoreActivations = ({
             hasNewAutomatePlan,
             flags: {
                 hasAiAgentNewActivationXp,
-                isAiSalesBetaUser,
                 aiSalesAgentEmailEnabled,
             },
         }
@@ -292,7 +290,6 @@ export const useStoreActivations = ({
         chatIntegrationStatus,
         hasAiAgentNewActivationXp,
         hasNewAutomatePlan,
-        isAiSalesBetaUser,
         aiSalesAgentEmailEnabled,
         storesKnowledgeStatus,
         storeConfigUpdateAction,
@@ -319,7 +316,6 @@ export const useStoreActivations = ({
             type: 'UPDATE_PRICING',
             flags: {
                 hasAiAgentNewActivationXp,
-                isAiSalesBetaUser,
                 aiSalesAgentEmailEnabled,
             },
         })
@@ -334,7 +330,6 @@ export const useStoreActivations = ({
             type: 'UPDATE_PRICING',
             flags: {
                 hasAiAgentNewActivationXp,
-                isAiSalesBetaUser,
                 aiSalesAgentEmailEnabled,
             },
         })
@@ -343,7 +338,6 @@ export const useStoreActivations = ({
         upsertStoresConfiguration,
         dispatch,
         hasAiAgentNewActivationXp,
-        isAiSalesBetaUser,
         aiSalesAgentEmailEnabled,
     ])
 
@@ -379,7 +373,6 @@ export const useStoreActivations = ({
                 newValue,
                 flags: {
                     hasAiAgentNewActivationXp,
-                    isAiSalesBetaUser,
                     aiSalesAgentEmailEnabled,
                 },
             })
@@ -401,7 +394,6 @@ export const useStoreActivations = ({
                 newValue,
                 flags: {
                     hasAiAgentNewActivationXp,
-                    isAiSalesBetaUser,
                     aiSalesAgentEmailEnabled,
                 },
             })
@@ -424,7 +416,6 @@ export const useStoreActivations = ({
                 hasNewAutomatePlan,
                 flags: {
                     hasAiAgentNewActivationXp,
-                    isAiSalesBetaUser,
                     aiSalesAgentEmailEnabled,
                 },
             })
@@ -448,7 +439,6 @@ export const useStoreActivations = ({
                 hasNewAutomatePlan,
                 flags: {
                     hasAiAgentNewActivationXp,
-                    isAiSalesBetaUser,
                     aiSalesAgentEmailEnabled,
                 },
             })

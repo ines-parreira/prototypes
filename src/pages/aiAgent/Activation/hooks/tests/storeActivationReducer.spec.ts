@@ -67,7 +67,6 @@ describe('storeActivationReducer', () => {
         'when aiSalesAgentEmailEnabled is true + beta on new automation plan + hasAiAgentNewActivationXp is $hasAiAgentNewActivationXp',
         ({ hasAiAgentNewActivationXp }) => {
             const flags = {
-                isAiSalesBetaUser: true,
                 hasAiAgentNewActivationXp,
                 aiSalesAgentEmailEnabled: true,
             }
@@ -283,7 +282,6 @@ describe('storeActivationReducer', () => {
         'when aiSalesAgentEmailEnabled is false + beta on new automation plan + hasAiAgentNewActivationXp is $hasAiAgentNewActivationXp',
         ({ hasAiAgentNewActivationXp }) => {
             const flags = {
-                isAiSalesBetaUser: true,
                 hasAiAgentNewActivationXp,
                 aiSalesAgentEmailEnabled: false,
             }
@@ -556,7 +554,6 @@ describe('storeActivationReducer', () => {
                 ldFlags: LD_FLAGS,
                 storesKnowledgeStatus,
                 flags: {
-                    isAiSalesBetaUser: false,
                     hasAiAgentNewActivationXp: false,
                     aiSalesAgentEmailEnabled: false,
                 },
@@ -627,7 +624,6 @@ describe('storeActivationReducer', () => {
                 ldFlags: LD_FLAGS,
                 storesKnowledgeStatus,
                 flags: {
-                    isAiSalesBetaUser: false,
                     hasAiAgentNewActivationXp: false,
                     aiSalesAgentEmailEnabled: false,
                 },
@@ -666,7 +662,6 @@ describe('storeActivationReducer', () => {
             ldFlags: LD_FLAGS,
             // No impact on chat enabled/disabled
             flags: {
-                isAiSalesBetaUser: false,
                 hasAiAgentNewActivationXp: false,
                 aiSalesAgentEmailEnabled: false,
             },
@@ -700,7 +695,6 @@ describe('storeActivationReducer', () => {
             ldFlags: LD_FLAGS,
             // No impact on chat enabled/disabled
             flags: {
-                isAiSalesBetaUser: false,
                 hasAiAgentNewActivationXp: false,
                 aiSalesAgentEmailEnabled: false,
             },
@@ -739,7 +733,6 @@ describe('storeActivationReducer', () => {
             ldFlags: LD_FLAGS,
             // No impact on email enabled/disabled
             flags: {
-                isAiSalesBetaUser: false,
                 hasAiAgentNewActivationXp: false,
                 aiSalesAgentEmailEnabled: false,
             },
@@ -756,27 +749,15 @@ describe('storeActivationReducer', () => {
         it('should return true if beta account on new pricing and does not have sales', () => {
             expect(
                 isSalesEnabledWithNewActivationXp({
-                    isAiSalesBetaUser: true,
                     hasNewAutomatePlan: true,
                     storeHasSales: false,
                 }),
             ).toBe(true)
         })
 
-        it('should return false if not beta account on new pricing and does not have sales', () => {
-            expect(
-                isSalesEnabledWithNewActivationXp({
-                    isAiSalesBetaUser: false,
-                    hasNewAutomatePlan: true,
-                    storeHasSales: false,
-                }),
-            ).toBe(false)
-        })
-
         it('should return false if beta account not on new pricing and does not have sales', () => {
             expect(
                 isSalesEnabledWithNewActivationXp({
-                    isAiSalesBetaUser: false,
                     hasNewAutomatePlan: false,
                     storeHasSales: false,
                 }),
@@ -786,7 +767,6 @@ describe('storeActivationReducer', () => {
         it('should return true if it has already sales', () => {
             expect(
                 isSalesEnabledWithNewActivationXp({
-                    isAiSalesBetaUser: false,
                     hasNewAutomatePlan: false,
                     storeHasSales: true,
                 }),
@@ -798,7 +778,6 @@ describe('storeActivationReducer', () => {
         describe('when account has sales', () => {
             // Has sales
             const flags = {
-                isAiSalesBetaUser: true,
                 hasAiAgentNewActivationXp: true,
                 aiSalesAgentEmailEnabled: true,
             }
@@ -986,7 +965,6 @@ describe('storeActivationReducer', () => {
         describe('when account does not have sales', () => {
             // Does not have sales
             const flags = {
-                isAiSalesBetaUser: false,
                 hasAiAgentNewActivationXp: false,
                 aiSalesAgentEmailEnabled: false,
             }

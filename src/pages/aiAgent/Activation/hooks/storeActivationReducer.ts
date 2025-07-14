@@ -20,14 +20,12 @@ import { AlertType } from 'pages/common/components/Alert/Alert'
 
 export const isSalesEnabledWithNewActivationXp = ({
     storeHasSales,
-    isAiSalesBetaUser,
     hasNewAutomatePlan,
 }: {
     storeHasSales: boolean
     hasNewAutomatePlan: boolean
-    isAiSalesBetaUser: boolean
 }) => {
-    return (isAiSalesBetaUser && hasNewAutomatePlan) || storeHasSales
+    return hasNewAutomatePlan || storeHasSales
 }
 
 export const KNOWLEDGE_ALERT_KIND = Symbol('Knowledge Alert')
@@ -35,7 +33,6 @@ type AlertKind = typeof KNOWLEDGE_ALERT_KIND
 
 export type Flags = {
     hasAiAgentNewActivationXp: boolean
-    isAiSalesBetaUser: boolean
     aiSalesAgentEmailEnabled: boolean
 }
 export type Settings = {
@@ -429,11 +426,7 @@ export const storeConfigurationToState = (
         ldFlags,
         storesKnowledgeStatus,
         hasNewAutomatePlan,
-        flags: {
-            hasAiAgentNewActivationXp,
-            isAiSalesBetaUser,
-            aiSalesAgentEmailEnabled,
-        },
+        flags: { hasAiAgentNewActivationXp, aiSalesAgentEmailEnabled },
     }: UpdateStoreConfiguration,
 ): State => {
     return storeConfigurations.reduce<Record<string, StoreActivation>>(
@@ -497,7 +490,6 @@ export const storeConfigurationToState = (
             let salesIsDisabled: boolean
             if (hasAiAgentNewActivationXp) {
                 salesEnabled = isSalesEnabledWithNewActivationXp({
-                    isAiSalesBetaUser,
                     storeHasSales: scopes.includes(AiAgentScope.Sales),
                     hasNewAutomatePlan,
                 })
@@ -546,7 +538,7 @@ export const storeConfigurationToState = (
 
 export const updatePricing = (
     state: State,
-    { flags: { isAiSalesBetaUser, hasAiAgentNewActivationXp } }: UpdatePricing,
+    { flags: { hasAiAgentNewActivationXp } }: UpdatePricing,
 ): State => {
     if (!hasAiAgentNewActivationXp) {
         return state
@@ -559,7 +551,6 @@ export const updatePricing = (
             } = storeActivation
 
             const salesEnabled = isSalesEnabledWithNewActivationXp({
-                isAiSalesBetaUser,
                 storeHasSales: scopes.includes(AiAgentScope.Sales),
                 hasNewAutomatePlan: true,
             })

@@ -290,7 +290,7 @@ describe('SalesPaywallMiddleware', () => {
     })
 
     describe('isAiShoppingAssistantEnabled', () => {
-        it('should render upgrade paywall when it has automate + beta user not on generation 6 plan', () => {
+        it('should render upgrade paywall when it has automate not on generation 6 plan', () => {
             setupUseAppSelectorMock({
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
@@ -298,7 +298,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -320,11 +319,10 @@ describe('SalesPaywallMiddleware', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render the child component when it has automate + beta user on generation 6 plan', () => {
+        it('should render the child component when it has automate on generation 6 plan', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
             setupUseAppSelectorMock({
                 hasAutomate: true,
@@ -341,11 +339,10 @@ describe('SalesPaywallMiddleware', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render the child component when it has automate + alpha/demo user', () => {
+        it('should render the child component when it has automate + alpha user', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
-                [FeatureFlagKey.AiSalesAgentBeta]: false,
             })
             setupUseAppSelectorMock({
                 hasAutomate: true,
@@ -364,7 +361,7 @@ describe('SalesPaywallMiddleware', () => {
     })
 
     describe('isAiShoppingAssistantEnabled false', () => {
-        it('should render waitlist paywall when it has automate + beta user not on generation 6 plan', () => {
+        it('should render waitlist paywall when it has automate not on generation 6 plan', () => {
             setupUseAppSelectorMock({
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
@@ -372,7 +369,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -395,11 +391,10 @@ describe('SalesPaywallMiddleware', () => {
         })
     })
 
-    it('should render the child component when it has automate + beta user on generation 5 plan + alpha/demo user', () => {
+    it('should render the child component when it has automate on generation 5 plan + alpha/demo user', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
-            [FeatureFlagKey.AiSalesAgentBeta]: true,
         })
         setupUseAppSelectorMock({
             hasAutomate: true,
@@ -409,7 +404,6 @@ describe('SalesPaywallMiddleware', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-            [FeatureFlagKey.AiSalesAgentBeta]: true,
         })
 
         renderMiddleware()
@@ -429,7 +423,7 @@ describe('SalesPaywallMiddleware', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render start trial paywall when it has automate + beta user on usd-5 plan', () => {
+    it('should render start trial paywall when it has automate on usd-5 plan', () => {
         useTrialEligibilityMock.mockReturnValue({
             canStartTrial: true,
             isLoading: false,
@@ -458,7 +452,6 @@ describe('SalesPaywallMiddleware', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-            [FeatureFlagKey.AiSalesAgentBeta]: true,
         })
 
         renderMiddleware()
@@ -480,7 +473,7 @@ describe('SalesPaywallMiddleware', () => {
         )
     })
 
-    it('should render start trial paywall when it has automate + beta user on usd-5 plan + manual activation from feature flag', () => {
+    it('should render start trial paywall when it has automate on usd-5 plan + manual activation from feature flag', () => {
         useTrialEligibilityMock.mockReturnValue({
             canStartTrial: false,
             isLoading: false,
@@ -514,7 +507,6 @@ describe('SalesPaywallMiddleware', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-            [FeatureFlagKey.AiSalesAgentBeta]: true,
             [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
         })
 
@@ -537,11 +529,10 @@ describe('SalesPaywallMiddleware', () => {
         )
     })
 
-    it('should render the child component when it has automate + beta user on generation 6 plan', () => {
+    it('should render the child component when it has automate on generation 6 plan', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-            [FeatureFlagKey.AiSalesAgentBeta]: true,
         })
         setupUseAppSelectorMock({
             hasAutomate: true,
@@ -558,7 +549,6 @@ describe('SalesPaywallMiddleware', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: true,
-            [FeatureFlagKey.AiSalesAgentBeta]: false,
         })
         setupUseAppSelectorMock({
             hasAutomate: true,
@@ -571,36 +561,26 @@ describe('SalesPaywallMiddleware', () => {
         expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
     })
 
-    it.each([{ generation: 5 }, { generation: 6 }])(
-        'should render waitlist paywall when it has automate + any generation plan and not part of demo/alpha/beta',
-        ({ generation }) => {
-            setupUseAppSelectorMock({
-                hasAutomate: true,
-                currentAutomatePlan: { generation },
-            })
-            mockFlags({
-                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: false,
-            })
+    it('should render waitlist paywall when it has automate + generation 5 plan and not part of alpha', () => {
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 5 },
+        })
+        mockFlags({
+            [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+        })
 
-            renderMiddleware()
+        renderMiddleware()
 
-            expect(
-                screen.queryByTestId('mock-child-component'),
-            ).not.toBeInTheDocument()
-
-            const paywallView = screen.getByText(/Paywall View Mock/)
-            expect(paywallView).toBeInTheDocument()
-            expect(paywallView).toHaveTextContent(
-                `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.SalesWaitlist}`,
-            )
-            expect(
-                paywallView.querySelector(
-                    '[data-candu-id="ai-agent-waitlist"]',
-                ),
-            ).toBeInTheDocument()
-        },
-    )
+        const paywallView = screen.getByText(/Paywall View Mock/)
+        expect(paywallView).toBeInTheDocument()
+        expect(paywallView).toHaveTextContent(
+            `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.SalesWaitlist}`,
+        )
+        expect(
+            paywallView.querySelector('[data-candu-id="ai-agent-waitlist"]'),
+        ).toBeInTheDocument()
+    })
 
     describe('Shopping Assistant Trial Revamp', () => {
         it('shows trial button when revamp flag is enabled and canSeeTrialCTA is true', () => {
@@ -620,7 +600,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -647,7 +626,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -692,7 +670,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -729,7 +706,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
 
             renderMiddleware()
@@ -758,7 +734,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
         })
@@ -986,7 +961,6 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
-                [FeatureFlagKey.AiSalesAgentBeta]: true,
             })
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
