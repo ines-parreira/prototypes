@@ -261,10 +261,14 @@ describe('AiSalesAgentSalesOverview', () => {
             canBookDemo: false,
             canSeeSystemBanner: false,
             canSeeTrialCTA: false, // Default to false, will override in specific tests
-            hasActiveTrial: false,
-            hasCurrentStoreOptedOut: false,
-            hasMinOneStoreOptedOut: false,
-            hasTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+            hasAnyTrialStarted: false,
+            hasCurrentStoreTrialOptedOut: false,
+            hasAnyTrialOptedOut: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            hasAnyTrialActive: false,
         })
 
         // Mock useFlag

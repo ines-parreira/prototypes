@@ -16,15 +16,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { getShoppingAssistantExpirationDays } from 'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner'
-import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { formatAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 export type TrialMetrics = {
-    remainingDays: number
-    trialEndTime: string | null
     gmvInfluenced: string
     gmvInfluencedRate: number
     isLoading: boolean
@@ -39,9 +35,6 @@ export const useTrialMetrics = (): TrialMetrics => {
         ]),
         shallowEqual,
     )
-    const trialMilestone = useSalesTrialRevampMilestone()
-
-    const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
     const { storeActivations } = useStoreActivations()
 
     const storeIds = useMemo(() => {
@@ -154,64 +147,6 @@ export const useTrialMetrics = (): TrialMetrics => {
     const currentPlan = billingState?.data?.current_plans?.automate
     const currency = currentPlan?.currency ?? 'USD'
 
-    const { remainingDays, trialEndTime } = useMemo(() => {
-        if (!storeActivations) {
-            return { remainingDays: 0, trialEndTime: null }
-        }
-
-        // Use the stable 'to' date we already calculated above
-        const now = moment(to)
-
-        const trialData = Object.values(storeActivations)
-            .map((storeConfig) => {
-                if (isRevampTrialMilestone1Enabled) {
-                    const trialStartDatetime =
-                        storeConfig.configuration.sales?.trial.startDatetime
-                    const trialEndDatetime =
-                        storeConfig.configuration.sales?.trial.endDatetime
-
-                    if (!trialStartDatetime || !trialEndDatetime) {
-                        return { days: Infinity, endTime: null }
-                    }
-
-                    const trialEndDate = moment(trialEndDatetime)
-                    const days = Math.max(
-                        0,
-                        Math.round(trialEndDate.diff(now, 'days', true)),
-                    )
-
-                    return { days, endTime: trialEndDate.toISOString() }
-                }
-
-                const salesDeactivatedDatetime =
-                    storeConfig.configuration.salesDeactivatedDatetime
-                if (!salesDeactivatedDatetime) {
-                    return { days: Infinity, endTime: null }
-                }
-
-                const deactivatedDate = moment(salesDeactivatedDatetime)
-                const days =
-                    getShoppingAssistantExpirationDays(
-                        salesDeactivatedDatetime,
-                    ) || Infinity
-
-                return { days, endTime: deactivatedDate.toISOString() }
-            })
-            .filter((data) => data.days !== Infinity)
-
-        const minDaysData =
-            trialData.length > 0
-                ? trialData.reduce((min, current) =>
-                      current.days < min.days ? current : min,
-                  )
-                : { days: 0, endTime: null }
-
-        return {
-            remainingDays: minDaysData.days,
-            trialEndTime: minDaysData.endTime,
-        }
-    }, [storeActivations, isRevampTrialMilestone1Enabled, to])
-
     const gmvInfluenced = useMemo(() => {
         if (
             !gmvInfluencedData ||
@@ -232,8 +167,6 @@ export const useTrialMetrics = (): TrialMetrics => {
     }, [gmvInfluencedData])
 
     return {
-        remainingDays,
-        trialEndTime,
         gmvInfluenced: formatAmount(currency, gmvInfluenced),
         gmvInfluencedRate: gmvInfluencedRateData?.value || 0,
         isLoading: isGmvInfluencedFetching || isGmvInfluencedRateFetching,

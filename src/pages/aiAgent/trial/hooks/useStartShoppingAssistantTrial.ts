@@ -55,7 +55,6 @@ export const useStartShoppingAssistantTrial = ({
 
             // Check if the store has a valid chat integration
             const isChatValid =
-                store.support.chat.enabled &&
                 store.support.chat.availableChats &&
                 store.support.chat.availableChats.length > 0 &&
                 !store.support.chat.isIntegrationMissing &&
@@ -70,9 +69,10 @@ export const useStartShoppingAssistantTrial = ({
                     }),
                 )
                 history.push(routes.settingsChannels)
-                onError?.()
                 throw new Error("Invalid Chat - can't start trial")
             }
+
+            // TODO: Add validation for "at least 1 knowledge sources"
 
             if (milestone === 'milestone-1') {
                 await startSalesTrialMutation.mutateAsync([store.name])
@@ -109,6 +109,7 @@ export const useStartShoppingAssistantTrial = ({
                         status: NotificationStatus.Error,
                     }),
                 )
+                onError?.()
             },
         },
     )

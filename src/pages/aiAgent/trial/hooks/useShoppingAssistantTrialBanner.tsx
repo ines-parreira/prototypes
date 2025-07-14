@@ -1,16 +1,17 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
+/** System banner to warn user for Shopping Assistant Trial */
 export const useShoppingAssistantTrialBanner = () => {
     const { addBanner, removeBanner } = useBanners()
 
@@ -19,8 +20,6 @@ export const useShoppingAssistantTrialBanner = () => {
     const userRole = useAppSelector(getRoleName)
 
     const { storeActivations } = useStoreActivations()
-
-    const history = useHistory()
 
     const pathname = useLocation().pathname
 
@@ -45,23 +44,17 @@ export const useShoppingAssistantTrialBanner = () => {
         [currentAccount, currentUser, userRole],
     )
 
-    const basePath = getAiAgentBasePath(
-        Object.values(storeActivations)[0]?.name,
-    )
-    const redirectionPath = `${basePath}/sales`
-
-    const onClick = useCallback(() => {
-        history.push(redirectionPath)
-        logEvent(SegmentEvent.TrialSystemWideBannerCTAClicked, {
-            ...eventData,
-        })
-    }, [history, redirectionPath, eventData])
+    const firstStore = Object.values(storeActivations)[0]
+    const { routes } = useAiAgentNavigation({
+        shopName: firstStore?.name ?? '',
+    })
 
     useEffect(() => {
-        if (displayBanner) {
+        if (firstStore && displayBanner) {
             logEvent(SegmentEvent.TrialSystemWideBannerViewed, {
                 ...eventData,
             })
+
             addBanner({
                 preventDismiss: false,
                 category: BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
@@ -70,9 +63,14 @@ export const useShoppingAssistantTrialBanner = () => {
                 message:
                     'AI Agent just got even smarter with brand new Shopping Assistant skills, start your exclusive access to a 14-day trial',
                 CTA: {
-                    type: 'action',
+                    type: 'internal',
                     text: 'Get Started',
-                    onClick,
+                    to: routes.overview,
+                    onClick: () => {
+                        logEvent(SegmentEvent.TrialSystemWideBannerCTAClicked, {
+                            ...eventData,
+                        })
+                    },
                 },
             })
         } else {
@@ -81,5 +79,5 @@ export const useShoppingAssistantTrialBanner = () => {
                 BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
             )
         }
-    }, [displayBanner, addBanner, removeBanner, eventData, onClick])
+    }, [firstStore, displayBanner, addBanner, removeBanner, routes, eventData])
 }

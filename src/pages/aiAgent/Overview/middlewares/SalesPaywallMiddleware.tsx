@@ -20,6 +20,7 @@ import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SALES } from 'pages/aiAgent/constants'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
+import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
@@ -56,18 +57,18 @@ export const SalesPaywallMiddleware =
         const { storeActivations } = useStoreActivations()
 
         const trialMilestone = useSalesTrialRevampMilestone()
+        const { shopName } = useParams<{ shopName?: string }>()
+        const currentStore = shopName ? storeActivations[shopName] : undefined
         const {
             canSeeTrialCTA,
-            hasMinOneStoreOptedOut,
-            hasActiveTrial,
-            hasTrialExpired,
-        } = useShoppingAssistantTrialAccess()
+            hasCurrentStoreTrialStarted,
+            hasCurrentStoreTrialExpired,
+            hasAnyTrialOptedIn,
+        } = useShoppingAssistantTrialAccess(currentStore?.name)
 
         const currentStoreHasActiveTrial =
             trialMilestone === 'milestone-1'
-                ? Object.values(storeActivations).some(
-                      (store) => store.configuration.sales?.trial.startDatetime,
-                  ) && !hasTrialExpired
+                ? hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired
                 : atLeastOneStoreHasActiveTrialOnSpecificStores(
                       storeActivations,
                   )
@@ -85,7 +86,7 @@ export const SalesPaywallMiddleware =
             trialModal.openModal(AI_TRIAL_MODAL_NAME, false)
         }
 
-        const { upgradePlan, isLoading: isUpgradePlanLoading } =
+        const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
             useUpgradePlan()
 
         const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
@@ -96,7 +97,6 @@ export const SalesPaywallMiddleware =
             startTrial: startTrialOriginal,
             isLoading,
             canStartTrialFromFeatureFlag,
-            shopName,
         } = useActivateAiAgentTrial({
             accountDomain,
             storeActivations,
@@ -128,10 +128,10 @@ export const SalesPaywallMiddleware =
 
         const onStartTrialClicked = () => {
             if (isShoppingAssistantTrialRevampEnabled) {
-                if (hasMinOneStoreOptedOut || !hasActiveTrial) {
-                    openTrialUpgradeModal()
-                } else {
+                if (hasAnyTrialOptedIn) {
                     startRevampTrial()
+                } else {
+                    openTrialUpgradeModal()
                 }
             } else {
                 startTrialOriginal()
@@ -151,7 +151,7 @@ export const SalesPaywallMiddleware =
             userId: currentUser.get('id'),
             userRole: userRole || '',
             type: 'sales-paywall',
-            storeName: shopName || '',
+            storeName: shopName ?? '',
         }
 
         const isAiSalesAlphaDemoUser =
@@ -161,6 +161,7 @@ export const SalesPaywallMiddleware =
             !hasNewAutomatePlan &&
             !currentStoreHasActiveTrial &&
             !isAiSalesAlphaDemoUser
+
         const showSalesSettings =
             hasNewAutomatePlan ||
             isAiSalesAlphaDemoUser ||
@@ -170,23 +171,23 @@ export const SalesPaywallMiddleware =
             autoDestroy: false,
         })
 
-        const trialModalProps = useTrialModalProps({})
+        const trialModalProps = useTrialModalProps({ storeName: shopName })
 
-        const onUpgradeClick = useCallback(() => {
+        const onUpgradeClick = useCallback(async () => {
             logEvent(SegmentEvent.PricingModalClicked, {
                 type: 'upgraded',
             })
-            upgradePlan()
+            await upgradePlanAsync()
             closeManageTrialModal()
             closeUpgradePlanModal()
-        }, [upgradePlan, closeManageTrialModal, closeUpgradePlanModal])
+        }, [upgradePlanAsync, closeManageTrialModal, closeUpgradePlanModal])
 
         const onUpgradePlanClicked = () => {
             if (isShoppingAssistantTrialRevampEnabled) {
-                if (hasMinOneStoreOptedOut || !hasActiveTrial) {
-                    openUpgradePlanModal()
-                } else {
+                if (hasAnyTrialOptedIn) {
                     onUpgradeClick()
+                } else {
+                    openUpgradePlanModal()
                 }
             } else {
                 showEarlyAccessModal()
@@ -205,6 +206,25 @@ export const SalesPaywallMiddleware =
 
         return (
             <>
+                <PaywallWrapperComponent
+                    showUpgradePaywall={showUpgradePaywall}
+                    showEarlyAccessModal={onUpgradePlanClicked}
+                    displayTrialButton={displayTrialButton}
+                    startTrial={() => {
+                        logEvent(
+                            SegmentEvent.AiAgentShoppingAssistantStartTrialClicked,
+                            {
+                                ...eventData,
+                            },
+                        )
+                        onStartTrialClicked()
+                    }}
+                    earlyAccessModal={earlyAccessModal}
+                    showSalesSettings={showSalesSettings}
+                    ChildComponent={ChildComponent}
+                    eventData={eventData}
+                />
+
                 {isTrialModalOpen && (
                     <UpgradePlanModal
                         {...trialModalProps.trialUpgradePlanModal}
@@ -233,24 +253,11 @@ export const SalesPaywallMiddleware =
                     />
                 )}
 
-                <PaywallWrapperComponent
-                    showUpgradePaywall={showUpgradePaywall}
-                    showEarlyAccessModal={onUpgradePlanClicked}
-                    displayTrialButton={displayTrialButton}
-                    startTrial={() => {
-                        logEvent(
-                            SegmentEvent.AiAgentShoppingAssistantStartTrialClicked,
-                            {
-                                ...eventData,
-                            },
-                        )
-                        onStartTrialClicked()
-                    }}
-                    earlyAccessModal={earlyAccessModal}
-                    showSalesSettings={showSalesSettings}
-                    ChildComponent={ChildComponent}
-                    eventData={eventData}
-                />
+                {currentStore && (
+                    <TrialEndedModal
+                        storeConfiguration={currentStore.configuration}
+                    />
+                )}
 
                 <AIAgentTrialSuccessModal
                     isOpen={trialModal.isOpen(AI_TRIAL_MODAL_NAME)}

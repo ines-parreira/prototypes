@@ -40,10 +40,12 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 jest.mock('../hooks/useGetShoppingAssistantEnabled')
 
 const mockHistoryPush = jest.fn()
+const mockHistoryReplace = jest.fn()
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
         push: mockHistoryPush,
+        replace: mockHistoryReplace,
     }),
 }))
 
@@ -111,7 +113,7 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryPush).toHaveBeenCalledWith(
+        expect(mockHistoryReplace).toHaveBeenCalledWith(
             '/app/ai-agent/shopify/test-shop/sales/strategy',
         )
     })
@@ -124,7 +126,7 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryPush).toHaveBeenCalledWith(
+        expect(mockHistoryReplace).toHaveBeenCalledWith(
             '/app/ai-agent/shopify/test-shop/sales/analytics',
         )
     })
@@ -137,7 +139,7 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryPush).not.toHaveBeenCalled()
+        expect(mockHistoryReplace).not.toHaveBeenCalled()
     })
 
     it('should not redirect when feature flag is disabled', () => {
@@ -152,6 +154,6 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryPush).not.toHaveBeenCalled()
+        expect(mockHistoryReplace).not.toHaveBeenCalled()
     })
 })

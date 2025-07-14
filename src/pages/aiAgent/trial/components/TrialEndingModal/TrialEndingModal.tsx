@@ -1,11 +1,41 @@
+import { useCallback, useState } from 'react'
+
+import moment from 'moment'
+
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
+import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
-export const TrialEndedModal = () => {
-    const { manageTrialModal } = useTrialModalProps({})
-    const { isTrialEnded: isTrialEndedModalOpen, dismissTrialEnded } =
-        useTrialEnding()
+const TRIAL_ENDED_DISMISSED_KEY = 'ai-agent-trial-ended-dismissed'
+
+export const TrialEndedModal = ({
+    storeConfiguration,
+}: {
+    storeConfiguration: StoreConfiguration
+}) => {
+    const storeName = storeConfiguration.storeName
+    const { manageTrialModal } = useTrialModalProps({ storeName })
+    const { trialTerminationDatetime } = useTrialEnding(storeName)
+    const trialMilestone = useSalesTrialRevampMilestone()
+    const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
+
+    const [isTrialEndedDismissed, setIsTrialEndedDismissed] = useState(
+        () => localStorage.getItem(TRIAL_ENDED_DISMISSED_KEY) === 'true',
+    )
+
+    const dismissTrialEnded = useCallback(() => {
+        localStorage.setItem(TRIAL_ENDED_DISMISSED_KEY, 'true')
+        setIsTrialEndedDismissed(true)
+    }, [])
+
+    const now = moment()
+    const isTrialEndedModalOpen =
+        isRevampTrialMilestone1Enabled &&
+        !isTrialEndedDismissed &&
+        !!trialTerminationDatetime &&
+        moment(trialTerminationDatetime).isBefore(now)
 
     if (!isTrialEndedModalOpen) {
         return null
@@ -30,12 +60,37 @@ export const TrialEndedModal = () => {
     )
 }
 
-export const TrialEndingTomorrowModal = () => {
-    const { manageTrialModal } = useTrialModalProps({})
-    const {
-        isTrialEndingTomorrow: isTrialEndingTomorrowModalOpen,
-        dismissTrialEndingTomorrow,
-    } = useTrialEnding()
+const TRIAL_ENDING_TOMORROW_DISMISSED_KEY =
+    'ai-agent-trial-ending-tomorrow-dismissed'
+
+export const TrialEndingTomorrowModal = ({
+    storeConfiguration,
+}: {
+    storeConfiguration: StoreConfiguration
+}) => {
+    const storeName = storeConfiguration.storeName
+    const { manageTrialModal } = useTrialModalProps({ storeName })
+    const { remainingDays, trialEndDatetime } = useTrialEnding(storeName)
+    const trialMilestone = useSalesTrialRevampMilestone()
+    const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
+
+    const [isTrialEndingTomorrowDismissed, setIsTrialEndingTomorrowDismissed] =
+        useState(
+            () =>
+                localStorage.getItem(TRIAL_ENDING_TOMORROW_DISMISSED_KEY) ===
+                'true',
+        )
+
+    const dismissTrialEndingTomorrow = useCallback(() => {
+        localStorage.setItem(TRIAL_ENDING_TOMORROW_DISMISSED_KEY, 'true')
+        setIsTrialEndingTomorrowDismissed(true)
+    }, [])
+
+    const isTrialEndingTomorrowModalOpen =
+        isRevampTrialMilestone1Enabled &&
+        !isTrialEndingTomorrowDismissed &&
+        !!trialEndDatetime &&
+        remainingDays === 1
 
     if (!isTrialEndingTomorrowModalOpen) {
         return null

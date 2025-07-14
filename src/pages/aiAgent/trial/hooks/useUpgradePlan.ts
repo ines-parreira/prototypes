@@ -18,7 +18,7 @@ export const useUpgradePlan = () => {
         useUpgradeSalesSubscriptionMutation()
 
     const upgradePlanMutation = useMutation({
-        mutationFn: async () => {
+        mutationFn: () => {
             if (isRevampTrialMilestone1Enabled) {
                 return upgradeSalesSubscriptionMutation.mutateAsync([])
             }

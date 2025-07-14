@@ -11,7 +11,6 @@ import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanne
 import { TrialEndingTomorrowModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
-import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -28,7 +27,6 @@ jest.mock('pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner')
 jest.mock('pages/aiAgent/trial/components/TrialManageModal/TrialManageModal')
 jest.mock('pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal')
 jest.mock('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
-jest.mock('pages/aiAgent/trial/hooks/useIsTrialStarted')
 jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
@@ -49,6 +47,15 @@ describe('TrialManageWorkflow', () => {
     const mockLogEvent = jest.fn()
     const mockOptOutMutate = jest.fn()
     const mockUpgradePlan = jest.fn()
+    const mockUpgradePlanAsync = jest.fn().mockResolvedValue(undefined)
+
+    const mockStoreConfiguration = {
+        storeName: 'test-store',
+        storeId: 'test-store-id',
+        sales: {
+            enabled: true,
+        },
+    } as any
     const mockPush = jest.fn()
     const mockUseHistory = useHistory as jest.Mock
     const mockUseLocation = useLocation as jest.Mock
@@ -76,11 +83,19 @@ describe('TrialManageWorkflow', () => {
         ;(useStoreActivations as jest.Mock).mockReturnValue({
             storeActivations: ['store1', 'store2'],
         })
-        ;(useIsTrialStarted as jest.Mock).mockReturnValue(false)
         ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-            hasActiveTrial: false,
-            canSeeTrialStartedBanner: false,
+            hasCurrentStoreTrialStarted: false,
+            hasAnyTrialStarted: false,
+            hasCurrentStoreTrialOptedOut: false,
+            hasAnyTrialOptedOut: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            hasAnyTrialActive: false,
+            canNotifyAdmin: false,
             canBookDemo: false,
+            canSeeSystemBanner: false,
+            canSeeTrialCTA: false,
         })
         ;(useShoppingAssistantTrialFlow as jest.Mock).mockReturnValue({
             openManageTrialModal: mockOpenManageTrialModal,
@@ -89,6 +104,7 @@ describe('TrialManageWorkflow', () => {
         })
         ;(useUpgradePlan as jest.Mock).mockReturnValue({
             upgradePlan: mockUpgradePlan,
+            upgradePlanAsync: mockUpgradePlanAsync,
             isLoading: false,
         })
         ;(useOptOutSalesTrialUpgradeMutation as jest.Mock).mockImplementation(
@@ -159,7 +175,12 @@ describe('TrialManageWorkflow', () => {
     })
 
     it('does not render any components when user cannot see trial banner', () => {
-        render(<TrialManageWorkflow pageName="Strategy" />)
+        render(
+            <TrialManageWorkflow
+                pageName="Strategy"
+                storeConfiguration={mockStoreConfiguration}
+            />,
+        )
 
         expect(
             screen.queryByTestId('trial-alert-banner'),
@@ -173,7 +194,10 @@ describe('TrialManageWorkflow', () => {
         mockUseSalesTrialRevampMilestone.mockReturnValue('off')
 
         const { container } = render(
-            <TrialManageWorkflow pageName="Strategy" />,
+            <TrialManageWorkflow
+                pageName="Strategy"
+                storeConfiguration={mockStoreConfiguration}
+            />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -187,25 +211,46 @@ describe('TrialManageWorkflow', () => {
 
     describe('when user can see trial banner', () => {
         beforeEach(() => {
-            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-                hasActiveTrial: true,
-                canSeeTrialStartedBanner: true,
+                hasCurrentStoreTrialStarted: true,
+                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+                hasAnyTrialActive: true,
+                canSeeTrialCTA: true,
+                canSeeSystemBanner: false,
+                canNotifyAdmin: false,
                 canBookDemo: false,
             })
         })
 
         it('renders TrialAlertBanner', () => {
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(screen.getByTestId('trial-alert-banner')).toBeInTheDocument()
         })
 
         it('shows "Book a demo" as primary action when user can book demo', () => {
-            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-                hasActiveTrial: true,
-                canSeeTrialStartedBanner: true,
+                hasCurrentStoreTrialStarted: true,
+                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+                hasAnyTrialActive: true,
+                canSeeTrialCTA: true,
+                canSeeSystemBanner: false,
+                canNotifyAdmin: false,
                 canBookDemo: true,
             })
             // Mock the trial modal props to return the correct actions
@@ -233,7 +278,12 @@ describe('TrialManageWorkflow', () => {
                 upgradePlanModal: {},
             })
 
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(screen.getByText('Book a demo')).toBeInTheDocument()
         })
@@ -263,15 +313,28 @@ describe('TrialManageWorkflow', () => {
                 },
                 upgradePlanModal: {},
             })
-            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-                hasActiveTrial: true,
-                canSeeTrialStartedBanner: true,
+                hasCurrentStoreTrialStarted: true,
+                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+                hasAnyTrialActive: true,
+                canSeeTrialCTA: true,
+                canSeeSystemBanner: false,
+                canNotifyAdmin: false,
                 canBookDemo: true,
             })
 
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const bookDemoButton = screen.getByText('Book a demo')
             await user.click(bookDemoButton)
@@ -280,13 +343,23 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('shows "Upgrade Now" as primary action when user cannot book demo', () => {
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
             expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
         })
 
         it('does nothing when "Upgrade Now" is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const upgradeButton = screen.getByText('Upgrade Now')
             await user.click(upgradeButton)
@@ -321,7 +394,12 @@ describe('TrialManageWorkflow', () => {
                 upgradePlanModal: {},
             })
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const manageTrialButton = screen.getByText('Manage Trial')
             await user.click(manageTrialButton)
@@ -340,12 +418,22 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('renders TrialManageModal', () => {
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
             expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
         })
 
         it('displays correct title and description with GMV metrics', () => {
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(
                 screen.getByText('Manage Shopping Assistant trial'),
@@ -358,7 +446,12 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('displays GMV metric in advantages', () => {
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(TrialManageModal).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -370,7 +463,12 @@ describe('TrialManageWorkflow', () => {
 
         it('closes modal when "Opt Out" is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const optOutButton = screen.getByText('Opt Out')
             await act(async () => {
@@ -382,7 +480,12 @@ describe('TrialManageWorkflow', () => {
 
         it('closes modal when onClose is triggered', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const closeButton = screen.getByText('Close')
             await act(async () => {
@@ -394,7 +497,12 @@ describe('TrialManageWorkflow', () => {
     })
 
     it('passes correct parameters to useShoppingAssistantTrialFlow', () => {
-        render(<TrialManageWorkflow pageName="Strategy" />)
+        render(
+            <TrialManageWorkflow
+                pageName="Strategy"
+                storeConfiguration={mockStoreConfiguration}
+            />,
+        )
 
         expect(useShoppingAssistantTrialFlow).toHaveBeenCalledWith({
             accountDomain: 'test-domain.com',
@@ -403,14 +511,27 @@ describe('TrialManageWorkflow', () => {
     })
 
     it('passes correct props to TrialAlertBanner', () => {
-        ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
         ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-            hasActiveTrial: true,
-            canSeeTrialStartedBanner: true,
+            hasCurrentStoreTrialStarted: true,
+            hasAnyTrialStarted: true,
+            hasCurrentStoreTrialOptedOut: false,
+            hasAnyTrialOptedOut: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialExpired: false,
+            hasAnyTrialOptedIn: true,
+            hasAnyTrialActive: true,
+            canSeeTrialCTA: true,
+            canSeeSystemBanner: false,
+            canNotifyAdmin: false,
             canBookDemo: false,
         })
 
-        render(<TrialManageWorkflow pageName="Strategy" />)
+        render(
+            <TrialManageWorkflow
+                pageName="Strategy"
+                storeConfiguration={mockStoreConfiguration}
+            />,
+        )
 
         expect(TrialAlertBanner).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -439,7 +560,12 @@ describe('TrialManageWorkflow', () => {
             openTrialUpgradeModal: mockOpenTrialUpgradeModal,
         })
 
-        render(<TrialManageWorkflow pageName="Strategy" />)
+        render(
+            <TrialManageWorkflow
+                pageName="Strategy"
+                storeConfiguration={mockStoreConfiguration}
+            />,
+        )
 
         const call = (TrialManageModal as jest.Mock).mock.calls[0]
         expect(call[0].title).toBe('Manage Shopping Assistant trial')
@@ -456,14 +582,27 @@ describe('TrialManageWorkflow', () => {
 
     describe('useEffect logging', () => {
         it('logs TrialBannerSettingsViewed event when hasActiveTrial is true', () => {
-            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-                hasActiveTrial: true,
-                canSeeTrialStartedBanner: true,
+                hasCurrentStoreTrialStarted: true,
+                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+                hasAnyTrialActive: true,
+                canSeeTrialCTA: true,
+                canSeeSystemBanner: false,
+                canNotifyAdmin: false,
                 canBookDemo: false,
             })
 
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 'ai-agent/trial-banner-settings-viewed',
@@ -474,14 +613,27 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('logs TrialBannerSettingsViewed event with correct pageName for Engagement', () => {
-            ;(useIsTrialStarted as jest.Mock).mockReturnValue(true)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-                hasActiveTrial: true,
-                canSeeTrialStartedBanner: true,
+                hasCurrentStoreTrialStarted: true,
+                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+                hasAnyTrialActive: true,
+                canSeeTrialCTA: true,
+                canSeeSystemBanner: false,
+                canNotifyAdmin: false,
                 canBookDemo: false,
             })
 
-            render(<TrialManageWorkflow pageName="Engagement" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Engagement"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 'ai-agent/trial-banner-settings-viewed',
@@ -492,14 +644,27 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('does not log event when hasActiveTrial is false', () => {
-            ;(useIsTrialStarted as jest.Mock).mockReturnValue(false)
             ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
-                hasActiveTrial: false,
-                canSeeTrialStartedBanner: false,
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
+                canSeeTrialCTA: false,
+                canSeeSystemBanner: false,
+                canNotifyAdmin: false,
                 canBookDemo: false,
             })
 
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(mockLogEvent).not.toHaveBeenCalled()
         })
@@ -525,14 +690,24 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('renders UpgradePlanModal when isUpgradePlanModalOpen is true', () => {
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             expect(screen.getByTestId('upgrade-plan-modal')).toBeInTheDocument()
         })
 
         it('calls upgradePlan and logs event when onConfirm is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const confirmButton = screen.getByText('Confirm')
             await user.click(confirmButton)
@@ -543,7 +718,7 @@ describe('TrialManageWorkflow', () => {
                     type: 'upgraded',
                 },
             )
-            expect(mockUpgradePlan).toHaveBeenCalled()
+            expect(mockUpgradePlanAsync).toHaveBeenCalled()
         })
 
         it('passes correct props to UpgradePlanModal', () => {
@@ -556,7 +731,12 @@ describe('TrialManageWorkflow', () => {
                 closeUpgradePlanModal: mockCloseUpgradePlanModal,
             })
 
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const call = (UpgradePlanModal as jest.Mock).mock.calls[0]
             expect(call[0].onClose).toBe(mockCloseUpgradePlanModal)
@@ -577,7 +757,12 @@ describe('TrialManageWorkflow', () => {
 
         it('renders TrialOptOutModal when opt out is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const optOutButton = screen.getByText('Opt Out')
             await user.click(optOutButton)
@@ -591,7 +776,12 @@ describe('TrialManageWorkflow', () => {
 
         it('calls optOutPlan and logs event when Opt Out is confirmed', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
@@ -616,7 +806,12 @@ describe('TrialManageWorkflow', () => {
 
         it('logs event when Dismiss is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
@@ -638,7 +833,12 @@ describe('TrialManageWorkflow', () => {
 
         it('logs event when modal is closed', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
@@ -668,7 +868,12 @@ describe('TrialManageWorkflow', () => {
             }))
 
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
@@ -685,7 +890,12 @@ describe('TrialManageWorkflow', () => {
 
         it('updates URL with showOptOutFeedback parameter after opt out modal is closed', async () => {
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
@@ -713,7 +923,12 @@ describe('TrialManageWorkflow', () => {
             })
 
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')
@@ -755,7 +970,12 @@ describe('TrialManageWorkflow', () => {
             })
 
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             const upgradeButton = screen.getByText('Upgrade Now')
             await user.click(upgradeButton)
@@ -781,7 +1001,12 @@ describe('TrialManageWorkflow', () => {
             })
 
             const user = userEvent.setup()
-            render(<TrialManageWorkflow pageName="Strategy" />)
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
 
             // Click opt out in manage modal
             const optOutButton = screen.getByText('Opt Out')

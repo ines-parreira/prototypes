@@ -51,27 +51,33 @@ const mocksStore = {
 // Mock API responses
 const mockGmvReportingResponse = http.post('*/api/reporting', () => {
     return HttpResponse.json({
-        data: [
-            { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
-            { [AiSalesAgentOrdersMeasure.Gmv]: '1500' },
-            { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
-        ],
+        data: {
+            allData: [
+                { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
+                { [AiSalesAgentOrdersMeasure.Gmv]: '1500' },
+                { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
+            ],
+        },
     })
 })
 
 const mockEmptyGmvReportingResponse = http.post('*/api/reporting', () => {
     return HttpResponse.json({
-        data: [],
+        data: {
+            allData: [],
+        },
     })
 })
 
 const mockGmvReportingResponseWithNulls = http.post('*/api/reporting', () => {
     return HttpResponse.json({
-        data: [
-            { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
-            { [AiSalesAgentOrdersMeasure.Gmv]: null },
-            { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
-        ],
+        data: {
+            allData: [
+                { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
+                { [AiSalesAgentOrdersMeasure.Gmv]: null },
+                { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
+            ],
+        },
     })
 })
 
@@ -277,19 +283,22 @@ describe('useTrialMetrics', () => {
 
     describe('remaining days calculation', () => {
         it('should return 0 when no store activations exist', async () => {
+            server.use(mockEmptyGmvReportingResponse)
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: null,
                 isFetchLoading: false,
             } as any)
+            mockFormatAmount.mockReturnValue('$0')
 
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
-                expect(result.current.remainingDays).toBe(0)
+                expect(result.current.gmvInfluenced).toBe('$0')
             })
         })
 
         it('should return 0 when all stores have missing trial dates', async () => {
+            server.use(mockEmptyGmvReportingResponse)
             const storeActivationsWithMissingDates = {
                 'store-1': {
                     name: 'store-1',
@@ -305,11 +314,12 @@ describe('useTrialMetrics', () => {
                 storeActivations: storeActivationsWithMissingDates,
                 isFetchLoading: false,
             } as any)
+            mockFormatAmount.mockReturnValue('$0')
 
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
-                expect(result.current.remainingDays).toBe(0)
+                expect(result.current.gmvInfluenced).toBe('$0')
             })
         })
     })

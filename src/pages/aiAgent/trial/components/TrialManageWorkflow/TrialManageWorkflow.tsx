@@ -23,19 +23,19 @@ import {
 } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
-import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useSalesTrialRevampMilestone } from '../../hooks/useSalesTrialRevampMilestone'
+import { useShoppingAssistantTrialAccess } from '../../hooks/useShoppingAssistantTrialAccess'
 
 import css from './TrialManageWorkflow.less'
 
 export type TrialManageWorkflowProps = {
     pageName: 'Strategy' | 'Engagement'
-    storeConfiguration?: StoreConfiguration
+    storeConfiguration: StoreConfiguration
 }
 
 export const TrialManageWorkflow = ({
@@ -48,9 +48,11 @@ export const TrialManageWorkflow = ({
     const location = useLocation()
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
 
-    const hasActiveTrial = useIsTrialStarted({ storeConfiguration })
+    const { hasCurrentStoreTrialStarted, hasCurrentStoreTrialExpired } =
+        useShoppingAssistantTrialAccess(storeConfiguration.storeName)
 
-    const { upgradePlan, isLoading: isUpgradePlanLoading } = useUpgradePlan()
+    const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
+        useUpgradePlan()
 
     const accountDomain = currentAccount.get('domain')
 
@@ -70,16 +72,19 @@ export const TrialManageWorkflow = ({
         setIsOptOutModalOpen(true)
     }
 
-    const onUpgradeClick = useCallback(() => {
+    const onUpgradeClick = useCallback(async () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'upgraded',
         })
-        upgradePlan()
+        await upgradePlanAsync()
         closeManageTrialModal()
         closeUpgradePlanModal()
-    }, [upgradePlan, closeManageTrialModal, closeUpgradePlanModal])
+    }, [upgradePlanAsync, closeManageTrialModal, closeUpgradePlanModal])
 
-    const trialModalProps = useTrialModalProps({ pageName })
+    const trialModalProps = useTrialModalProps({
+        pageName,
+        storeName: storeConfiguration.storeName,
+    })
 
     const onCloseOptOutModal = () => {
         setIsOptOutModalOpen(false)
@@ -93,20 +98,23 @@ export const TrialManageWorkflow = ({
         })
     }
 
+    const displayTrialBanner =
+        hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired
+
     useEffect(() => {
-        if (hasActiveTrial) {
+        if (displayTrialBanner) {
             logEvent(SegmentEvent.TrialBannerSettingsViewed, {
                 type: pageName,
             })
         }
-    }, [pageName, hasActiveTrial])
+    }, [pageName, displayTrialBanner])
 
     const trialMilestone = useSalesTrialRevampMilestone()
     if (trialMilestone === 'off') return undefined
 
     return (
         <>
-            {hasActiveTrial && (
+            {displayTrialBanner && (
                 <TrialAlertBanner {...trialModalProps.trialStartedBanner} />
             )}
 
@@ -125,6 +133,7 @@ export const TrialManageWorkflow = ({
                     }}
                 />
             )}
+
             {isUpgradePlanModalOpen && (
                 <UpgradePlanModal
                     {...trialModalProps.upgradePlanModal}
@@ -134,12 +143,14 @@ export const TrialManageWorkflow = ({
                     isLoading={isUpgradePlanLoading}
                 />
             )}
+
             {isOptOutModalOpen && (
                 <TrialOptOutModal onClose={onCloseOptOutModal} />
             )}
 
-            <TrialEndedModal />
-            <TrialEndingTomorrowModal />
+            <TrialEndingTomorrowModal storeConfiguration={storeConfiguration} />
+
+            <TrialEndedModal storeConfiguration={storeConfiguration} />
         </>
     )
 }

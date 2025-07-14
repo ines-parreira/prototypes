@@ -11,5 +11,6 @@ export function useBillingState(): BillingState | undefined {
             refetchOnWindowFocus: false,
         },
     })
+
     return data?.data
 }

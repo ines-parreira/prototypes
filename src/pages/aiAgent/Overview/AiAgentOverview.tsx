@@ -55,7 +55,7 @@ export const AiAgentOverview = () => {
     const { isOpen, isLoading, handleModalAction, modalContent } =
         useThankYouModal()
 
-    const { canSeeTrialCTA, canBookDemo, hasActiveTrial } =
+    const { canSeeTrialCTA, canBookDemo, hasAnyTrialStarted } =
         useShoppingAssistantTrialAccess()
 
     const { storeActivations } = useStoreActivations()
@@ -75,12 +75,12 @@ export const AiAgentOverview = () => {
     })
 
     useEffect(() => {
-        if ((canSeeTrialCTA || canBookDemo) && !hasActiveTrial) {
+        if ((canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted) {
             logEvent(SegmentEvent.TrialBannerOverviewViewed, {
                 type: canBookDemo ? 'Demo' : 'Trial',
             })
         }
-    }, [canSeeTrialCTA, canBookDemo, hasActiveTrial])
+    }, [canSeeTrialCTA, canBookDemo, hasAnyTrialStarted])
 
     const onConfirmModal = () => handleModalAction('confirm')
     const onCloseModal = () => handleModalAction('close')
@@ -97,7 +97,8 @@ export const AiAgentOverview = () => {
                     hasNoOnboardedStores ? null : activationButton
                 }
             />
-            {(canSeeTrialCTA || canBookDemo) && !hasActiveTrial && (
+
+            {(canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted && (
                 <TrialAlertBanner {...trialModalProps.trialAlertBanner} />
             )}
 

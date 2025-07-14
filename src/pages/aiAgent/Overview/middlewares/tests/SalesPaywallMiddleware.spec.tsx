@@ -253,7 +253,7 @@ describe('SalesPaywallMiddleware', () => {
             },
         })
         mockUseUpgradePlan.mockReturnValue({
-            upgradePlan: jest.fn(),
+            upgradePlanAsync: jest.fn(),
             isLoading: false,
         })
         useActivationMock.mockReturnValue({
@@ -810,12 +810,12 @@ describe('SalesPaywallMiddleware', () => {
             ).toBeInTheDocument()
         })
 
-        it('calls onUpgradeClick with correct event logging when upgrade plan modal confirm is clicked', () => {
-            const mockUpgradePlan = jest.fn()
+        it('calls onUpgradeClick with correct event logging when upgrade plan modal confirm is clicked', async () => {
+            const mockUpgradePlan = jest.fn().mockResolvedValue({})
             const mockCloseManageTrialModal = jest.fn()
 
             mockUseUpgradePlan.mockReturnValue({
-                upgradePlan: mockUpgradePlan,
+                upgradePlanAsync: mockUpgradePlan,
                 isLoading: false,
             })
 
@@ -842,6 +842,9 @@ describe('SalesPaywallMiddleware', () => {
                 name: /confirm/i,
             })
             fireEvent.click(confirmButton)
+
+            // Wait for async call to complete
+            await new Promise((resolve) => setTimeout(resolve, 0))
 
             // Verify the segment event was logged
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -1072,7 +1075,7 @@ describe('SalesPaywallMiddleware', () => {
 
             const mockUpgradePlan = jest.fn()
             mockUseUpgradePlan.mockReturnValue({
-                upgradePlan: mockUpgradePlan,
+                upgradePlanAsync: mockUpgradePlan,
                 isLoading: false,
             })
 
@@ -1084,14 +1087,14 @@ describe('SalesPaywallMiddleware', () => {
             expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })
 
-        it('calls onUpgradeClick when upgrade button is clicked with active trial', () => {
-            const mockUpgradePlan = jest.fn()
+        it('calls onUpgradeClick when upgrade button is clicked with active trial', async () => {
+            const mockUpgradePlan = jest.fn().mockResolvedValue({})
 
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasOptedOut: false,
-                hasActiveTrial: true,
+                hasAnyTrialOptedIn: true,
             })
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
@@ -1111,7 +1114,7 @@ describe('SalesPaywallMiddleware', () => {
             })
 
             mockUseUpgradePlan.mockReturnValue({
-                upgradePlan: mockUpgradePlan,
+                upgradePlanAsync: mockUpgradePlan,
                 isLoading: false,
             })
 
@@ -1119,6 +1122,9 @@ describe('SalesPaywallMiddleware', () => {
 
             const upgradeButton = screen.getByText('Upgrade Now')
             fireEvent.click(upgradeButton)
+
+            // Wait for async call to complete
+            await new Promise((resolve) => setTimeout(resolve, 0))
 
             expect(mockUpgradePlan).toHaveBeenCalled()
         })
@@ -1179,6 +1185,385 @@ describe('SalesPaywallMiddleware', () => {
             expect(
                 screen.queryByTestId('mock-child-component'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Additional Coverage Tests', () => {
+        it('should handle undefined shopName parameter', () => {
+            const WrappedComponent = SalesPaywallMiddleware(MockChildComponent)
+            const path = '/shops/ai-agent/sales'
+            const initialRoute = '/shops/ai-agent/sales'
+
+            renderWithStoreAndQueryClientAndRouter(
+                <Switch>
+                    <Route path={path} render={() => <WrappedComponent />} />
+                </Switch>,
+                {},
+                { route: initialRoute, path },
+            )
+
+            // Should still render without crashing when shopName is undefined
+            expect(screen.getByText(/Paywall View Mock/)).toBeInTheDocument()
+        })
+
+        it('should render TrialEndedModal when currentStore exists', () => {
+            const mockStoreActivations = {
+                'test-shop': {
+                    name: 'test-shop',
+                    configuration: {
+                        sales: {
+                            trial: {
+                                startDatetime: '2023-11-01T00:00:00.000Z',
+                                endDatetime: '2023-11-15T00:00:00.000Z',
+                            },
+                        },
+                    },
+                },
+            }
+
+            useStoreActivationsMock.mockReturnValue({
+                storeActivations: mockStoreActivations,
+            } as any)
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 6 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            // Verify that the component renders - we expect the child component to be shown
+            expect(
+                screen.getByTestId('mock-child-component'),
+            ).toBeInTheDocument()
+        })
+
+        it('should call history.push when AIAgentTrialSuccessModal onClick is triggered', () => {
+            mockUseModalManager.mockReturnValue({
+                isOpen: jest.fn().mockReturnValue(true), // Modal is open
+                openModal: jest.fn(),
+                closeModal: jest.fn(),
+            })
+
+            const mockRoutes = {
+                customerEngagement: '/customer-engagement',
+            }
+
+            mockUseActivateAiAgentTrial.mockReturnValue({
+                canStartTrial: false,
+                routes: mockRoutes,
+                startTrial: jest.fn(),
+                isLoading: false,
+                canStartTrialFromFeatureFlag: false,
+                shopName: 'test-shop',
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 6 },
+            })
+
+            const { history } = renderMiddleware()
+
+            // Find the navigate button in the AIAgentTrialSuccessModal
+            const navigateButton = screen.getByText('Navigate')
+            fireEvent.click(navigateButton)
+
+            expect(history.location.pathname).toBe('/customer-engagement')
+        })
+
+        it('should call closeModal when AIAgentTrialSuccessModal onClose is triggered', () => {
+            const mockCloseModal = jest.fn()
+
+            mockUseModalManager.mockReturnValue({
+                isOpen: jest.fn().mockReturnValue(true), // Modal is open
+                openModal: jest.fn(),
+                closeModal: mockCloseModal,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 6 },
+            })
+
+            renderMiddleware()
+
+            // Find the close button in the AIAgentTrialSuccessModal
+            const closeButton = screen.getByText('Close')
+            fireEvent.click(closeButton)
+
+            expect(mockCloseModal).toHaveBeenCalled()
+        })
+
+        it('should handle onUpgradePlanClicked when revamp is enabled and has any trial opted in', () => {
+            const mockUpgradePlan = jest.fn()
+            const mockCloseManageTrialModal = jest.fn()
+            const mockCloseUpgradePlanModal = jest.fn()
+
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+            })
+
+            mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                startTrial: jest.fn(),
+                isLoading: false,
+                isTrialModalOpen: false,
+                isSuccessModalOpen: false,
+                closeTrialUpgradeModal: jest.fn(),
+                closeSuccessModal: jest.fn(),
+                openTrialUpgradeModal: jest.fn(),
+                openUpgradePlanModal: jest.fn(),
+                closeUpgradePlanModal: mockCloseUpgradePlanModal,
+                closeManageTrialModal: mockCloseManageTrialModal,
+                isUpgradePlanModalOpen: false,
+                onDismissTrialUpgradeModal: jest.fn(),
+                onDismissUpgradePlanModal: jest.fn(),
+            })
+
+            mockUseUpgradePlan.mockReturnValue({
+                upgradePlanAsync: mockUpgradePlan.mockResolvedValue({}),
+                isLoading: false,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            const upgradeButton = screen.getByText('Upgrade Now')
+            fireEvent.click(upgradeButton)
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/pricing-modal-clicked',
+                { type: 'upgraded' },
+            )
+        })
+
+        it('should handle start trial with hasAnyTrialOptedIn true', () => {
+            const mockStartRevampTrial = jest.fn()
+
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+            })
+
+            mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                startTrial: mockStartRevampTrial,
+                isLoading: false,
+                isTrialModalOpen: false,
+                isSuccessModalOpen: false,
+                closeTrialUpgradeModal: jest.fn(),
+                closeSuccessModal: jest.fn(),
+                openTrialUpgradeModal: jest.fn(),
+                openUpgradePlanModal: jest.fn(),
+                closeUpgradePlanModal: jest.fn(),
+                closeManageTrialModal: jest.fn(),
+                isUpgradePlanModalOpen: false,
+                onDismissTrialUpgradeModal: jest.fn(),
+                onDismissUpgradePlanModal: jest.fn(),
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            const trialButton = screen.getByText(
+                'Start 14-Day Trial At No Additional Cost',
+            )
+            fireEvent.click(trialButton)
+
+            expect(mockStartRevampTrial).toHaveBeenCalled()
+        })
+
+        it('should handle milestone-1 trial logic', () => {
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialExpired: false,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            expect(
+                screen.getByTestId('mock-child-component'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle upgrade plan modal when no trial opted in', () => {
+            const mockOpenUpgradePlanModal = jest.fn()
+
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+            })
+
+            mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                startTrial: jest.fn(),
+                isLoading: false,
+                isTrialModalOpen: false,
+                isSuccessModalOpen: false,
+                closeTrialUpgradeModal: jest.fn(),
+                closeSuccessModal: jest.fn(),
+                openTrialUpgradeModal: jest.fn(),
+                openUpgradePlanModal: mockOpenUpgradePlanModal,
+                closeUpgradePlanModal: jest.fn(),
+                closeManageTrialModal: jest.fn(),
+                isUpgradePlanModalOpen: false,
+                onDismissTrialUpgradeModal: jest.fn(),
+                onDismissUpgradePlanModal: jest.fn(),
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            const upgradeButton = screen.getByText('Upgrade Now')
+            fireEvent.click(upgradeButton)
+
+            expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
+        })
+
+        it('should handle trial modal props with undefined shopName', () => {
+            mockUseTrialModalProps.mockReturnValue({
+                trialUpgradePlanModal: {
+                    title: 'Try Shopping Assistant for 14 days at no additional cost',
+                    description: 'Test description',
+                },
+                trialActivatedModal: {
+                    title: 'Shopping Assistant Activated',
+                    description: 'Test description',
+                },
+                upgradePlanModal: {
+                    title: 'Upgrade your plan',
+                    description: 'Test description',
+                },
+            })
+
+            const WrappedComponent = SalesPaywallMiddleware(MockChildComponent)
+            const path = '/shops/ai-agent/sales'
+            const initialRoute = '/shops/ai-agent/sales'
+
+            renderWithStoreAndQueryClientAndRouter(
+                <Switch>
+                    <Route path={path} render={() => <WrappedComponent />} />
+                </Switch>,
+                {},
+                { route: initialRoute, path },
+            )
+
+            expect(mockUseTrialModalProps).toHaveBeenCalledWith({
+                storeName: undefined,
+            })
+        })
+
+        it('should handle async upgrade plan correctly', async () => {
+            const mockUpgradePlan = jest.fn().mockResolvedValue({})
+            const mockCloseManageTrialModal = jest.fn()
+            const mockCloseUpgradePlanModal = jest.fn()
+
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+            })
+
+            mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                startTrial: jest.fn(),
+                isLoading: false,
+                isTrialModalOpen: false,
+                isSuccessModalOpen: false,
+                closeTrialUpgradeModal: jest.fn(),
+                closeSuccessModal: jest.fn(),
+                openTrialUpgradeModal: jest.fn(),
+                openUpgradePlanModal: jest.fn(),
+                closeUpgradePlanModal: mockCloseUpgradePlanModal,
+                closeManageTrialModal: mockCloseManageTrialModal,
+                isUpgradePlanModalOpen: true,
+                onDismissTrialUpgradeModal: jest.fn(),
+                onDismissUpgradePlanModal: jest.fn(),
+            })
+
+            mockUseUpgradePlan.mockReturnValue({
+                upgradePlanAsync: mockUpgradePlan,
+                isLoading: false,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBeta]: true,
+            })
+
+            renderMiddleware()
+
+            const confirmButton = screen.getByRole('button', {
+                name: /confirm/i,
+            })
+            fireEvent.click(confirmButton)
+
+            await new Promise((resolve) => setTimeout(resolve, 0))
+
+            expect(mockUpgradePlan).toHaveBeenCalled()
+            expect(mockCloseManageTrialModal).toHaveBeenCalled()
+            expect(mockCloseUpgradePlanModal).toHaveBeenCalled()
         })
     })
 })

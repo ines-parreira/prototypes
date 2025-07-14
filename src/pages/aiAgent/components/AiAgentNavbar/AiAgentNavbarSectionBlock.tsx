@@ -19,7 +19,7 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
-import { useIsTrialStarted } from 'pages/aiAgent/trial/hooks/useIsTrialStarted'
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 
@@ -85,7 +85,8 @@ export const AiAgentNavbarSectionBlock = ({
         }
     }, [onboardingState])
 
-    const isTrialStarted = useIsTrialStarted({ storeConfiguration })
+    const { hasCurrentStoreTrialStarted, hasCurrentStoreTrialExpired } =
+        useShoppingAssistantTrialAccess(storeConfiguration?.storeName)
 
     const itemName = (item: NavigationItem) => {
         switch (item.title) {
@@ -93,14 +94,15 @@ export const AiAgentNavbarSectionBlock = ({
                 return (
                     <div className={css.item}>
                         {item.title}
-                        {isTrialStarted && (
-                            <Badge
-                                className={css.trialBadge}
-                                type="light-success"
-                            >
-                                TRIAL
-                            </Badge>
-                        )}
+                        {hasCurrentStoreTrialStarted &&
+                            !hasCurrentStoreTrialExpired && (
+                                <Badge
+                                    className={css.trialBadge}
+                                    type="light-success"
+                                >
+                                    TRIAL
+                                </Badge>
+                            )}
                     </div>
                 )
             case SETTINGS:

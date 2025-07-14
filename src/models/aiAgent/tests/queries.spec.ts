@@ -8,9 +8,11 @@ import {
 } from 'models/aiAgent/queries'
 import * as configurationResources from 'models/aiAgent/resources/configuration'
 import { initialState } from 'state/currentAccount/reducers'
+import * as notificationActions from 'state/notifications/actions'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('models/aiAgent/resources/configuration')
+jest.mock('state/notifications/actions')
 
 const defaultState = {
     currentAccount: initialState.mergeDeep(
@@ -147,6 +149,50 @@ describe('aiAgent queries', () => {
             await result.current.mutateAsync([])
 
             expect(onSuccessMock).toHaveBeenCalled()
+        })
+
+        it('should dispatch error notification on failure', async () => {
+            const mockError = new Error('Network error')
+            const mockNotify = jest.mocked(notificationActions.notify)
+            mockNotify.mockReturnValue(jest.fn())
+
+            mockOptOutSalesTrialUpgrade.mockRejectedValue(mockError)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useOptOutSalesTrialUpgradeMutation(),
+                defaultState,
+            )
+
+            await expect(result.current.mutateAsync([])).rejects.toThrow(
+                'Network error',
+            )
+
+            expect(mockNotify).toHaveBeenCalledWith({
+                message: 'Failed to upgrade plan. Please try again later.',
+                status: 'error',
+            })
+        })
+
+        it('should call onError override when provided and error occurs', async () => {
+            const mockError = new Error('Network error')
+            const onErrorMock = jest.fn()
+            mockOptOutSalesTrialUpgrade.mockRejectedValue(mockError)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () =>
+                    useOptOutSalesTrialUpgradeMutation({
+                        onError: onErrorMock,
+                    }),
+                defaultState,
+            )
+
+            try {
+                await result.current.mutateAsync([])
+            } catch {
+                // Expected to throw
+            }
+
+            expect(onErrorMock).toHaveBeenCalledWith(mockError, [], undefined)
         })
     })
 })

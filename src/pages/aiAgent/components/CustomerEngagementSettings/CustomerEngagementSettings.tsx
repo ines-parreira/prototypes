@@ -210,10 +210,13 @@ export const CustomerEngagementSettings = () => {
                                 undefined
                             }
                         />
-                        <TrialManageWorkflow
-                            pageName="Engagement"
-                            storeConfiguration={storeConfiguration}
-                        />
+                        {storeConfiguration && (
+                            <TrialManageWorkflow
+                                pageName="Engagement"
+                                storeConfiguration={storeConfiguration}
+                            />
+                        )}
+
                         {isTriggerOnSearchEnabled && (
                             <TriggerOnSearchSettings
                                 gmv={gmv}

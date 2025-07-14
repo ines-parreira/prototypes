@@ -199,7 +199,6 @@ export const SalesSettings = () => {
             <div className={css.salesSettingsContent}>
                 <div className={css.settings}>
                     <Skeleton width={730} height={200} />
-                    <Skeleton width={730} height={250} />
                 </div>
             </div>
         )
@@ -217,18 +216,19 @@ export const SalesSettings = () => {
             <FormProvider {...methods}>
                 <div className={css.salesSettingsContent}>
                     <div className={css.settings}>
-                        <div className={css.bannerContainer}>
-                            <AiShoppingAssistantExpireBanner
-                                deactiveDatetime={
-                                    storeConfiguration?.salesDeactivatedDatetime ??
-                                    undefined
-                                }
-                            />
+                        <AiShoppingAssistantExpireBanner
+                            deactiveDatetime={
+                                storeConfiguration?.salesDeactivatedDatetime ??
+                                undefined
+                            }
+                        />
+                        {storeConfiguration && (
                             <TrialManageWorkflow
                                 pageName="Strategy"
                                 storeConfiguration={storeConfiguration}
                             />
-                        </div>
+                        )}
+
                         <section className={css.card}>
                             <div className={css.titleContainer}>
                                 <label

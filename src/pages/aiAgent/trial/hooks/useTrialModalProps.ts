@@ -17,6 +17,7 @@ import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePla
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import {
     TrialMetrics,
     useTrialMetrics,
@@ -169,23 +170,22 @@ const useTrialActivatedModal = () => ({
 
 const useTrialStartedBanner = (
     trialMetrics: TrialMetrics,
+    storeName?: string,
     pageName?: 'Strategy' | 'Engagement',
 ): TrialModalProps['trialStartedBanner'] => {
+    const { remainingDays } = useTrialEnding(storeName ?? '')
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const { storeActivations } = useStoreActivations()
-    const { upgradePlan, isLoading: isUpgradePlanLoading } = useUpgradePlan()
+    const { storeActivations } = useStoreActivations({ storeName })
+    const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
+        useUpgradePlan()
 
     const trialMilestone = useSalesTrialRevampMilestone()
 
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
-    const { remainingDays, gmvInfluenced, gmvInfluencedRate } = trialMetrics
-    const {
-        canBookDemo,
-        hasMinOneStoreOptedOut,
-        hasCurrentStoreOptedOut,
-        hasActiveTrial,
-    } = useShoppingAssistantTrialAccess()
+    const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
+    const { canBookDemo, hasCurrentStoreTrialOptedOut, hasAnyTrialOptedIn } =
+        useShoppingAssistantTrialAccess(storeName)
     const accountDomain = currentAccount.get('domain')
 
     const { openManageTrialModal, openUpgradePlanModal } =
@@ -198,25 +198,19 @@ const useTrialStartedBanner = (
         openManageTrialModal()
     }, [openManageTrialModal])
 
-    const handleUpgradePlan = useCallback(() => {
-        if (hasMinOneStoreOptedOut || !hasActiveTrial) {
+    const handleUpgradePlan = useCallback(async () => {
+        if (hasAnyTrialOptedIn) {
+            await upgradePlanAsync()
+        } else {
             logEvent(SegmentEvent.TrialBannerSettingsClicked, {
                 pageName,
             })
             openUpgradePlanModal()
-        } else {
-            upgradePlan()
         }
-    }, [
-        openUpgradePlanModal,
-        pageName,
-        hasMinOneStoreOptedOut,
-        upgradePlan,
-        hasActiveTrial,
-    ])
+    }, [openUpgradePlanModal, pageName, hasAnyTrialOptedIn, upgradePlanAsync])
 
     const secondaryAction = useMemo(() => {
-        if (!isRevampTrialMilestone1Enabled || hasCurrentStoreOptedOut) {
+        if (!isRevampTrialMilestone1Enabled || hasCurrentStoreTrialOptedOut) {
             return undefined
         }
 
@@ -228,7 +222,7 @@ const useTrialStartedBanner = (
     }, [
         handleManageTrial,
         isRevampTrialMilestone1Enabled,
-        hasCurrentStoreOptedOut,
+        hasCurrentStoreTrialOptedOut,
         isUpgradePlanLoading,
     ])
 
@@ -381,9 +375,11 @@ const useTrialEndedModal = (
 }
 
 export const useTrialModalProps = ({
+    storeName,
     onConfirmTrial,
     pageName,
 }: {
+    storeName?: string
     onConfirmTrial?: () => void
     pageName?: 'Strategy' | 'Engagement'
 }): TrialModalProps => {
@@ -391,7 +387,11 @@ export const useTrialModalProps = ({
     const upgradePlanModal = useUpgradePlanModal()
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
     const trialActivatedModal = useTrialActivatedModal()
-    const trialStartedBanner = useTrialStartedBanner(trialMetrics, pageName)
+    const trialStartedBanner = useTrialStartedBanner(
+        trialMetrics,
+        storeName,
+        pageName,
+    )
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })

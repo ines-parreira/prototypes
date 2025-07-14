@@ -8,6 +8,7 @@ import { AxiosError } from 'axios'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     createOnboardingNotificationState,
@@ -37,9 +38,12 @@ import {
     SearchCustomerRequest,
     SearchTicketsRequest,
 } from 'models/aiAgentPlayground/types'
+import { billingKeys } from 'models/billing/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { Paths } from 'rest_api/help_center_api/client.generated'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { MutationOverrides } from 'types/query'
 
 import { getAIGeneratedGuidances } from './resources/guidances'
@@ -545,13 +549,25 @@ export const useOptOutSalesTrialUpgradeMutation = (
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
+    const dispatch = useAppDispatch()
+
     return useMutation({
         mutationFn: () => optOutSalesTrialUpgrade(accountDomain),
-        onSuccess: () => {
+        onSuccess: (...args) => {
             // Invalidate store configurations to refresh trial state
             void queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.all(),
             })
+            overrides?.onSuccess?.(...args)
+        },
+        onError: (...args) => {
+            void dispatch(
+                notify({
+                    message: 'Failed to upgrade plan. Please try again later.',
+                    status: NotificationStatus.Error,
+                }),
+            )
+            overrides?.onError?.(...args)
         },
         ...overrides,
     })
@@ -567,12 +583,17 @@ export const useUpgradeSalesSubscriptionMutation = (
 
     return useMutation({
         mutationFn: () => upgradeSalesSubscription(accountDomain),
-        onSuccess: () => {
+        ...overrides,
+        onSuccess: (...args) => {
             // Invalidate store configurations to refresh subscription state
             void queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.all(),
             })
+            void queryClient.invalidateQueries({
+                queryKey: billingKeys.all,
+            })
+
+            overrides?.onSuccess?.(...args)
         },
-        ...overrides,
     })
 }

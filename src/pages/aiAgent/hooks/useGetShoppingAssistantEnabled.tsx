@@ -9,6 +9,7 @@ type Props = {
 export const useGetShoppingAssistantEnabled = ({ shopName }: Props) => {
     const { storeActivations, isFetchLoading } = useStoreActivations({
         storeName: shopName,
+        withStoresKnowledgeStatus: true,
     })
 
     const isEnabled = useMemo(() => {

@@ -128,10 +128,14 @@ describe('useShoppingAssistantTrialBanner', () => {
             canBookDemo: false,
             canSeeSystemBanner: false,
             canSeeTrialCTA: false,
-            hasActiveTrial: false,
-            hasCurrentStoreOptedOut: false,
-            hasMinOneStoreOptedOut: false,
-            hasTrialExpired: false,
+            hasAnyTrialStarted: false,
+            hasCurrentStoreTrialOptedOut: false,
+            hasAnyTrialOptedOut: false,
+            hasAnyTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            hasAnyTrialActive: false,
         })
     })
 
@@ -150,10 +154,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -179,10 +187,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -201,10 +213,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -223,10 +239,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // Hook returns false when conditions not met
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
 
             renderHook(() => useShoppingAssistantTrialBanner())
@@ -254,10 +274,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
         })
 
@@ -272,8 +296,9 @@ describe('useShoppingAssistantTrialBanner', () => {
                 message:
                     'AI Agent just got even smarter with brand new Shopping Assistant skills, start your exclusive access to a 14-day trial',
                 CTA: {
-                    type: 'action',
+                    type: 'internal',
                     text: 'Get Started',
+                    to: '/app/ai-agent/overview',
                     onClick: expect.any(Function),
                 },
             })
@@ -324,10 +349,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
 
             rerender()
@@ -344,10 +373,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
 
             const { rerender } = renderHook(() =>
@@ -367,10 +400,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
 
             rerender()
@@ -391,10 +428,14 @@ describe('useShoppingAssistantTrialBanner', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
             })
         })
 

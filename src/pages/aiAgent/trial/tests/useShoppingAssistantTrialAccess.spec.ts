@@ -88,8 +88,8 @@ describe('useShoppingAssistantTrialAccess', () => {
             [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
         })
 
-        // Mock the new milestone hook to return 'milestone-0' (equivalent to true)
-        mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+        // Mock the new milestone hook to return 'milestone-1' (equivalent to true)
+        mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
 
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getCurrentUser) {
@@ -149,10 +149,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
     })
@@ -168,10 +172,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true, // Has AI Agent on chat + all other conditions
                 canSeeTrialCTA: true,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
 
@@ -201,10 +209,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
 
@@ -221,10 +233,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // Only admins can see system banner
                 canSeeTrialCTA: false, // Only admins can see trial CTA
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
     })
@@ -258,10 +274,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // System banner only for Starter/Basic
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
 
@@ -279,10 +299,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: true, // Pro+ without feature flag can book demo
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
 
@@ -299,10 +323,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
     })
@@ -334,10 +362,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
 
@@ -367,10 +399,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
     })
@@ -399,10 +435,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false, // No AI Agent on chat
                 canSeeTrialCTA: true, // Trial CTA doesn't require AI Agent on chat
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
     })
@@ -422,10 +462,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
     })
@@ -444,10 +488,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                 canBookDemo: false,
                 canSeeSystemBanner: false,
                 canSeeTrialCTA: false,
-                hasActiveTrial: false,
-                hasCurrentStoreOptedOut: false,
-                hasMinOneStoreOptedOut: false,
-                hasTrialExpired: false,
+                hasAnyTrialActive: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasCurrentStoreTrialStarted: false,
             })
         })
     })
@@ -535,10 +583,14 @@ describe('useShoppingAssistantTrialAccess', () => {
                     canBookDemo: false,
                     canSeeSystemBanner: true,
                     canSeeTrialCTA: true,
-                    hasActiveTrial: false,
-                    hasCurrentStoreOptedOut: true,
-                    hasMinOneStoreOptedOut: true,
-                    hasTrialExpired: false,
+                    hasAnyTrialActive: false,
+                    hasAnyTrialExpired: false,
+                    hasAnyTrialOptedIn: false,
+                    hasAnyTrialOptedOut: true,
+                    hasAnyTrialStarted: false,
+                    hasCurrentStoreTrialExpired: false,
+                    hasCurrentStoreTrialOptedOut: false,
+                    hasCurrentStoreTrialStarted: false,
                 })
             })
 
@@ -605,7 +657,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasMinOneStoreOptedOut).toBe(true)
+                expect(result.current.hasAnyTrialOptedOut).toBe(true)
             })
         })
 
@@ -692,7 +744,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasMinOneStoreOptedOut).toBe(true)
+                expect(result.current.hasAnyTrialOptedOut).toBe(true)
             })
         })
 
@@ -731,7 +783,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
+                expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
         })
 
@@ -747,7 +799,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
+                expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
 
             it('should handle store configurations without sales data', () => {
@@ -770,7 +822,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
+                expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
 
             it('should handle store configurations with incomplete trial data', () => {
@@ -805,7 +857,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     useShoppingAssistantTrialAccess(),
                 )
 
-                expect(result.current.hasMinOneStoreOptedOut).toBe(false)
+                expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
         })
     })

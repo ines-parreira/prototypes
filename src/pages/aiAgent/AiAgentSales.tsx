@@ -37,7 +37,7 @@ export const AiAgentSales = () => {
             ? analyticsRoute
             : strategyRoute
 
-        history.push(route)
+        history.replace(route)
     }, [
         isSalesPageEnabled,
         isLoading,

@@ -29,10 +29,15 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 const AiSalesAgentSalesOverview = () => {
     useCleanStatsFilters()
     const history = useHistory()
+    const milestone = useSalesTrialRevampMilestone()
+    const { hasAnyTrialActive } = useShoppingAssistantTrialAccess()
     const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
-
-    const shouldDisplayPaywall =
+    const legacyShouldDisplayPaywall =
         !useCanUseAiSalesAgent() && !atLeastOneStoreHasActiveTrial
+    const shouldDisplayPaywall =
+        milestone === 'milestone-1'
+            ? hasAnyTrialActive
+            : legacyShouldDisplayPaywall
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -72,10 +77,7 @@ const AiSalesAgentSalesOverview = () => {
 
     const { earlyAccessModal, showEarlyAccessModal } = useActivation({
         autoDisplayEarlyAccessDisabled:
-            atLeastOneStoreHasActiveTrial ||
-            isLoading ||
-            canStartTrialOriginal ||
-            canStartTrialFromFeatureFlag,
+            atLeastOneStoreHasActiveTrial || isLoading || canStartTrial,
     })
 
     const component: React.ReactNode = (

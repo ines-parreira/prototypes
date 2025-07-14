@@ -406,7 +406,6 @@ export const getChatActivation = ({
         !isChatIntegrationMissing &&
         !isMissingKnowledge &&
         !isChatInstallationMissing
-
     return {
         availableMonitoredChat,
         enabled: isEnabled,
