@@ -168,6 +168,7 @@ describe('useTrialModalProps', () => {
                             enabled: true,
                         },
                     },
+                    isMissingKnowledge: false,
                 },
                 store2: {
                     name: 'store2',
@@ -187,6 +188,7 @@ describe('useTrialModalProps', () => {
                             enabled: true,
                         },
                     },
+                    isMissingKnowledge: false,
                 },
             },
             progressPercentage: 50,

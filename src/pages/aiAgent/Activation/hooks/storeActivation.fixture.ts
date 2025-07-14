@@ -35,6 +35,7 @@ export const storeActivationFixture = (
         name,
         title: name,
         alerts: overrides?.alerts ?? [],
+        isMissingKnowledge: false,
         ...settings,
         configuration: {
             shopType: 'shopify',

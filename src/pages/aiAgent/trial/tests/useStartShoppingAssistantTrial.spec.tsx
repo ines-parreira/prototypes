@@ -152,6 +152,7 @@ describe('useStartShoppingAssistantTrial', () => {
                 isIntegrationMissing: false,
             },
         },
+        isMissingKnowledge: false,
     }
 
     const mockParams = {
@@ -170,6 +171,7 @@ describe('useStartShoppingAssistantTrial', () => {
         useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
         getAiAgentNavigationRoutesMock.mockReturnValue({
             settingsChannels: '/ai-agent/store1/settings/channels',
+            knowledge: '/ai-agent/store1/knowledge',
         } as any)
 
         useStartSalesTrialMutation.mockReturnValue({
@@ -316,7 +318,7 @@ describe('useStartShoppingAssistantTrial', () => {
 
             await expect(
                 result.current.mutateAsync(paramsWithMissingChat),
-            ).rejects.toThrow("Invalid Chat - can't start trial")
+            ).rejects.toThrow()
 
             expect(mockDispatch).toHaveBeenCalledWith(
                 notifyMock({
@@ -361,9 +363,40 @@ describe('useStartShoppingAssistantTrial', () => {
                 defaultState,
             )
 
-            await expect(result.current.mutateAsync(params)).rejects.toThrow(
-                "Invalid Chat - can't start trial",
+            await expect(result.current.mutateAsync(params)).rejects.toThrow()
+        })
+
+        it('should throw error and show notification when knowledge is missing', async () => {
+            const mockStoreActivationWithMissingKnowledge = {
+                ...mockStoreActivation,
+                isMissingKnowledge: true,
+            }
+
+            const paramsWithMissingKnowledge = {
+                accountDomain: 'test-domain',
+                storeActivations: {
+                    store1: mockStoreActivationWithMissingKnowledge,
+                },
+            }
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
+                defaultState,
             )
+
+            await expect(
+                result.current.mutateAsync(paramsWithMissingKnowledge),
+            ).rejects.toThrow()
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notifyMock({
+                    message:
+                        'You need at least 1 valid knowledge source to be able to start the Shopping Assistant Trial.',
+                    status: NotificationStatus.Warning,
+                }),
+            )
+            expect(mockPush).toHaveBeenCalledWith('/ai-agent/store1/knowledge')
+            expect(upsertStoreConfiguration).not.toHaveBeenCalled()
         })
 
         it('should handle upsertStoreConfiguration errors', async () => {

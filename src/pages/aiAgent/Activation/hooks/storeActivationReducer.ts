@@ -69,6 +69,7 @@ export type StoreActivation = {
     title: string
     alerts: StoreActivationAlert[]
     configuration: StoreConfiguration
+    isMissingKnowledge: boolean
 } & Settings
 
 export type State = Record<string, StoreActivation>
@@ -510,6 +511,7 @@ export const storeConfigurationToState = (
                 title: storeName,
                 alerts,
                 configuration: storeConfiguration,
+                isMissingKnowledge,
 
                 support: {
                     enabled: isChatEnabled || isEmailEnabled,

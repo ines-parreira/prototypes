@@ -53,6 +53,7 @@ const getStoreActivation = ({
         title: 'Steve Madden',
         alerts: alerts ?? [],
         configuration: defaultStoreConfiguration,
+        isMissingKnowledge: false,
         ...settings,
     }
 }

@@ -54,7 +54,10 @@ export const SalesPaywallMiddleware =
     (ChildComponent: React.ComponentType<any>) => (): React.ReactElement => {
         const flags = useFlags()
         const hasAutomate = useAppSelector(getHasAutomate)
-        const { storeActivations } = useStoreActivations()
+        const { storeActivations } = useStoreActivations({
+            withChatIntegrationsStatus: true,
+            withStoresKnowledgeStatus: true,
+        })
 
         const trialMilestone = useSalesTrialRevampMilestone()
         const { shopName } = useParams<{ shopName?: string }>()

@@ -75,6 +75,7 @@ const dummyStoreActivation: StoreActivation = {
         handoverEmailIntegrationId: null,
         handoverHttpIntegrationId: null,
     },
+    isMissingKnowledge: false,
 }
 const dummyStoreActivation2: StoreActivation = {
     ...dummyStoreActivation,

@@ -25,6 +25,13 @@ type Params = {
 
 const TRIAL_DURATION = 14 * 24 * 60 * 60 * 1000
 
+class InvalidChatError extends Error {
+    public readonly name = 'InvalidChatError'
+}
+class InvalidKnowledgeError extends Error {
+    public readonly name = 'InvalidKnowledgeError'
+}
+
 export const useStartShoppingAssistantTrial = ({
     onError,
 }: {
@@ -42,16 +49,7 @@ export const useStartShoppingAssistantTrial = ({
     return useMutation<void, Error, Params>(
         // Ideally this should take only a single storeActivation as parameter so that we could remove the protective check on stores.length === 1
         async ({ accountDomain, storeActivations }) => {
-            const stores = Object.values(storeActivations)
-            if (stores.length !== 1) {
-                throw new Error(
-                    'Unexpected case: Should be in the context of a specific store to start the trial on it.',
-                )
-            }
-
-            const store = stores[0]
-
-            const routes = getAiAgentNavigationRoutes(store.name, flags)
+            const store = getSingleStoreOrThrow(storeActivations)
 
             // Check if the store has a valid chat integration
             const isChatValid =
@@ -59,20 +57,14 @@ export const useStartShoppingAssistantTrial = ({
                 store.support.chat.availableChats.length > 0 &&
                 !store.support.chat.isIntegrationMissing &&
                 !store.support.chat.isInstallationMissing
-
             if (!isChatValid) {
-                dispatch(
-                    notify({
-                        message:
-                            'You need at least 1 valid chat integration to be able to start the Shopping Assistant Trial.',
-                        status: NotificationStatus.Warning,
-                    }),
-                )
-                history.push(routes.settingsChannels)
-                throw new Error("Invalid Chat - can't start trial")
+                throw new InvalidChatError()
             }
 
-            // TODO: Add validation for "at least 1 knowledge sources"
+            const isKnowledgeValid = !store.isMissingKnowledge
+            if (!isKnowledgeValid) {
+                throw new InvalidKnowledgeError()
+            }
 
             if (milestone === 'milestone-1') {
                 await startSalesTrialMutation.mutateAsync([store.name])
@@ -101,16 +93,52 @@ export const useStartShoppingAssistantTrial = ({
                     })
                 }
             },
-            onError: () => {
-                void dispatch(
-                    notify({
-                        message:
-                            'Failed to start the shopping assistant trial. Please try again.',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+            onError: (error, { storeActivations }) => {
+                const store = getSingleStoreOrThrow(storeActivations)
+                const routes = getAiAgentNavigationRoutes(store.name, flags)
+                if (error instanceof InvalidChatError) {
+                    dispatch(
+                        notify({
+                            message:
+                                'You need at least 1 valid chat integration to be able to start the Shopping Assistant Trial.',
+                            status: NotificationStatus.Warning,
+                        }),
+                    )
+                    history.push(routes.settingsChannels)
+                } else if (error instanceof InvalidKnowledgeError) {
+                    dispatch(
+                        notify({
+                            message:
+                                'You need at least 1 valid knowledge source to be able to start the Shopping Assistant Trial.',
+                            status: NotificationStatus.Warning,
+                        }),
+                    )
+                    history.push(routes.knowledge)
+                } else {
+                    void dispatch(
+                        notify({
+                            message:
+                                'Failed to start the shopping assistant trial. Please try again.',
+                            status: NotificationStatus.Error,
+                        }),
+                    )
+                }
+
                 onError?.()
             },
         },
     )
+}
+
+const getSingleStoreOrThrow = (
+    storeActivations: Record<string, StoreActivation>,
+) => {
+    const stores = Object.values(storeActivations)
+    if (stores.length !== 1) {
+        throw new Error(
+            'Unexpected case: Should be in the context of a specific store to start the trial on it.',
+        )
+    }
+
+    return stores[0]
 }
