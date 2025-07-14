@@ -1,6 +1,8 @@
 import { memo, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
 import { Popover } from 'components/Popover'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useTimeout } from 'hooks/useTimeout'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
@@ -46,6 +48,10 @@ const KnowledgeSourcePopover = ({
     const triggerRef = useRef<HTMLElement>(null)
     const [isOpen, setIsOpen] = useState(false)
     const [setTimeout, clearTimeout] = useTimeout()
+
+    const enableKnowledgeManagementFromTicketView = useFlag(
+        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
+    )
 
     const { guidanceActions, isLoading: isLoadingActions } =
         useGetGuidancesAvailableActions(shopName, shopType)
@@ -113,10 +119,11 @@ const KnowledgeSourcePopover = ({
                     <a
                         href={
                             !href ||
-                            [
-                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
-                            ].includes(knowledgeResourceType)
+                            (enableKnowledgeManagementFromTicketView &&
+                                [
+                                    AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                                    AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                                ].includes(knowledgeResourceType))
                                 ? undefined
                                 : href
                         }
