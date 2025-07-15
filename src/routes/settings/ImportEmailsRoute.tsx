@@ -2,7 +2,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import ImportEmails from 'pages/settings/importEmails'
+import ImportEmails from 'pages/settings/importEmails/ImportEmail'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 
