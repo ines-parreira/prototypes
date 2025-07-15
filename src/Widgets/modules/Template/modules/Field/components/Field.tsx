@@ -1,3 +1,4 @@
+import CopyButton from 'components/CopyButton/CopyButton'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LEAF_TYPES } from 'models/widget/constants'
 import { LeafTemplate, LeafType } from 'models/widget/types'
@@ -9,7 +10,6 @@ import {
 } from 'state/widgets/actions'
 
 import { FieldEditFormData, HiddenFields } from '../types'
-import CopyButton from './CopyButton'
 import UIField from './views'
 import { TypeOption } from './views/FieldEditForm'
 

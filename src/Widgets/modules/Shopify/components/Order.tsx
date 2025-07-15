@@ -9,6 +9,7 @@ import {
 import { fromJS, Map } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import CopyButton from 'components/CopyButton/CopyButton'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import {
     FinancialStatus,
@@ -33,7 +34,7 @@ import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOr
 import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
-import { CopyButton, StaticField } from 'Widgets/modules/Template/modules/Field'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import { CustomizationContext } from '../../Template'
 import { ShopifyContext } from '../contexts/ShopifyContext'

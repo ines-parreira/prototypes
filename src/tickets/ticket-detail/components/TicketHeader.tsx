@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 
 import type { Ticket, TicketCompact } from '@gorgias/helpdesk-queries'
 
+import CopyButton from 'components/CopyButton/CopyButton'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import TicketFields from 'timeline/TicketFields'
 
@@ -26,7 +27,10 @@ export function TicketHeader({ ticket, additionalActions }: Props) {
                         <h2 className={css.subject}>{ticket.subject}</h2>
                         <TicketStatus ticket={ticket} />
                     </div>
-                    <p className={css.ticketId}>ID: {ticket.id}</p>
+                    <div className={css.ticketIdWrapper}>
+                        <p className={css.ticketId}>ID: {ticket.id}</p>
+                        <CopyButton value={ticket.id.toString()} />
+                    </div>
                 </div>
 
                 {!!additionalActions && (

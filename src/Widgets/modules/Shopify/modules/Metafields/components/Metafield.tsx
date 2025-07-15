@@ -13,12 +13,13 @@ import {
 import { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import CopyButton from 'components/CopyButton/CopyButton'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { Badge } from 'gorgias-design-system/Badge/Badge'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import { CopyButton, StaticField } from 'Widgets/modules/Template/modules/Field'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import { extractGid, prepareGidUrl } from '../helpers/Gid'
 import { shortenUrl } from '../helpers/shortenUrl'

@@ -5,6 +5,7 @@ import { Map } from 'immutable'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import CopyButton from 'components/CopyButton/CopyButton'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
@@ -13,7 +14,7 @@ import { EditionContext } from 'providers/infobar/EditionContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
-import { CopyButton, StaticField } from 'Widgets/modules/Template/modules/Field'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import css from './DraftOrder.less'
 

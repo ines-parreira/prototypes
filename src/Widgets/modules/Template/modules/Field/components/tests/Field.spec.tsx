@@ -2,6 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 
+import CopyButton from 'components/CopyButton/CopyButton'
 import { idTemplate } from 'fixtures/widgets'
 import { LEAF_TYPES } from 'models/widget/constants'
 import {
@@ -12,14 +13,15 @@ import {
 } from 'state/widgets/actions'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import CopyButton from '../CopyButton'
 import Field from '../Field'
 import UIField from '../views'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
-jest.mock('../CopyButton', () => jest.fn(() => <span>copy button</span>))
+jest.mock('components/CopyButton/CopyButton', () =>
+    jest.fn(() => <span>copy button</span>),
+)
 const CopyButtonMock = assumeMock(CopyButton)
 
 jest.mock('../views', () =>

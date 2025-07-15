@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { notify } from 'state/notifications/actions'
 
-import CopyButton from '../CopyButton'
+import CopyButton from './CopyButton'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
