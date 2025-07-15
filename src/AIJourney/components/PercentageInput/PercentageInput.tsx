@@ -8,20 +8,23 @@ type PercentageInputProps = {
     value?: string
     isDisabled?: boolean
     onChange?: (value: string) => void
+    onValidationChange?: (isValid: boolean) => void
 }
 
 export const PercentageInput = ({
     value,
     isDisabled = false,
     onChange = () => {},
+    onValidationChange = () => {},
 }: PercentageInputProps) => {
     const [isValid, setIsValid] = useState(true)
 
     useEffect(() => {
         if (isDisabled) {
             setIsValid(true)
+            onValidationChange(true)
         }
-    }, [isDisabled])
+    }, [isDisabled, onValidationChange])
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const input = e.target
@@ -31,7 +34,9 @@ export const PercentageInput = ({
 
         onChange(newValue)
 
-        setIsValid(input.validity.valid)
+        const validity = input.validity.valid
+        setIsValid(validity)
+        onValidationChange(validity)
     }
 
     const handleOnBlur = (e: ChangeEvent<HTMLInputElement>) => {

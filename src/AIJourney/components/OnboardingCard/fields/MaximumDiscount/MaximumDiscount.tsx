@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -10,13 +10,25 @@ type MaximumDiscountFieldProps = {
     value?: string
     isDisabled?: boolean
     onChange?: (value: string) => void
+    onValidationChange?: (isValid: boolean) => void
 }
 
 export const MaximumDiscountField = ({
     value,
     isDisabled = false,
     onChange = () => {},
+    onValidationChange = () => {},
 }: MaximumDiscountFieldProps = {}) => {
+    const [isValid, setIsValid] = useState(true)
+
+    const handleValidationChange = useCallback(
+        (valid: boolean) => {
+            setIsValid(valid)
+            onValidationChange(valid)
+        },
+        [onValidationChange],
+    )
+
     const handleChange = useCallback(
         (value: string) => {
             onChange(value)
@@ -32,6 +44,7 @@ export const MaximumDiscountField = ({
 
     const maximumDiscountFieldClass = classNames(css.maximumDiscountField, {
         [css['maximumDiscountField--disabled']]: isDisabled,
+        [css['maximumDiscountField--invalid']]: isValid,
     })
 
     return (
@@ -41,6 +54,7 @@ export const MaximumDiscountField = ({
                 value={value}
                 onChange={handleChange}
                 isDisabled={isDisabled}
+                onValidationChange={handleValidationChange}
             />
         </div>
     )

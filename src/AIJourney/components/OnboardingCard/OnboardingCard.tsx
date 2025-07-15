@@ -106,6 +106,8 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const [discountValue, setDiscountValue] = useState(
         journeyParams?.max_discount_percent?.toString() || '',
     )
+    const [isDiscountValueValid, setIsDiscountValueValid] = useState(true)
+
     const [phoneNumberValue, setPhoneNumberValue] = useState<
         NewPhoneNumber | undefined
     >(currentPhoneNumber)
@@ -131,6 +133,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const handleMaximumDiscountChange = (newValue: string) => {
         setDiscountValue(newValue)
+    }
+
+    const handleValidationChange = (isValid: boolean) => {
+        setIsDiscountValueValid(isValid)
     }
 
     const handlePhoneNumberChange = (newValue: NewPhoneNumber) => {
@@ -245,11 +251,13 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const followUpOptions = [1, 2, 3]
 
-    const isDiscountFieldValid = isDiscountEnabled ? !!discountValue : true
+    const isDiscountFieldValid = isDiscountEnabled
+        ? !!discountValue && isDiscountValueValid
+        : true
 
     const shouldDisableButton = isActivationStep
         ? !selectedProduct || !testSmsNumber
-        : !isDiscountFieldValid || !followUpValue || !phoneNumberValue
+        : !isDiscountFieldValid || !phoneNumberValue
 
     return (
         <div className={css.onboardingCard}>
@@ -289,6 +297,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                             value={discountValue}
                             isDisabled={!isDiscountEnabled}
                             onChange={handleMaximumDiscountChange}
+                            onValidationChange={handleValidationChange}
                         />
                     </>
                 )}
