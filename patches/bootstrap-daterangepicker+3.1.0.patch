@@ -1,0 +1,18 @@
+diff --git a/node_modules/bootstrap-daterangepicker/daterangepicker.js b/node_modules/bootstrap-daterangepicker/daterangepicker.js
+index a3becee53751cce655e834e2917a6973fbd6d8ef..0548c981b5771d3acca42f14d490c340f5d229d9 100644
+--- a/node_modules/bootstrap-daterangepicker/daterangepicker.js
++++ b/node_modules/bootstrap-daterangepicker/daterangepicker.js
+@@ -1210,10 +1210,10 @@
+                 this.showCalendars();
+             } else {
+                 var dates = this.ranges[label];
+-                this.startDate = dates[0];
+-                this.endDate = dates[1];
++                this.startDate = dates && dates[0];
++                this.endDate = dates && dates[1];
+ 
+-                if (!this.timePicker) {
++                if (!this.timePicker && this.startDate && this.endDate) {
+                     this.startDate.startOf('day');
+                     this.endDate.endOf('day');
+                 }
