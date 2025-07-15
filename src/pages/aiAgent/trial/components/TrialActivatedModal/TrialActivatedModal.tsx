@@ -31,9 +31,9 @@ export const TrialActivatedModal: FC<TrialActivatedModalProps> = ({
                             Your Shopping Assistant is live!
                         </div>
                         <div className={css.descriptionText}>
-                            You&apos;re all set to start turning visitors into
-                            buyers. Now let&apos;s unlock its full potential in
-                            just a couple of quick steps.
+                            You&apos;re all set to start turning website
+                            visitors into buyers. Take a few quick steps to
+                            unlock its full potential.
                         </div>
                     </div>
                 </div>
@@ -72,10 +72,10 @@ export const TrialActivatedModal: FC<TrialActivatedModalProps> = ({
                                 </i>
                                 <div className={css.conditionText}>
                                     <div className={css.conditionTextTitle}>
-                                        Engage customers
+                                        Proactively engage customers
                                     </div>
                                     <div className={css.conditionTextSubtitle}>
-                                        Turn on customer engagement tools
+                                        Turn on customer engagement features
                                     </div>
                                     <div className={css.discountBadgeWrapper}>
                                         <Badge
@@ -119,7 +119,7 @@ export const TrialActivatedModal: FC<TrialActivatedModalProps> = ({
                                         Offer smart discounts
                                     </div>
                                     <div className={css.conditionTextSubtitle}>
-                                        Set up discount strategy
+                                        Set up your discount strategy
                                     </div>
                                     <div className={css.discountBadgeWrapper}>
                                         <Badge
@@ -140,7 +140,8 @@ export const TrialActivatedModal: FC<TrialActivatedModalProps> = ({
                                                     css.discountBadgeText
                                                 }
                                             >
-                                                Boost conversion by up to +50%
+                                                Increase conversions by up to
+                                                +50%
                                             </span>
                                         </Badge>
                                     </div>

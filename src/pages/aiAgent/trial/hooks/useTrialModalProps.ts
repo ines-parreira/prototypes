@@ -106,28 +106,52 @@ const createPlanModalData = (
 ) => ({
     title,
     currentPlan: {
-        title: 'Support Agent',
+        title: 'AI Agent',
         description: 'Provide best-in-class automated support',
         price: planDetails.currentPlanAmountFormatted,
         billingPeriod: planDetails.currentPlanCadence,
         features: [
-            `${planDetails.numQuotaTickets} automated interactions`,
-            'Deliver instant answers to repetitive questions and improve customer satisfaction',
-            'Automatically handle orders, returns, and subscriptions quickly, 24/7',
+            {
+                label: `${planDetails.numQuotaTickets} automated interactions`,
+                isError: false,
+            },
+            {
+                label: 'Deliver instant answers to repetitive questions and improve customer satisfaction',
+                isError: false,
+            },
+            {
+                label: 'Automatically handle orders, returns, and subscriptions quickly, 24/7',
+                isError: false,
+            },
+            {
+                label: 'Advanced sales skills',
+                isError: true,
+            },
         ],
         buttonText: buttonTexts.current,
     },
     newPlan: {
-        title: 'Support Agent and Shopping Assistant ',
-        description: 'Unlock full potential to drive more sales',
+        title: 'AI Agent with Shopping Assistant',
+        description: 'Power up AI Agent with new advanced sales skills',
         price: planDetails.earlyAccessPlanAmount,
         billingPeriod: `${planDetails.earlyAccessPlanCadence}${isTrial ? ' after trial ends' : ''}`,
         features: [
-            'Everything in Support Agent skills',
-            'Proactively engage with customers to guide discovery',
-            'Personalize recommendations with rich customer insights',
-            'Intelligent upsell using customer input, not guesswork',
-            'Offer discounts based on purchase intent',
+            {
+                label: 'Everything in Support Agent skills',
+                isError: false,
+            },
+            {
+                label: 'Proactively engage with shoppers at key moments',
+                isError: false,
+            },
+            {
+                label: 'Personalize product recommendations powered by rich customer insights',
+                isError: false,
+            },
+            {
+                label: 'Offer discounts based on purchase intent',
+                isError: false,
+            },
         ],
         buttonText: buttonTexts.new,
         priceTooltipText: `Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a ${planDetails.helpdeskPlanTicketCost} helpdesk fee.`,
@@ -155,7 +179,7 @@ const useTrialUpgradePlanModal =
         return useMemo(
             () =>
                 createPlanModalData(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                     planDetails,
                     { current: 'Keep current plan', new: 'Try for 14 days' },
                     true,
@@ -245,9 +269,9 @@ const useTrialStartedBanner = (
 
     const description = useMemo(() => {
         if (gmvInfluencedRate > 0.01) {
-            return `So far, it's generated ${gmvInfluenced} in added GMV for your store.`
+            return `So far, it's influenced ${gmvInfluenced} of GMV for your store.`
         }
-        return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.`
+        return `Increase conversion by +50% by setting up your sales and discount strategy.`
     }, [gmvInfluenced, gmvInfluencedRate])
 
     const trialEndsText =
@@ -259,7 +283,7 @@ const useTrialStartedBanner = (
 
     return useMemo(
         () => ({
-            title: `Shopping Assistant trial ${trialEndsText}.`,
+            title: `Your Shopping Assistant trial ${trialEndsText}.`,
             description,
             primaryAction,
             secondaryAction,
@@ -277,7 +301,7 @@ const useTrialAlertBanner = ({
 
     const secondaryAction = useMemo(() => {
         return {
-            label: 'How Shopping Assistant Accelerates Growth',
+            label: 'How AI Agent can 2x conversion rate',
             onClick: () => {
                 window.open(EXTERNAL_URLS.SHOPPING_ASSISTANT_INFO, '_blank')
                 logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
@@ -313,9 +337,9 @@ const useTrialAlertBanner = ({
 
     return useMemo(
         () => ({
-            title: 'Drive more revenue with Shopping Assistant',
+            title: 'Influence +1.5% GMV with Shopping Assistant',
             description:
-                "Make every interaction personal. With AI Agent's new shopping assistant features, you can offer real-time recommendations powered by rich insights and persuasive selling skills that help customers buy with confidence.",
+                'Increase customer engagement and turn every interaction into a sale. With AI Agent’s new shopping assistant features, you can deliver personalized recommendations and offer intent-based discounts that convert.',
             primaryAction,
             secondaryAction,
         }),

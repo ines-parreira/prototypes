@@ -23,7 +23,10 @@ export type PlanDetails = {
     price: string
     billingPeriod: string
     priceTooltipText?: string
-    features: string[]
+    features: {
+        label: string
+        isError: boolean
+    }[]
     buttonText: string
 }
 
@@ -167,10 +170,20 @@ const PlanSection: React.FC<{
     )
 }
 
-const FeatureItem: React.FC<{ feature: string }> = ({ feature }) => (
+const FeatureItem: React.FC<{
+    feature: { label: string; isError: boolean }
+}> = ({ feature }) => (
     <div className={css.feature}>
-        <i className={classNames('material-icons', css.checkIcon)}>check</i>
-        {feature}
+        <i
+            className={classNames(
+                'material-icons',
+                css.checkIcon,
+                feature.isError && css.errorIcon,
+            )}
+        >
+            {feature.isError ? 'close' : 'check'}
+        </i>
+        {feature.label}
     </div>
 )
 

@@ -51,13 +51,14 @@ export const usePaywallConfig = (
             }
         case AIAgentPaywallFeatures.SalesWaitlist:
             return {
-                title: 'with Shopping Assistant skills',
+                title: 'Shopping Assistant',
                 subtitle:
-                    'Sell more with a Shopping Assistant that drives conversions and elevates the shopping experience.',
+                    'Introducing Shopping Assistant, your team’s newest member to drive conversion. ',
                 descriptions: [
-                    'Offer 24/7 tailored assistance to guide shoppers, answer questions, and reduce drop-off',
-                    'Offer smart discounts to convert shoppers while protecting margins',
-                    'Personalize product recommendations with historical purchase data and real-time browsing behavior',
+                    'Proactively engage with shoppers at key moments',
+                    'Personalize product recommendations powered by rich customer insights',
+                    'Maximize cart size with intelligent upsells',
+                    'Offer discounts based on purchase intent',
                 ],
                 toggleElements: [
                     {
@@ -111,13 +112,14 @@ export const usePaywallConfig = (
             }
         case AIAgentPaywallFeatures.Upgrade:
             return {
-                title: 'with Shopping Assistant skills',
+                title: 'Shopping Assistant',
                 subtitle:
-                    'Sell more with a Shopping Assistant that drives conversions and elevates the shopping experience.',
+                    'Introducing Shopping Assistant, your team’s newest member to drive conversion. ',
                 descriptions: [
-                    'Offer 24/7 tailored assistance to guide shoppers, answer questions, and reduce drop-off',
-                    'Offer smart discounts to convert shoppers while protecting margins',
-                    'Personalize product recommendations with historical purchase data and real-time browsing behavior',
+                    'Proactively engage with shoppers at key moments',
+                    'Personalize product recommendations powered by rich customer insights',
+                    'Maximize cart size with intelligent upsells',
+                    'Offer discounts based on purchase intent',
                 ],
                 toggleElements: [
                     {

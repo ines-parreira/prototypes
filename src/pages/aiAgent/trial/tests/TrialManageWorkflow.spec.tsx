@@ -120,7 +120,7 @@ describe('TrialManageWorkflow', () => {
             ).mock.results[0]?.value || { canBookDemo: false }
             return {
                 trialStartedBanner: {
-                    title: 'Shopping Assistant trial ends in 5 days.',
+                    title: 'Your Shopping Assistant trial ends in 5 days.',
                     description:
                         "So far, it's generated $25 in added GMV for your store.",
                     primaryAction: {
@@ -256,7 +256,7 @@ describe('TrialManageWorkflow', () => {
             // Mock the trial modal props to return the correct actions
             ;(useTrialModalProps as jest.Mock).mockReturnValue({
                 trialStartedBanner: {
-                    title: 'Shopping Assistant trial ends in 5 days.',
+                    title: 'Your Shopping Assistant trial ends in 5 days.',
                     description:
                         "So far, it's generated $25 in added GMV for your store.",
                     primaryAction: {
@@ -292,7 +292,7 @@ describe('TrialManageWorkflow', () => {
             const mockOnClick = jest.fn()
             ;(useTrialModalProps as jest.Mock).mockReturnValue({
                 trialStartedBanner: {
-                    title: 'Shopping Assistant trial ends in 5 days.',
+                    title: 'Your Shopping Assistant trial ends in 5 days.',
                     description:
                         "So far, it's generated $25 in added GMV for your store.",
                     primaryAction: {
@@ -372,7 +372,7 @@ describe('TrialManageWorkflow', () => {
             const mockOnManageTrial = jest.fn()
             ;(useTrialModalProps as jest.Mock).mockReturnValue({
                 trialStartedBanner: {
-                    title: 'Shopping Assistant trial ends in 5 days.',
+                    title: 'Your Shopping Assistant trial ends in 5 days.',
                     description:
                         "So far, it's generated $25 in added GMV for your store.",
                     primaryAction: {
@@ -436,7 +436,7 @@ describe('TrialManageWorkflow', () => {
             )
 
             expect(
-                screen.getByText('Manage Shopping Assistant trial'),
+                screen.getByText('Manage your Shopping Assistant trial'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
@@ -535,7 +535,7 @@ describe('TrialManageWorkflow', () => {
 
         expect(TrialAlertBanner).toHaveBeenCalledWith(
             expect.objectContaining({
-                title: 'Shopping Assistant trial ends in 5 days.',
+                title: 'Your Shopping Assistant trial ends in 5 days.',
                 description:
                     "So far, it's generated $25 in added GMV for your store.",
                 primaryAction: {
@@ -568,7 +568,7 @@ describe('TrialManageWorkflow', () => {
         )
 
         const call = (TrialManageModal as jest.Mock).mock.calls[0]
-        expect(call[0].title).toBe('Manage Shopping Assistant trial')
+        expect(call[0].title).toBe('Manage your Shopping Assistant trial')
         expect(call[0].description).toBe(
             'Shopping Assistant boosted your GMV by +$25 during the trial. Keep the momentum going and turn even more visitors into buyers.',
         )

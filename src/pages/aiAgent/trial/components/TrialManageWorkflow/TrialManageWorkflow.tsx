@@ -121,7 +121,7 @@ export const TrialManageWorkflow = ({
             {isManageTrialModalOpen && (
                 <TrialManageModal
                     {...trialModalProps.manageTrialModal}
-                    title="Manage Shopping Assistant trial"
+                    title="Manage your Shopping Assistant trial"
                     onClose={closeManageTrialModal}
                     primaryAction={{
                         label: 'Upgrade Now',
@@ -201,8 +201,14 @@ export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
                         You won&apos;t be automatically upgraded when your trial
                         ends — you&apos;ll keep access to the Shopping Assistant
                         until your trial expires. If you&apos;d like to turn off
-                        the Shopping Assistant sooner, please contact the
-                        support team.
+                        the Shopping Assistant sooner, please contact us at{' '}
+                        <a
+                            href="mailto:support@gorgias.com"
+                            className={css.link}
+                        >
+                            support@gorgias.com
+                        </a>
+                        .
                     </div>
                 </div>
             </ModalBodyWrapper>

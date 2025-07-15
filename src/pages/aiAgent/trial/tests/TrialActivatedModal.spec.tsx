@@ -30,19 +30,23 @@ describe('TrialActivatedModal', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                "You're all set to start turning visitors into buyers. Now let's unlock its full potential in just a couple of quick steps.",
+                "You're all set to start turning website visitors into buyers. Take a few quick steps to unlock its full potential.",
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText('Shopping Assistant activated'),
         ).toBeInTheDocument()
         expect(screen.getByText('14 day trial')).toBeInTheDocument()
-        expect(screen.getByText('Engage customers')).toBeInTheDocument()
         expect(
-            screen.getByText('Turn on customer engagement tools'),
+            screen.getByText('Proactively engage customers'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Turn on customer engagement features'),
         ).toBeInTheDocument()
         expect(screen.getByText('Offer smart discounts')).toBeInTheDocument()
-        expect(screen.getByText('Set up discount strategy')).toBeInTheDocument()
+        expect(
+            screen.getByText('Set up your discount strategy'),
+        ).toBeInTheDocument()
     })
 
     it('should render boost conversion badges', () => {
@@ -50,7 +54,7 @@ describe('TrialActivatedModal', () => {
 
         expect(screen.getByText('Boost conversion by 15%')).toBeInTheDocument()
         expect(
-            screen.getByText('Boost conversion by up to +50%'),
+            screen.getByText('Increase conversions by up to +50%'),
         ).toBeInTheDocument()
     })
 
@@ -107,7 +111,9 @@ describe('TrialActivatedModal', () => {
             screen.getByText('Your Shopping Assistant is live!'),
         ).toBeInTheDocument()
         expect(screen.getByText('Complete Set Up')).toBeInTheDocument()
-        expect(screen.getByText('Engage customers')).toBeInTheDocument()
+        expect(
+            screen.getByText('Proactively engage customers'),
+        ).toBeInTheDocument()
         expect(screen.getByText('Offer smart discounts')).toBeInTheDocument()
     })
 
@@ -128,7 +134,9 @@ describe('TrialActivatedModal', () => {
         expect(
             screen.getByText('Shopping Assistant activated'),
         ).toBeInTheDocument()
-        expect(screen.getByText('Engage customers')).toBeInTheDocument()
+        expect(
+            screen.getByText('Proactively engage customers'),
+        ).toBeInTheDocument()
         expect(screen.getByText('Offer smart discounts')).toBeInTheDocument()
     })
 
@@ -158,7 +166,7 @@ describe('TrialActivatedModal', () => {
         // Check that both badge texts are rendered
         expect(screen.getByText('Boost conversion by 15%')).toBeInTheDocument()
         expect(
-            screen.getByText('Boost conversion by up to +50%'),
+            screen.getByText('Increase conversions by up to +50%'),
         ).toBeInTheDocument()
     })
 })

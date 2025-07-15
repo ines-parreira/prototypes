@@ -307,7 +307,7 @@ describe('AiAgentOverview', () => {
 
             const { queryByText } = renderComponent()
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeFalsy()
             expect(queryByText('Try for 14 days')).toBeFalsy()
         })
@@ -319,11 +319,11 @@ describe('AiAgentOverview', () => {
 
             const { queryByText } = renderComponent()
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeTruthy()
             expect(queryByText('Try for 14 days')).toBeTruthy()
             expect(
-                queryByText('How Shopping Assistant Accelerates Growth'),
+                queryByText('How AI Agent can 2x conversion rate'),
             ).toBeTruthy()
         })
 
@@ -337,7 +337,7 @@ describe('AiAgentOverview', () => {
             // Modal should not be open initially
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeFalsy()
 
@@ -345,7 +345,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getByText('Try for 14 days'))
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeTruthy()
 
@@ -353,7 +353,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getByText('Keep current plan'))
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeFalsy()
         })
@@ -369,12 +369,12 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getAllByText('Try for 14 days')[0])
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeTruthy()
 
             // Verify modal content is displayed
-            expect(queryByText('Support Agent')).toBeTruthy()
+            expect(queryByText('AI Agent')).toBeTruthy()
             expect(queryByText('Keep current plan')).toBeTruthy()
         })
 
@@ -389,22 +389,18 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getAllByText('Try for 14 days')[0])
 
             // Check current plan details
-            expect(queryByText('Support Agent')).toBeTruthy()
+            expect(queryByText('AI Agent')).toBeTruthy()
             expect(queryByText('$450')).toBeTruthy()
             expect(queryByText('2000 automated interactions')).toBeTruthy()
 
             // Check new plan details
-            expect(
-                queryByText('Support Agent and Shopping Assistant'),
-            ).toBeTruthy()
+            expect(queryByText('AI Agent with Shopping Assistant')).toBeTruthy()
             expect(queryByText('$530')).toBeTruthy()
             expect(
                 queryByText('Everything in Support Agent skills'),
             ).toBeTruthy()
             expect(
-                queryByText(
-                    'Proactively engage with customers to guide discovery',
-                ),
+                queryByText('Proactively engage with shoppers at key moments'),
             ).toBeTruthy()
         })
 
@@ -416,9 +412,7 @@ describe('AiAgentOverview', () => {
             window.open = jest.fn()
 
             const { getByText } = renderComponent()
-            fireEvent.click(
-                getByText('How Shopping Assistant Accelerates Growth'),
-            )
+            fireEvent.click(getByText('How AI Agent can 2x conversion rate'))
 
             expect(window.open).toHaveBeenCalledWith(
                 'https://www.gorgias.com/ai-shopping-assistant',
@@ -438,14 +432,14 @@ describe('AiAgentOverview', () => {
             // Verify both actions are available
             expect(getAllByText('Try for 14 days')[0]).toBeTruthy()
             expect(
-                getByText('How Shopping Assistant Accelerates Growth'),
+                getByText('How AI Agent can 2x conversion rate'),
             ).toBeTruthy()
 
             // Test primary action multiple times
             fireEvent.click(getAllByText('Try for 14 days')[0])
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeTruthy()
 
@@ -456,7 +450,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getAllByText('Try for 14 days')[0])
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeTruthy()
         })
@@ -466,12 +460,12 @@ describe('AiAgentOverview', () => {
 
             const { queryByText } = renderComponent()
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeFalsy()
             // The test should check that trial banner is not shown, but there might be other buttons with same text
             // We should check specifically for banner elements, not just text
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeFalsy()
         })
 
@@ -488,7 +482,7 @@ describe('AiAgentOverview', () => {
             // Check for new plan features instead of tooltip
             expect(
                 queryByText(
-                    'Intelligent upsell using customer input, not guesswork',
+                    'Personalize product recommendations powered by rich customer insights',
                 ),
             ).toBeTruthy()
         })
@@ -501,7 +495,7 @@ describe('AiAgentOverview', () => {
 
             // Initially visible
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeTruthy()
 
             // Change to not visible
@@ -520,7 +514,7 @@ describe('AiAgentOverview', () => {
 
             // Should not be visible
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeFalsy()
         })
 
@@ -529,7 +523,7 @@ describe('AiAgentOverview', () => {
 
             const { queryByText } = renderComponent()
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeFalsy()
         })
     })
@@ -548,7 +542,7 @@ describe('AiAgentOverview', () => {
             // Check all major sections
             expect(queryByText(/Welcome,.*/)).toBeTruthy() // Title
             expect(
-                queryByText('Drive more revenue with Shopping Assistant'),
+                queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeTruthy() // Trial Banner
             expect(queryByText('AI Agent performance')).toBeTruthy() // KPI Section
             expect(getByTestId('mocked-pending-tasks')).toBeTruthy() // Pending Tasks
@@ -599,7 +593,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getAllByText('Try for 14 days')[0])
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeTruthy()
 
@@ -607,7 +601,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getByText('Keep current plan'))
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeFalsy()
 
@@ -615,7 +609,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getAllByText('Try for 14 days')[0])
             expect(
                 queryByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeTruthy()
         })

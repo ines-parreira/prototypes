@@ -244,7 +244,7 @@ describe('SalesPaywallMiddleware', () => {
         })
         mockUseTrialModalProps.mockReturnValue({
             trialUpgradePlanModal: {
-                title: 'Try Shopping Assistant for 14 days at no additional cost',
+                title: 'Try the full power of AI Agent for 14 days at no additional cost',
                 description: 'Test description',
             },
             trialActivatedModal: {
@@ -801,7 +801,7 @@ describe('SalesPaywallMiddleware', () => {
 
             expect(
                 screen.getByText(
-                    'Try Shopping Assistant for 14 days at no additional cost',
+                    'Try the full power of AI Agent for 14 days at no additional cost',
                 ),
             ).toBeInTheDocument()
         })
@@ -1597,7 +1597,7 @@ describe('SalesPaywallMiddleware', () => {
         it('should handle trial modal props with undefined shopName', () => {
             mockUseTrialModalProps.mockReturnValue({
                 trialUpgradePlanModal: {
-                    title: 'Try Shopping Assistant for 14 days at no additional cost',
+                    title: 'Try the full power of AI Agent for 14 days at no additional cost',
                     description: 'Test description',
                 },
                 trialActivatedModal: {

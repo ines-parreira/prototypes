@@ -89,7 +89,7 @@ const mockTrialModalProps = {
             description: 'Current plan description',
             price: '$100',
             billingPeriod: 'month',
-            features: ['Feature 1'],
+            features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
         },
         newPlan: {
@@ -97,7 +97,10 @@ const mockTrialModalProps = {
             description: 'New plan description',
             price: '$200',
             billingPeriod: 'month',
-            features: ['Feature 1', 'Feature 2'],
+            features: [
+                { label: 'Feature 1', isError: false },
+                { label: 'Feature 2', isError: false },
+            ],
             buttonText: 'Upgrade plan',
         },
     },
@@ -108,7 +111,7 @@ const mockTrialModalProps = {
             description: 'Current plan description',
             price: '$100',
             billingPeriod: 'month',
-            features: ['Feature 1'],
+            features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
         },
         newPlan: {
@@ -116,7 +119,10 @@ const mockTrialModalProps = {
             description: 'New plan description',
             price: '$200',
             billingPeriod: 'month',
-            features: ['Feature 1', 'Feature 2'],
+            features: [
+                { label: 'Feature 1', isError: false },
+                { label: 'Feature 2', isError: false },
+            ],
             buttonText: 'Upgrade plan',
         },
     },

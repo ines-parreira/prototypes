@@ -13,7 +13,11 @@ describe('UpgradePlanModal', () => {
         description: 'Your existing plan features',
         price: '$299',
         billingPeriod: 'month',
-        features: ['Feature 1', 'Feature 2', 'Feature 3'],
+        features: [
+            { label: 'Feature 1', isError: false },
+            { label: 'Feature 2', isError: false },
+            { label: 'Feature 3', isError: false },
+        ],
         buttonText: 'Keep Current Plan',
     }
 
@@ -24,9 +28,9 @@ describe('UpgradePlanModal', () => {
         billingPeriod: 'month after trial ends',
         priceTooltipText: 'Price includes all premium features',
         features: [
-            'Premium Feature 1',
-            'Premium Feature 2',
-            'Premium Feature 3',
+            { label: 'Premium Feature 1', isError: false },
+            { label: 'Premium Feature 2', isError: false },
+            { label: 'Premium Feature 3', isError: false },
         ],
         buttonText: 'Upgrade Now',
     }
@@ -85,9 +89,9 @@ describe('UpgradePlanModal', () => {
         expect(screen.getByText('Premium Feature 3')).toBeInTheDocument()
 
         // Current plan features
-        expect(screen.getByText('Feature 1')).toBeInTheDocument()
-        expect(screen.getByText('Feature 2')).toBeInTheDocument()
-        expect(screen.getByText('Feature 3')).toBeInTheDocument()
+        expect(screen.getByText('Premium Feature 1')).toBeInTheDocument()
+        expect(screen.getByText('Premium Feature 2')).toBeInTheDocument()
+        expect(screen.getByText('Premium Feature 3')).toBeInTheDocument()
     })
 
     it('should render tooltip icon when priceTooltipText is provided', () => {

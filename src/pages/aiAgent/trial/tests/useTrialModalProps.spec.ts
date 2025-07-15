@@ -252,30 +252,55 @@ describe('useTrialModalProps', () => {
             )
 
             expect(result.current.trialUpgradePlanModal).toEqual({
-                title: 'Try Shopping Assistant for 14 days at no additional cost',
+                title: 'Try the full power of AI Agent for 14 days at no additional cost',
                 currentPlan: {
-                    title: 'Support Agent',
+                    title: 'AI Agent',
                     description: 'Provide best-in-class automated support',
                     price: '$50',
                     billingPeriod: 'month',
                     features: [
-                        '100 automated interactions',
-                        'Deliver instant answers to repetitive questions and improve customer satisfaction',
-                        'Automatically handle orders, returns, and subscriptions quickly, 24/7',
+                        {
+                            isError: false,
+                            label: '100 automated interactions',
+                        },
+                        {
+                            isError: false,
+                            label: 'Deliver instant answers to repetitive questions and improve customer satisfaction',
+                        },
+                        {
+                            isError: false,
+                            label: 'Automatically handle orders, returns, and subscriptions quickly, 24/7',
+                        },
+                        {
+                            isError: true,
+                            label: 'Advanced sales skills',
+                        },
                     ],
                     buttonText: 'Keep current plan',
                 },
                 newPlan: {
-                    title: 'Support Agent and Shopping Assistant ',
-                    description: 'Unlock full potential to drive more sales',
+                    title: 'AI Agent with Shopping Assistant',
+                    description:
+                        'Power up AI Agent with new advanced sales skills',
                     price: '$99',
                     billingPeriod: 'month after trial ends',
                     features: [
-                        'Everything in Support Agent skills',
-                        'Proactively engage with customers to guide discovery',
-                        'Personalize recommendations with rich customer insights',
-                        'Intelligent upsell using customer input, not guesswork',
-                        'Offer discounts based on purchase intent',
+                        {
+                            isError: false,
+                            label: 'Everything in Support Agent skills',
+                        },
+                        {
+                            isError: false,
+                            label: 'Proactively engage with shoppers at key moments',
+                        },
+                        {
+                            isError: false,
+                            label: 'Personalize product recommendations powered by rich customer insights',
+                        },
+                        {
+                            isError: false,
+                            label: 'Offer discounts based on purchase intent',
+                        },
                     ],
                     buttonText: 'Try for 14 days',
                     priceTooltipText:
@@ -412,9 +437,9 @@ describe('useTrialModalProps', () => {
             )
 
             expect(result.current.trialStartedBanner).toEqual({
-                title: 'Shopping Assistant trial ends in 7 days.',
+                title: 'Your Shopping Assistant trial ends in 7 days.',
                 description:
-                    "So far, it's generated $25 in added GMV for your store.",
+                    "So far, it's influenced $25 of GMV for your store.",
                 primaryAction: expect.objectContaining({
                     label: 'Upgrade Now',
                     onClick: expect.any(Function),
@@ -445,7 +470,7 @@ describe('useTrialModalProps', () => {
 
             // Initial values
             expect(result.current.trialStartedBanner.title).toBe(
-                'Shopping Assistant trial ends in 14 days.',
+                'Your Shopping Assistant trial ends in 14 days.',
             )
 
             // Update metrics
@@ -464,9 +489,9 @@ describe('useTrialModalProps', () => {
             rerender()
 
             expect(result.current.trialStartedBanner).toEqual({
-                title: 'Shopping Assistant trial ends in 3 days.',
+                title: 'Your Shopping Assistant trial ends in 3 days.',
                 description:
-                    "So far, it's generated $50 in added GMV for your store.",
+                    "So far, it's influenced $50 of GMV for your store.",
                 primaryAction: expect.objectContaining({
                     label: 'Upgrade Now',
                     onClick: expect.any(Function),
@@ -493,7 +518,7 @@ describe('useTrialModalProps', () => {
                 } as any)
             })
 
-            it('should display "is ending today" when remainingDays is 0', () => {
+            it('should display "ends today" when remainingDays is 0', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
@@ -511,11 +536,11 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial ends today.',
+                    'Your Shopping Assistant trial ends today.',
                 )
             })
 
-            it('should display "is ending today" when remainingDays is negative', () => {
+            it('should display "ends today" when remainingDays is negative', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
                     gmvInfluencedRate: 0.05,
@@ -533,7 +558,7 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial ends today.',
+                    'Your Shopping Assistant trial ends today.',
                 )
             })
 
@@ -555,7 +580,7 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial ends in 1 day.',
+                    'Your Shopping Assistant trial ends in 1 day.',
                 )
             })
 
@@ -586,7 +611,7 @@ describe('useTrialModalProps', () => {
                     )
 
                     expect(result.current.trialStartedBanner.title).toBe(
-                        `Shopping Assistant trial ${expected}.`,
+                        `Your Shopping Assistant trial ${expected}.`,
                     )
                 })
             })
@@ -609,7 +634,7 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial ends in 365 days.',
+                    'Your Shopping Assistant trial ends in 365 days.',
                 )
             })
 
@@ -632,7 +657,7 @@ describe('useTrialModalProps', () => {
 
                 // Initial state
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial ends in 5 days.',
+                    'Your Shopping Assistant trial ends in 5 days.',
                 )
 
                 // Update to 1 day
@@ -650,7 +675,7 @@ describe('useTrialModalProps', () => {
                 rerender()
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial ends in 1 day.',
+                    'Your Shopping Assistant trial ends in 1 day.',
                 )
 
                 // Update to 0 days
@@ -668,7 +693,7 @@ describe('useTrialModalProps', () => {
                 rerender()
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial ends today.',
+                    'Your Shopping Assistant trial ends today.',
                 )
             })
         })
@@ -710,15 +735,15 @@ describe('useTrialModalProps', () => {
             )
 
             expect(result.current.trialAlertBanner).toEqual({
-                title: 'Drive more revenue with Shopping Assistant',
+                title: 'Influence +1.5% GMV with Shopping Assistant',
                 description:
-                    "Make every interaction personal. With AI Agent's new shopping assistant features, you can offer real-time recommendations powered by rich insights and persuasive selling skills that help customers buy with confidence.",
+                    'Increase customer engagement and turn every interaction into a sale. With AI Agent’s new shopping assistant features, you can deliver personalized recommendations and offer intent-based discounts that convert.',
                 primaryAction: {
                     label: 'Book a demo',
                     onClick: expect.any(Function),
                 },
                 secondaryAction: {
-                    label: 'How Shopping Assistant Accelerates Growth',
+                    label: 'How AI Agent can 2x conversion rate',
                     onClick: expect.any(Function),
                 },
             })
@@ -745,7 +770,7 @@ describe('useTrialModalProps', () => {
             )
 
             expect(result.current.trialAlertBanner.secondaryAction).toEqual({
-                label: 'How Shopping Assistant Accelerates Growth',
+                label: 'How AI Agent can 2x conversion rate',
                 onClick: expect.any(Function),
             })
         })
