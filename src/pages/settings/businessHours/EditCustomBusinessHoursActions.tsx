@@ -10,11 +10,17 @@ import ConfirmButtonWithModal from 'pages/common/components/button/ConfirmButton
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
 
-export default function EditCustomBusinessHoursActions() {
+type Props = {
+    isLoading?: boolean
+}
+
+export default function EditCustomBusinessHoursActions({ isLoading }: Props) {
     return (
         <FormActions>
             <FormActionsGroup>
-                <FormSubmitButton>Save changes</FormSubmitButton>
+                <FormSubmitButton isLoading={isLoading}>
+                    Save changes
+                </FormSubmitButton>
                 <Link to={BUSINESS_HOURS_BASE_URL}>
                     <Button intent="secondary">Cancel</Button>
                 </Link>

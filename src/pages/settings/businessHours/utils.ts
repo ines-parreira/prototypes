@@ -1,6 +1,9 @@
+import { omit } from 'lodash'
+
 import {
     BusinessHoursCreate,
     BusinessHoursDetails,
+    BusinessHoursUpdate,
     Timezone,
 } from '@gorgias/helpdesk-types'
 
@@ -67,5 +70,27 @@ export const getIntegrationsChangeSummary = (
     return {
         newIntegrations,
         removedIntegrations,
+    }
+}
+
+export const getUpdateBusinessHoursPayloadFromValues = (
+    values: EditCustomBusinessHoursFormValues,
+): BusinessHoursUpdate => {
+    const changes = getIntegrationsChangeSummary(
+        values.previous_assigned_integrations,
+        values.assigned_integrations.assign_integrations,
+    )
+
+    const newValues = omit(values, [
+        'temporary_assigned_integrations',
+        'previous_assigned_integrations',
+    ])
+
+    return {
+        ...newValues,
+        assigned_integrations: {
+            assign_integrations: changes.newIntegrations,
+            unassign_integrations: changes.removedIntegrations,
+        },
     }
 }

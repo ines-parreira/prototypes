@@ -1,10 +1,47 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { mockBusinessHoursDetails } from '@gorgias/helpdesk-mocks'
+import {
+    mockBusinessHoursDetails,
+    mockUpdateBusinessHoursHandler,
+} from '@gorgias/helpdesk-mocks'
 
+import history from 'pages/history'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
+import { BUSINESS_HOURS_BASE_URL } from '../constants'
 import EditCustomBusinessHoursForm from '../EditCustomBusinessHoursForm'
+
+const mockNotify = {
+    success: jest.fn(),
+    error: jest.fn(),
+}
+
+jest.mock('hooks/useNotify', () => ({
+    useNotify: () => mockNotify,
+}))
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const mockUpdateBusinessHours = mockUpdateBusinessHoursHandler()
+
+beforeEach(() => {
+    server.use(mockUpdateBusinessHours.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
 
 const businessHours = mockBusinessHoursDetails({
     business_hours_config: {
@@ -70,5 +107,55 @@ describe('EditCustomBusinessHoursForm', () => {
         expect(screen.getByDisplayValue('17:00')).toBeInTheDocument()
         expect(screen.getByDisplayValue('10:00')).toBeInTheDocument()
         expect(screen.getByDisplayValue('18:00')).toBeInTheDocument()
+    })
+
+    it('should handle form submission successfully', async () => {
+        const user = userEvent.setup()
+        renderWithStoreAndQueryClientAndRouter(
+            <EditCustomBusinessHoursForm businessHours={businessHours} />,
+            {},
+        )
+
+        await act(async () =>
+            user.type(screen.getByLabelText(/Name/), 'New Name'),
+        )
+        await act(async () =>
+            user.click(screen.getByRole('button', { name: 'Save changes' })),
+        )
+
+        expect(mockNotify.success).toHaveBeenCalledWith(
+            `'${mockUpdateBusinessHours.data.name}' business hours were successfully updated.`,
+        )
+        expect(history.push).toHaveBeenCalledWith(BUSINESS_HOURS_BASE_URL)
+    })
+
+    it('should call errorNotify when the form is submitted with invalid data', async () => {
+        const user = userEvent.setup()
+        const mockUpdateBusinessHoursError = mockUpdateBusinessHoursHandler(
+            async ({ data }) =>
+                HttpResponse.json(
+                    { ...data },
+                    {
+                        status: 500,
+                    },
+                ),
+        )
+        server.use(mockUpdateBusinessHoursError.handler)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <EditCustomBusinessHoursForm businessHours={businessHours} />,
+            {},
+        )
+
+        await act(async () =>
+            user.type(screen.getByLabelText(/Name/), 'New Name'),
+        )
+        await act(async () =>
+            user.click(screen.getByRole('button', { name: 'Save changes' })),
+        )
+
+        expect(mockNotify.error).toHaveBeenCalledWith(
+            "We couldn't save your preferences. Please try again.",
+        )
     })
 })

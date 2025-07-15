@@ -1,3 +1,4 @@
+import { mockBusinessHoursUpdate } from '@gorgias/helpdesk-mocks'
 import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from '../constants'
@@ -6,6 +7,7 @@ import {
     getCreateBusinessHoursFormDefaultValues,
     getEditCustomBusinessHoursDefaultValues,
     getIntegrationsChangeSummary,
+    getUpdateBusinessHoursPayloadFromValues,
 } from '../utils'
 
 describe('utils', () => {
@@ -116,6 +118,30 @@ describe('utils', () => {
             expect(result).toEqual({
                 newIntegrations: [5],
                 removedIntegrations: [3, 4],
+            })
+        })
+    })
+
+    describe('getUpdateBusinessHoursPayloadFromValues', () => {
+        it('removes temporary_assigned_integrations and previous_assigned_integrations and populates assign_integrations and unassign_integrations correctly', () => {
+            const mockedBusinessHoursUpdate = mockBusinessHoursUpdate()
+
+            const result = getUpdateBusinessHoursPayloadFromValues({
+                ...mockedBusinessHoursUpdate,
+                assigned_integrations: {
+                    assign_integrations: [1, 2, 3],
+                    unassign_integrations: [4, 5, 6],
+                },
+                previous_assigned_integrations: [3, 4, 5, 6],
+                temporary_assigned_integrations: [1],
+            })
+
+            expect(result).toEqual({
+                ...mockedBusinessHoursUpdate,
+                assigned_integrations: {
+                    assign_integrations: [1, 2],
+                    unassign_integrations: [4, 5, 6],
+                },
             })
         })
     })

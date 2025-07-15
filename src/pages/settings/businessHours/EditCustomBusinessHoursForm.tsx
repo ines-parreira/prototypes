@@ -1,9 +1,9 @@
-import { noop, omit } from 'lodash'
-
+import { useUpdateBusinessHours } from '@gorgias/helpdesk-queries'
 import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
-import { validateBusinessHoursDetails } from '@gorgias/helpdesk-validators'
+import { validateBusinessHoursUpdate } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
+import { useNotify } from 'hooks/useNotify'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import {
     SettingsCard,
@@ -12,12 +12,17 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
+import history from 'pages/history'
 
+import { BUSINESS_HOURS_BASE_URL } from './constants'
 import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields'
 import EditCustomBusinessHoursActions from './EditCustomBusinessHoursActions'
 import EditCustomBusinessHoursIntegrationsSection from './EditCustomBusinessHoursIntegrationsSection'
 import { EditCustomBusinessHoursFormValues } from './types'
-import { getEditCustomBusinessHoursDefaultValues } from './utils'
+import {
+    getEditCustomBusinessHoursDefaultValues,
+    getUpdateBusinessHoursPayloadFromValues,
+} from './utils'
 
 import css from './EditCustomBusinessHoursForm.less'
 
@@ -26,21 +31,42 @@ type Props = {
 }
 
 export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
+    const notify = useNotify()
+
+    const { mutate: updateBusinessHours, isLoading } = useUpdateBusinessHours({
+        mutation: {
+            onSuccess: (response) => {
+                notify.success(
+                    `'${response.data.name}' business hours were successfully updated.`,
+                )
+
+                history.push(BUSINESS_HOURS_BASE_URL)
+            },
+            onError: () => {
+                notify.error(
+                    "We couldn't save your preferences. Please try again.",
+                )
+            },
+        },
+    })
+
+    const handleFormSubmit = (values: EditCustomBusinessHoursFormValues) => {
+        updateBusinessHours({
+            id: businessHours.id,
+            data: getUpdateBusinessHoursPayloadFromValues(values),
+        })
+    }
+
     return (
         <Form<EditCustomBusinessHoursFormValues>
             mode="all"
             defaultValues={getEditCustomBusinessHoursDefaultValues(
                 businessHours,
             )}
-            onValidSubmit={noop}
+            onValidSubmit={handleFormSubmit}
             validator={(values) => {
-                const relevantValues = omit(values, [
-                    'previous_assigned_integrations',
-                    'temporary_assigned_integrations',
-                ])
-                return toFormErrors(
-                    validateBusinessHoursDetails(relevantValues),
-                )
+                const payload = getUpdateBusinessHoursPayloadFromValues(values)
+                return toFormErrors(validateBusinessHoursUpdate(payload))
             }}
         >
             <div className={css.formContent}>
@@ -83,9 +109,8 @@ export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
                         <EditCustomBusinessHoursIntegrationsSection />
                     </SettingsCardContent>
                 </SettingsCard>
-                <EditCustomBusinessHoursActions />
-                {/* TODO: add onSave */}
-                <FormUnsavedChangesPrompt onSave={noop} />
+                <EditCustomBusinessHoursActions isLoading={isLoading} />
+                <FormUnsavedChangesPrompt onSave={handleFormSubmit} />
             </div>
         </Form>
     )
