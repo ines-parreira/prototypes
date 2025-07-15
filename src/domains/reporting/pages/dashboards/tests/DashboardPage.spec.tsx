@@ -7,14 +7,11 @@ import {
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import {
-    AnalyticsCustomReport,
-    useGetAnalyticsCustomReport,
-} from '@gorgias/helpdesk-queries'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
+import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
+import { useDashboardById } from 'domains/reporting/hooks/dashboards/useDashboardById'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
 import { useReportRestrictions } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { useUpdateDashboardCache } from 'domains/reporting/hooks/dashboards/useUpdateDashboardCache'
@@ -27,26 +24,29 @@ import {
     DASHBOARD_SCHEMA_ERROR,
     DashboardPage,
 } from 'domains/reporting/pages/dashboards/DashboardPage'
+import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
+
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
+const mockUseParams = assumeMock(useParams)
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('state/notifications/actions')
-
 jest.mock('domains/reporting/hooks/dashboards/useUpdateDashboardCache')
 const useUpdateDashboardCacheMock = assumeMock(useUpdateDashboardCache)
 
-jest.mock('@gorgias/helpdesk-queries')
-const useGetAnalyticsCustomReportMock = assumeMock(useGetAnalyticsCustomReport)
+jest.mock('domains/reporting/hooks/dashboards/useDashboardById')
+const useDashboardByIdMock = assumeMock(useDashboardById)
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
@@ -58,8 +58,6 @@ const DrillDownModalMock = assumeMock(DrillDownModal)
 
 jest.mock('domains/reporting/pages/dashboards/Dashboard')
 const DashboardMock = assumeMock(Dashboard)
-
-const mockUseParams = assumeMock(useParams)
 
 jest.mock('domains/reporting/pages/dashboards/DashboardActionButton')
 const DashboardActionButtonMock = assumeMock(DashboardActionButton)
@@ -76,6 +74,9 @@ const useDashboardActionsMock = assumeMock(useDashboardActions)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
+jest.mock('domains/reporting/pages/dashboards/PinnedFilterSyncProvider')
+const PinnedFilterSyncProviderMock = assumeMock(PinnedFilterSyncProvider)
+
 const MOCKED_BUTTON_LABEL = 'some button name'
 
 describe('DashboardPage', () => {
@@ -86,9 +87,9 @@ describe('DashboardPage', () => {
     const dashboardId = '2'
     const dashboardName = 'Dashboard'
 
-    const rawDashboard: AnalyticsCustomReport = {
+    const dashboard = dashboardFromApi({
         id: Number(dashboardId),
-        analytics_filter_id: 1,
+        analytics_filter_id: null,
         name: dashboardName,
         emoji: null,
         type: 'custom',
@@ -111,9 +112,7 @@ describe('DashboardPage', () => {
                 ],
             },
         ],
-    }
-
-    const dashboard = dashboardFromApi(rawDashboard)!
+    })!
 
     const updateDashboardMock = jest.fn()
 
@@ -125,6 +124,8 @@ describe('DashboardPage', () => {
     const MOVE_CHART_END_BUTTON = 'chart move end'
 
     beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+
         mockUseParams.mockReturnValue({
             id: dashboardId,
         })
@@ -150,8 +151,12 @@ describe('DashboardPage', () => {
             </button>
         ))
 
-        useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: { data: rawDashboard },
+        PinnedFilterSyncProviderMock.mockImplementation(({ children }) => (
+            <>{children}</>
+        ))
+
+        useDashboardByIdMock.mockReturnValue({
+            data: dashboard,
             isLoading: false,
         } as any)
 
@@ -184,8 +189,8 @@ describe('DashboardPage', () => {
     })
 
     it('should render fallback when no charts are present', () => {
-        useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: { data: { ...rawDashboard, children: [] } },
+        useDashboardByIdMock.mockReturnValue({
+            data: { ...dashboard, children: [] },
             isLoading: false,
         } as any)
 
@@ -214,7 +219,7 @@ describe('DashboardPage', () => {
     })
 
     it('should render the loading spinner', () => {
-        useGetAnalyticsCustomReportMock.mockReturnValue({
+        useDashboardByIdMock.mockReturnValue({
             data: undefined,
             isLoading: true,
         } as any)
@@ -225,7 +230,7 @@ describe('DashboardPage', () => {
     })
 
     it('should render error on incorrect schema', () => {
-        useGetAnalyticsCustomReportMock.mockReturnValue({
+        useDashboardByIdMock.mockReturnValue({
             data: undefined,
             isLoading: false,
             isError: true,
@@ -234,6 +239,29 @@ describe('DashboardPage', () => {
         renderWithStore(<DashboardPage />, {})
 
         expect(screen.getByText(DASHBOARD_SCHEMA_ERROR))
+    })
+
+    it('should wrap in PinnedFilterSyncProvider when analytics_filter_id is present', () => {
+        useFlagMock.mockReturnValue(true)
+        useDashboardByIdMock.mockReturnValue({
+            data: { ...dashboard, analytics_filter_id: 1 },
+            isLoading: false,
+        } as any)
+
+        renderWithStore(<DashboardPage />, {})
+
+        expect(PinnedFilterSyncProviderMock).toHaveBeenCalled()
+    })
+
+    it('should not wrap in PinnedFilterSyncProvider if flag is disabled', () => {
+        useDashboardByIdMock.mockReturnValue({
+            data: { ...dashboard, analytics_filter_id: 1 },
+            isLoading: false,
+        } as any)
+
+        renderWithStore(<DashboardPage />, {})
+
+        expect(PinnedFilterSyncProviderMock).not.toHaveBeenCalled()
     })
 
     it('should update name when input is blurred', async () => {

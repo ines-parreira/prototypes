@@ -15,7 +15,9 @@ import {
     statFiltersWithLogicalOperatorsCleanWithPayload,
 } from 'domains/reporting/state/ui/stats/actions'
 import {
+    applyPinnedFilter,
     applySavedFilter,
+    clearPinnedFilterDraft,
     clearSavedFilterDraft,
     COPY_OF_DRAFT_NAME,
     duplicateSavedFilterDraftFromSavedFilter,
@@ -25,6 +27,7 @@ import {
     getHasSavedFilterDraft,
     getHideFiltersPanelOptionalFilters,
     getIsSavedFilterApplied,
+    getPinnedFilterAppliedId,
     getSavedFilterDraft,
     initialiseSavedFilterDraft,
     initialiseSavedFilterDraftFromFilters,
@@ -220,6 +223,98 @@ describe('filtersSlice', () => {
 
             expect(newState.appliedSavedFilterId).toEqual(savedFilter.id)
             expect(newState.savedFilterDraft).toEqual(savedFilter)
+        })
+
+        it('should applyPinnedFilter', () => {
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: 'Some name',
+                filter_group: [agentsSavedFilter],
+            }
+
+            const newState = filtersSlice.reducer(
+                initialState,
+                applyPinnedFilter(savedFilter),
+            )
+
+            expect(newState.pinnedSavedFilter).toEqual(savedFilter)
+            expect(newState.appliedSavedFilterId).toEqual(savedFilter.id)
+            expect(newState.savedFilterDraft).toEqual(savedFilter)
+        })
+
+        it('should clearPinnedFilterDraft when pinnedSavedFilter.id matches appliedSavedFilterId', () => {
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: 'Some name',
+                filter_group: [agentsSavedFilter],
+            }
+
+            const stateWithPinnedFilter = filtersSlice.reducer(
+                initialState,
+                applyPinnedFilter(savedFilter),
+            )
+
+            const newState = filtersSlice.reducer(
+                stateWithPinnedFilter,
+                clearPinnedFilterDraft(),
+            )
+
+            expect(newState.pinnedSavedFilter).toBeNull()
+            expect(newState.appliedSavedFilterId).toBeNull()
+            expect(newState.savedFilterDraft).toBeNull()
+        })
+
+        it('should not clear SavedFilter if there is no pinnedFilter', () => {
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: 'Some name',
+                filter_group: [agentsSavedFilter],
+            }
+
+            const stateWithSavedFilter = filtersSlice.reducer(
+                initialState,
+                applySavedFilter(savedFilter),
+            )
+
+            const newState2 = filtersSlice.reducer(
+                stateWithSavedFilter,
+                clearPinnedFilterDraft(),
+            )
+
+            expect(newState2.pinnedSavedFilter).toBeNull()
+            expect(newState2.appliedSavedFilterId).toEqual(savedFilter.id)
+            expect(newState2.savedFilterDraft).toEqual(savedFilter)
+        })
+
+        it('should clearPinnedFilterDraft and appliedSavedFilter when pinnedSavedFilter.id matches appliedSavedFilterId', () => {
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: 'Some name',
+                filter_group: [agentsSavedFilter],
+            }
+            const anotherSavedFilter: SavedFilter = {
+                id: 456,
+                name: 'Some other name',
+                filter_group: [agentsSavedFilter],
+            }
+
+            const stateWithPinnedFilter = filtersSlice.reducer(
+                initialState,
+                applyPinnedFilter(savedFilter),
+            )
+            const stateWithPinnedFilterAndSavedFilter = filtersSlice.reducer(
+                stateWithPinnedFilter,
+                applySavedFilter(anotherSavedFilter),
+            )
+
+            const newState = filtersSlice.reducer(
+                stateWithPinnedFilterAndSavedFilter,
+                clearPinnedFilterDraft(),
+            )
+
+            expect(newState.pinnedSavedFilter).toBeNull()
+            expect(newState.appliedSavedFilterId).toEqual(anotherSavedFilter.id)
+            expect(newState.savedFilterDraft).toEqual(anotherSavedFilter)
         })
 
         it('should add a filter upsertSavedFilterFilter', () => {
@@ -814,6 +909,42 @@ describe('filtersSlice', () => {
             } as RootState
 
             expect(getIsSavedFilterApplied(state)).toEqual(false)
+        })
+
+        it('should return pinnedFilterId when pinnedSavedFilter exists', () => {
+            const pinnedFilter: SavedFilter = {
+                id: 123,
+                name: 'Pinned filter',
+                filter_group: [agentsSavedFilter],
+            }
+
+            const state = {
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            pinnedSavedFilter: pinnedFilter,
+                        },
+                    },
+                },
+            } as RootState
+
+            expect(getPinnedFilterAppliedId(state)).toEqual(pinnedFilter.id)
+        })
+
+        it('should return null when pinnedSavedFilter does not exist', () => {
+            const state = {
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            pinnedSavedFilter: null,
+                        },
+                    },
+                },
+            } as RootState
+
+            expect(getPinnedFilterAppliedId(state)).toBeNull()
         })
     })
 

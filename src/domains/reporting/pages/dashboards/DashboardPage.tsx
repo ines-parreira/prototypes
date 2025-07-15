@@ -2,11 +2,13 @@ import { useCallback, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { useGetAnalyticsCustomReport } from '@gorgias/helpdesk-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
+import { useDashboardById } from 'domains/reporting/hooks/dashboards/useDashboardById'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
 import { useUpdateDashboardCache } from 'domains/reporting/hooks/dashboards/useUpdateDashboardCache'
 import StatsPage, {
@@ -19,22 +21,25 @@ import { Dashboard } from 'domains/reporting/pages/dashboards/Dashboard'
 import { DashboardActionButton } from 'domains/reporting/pages/dashboards/DashboardActionButton'
 import { DashboardName } from 'domains/reporting/pages/dashboards/DashboardName'
 import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
+import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
+const useIsPinnedFilterEnabled = () =>
+    useFlag(FeatureFlagKey.ReportingSavedFiltersInDashboards, false)
+
 export const DASHBOARD_SCHEMA_ERROR = 'Dashboard schema error'
 
 export const DashboardPage = () => {
+    const isPinnedFilterEnabled = useIsPinnedFilterEnabled()
+
     const { id } = useParams<{ id: string }>()
 
-    const { data, isLoading, isError } = useGetAnalyticsCustomReport(Number(id))
+    const dashboard = useDashboardById(Number(id))
 
-    const dashboard = dashboardFromApi(data?.data)
-
-    if (isLoading) {
+    if (dashboard.isLoading) {
         return (
             <StatsPage title="">
                 <LoadingSpinner />
@@ -42,7 +47,7 @@ export const DashboardPage = () => {
         )
     }
 
-    if (isError || !dashboard) {
+    if (dashboard.isError || !dashboard.data) {
         return (
             <StatsPage title="">
                 <div>{DASHBOARD_SCHEMA_ERROR}</div>
@@ -50,7 +55,24 @@ export const DashboardPage = () => {
         )
     }
 
-    return <DashboardPageContent key={dashboard.id} dashboard={dashboard} />
+    const pinnedFilterId = dashboard.data.analytics_filter_id
+
+    let content = (
+        <DashboardPageContent
+            key={dashboard.data.id}
+            dashboard={dashboard.data}
+        />
+    )
+
+    if (isPinnedFilterEnabled && pinnedFilterId) {
+        content = (
+            <PinnedFilterSyncProvider savedFilterId={pinnedFilterId}>
+                {content}
+            </PinnedFilterSyncProvider>
+        )
+    }
+
+    return content
 }
 
 const DashboardPageContent = ({

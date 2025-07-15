@@ -25,6 +25,7 @@ export type FiltersSliceState = {
     cleanStatsFilters: StatsFiltersWithLogicalOperator | null
     savedFilterDraft: SavedFilter | SavedFilterDraft | null
     appliedSavedFilterId: number | null
+    pinnedSavedFilter: SavedFilter | null
 }
 
 type RemoveFiltersProps = {
@@ -38,6 +39,7 @@ export const initialState: FiltersSliceState = {
     cleanStatsFilters: null,
     savedFilterDraft: null,
     appliedSavedFilterId: null,
+    pinnedSavedFilter: null,
 }
 
 export const EMPTY_DRAFT_NAME = 'Saved Filter Draft'
@@ -102,6 +104,18 @@ export const filtersSlice = createSlice({
         applySavedFilter(state, action: PayloadAction<SavedFilter>) {
             state.appliedSavedFilterId = action.payload.id
             state.savedFilterDraft = action.payload
+        },
+        applyPinnedFilter(state, action: PayloadAction<SavedFilter>) {
+            state.pinnedSavedFilter = action.payload
+            state.appliedSavedFilterId = action.payload.id
+            state.savedFilterDraft = action.payload
+        },
+        clearPinnedFilterDraft(state) {
+            if (state.pinnedSavedFilter?.id === state.appliedSavedFilterId) {
+                state.appliedSavedFilterId = null
+                state.savedFilterDraft = null
+            }
+            state.pinnedSavedFilter = null
         },
         updateSavedFilterDraftName(state, action: PayloadAction<string>) {
             if (state.savedFilterDraft === null) {
@@ -248,11 +262,15 @@ export const {
     duplicateSavedFilterDraftFromSavedFilter,
     clearSavedFilterDraft,
     applySavedFilter,
+    applyPinnedFilter,
+    clearPinnedFilterDraft,
     updateSavedFilterDraftName,
     upsertSavedFilterFilter,
     upsertSavedFilterCustomFieldFilter,
     removeFilterFromSavedFilterDraft,
 } = filtersSlice.actions
+
+export const { actions } = filtersSlice
 
 const getSliceState = (state: RootState) => state.ui.stats[filtersSlice.name]
 
@@ -284,8 +302,23 @@ export const getSavedFilterAppliedId = createSelector(
     (state) => state.appliedSavedFilterId,
 )
 
+export const getPinnedFilterAppliedId = createSelector(
+    getSliceState,
+    (state) => state.pinnedSavedFilter?.id || null,
+)
+
 export const getHideFiltersPanelOptionalFilters = createSelector(
     getSliceState,
     (state) =>
         state.appliedSavedFilterId !== null || state.savedFilterDraft !== null,
 )
+
+export const selectors = Object.freeze({
+    getHasSavedFilterDraft,
+    getSavedFilterDraft,
+    getCanSaveFilter,
+    getIsSavedFilterApplied,
+    getSavedFilterAppliedId,
+    getPinnedFilterAppliedId,
+    getHideFiltersPanelOptionalFilters,
+})
