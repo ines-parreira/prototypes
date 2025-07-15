@@ -197,6 +197,41 @@ describe('ChatSettingsFormComponent', () => {
         expect(screen.getByText('open_in_new')).toBeInTheDocument()
     })
 
+    it('should still display uninstalled chat error message when the chat is not required', () => {
+        const uninstalledChatChannels = [
+            {
+                type: 'chat',
+                value: {
+                    id: 1,
+                    name: 'Chat 1',
+                    meta: { app_id: 123 },
+                    isUninstalled: true,
+                },
+            },
+            {
+                type: 'chat',
+                value: { id: 2, name: 'Chat 2', meta: { app_id: 456 } },
+            },
+        ] as any
+
+        render(
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    isRequired={false}
+                    monitoredChatIntegrations={[1]}
+                    chatChannels={uninstalledChatChannels}
+                />
+            </MemoryRouter>,
+        )
+
+        expect(
+            screen.getByText('One or more Chats are not installed.'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Install Chat')).toBeInTheDocument()
+        expect(screen.getByText('open_in_new')).toBeInTheDocument()
+    })
+
     it('should render the install chat link with correct URL', () => {
         const chatId = 123
         const uninstalledChatChannels = [

@@ -114,9 +114,7 @@ export const ChatSettingsFormComponent = ({
 
         if (
             selectedChats?.length &&
-            selectedChats.some((chat) => chat.value.isUninstalled ?? false) &&
-            // Checks if the chat is enabled
-            isRequired
+            selectedChats.some((chat) => chat.value.isUninstalled ?? false)
         ) {
             return buildChatErrorMessage(
                 selectedChats.find((chat) => chat.value.isUninstalled)!.value
@@ -127,8 +125,8 @@ export const ChatSettingsFormComponent = ({
     }, [selectedChats, isRequired])
 
     const hasError = useMemo(() => {
-        return !!chatIntegrationsValidationError
-    }, [chatIntegrationsValidationError])
+        return !!chatIntegrationsValidationError && isRequired
+    }, [chatIntegrationsValidationError, isRequired])
 
     const handleSelectChatIntegration = useCallback(
         (values: number[]) => {
@@ -190,9 +188,7 @@ export const ChatSettingsFormComponent = ({
                                     [css.error]: hasError,
                                 })}
                             >
-                                {hasError
-                                    ? chatIntegrationsValidationError
-                                    : null}
+                                {chatIntegrationsValidationError}
                             </div>
                         </div>
                     </SettingsCardContent>
