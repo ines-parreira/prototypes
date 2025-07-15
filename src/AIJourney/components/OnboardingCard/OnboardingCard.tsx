@@ -5,6 +5,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { Button } from 'AIJourney/components'
+import { useAiJourneyPhoneList } from 'AIJourney/hooks'
 import { useIntegrations } from 'AIJourney/providers'
 import {
     useCreateNewJourney,
@@ -16,6 +17,7 @@ import { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useListProducts } from 'models/integration/queries'
 import { IntegrationDataItem } from 'models/integration/types'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -65,6 +67,9 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         },
     )
 
+    const { eligiblePhoneNumbers, marketingCapabilityPhoneNumbers } =
+        useAiJourneyPhoneList(currentIntegration?.id)
+
     const integrationDataItemsResponse = useListProducts(
         currentIntegration?.id ?? 0,
         !!currentIntegration?.id,
@@ -82,6 +87,13 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
             .map((item) => item.data)
     }, [integrationDataItemsResponse])
 
+    const currentPhoneNumber = marketingCapabilityPhoneNumbers.find(
+        (phoneNumber) =>
+            phoneNumber.integrations.find(
+                (integration) => integration.type === 'sms',
+            )?.id === journeyParams?.sms_sender_integration_id,
+    )
+
     const createNewJourney = useCreateNewJourney()
     const updateJourney = useUpdateJourney()
 
@@ -94,9 +106,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const [discountValue, setDiscountValue] = useState(
         journeyParams?.max_discount_percent?.toString() || '',
     )
-    const [phoneNumberValue, setPhoneNumberValue] = useState(
-        journeyParams?.sms_sender_number || '',
-    )
+    const [phoneNumberValue, setPhoneNumberValue] = useState<
+        NewPhoneNumber | undefined
+    >(currentPhoneNumber)
+
     const [testSmsNumber, setTestSmsNumber] = useState('')
     const [selectedProduct, setSelectedProduct] = useState({} as Product)
 
@@ -107,10 +120,10 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
             setDiscountValue(
                 journeyParams.max_discount_percent?.toString() || '',
             )
-            setPhoneNumberValue(journeyParams.sms_sender_number || '')
+            setPhoneNumberValue(currentPhoneNumber)
             setTestSmsNumber('')
         }
-    }, [journeyParams])
+    }, [journeyParams, currentPhoneNumber])
 
     const handleDiscountToggle = () => {
         setIsDiscountEnabled((prev) => !prev)
@@ -120,7 +133,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         setDiscountValue(newValue)
     }
 
-    const handlePhoneNumberChange = (newValue: string) => {
+    const handlePhoneNumberChange = (newValue: NewPhoneNumber) => {
         setPhoneNumberValue(newValue)
     }
 
@@ -149,8 +162,11 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                     max_follow_up_messages: followUpValue,
                     offer_discount: isDiscountEnabled,
                     max_discount_percent: Number(discountValue),
-                    // TODO: use integration ID instead of phone value
-                    // sms_sender_integration_id: phoneNumberValue,
+                    sms_sender_integration_id:
+                        phoneNumberValue?.integrations.find(
+                            (integration) => integration.type === 'sms',
+                        )?.id,
+                    sms_sender_number: phoneNumberValue?.phone_number,
                 },
             })
         } catch (error) {
@@ -187,8 +203,11 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                     max_follow_up_messages: followUpValue,
                     offer_discount: isDiscountEnabled,
                     max_discount_percent: Number(discountValue),
-                    // TODO: use integration ID instead of phone value
-                    // sms_sender_integration_id: phoneNumberValue,
+                    sms_sender_integration_id:
+                        phoneNumberValue?.integrations.find(
+                            (integration) => integration.type === 'sms',
+                        )?.id,
+                    sms_sender_number: phoneNumberValue?.phone_number,
                 },
             })
         } catch (error) {
@@ -225,7 +244,6 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     }
 
     const followUpOptions = [1, 2, 3]
-    const optionsList = ['(415)-111-111', '(415)-222-222', '(415)-333-333']
 
     const isDiscountFieldValid = isDiscountEnabled ? !!discountValue : true
 
@@ -254,7 +272,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                 ) : (
                     <>
                         <PhoneNumberField
-                            options={optionsList}
+                            options={eligiblePhoneNumbers}
                             value={phoneNumberValue}
                             onChange={handlePhoneNumberChange}
                         />

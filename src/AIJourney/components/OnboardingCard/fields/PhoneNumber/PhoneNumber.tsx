@@ -1,13 +1,14 @@
 import { useCallback } from 'react'
 
 import { Dropdown, FieldPresentation } from 'AIJourney/components'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import css from './PhoneNumber.less'
 
 type PhoneNumberFieldProps = {
-    options?: string[]
-    value?: string
-    onChange?: (value: string) => void
+    options: NewPhoneNumber[]
+    value?: NewPhoneNumber
+    onChange?: (value: NewPhoneNumber) => void
 }
 
 export const PhoneNumberField = ({
@@ -16,7 +17,7 @@ export const PhoneNumberField = ({
     onChange = () => {},
 }: PhoneNumberFieldProps) => {
     const handleChange = useCallback(
-        (value: string) => {
+        (value: NewPhoneNumber) => {
             onChange(value)
         },
         [onChange],

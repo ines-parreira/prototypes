@@ -2,3 +2,4 @@ export { useJourneyConfiguration } from './useJourneyConfiguration/useJourneyCon
 export { useCreateNewJourney } from './useCreateNewJourney/useCreateNewJourney'
 export { useJourneys } from './useJourneys/useJourneys'
 export { useUpdateJourney } from './useUpdateJourney/useUpdateJourney'
+export { useSmsIntegrations } from './useSmsIntegrations/useSmsIntegrations'

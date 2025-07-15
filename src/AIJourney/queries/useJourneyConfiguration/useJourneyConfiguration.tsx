@@ -33,7 +33,7 @@ export const useJourneyConfiguration = (
         queryFn: () => getJourneyConfiguration(journeyId!, accessToken!),
         enabled: !!accessToken && !!journeyId && options.enabled !== false,
         refetchOnWindowFocus: false,
-        refetchOnMount: false,
+        refetchOnMount: true,
         ...options,
     })
 }

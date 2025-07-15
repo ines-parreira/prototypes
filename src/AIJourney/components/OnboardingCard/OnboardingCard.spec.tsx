@@ -6,8 +6,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { IntegrationsProvider } from 'AIJourney/providers'
+import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
 import { shopifyProductResult } from 'fixtures/shopify'
+import useAppSelector from 'hooks/useAppSelector'
 import { useListProducts } from 'models/integration/queries'
 import { assumeMock } from 'utils/testing'
 
@@ -35,9 +37,12 @@ jest.mock('AIJourney/queries', () => ({
     useCreateNewJourney: jest.fn(),
     useJourneyConfiguration: jest.fn(),
     useUpdateJourney: jest.fn(),
+    useSmsIntegrations: jest.fn(),
 }))
 
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
+const mockUseSmsIntegrations = require('AIJourney/queries')
+    .useSmsIntegrations as jest.Mock
 const mockUseJourneyConfiguration = require('AIJourney/queries')
     .useJourneyConfiguration as jest.Mock
 const mockUseIntegrations = require('AIJourney/providers')
@@ -49,6 +54,10 @@ const mockUseUpdateJourney = require('AIJourney/queries')
 
 jest.mock('models/integration/queries')
 const useListProductsMock = assumeMock(useListProducts)
+
+jest.mock('hooks/useAppSelector', () => jest.fn())
+
+const mockUseAppSelector = useAppSelector as jest.Mock
 
 describe('<OnboardingCard />', () => {
     const mockStore = configureMockStore([thunk])()
@@ -65,12 +74,30 @@ describe('<OnboardingCard />', () => {
             isLoading: false,
         }))
 
+        mockUseAppSelector.mockReturnValue({
+            '1': mockPhoneNumbers['1'],
+            '2': {
+                ...mockPhoneNumbers['2'],
+                name: 'Regular Phone 2',
+            },
+        })
+
+        mockUseSmsIntegrations.mockReturnValue({
+            data: [
+                { sms_integration_id: 'sms-1', store_integration_id: 1 },
+                { sms_integration_id: 'sms-2', store_integration_id: 2 },
+            ],
+            isLoading: false,
+            error: null,
+        })
+
         mockUseJourneyConfiguration.mockImplementation(() => ({
             data: {
                 max_follow_up_messages: 3,
                 offer_discount: true,
                 max_discount_percent: 20,
-                sms_sender_number: '(415)-111-111',
+                sms_sender_number: '415-111-111',
+                sms_sender_integration_id: 'sms-1',
             },
             isError: false,
             isLoading: false,
@@ -139,6 +166,7 @@ describe('<OnboardingCard />', () => {
                 offer_discount: true,
                 max_discount_percent: 20,
                 sms_sender_number: '(415)-111-111',
+                sms_sender_integration_id: 'sms-1',
             },
             isError: false,
             isLoading: false,
@@ -207,6 +235,10 @@ describe('<OnboardingCard />', () => {
     })
 
     describe('Error Handling', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
         it('should throw error when creating journey with missing integration ID', async () => {
             mockUseIntegrations.mockImplementation(() => ({
                 integrations: [{ name: 'shopify-store' }],
@@ -498,6 +530,10 @@ describe('<OnboardingCard />', () => {
     })
 
     describe('handleContinue', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
         it('should navigate to activation page after successful journey creation', async () => {
             mockUseIntegrations.mockImplementation(() => ({
                 integrations: [{ id: 1, name: 'shopify-store' }],
@@ -699,6 +735,7 @@ describe('<OnboardingCard />', () => {
                     max_follow_up_messages: 3,
                     offer_discount: true,
                     max_discount_percent: 20,
+                    sms_sender_integration_id: 'sms-1',
                 },
             })
         })
@@ -733,6 +770,7 @@ describe('<OnboardingCard />', () => {
             )
 
             const button = screen.getByTestId('ai-journey-button')
+            expect(button).not.toBeDisabled()
             await userEvent.click(button)
 
             await waitFor(() => {
@@ -748,6 +786,7 @@ describe('<OnboardingCard />', () => {
                     max_follow_up_messages: 3,
                     offer_discount: true,
                     max_discount_percent: 20,
+                    sms_sender_integration_id: 'sms-1',
                 },
             })
         })
