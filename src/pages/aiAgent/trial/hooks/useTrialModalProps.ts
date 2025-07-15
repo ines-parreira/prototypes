@@ -357,10 +357,14 @@ const useTrialEndedModal = (
     }, [gmvInfluenced, gmvInfluencedRate])
 
     const secondaryDescription = useMemo(() => {
+        const increaseAmount = formatAmount(difference, currency)
         if (gmvInfluencedRate > 0.01) {
-            return `After your trial, your plan will increase by ${formatAmount(difference, currency)}.`
+            return `After your trial, your plan will increase by ${increaseAmount}.`
         }
-        return `Typical results achieved by merchants. After upgrading, your plan will increase by ${formatAmount(difference, currency)}.`
+        if (difference > 0) {
+            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}.`
+        }
+        return `Typical results achieved by merchants. The price of your plan remains the same after the upgrade.`
     }, [gmvInfluencedRate, difference, currency])
 
     return useMemo(

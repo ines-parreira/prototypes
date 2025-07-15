@@ -78,7 +78,11 @@ export const TrialActivatedModal: FC<TrialActivatedModalProps> = ({
                                         Turn on customer engagement tools
                                     </div>
                                     <div className={css.discountBadgeWrapper}>
-                                        <Badge corner="square" type="magenta">
+                                        <Badge
+                                            corner="square"
+                                            type="magenta"
+                                            className={css.discountBadge}
+                                        >
                                             <i
                                                 className={classNames(
                                                     'material-icons',
@@ -118,7 +122,11 @@ export const TrialActivatedModal: FC<TrialActivatedModalProps> = ({
                                         Set up discount strategy
                                     </div>
                                     <div className={css.discountBadgeWrapper}>
-                                        <Badge corner="square" type="magenta">
+                                        <Badge
+                                            corner="square"
+                                            type="magenta"
+                                            className={css.discountBadge}
+                                        >
                                             <i
                                                 className={classNames(
                                                     'material-icons',
