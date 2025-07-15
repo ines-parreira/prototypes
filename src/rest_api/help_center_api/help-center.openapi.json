@@ -4949,12 +4949,14 @@
                     "help_center_id": { "type": "number" },
                     "shop_name": { "type": "string" },
                     "has_public_resources": { "type": "boolean" },
+                    "has_external_documents": { "type": "boolean" },
                     "is_store_domain_synced": { "type": "boolean" }
                 },
                 "required": [
                     "help_center_id",
                     "shop_name",
                     "has_public_resources",
+                    "has_external_documents",
                     "is_store_domain_synced"
                 ]
             },

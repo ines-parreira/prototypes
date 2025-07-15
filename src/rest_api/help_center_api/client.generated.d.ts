@@ -2274,6 +2274,7 @@ declare namespace Components {
             help_center_id: number
             shop_name: string
             has_public_resources: boolean
+            has_external_documents: boolean
             is_store_domain_synced: boolean
         }
         export interface LinkDto {

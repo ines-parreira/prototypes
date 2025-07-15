@@ -1126,6 +1126,7 @@ describe('storeActivationReducer', () => {
                     has_public_resources: false,
                     help_center_id: 123,
                     is_store_domain_synced: false,
+                    has_external_documents: false,
                     shop_name: 'Test Store',
                 },
             })
@@ -1141,6 +1142,7 @@ describe('storeActivationReducer', () => {
                     has_public_resources: false,
                     help_center_id: 123,
                     is_store_domain_synced: false,
+                    has_external_documents: false,
                     shop_name: 'Test Store',
                 },
             })
@@ -1156,6 +1158,7 @@ describe('storeActivationReducer', () => {
                     has_public_resources: true,
                     help_center_id: 123,
                     is_store_domain_synced: false,
+                    has_external_documents: false,
                     shop_name: 'Test Store',
                 },
             })
@@ -1171,6 +1174,23 @@ describe('storeActivationReducer', () => {
                     has_public_resources: false,
                     help_center_id: 123,
                     is_store_domain_synced: true,
+                    has_external_documents: false,
+                    shop_name: 'Test Store',
+                },
+            })
+
+            expect(isMissing).toBe(false)
+        })
+
+        it('should return true when external documents are available', () => {
+            const isMissing = checkIsMissingKnowledge({
+                helpCentersFaq: [],
+                helpCenterId: null,
+                storeKnowledgeStatus: {
+                    has_public_resources: false,
+                    help_center_id: 123,
+                    is_store_domain_synced: false,
+                    has_external_documents: true,
                     shop_name: 'Test Store',
                 },
             })

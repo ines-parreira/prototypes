@@ -353,8 +353,14 @@ export const checkIsMissingKnowledge = ({
         hasHelpCenterFaq
     const hasPublicUrls = !!storeKnowledgeStatus?.has_public_resources
     const hasSyncedOnce = !!storeKnowledgeStatus?.is_store_domain_synced
+    const hasExternalDocuments = !!storeKnowledgeStatus?.has_external_documents
 
-    return !hasHelpCenter && !hasPublicUrls && !hasSyncedOnce
+    return (
+        !hasHelpCenter &&
+        !hasPublicUrls &&
+        !hasSyncedOnce &&
+        !hasExternalDocuments
+    )
 }
 
 export const getChatActivation = ({

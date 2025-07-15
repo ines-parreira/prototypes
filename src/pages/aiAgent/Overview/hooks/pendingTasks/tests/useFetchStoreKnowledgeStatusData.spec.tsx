@@ -51,6 +51,7 @@ describe('useFetchStoreKnowledgeStatusData', () => {
                     help_center_id: 2,
                     has_public_resources: false,
                     is_store_domain_synced: false,
+                    has_external_documents: false,
                 },
             },
             isLoading: false,
@@ -73,12 +74,14 @@ describe('useFetchStoreKnowledgeStatusData', () => {
                     help_center_id: 1,
                     has_public_resources: true,
                     is_store_domain_synced: true,
+                    has_external_documents: true,
                 },
                 'another-store': {
                     shop_name: 'another-store',
                     help_center_id: 2,
                     has_public_resources: false,
                     is_store_domain_synced: false,
+                    has_external_documents: false,
                 },
             },
         })
@@ -93,6 +96,7 @@ describe('useFetchStoreKnowledgeStatusData', () => {
             help_center_id: 1,
             has_public_resources: true,
             is_store_domain_synced: true,
+            has_external_documents: true,
         })
     })
 })

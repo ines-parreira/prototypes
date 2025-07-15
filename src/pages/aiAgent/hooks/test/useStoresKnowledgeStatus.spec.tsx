@@ -44,24 +44,28 @@ describe('useStoresKnowledgeStatus', () => {
                 help_center_id: STORE_NAME_1_SNIPPET_ID_1,
                 shop_name: STORE_NAME_1,
                 is_store_domain_synced: false,
+                has_external_documents: true,
             },
             {
                 has_public_resources: false,
                 help_center_id: STORE_NAME_1_SNIPPET_ID_2,
                 shop_name: STORE_NAME_1,
                 is_store_domain_synced: false,
+                has_external_documents: false,
             },
             {
                 has_public_resources: false,
                 help_center_id: STORE_NAME_2_SNIPPET_ID,
                 shop_name: STORE_NAME_2,
                 is_store_domain_synced: true,
+                has_external_documents: true,
             },
             {
                 has_public_resources: false,
                 help_center_id: STORE_NAME_3_SNIPPET_ID,
                 shop_name: STORE_NAME_3,
                 is_store_domain_synced: false,
+                has_external_documents: false,
             },
         ])
     })
@@ -86,18 +90,21 @@ describe('useStoresKnowledgeStatus', () => {
                 help_center_id: STORE_NAME_1_SNIPPET_ID_1,
                 shop_name: STORE_NAME_1,
                 is_store_domain_synced: false,
+                has_external_documents: true,
             },
             [STORE_NAME_2]: {
                 has_public_resources: false,
                 help_center_id: STORE_NAME_2_SNIPPET_ID,
                 shop_name: STORE_NAME_2,
                 is_store_domain_synced: true,
+                has_external_documents: true,
             },
             [STORE_NAME_3]: {
                 has_public_resources: false,
                 help_center_id: STORE_NAME_3_SNIPPET_ID,
                 shop_name: STORE_NAME_3,
                 is_store_domain_synced: false,
+                has_external_documents: false,
             },
         })
         expect(reportErrorSpy).not.toHaveBeenCalled()
