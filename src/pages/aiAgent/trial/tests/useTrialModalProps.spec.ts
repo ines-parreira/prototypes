@@ -511,7 +511,7 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial is ending today.',
+                    'Shopping Assistant trial ends today.',
                 )
             })
 
@@ -533,7 +533,7 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial is ending today.',
+                    'Shopping Assistant trial ends today.',
                 )
             })
 
@@ -668,7 +668,7 @@ describe('useTrialModalProps', () => {
                 rerender()
 
                 expect(result.current.trialStartedBanner.title).toBe(
-                    'Shopping Assistant trial is ending today.',
+                    'Shopping Assistant trial ends today.',
                 )
             })
         })

@@ -252,7 +252,7 @@ const useTrialStartedBanner = (
 
     const trialEndsText =
         remainingDays <= 0
-            ? 'is ending today'
+            ? 'ends today'
             : remainingDays === 1
               ? 'ends in 1 day'
               : `ends in ${remainingDays} days`
