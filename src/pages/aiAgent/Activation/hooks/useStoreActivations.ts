@@ -29,6 +29,7 @@ import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailI
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { compare } from 'utils'
 
 import { FocusActivationModal } from '../utils'
@@ -175,6 +176,16 @@ export const useStoreActivations = ({
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
     const pageName = window.location.pathname
 
+    const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
+
+    const availableStoreNames = useMemo(
+        () =>
+            new Set(
+                storeIntegrations.map(({ meta: { shop_name } }) => shop_name),
+            ),
+        [storeIntegrations],
+    )
+
     const hasAiAgentNewActivationXp =
         !!flags[FeatureFlagKey.AiAgentNewActivationXp]
     const aiSalesAgentEmailEnabled =
@@ -210,10 +221,18 @@ export const useStoreActivations = ({
     const accountDomain = currentAccount.get('domain')
 
     const {
-        storeConfigurations,
+        storeConfigurations: allStoreConfigurations,
         storeNames,
         isLoading: isStoreConfigurationLoading,
     } = useStoreConfigurations(accountDomain, storeName, enabled)
+
+    const storeConfigurations = useMemo(
+        () =>
+            allStoreConfigurations.filter(({ storeName }) =>
+                availableStoreNames.has(storeName),
+            ),
+        [allStoreConfigurations, availableStoreNames],
+    )
 
     const chatIds = useMemo(() => {
         return storeConfigurations.flatMap(

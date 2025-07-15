@@ -207,88 +207,91 @@ describe('useStoreConfigurations', () => {
 })
 
 describe('useStoreActivations', () => {
+    const defaultState = {
+        billing: fromJS({
+            products: [
+                {
+                    type: 'helpdesk',
+                    prices: [{ amount: 100, cadence: 'month' }],
+                },
+            ],
+        }),
+        currentAccount: fromJS(account),
+        currentUser: fromJS({
+            role: {
+                name: 'admin',
+            },
+        }),
+        integrations: fromJS({
+            integrations: [
+                {
+                    id: 1,
+                    deleted_datetime: null,
+                    mappings: [],
+                    meta: {
+                        shop_id: 54899465,
+                        shop_domain: 'store1.com',
+                        currency: 'USD',
+                        shop_display_name: 'Store 1',
+                        shop_name: 'store1',
+                    },
+                    deactivated_datetime: null,
+                    name: 'store1',
+                    uri: '/api/integrations/1/',
+                    type: 'shopify',
+                    created_datetime: '2020-01-28T22:19:15.604153+00:00',
+                    updated_datetime: '2020-01-28T22:19:15.604157+00:00',
+                },
+                {
+                    id: 2,
+                    deleted_datetime: null,
+                    mappings: [],
+                    meta: {
+                        shop_id: 54899466,
+                        shop_domain: 'store2.com',
+                        currency: 'USD',
+                        shop_display_name: 'Store 2',
+                        shop_name: 'store2',
+                    },
+                    deactivated_datetime: null,
+                    name: 'store2',
+                    uri: '/api/integrations/2/',
+                    type: 'shopify',
+                    created_datetime: '2020-01-28T22:19:15.604153+00:00',
+                    updated_datetime: '2020-01-28T22:19:15.604157+00:00',
+                },
+            ],
+        }),
+        automate: fromJS({
+            storeIntegrations: {
+                store1: {
+                    id: 1,
+                    name: 'store1',
+                    type: 'shopify',
+                },
+                store2: {
+                    id: 2,
+                    name: 'store2',
+                    type: 'shopify',
+                },
+            },
+        }),
+    }
+
     const renderHookWithRouter = ({
         initialEntry = '/',
+        state = defaultState,
     }: {
         initialEntry?: string
+        state?: Record<string, any>
     } = {}) => {
         const queryClient = mockQueryClient()
-        const defaultState = {
-            billing: fromJS({
-                products: [
-                    {
-                        type: 'helpdesk',
-                        prices: [{ amount: 100, cadence: 'month' }],
-                    },
-                ],
-            }),
-            currentAccount: fromJS(account),
-            currentUser: fromJS({
-                role: {
-                    name: 'admin',
-                },
-            }),
-            integrations: fromJS({
-                integrations: [
-                    {
-                        id: 1,
-                        deleted_datetime: null,
-                        mappings: [],
-                        meta: {
-                            shop_id: 54899465,
-                            shop_domain: 'store1.com',
-                            currency: 'USD',
-                            shop_display_name: 'Store 1',
-                            shop_name: 'store1',
-                        },
-                        deactivated_datetime: null,
-                        name: 'store1',
-                        uri: '/api/integrations/1/',
-                        type: 'shopify',
-                        created_datetime: '2020-01-28T22:19:15.604153+00:00',
-                        updated_datetime: '2020-01-28T22:19:15.604157+00:00',
-                    },
-                    {
-                        id: 2,
-                        deleted_datetime: null,
-                        mappings: [],
-                        meta: {
-                            shop_id: 54899466,
-                            shop_domain: 'store2.com',
-                            currency: 'USD',
-                            shop_display_name: 'Store 2',
-                            shop_name: 'store2',
-                        },
-                        deactivated_datetime: null,
-                        name: 'store2',
-                        uri: '/api/integrations/2/',
-                        type: 'shopify',
-                        created_datetime: '2020-01-28T22:19:15.604153+00:00',
-                        updated_datetime: '2020-01-28T22:19:15.604157+00:00',
-                    },
-                ],
-            }),
-            automate: fromJS({
-                storeIntegrations: {
-                    store1: {
-                        id: 1,
-                        name: 'store1',
-                        type: 'shopify',
-                    },
-                    store2: {
-                        id: 2,
-                        name: 'store2',
-                        type: 'shopify',
-                    },
-                },
-            }),
-        }
 
         const history = createMemoryHistory({ initialEntries: [initialEntry] })
         const wrapper = ({ children }: { children?: React.ReactNode }) => (
             <Router history={history}>
                 <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
+                    <Provider store={mockStore(state)}>
                         <Route path="/:shopName?">{children}</Route>
                     </Provider>
                 </QueryClientProvider>
@@ -336,6 +339,44 @@ describe('useStoreActivations', () => {
                 expect(result.current.storeActivations['store2']).toBeFalsy()
             })
         })
+
+        it('should filter store that do not exist', async () => {
+            const { result } = renderHookWithRouter({
+                initialEntry: '/',
+                state: {
+                    ...defaultState,
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                deleted_datetime: null,
+                                mappings: [],
+                                meta: {
+                                    shop_id: 54899465,
+                                    shop_domain: 'store1.com',
+                                    currency: 'USD',
+                                    shop_display_name: 'Store 1',
+                                    shop_name: 'store1',
+                                },
+                                deactivated_datetime: null,
+                                name: 'store1',
+                                uri: '/api/integrations/1/',
+                                type: 'shopify',
+                                created_datetime:
+                                    '2020-01-28T22:19:15.604153+00:00',
+                                updated_datetime:
+                                    '2020-01-28T22:19:15.604157+00:00',
+                            },
+                        ],
+                    }),
+                },
+            })
+
+            await waitFor(() => {
+                expect(result.current.storeActivations['store1']).toBeTruthy()
+                expect(result.current.storeActivations['store2']).toBeFalsy()
+            })
+        })
     })
 
     describe('migrateToNewPricing', () => {
@@ -361,6 +402,58 @@ describe('useStoreActivations', () => {
                         }),
                         expect.objectContaining({
                             storeName: 'store2',
+                        }),
+                    ]),
+                )
+            })
+        })
+
+        it('should filter store that do not exist', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentNewActivationXp]: true,
+            })
+            const { result } = renderHookWithRouter({
+                initialEntry: '/',
+                state: {
+                    ...defaultState,
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                deleted_datetime: null,
+                                mappings: [],
+                                meta: {
+                                    shop_id: 54899465,
+                                    shop_domain: 'store1.com',
+                                    currency: 'USD',
+                                    shop_display_name: 'Store 1',
+                                    shop_name: 'store1',
+                                },
+                                deactivated_datetime: null,
+                                name: 'store1',
+                                uri: '/api/integrations/1/',
+                                type: 'shopify',
+                                created_datetime:
+                                    '2020-01-28T22:19:15.604153+00:00',
+                                updated_datetime:
+                                    '2020-01-28T22:19:15.604157+00:00',
+                            },
+                        ],
+                    }),
+                },
+            })
+            await result.current.migrateToNewPricing()
+
+            await waitFor(() => {
+                expect(upsertStoresConfiguration).toHaveBeenCalledTimes(1)
+
+                const input: StoreConfiguration[] =
+                    upsertStoresConfiguration.mock.calls[0][0]
+                expect(input).toHaveLength(1)
+                expect(input).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            storeName: 'store1',
                         }),
                     ]),
                 )
