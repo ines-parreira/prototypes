@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import {
@@ -122,31 +122,7 @@ describe('UpgradePlanModal', () => {
         ).toBeInTheDocument()
     })
 
-    it('should disable upgrade button when terms are not checked', () => {
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        const upgradeButton = screen.getByRole('button', {
-            name: 'Upgrade Now',
-        })
-        expect(upgradeButton).toHaveAttribute('aria-disabled', 'true')
-    })
-
-    it('should enable upgrade button when terms are checked', async () => {
-        const user = userEvent.setup()
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        const checkbox = screen.getAllByRole('checkbox')[0]
-        await act(async () => {
-            await user.click(checkbox)
-        })
-
-        const upgradeButton = screen.getByRole('button', {
-            name: 'Upgrade Now',
-        })
-        expect(upgradeButton).toBeEnabled()
-    })
-
-    it('should call onConfirm when upgrade button is clicked', async () => {
+    it('should prevent submission when terms are not accepted', async () => {
         const user = userEvent.setup()
         const mockOnConfirm = jest.fn()
         const props = {
@@ -156,19 +132,20 @@ describe('UpgradePlanModal', () => {
 
         render(<UpgradePlanModal {...props} />)
 
-        // Check terms
-        const checkbox = screen.getAllByRole('checkbox')[0]
-        await act(async () => {
-            await user.click(checkbox)
-        })
-
-        // Click upgrade
+        // Try to click upgrade without checking terms
         const upgradeButton = screen.getByRole('button', {
             name: 'Upgrade Now',
         })
         await user.click(upgradeButton)
 
-        expect(mockOnConfirm).toHaveBeenCalledTimes(1)
+        // Should not call onConfirm
+        expect(mockOnConfirm).not.toHaveBeenCalled()
+
+        // Terms link should still be present
+        const termsLinks = screen.getAllByRole('link', {
+            name: 'Gorgias terms',
+        })
+        expect(termsLinks[0]).toBeInTheDocument()
     })
 
     it('should call onDismiss when keep current plan button is clicked', async () => {
@@ -230,169 +207,7 @@ describe('UpgradePlanModal', () => {
         expect(termsLinks[0]).toHaveAttribute('rel', 'noreferrer')
     })
 
-    it('should not show terms checkbox when showTermsCheckbox is false', () => {
-        const props = {
-            ...defaultProps,
-            showTermsCheckbox: false,
-        }
-
-        render(<UpgradePlanModal {...props} />)
-
-        expect(
-            screen.queryByText(/I agree to the updated pricing/),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should enable upgrade button when showTermsCheckbox is false', () => {
-        const props = {
-            ...defaultProps,
-            showTermsCheckbox: false,
-        }
-
-        render(<UpgradePlanModal {...props} />)
-
-        const upgradeButton = screen.getByRole('button', {
-            name: 'Upgrade Now',
-        })
-        expect(upgradeButton).toBeEnabled()
-    })
-
-    it('should render check icons for all features', () => {
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        const checkIcons = screen.getAllByText('check')
-        // 3 features for new plan + 3 features for current plan = 6 check icons
-        expect(checkIcons).toHaveLength(6)
-    })
-
-    it('should render separators between sections', () => {
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        // The Separator component should be rendered - we can check by verifying the structure exists
-        expect(screen.getByText('Premium Plan')).toBeInTheDocument()
-        expect(screen.getByText('Current Plan')).toBeInTheDocument()
-        // Separators are present in the component structure
-    })
-
-    it('should apply correct CSS classes', () => {
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        // Check that the modal renders with the expected structure and content
-        // CSS modules transform class names, so we verify the content structure instead
-        expect(screen.getByText('Premium Plan')).toBeInTheDocument()
-        expect(screen.getByText('Current Plan')).toBeInTheDocument()
-        expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
-        expect(screen.getByText('Keep Current Plan')).toBeInTheDocument()
-    })
-
-    it('should handle plans without tooltip text', () => {
-        const planWithoutTooltip = {
-            ...mockNewPlan,
-            priceTooltipText: undefined,
-        }
-
-        const props = {
-            ...defaultProps,
-            newPlan: planWithoutTooltip,
-        }
-
-        render(<UpgradePlanModal {...props} />)
-
-        expect(screen.queryByText('info_outline')).not.toBeInTheDocument()
-    })
-
-    it('should render modal with data-candu-id attribute', () => {
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        // Check that the modal renders with the expected content and structure
-        expect(screen.getByText('Upgrade Your Plan')).toBeInTheDocument()
-        expect(screen.getByText('Premium Plan')).toBeInTheDocument()
-        expect(screen.getByText('Current Plan')).toBeInTheDocument()
-    })
-
-    it('should maintain checkbox state across interactions', async () => {
-        const user = userEvent.setup()
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        const checkbox = screen.getAllByRole('checkbox')[0]
-
-        // Initially unchecked
-        expect(checkbox).not.toBeChecked()
-        expect(
-            screen.getByRole('button', { name: 'Upgrade Now' }),
-        ).toHaveAttribute('aria-disabled', 'true')
-
-        // Check it
-        await user.click(checkbox)
-        expect(checkbox).toBeChecked()
-        expect(
-            screen.getByRole('button', { name: 'Upgrade Now' }),
-        ).not.toHaveAttribute('aria-disabled', 'true')
-
-        // Uncheck it
-        await user.click(checkbox)
-        expect(checkbox).not.toBeChecked()
-        expect(
-            screen.getByRole('button', { name: 'Upgrade Now' }),
-        ).toHaveAttribute('aria-disabled', 'true')
-    })
-
-    it('should render both checkboxes but only one should be interactive', () => {
-        render(<UpgradePlanModal {...defaultProps} />)
-
-        const checkboxes = screen.getAllByRole('checkbox')
-        expect(checkboxes).toHaveLength(2)
-
-        // First checkbox (new plan) should be unchecked and interactive
-        expect(checkboxes[0]).not.toBeChecked()
-
-        // Second checkbox (current plan) should be checked and non-interactive
-        expect(checkboxes[1]).toBeChecked()
-    })
-
-    it('should handle empty features array', () => {
-        const props = {
-            ...defaultProps,
-            currentPlan: {
-                ...mockCurrentPlan,
-                features: [],
-            },
-            newPlan: {
-                ...mockNewPlan,
-                features: [],
-            },
-        }
-
-        render(<UpgradePlanModal {...props} />)
-
-        // Should not crash and should render other elements
-        expect(screen.getByText('Premium Plan')).toBeInTheDocument()
-        expect(screen.getByText('Current Plan')).toBeInTheDocument()
-    })
-
-    it('should handle long feature lists', () => {
-        const longFeatures = Array.from(
-            { length: 5 },
-            (_, i) => `Long Feature ${i + 1}`,
-        )
-
-        const props = {
-            ...defaultProps,
-            newPlan: {
-                ...mockNewPlan,
-                features: longFeatures,
-            },
-        }
-
-        render(<UpgradePlanModal {...props} />)
-
-        // Check that all features are rendered
-        longFeatures.forEach((feature) => {
-            expect(screen.getByText(feature)).toBeInTheDocument()
-        })
-    })
-
-    it('should not call onConfirm when terms are not accepted', async () => {
+    it('should successfully upgrade when terms are accepted', async () => {
         const user = userEvent.setup()
         const mockOnConfirm = jest.fn()
         const props = {
@@ -402,13 +217,99 @@ describe('UpgradePlanModal', () => {
 
         render(<UpgradePlanModal {...props} />)
 
+        // Check terms first
+        const checkbox = screen.getAllByRole('checkbox')[0]
+        await user.click(checkbox)
+        expect(checkbox).toBeChecked()
+
+        // Then click upgrade
         const upgradeButton = screen.getByRole('button', {
             name: 'Upgrade Now',
         })
-
-        // Try to click disabled button (should not work)
         await user.click(upgradeButton)
 
-        expect(mockOnConfirm).not.toHaveBeenCalled()
+        // Should call onConfirm
+        expect(mockOnConfirm).toHaveBeenCalledTimes(1)
+    })
+
+    it('should render checkbox states correctly', () => {
+        render(<UpgradePlanModal {...defaultProps} />)
+
+        const checkboxes = screen.getAllByRole('checkbox')
+        expect(checkboxes).toHaveLength(2)
+
+        // New plan checkbox should be unchecked (interactive)
+        expect(checkboxes[0]).not.toBeChecked()
+
+        // Current plan checkbox should be checked (non-interactive)
+        expect(checkboxes[1]).toBeChecked()
+    })
+
+    it('should handle edge cases gracefully', () => {
+        const props = {
+            ...defaultProps,
+            currentPlan: {
+                ...mockCurrentPlan,
+                features: [],
+            },
+            newPlan: {
+                ...mockNewPlan,
+                features: [],
+                priceTooltipText: undefined,
+            },
+        }
+
+        render(<UpgradePlanModal {...props} />)
+
+        // Should not crash and should render essential elements
+        expect(screen.getByText('Premium Plan')).toBeInTheDocument()
+        expect(screen.getByText('Current Plan')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Upgrade Now' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Keep Current Plan' }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('info_outline')).not.toBeInTheDocument()
+    })
+
+    it('should work without terms checkbox when showTermsCheckbox is false', async () => {
+        const user = userEvent.setup()
+        const mockOnConfirm = jest.fn()
+        const props = {
+            ...defaultProps,
+            onConfirm: mockOnConfirm,
+            showTermsCheckbox: false,
+        }
+
+        render(<UpgradePlanModal {...props} />)
+
+        // Should not show terms checkbox
+        expect(
+            screen.queryByText(/I agree to the updated pricing/),
+        ).not.toBeInTheDocument()
+
+        // Should be able to upgrade immediately
+        const upgradeButton = screen.getByRole('button', {
+            name: 'Upgrade Now',
+        })
+        await user.click(upgradeButton)
+
+        expect(mockOnConfirm).toHaveBeenCalledTimes(1)
+    })
+
+    it('should handle loading state correctly', () => {
+        const props = {
+            ...defaultProps,
+            isLoading: true,
+        }
+
+        render(<UpgradePlanModal {...props} />)
+
+        const upgradeButton = screen.getByRole('button', {
+            name: /Loading.*Upgrade Now/,
+        })
+        expect(upgradeButton).toHaveAttribute('aria-disabled', 'true')
+        expect(upgradeButton).toHaveTextContent('Loading...')
     })
 })

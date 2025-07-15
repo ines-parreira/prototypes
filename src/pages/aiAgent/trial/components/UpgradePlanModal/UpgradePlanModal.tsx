@@ -49,6 +49,7 @@ const PlanSection: React.FC<{
     buttonIntent?: 'primary' | 'secondary'
     isLoading?: boolean
     isTrial?: boolean
+    hasAttemptedSubmit?: boolean
 }> = ({
     plan,
     isNewPlan = false,
@@ -58,6 +59,7 @@ const PlanSection: React.FC<{
     onTermsChange,
     buttonIntent = 'primary',
     isLoading = false,
+    hasAttemptedSubmit = false,
 }) => {
     const tooltipId = `${isNewPlan ? 'new' : 'current'}-plan-price-tooltip`
     const priceContainerRef = useRef<HTMLDivElement>(null)
@@ -71,7 +73,7 @@ const PlanSection: React.FC<{
                 target="_blank"
                 rel="noreferrer"
                 className={
-                    isNewPlan && !isTermsChecked
+                    isNewPlan && !isTermsChecked && hasAttemptedSubmit
                         ? css.termsLinkError
                         : css.termsLink
                 }
@@ -81,8 +83,6 @@ const PlanSection: React.FC<{
             .
         </span>
     )
-
-    const isDisabled = isNewPlan && showTermsCheckbox && !isTermsChecked
 
     return (
         <>
@@ -120,7 +120,7 @@ const PlanSection: React.FC<{
 
             <div className={css.checkboxContainer}>
                 <Button
-                    isDisabled={isLoading || isDisabled}
+                    isDisabled={isLoading}
                     isLoading={isLoading}
                     onClick={onButtonClick}
                     intent={buttonIntent}
@@ -142,7 +142,9 @@ const PlanSection: React.FC<{
                             onChange={isNewPlan ? onTermsChange! : () => {}}
                             label={termsLabel}
                             className={
-                                isNewPlan && !isTermsChecked
+                                isNewPlan &&
+                                !isTermsChecked &&
+                                hasAttemptedSubmit
                                     ? css.checkboxFieldError
                                     : css.checkboxField
                             }
@@ -185,6 +187,15 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
 }) => {
     const canduId = 'upgrade-plan-modal'
     const [isTermsChecked, setIsTermsChecked] = useState(false)
+    const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
+
+    const handleConfirm = () => {
+        if (showTermsCheckbox && !isTermsChecked) {
+            setHasAttemptedSubmit(true)
+            return
+        }
+        onConfirm()
+    }
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.PricingModalViewed, {
@@ -202,12 +213,13 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                     <PlanSection
                         plan={newPlan}
                         isNewPlan
-                        onButtonClick={onConfirm}
+                        onButtonClick={handleConfirm}
                         showTermsCheckbox={showTermsCheckbox}
                         isTermsChecked={isTermsChecked}
                         onTermsChange={setIsTermsChecked}
                         isLoading={isLoading}
                         isTrial={isTrial}
+                        hasAttemptedSubmit={hasAttemptedSubmit}
                     />
                 </div>
                 <div className={css.currentPlan}>
