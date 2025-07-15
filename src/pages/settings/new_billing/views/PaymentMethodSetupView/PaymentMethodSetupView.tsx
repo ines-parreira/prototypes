@@ -6,7 +6,7 @@ import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethod
 import { useSetupIntent } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
 
 type IProps = {
-    dispatchBillingError: () => void
+    dispatchBillingError: (error: unknown) => void
 }
 
 export const PaymentMethodSetupView: React.FC<IProps> = ({

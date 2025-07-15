@@ -39,8 +39,6 @@ import {
     paymentMethod,
 } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
 import { formatDatetime } from 'utils'
 
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
@@ -58,6 +56,7 @@ import {
     SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
     ZAPIER_BILLING_HOOK,
 } from '../../constants'
+import useDispatchBillingError from '../../hooks/useDispatchBillingError'
 import { BillingAddressSetupView } from '../BillingAddressSetupView/BillingAddressSetupView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import BillingInternalView from '../BillingInternalView'
@@ -130,27 +129,7 @@ const BillingStartView = () => {
         [domain],
     )
 
-    const billingErrorNotification: Notification = useMemo(
-        () => ({
-            message: `We couldn't update your subscription. Please try again.`,
-            buttons: [
-                {
-                    primary: false,
-                    name: 'Contact Billing',
-                    onClick: () => contactBilling(TicketPurpose.ERROR),
-                },
-            ],
-            noAutoDismiss: true,
-            showDismissButton: true,
-            status: NotificationStatus.Error,
-            id: 'billing-error-notification',
-        }),
-        [contactBilling],
-    )
-
-    const dispatchBillingError = useCallback(() => {
-        void dispatch(notify(billingErrorNotification))
-    }, [billingErrorNotification, dispatch])
+    const dispatchBillingError = useDispatchBillingError(contactBilling)
 
     const prepareMessage = useCallback(
         (message: string) => {

@@ -65,7 +65,7 @@ import {
 } from '../views/BillingProcessView/utils'
 
 export type BillingPlansProps = {
-    dispatchBillingError: () => void
+    dispatchBillingError: (error: unknown) => void
     selectedProduct?: ProductType
     filterByCadence?: boolean
 }
@@ -428,7 +428,7 @@ export const useBillingPlans = ({
                     }),
                 )
             } catch (error) {
-                dispatchBillingError()
+                dispatchBillingError(error)
                 throw error
             }
         }
@@ -606,7 +606,7 @@ export const useBillingPlans = ({
                     )
                 }
             } catch (error) {
-                dispatchBillingError()
+                dispatchBillingError(error)
                 throw error
             } finally {
                 setIsSubscriptionUpdating(false)

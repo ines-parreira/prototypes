@@ -22,6 +22,7 @@ import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
 
+import { assumeMock } from '../../../../../utils/testing'
 import { useBillingPlans } from '../useBillingPlan'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
@@ -73,7 +74,14 @@ const store = mockedStore({
     billing: fromJS(mockedBilling),
 })
 
+const mockClientGet = assumeMock(client.get)
+const mockClientPut = assumeMock(client.put)
+
 describe('useBillingPlans', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('should submit a support ticket when a non-vetted user selects a phone plan', async () => {
         const dispatchBillingError = jest.fn()
         const queryClient = mockQueryClient()
@@ -105,9 +113,9 @@ describe('useBillingPlans', () => {
         await result.current.updateSubscription()
 
         await waitFor(() => {
-            expect(client.get).toHaveBeenCalledTimes(1)
+            expect(mockClientGet).toHaveBeenCalledTimes(1)
             // ticket created should contain "SMS plan request: SMS Addon 150 Monthly"
-            expect(client.get).toHaveBeenCalledWith(
+            expect(mockClientGet).toHaveBeenCalledWith(
                 'https://hooks.zapier.com/hooks/catch/9639651/3hsj6pb/?message=New%20SMS%20Add-on%20Request%20by%20acme%0AProduct(s)%3A%20SMS%20Add-on%20Plan%20selection%20-%20acme%0ASMS%20plan%20request%3A%20SMS%20Addon%20150%20Monthly&from=undefined&to=billing%40gorgias.com&subject=SMS%20Add-on%20Plan%20selection%20-%20acme&helpdeskPlan=Basic&freeTrial=true&account=acme',
                 {
                     transformRequest: expect.any(Function),
@@ -163,10 +171,10 @@ describe('useBillingPlans', () => {
 
         // ensure we're not trying to create a support ticket
         await waitFor(() => {
-            expect(client.get).not.toHaveBeenCalled()
+            expect(mockClientGet).not.toHaveBeenCalled()
 
-            expect(client.put).toHaveBeenCalledTimes(1)
-            expect(client.put).toHaveBeenCalledWith(
+            expect(mockClientPut).toHaveBeenCalledTimes(1)
+            expect(mockClientPut).toHaveBeenCalledWith(
                 '/api/billing/subscription/',
                 {
                     prices: [
@@ -176,6 +184,104 @@ describe('useBillingPlans', () => {
                     ],
                 },
             )
+        })
+    })
+
+    it('should call dispatchBillingError when subscription update fails', async () => {
+        const mockError = new Error('Billing update failed')
+
+        mockClientPut.mockRejectedValue(mockError)
+
+        const dispatchBillingError = jest.fn()
+        const queryClient = mockQueryClient()
+
+        const alteredStore = mockedStore({
+            billing: fromJS(mockedBilling),
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                        [SMS_PRODUCT_ID]: smsPlan0.price_id,
+                        [VOICE_PRODUCT_ID]: voicePlan0.price_id,
+                    },
+                },
+            }),
+        })
+
+        const { result } = renderHook(
+            () =>
+                useBillingPlans({
+                    dispatchBillingError,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={alteredStore}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+
+        await act(async () => {
+            result.current.setSelectedPlans((prev) => ({
+                ...prev,
+                [ProductType.SMS]: {
+                    plan: smsPlan1,
+                    isSelected: true,
+                },
+            }))
+        })
+
+        await expect(result.current.updateSubscription()).rejects.toThrow(
+            'Billing update failed',
+        )
+
+        await waitFor(() => {
+            expect(mockClientPut).toHaveBeenCalledTimes(1)
+            expect(dispatchBillingError).toHaveBeenCalledWith(mockError)
+        })
+    })
+
+    it('should call dispatchBillingError when support ticket creation fails', async () => {
+        const dispatchBillingError = jest.fn()
+        const queryClient = mockQueryClient()
+        const mockError = new Error('Support ticket creation failed')
+        mockClientGet.mockRejectedValueOnce(mockError)
+
+        const { result } = renderHook(
+            () =>
+                useBillingPlans({
+                    dispatchBillingError,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+
+        await act(async () => {
+            result.current.setSelectedPlans((prev) => ({
+                ...prev,
+                [ProductType.SMS]: {
+                    plan: smsPlan1,
+                    isSelected: true,
+                },
+            }))
+        })
+
+        await expect(result.current.updateSubscription()).rejects.toThrow(
+            'Support ticket creation failed',
+        )
+
+        await waitFor(() => {
+            expect(mockClientGet).toHaveBeenCalledTimes(1)
+            expect(dispatchBillingError).toHaveBeenCalledWith(mockError)
         })
     })
 })

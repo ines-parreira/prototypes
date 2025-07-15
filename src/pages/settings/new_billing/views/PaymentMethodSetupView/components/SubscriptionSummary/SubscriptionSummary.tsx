@@ -23,7 +23,7 @@ import css from './SubscriptionSummary.less'
 export type ISubscriptionSummaryProps<
     TFields extends FieldValues = FieldValues,
 > = {
-    dispatchBillingError: () => void
+    dispatchBillingError: (error: unknown) => void
     onValidSubmit: SubmitHandler<TFields>
 }
 

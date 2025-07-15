@@ -29,7 +29,7 @@ import css from './BillingFrequencyView.less'
 
 type BillingFrequencyViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
-    dispatchBillingError: () => void
+    dispatchBillingError: (error: unknown) => void
     periodEnd: string
     isTrialing: boolean
     isCurrentSubscriptionCanceled: boolean

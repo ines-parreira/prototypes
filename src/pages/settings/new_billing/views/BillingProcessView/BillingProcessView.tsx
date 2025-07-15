@@ -49,7 +49,7 @@ type BillingProcessViewProps = {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
     contactBilling: (ticketPurpose: TicketPurpose) => void
     setDefaultMessage: React.Dispatch<React.SetStateAction<string>>
-    dispatchBillingError: () => void
+    dispatchBillingError: (error: unknown) => void
     isTrialing: boolean
     isCurrentSubscriptionCanceled: boolean
     periodEnd: string
