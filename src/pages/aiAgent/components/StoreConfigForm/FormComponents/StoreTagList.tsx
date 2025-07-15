@@ -30,6 +30,7 @@ export const StoreTagComponent = ({
                 value={description ?? ''}
                 isDisabled={false}
                 onChange={onDescriptionUpdate}
+                maxLength={255}
             />
             <IconButton
                 icon="close"
