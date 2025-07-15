@@ -211,6 +211,10 @@ describe('SalesPaywallMiddleware', () => {
             canSeeTrialCTA: false,
             canStartTrial: false,
             hasTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            canBookDemo: false,
         })
         mockUseFlag.mockReturnValue(false)
         mockUseFlags.mockReturnValue({})
@@ -435,6 +439,10 @@ describe('SalesPaywallMiddleware', () => {
             canSeeTrialCTA: false,
             canStartTrial: false,
             hasTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            canBookDemo: false,
         })
         // Mock the original trial hook to return canStartTrial: true
         mockUseActivateAiAgentTrial.mockReturnValue({
@@ -490,6 +498,10 @@ describe('SalesPaywallMiddleware', () => {
             canSeeTrialCTA: false,
             canStartTrial: false,
             hasTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            canBookDemo: false,
         })
         // Mock the original trial hook to return canStartTrialFromFeatureFlag: true
         mockUseActivateAiAgentTrial.mockReturnValue({
@@ -591,6 +603,10 @@ describe('SalesPaywallMiddleware', () => {
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
             })
             // Set up other mocks to hit the upgrade paywall
             setupUseAppSelectorMock({
@@ -643,6 +659,10 @@ describe('SalesPaywallMiddleware', () => {
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
             })
 
             const mockOpenTrialUpgradeModal = jest.fn()
@@ -969,6 +989,10 @@ describe('SalesPaywallMiddleware', () => {
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
             })
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
         })
@@ -1178,6 +1202,10 @@ describe('SalesPaywallMiddleware', () => {
                 canSeeTrialCTA: false,
                 canStartTrial: false,
                 hasTrialExpired: true,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
             })
 
             renderMiddleware()
@@ -1185,6 +1213,72 @@ describe('SalesPaywallMiddleware', () => {
             expect(
                 screen.queryByTestId('mock-child-component'),
             ).not.toBeInTheDocument()
+        })
+
+        it('should show "Book a demo" button when canBookDemo is true', () => {
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: true,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+            })
+
+            renderMiddleware()
+
+            expect(screen.getByText('Book a demo')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open external URL when "Book a demo" button is clicked', () => {
+            const mockWindowOpen = jest.fn()
+            global.window.open = mockWindowOpen
+
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: true,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+            })
+
+            renderMiddleware()
+
+            const bookDemoButton = screen.getByText('Book a demo')
+            fireEvent.click(bookDemoButton)
+
+            expect(mockWindowOpen).toHaveBeenCalledWith(
+                expect.stringContaining('https://'),
+                '_blank',
+            )
         })
     })
 
@@ -1400,7 +1494,7 @@ describe('SalesPaywallMiddleware', () => {
             expect(mockStartRevampTrial).toHaveBeenCalled()
         })
 
-        it('should handle milestone-1 trial logic', () => {
+        it('should handle milestone-1 trial logic with active trial', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
@@ -1408,6 +1502,8 @@ describe('SalesPaywallMiddleware', () => {
                 hasTrialExpired: false,
                 hasCurrentStoreTrialStarted: true,
                 hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
             })
 
             setupUseAppSelectorMock({
@@ -1424,6 +1520,34 @@ describe('SalesPaywallMiddleware', () => {
             expect(
                 screen.getByTestId('mock-child-component'),
             ).toBeInTheDocument()
+        })
+
+        it('should handle milestone-1 trial logic with expired trial', () => {
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialExpired: true,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            })
+
+            renderMiddleware()
+
+            expect(
+                screen.queryByTestId('mock-child-component'),
+            ).not.toBeInTheDocument()
         })
 
         it('should handle upgrade plan modal when no trial opted in', () => {

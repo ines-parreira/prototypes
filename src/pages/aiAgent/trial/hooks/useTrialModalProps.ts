@@ -26,7 +26,7 @@ import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-const EXTERNAL_URLS = {
+export const EXTERNAL_URLS = {
     BOOK_DEMO: 'https://www.gorgias.com/demo/customers/automate',
     SHOPPING_ASSISTANT_INFO: 'https://www.gorgias.com/ai-shopping-assistant',
 } as const

@@ -25,7 +25,10 @@ import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModa
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import {
+    EXTERNAL_URLS,
+    useTrialModalProps,
+} from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
@@ -67,6 +70,7 @@ export const SalesPaywallMiddleware =
             hasCurrentStoreTrialStarted,
             hasCurrentStoreTrialExpired,
             hasAnyTrialOptedIn,
+            canBookDemo,
         } = useShoppingAssistantTrialAccess(currentStore?.name)
 
         const currentStoreHasActiveTrial =
@@ -226,6 +230,7 @@ export const SalesPaywallMiddleware =
                     showSalesSettings={showSalesSettings}
                     ChildComponent={ChildComponent}
                     eventData={eventData}
+                    canBookDemo={canBookDemo}
                 />
 
                 {isTrialModalOpen && (
@@ -285,6 +290,7 @@ const PaywallWrapperComponent = ({
     showSalesSettings,
     ChildComponent,
     eventData,
+    canBookDemo,
 }: {
     showUpgradePaywall: boolean
     showEarlyAccessModal: () => void
@@ -294,6 +300,7 @@ const PaywallWrapperComponent = ({
     showSalesSettings: boolean
     ChildComponent: React.ComponentType<any>
     eventData: Record<string, string>
+    canBookDemo: boolean
 }) => {
     const flags = useFlags()
     const isAiShoppingAssistantEnabled =
@@ -318,6 +325,14 @@ const PaywallWrapperComponent = ({
         eventData,
     ])
 
+    const onTrialButtonClick = () => {
+        if (canBookDemo) {
+            window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+        } else {
+            startTrial()
+        }
+    }
+
     if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
         return (
             <PaywallWrapper>
@@ -335,10 +350,12 @@ const PaywallWrapperComponent = ({
                         {displayTrialButton && (
                             <Button
                                 fillStyle="ghost"
-                                onClick={startTrial}
+                                onClick={onTrialButtonClick}
                                 className={css.trialButton}
                             >
-                                Start 14-Day Trial At No Additional Cost
+                                {canBookDemo
+                                    ? 'Book a demo'
+                                    : 'Start 14-Day Trial At No Additional Cost'}
                             </Button>
                         )}
                     </div>
