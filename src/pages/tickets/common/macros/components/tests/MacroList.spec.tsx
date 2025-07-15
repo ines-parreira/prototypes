@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -52,7 +52,7 @@ describe('MacroList component', () => {
 
         expect(screen.getByText(macros[0].name!)).toHaveClass('active')
         expect(screen.getByText(macros[0].name!).textContent).toMatch(
-            /auto_awesome/,
+            /verified/,
         )
         expect(screen.getByText(macros[1].name!)).toBeInTheDocument()
         expect(screen.getByText(macros[2].name!)).toBeInTheDocument()
@@ -94,5 +94,95 @@ describe('MacroList component', () => {
                 user_id: 2,
             },
         ])
+    })
+
+    it('should call onHoverItem when hovering over macro items', () => {
+        const onHoverItemMock = jest.fn()
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroListContainer
+                    {...minProps}
+                    onHoverItem={onHoverItemMock}
+                />
+            </Provider>,
+        )
+
+        fireEvent.mouseEnter(screen.getByText(macros[0].name!))
+        expect(onHoverItemMock).toHaveBeenCalledWith(macros[0])
+
+        fireEvent.mouseEnter(screen.getByText(macros[1].name!))
+        expect(onHoverItemMock).toHaveBeenCalledWith(macros[1])
+    })
+
+    it('should not call onClickItem when clicking on disabled macro', () => {
+        const onClickItemMock = jest.fn()
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroListContainer
+                    {...minProps}
+                    onClickItem={onClickItemMock}
+                    areExternalActionsDisabled
+                />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText(macros[2].name!))
+        expect(onClickItemMock).not.toHaveBeenCalled()
+        expect(logEventMock).not.toHaveBeenCalled()
+    })
+
+    it('should call onClickItem when clicking on enabled macro', () => {
+        const onClickItemMock = jest.fn()
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroListContainer
+                    {...minProps}
+                    onClickItem={onClickItemMock}
+                />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText(macros[1].name!))
+        expect(onClickItemMock).toHaveBeenCalledWith(macros[1])
+    })
+
+    it('should apply custom className when provided', () => {
+        const customClassName = 'custom-macro-list'
+        const { container } = render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroListContainer {...minProps} className={customClassName} />
+            </Provider>,
+        )
+
+        expect(container.firstChild).toHaveClass(customClassName)
+    })
+
+    it('should show verified icon for recommended macros (relevance_rank 1)', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroListContainer {...minProps} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('verified')).toBeInTheDocument()
+        expect(screen.getByText('verified')).toHaveClass('material-icons')
+    })
+
+    it('should not show verified icon for non-recommended macros (relevance_rank 0)', () => {
+        const nonRecommendedMacros = [
+            { id: 1, name: 'Pizza Pepperoni', relevance_rank: 0 },
+            { id: 2, name: 'Pizza Capricciosa', relevance_rank: 100000 },
+        ] as Macro[]
+
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroListContainer
+                    {...minProps}
+                    searchResults={nonRecommendedMacros}
+                />
+            </Provider>,
+        )
+
+        expect(screen.queryByText('verified')).not.toBeInTheDocument()
     })
 })
