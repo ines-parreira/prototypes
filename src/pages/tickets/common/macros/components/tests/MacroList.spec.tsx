@@ -185,4 +185,28 @@ describe('MacroList component', () => {
 
         expect(screen.queryByText('verified')).not.toBeInTheDocument()
     })
+
+    it('should filter out macros without an ID', () => {
+        const macrosWithInvalidIds = [
+            { id: 1, name: 'Valid Macro 1' },
+            { id: undefined, name: 'Invalid Macro 1' },
+            { id: 2, name: 'Valid Macro 2' },
+            { id: 0, name: 'Valid Macro 3' },
+        ] as Macro[]
+
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroListContainer
+                    {...minProps}
+                    searchResults={macrosWithInvalidIds}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Valid Macro 1')).toBeInTheDocument()
+        expect(screen.getByText('Valid Macro 2')).toBeInTheDocument()
+        expect(screen.getByText('Valid Macro 3')).toBeInTheDocument()
+
+        expect(screen.queryByText('Invalid Macro 1')).not.toBeInTheDocument()
+    })
 })

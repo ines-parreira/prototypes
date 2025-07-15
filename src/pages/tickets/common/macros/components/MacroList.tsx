@@ -41,16 +41,18 @@ const MacroList = ({
             onLoad={loadMore}
             shouldLoadMore={hasDataToLoad}
         >
-            {searchResults.map((macro: Macro) => (
-                <MacroListItem
-                    key={macro.id}
-                    macro={macro}
-                    currentMacro={currentMacro}
-                    areExternalActionsDisabled={areExternalActionsDisabled}
-                    onHoverItem={onHoverItem}
-                    onClickItem={onClickItem}
-                />
-            ))}
+            {searchResults
+                .filter((macro) => macro && typeof macro.id !== 'undefined')
+                .map((macro: Macro) => (
+                    <MacroListItem
+                        key={macro.id}
+                        macro={macro}
+                        currentMacro={currentMacro}
+                        areExternalActionsDisabled={areExternalActionsDisabled}
+                        onHoverItem={onHoverItem}
+                        onClickItem={onClickItem}
+                    />
+                ))}
         </InfiniteScroll>
     )
 }
@@ -76,7 +78,6 @@ function MacroListItem({
     const scopedId = `macro-list-item-icon-${id}`
     return (
         <div
-            key={macro.id}
             className={classnames(css.item, {
                 [css.active]: isActive,
                 [css.disabled]: isDisabled,
