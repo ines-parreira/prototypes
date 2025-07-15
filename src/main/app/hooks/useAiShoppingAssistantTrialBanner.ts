@@ -4,8 +4,6 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
@@ -33,10 +31,6 @@ export function useAiShoppingAssistantTrialBanner() {
 
     const currentUser = useAppSelector(getCurrentUser)
     const userRole = useAppSelector(getRoleName)
-    const isShoppingAssistantTrialSystemBannerEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantTrialSystemBanner,
-        false,
-    )
 
     const trialMilestone = useSalesTrialRevampMilestone()
     const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
@@ -58,14 +52,12 @@ export function useAiShoppingAssistantTrialBanner() {
     const displayBanner = useMemo(
         () =>
             !isShoppingAssistantTrialRevampEnabled &&
-            isShoppingAssistantTrialSystemBannerEnabled &&
             !isAtLeastOneStoreHasActiveTrial &&
             !isTicketsPage &&
             storeEligibleForTrial.length &&
             (canStartTrial || canStartTrialFromFeatureFlag),
         [
             isShoppingAssistantTrialRevampEnabled,
-            isShoppingAssistantTrialSystemBannerEnabled,
             isAtLeastOneStoreHasActiveTrial,
             isTicketsPage,
             storeEligibleForTrial,

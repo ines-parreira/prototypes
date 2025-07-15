@@ -85,9 +85,6 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
         // Mock the new useFlag hook properly
         mockUseFlag.mockImplementation(
             (flagKey: string, defaultValue: boolean = false) => {
-                if (flagKey === 'ai-shopping-assistant-trial-system-banner') {
-                    return true
-                }
                 if (
                     flagKey === 'linear.project_shopping-assistant-trial-revamp'
                 ) {
@@ -156,32 +153,9 @@ describe('ShoppingAssistantTrialSystemBanner', () => {
         })
     })
 
-    it('should not render if the system banner feature flag is disabled', () => {
-        mockUseFlag.mockImplementation(
-            (flagKey: string, defaultValue: boolean = false) => {
-                if (flagKey === 'ai-shopping-assistant-trial-system-banner') {
-                    return false
-                }
-                if (
-                    flagKey === 'linear.project_shopping-assistant-trial-revamp'
-                ) {
-                    return false
-                }
-                return defaultValue
-            },
-        )
-
-        renderHook(useAiShoppingAssistantTrialBanner)
-
-        expect(mockedAddBanner).not.toHaveBeenCalled()
-    })
-
     it('should not render if the revamp feature flag is enabled', () => {
         mockUseFlag.mockImplementation(
             (flagKey: string, defaultValue: boolean = false) => {
-                if (flagKey === 'ai-shopping-assistant-trial-system-banner') {
-                    return true
-                }
                 if (
                     flagKey === 'linear.project_shopping-assistant-trial-revamp'
                 ) {

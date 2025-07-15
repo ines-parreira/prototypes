@@ -36,7 +36,6 @@ export enum FeatureFlagKey {
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
     AiShoppingAssistantTrialExtension = 'ai-shopping-assistant-trial-extension',
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
-    AiShoppingAssistantTrialSystemBanner = 'ai-shopping-assistant-trial-system-banner',
     AiShoppingAssistantTrackingBundleWarningBanner = 'tracking-bundle-warning-banner',
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
