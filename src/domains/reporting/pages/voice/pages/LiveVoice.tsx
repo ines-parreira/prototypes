@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useListLiveCallQueueVoiceCalls } from '@gorgias/helpdesk-queries'
 import { useChannel } from '@gorgias/realtime'
 
@@ -26,11 +28,15 @@ function LiveVoice() {
     const { cleanStatsFilters } = useAppSelector(
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     )
-    const params = {
-        agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
-        integration_ids: cleanStatsFilters?.[FilterKey.Integrations]?.values,
-        voice_queue_ids: cleanStatsFilters?.[FilterKey.VoiceQueues]?.values,
-    }
+    const params = useMemo(
+        () => ({
+            agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
+            integration_ids:
+                cleanStatsFilters?.[FilterKey.Integrations]?.values,
+            voice_queue_ids: cleanStatsFilters?.[FilterKey.VoiceQueues]?.values,
+        }),
+        [cleanStatsFilters],
+    )
     const { data: voiceCalls, isLoading } = useListLiveCallQueueVoiceCalls(
         params,
         {
