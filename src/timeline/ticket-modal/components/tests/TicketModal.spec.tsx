@@ -1,8 +1,6 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-
-import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -18,9 +16,18 @@ jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
 }))
 
+const mockIconButtonRender = jest.fn()
+
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     ...jest.requireActual('@gorgias/merchant-ui-kit'),
-    IconButton: jest.fn(() => <div>IconButton</div>),
+    IconButton: React.forwardRef<HTMLButtonElement, any>((props, ref) => {
+        mockIconButtonRender(props, ref)
+        return (
+            <button ref={ref} {...props}>
+                Mock IconButton
+            </button>
+        )
+    }),
 }))
 
 jest.mock('core/flags', () => ({
@@ -60,6 +67,7 @@ describe('TicketModal', () => {
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(false) // Default to modal view
+        mockIconButtonRender.mockClear()
     })
 
     it('should render nothing if no ticketId is passed', () => {
@@ -81,11 +89,11 @@ describe('TicketModal', () => {
             {},
         )
 
-        expect(IconButton).toHaveBeenCalledWith(
+        expect(mockIconButtonRender).toHaveBeenCalledWith(
             expect.objectContaining({
                 onClick: defaultProps.onClose,
             }),
-            {},
+            expect.anything(),
         )
     })
 
@@ -141,6 +149,18 @@ describe('TicketModal', () => {
         render(<TicketModal {...defaultProps} />)
 
         expect(TicketModalProviderMock).toHaveBeenCalled()
+    })
+
+    it('should focus the close button on mount', () => {
+        const mockFocus = jest
+            .spyOn(HTMLElement.prototype, 'focus')
+            .mockImplementation(() => {})
+
+        render(<TicketModal {...defaultProps} />)
+
+        expect(mockFocus).toHaveBeenCalled()
+
+        mockFocus.mockRestore()
     })
 
     it('should call useFlag with CustomerTimelineDrawerUX flag', () => {

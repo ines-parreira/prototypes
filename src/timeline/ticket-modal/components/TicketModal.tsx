@@ -1,3 +1,7 @@
+import { useEffect, useRef } from 'react'
+
+import cn from 'classnames'
+
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
@@ -29,6 +33,12 @@ export function TicketModal({
     containerRef,
 }: Props) {
     const hasCTDrawerUX = useFlag(FeatureFlagKey.CustomerTimelineDrawerUX)
+    const closeButtonRef = useRef<HTMLButtonElement>(null)
+    useEffect(() => {
+        if (closeButtonRef.current) {
+            closeButtonRef.current.focus()
+        }
+    }, [])
 
     if (!ticketId) return null
 
@@ -53,6 +63,7 @@ export function TicketModal({
                                             icon="close"
                                             intent="secondary"
                                             onClick={onClose}
+                                            ref={closeButtonRef}
                                         />
                                     }
                                 />
@@ -105,10 +116,9 @@ export function TicketModal({
     return (
         <Modal
             classNameContent={css.content}
-            classNameDialog={css.dialog}
+            classNameDialog={cn(css.dialog, 'shortcuts-enable')}
             isOpen
             onClose={onClose}
-            forceFocus
         >
             <TicketModalProvider>
                 <ModalBody className={css.body}>
@@ -121,6 +131,7 @@ export function TicketModal({
                                 icon="close"
                                 intent="secondary"
                                 onClick={onClose}
+                                ref={closeButtonRef}
                             />
                         }
                     />
