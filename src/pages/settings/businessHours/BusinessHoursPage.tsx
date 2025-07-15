@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
-import BusinessHours from './BusinessHours'
+import BusinessHours from './BusinessHoursLegacy'
 import CustomBusinessHours from './CustomBusinessHours'
 import EditCustomBusinessHoursPage from './EditCustomBusinessHoursPage'
 

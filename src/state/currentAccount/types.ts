@@ -109,6 +109,9 @@ export type AccountSettingBusinessHours = {
     }
 }
 
+export type BusinessHour =
+    AccountSettingBusinessHours['data']['business_hours'][number]
+
 export type AccountSettingTicketAssignment = {
     id: number
     type: AccountSettingType.TicketAssignment
