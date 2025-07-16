@@ -1,6 +1,6 @@
-import { noop } from 'lodash'
 import { Link } from 'react-router-dom'
 
+import { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FormSubmitButton } from 'core/forms'
@@ -9,12 +9,20 @@ import FormActionsGroup from 'core/forms/components/FormActionsGroup'
 import ConfirmButtonWithModal from 'pages/common/components/button/ConfirmButtonWithModal'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
+import useDeleteCustomBusinessHours from './hooks/useDeleteCustomBusinessHours'
 
 type Props = {
+    businessHours: BusinessHoursDetails
     isLoading?: boolean
 }
 
-export default function EditCustomBusinessHoursActions({ isLoading }: Props) {
+export default function EditCustomBusinessHoursActions({
+    businessHours,
+    isLoading,
+}: Props) {
+    const { mutate: deleteBusinessHours, isLoading: isDeleting } =
+        useDeleteCustomBusinessHours(businessHours)
+
     return (
         <FormActions>
             <FormActionsGroup>
@@ -26,6 +34,7 @@ export default function EditCustomBusinessHoursActions({ isLoading }: Props) {
                 </Link>
             </FormActionsGroup>
             <ConfirmButtonWithModal
+                isLoading={isDeleting}
                 intent="destructive"
                 fillStyle="ghost"
                 leadingIcon="delete_outline"
@@ -35,8 +44,8 @@ export default function EditCustomBusinessHoursActions({ isLoading }: Props) {
                 confirmationContent={
                     <>
                         <p>
-                            {/* TODO: Add business hours name */}
-                            Are you sure you want to delete these custom
+                            Are you sure you want to delete{' '}
+                            <strong>{businessHours.name}</strong> custom
                             business hours?
                         </p>
                         <p>
@@ -46,8 +55,7 @@ export default function EditCustomBusinessHoursActions({ isLoading }: Props) {
                         </p>
                     </>
                 }
-                onConfirm={noop}
-                onCancel={noop}
+                onConfirm={() => deleteBusinessHours({ id: businessHours.id })}
             >
                 Delete business hours
             </ConfirmButtonWithModal>

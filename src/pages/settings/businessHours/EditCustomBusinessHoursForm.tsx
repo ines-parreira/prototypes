@@ -109,7 +109,10 @@ export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
                         <EditCustomBusinessHoursIntegrationsSection />
                     </SettingsCardContent>
                 </SettingsCard>
-                <EditCustomBusinessHoursActions isLoading={isLoading} />
+                <EditCustomBusinessHoursActions
+                    businessHours={businessHours}
+                    isLoading={isLoading}
+                />
                 <FormUnsavedChangesPrompt onSave={handleFormSubmit} />
             </div>
         </Form>
