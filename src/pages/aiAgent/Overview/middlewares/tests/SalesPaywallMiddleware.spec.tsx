@@ -1280,6 +1280,146 @@ describe('SalesPaywallMiddleware', () => {
                 '_blank',
             )
         })
+
+        it('should show "How shopping Assistants boosts sales" button when hasCurrentStoreTrialOptedOut is true', () => {
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
+                hasCurrentStoreTrialOptedOut: true,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+            })
+
+            renderMiddleware()
+
+            expect(
+                screen.getByText('How shopping Assistants boosts sales'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open shopping assistant info URL when "How shopping Assistants boosts sales" button is clicked', () => {
+            const mockWindowOpen = jest.fn()
+            global.window.open = mockWindowOpen
+
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
+                hasCurrentStoreTrialOptedOut: true,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+            })
+
+            renderMiddleware()
+
+            const infoButton = screen.getByText(
+                'How shopping Assistants boosts sales',
+            )
+            fireEvent.click(infoButton)
+
+            expect(mockWindowOpen).toHaveBeenCalledWith(
+                expect.stringContaining('https://'),
+                '_blank',
+            )
+        })
+
+        it('should not render any secondary button when displayTrialButton is false and canBookDemo is false', () => {
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: false,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: false,
+                hasCurrentStoreTrialOptedOut: false,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+            })
+
+            renderMiddleware()
+
+            // Should only show Upgrade Now button
+            expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Book a demo')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('How shopping Assistants boosts sales'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should prioritize Book a demo button over other secondary buttons', () => {
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: true,
+                hasCurrentStoreTrialOptedOut: true, // This should be ignored when canBookDemo is true
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+            })
+
+            renderMiddleware()
+
+            // Should show Book a demo, not the opted out button
+            expect(screen.getByText('Book a demo')).toBeInTheDocument()
+            expect(
+                screen.queryByText('How shopping Assistants boosts sales'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('Additional Coverage Tests', () => {

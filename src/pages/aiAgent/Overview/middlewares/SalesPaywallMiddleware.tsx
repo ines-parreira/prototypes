@@ -71,6 +71,7 @@ export const SalesPaywallMiddleware =
             hasCurrentStoreTrialExpired,
             hasAnyTrialOptedIn,
             canBookDemo,
+            hasCurrentStoreTrialOptedOut,
         } = useShoppingAssistantTrialAccess(currentStore?.name)
 
         const currentStoreHasActiveTrial =
@@ -231,6 +232,7 @@ export const SalesPaywallMiddleware =
                     ChildComponent={ChildComponent}
                     eventData={eventData}
                     canBookDemo={canBookDemo}
+                    hasCurrentStoreTrialOptedOut={hasCurrentStoreTrialOptedOut}
                 />
 
                 {isTrialModalOpen && (
@@ -291,6 +293,7 @@ const PaywallWrapperComponent = ({
     ChildComponent,
     eventData,
     canBookDemo,
+    hasCurrentStoreTrialOptedOut,
 }: {
     showUpgradePaywall: boolean
     showEarlyAccessModal: () => void
@@ -301,6 +304,7 @@ const PaywallWrapperComponent = ({
     ChildComponent: React.ComponentType<any>
     eventData: Record<string, string>
     canBookDemo: boolean
+    hasCurrentStoreTrialOptedOut: boolean
 }) => {
     const flags = useFlags()
     const isAiShoppingAssistantEnabled =
@@ -325,12 +329,51 @@ const PaywallWrapperComponent = ({
         eventData,
     ])
 
-    const onTrialButtonClick = () => {
+    const renderSecondaryActionButton = () => {
         if (canBookDemo) {
-            window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
-        } else {
-            startTrial()
+            return (
+                <Button
+                    fillStyle="ghost"
+                    onClick={() => {
+                        window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+                    }}
+                    className={css.trialButton}
+                >
+                    Book a demo
+                </Button>
+            )
         }
+
+        if (!displayTrialButton) {
+            return null
+        }
+
+        if (hasCurrentStoreTrialOptedOut) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    onClick={() => {
+                        window.open(
+                            EXTERNAL_URLS.SHOPPING_ASSISTANT_INFO,
+                            '_blank',
+                        )
+                    }}
+                    className={css.trialButton}
+                >
+                    How shopping Assistants boosts sales
+                </Button>
+            )
+        }
+
+        return (
+            <Button
+                fillStyle="ghost"
+                onClick={startTrial}
+                className={css.trialButton}
+            >
+                Start 14-Day Trial At No Additional Cost
+            </Button>
+        )
     }
 
     if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
@@ -347,17 +390,7 @@ const PaywallWrapperComponent = ({
                         >
                             Upgrade Now
                         </Button>
-                        {displayTrialButton && (
-                            <Button
-                                fillStyle="ghost"
-                                onClick={onTrialButtonClick}
-                                className={css.trialButton}
-                            >
-                                {canBookDemo
-                                    ? 'Book a demo'
-                                    : 'Start 14-Day Trial At No Additional Cost'}
-                            </Button>
-                        )}
+                        {renderSecondaryActionButton()}
                     </div>
                 </AiAgentPaywallView>
                 {earlyAccessModal}
