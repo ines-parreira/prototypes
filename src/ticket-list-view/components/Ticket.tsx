@@ -1,24 +1,18 @@
-import React, {
-    ComponentProps,
-    MouseEvent,
-    useCallback,
-    useMemo,
-    useRef,
-} from 'react'
+import { ComponentProps, MouseEvent, useCallback, useMemo, useRef } from 'react'
 
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { Components } from 'react-virtuoso'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import RelativeTime from 'pages/common/components/RelativeTime'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { PriorityLabel } from 'pages/common/utils/labels'
 import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
@@ -35,7 +29,7 @@ type Props = {
     ticket: TicketPartial | TicketCompact
     viewId: number
     isNewTicket?: boolean
-    isSelected?: boolean
+    isSelected: boolean
     onSelect: (id: number, selected: boolean, selectRange?: boolean) => void
 }
 
@@ -67,6 +61,7 @@ export default function Ticket({
         FeatureFlagKey.RedirectDeprecatedTicketRoutes,
         false,
     )
+    const hasTicketPriority = useFlag(FeatureFlagKey.TicketAllowPriorityUsage)
 
     const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
@@ -140,9 +135,9 @@ export default function Ticket({
                                     title={agentViewingMessage}
                                 />
                             )}
-                            <CheckBox
+                            <CheckBoxField
                                 ref={checkboxRef}
-                                isChecked={isSelected}
+                                value={isSelected}
                                 onClick={handleClickCheckbox}
                             />
                             <div
@@ -169,6 +164,13 @@ export default function Ticket({
                                             {ticket.channel}
                                         </Tooltip>
                                     </span>
+                                    {hasTicketPriority && !!ticket.priority && (
+                                        <PriorityLabel
+                                            className={css.priorityBadge}
+                                            priority={ticket.priority}
+                                            displayLabel={false}
+                                        />
+                                    )}
                                     {!!datetime && (
                                         <span className={css.time}>
                                             <RelativeTime datetime={datetime} />

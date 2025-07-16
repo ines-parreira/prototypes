@@ -254,19 +254,19 @@ export const StatusLabel = ({
 
 export const PriorityLabel = ({
     className,
+    displayLabel = true,
     priority,
 }: {
     className?: string
+    displayLabel?: boolean
     priority: TicketPriority
 }) => {
     const type = PRIORITY_TO_BADGE[priority] || 'modern'
 
     return (
         <Badge className={className ?? 'text-center'} type={type}>
-            <span className="material-icons md-2">
-                {PRIORITY_TO_ICON[priority]}
-            </span>
-            {priority}
+            <span className="material-icons">{PRIORITY_TO_ICON[priority]}</span>
+            {displayLabel && priority}
         </Badge>
     )
 }

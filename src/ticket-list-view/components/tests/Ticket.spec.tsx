@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
+import { TicketPriority } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
@@ -36,6 +37,7 @@ describe('Ticket', () => {
         ticket: defaultTicket,
         viewId: 1,
         onSelect: jest.fn(),
+        isSelected: false,
     }
 
     beforeEach(() => {
@@ -375,6 +377,76 @@ describe('Ticket', () => {
             render(<Ticket {...defaultProps} ticket={ticketPartial as any} />)
             expect(
                 screen.queryByText('Last message not delivered'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('priority display', () => {
+        const ticketWithPriority = (priority: TicketPriority) => ({
+            ...defaultTicket,
+            priority,
+        })
+
+        it('should display priority badge when feature flag is enabled and ticket has priority', () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === 'ticket-allow-priority-usage') return true
+                return false
+            })
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithPriority(TicketPriority.High)}
+                />,
+            )
+
+            expect(screen.getByText('keyboard_arrow_up')).toBeInTheDocument()
+        })
+
+        it('should not display priority badge when feature flag is disabled', () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === 'ticket-allow-priority-usage') return false
+                return false
+            })
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithPriority(TicketPriority.High)}
+                />,
+            )
+
+            expect(
+                screen.queryByText('keyboard_arrow_up'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not display priority badge when feature flag is enabled but ticket has no priority', () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === 'ticket-allow-priority-usage') return true
+                return false
+            })
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...defaultTicket,
+                        priority: undefined,
+                    }}
+                />,
+            )
+
+            // Check that no priority icons are displayed
+            expect(
+                screen.queryByText('keyboard_arrow_down'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('drag_handle')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('keyboard_arrow_up'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('keyboard_double_arrow_up'),
             ).not.toBeInTheDocument()
         })
     })

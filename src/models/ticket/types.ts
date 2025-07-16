@@ -3,6 +3,7 @@ import {
     Tag,
     TicketMessageAuthCustomerIdentityProperty,
 } from '@gorgias/helpdesk-queries'
+import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import {
     TicketChannel,
@@ -53,6 +54,7 @@ export type Ticket = {
     via: TicketVia
     reply_options?: TicketReplyOptions
     last_sent_message_not_delivered?: boolean
+    priority?: TicketPriority
 }
 
 export type TicketPartial = Pick<Ticket, 'id' | 'updated_datetime'> & {
