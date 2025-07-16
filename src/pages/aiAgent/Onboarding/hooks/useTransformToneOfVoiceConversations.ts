@@ -12,6 +12,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import useAppSelector from 'hooks/useAppSelector'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { TransformToneOfVoiceConversation } from 'models/aiAgent/types'
+import { ToneOfVoice } from 'pages/aiAgent/constants'
 import {
     PreviewId,
     PRODUCT_RECOMMENDATION_MESSAGE_ID,
@@ -147,11 +148,13 @@ export const useTransformToneOfVoiceConversations = (
                 return
             }
 
-            if (gorgiasDomain && data?.customToneOfVoiceGuidance) {
+            if (gorgiasDomain) {
                 try {
                     const response = await transformConversation({
                         gorgiasDomain,
-                        toneOfVoice: data.customToneOfVoiceGuidance,
+                        toneOfVoice:
+                            data?.customToneOfVoiceGuidance ||
+                            ToneOfVoice.Friendly,
                         conversations,
                         product: products.length > 0 ? products[0] : undefined,
                     })

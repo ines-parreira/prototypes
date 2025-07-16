@@ -177,7 +177,7 @@ describe('useTransformToneOfVoiceConversations', () => {
         expect(transformToneOfVoiceMock).not.toHaveBeenCalled()
     })
 
-    it("should return hardcoded when there's no customToneOfVoiceGuidance", async () => {
+    it("should use friendly tone of voice when there's no customToneOfVoiceGuidance in data", async () => {
         useGetOnboardingDataMock.mockReturnValue({
             data: {
                 preview: '',
@@ -191,7 +191,7 @@ describe('useTransformToneOfVoiceConversations', () => {
                 useTransformToneOfVoiceConversations(
                     1,
                     'test-store',
-                    'default',
+                    'productRecommendations',
                 ),
             {
                 currentAccount: fromJS(account),
@@ -201,13 +201,109 @@ describe('useTransformToneOfVoiceConversations', () => {
         await waitFor(() => {
             expect(result.current.isLoading).toStrictEqual(false)
             expect(result.current.isPreviewLoading).toStrictEqual(false)
-            expect(result.current.preview).toBe(undefined)
-            expect(result.current.previewConversation).toBe(
-                conversationExamples.default,
+            expect(result.current.preview).toBe(
+                '{"productRecommendations":{"messages":[{"content":"Test message","isHtml":true,"fromAgent":true,"attachments":[{"content_type":"application/productCard","size":1,"url":"https://test.com/image.jpg","name":"Test product","extra":{"product_id":1,"variant_id":1,"variant_name":"Test product","product_link":"https://test.com/image.jpg","featured_image":"https://test.com/image.jpg","price":"12"}}]}]}}',
             )
+            expect(result.current.previewConversation).toStrictEqual({
+                messages: [
+                    {
+                        attachments: [
+                            {
+                                content_type: 'application/productCard',
+                                extra: {
+                                    featured_image:
+                                        'https://test.com/image.jpg',
+                                    product_id: 1,
+                                    product_link: 'https://test.com/image.jpg',
+                                    variant_id: 1,
+                                    variant_name: 'Test product',
+                                    price: '12',
+                                },
+                                name: 'Test product',
+                                size: 1,
+                                url: 'https://test.com/image.jpg',
+                            },
+                        ],
+                        content: 'Test message',
+                        fromAgent: true,
+                        isHtml: true,
+                    },
+                ],
+            })
         })
 
-        expect(transformToneOfVoiceMock).not.toHaveBeenCalled()
+        expect(transformToneOfVoiceMock).toHaveBeenCalledWith(
+            'acme',
+            'Friendly',
+            expect.anything(),
+            expect.objectContaining({
+                title: 'Test product',
+                description: 'Test description',
+            }),
+        )
+    })
+
+    it('should use friendly tone of voice when data is missing', async () => {
+        useGetOnboardingDataMock.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        })
+
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            () =>
+                useTransformToneOfVoiceConversations(
+                    1,
+                    'test-store',
+                    'productRecommendations',
+                ),
+            {
+                currentAccount: fromJS(account),
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toStrictEqual(false)
+            expect(result.current.isPreviewLoading).toStrictEqual(false)
+            expect(result.current.preview).toBe(
+                '{"productRecommendations":{"messages":[{"content":"Test message","isHtml":true,"fromAgent":true,"attachments":[{"content_type":"application/productCard","size":1,"url":"https://test.com/image.jpg","name":"Test product","extra":{"product_id":1,"variant_id":1,"variant_name":"Test product","product_link":"https://test.com/image.jpg","featured_image":"https://test.com/image.jpg","price":"12"}}]}]}}',
+            )
+            expect(result.current.previewConversation).toStrictEqual({
+                messages: [
+                    {
+                        attachments: [
+                            {
+                                content_type: 'application/productCard',
+                                extra: {
+                                    featured_image:
+                                        'https://test.com/image.jpg',
+                                    product_id: 1,
+                                    product_link: 'https://test.com/image.jpg',
+                                    variant_id: 1,
+                                    variant_name: 'Test product',
+                                    price: '12',
+                                },
+                                name: 'Test product',
+                                size: 1,
+                                url: 'https://test.com/image.jpg',
+                            },
+                        ],
+                        content: 'Test message',
+                        fromAgent: true,
+                        isHtml: true,
+                    },
+                ],
+            })
+        })
+
+        expect(transformToneOfVoiceMock).toHaveBeenCalledWith(
+            'acme',
+            'Friendly',
+            expect.anything(),
+            expect.objectContaining({
+                title: 'Test product',
+                description: 'Test description',
+            }),
+        )
     })
 
     it('should return hardcoded when FF is deactivated', async () => {
@@ -225,6 +321,22 @@ describe('useTransformToneOfVoiceConversations', () => {
             {
                 currentAccount: fromJS(account),
             },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toStrictEqual(false)
+            expect(result.current.preview).toBe(undefined)
+            expect(result.current.previewConversation).toBe(
+                conversationExamples.default,
+            )
+        })
+
+        expect(transformToneOfVoiceMock).not.toHaveBeenCalled()
+    })
+
+    it('should return hardcoded when account domain is undefined', async () => {
+        const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+            useTransformToneOfVoiceConversations(1, 'test-store', 'default'),
         )
 
         await waitFor(() => {
