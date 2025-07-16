@@ -652,10 +652,20 @@ describe('KnowledgeSourceArticleEditor', () => {
         })
 
         it('calls deleteArticleTranslation when translation deletion is confirmed and dispatches state changes', async () => {
+            const mockArticleWithMultipleLocales = {
+                ...mockArticle,
+                available_locales: ['en-US', 'fr-FR', 'es-ES'] as LocaleCode[],
+            }
+
+            useEditionManagerMock.mockReturnValue({
+                ...defaultEditionManagerState,
+                selectedArticle: mockArticleWithMultipleLocales,
+            })
+
             mockDeleteArticleTranslation.mockImplementation(() => {
                 const mockCall = useFeedbackArticleActionsMock.mock.calls[0]
                 if (mockCall && mockCall[4]) {
-                    mockCall[4]() // Call onArticleTranslationDelete
+                    mockCall[4]('en-US') // Call onArticleTranslationDelete with deleted locale
                 }
             })
 
@@ -699,6 +709,10 @@ describe('KnowledgeSourceArticleEditor', () => {
                 expect(mockSetSelectedArticleLanguage).toHaveBeenCalledWith(
                     mockHelpCenter.default_locale,
                 )
+                expect(mockSetSelectedArticle).toHaveBeenCalledWith({
+                    ...mockArticleWithMultipleLocales,
+                    available_locales: ['fr-FR', 'es-ES'],
+                })
             })
         })
 

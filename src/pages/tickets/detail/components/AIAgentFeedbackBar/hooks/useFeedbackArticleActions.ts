@@ -22,7 +22,7 @@ export const useFeedbackArticleActions = (
     onArticleCreate: (article: Article) => void,
     onArticleUpdate: (article: Article) => void,
     onArticleDelete: (article: Article) => void,
-    onArticleTranslationDelete: () => void,
+    onArticleTranslationDelete: (deletedLocale: LocaleCode) => void,
 ) => {
     const dispatch = useAppDispatch()
     const helpCenter = useCurrentHelpCenter()
@@ -185,7 +185,7 @@ export const useFeedbackArticleActions = (
                     locale,
                 )
 
-                onArticleTranslationDelete()
+                onArticleTranslationDelete(locale)
 
                 void dispatch(
                     notify({

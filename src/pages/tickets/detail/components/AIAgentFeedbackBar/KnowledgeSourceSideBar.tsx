@@ -56,7 +56,7 @@ const KnowledgeSourceSideBar = ({
     const { getHasUnsavedChanges, openUnsavedChangesModal } =
         useUnsavedChangesModal()
     const helpCenter = useCurrentHelpCenter()
-    const { setEditModal, setSelectedArticle } = useEditionManager()
+    const { setEditModal } = useEditionManager()
     const { isPassingRulesCheck } = useAbilityChecker()
 
     const canUpdateArticle = isPassingRulesCheck(({ can }) =>
@@ -105,12 +105,6 @@ const KnowledgeSourceSideBar = ({
             position: Math.max(articleIndex, 0),
         }
     }, [articles, selectedResourceIdAsNumber])
-
-    useEffect(() => {
-        if (shouldDisplayArticleEditor && selectedArticle) {
-            setSelectedArticle(selectedArticle)
-        }
-    }, [shouldDisplayArticleEditor, selectedArticle, setSelectedArticle])
 
     const resourceUpdatedAt = useMemo(() => {
         return (

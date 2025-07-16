@@ -500,7 +500,7 @@ describe('useFeedbackArticleActions', () => {
                 )
             })
 
-            expect(mockOnArticleTranslationDelete).toHaveBeenCalled()
+            expect(mockOnArticleTranslationDelete).toHaveBeenCalledWith(locale)
             expect(notify).toHaveBeenCalledWith({
                 message: 'Article translation deleted with success',
                 status: NotificationStatus.Success,

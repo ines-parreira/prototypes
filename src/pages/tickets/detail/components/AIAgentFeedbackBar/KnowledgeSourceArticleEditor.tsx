@@ -98,6 +98,7 @@ const KnowledgeSourceArticleEditor = ({
         isFullscreenEditModal,
     } = useEditionManager()
 
+    // handle create mode setup
     if (isCreateMode && !article?.id && !selectedArticle) {
         const categoryFromModalParams =
             articleModal.getParams()?.categoryId ?? null
@@ -110,6 +111,11 @@ const KnowledgeSourceArticleEditor = ({
         })
 
         setSelectedCategoryId(categoryFromModalParams)
+    }
+
+    // handle edit mode setup
+    if (!isCreateMode && article?.id && !selectedArticle) {
+        setSelectedArticle(article)
     }
 
     const {
@@ -212,10 +218,31 @@ const KnowledgeSourceArticleEditor = ({
         closeModal()
     }, [setSelectedArticle, closeModal])
 
-    const onArticleTranslationDelete = useCallback(() => {
-        dispatch(changeViewLanguage(helpCenter.default_locale))
-        setSelectedArticleLanguage(helpCenter.default_locale)
-    }, [dispatch, helpCenter.default_locale, setSelectedArticleLanguage])
+    const onArticleTranslationDelete = useCallback(
+        (deletedLocale: LocaleCode) => {
+            dispatch(changeViewLanguage(helpCenter.default_locale))
+            setSelectedArticleLanguage(helpCenter.default_locale)
+
+            if (selectedArticle && isExistingArticle(selectedArticle)) {
+                const updatedAvailableLocales =
+                    selectedArticle.available_locales.filter(
+                        (locale: LocaleCode) => locale !== deletedLocale,
+                    )
+
+                setSelectedArticle({
+                    ...selectedArticle,
+                    available_locales: updatedAvailableLocales,
+                })
+            }
+        },
+        [
+            dispatch,
+            helpCenter.default_locale,
+            setSelectedArticleLanguage,
+            setSelectedArticle,
+            selectedArticle,
+        ],
+    )
 
     const {
         isLoading,
