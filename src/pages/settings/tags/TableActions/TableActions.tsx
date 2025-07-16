@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { List } from 'immutable'
 
@@ -34,9 +34,12 @@ const TableActions = ({ onBulkDelete, onMerge, selectedTagsIds }: Props) => {
 
     const selectedTagsNames = useMemo(
         () =>
-            selectedTagsIds
-                .map((id: number) => keyedTags[id].name)
-                .toJS() as string[],
+            (
+                selectedTagsIds
+                    .map((id: number) => keyedTags[id]?.name)
+                    .toJS() as string[]
+            ).filter(Boolean),
+
         [keyedTags, selectedTagsIds],
     )
 
