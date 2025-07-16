@@ -1590,6 +1590,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                 content: 'Test content',
             },
             mode: null,
+            isClosing: false,
             openPreview: jest.fn(),
             openEdit: jest.fn(),
             openCreate: jest.fn(),
