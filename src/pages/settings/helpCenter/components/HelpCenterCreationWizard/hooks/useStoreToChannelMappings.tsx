@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import {
     useCreateStoreMapping,
     useUpdateStoreMapping,
@@ -12,7 +10,6 @@ import { Components } from '../../../../../../rest_api/help_center_api/client.ge
 import HelpCenterDto = Components.Schemas.HelpCenterDto
 
 export const useStoreToChannelMappings = () => {
-    const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
     const { mutateAsync: createMapping } = useCreateStoreMapping()
     const { mutateAsync: updateMapping } = useUpdateStoreMapping()
 
@@ -51,15 +48,13 @@ export const useStoreToChannelMappings = () => {
                 return
             }
 
-            if (isMultiStoreEnabled) {
-                if (isUpdate) {
-                    await updateConnection(storeId, helpCenterIntegrationId)
-                } else {
-                    await createConnection(storeId, helpCenterIntegrationId)
-                }
+            if (isUpdate) {
+                await updateConnection(storeId, helpCenterIntegrationId)
+            } else {
+                await createConnection(storeId, helpCenterIntegrationId)
             }
         },
-        [isMultiStoreEnabled, createConnection, updateConnection],
+        [createConnection, updateConnection],
     )
 
     return {

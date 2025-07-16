@@ -40,7 +40,6 @@ const Sections = {
 const SettingsNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const integrations = useStoreIntegrations()
-    const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
     const isEmailImportEnabled = useFlag(
         FeatureFlagKey.HistoricalImports,
         false,
@@ -261,7 +260,6 @@ const SettingsNavbar = () => {
                         <Item
                             to="store-management"
                             text="Store Management"
-                            shouldRender={isMultiStoreEnabled}
                             requiredRole={ADMIN_ROLE}
                         />
                         <Item

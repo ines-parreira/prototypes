@@ -10,8 +10,6 @@ import {
 } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { StoreIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -26,7 +24,6 @@ import StoreManagementStoreSelector from './StoreManagmentStoreSelector'
 import css from './StoreDetailsPage.less'
 
 export default function StoreDetailsPage() {
-    const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
     const { id } = useParams<{ id: string }>()
 
     const {
@@ -37,10 +34,6 @@ export default function StoreDetailsPage() {
     const { isLoading: isFetchingStoresWithMaps } = useStoreManagementState()
 
     const isFetching = isFetchingStore || isFetchingStoresWithMaps
-
-    if (!isMultiStoreEnabled) {
-        return null
-    }
 
     const store = data?.data as unknown as StoreIntegration
 

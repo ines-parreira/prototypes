@@ -4,7 +4,6 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { assumeMock } from 'utils/testing'
 
@@ -147,17 +146,6 @@ describe('StoreManagementPage', () => {
             expect(screen.getByText('test-2')).toBeInTheDocument()
             expect(screen.queryByText('test-3')).not.toBeInTheDocument()
         })
-    })
-
-    it('should not render when MultiStore feature flag is disabled', () => {
-        useFlagMock.mockImplementation((flag: string) => {
-            if (flag === FeatureFlagKey.MultiStore) return false
-            return false
-        })
-
-        const { container } = renderWithProviders(<StoreManagementPage />)
-
-        expect(container.firstChild).toBeNull()
     })
 
     it('should render NoStoresPage when no stores are available', () => {

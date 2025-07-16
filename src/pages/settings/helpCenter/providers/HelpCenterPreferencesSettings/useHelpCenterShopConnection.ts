@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { HelpCenter } from 'models/helpCenter/types'
 import {
     useCreateStoreMapping,
@@ -26,7 +24,6 @@ export type ConnectedShop = {
 
 export const useHelpCenterShopConnection = (helpCenter: HelpCenter) => {
     const { client } = useHelpCenterApi()
-    const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
     const { mutateAsync: createMapping } = useCreateStoreMapping()
     const { mutateAsync: updateMapping } = useUpdateStoreMapping()
     const { mutateAsync: deleteMapping } = useDeleteStoreMapping()
@@ -120,7 +117,7 @@ export const useHelpCenterShopConnection = (helpCenter: HelpCenter) => {
         async (connectedShop: ConnectedShop) => {
             if (!client) return null
 
-            if (isMultiStoreEnabled && helpCenter.integration_id) {
+            if (helpCenter.integration_id) {
                 return await handleMultiStoreConnection(connectedShop)
             }
 
@@ -128,7 +125,6 @@ export const useHelpCenterShopConnection = (helpCenter: HelpCenter) => {
         },
         [
             client,
-            isMultiStoreEnabled,
             helpCenter.integration_id,
             handleMultiStoreConnection,
             updateHelpCenterDirect,

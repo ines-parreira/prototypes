@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useCreateStoreMapping } from 'models/storeMapping/queries'
 
 interface ContactForm {
@@ -11,15 +9,10 @@ interface ContactForm {
 
 export default function useViewStoreMapping() {
     const { mutate: createMapping } = useCreateStoreMapping()
-    const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
 
     const handleStoreMapping = useCallback(
         (contactForm: ContactForm) => {
-            if (
-                isMultiStoreEnabled &&
-                contactForm.integration_id &&
-                contactForm.shop_integration_id
-            ) {
+            if (contactForm.integration_id && contactForm.shop_integration_id) {
                 createMapping([
                     {
                         store_id: contactForm.shop_integration_id,
@@ -28,11 +21,10 @@ export default function useViewStoreMapping() {
                 ])
             }
         },
-        [isMultiStoreEnabled, createMapping],
+        [createMapping],
     )
 
     return {
         handleStoreMapping,
-        isMultiStoreEnabled,
     }
 }

@@ -1,6 +1,5 @@
 import { renderHook } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     useCreateStoreMapping,
     useListStoreMappings,
@@ -8,10 +7,8 @@ import {
 
 import usePreferencesStoreMapping from '../usePreferencesStoreMapping'
 
-jest.mock('core/flags')
 jest.mock('models/storeMapping/queries')
 
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseCreateStoreMapping = useCreateStoreMapping as jest.MockedFunction<
     typeof useCreateStoreMapping
 >
@@ -34,7 +31,6 @@ describe('usePreferencesStoreMapping', () => {
         mockUseListStoreMappings.mockReturnValue({
             data: [],
         } as any)
-        mockUseFlag.mockReturnValue(false)
     })
 
     it('should call useListStoreMappings with correct parameters', () => {
@@ -46,21 +42,7 @@ describe('usePreferencesStoreMapping', () => {
         })
     })
 
-    it('should not create mapping when MultiStore is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
-        const { result } = renderHook(() =>
-            usePreferencesStoreMapping({ contactForm }),
-        )
-
-        await result.current.handleStoreMappingCreation({
-            shop_integration_id: 456,
-        })
-
-        expect(mockCreateMapping).not.toHaveBeenCalled()
-    })
-
     it('should not create mapping when storeMappings exist', async () => {
-        mockUseFlag.mockReturnValue(true)
         mockUseListStoreMappings.mockReturnValue({
             data: [{ id: 1 }],
         } as any)
@@ -77,7 +59,6 @@ describe('usePreferencesStoreMapping', () => {
     })
 
     it('should not create mapping when shop_integration_id is not provided', async () => {
-        mockUseFlag.mockReturnValue(true)
         mockUseListStoreMappings.mockReturnValue({
             data: [],
         } as any)
@@ -92,7 +73,6 @@ describe('usePreferencesStoreMapping', () => {
     })
 
     it('should not create mapping when contact form integration_id is null', async () => {
-        mockUseFlag.mockReturnValue(true)
         mockUseListStoreMappings.mockReturnValue({
             data: [],
         } as any)
@@ -116,7 +96,6 @@ describe('usePreferencesStoreMapping', () => {
     })
 
     it('should create mapping when all conditions are met', async () => {
-        mockUseFlag.mockReturnValue(true)
         mockUseListStoreMappings.mockReturnValue({
             data: [],
         } as any)
@@ -138,7 +117,6 @@ describe('usePreferencesStoreMapping', () => {
     })
 
     it('should create mapping when storeMappings is null', async () => {
-        mockUseFlag.mockReturnValue(true)
         mockUseListStoreMappings.mockReturnValue({
             data: null,
         } as any)

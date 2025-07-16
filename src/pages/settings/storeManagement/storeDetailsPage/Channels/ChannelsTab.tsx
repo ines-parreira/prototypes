@@ -1,7 +1,5 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import {
     useCreateStoreMapping,
     useDeleteStoreMapping,
@@ -28,18 +26,8 @@ interface ChannelsTabProps {
 }
 
 export default function ChannelsTab({ storeId }: ChannelsTabProps) {
-    const allChannels = useChannels()
-    const includedChannelTypes = useFlag<string[]>(
-        FeatureFlagKey.MultiStoreIncludedChannels,
-        [],
-    )
-    const channels = useMemo(
-        () =>
-            allChannels.filter((channel) =>
-                includedChannelTypes.includes(channel.type),
-            ),
-        [allChannels, includedChannelTypes],
-    )
+    const channels = useChannels()
+
     const { refetchMapping } = useStoreManagementState()
     const { mutateAsync: createMapping } = useCreateStoreMapping()
     const { mutateAsync: deleteMapping } = useDeleteStoreMapping()

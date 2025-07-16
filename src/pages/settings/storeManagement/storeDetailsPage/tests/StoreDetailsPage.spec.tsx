@@ -5,7 +5,6 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
@@ -37,7 +36,6 @@ jest.mock('../../hooks/useStoresWithMaps', () => ({
     }),
 }))
 
-const mockUseFlag = assumeMock(useFlag)
 const mockChannelsTab = assumeMock(ChannelsTab)
 const mockuseStoreGetter = assumeMock(useStoreGetter)
 
@@ -45,7 +43,6 @@ describe('StoreDetailsPage', () => {
     const { QueryClientProvider } = mockQueryClientProvider()
 
     beforeEach(() => {
-        mockUseFlag.mockReset()
         mockChannelsTab.mockImplementation(() => <div>Mocked Channels Tab</div>)
         mockuseStoreGetter.mockReturnValue({
             isFetching: false,
@@ -54,29 +51,9 @@ describe('StoreDetailsPage', () => {
         })
     })
 
-    it('should render nothing when multi-store flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { container } = renderWithStore(
-            <MemoryRouter initialEntries={[`/settings/stores/1}`]}>
-                <QueryClientProvider>
-                    <StoreManagementProvider>
-                        <Route path="/settings/stores/:id">
-                            <StoreDetailsPage />
-                        </Route>
-                    </StoreManagementProvider>
-                </QueryClientProvider>
-            </MemoryRouter>,
-            {},
-        )
-
-        expect(container.firstChild).toBeNull()
-    })
-
-    it('should render page content when multi-store flag is enabled', async () => {
+    it('should render page content', async () => {
         const storeId = '123'
 
-        mockUseFlag.mockReturnValue(true)
         renderWithStore(
             <MemoryRouter initialEntries={[`/settings/stores/${storeId}`]}>
                 <QueryClientProvider>
@@ -101,7 +78,6 @@ describe('StoreDetailsPage', () => {
     })
 
     it('renders loader when fetching data', () => {
-        mockUseFlag.mockReturnValue(true)
         ;(useStoreGetter as jest.Mock).mockReturnValue({
             isFetching: true,
             data: null,
@@ -134,7 +110,6 @@ describe('StoreDetailsPage', () => {
         const storeId = '123'
         const storeName = 'My Test Store'
 
-        mockUseFlag.mockReturnValue(true)
         mockuseStoreGetter.mockReturnValue({
             isFetching: false,
             data: {

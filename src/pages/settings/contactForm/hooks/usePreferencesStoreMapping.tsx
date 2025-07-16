@@ -1,5 +1,3 @@
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { UpdateContactFormDto } from 'models/contactForm/types'
 import {
     useCreateStoreMapping,
@@ -26,13 +24,11 @@ export default function usePreferencesStoreMapping({
             refetchOnWindowFocus: false,
         },
     )
-    const isMultiStoreEnabled = useFlag(FeatureFlagKey.MultiStore, false)
 
     const handleStoreMappingCreation = async (
         updateContactFormDto: Pick<UpdateContactFormDto, 'shop_integration_id'>,
     ) => {
         if (
-            isMultiStoreEnabled &&
             (storeMappings == null || storeMappings.length <= 0) &&
             updateContactFormDto.shop_integration_id &&
             contactForm.integration_id != null
@@ -48,7 +44,6 @@ export default function usePreferencesStoreMapping({
 
     return {
         storeMappings,
-        isMultiStoreEnabled,
         handleStoreMappingCreation,
     }
 }
