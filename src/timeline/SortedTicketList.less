@@ -1,0 +1,22 @@
+:local {
+    .list {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        & > li + li {
+            margin-top: var(--layout-spacing-s);
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: 27px;
+            top: 0;
+            display: block;
+            width: 1px;
+            height: 100%;
+            border-left: 1px solid var(--neutral-grey-3);
+        }
+    }
+}

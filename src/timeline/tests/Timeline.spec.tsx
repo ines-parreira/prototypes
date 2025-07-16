@@ -17,6 +17,7 @@ import Timeline from '../Timeline'
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
+jest.mock('core/flags/hooks/useFlag', () => jest.fn())
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -289,6 +290,7 @@ describe('<Timeline />', () => {
         it('should log event and call modal.onOpen when a ticket card is clicked', () => {
             render(<Timeline shopperId={null} />)
 
+            // Find the link that wraps the TicketCard
             const card = screen.getAllByText('TicketCard')[0].parentElement
             card?.click()
 
