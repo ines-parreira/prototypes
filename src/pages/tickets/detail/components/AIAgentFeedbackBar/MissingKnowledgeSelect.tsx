@@ -34,7 +34,7 @@ type MissingKnowledgeSelectProps = {
     helpCenterId?: number | null
     guidanceHelpCenterId?: number
     snippetHelpCenterId?: number
-    enrichedData: ReturnType<typeof useEnrichFeedbackData>
+    enrichedData: ReturnType<typeof useEnrichFeedbackData> | null
     initialValues: SuggestedResource[]
     accountId: number
     onSubmit: (choices: Array<ChoiceOption>) => void
@@ -76,20 +76,22 @@ const MissingKnowledgeSelect = ({
     const [values, setValues] = useState<string[]>([])
 
     const choices = useMemo(() => {
+        if (!enrichedData) return []
+
         const resourcesData = {
-            articles: enrichedData.articles,
-            guidanceArticles: enrichedData.guidanceArticles,
-            sourceItems: enrichedData.sourceItems,
-            ingestedFiles: enrichedData.ingestedFiles,
-            macros: enrichedData.macros,
-            actions: enrichedData.actions,
-            helpCenters: enrichedData.helpCenters,
-            storeWebsiteQuestions: enrichedData.storeWebsiteQuestions,
+            articles: enrichedData.articles || [],
+            guidanceArticles: enrichedData.guidanceArticles || [],
+            sourceItems: enrichedData.sourceItems || [],
+            ingestedFiles: enrichedData.ingestedFiles || [],
+            macros: enrichedData.macros || [],
+            actions: enrichedData.actions || [],
+            helpCenters: enrichedData.helpCenters || [],
+            storeWebsiteQuestions: enrichedData.storeWebsiteQuestions || [],
         }
         return [
             // Order is important here, as it determines the order of the options in the select dropdown
             // GUIDANCES
-            ...enrichedData.guidanceArticles
+            ...(enrichedData?.guidanceArticles || [])
                 .filter((guidance) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -116,7 +118,7 @@ const MissingKnowledgeSelect = ({
                         guidance.visibility === 'UNLISTED',
                 })),
             // ACTIONS
-            ...enrichedData.actions
+            ...(enrichedData?.actions || [])
                 .filter((action) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -141,7 +143,7 @@ const MissingKnowledgeSelect = ({
                     hide: action?.entrypoints?.[0]?.deactivated_datetime,
                 })),
             // HELP CENTER ARTICLES
-            ...enrichedData.articles
+            ...(enrichedData?.articles || [])
                 .filter((article) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -168,7 +170,7 @@ const MissingKnowledgeSelect = ({
                         !article.translation.is_current,
                 })),
             //MACROS
-            ...enrichedData.macros
+            ...(enrichedData?.macros || [])
                 .filter((macro) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -193,14 +195,14 @@ const MissingKnowledgeSelect = ({
                     value: macro.id?.toString(),
                     type: AiAgentKnowledgeResourceTypeEnum.MACRO,
                 })),
-            ...enrichedData.storeWebsiteQuestions
+            ...(enrichedData?.storeWebsiteQuestions || [])
                 .filter((question) => {
                     return !knowledgeResources?.find(
                         (resource) =>
                             resource.resource.resourceId ===
                                 question.article_id.toString() &&
-                            resource.resource.resourceType ===
-                                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                            resource.resource.resourceType.toLowerCase() ===
+                                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET.toLowerCase(),
                     )
                 })
                 .map((question) => ({
@@ -219,7 +221,7 @@ const MissingKnowledgeSelect = ({
                     hide: question.helpCenterId !== snippetHelpCenterId,
                 })),
             // EXTERNAL WEBSITE LINKS
-            ...enrichedData.sourceItems
+            ...(enrichedData?.sourceItems || [])
                 .filter((snippet) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -232,7 +234,7 @@ const MissingKnowledgeSelect = ({
                 .map((snippet) => {
                     const meta = getResourceMetadata(
                         {
-                            id: snippet.id.toString(),
+                            id: snippet.id?.toString(),
                             type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                             title: snippet.title,
                         },
@@ -242,8 +244,8 @@ const MissingKnowledgeSelect = ({
 
                     return {
                         meta,
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${meta.title}`,
-                        value: snippet.id.toString(),
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.external_snippet}${meta?.title}`,
+                        value: snippet.id?.toString(),
                         type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                         hide:
                             snippet.helpCenterId !== snippetHelpCenterId ||
@@ -251,7 +253,7 @@ const MissingKnowledgeSelect = ({
                     }
                 }),
             //EXTERNAL FILES
-            ...enrichedData.ingestedFiles
+            ...(enrichedData?.ingestedFiles || [])
                 .filter((file) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -264,7 +266,7 @@ const MissingKnowledgeSelect = ({
                 .map((snippet) => {
                     const meta = getResourceMetadata(
                         {
-                            id: snippet.id.toString(),
+                            id: snippet.id?.toString(),
                             type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                             title: snippet.title,
                         },
@@ -274,8 +276,8 @@ const MissingKnowledgeSelect = ({
 
                     return {
                         meta,
-                        label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${meta.title}`,
-                        value: snippet.id.toString(),
+                        label: `${SIMPLIFIED_RESOURCE_LABELS.file_external_snippet}${meta?.title}`,
+                        value: snippet.id?.toString(),
                         type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                         hide:
                             snippet.helpCenterId !== snippetHelpCenterId ||

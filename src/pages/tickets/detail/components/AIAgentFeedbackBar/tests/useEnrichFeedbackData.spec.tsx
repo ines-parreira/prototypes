@@ -19,7 +19,9 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import {
+    getResourceMetadata,
     useEnrichFeedbackData,
+    useGetKnowledgeResourceData,
     useGetResourceData,
     useGetResourcesReasoningMetadata,
 } from '../useEnrichFeedbackData'
@@ -330,7 +332,7 @@ describe('useGetResourceData', () => {
             wrapper,
         })
 
-        expect(result.current.isLoading).toBe(true)
+        expect(result.current).toBe(null)
     })
 })
 
@@ -720,11 +722,11 @@ describe('useEnrichFeedbackData', () => {
             { wrapper },
         )
 
-        expect(result.current.isLoading).toBe(false)
+        expect(result.current?.isLoading).toBe(false)
 
         // Check that knowledgeResources has all resource types
         const knowledgeResourceTypes =
-            result.current.enrichedData.knowledgeResources.map(
+            result.current?.enrichedData.knowledgeResources.map(
                 (kr) => kr.resource.resourceType,
             )
 
@@ -743,7 +745,7 @@ describe('useEnrichFeedbackData', () => {
 
         // Check that suggestedResources has all resource types
         const suggestedResourceTypes =
-            result.current.enrichedData.suggestedResources.map(
+            result.current?.enrichedData.suggestedResources.map(
                 (sr) => sr.parsedResource.resourceType,
             )
 
@@ -757,9 +759,9 @@ describe('useEnrichFeedbackData', () => {
             'FILE_EXTERNAL_SNIPPET',
         ])
         // Check for the freeForm feedback
-        expect(result.current.enrichedData.freeForm).not.toBeNull()
+        expect(result.current?.enrichedData.freeForm).not.toBeNull()
         expect(
-            result.current.enrichedData.freeForm?.feedback.feedbackType,
+            result.current?.enrichedData.freeForm?.feedback.feedbackType,
         ).toBe('TICKET_FREEFORM')
     })
 
@@ -811,7 +813,7 @@ describe('useEnrichFeedbackData', () => {
             { wrapper },
         )
 
-        expect(result.current.enrichedData).toEqual({
+        expect(result.current?.enrichedData).toEqual({
             knowledgeResources: [],
             suggestedResources: [],
             freeForm: null,
@@ -861,7 +863,7 @@ describe('useEnrichFeedbackData', () => {
         )
 
         expect(
-            result.current.enrichedData.knowledgeResources[0].metadata,
+            result.current?.enrichedData.knowledgeResources[0].metadata,
         ).toEqual({
             title: '',
             content: '',
@@ -958,9 +960,9 @@ describe('useEnrichFeedbackData', () => {
         )
 
         // Should still work but guidance URL might be undefined due to missing shopName
-        expect(result.current.enrichedData.knowledgeResources).toHaveLength(1)
+        expect(result.current?.enrichedData.knowledgeResources).toHaveLength(1)
         expect(
-            result.current.enrichedData.knowledgeResources[0].metadata.title,
+            result.current?.enrichedData.knowledgeResources[0].metadata.title,
         ).toBe('Guidance Title')
     })
 
@@ -987,7 +989,7 @@ describe('useEnrichFeedbackData', () => {
         )
 
         // Should return empty data since queries are disabled
-        expect(result.current.enrichedData).toEqual({
+        expect(result.current?.enrichedData).toEqual({
             knowledgeResources: [],
             suggestedResources: [],
             freeForm: null,
@@ -1007,7 +1009,7 @@ describe('useEnrichFeedbackData', () => {
         )
 
         // Should return empty data since no data is provided
-        expect(result.current.enrichedData).toEqual({
+        expect(result.current?.enrichedData).toEqual({
             knowledgeResources: [],
             suggestedResources: [],
             freeForm: null,
@@ -1099,7 +1101,7 @@ describe('useEnrichFeedbackData', () => {
         )
 
         const resourceTypes =
-            result.current.enrichedData.knowledgeResources.map(
+            result.current?.enrichedData.knowledgeResources.map(
                 (kr) => kr.resource.resourceType,
             )
 
@@ -1146,7 +1148,7 @@ describe('useEnrichFeedbackData', () => {
         )
 
         expect(
-            result.current.enrichedData.knowledgeResources[0].metadata,
+            result.current?.enrichedData.knowledgeResources[0].metadata,
         ).toEqual({
             title: '',
             content: '',
@@ -1209,12 +1211,528 @@ describe('useEnrichFeedbackData', () => {
 
         // Should return empty metadata since file ingestion was not successful
         expect(
-            result.current.enrichedData.knowledgeResources[0].metadata,
+            result.current?.enrichedData.knowledgeResources[0].metadata,
         ).toEqual({
             title: '',
             content: '',
             isDeleted: true,
         })
+    })
+
+    it('should handle STORE_WEBSITE_QUESTION_SNIPPET when no matching question is found', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '999',
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'Non-existent Question',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].metadata,
+        ).toEqual({
+            title: '',
+            content: '',
+            isDeleted: true,
+        })
+    })
+
+    it('should handle non-existent article resources', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '999',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article Title',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData.knowledgeResources).toHaveLength(1)
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].metadata
+                .isDeleted,
+        ).toBe(true)
+    })
+
+    it('should handle non-existent suggested article resources', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const timestamp = new Date().toISOString()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [
+                        {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 'exec-123',
+                            targetType: 'TICKET',
+                            targetId: '123',
+                            feedbackType: 'SUGGESTED_RESOURCE',
+                            feedbackValue: JSON.stringify({
+                                resourceId: '999',
+                                resourceType: 'ARTICLE',
+                                resourceSetId: '100',
+                            }),
+                            submittedBy: 1,
+                            createdDatetime: timestamp,
+                            updatedDatetime: timestamp,
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData.suggestedResources).toHaveLength(1)
+        expect(
+            result.current?.enrichedData.suggestedResources[0].metadata
+                .isDeleted,
+        ).toBe(true)
+    })
+
+    it('should handle when main resource data is loading', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article Title',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [],
+            isLoading: true,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+        expect(result.current?.enrichedData).toEqual({
+            knowledgeResources: [],
+            suggestedResources: [],
+            freeForm: null,
+        })
+    })
+
+    it('should handle EXTERNAL_SNIPPET that becomes STORE_WEBSITE_QUESTION_SNIPPET when no matching question found', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '999',
+                            resourceType: 'EXTERNAL_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'External Snippet',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [
+                {
+                    id: 1,
+                    article_id: 123,
+                    title: 'Different Question',
+                    helpCenterId: 300,
+                },
+            ],
+            isLoading: false,
+        })
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
+            ingestedFiles: [],
+            isLoading: false,
+        })
+        ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
+            sourceItems: [],
+            isSourceItemsListLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData.knowledgeResources).toHaveLength(1)
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].metadata
+                .isDeleted,
+        ).toBe(true)
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].resource
+                .resourceType,
+        ).toBe('EXTERNAL_SNIPPET')
+    })
+
+    it('should return empty metadata for STORE_WEBSITE_QUESTION_SNIPPET with non-existent question ID', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '999',
+                            resourceType: 'STORE_WEBSITE_QUESTION_SNIPPET',
+                            resourceSetId: '300',
+                            resourceTitle: 'Missing Question',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [
+                {
+                    id: 1,
+                    article_id: 123,
+                    title: 'Different Question',
+                    helpCenterId: 300,
+                },
+            ],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+        expect(result.current?.enrichedData.knowledgeResources).toHaveLength(1)
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].metadata
+                .isDeleted,
+        ).toBe(true)
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].metadata.title,
+        ).toBe('')
+    })
+
+    it('should handle unknown resource type gracefully', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '999',
+                            resourceType: 'UNKNOWN_RESOURCE_TYPE' as any,
+                            resourceSetId: '100',
+                            resourceTitle: 'Unknown Resource',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData.knowledgeResources).toHaveLength(1)
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].metadata
+                .isDeleted,
+        ).toBe(true)
+    })
+
+    it('should handle null executions gracefully', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [],
+        } as Components.Schemas.FeedbackDto
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData).toEqual({
+            knowledgeResources: [],
+            suggestedResources: [],
+            freeForm: null,
+        })
+    })
+
+    it('skip resources when getResourceMetadata returns null', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article Title',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: 'test-store',
+                        shopType: 'shopify',
+                        faqHelpCenterId: 100,
+                        guidanceHelpCenterId: 200,
+                        snippetHelpCenterId: 300,
+                    },
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        const useEnrichFeedbackDataModule = require('../useEnrichFeedbackData')
+        const getResourceMetadataSpy = jest.spyOn(
+            useEnrichFeedbackDataModule,
+            'getResourceMetadata',
+        )
+
+        getResourceMetadataSpy.mockReturnValue(null)
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData.knowledgeResources).toHaveLength(0)
+
+        getResourceMetadataSpy.mockRestore()
+    })
+
+    it('skip suggested resources when getResourceMetadata returns null', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        const timestamp = new Date().toISOString()
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [
+                        {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 'exec-123',
+                            targetType: 'TICKET',
+                            targetId: '123',
+                            feedbackType: 'SUGGESTED_RESOURCE',
+                            feedbackValue: JSON.stringify({
+                                resourceId: '1',
+                                resourceType: 'ARTICLE',
+                                resourceSetId: '100',
+                            }),
+                            submittedBy: 1,
+                            createdDatetime: timestamp,
+                            updatedDatetime: timestamp,
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'test-store',
+                        shopType: 'shopify',
+                        faqHelpCenterId: 100,
+                        guidanceHelpCenterId: 200,
+                        snippetHelpCenterId: 300,
+                    },
+                },
+            ],
+        } as Components.Schemas.FeedbackDto
+
+        const useEnrichFeedbackDataModule = require('../useEnrichFeedbackData')
+        const getResourceMetadataSpy = jest.spyOn(
+            useEnrichFeedbackDataModule,
+            'getResourceMetadata',
+        )
+
+        getResourceMetadataSpy.mockReturnValue(null)
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData.suggestedResources).toHaveLength(0)
+
+        getResourceMetadataSpy.mockRestore()
     })
 })
 
@@ -1431,48 +1949,48 @@ describe('useGetResourcesReasoningMetadata', () => {
             { wrapper },
         )
 
-        expect(result.current.isLoading).toBe(false)
-        expect(result.current.data).toHaveLength(7)
+        expect(result.current?.isLoading).toBe(false)
+        expect(result.current?.data).toHaveLength(7)
 
-        expect(result.current.data[0]).toEqual({
+        expect(result.current?.data[0]).toEqual({
             title: 'Article Title',
             content: 'Article Content',
             url: expect.any(String),
             helpCenterId: 100,
         })
 
-        expect(result.current.data[1]).toEqual({
+        expect(result.current?.data[1]).toEqual({
             title: 'Guidance Title',
             content: 'Guidance Content',
             url: '/mock/guidance/edit/2',
             helpCenterId: 200,
         })
 
-        expect(result.current.data[2]).toEqual({
+        expect(result.current?.data[2]).toEqual({
             title: 'https://example.com',
             content: 'https://example.com',
             url: '/mock/articles/detail/300/3',
         })
 
-        expect(result.current.data[3]).toEqual({
+        expect(result.current?.data[3]).toEqual({
             title: 'test.pdf',
             content: 'test.pdf',
             url: expect.any(String),
         })
 
-        expect(result.current.data[4]).toEqual({
+        expect(result.current?.data[4]).toEqual({
             title: 'Macro Name',
             content: 'Macro Intent',
             url: '/app/settings/macros/5',
         })
 
-        expect(result.current.data[5]).toEqual({
+        expect(result.current?.data[5]).toEqual({
             title: 'Action Name',
             content: 'Action Name',
             url: expect.any(String),
         })
 
-        expect(result.current.data[6]).toEqual({
+        expect(result.current?.data[6]).toEqual({
             title: 'Order #123',
             content: 'Order #123',
             url: 'https://admin.shopify.com/store/test-store/orders/7',
@@ -1495,7 +2013,7 @@ describe('useGetResourcesReasoningMetadata', () => {
             { wrapper },
         )
 
-        expect(result.current.isLoading).toBe(true)
+        expect(result.current).toBe(null)
     })
 
     it('should handle disabled queries', () => {
@@ -1514,5 +2032,102 @@ describe('useGetResourcesReasoningMetadata', () => {
             { version_status: 'latest_draft', per_page: 1000 },
             expect.objectContaining({ enabled: false }),
         )
+    })
+})
+
+describe('useGetKnowledgeResourceData', () => {
+    const wrapper = ({ children }: any) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        queryClient.clear()
+
+        // Setup default mock returns
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [],
+            isLoading: false,
+        })
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: [],
+            isLoading: false,
+        })
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
+            ingestedFiles: [],
+            isLoading: false,
+        })
+        ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+        ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
+            sourceItems: [],
+            isSourceItemsListLoading: false,
+        })
+        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
+            data: { pages: [{ data: { data: [] } }] },
+            isLoading: false,
+            hasNextPage: false,
+            fetchNextPage: jest.fn(),
+        })
+        ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [],
+            isLoading: false,
+        })
+    })
+
+    it('should return null when loading', () => {
+        const params = {
+            queriesEnabled: true,
+            faqHelpCenterQueryData: { ids: [100], recordIds: [1] },
+            guidanceHelpCenterQueryData: { ids: [200], recordIds: [2] },
+            snippetHelpCenterQueryData: { ids: [300], recordIds: [3] },
+            macroIds: [5],
+            actionIds: [6],
+            shopName: 'test-store',
+            shopType: 'shopify',
+        }
+
+        // Make at least one dependency loading
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [],
+            isLoading: true, // This will trigger the loading state
+        })
+
+        const { result } = renderHook(
+            () => useGetKnowledgeResourceData(params),
+            { wrapper },
+        )
+
+        expect(result.current).toBe(null)
+    })
+})
+
+describe('getResourceMetadata', () => {
+    beforeEach(() => {
+        ldClientMock.allFlags.mockReturnValue({
+            'ai-shopping-assistant-enabled': false,
+        })
+    })
+
+    it('should return null when resourceData is null', () => {
+        const result = getResourceMetadata(
+            {
+                id: '1',
+                title: 'Test Title',
+                type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+            },
+            'test-store',
+            null,
+        )
+
+        expect(result).toBe(null)
     })
 })

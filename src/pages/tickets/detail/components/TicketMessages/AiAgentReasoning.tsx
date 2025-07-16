@@ -172,26 +172,25 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
         }
     }, [messageAiReasoning?.reasoning, messageAiReasoning?.resources])
 
-    const { data, isLoading: isResourcesReasoningMetadataLoading } =
-        useGetResourcesReasoningMetadata({
-            queriesEnabled: state !== 'collapsed',
-            resources: reasoningResources.filter(
-                (resource): resource is NonNullable<typeof resource> =>
-                    resource !== null,
-            ),
-            storeConfiguration: messageAiReasoning?.storeConfiguration,
-        })
+    const reasoningMetadata = useGetResourcesReasoningMetadata({
+        queriesEnabled: state !== 'collapsed',
+        resources: reasoningResources.filter(
+            (resource): resource is NonNullable<typeof resource> =>
+                resource !== null,
+        ),
+        storeConfiguration: messageAiReasoning?.storeConfiguration,
+    })
 
     useEffect(() => {
         if (reasoningContent === null) return
-        if (state === 'loading' && !isResourcesReasoningMetadataLoading) {
+        if (state === 'loading' && !reasoningMetadata?.isLoading) {
             if (reasoningContent) {
                 setState('expanded')
             } else {
                 setState('error')
             }
         }
-    }, [reasoningContent, state, isResourcesReasoningMetadataLoading])
+    }, [reasoningContent, state, reasoningMetadata?.isLoading])
 
     const handleToggleExpansion = useCallback(() => {
         if (state === 'collapsed') {
@@ -292,7 +291,7 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                 <AiAgentReasoningContent
                     reasoningContent={reasoningContent}
                     reasoningResources={reasoningResources}
-                    data={data}
+                    data={reasoningMetadata?.data}
                     storeConfiguration={messageAiReasoning?.storeConfiguration}
                     enableKnowledgeManagementFromTicketView={
                         enableKnowledgeManagementFromTicketView

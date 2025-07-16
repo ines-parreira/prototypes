@@ -19,18 +19,24 @@ interface UseFeedbackActionsParams {
     feedback: ReturnType<typeof useGetFeedback>['data']
     ticketId: number
     storeConfiguration?: StoreConfiguration
-    actions: ReturnType<typeof useEnrichFeedbackData>['actions']
-    guidanceArticles: ReturnType<
-        typeof useEnrichFeedbackData
+    actions: NonNullable<ReturnType<typeof useEnrichFeedbackData>>['actions']
+    guidanceArticles: NonNullable<
+        ReturnType<typeof useEnrichFeedbackData>
     >['guidanceArticles']
-    articles: ReturnType<typeof useEnrichFeedbackData>['articles']
-    sourceItems: ReturnType<typeof useEnrichFeedbackData>['sourceItems']
-    macros: ReturnType<typeof useEnrichFeedbackData>['macros']
-    ingestedFiles: ReturnType<typeof useEnrichFeedbackData>['ingestedFiles']
-    storeWebsiteQuestions: ReturnType<
-        typeof useEnrichFeedbackData
+    articles: NonNullable<ReturnType<typeof useEnrichFeedbackData>>['articles']
+    sourceItems: NonNullable<
+        ReturnType<typeof useEnrichFeedbackData>
+    >['sourceItems']
+    macros: NonNullable<ReturnType<typeof useEnrichFeedbackData>>['macros']
+    ingestedFiles: NonNullable<
+        ReturnType<typeof useEnrichFeedbackData>
+    >['ingestedFiles']
+    storeWebsiteQuestions: NonNullable<
+        ReturnType<typeof useEnrichFeedbackData>
     >['storeWebsiteQuestions']
-    enrichedData: ReturnType<typeof useEnrichFeedbackData>['enrichedData']
+    enrichedData?: NonNullable<
+        ReturnType<typeof useEnrichFeedbackData>
+    >['enrichedData']
     setLoadingMutations: React.Dispatch<
         React.SetStateAction<string[] | undefined>
     >
@@ -56,7 +62,7 @@ export const useFeedbackActions = ({
             if (choice.isDeleted) return null
             switch (choice.type) {
                 case AiAgentKnowledgeResourceTypeEnum.ACTION: {
-                    const action = actions.find((a) => a.id === choice.value)
+                    const action = actions?.find((a) => a.id === choice.value)
                     if (!action) return null
                     return {
                         resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
@@ -66,7 +72,7 @@ export const useFeedbackActions = ({
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.GUIDANCE: {
-                    const guidanceArticle = guidanceArticles.find(
+                    const guidanceArticle = guidanceArticles?.find(
                         (a) => a.id.toString() === choice.value,
                     )
                     if (!guidanceArticle) return null
@@ -79,7 +85,7 @@ export const useFeedbackActions = ({
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.ARTICLE: {
-                    const article = articles.find(
+                    const article = articles?.find(
                         (a) => a.id.toString() === choice.value,
                     )
                     if (!article) return null
@@ -92,7 +98,7 @@ export const useFeedbackActions = ({
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET: {
-                    const sourceItem = sourceItems.find(
+                    const sourceItem = sourceItems?.find(
                         (a) => a.id.toString() === choice.value,
                     )
                     if (!sourceItem) return null
@@ -106,7 +112,7 @@ export const useFeedbackActions = ({
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET: {
-                    const storeWebsiteQuestion = storeWebsiteQuestions.find(
+                    const storeWebsiteQuestion = storeWebsiteQuestions?.find(
                         (a) => a.id.toString() === choice.value,
                     )
                     if (!storeWebsiteQuestion) return null
@@ -120,7 +126,7 @@ export const useFeedbackActions = ({
                     }
                 }
                 case AiAgentKnowledgeResourceTypeEnum.MACRO: {
-                    const macro = macros.find(
+                    const macro = macros?.find(
                         (a) => a.id?.toString() === choice.value,
                     )
                     if (!macro) return null
@@ -196,59 +202,69 @@ export const useFeedbackActions = ({
                 choices
                     .map((choice) => {
                         const suggestedResource =
-                            enrichedData.suggestedResources.find((resource) => {
-                                switch (choice.type) {
-                                    case 'ARTICLE':
-                                        return (
-                                            resource.parsedResource
-                                                .resourceType === 'ARTICLE' &&
-                                            resource.parsedResource
-                                                .resourceId === choice.value &&
-                                            resource.parsedResource
-                                                .resourceSetId ===
-                                                storeConfiguration?.helpCenterId?.toString()
-                                        )
-                                    case 'GUIDANCE':
-                                        return (
-                                            resource.parsedResource
-                                                .resourceType === 'GUIDANCE' &&
-                                            resource.parsedResource
-                                                .resourceId === choice.value &&
-                                            resource.parsedResource
-                                                .resourceSetId ===
-                                                storeConfiguration?.guidanceHelpCenterId?.toString()
-                                        )
-                                    case 'EXTERNAL_SNIPPET':
-                                        return (
-                                            resource.parsedResource
-                                                .resourceType ===
-                                                'EXTERNAL_SNIPPET' &&
-                                            resource.parsedResource
-                                                .resourceId === choice.value &&
-                                            resource.parsedResource
-                                                .resourceSetId ===
-                                                storeConfiguration?.snippetHelpCenterId?.toString()
-                                        )
-                                    case 'FILE_EXTERNAL_SNIPPET':
-                                        return (
-                                            resource.parsedResource
-                                                .resourceType ===
-                                                'FILE_EXTERNAL_SNIPPET' &&
-                                            resource.parsedResource
-                                                .resourceId === choice.value &&
-                                            resource.parsedResource
-                                                .resourceSetId ===
-                                                storeConfiguration?.snippetHelpCenterId?.toString()
-                                        )
-                                    default:
-                                        return (
-                                            resource.parsedResource
-                                                .resourceId === choice.value &&
-                                            resource.parsedResource
-                                                .resourceType === choice.type
-                                        )
-                                }
-                            })
+                            enrichedData?.suggestedResources.find(
+                                (resource) => {
+                                    switch (choice.type) {
+                                        case 'ARTICLE':
+                                            return (
+                                                resource.parsedResource
+                                                    .resourceType ===
+                                                    'ARTICLE' &&
+                                                resource.parsedResource
+                                                    .resourceId ===
+                                                    choice.value &&
+                                                resource.parsedResource
+                                                    .resourceSetId ===
+                                                    storeConfiguration?.helpCenterId?.toString()
+                                            )
+                                        case 'GUIDANCE':
+                                            return (
+                                                resource.parsedResource
+                                                    .resourceType ===
+                                                    'GUIDANCE' &&
+                                                resource.parsedResource
+                                                    .resourceId ===
+                                                    choice.value &&
+                                                resource.parsedResource
+                                                    .resourceSetId ===
+                                                    storeConfiguration?.guidanceHelpCenterId?.toString()
+                                            )
+                                        case 'EXTERNAL_SNIPPET':
+                                            return (
+                                                resource.parsedResource
+                                                    .resourceType ===
+                                                    'EXTERNAL_SNIPPET' &&
+                                                resource.parsedResource
+                                                    .resourceId ===
+                                                    choice.value &&
+                                                resource.parsedResource
+                                                    .resourceSetId ===
+                                                    storeConfiguration?.snippetHelpCenterId?.toString()
+                                            )
+                                        case 'FILE_EXTERNAL_SNIPPET':
+                                            return (
+                                                resource.parsedResource
+                                                    .resourceType ===
+                                                    'FILE_EXTERNAL_SNIPPET' &&
+                                                resource.parsedResource
+                                                    .resourceId ===
+                                                    choice.value &&
+                                                resource.parsedResource
+                                                    .resourceSetId ===
+                                                    storeConfiguration?.snippetHelpCenterId?.toString()
+                                            )
+                                        default:
+                                            return (
+                                                resource.parsedResource
+                                                    .resourceId ===
+                                                    choice.value &&
+                                                resource.parsedResource
+                                                    .resourceType ===
+                                                    choice.type
+                                            )
+                                    }
+                                },
+                            )
 
                         const feedbackValue =
                             getSuggestedResourceFeedbackValue(choice)

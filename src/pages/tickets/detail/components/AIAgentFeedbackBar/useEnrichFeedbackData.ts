@@ -219,16 +219,7 @@ export const getResourceMetadata = (
         type: AiAgentKnowledgeResourceTypeEnum
     },
     shopName: string,
-    {
-        articles,
-        guidanceArticles,
-        sourceItems,
-        ingestedFiles,
-        macros,
-        actions,
-        helpCenters,
-        storeWebsiteQuestions,
-    }: {
+    resourceData: {
         articles: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
         >
@@ -253,7 +244,7 @@ export const getResourceMetadata = (
                 typeof useMultipleStoreWebsiteQuestions
             >['storeWebsiteQuestions']
         >
-    },
+    } | null,
 ) => {
     const flags = getLDClient().allFlags()
     const aiAgentRoutes = shopName
@@ -261,6 +252,21 @@ export const getResourceMetadata = (
         : undefined
 
     const idAsNumber = parseInt(id)
+
+    if (!resourceData) {
+        return null
+    }
+
+    const {
+        articles,
+        guidanceArticles,
+        sourceItems,
+        ingestedFiles,
+        macros,
+        actions,
+        helpCenters,
+        storeWebsiteQuestions,
+    } = resourceData
 
     switch (type) {
         case AiAgentKnowledgeResourceTypeEnum.ARTICLE: {
@@ -426,16 +432,7 @@ const getResourceType = (
 const useProcessResources = (
     executions: Components.Schemas.FeedbackDto['executions'] = [],
     shopName: string,
-    {
-        articles,
-        guidanceArticles,
-        sourceItems,
-        ingestedFiles,
-        macros,
-        actions,
-        helpCenters,
-        storeWebsiteQuestions,
-    }: {
+    resourceData: {
         articles: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
         >
@@ -460,7 +457,7 @@ const useProcessResources = (
                 typeof useMultipleStoreWebsiteQuestions
             >['storeWebsiteQuestions']
         >
-    },
+    } | null,
 ) => {
     return useMemo(() => {
         const output: {
@@ -473,14 +470,19 @@ const useProcessResources = (
             freeForm: null,
         }
 
+        if (!resourceData) {
+            return output
+        }
+
         executions.forEach((execution) => {
             execution.resources.forEach((resource) => {
                 const type = getResourceType(
                     resource.resourceId,
                     resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
                     {
-                        storeWebsiteQuestions,
-                        ingestedFiles,
+                        storeWebsiteQuestions:
+                            resourceData?.storeWebsiteQuestions ?? [],
+                        ingestedFiles: resourceData?.ingestedFiles ?? [],
                     },
                 )
 
@@ -492,16 +494,7 @@ const useProcessResources = (
                         type: resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
                     },
                     shopName,
-                    {
-                        articles,
-                        guidanceArticles,
-                        sourceItems,
-                        ingestedFiles,
-                        macros,
-                        actions,
-                        helpCenters,
-                        storeWebsiteQuestions,
-                    },
+                    resourceData,
                 )
 
                 if (!metadata) {
@@ -541,16 +534,7 @@ const useProcessResources = (
                                     type: parsedResource.resourceType as AiAgentKnowledgeResourceTypeEnum,
                                 },
                                 shopName,
-                                {
-                                    articles,
-                                    guidanceArticles,
-                                    sourceItems,
-                                    ingestedFiles,
-                                    macros,
-                                    actions,
-                                    helpCenters,
-                                    storeWebsiteQuestions,
-                                },
+                                resourceData,
                             )
                             if (!metadata) {
                                 return
@@ -599,18 +583,7 @@ const useProcessResources = (
         })
 
         return output
-    }, [
-        executions,
-        articles,
-        guidanceArticles,
-        sourceItems,
-        ingestedFiles,
-        macros,
-        actions,
-        shopName,
-        helpCenters,
-        storeWebsiteQuestions,
-    ])
+    }, [executions, shopName, resourceData])
 }
 
 export const useGetResourceData = ({
@@ -628,7 +601,6 @@ export const useGetResourceData = ({
     shopName: string
     shopType: string
 }) => {
-    // Fetch articles from multiple FAQ help centers
     const { articles, isLoading: isArticlesLoading } =
         useGetMultipleHelpCenterArticleLists(
             faqHelpCenterIds,
@@ -644,7 +616,10 @@ export const useGetResourceData = ({
             },
         )
 
-    const helpCenterIds = [...faqHelpCenterIds, ...guidanceHelpCenterIds]
+    const helpCenterIds = useMemo(
+        () => [...faqHelpCenterIds, ...guidanceHelpCenterIds],
+        [faqHelpCenterIds, guidanceHelpCenterIds],
+    )
 
     const { helpCenters, isLoading: isHelpCentersLoading } =
         useGetMultipleHelpCenter(helpCenterIds, {
@@ -654,7 +629,6 @@ export const useGetResourceData = ({
             cacheTime: DEFAULT_CACHE_TIME,
         })
 
-    // Fetch guidance articles
     const { guidanceArticles, isGuidanceArticleListLoading } =
         useMultipleGuidanceArticles(guidanceHelpCenterIds, {
             enabled: queriesEnabled,
@@ -662,7 +636,6 @@ export const useGetResourceData = ({
             cacheTime: DEFAULT_CACHE_TIME,
         })
 
-    // Fetch snippets from multiple help centers
     const { sourceItems, isSourceItemsListLoading } =
         useMultiplePublicResources({
             helpCenterIds: snippetHelpCenterIds,
@@ -673,11 +646,10 @@ export const useGetResourceData = ({
             },
         })
 
-    // Fetch file snippets from multiple help centers
     const { ingestedFiles, isLoading: isIngesting } =
         useGetMultipleFileIngestionSnippets(
             snippetHelpCenterIds,
-            {}, // No specific file IDs needed
+            {},
             {
                 enabled: queriesEnabled && snippetHelpCenterIds.length > 0,
                 staleTime: DEFAULT_STALE_TIME,
@@ -696,18 +668,15 @@ export const useGetResourceData = ({
             },
         })
 
-    // Fetch macros
     const { macros, isLoading: isMacrosLoading } =
         useMacroResources(queriesEnabled)
 
-    // Fetch actions
     const { actions, isLoading: isActionsLoading } = useActionResources(
         shopName,
         shopType,
         queriesEnabled && !!shopName && !!shopType,
     )
 
-    // Determine overall loading state
     const isLoading =
         isArticlesLoading ||
         isMacrosLoading ||
@@ -717,6 +686,168 @@ export const useGetResourceData = ({
         isIngesting ||
         isHelpCentersLoading ||
         isStoreWebsiteQuestionsLoading
+
+    return useMemo(() => {
+        if (isLoading) {
+            return null
+        }
+
+        return {
+            isLoading,
+            articles,
+            guidanceArticles,
+            sourceItems,
+            ingestedFiles,
+            macros,
+            actions,
+            helpCenters,
+            storeWebsiteQuestions,
+        }
+    }, [
+        isLoading,
+        articles,
+        guidanceArticles,
+        sourceItems,
+        ingestedFiles,
+        macros,
+        actions,
+        helpCenters,
+        storeWebsiteQuestions,
+    ])
+}
+
+export const useGetKnowledgeResourceData = (props: {
+    queriesEnabled: boolean
+    faqHelpCenterQueryData: { ids: number[]; recordIds: number[] }
+    guidanceHelpCenterQueryData: { ids: number[]; recordIds: number[] }
+    snippetHelpCenterQueryData: { ids: number[]; recordIds: number[] }
+    macroIds: number[]
+    actionIds: number[]
+    shopName: string
+    shopType: string
+}) => {
+    const {
+        queriesEnabled,
+        faqHelpCenterQueryData,
+        guidanceHelpCenterQueryData,
+        snippetHelpCenterQueryData,
+        macroIds,
+        actionIds,
+        shopName,
+        shopType,
+    } = props
+    const { articles, isLoading: isArticlesLoading } =
+        useGetMultipleHelpCenterArticleLists(
+            faqHelpCenterQueryData.ids,
+            {
+                ids: faqHelpCenterQueryData.recordIds,
+                version_status: 'latest_draft',
+                per_page: 1000,
+            },
+            {
+                enabled:
+                    queriesEnabled &&
+                    faqHelpCenterQueryData.ids.length > 0 &&
+                    faqHelpCenterQueryData.recordIds.length > 0,
+                refetchOnWindowFocus: false,
+                staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
+            },
+        )
+
+    const helpCenterIds = [
+        ...faqHelpCenterQueryData.ids,
+        ...guidanceHelpCenterQueryData.ids,
+    ]
+
+    const { helpCenters, isLoading: isHelpCentersLoading } =
+        useGetMultipleHelpCenter(helpCenterIds, {
+            enabled: queriesEnabled && helpCenterIds.length > 0,
+            refetchOnWindowFocus: false,
+            staleTime: DEFAULT_STALE_TIME,
+            cacheTime: DEFAULT_CACHE_TIME,
+        })
+
+    const { guidanceArticles, isGuidanceArticleListLoading } =
+        useMultipleGuidanceArticles(
+            guidanceHelpCenterQueryData.ids,
+            {
+                enabled:
+                    queriesEnabled &&
+                    guidanceHelpCenterQueryData.ids.length > 0 &&
+                    guidanceHelpCenterQueryData.recordIds.length > 0,
+                staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
+            },
+            {
+                ids: guidanceHelpCenterQueryData.recordIds,
+            },
+        )
+
+    const { sourceItems, isSourceItemsListLoading } =
+        useMultiplePublicResources({
+            helpCenterIds: snippetHelpCenterQueryData.ids,
+            queryOptionsOverrides: {
+                enabled:
+                    queriesEnabled &&
+                    snippetHelpCenterQueryData.ids.length > 0 &&
+                    snippetHelpCenterQueryData.recordIds.length > 0,
+                staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
+            },
+        })
+
+    const { ingestedFiles, isLoading: isIngesting } =
+        useGetMultipleFileIngestionSnippets(
+            snippetHelpCenterQueryData.ids,
+            {},
+            {
+                enabled:
+                    queriesEnabled &&
+                    snippetHelpCenterQueryData.ids.length > 0 &&
+                    snippetHelpCenterQueryData.recordIds.length > 0,
+                staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
+            },
+        )
+
+    const { storeWebsiteQuestions, isLoading: isStoreWebsiteQuestionsLoading } =
+        useMultipleStoreWebsiteQuestions({
+            snippetHelpCenterIds: snippetHelpCenterQueryData.ids,
+            shopName,
+            queryOptionsOverrides: {
+                enabled:
+                    queriesEnabled &&
+                    snippetHelpCenterQueryData.ids.length > 0 &&
+                    snippetHelpCenterQueryData.recordIds.length > 0,
+                staleTime: DEFAULT_STALE_TIME,
+                cacheTime: DEFAULT_CACHE_TIME,
+            },
+        })
+
+    const { macros, isLoading: isMacrosLoading } = useMacroResources(
+        queriesEnabled && macroIds.length > 0,
+    )
+
+    const { actions, isLoading: isActionsLoading } = useActionResources(
+        shopName,
+        shopType,
+        queriesEnabled && !!shopName && !!shopType && actionIds.length > 0,
+    )
+
+    const isLoading =
+        isArticlesLoading ||
+        isMacrosLoading ||
+        isGuidanceArticleListLoading ||
+        isSourceItemsListLoading ||
+        isActionsLoading ||
+        isIngesting ||
+        isHelpCentersLoading ||
+        isStoreWebsiteQuestionsLoading
+
+    if (isLoading) {
+        return null
+    }
 
     return {
         isLoading,
@@ -729,6 +860,129 @@ export const useGetResourceData = ({
         helpCenters,
         storeWebsiteQuestions,
     }
+}
+
+export const useGetKnowledgeResourceMetadata = ({
+    data,
+    storeConfiguration,
+    queriesEnabled,
+}: {
+    data?: Components.Schemas.FeedbackDto
+    storeConfiguration?: StoreConfiguration
+    queriesEnabled: boolean
+}) => {
+    const shopName = storeConfiguration?.storeName ?? ''
+    const shopType = storeConfiguration?.shopType ?? ''
+
+    const knowledgeReourceQueryData = useMemo(() => {
+        const knowledgeResources = data?.executions?.flatMap(
+            (execution) => execution.resources,
+        )
+        const {
+            faqHelpCenterQueryData,
+            guidanceHelpCenterQueryData,
+            snippetHelpCenterQueryData,
+            macroIds,
+            actionIds,
+        } = {
+            faqHelpCenterQueryData: {
+                ids: [] as number[],
+                recordIds: [] as number[],
+            },
+            guidanceHelpCenterQueryData: {
+                ids: [] as number[],
+                recordIds: [] as number[],
+            },
+            snippetHelpCenterQueryData: {
+                ids: [] as number[],
+                recordIds: [] as number[],
+            },
+            macroIds: [] as number[],
+            actionIds: [] as number[],
+        }
+        for (const resource of knowledgeResources ?? []) {
+            switch (resource.resourceType) {
+                case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
+                    if (
+                        !faqHelpCenterQueryData.ids.includes(
+                            Number(resource.resourceSetId),
+                        )
+                    ) {
+                        faqHelpCenterQueryData.ids.push(
+                            Number(resource.resourceSetId),
+                        )
+                    }
+                    faqHelpCenterQueryData.recordIds.push(
+                        Number(resource.resourceId),
+                    )
+                    break
+                case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
+                    if (
+                        !guidanceHelpCenterQueryData.ids.includes(
+                            Number(resource.resourceSetId),
+                        )
+                    ) {
+                        guidanceHelpCenterQueryData.ids.push(
+                            Number(resource.resourceSetId),
+                        )
+                    }
+                    guidanceHelpCenterQueryData.recordIds.push(
+                        Number(resource.resourceId),
+                    )
+                    break
+                case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
+                case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
+                case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET:
+                    if (
+                        !snippetHelpCenterQueryData.ids.includes(
+                            Number(resource.resourceSetId),
+                        )
+                    ) {
+                        snippetHelpCenterQueryData.ids.push(
+                            Number(resource.resourceSetId),
+                        )
+                    }
+                    snippetHelpCenterQueryData.recordIds.push(
+                        Number(resource.resourceId),
+                    )
+                    break
+                case AiAgentKnowledgeResourceTypeEnum.MACRO:
+                    macroIds.push(Number(resource.resourceId))
+                    break
+                case AiAgentKnowledgeResourceTypeEnum.ACTION:
+                    actionIds.push(Number(resource.resourceId))
+                    break
+            }
+        }
+        return {
+            faqHelpCenterQueryData,
+            guidanceHelpCenterQueryData,
+            snippetHelpCenterQueryData,
+            macroIds,
+            actionIds,
+        }
+    }, [data?.executions])
+
+    const resourceData = useGetKnowledgeResourceData({
+        queriesEnabled,
+        ...knowledgeReourceQueryData,
+        shopName,
+        shopType,
+    })
+
+    const { knowledgeResources } = useProcessResources(
+        data?.executions?.filter((execution) => execution.resources.length > 0),
+        shopName,
+        resourceData,
+    )
+
+    return useMemo(
+        () => ({
+            isLoading: resourceData?.isLoading,
+            knowledgeResources,
+        }),
+        [resourceData?.isLoading, knowledgeResources],
+    )
 }
 
 /**
@@ -752,16 +1006,15 @@ export const useEnrichFeedbackData = ({
     )
 
     const {
-        articles,
-        guidanceArticles,
-        sourceItems,
-        ingestedFiles,
-        macros,
-        actions,
-        helpCenters,
-        storeWebsiteQuestions,
-        isLoading,
-    } = useGetResourceData({
+        knowledgeResources,
+        isLoading: isKnowledgeResourceMetadataLoading,
+    } = useGetKnowledgeResourceMetadata({
+        data,
+        storeConfiguration,
+        queriesEnabled,
+    })
+
+    const resourceData = useGetResourceData({
         queriesEnabled,
         faqHelpCenterIds: relatedHelpCenterData.faqHelpCenterIds,
         guidanceHelpCenterIds: relatedHelpCenterData.guidanceHelpCenterIds,
@@ -771,28 +1024,24 @@ export const useEnrichFeedbackData = ({
     })
 
     // Process the fetched data into the final structure
-    const enrichedData = useProcessResources(data?.executions, shopName, {
-        articles,
-        guidanceArticles,
-        sourceItems: sourceItems ?? [],
-        storeWebsiteQuestions,
-        ingestedFiles: ingestedFiles ?? [],
-        macros,
-        actions,
-        helpCenters,
-    })
+    const enrichedData = useProcessResources(
+        data?.executions,
+        shopName,
+        resourceData,
+    )
+
+    if (!enrichedData) {
+        return null
+    }
 
     return {
-        isLoading,
-        enrichedData,
-        actions,
-        macros,
-        articles,
-        guidanceArticles,
-        sourceItems,
-        ingestedFiles,
-        helpCenters,
-        storeWebsiteQuestions,
+        isLoading: resourceData?.isLoading,
+        isKnowledgeResourceMetadataLoading,
+        enrichedData: {
+            ...enrichedData,
+            knowledgeResources,
+        },
+        ...resourceData,
     }
 }
 
@@ -843,25 +1092,19 @@ export const useGetResourcesReasoningMetadata = ({
         },
     )
 
-    const {
-        articles,
-        guidanceArticles,
-        sourceItems,
-        ingestedFiles,
-        macros,
-        actions,
-        helpCenters,
-        storeWebsiteQuestions,
-        isLoading,
-    } = useGetResourceData({
+    const resourceData = useGetResourceData({
         queriesEnabled,
         ...relatedHelpCenterData,
         shopName,
         shopType,
     })
 
+    if (!resourceData) {
+        return null
+    }
+
     return {
-        isLoading,
+        isLoading: resourceData.isLoading,
         data: resources.map((resource) => {
             return getResourceMetadata(
                 {
@@ -870,16 +1113,7 @@ export const useGetResourcesReasoningMetadata = ({
                     type: resource.resourceType,
                 },
                 shopName,
-                {
-                    articles,
-                    guidanceArticles,
-                    sourceItems,
-                    ingestedFiles,
-                    macros,
-                    actions,
-                    helpCenters,
-                    storeWebsiteQuestions,
-                },
+                resourceData,
             )
         }),
     }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -39,7 +39,6 @@ import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constan
 import { getViewsState } from 'state/views/selectors'
 
 const AIAgentSimplifiedFeedback = () => {
-    const [isInitialLoad, setIsInitialLoad] = useState(true)
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
     const viewsState = useAppSelector(getViewsState)
     const existingSections = useAppSelector(getSectionIdByName)
@@ -51,7 +50,6 @@ const AIAgentSimplifiedFeedback = () => {
 
     const [loadingFreeFormMutation, setLoadingFreeFormMutation] =
         useState<boolean>()
-    const prevLoadingRef = useRef(true)
 
     const ticket = useAppSelector(getTicketState)
     const account = useAppSelector(getCurrentAccountState)
@@ -117,6 +115,11 @@ const AIAgentSimplifiedFeedback = () => {
 
     const shopType = storeConfiguration?.shopType ?? ''
 
+    const enrichedFeedbackMetadata = useEnrichFeedbackData({
+        storeConfiguration,
+        data: feedback,
+    })
+
     const {
         isLoading: isLoadingEnrichedData,
         enrichedData,
@@ -128,10 +131,22 @@ const AIAgentSimplifiedFeedback = () => {
         ingestedFiles,
         helpCenters,
         storeWebsiteQuestions,
-    } = useEnrichFeedbackData({
-        storeConfiguration,
-        data: feedback,
-    })
+    } = useMemo(() => {
+        if (!enrichedFeedbackMetadata)
+            return {
+                isLoading: true,
+                enrichedData: undefined,
+                actions: [],
+                macros: [],
+                articles: [],
+                guidanceArticles: [],
+                sourceItems: [],
+                ingestedFiles: [],
+                helpCenters: [],
+                storeWebsiteQuestions: [],
+            }
+        return enrichedFeedbackMetadata
+    }, [enrichedFeedbackMetadata])
 
     const { mutateAsync: upsertFeedback } = useUpsertFeedback({
         objectId: ticketId.toString(),
@@ -183,23 +198,12 @@ const AIAgentSimplifiedFeedback = () => {
         }
     }
 
-    useEffect(() => {
-        if (!isInitialLoad) return
-
-        const wasLoading = prevLoadingRef.current
-        prevLoadingRef.current = isLoadingEnrichedData
-
-        if (wasLoading && !isLoadingEnrichedData) {
-            setIsInitialLoad(false)
-        }
-    }, [isLoadingEnrichedData, isInitialLoad])
-
     const handleFreeFormFeedbackChange = useCallback(
         async (value: string) => {
             setLoadingFreeFormMutation(true)
 
             const executionId =
-                enrichedData.freeForm?.executionId ??
+                enrichedData?.freeForm?.executionId ??
                 feedback?.executions?.[0]?.executionId
 
             // should never happen, since we're showing that we're still processing the details of this conversation
@@ -209,7 +213,7 @@ const AIAgentSimplifiedFeedback = () => {
             await upsertFeedback({
                 feedbackToUpsert: [
                     {
-                        id: enrichedData.freeForm?.feedback?.id,
+                        id: enrichedData?.freeForm?.feedback?.id,
                         objectId: ticketId.toString(),
                         objectType: 'TICKET',
                         executionId: executionId,
@@ -226,8 +230,8 @@ const AIAgentSimplifiedFeedback = () => {
         [
             ticketId,
             upsertFeedback,
-            enrichedData.freeForm?.executionId,
-            enrichedData.freeForm?.feedback?.id,
+            enrichedData?.freeForm?.executionId,
+            enrichedData?.freeForm?.feedback?.id,
             feedback?.executions,
         ],
     )
@@ -294,14 +298,18 @@ const AIAgentSimplifiedFeedback = () => {
                         </div>
 
                         <div className={css.sources}>
-                            {isInitialLoad
+                            {(enrichedData?.knowledgeResources.length ?? -1) !==
+                            feedback?.executions.flatMap(
+                                (execution) => execution.resources,
+                            ).length
                                 ? Array.from({ length: 3 }).map((_, index) => (
                                       <KnowledgeSourceFeedbackSkeleton
                                           key={index}
                                       />
                                   ))
-                                : enrichedData.knowledgeResources.length > 0
-                                  ? enrichedData.knowledgeResources.map(
+                                : (enrichedData?.knowledgeResources.length ??
+                                        0) > 0
+                                  ? enrichedData?.knowledgeResources.map(
                                         (resource) => (
                                             <KnowledgeSourceFeedback
                                                 key={resource.resource.id}
@@ -328,24 +336,14 @@ const AIAgentSimplifiedFeedback = () => {
                                     storeConfiguration?.snippetHelpCenterId
                                 }
                                 knowledgeResources={
-                                    enrichedData.knowledgeResources
+                                    enrichedData?.knowledgeResources
                                 }
-                                enrichedData={{
-                                    isLoading: isLoadingEnrichedData,
-                                    enrichedData,
-                                    actions,
-                                    macros,
-                                    articles,
-                                    guidanceArticles,
-                                    sourceItems,
-                                    ingestedFiles,
-                                    helpCenters,
-                                    storeWebsiteQuestions,
-                                }}
+                                enrichedData={enrichedFeedbackMetadata}
+                                disabled={isLoadingEnrichedData}
                                 onSubmit={onSubmitMissingKnowledge}
                                 onRemove={onSubmitMissingKnowledge}
                                 initialValues={
-                                    enrichedData.suggestedResources ?? []
+                                    enrichedData?.suggestedResources ?? []
                                 }
                                 accountId={accountId}
                                 shopName={shopName}
@@ -366,11 +364,12 @@ const AIAgentSimplifiedFeedback = () => {
                             onDebouncedChange={handleFreeFormFeedbackChange}
                             isMutationLoading={loadingFreeFormMutation}
                             initialValue={
-                                enrichedData.freeForm?.feedback
+                                enrichedData?.freeForm?.feedback
                                     ?.feedbackValue ?? ''
                             }
                             lastUpdated={
-                                enrichedData.freeForm?.feedback?.updatedDatetime
+                                enrichedData?.freeForm?.feedback
+                                    ?.updatedDatetime
                             }
                         />
                     </>
@@ -399,8 +398,8 @@ const AIAgentSimplifiedFeedback = () => {
                         <UnsavedChangesModalProvider>
                             <EditionManagerContextProvider>
                                 <KnowledgeSourceSideBar
-                                    articles={articles}
-                                    guidanceArticles={guidanceArticles}
+                                    articles={articles ?? []}
+                                    guidanceArticles={guidanceArticles ?? []}
                                     shopName={shopName}
                                     shopType={shopType}
                                     onSubmitNewMissingKnowledge={

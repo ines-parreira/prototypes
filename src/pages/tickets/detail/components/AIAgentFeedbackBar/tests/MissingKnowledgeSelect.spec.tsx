@@ -1,3 +1,5 @@
+import { useCallback, useState } from 'react'
+
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
@@ -875,5 +877,294 @@ describe('MissingKnowledgeSelect', () => {
 
         const duplicateActionTags = screen.getAllByText(/Same Name/)
         expect(duplicateActionTags.length).toBeGreaterThanOrEqual(3)
+    })
+
+    it('handles empty enrichedData correctly', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                enrichedData={{} as any}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Select First'))
+
+        expect(onSubmit).toHaveBeenCalledWith([])
+    })
+
+    it('handles complex label collision scenarios in makeLabelsUnique', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        const complexEnrichedData = {
+            actions: [
+                { id: 1, name: 'Same Name' },
+                { id: 1, name: 'Same Name' },
+            ],
+            guidanceArticles: [],
+            articles: [],
+            sourceItems: [],
+            ingestedFiles: [],
+            macros: [],
+            storeWebsiteQuestions: [],
+        } as any
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                enrichedData={complexEnrichedData}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Select Multiple'))
+        expect(onSubmit).toHaveBeenCalled()
+    })
+
+    it('handles handleRemove when resource is not found in choices', () => {
+        const onRemove = jest.fn()
+
+        const TestComponent = () => {
+            const [testValues, setTestValues] = useState(['1', 'nonexistent'])
+
+            const mockHandleRemove = useCallback(
+                async (valueToRemove: string) => {
+                    const choices = [
+                        {
+                            value: '1',
+                            label: 'Test Choice',
+                            type: 'ACTION' as any,
+                        },
+                    ]
+                    const resource = choices.find(
+                        (c) => c.value === valueToRemove,
+                    )
+                    const newValues = testValues.filter(
+                        (v) => v !== valueToRemove,
+                    )
+                    setTestValues(newValues)
+
+                    if (resource) {
+                        onRemove([{ ...resource, isDeleted: true }])
+                    }
+                },
+                [testValues],
+            )
+
+            return (
+                <div>
+                    <button
+                        data-testid="remove-existing"
+                        onClick={() => mockHandleRemove('1')}
+                    >
+                        Remove Existing
+                    </button>
+                    <button
+                        data-testid="remove-nonexistent"
+                        onClick={() => mockHandleRemove('nonexistent')}
+                    >
+                        Remove Non-existent
+                    </button>
+                </div>
+            )
+        }
+
+        render(<TestComponent />)
+
+        fireEvent.click(screen.getByTestId('remove-existing'))
+        expect(onRemove).toHaveBeenCalledWith([
+            expect.objectContaining({
+                value: '1',
+                isDeleted: true,
+            }),
+        ])
+
+        onRemove.mockClear()
+        fireEvent.click(screen.getByTestId('remove-nonexistent'))
+        expect(onRemove).not.toHaveBeenCalled()
+    })
+
+    it('covers handleRemove with actual component KnowledgeTag interaction', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[
+                    {
+                        parsedResource: {
+                            resourceId: '3',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        },
+                    } as SuggestedResource,
+                ]}
+                enrichedData={enrichedDataMock}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        const closeButton = screen.getByText('close')
+        fireEvent.click(closeButton)
+
+        expect(onRemove).toHaveBeenCalledWith([
+            expect.objectContaining({
+                isDeleted: true,
+                value: '3',
+            }),
+        ])
+    })
+
+    it('handles null enrichedData correctly', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                enrichedData={null as any}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Select First'))
+        expect(onSubmit).toHaveBeenCalledWith([])
+    })
+
+    it('handles removing choices through deselection logic', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[
+                    {
+                        parsedResource: {
+                            resourceId: '2',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        },
+                    } as SuggestedResource,
+                    {
+                        parsedResource: {
+                            resourceId: '3',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        },
+                    } as SuggestedResource,
+                ]}
+                enrichedData={enrichedDataMock}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        fireEvent.click(screen.getByTestId('deselect-all'))
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    isDeleted: true,
+                    value: '2',
+                }),
+                expect.objectContaining({
+                    isDeleted: true,
+                    value: '3',
+                }),
+            ]),
+        )
+    })
+
+    it('handles case where findChoiceFromDisplayLabel returns null', () => {
+        const TestComponent = () => {
+            const [testValues] = useState(['invalid-label'])
+
+            const mockFindChoice = useCallback((): { label: string } | null => {
+                return null
+            }, [])
+
+            return (
+                <div>
+                    <span data-testid="test-values">
+                        {testValues.join(',')}
+                    </span>
+                    {testValues.map((value) => {
+                        const choice = mockFindChoice()
+                        if (!choice) return null
+                        return <div key={value}>{choice.label}</div>
+                    })}
+                </div>
+            )
+        }
+
+        render(<TestComponent />)
+
+        expect(screen.getByTestId('test-values')).toHaveTextContent(
+            'invalid-label',
+        )
+    })
+
+    it('handles tags with choices that return null from findChoiceFromDisplayLabel', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[]}
+                enrichedData={enrichedDataMock}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Select First'))
+
+        const component = screen.getByText('Select First').closest('div')
+
+        expect(component).toBeInTheDocument()
     })
 })

@@ -8,6 +8,7 @@ import { sanitizeHtmlDefault } from 'utils/html'
 
 import KnowledgeSourceRenderer from '../AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import { AiAgentKnowledgeResourceTypeEnum } from '../AIAgentFeedbackBar/types'
+import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichFeedbackData'
 import { knowledgeResourceShouldBeLink } from '../AIAgentFeedbackBar/utils'
 
 import knowledgeSourceIconCss from '../AIAgentFeedbackBar/KnowledgeSourceIcon.less'
@@ -16,7 +17,10 @@ import css from './AiAgentReasoning.less'
 export type AiAgentReasoningContentProps = {
     reasoningContent: string | null
     reasoningResources: KnowledgeReasoningResource[]
-    data: any[]
+    data?: NonNullable<
+        ReturnType<typeof useGetResourcesReasoningMetadata>
+    >['data']
+
     storeConfiguration?: {
         shopName?: string
         shopType?: string
@@ -83,7 +87,7 @@ export const AiAgentReasoningContent = ({
                     kbd: ({ id }: { id?: string }) => {
                         const index = parseInt(id as string)
                         const resource = reasoningResources[index]
-                        const resourceData = data[index]
+                        const resourceData = data?.[index]
 
                         if (!resource || !resourceData) {
                             return null

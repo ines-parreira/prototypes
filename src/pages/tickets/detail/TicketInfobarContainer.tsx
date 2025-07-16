@@ -321,7 +321,7 @@ export const TicketInfobarContainer = ({
                 </Navbar>
             )}
 
-            {showAIAgentContent && <TicketFeedback />}
+            {showAIAgentContent && <TicketFeedback key={ticket.id} />}
 
             {showAutoQATabContent && (
                 <div className={css.autoQaContainer}>

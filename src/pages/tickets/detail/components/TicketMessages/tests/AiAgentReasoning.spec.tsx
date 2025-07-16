@@ -428,10 +428,12 @@ describe('AiAgentReasoning', () => {
 
     describe('Loading state', () => {
         it('should show loading state when clicked to expand', () => {
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
+            mockUseGetResourcesReasoningMetadata.mockReturnValue(null)
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
                 isLoading: true,
-            })
+                refetch: jest.fn(),
+            } as any)
 
             renderComponent()
 
@@ -445,10 +447,12 @@ describe('AiAgentReasoning', () => {
         })
 
         it('should transition to expanded state after loading timer', () => {
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
+            mockUseGetResourcesReasoningMetadata.mockReturnValue(null)
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
                 isLoading: true,
-            })
+                refetch: jest.fn(),
+            } as any)
 
             const { rerender } = renderComponent()
 
@@ -456,6 +460,42 @@ describe('AiAgentReasoning', () => {
             fireEvent.click(showReasoningButton)
 
             expect(screen.getByText('Loading reasoning...')).toBeInTheDocument()
+
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'OUTCOME',
+                            value: "Acknowledged the customer's confusion about CustomerInterestStage.READY_TO_BUY",
+                        },
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'AIAgentDecisionOutcome.WAIT_FOR_CUSTOMER_RESPONSE',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Sales <<<ARTICLE::16::13608>>> Support',
+                            targetId: 'task1',
+                        },
+                    ],
+                    resources: [
+                        {
+                            resourceType: 'ARTICLE',
+                            resourceId: '13608',
+                            resourceSetId: '16',
+                            resourceTitle: 'Test Article',
+                            resourceLocale: 'en',
+                            taskIds: ['task1'],
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
 
             mockUseGetResourcesReasoningMetadata.mockReturnValue({
                 data: [
@@ -493,10 +533,12 @@ describe('AiAgentReasoning', () => {
         })
 
         it('should not be clickable during loading', () => {
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
+            mockUseGetResourcesReasoningMetadata.mockReturnValue(null)
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
                 isLoading: true,
-            })
+                refetch: jest.fn(),
+            } as any)
 
             renderComponent()
 

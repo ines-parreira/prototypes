@@ -438,7 +438,11 @@ describe('AIAgentSimplifiedFeedback', () => {
 
     it('should render empty state when knowledgeResources length is zero and not in loading state', () => {
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { id: 123, storeConfiguration: 'test', resources: [] },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -1278,7 +1282,13 @@ describe('AIAgentSimplifiedFeedback', () => {
                 executions: [
                     {
                         // executionId missing from main execution
-                        resources: [],
+                        resources: [
+                            {
+                                // Add a resource to match the enrichedData knowledgeResources length
+                                id: '123',
+                                resourceType: 'ARTICLE',
+                            },
+                        ],
                     },
                 ],
             },
@@ -1568,6 +1578,79 @@ describe('AIAgentSimplifiedFeedback', () => {
         expect(
             screen.queryByText('KnowledgeSourceSideBar'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should render KnowledgeSourceSideBar with null articles and guidanceArticles to cover fallback', () => {
+        useKnowledgeSourceSideBarMocked.mockReturnValue({
+            selectedResource: {
+                knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                id: '123',
+                url: 'https://example.com',
+                title: 'Test Article',
+                content: 'Test content',
+            },
+            mode: null,
+            openPreview: jest.fn(),
+            openEdit: jest.fn(),
+            openCreate: jest.fn(),
+            closeModal: jest.fn(),
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [],
+            },
+            articles: null,
+            guidanceArticles: undefined,
+            helpCenters: helpCentersMock,
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(screen.getByText('KnowledgeSourceSideBar')).toBeInTheDocument()
+    })
+
+    it('should handle null enrichedFeedbackMetadata from useEnrichFeedbackData', () => {
+        useGetFeedbackMock.mockReturnValue({
+            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue(null)
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+
+        expect(screen.queryByText('No knowledge used')).not.toBeInTheDocument()
+    })
+
+    it('should handle when storeConfiguration is null to cover shopType fallback', () => {
+        jest.doMock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
+            useStoreConfiguration: () => ({
+                storeConfiguration: null,
+            }),
+        }))
+
+        useGetFeedbackMock.mockReturnValue({
+            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            ...initialFeedbackData,
+            enrichedData: {
+                knowledgeResources: [],
+                suggestedResources: undefined,
+            },
+            articles: null,
+            guidanceArticles: undefined,
+            isLoading: false,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
     })
 
     describe('useFeedbackTracking integration', () => {
