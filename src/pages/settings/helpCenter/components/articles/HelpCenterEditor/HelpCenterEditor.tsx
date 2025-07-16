@@ -1,9 +1,11 @@
-import { LegacyRef, useCallback, useEffect, useRef } from 'react'
+import { LegacyRef, useCallback, useEffect, useRef, useState } from 'react'
 
 import bytes from 'bytes'
 import classnames from 'classnames'
 import { zip } from 'lodash'
 import FroalaEditorComponentType from 'react-froala-wysiwyg'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LocaleCode } from 'models/helpCenter/types'
@@ -23,6 +25,8 @@ import {
     validateFileAttachments,
 } from './HelpCenterEditor.utils'
 import { Editor } from './types'
+
+import css from './HelpCenterEditor.less'
 
 type Props = {
     articleId?: number
@@ -50,6 +54,7 @@ const HelpCenterEditor = ({
     const { setIsEditorCodeViewActive } = useEditionManager()
     const nrOfFileAttachments = useRef(0)
     const editorOnRemoveAttachmentHandler = useRef<EventListener>()
+    const [isEditorInitialized, setIsEditorInitialized] = useState(false)
 
     // needed to specify the channel type of the attachment
     const helpCenter = useCurrentHelpCenter()
@@ -98,194 +103,213 @@ const HelpCenterEditor = ({
     )
 
     return (
-        <FroalaEditorComponent
-            model={value}
-            ref={editorRef as LegacyRef<FroalaEditorComponent>}
-            onModelChange={onModelChange}
-            tag="textarea"
-            config={{
-                ...config,
-                ...(hasOnePagerLayout && onePagerConfig),
-                editorClass: classnames(config.editorClass, className),
-                events: {
-                    'file.beforeUpload': function (fileList: FileList): false {
-                        const files = Array.from(fileList)
-                        if (files.length === 0) {
-                            return false
-                        }
+        <>
+            {!isEditorInitialized && (
+                <div className={css.skeletonWrapper}>
+                    <Skeleton count={2} height={72} className={css.skeleton} />
+                    <Skeleton count={20} height={24} className={css.skeleton} />
+                </div>
+            )}
 
-                        const errorMessage = validateFileAttachments(
-                            nrOfFileAttachments.current,
-                            files,
-                        )
+            <FroalaEditorComponent
+                model={value}
+                ref={editorRef as LegacyRef<FroalaEditorComponent>}
+                onModelChange={onModelChange}
+                tag="textarea"
+                config={{
+                    ...config,
+                    ...(hasOnePagerLayout && onePagerConfig),
+                    editorClass: classnames(config.editorClass, className),
+                    events: {
+                        'file.beforeUpload': function (
+                            fileList: FileList,
+                        ): false {
+                            const files = Array.from(fileList)
+                            if (files.length === 0) {
+                                return false
+                            }
 
-                        if (errorMessage !== null) {
-                            void dispatch(
-                                notify({
-                                    status: NotificationStatus.Error,
-                                    message: errorMessage,
-                                }),
+                            const errorMessage = validateFileAttachments(
+                                nrOfFileAttachments.current,
+                                files,
                             )
-                            return false
-                        }
 
-                        void uploadAttachments(files, {
-                            id: helpCenter.id,
-                            type: 'HC',
-                        })
-                            .then((attachments) => {
-                                const editor = editorRef.current?.editor
-
-                                if (
-                                    !editor ||
-                                    !editorOnRemoveAttachmentHandler.current
-                                ) {
-                                    // This should not happen, this is only for typescript to get this is not null
-                                    return false
-                                }
-
-                                zip(files, attachments).forEach(
-                                    ([file, attachment]) => {
-                                        if (!file || !attachment) return
-
-                                        const prettySize = bytes(file.size, {
-                                            decimalPlaces: 1,
-                                        })
-
-                                        const html =
-                                            generateEditorAttachmentHTML({
-                                                fileName: file.name,
-                                                prettySize,
-                                                url: attachment.url,
-                                            })
-
-                                        editor.html.insert(html, false)
-                                    },
-                                )
-
-                                editor.undo.saveStep()
-
-                                resetEditorOnRemoveAttachmentHandlers(
-                                    editor,
-                                    editorOnRemoveAttachmentHandler.current,
-                                )
-                            })
-                            .catch((err) => {
+                            if (errorMessage !== null) {
                                 void dispatch(
                                     notify({
                                         status: NotificationStatus.Error,
-                                        message: err.message,
+                                        message: errorMessage,
                                     }),
                                 )
+                                return false
+                            }
+
+                            void uploadAttachments(files, {
+                                id: helpCenter.id,
+                                type: 'HC',
                             })
+                                .then((attachments) => {
+                                    const editor = editorRef.current?.editor
 
-                        return false
-                    },
-                    'image.beforeUpload': function (images: FileList) {
-                        if (images.length === 0) {
-                            return false
-                        }
+                                    if (
+                                        !editor ||
+                                        !editorOnRemoveAttachmentHandler.current
+                                    ) {
+                                        // This should not happen, this is only for typescript to get this is not null
+                                        return false
+                                    }
 
-                        void uploadAttachments([images[0]], {
-                            id: helpCenter.id,
-                            type: 'HC',
-                        })
-                            .then((res) => {
-                                const editor = editorRef.current?.editor
+                                    zip(files, attachments).forEach(
+                                        ([file, attachment]) => {
+                                            if (!file || !attachment) return
 
-                                if (!editor) {
-                                    // This should not happen, this is only for typescript to get this is not null
-                                    return false
-                                }
+                                            const prettySize = bytes(
+                                                file.size,
+                                                {
+                                                    decimalPlaces: 1,
+                                                },
+                                            )
 
-                                // intercept the insertion of the image
-                                // else by default, froala uses base64 images
-                                const { url } = res[0]
+                                            const html =
+                                                generateEditorAttachmentHTML({
+                                                    fileName: file.name,
+                                                    prettySize,
+                                                    url: attachment.url,
+                                                })
 
-                                // This is needed to make sure the image we just uploaded is available at the given URL before trying to display it
-                                setTimeout(() => {
-                                    editor.image.insert(
-                                        url,
-                                        false,
-                                        null,
-                                        editor.image.get(),
-                                        res,
+                                            editor.html.insert(html, false)
+                                        },
                                     )
-                                }, 500)
+
+                                    editor.undo.saveStep()
+
+                                    resetEditorOnRemoveAttachmentHandlers(
+                                        editor,
+                                        editorOnRemoveAttachmentHandler.current,
+                                    )
+                                })
+                                .catch((err) => {
+                                    void dispatch(
+                                        notify({
+                                            status: NotificationStatus.Error,
+                                            message: err.message,
+                                        }),
+                                    )
+                                })
+
+                            return false
+                        },
+                        'image.beforeUpload': function (images: FileList) {
+                            if (images.length === 0) {
+                                return false
+                            }
+
+                            void uploadAttachments([images[0]], {
+                                id: helpCenter.id,
+                                type: 'HC',
                             })
-                            .catch(() => {
-                                void dispatch(
-                                    notify({
-                                        message: 'Failed to upload the image',
-                                        status: NotificationStatus.Error,
-                                    }),
-                                )
-                            })
+                                .then((res) => {
+                                    const editor = editorRef.current?.editor
 
-                        // return false so that Froala next actions won't be triggered
-                        return false
-                    },
-                    'commands.before': function (command: string) {
-                        const editor = editorRef.current?.editor
+                                    if (!editor) {
+                                        // This should not happen, this is only for typescript to get this is not null
+                                        return false
+                                    }
 
-                        if (!editor) return
+                                    // intercept the insertion of the image
+                                    // else by default, froala uses base64 images
+                                    const { url } = res[0]
 
-                        // Clear formatting before applying paragraph format
-                        if (command === 'paragraphFormat') {
-                            editor.commands.clearFormatting()
-                        }
-                    },
-                    'commands.after': function () {
-                        const editor = editorRef.current?.editor
+                                    // This is needed to make sure the image we just uploaded is available at the given URL before trying to display it
+                                    setTimeout(() => {
+                                        editor.image.insert(
+                                            url,
+                                            false,
+                                            null,
+                                            editor.image.get(),
+                                            res,
+                                        )
+                                    }, 500)
+                                })
+                                .catch(() => {
+                                    void dispatch(
+                                        notify({
+                                            message:
+                                                'Failed to upload the image',
+                                            status: NotificationStatus.Error,
+                                        }),
+                                    )
+                                })
 
-                        if (!editor) return
+                            // return false so that Froala next actions won't be triggered
+                            return false
+                        },
+                        'commands.before': function (command: string) {
+                            const editor = editorRef.current?.editor
 
-                        setIsEditorCodeViewActive(editor.codeView.isActive())
-                    },
-                    'video.linkError': function () {
-                        const editor = editorRef.current?.editor
+                            if (!editor) return
 
-                        if (!editor) return
+                            // Clear formatting before applying paragraph format
+                            if (command === 'paragraphFormat') {
+                                editor.commands.clearFormatting()
+                            }
+                        },
+                        'commands.after': function () {
+                            const editor = editorRef.current?.editor
 
-                        const videoProviders: string[] =
-                            FroalaEditor.VIDEO_PROVIDERS.map(
-                                ({ provider }: { provider: string }) =>
-                                    provider,
+                            if (!editor) return
+
+                            setIsEditorCodeViewActive(
+                                editor.codeView.isActive(),
                             )
-                        const $popup = editor.popups
-                            .get('video.insert')
-                            .find('.fr-video-progress-bar-layer')
-                            .find('h3')
+                        },
+                        'video.linkError': function () {
+                            const editor = editorRef.current?.editor
 
-                        // Customize video link error message
-                        $popup.html(
-                            `Unsupported video link.</br>Supported video platforms: ${videoProviders.join(
-                                ', ',
-                            )}.`,
-                        )
+                            if (!editor) return
+
+                            const videoProviders: string[] =
+                                FroalaEditor.VIDEO_PROVIDERS.map(
+                                    ({ provider }: { provider: string }) =>
+                                        provider,
+                                )
+                            const $popup = editor.popups
+                                .get('video.insert')
+                                .find('.fr-video-progress-bar-layer')
+                                .find('h3')
+
+                            // Customize video link error message
+                            $popup.html(
+                                `Unsupported video link.</br>Supported video platforms: ${videoProviders.join(
+                                    ', ',
+                                )}.`,
+                            )
+                        },
+                        initialized: function () {
+                            const editor = editorRef.current?.editor
+                            if (!editor) return
+
+                            const content = editor.html.get(true)
+
+                            onEditorReady?.(replaceUploadUrls(content))
+
+                            const closeClickEventHandler =
+                                createOnCloseEventHandler(editor)
+
+                            editorOnRemoveAttachmentHandler.current =
+                                closeClickEventHandler
+
+                            resetEditorOnRemoveAttachmentHandlers(
+                                editor,
+                                closeClickEventHandler,
+                            )
+
+                            setIsEditorInitialized(true)
+                        },
                     },
-                    initialized: function () {
-                        const editor = editorRef.current?.editor
-                        if (!editor) return
-
-                        const content = editor.html.get(true)
-
-                        onEditorReady?.(replaceUploadUrls(content))
-
-                        const closeClickEventHandler =
-                            createOnCloseEventHandler(editor)
-
-                        editorOnRemoveAttachmentHandler.current =
-                            closeClickEventHandler
-
-                        resetEditorOnRemoveAttachmentHandlers(
-                            editor,
-                            closeClickEventHandler,
-                        )
-                    },
-                },
-            }}
-        />
+                }}
+            />
+        </>
     )
 }
 

@@ -4,7 +4,6 @@
 
 :local {
     .froalaEditorWrapper {
-        height: ~'calc(100% - 180px)';
         display: flex;
         flex-direction: column;
         min-height: 0;
@@ -185,6 +184,15 @@
                     background-color: var(--neutral-grey-2);
                 }
             }
+        }
+    }
+
+    .skeletonWrapper {
+        min-height: 400px;
+        padding: var(--layout-spacing-l);
+
+        .skeleton {
+            margin-bottom: var(--layout-spacing-m);
         }
     }
 }
