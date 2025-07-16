@@ -79,12 +79,12 @@ export const initDatadogRum = ({
         trackResources: true,
         trackLongTasks: true,
         beforeSend: (event) => {
-            if (
-                event.type === 'error' &&
-                event.error?.message?.includes(
-                    'ResizeObserver loop completed with undelivered notifications.',
-                )
-            ) {
+            /**
+             * Error monitoring is handled by Sentry.
+             * We don't need to send errors to Datadog.
+             * We only use Datadog for performance monitoring.
+             */
+            if (event.type === 'error') {
                 return false
             }
             return true

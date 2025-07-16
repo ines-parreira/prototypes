@@ -119,30 +119,19 @@ describe('datadog', () => {
             })
         })
 
-        it('should filter out ResizeObserver errors in beforeSend', () => {
+        it('should filter out errors in beforeSend', () => {
             initDatadogRum(defaultOptions)
 
             const initCall = (datadogRum.init as jest.Mock).mock.calls[0][0]
             const beforeSend = initCall.beforeSend
 
-            // Test that ResizeObserver errors are filtered out
-            const resizeObserverError = {
+            const error = {
                 type: 'error',
                 error: {
-                    message:
-                        'ResizeObserver loop completed with undelivered notifications.',
+                    message: 'Some error message',
                 },
             }
-            expect(beforeSend(resizeObserverError)).toBe(false)
-
-            // Test that other errors are not filtered
-            const otherError = {
-                type: 'error',
-                error: {
-                    message: 'Some other error message',
-                },
-            }
-            expect(beforeSend(otherError)).toBe(true)
+            expect(beforeSend(error)).toBe(false)
 
             // Test that non-error events are not filtered
             const nonErrorEvent = {
