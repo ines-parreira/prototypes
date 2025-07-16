@@ -9,12 +9,12 @@ overrides:
 
 catalogs:
   rest-api-sdk:
-    '@gorgias/helpdesk-client': '0.9.12'
-    '@gorgias/helpdesk-mocks': '0.7.56'
-    '@gorgias/helpdesk-queries': '0.9.12'
-    '@gorgias/helpdesk-spec': '0.11.11'
-    '@gorgias/helpdesk-types': '0.7.54'
-    '@gorgias/helpdesk-validators': '0.7.56'
+    '@gorgias/helpdesk-client': '0.9.15'
+    '@gorgias/helpdesk-mocks': '0.7.59'
+    '@gorgias/helpdesk-queries': '0.9.15'
+    '@gorgias/helpdesk-spec': '0.11.14'
+    '@gorgias/helpdesk-types': '0.7.57'
+    '@gorgias/helpdesk-validators': '0.7.59'
     '@gorgias/knowledge-service-client': '0.2.17'
     '@gorgias/knowledge-service-mocks': '0.2.17'
     '@gorgias/knowledge-service-queries': '0.2.17'

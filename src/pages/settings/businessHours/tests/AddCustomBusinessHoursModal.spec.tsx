@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,10 +8,6 @@ import { mockCreateBusinessHoursHandler } from '@gorgias/helpdesk-mocks'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import AddCustomBusinessHoursModal from '../AddCustomBusinessHoursModal'
-
-jest.mock('../AddCustomBusinessHoursModalGeneralSection', () => () => (
-    <div>AddCustomBusinessHoursModalGeneralSection</div>
-))
 
 jest.mock('../CustomBusinessHoursIntegrationsTable', () => () => (
     <div>CustomBusinessHoursIntegrationsTable</div>
@@ -72,7 +68,7 @@ describe('AddCustomBusinessHoursModal', () => {
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText('AddCustomBusinessHoursModalGeneralSection'),
+            screen.getByRole('textbox', { name: 'Name required' }),
         ).toBeInTheDocument()
 
         expect(
@@ -105,15 +101,22 @@ describe('AddCustomBusinessHoursModal', () => {
         const user = userEvent.setup()
         renderComponent()
 
+        const nameField = screen.getByRole('textbox', {
+            name: 'Name required',
+        })
+        await act(() => user.type(nameField, 'test'))
+
         const addBusinessHoursButton = screen.getByRole('button', {
             name: 'Add Business Hours',
         })
         await act(() => user.click(addBusinessHoursButton))
 
-        expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
-        expect(mockNotify.success).toHaveBeenCalledWith(
-            `'${mockCreateBusinessHours.data.name}' business hours were successfully created.`,
-        )
+        await waitFor(() => {
+            expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+            expect(mockNotify.success).toHaveBeenCalledWith(
+                `'${mockCreateBusinessHours.data.name}' business hours were successfully created.`,
+            )
+        })
     })
 
     it('calls errorNotify when createBusinessHours fails', async () => {
@@ -132,12 +135,19 @@ describe('AddCustomBusinessHoursModal', () => {
         const user = userEvent.setup()
         renderComponent()
 
+        const nameField = screen.getByRole('textbox', {
+            name: 'Name required',
+        })
+        await act(() => user.type(nameField, 'test'))
+
         const addBusinessHoursButton = screen.getByRole('button', {
             name: 'Add Business Hours',
         })
 
         await act(() => user.click(addBusinessHoursButton))
 
-        expect(mockNotify.error).toHaveBeenCalledTimes(1)
+        await waitFor(() => {
+            expect(mockNotify.error).toHaveBeenCalledTimes(1)
+        })
     })
 })
