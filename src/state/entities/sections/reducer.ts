@@ -13,7 +13,7 @@ const initialState: SectionsState = {}
 const sectionsReducer = createReducer<SectionsState>(initialState, (builder) =>
     builder
         .addCase(sectionsFetched, (state, { payload }) => {
-            payload.map((section) => {
+            payload?.map((section) => {
                 state[section.id.toString()] = section
             })
         })

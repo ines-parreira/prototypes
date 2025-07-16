@@ -16,6 +16,16 @@ describe('sections reducer', () => {
             )
             expect(newState).toMatchSnapshot()
         })
+
+        it('should handle when payload is undefined', () => {
+            const newState = reducer({}, sectionsFetched(undefined))
+            expect(newState).toEqual({})
+        })
+
+        it('should handle when payload is null', () => {
+            const newState = reducer({}, sectionsFetched(null))
+            expect(newState).toEqual({})
+        })
     })
 
     describe('sectionCreated action', () => {

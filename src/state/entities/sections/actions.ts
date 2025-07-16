@@ -8,7 +8,9 @@ import {
     SECTIONS_FETCHED,
 } from './constants'
 
-export const sectionsFetched = createAction<Section[]>(SECTIONS_FETCHED)
+export const sectionsFetched = createAction<Section[] | undefined | null>(
+    SECTIONS_FETCHED,
+)
 
 export const sectionCreated = createAction<Section>(SECTION_CREATED)
 
