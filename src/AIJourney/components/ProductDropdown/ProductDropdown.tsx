@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -24,6 +24,12 @@ export const ProductDropdown = ({
 
     const [isOpen, setIsOpen] = useState(false)
     const [selectedOption, setSelectedOption] = useState<Product>(options[0])
+
+    useEffect(() => {
+        if (options.length > 0 && !selectedOption) {
+            setSelectedOption(options[0])
+        }
+    }, [options, selectedOption])
 
     const productDropdownOptionsClass = classNames(css.productDropdownOptions, {
         [css['productDropdownOptions--open']]: isOpen,

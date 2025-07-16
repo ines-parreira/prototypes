@@ -6,21 +6,22 @@ type OnboardingStepSelectorProps = {
     steps: {
         stepName: string
         stepIndicator: number
-        isActive: boolean
     }[]
+    activeStep?: string
 }
 
 export const OnboardingStepSelector = ({
     steps,
+    activeStep,
 }: OnboardingStepSelectorProps) => {
     return (
         <div className={css.onboardingSteps}>
-            {steps.map(({ stepName, stepIndicator, isActive }, index) => (
+            {steps.map(({ stepName, stepIndicator }, index) => (
                 <OnboardingStep
                     key={index}
                     stepName={stepName}
                     stepIndicator={stepIndicator}
-                    isActive={isActive}
+                    isActive={activeStep === stepName}
                 />
             ))}
         </div>

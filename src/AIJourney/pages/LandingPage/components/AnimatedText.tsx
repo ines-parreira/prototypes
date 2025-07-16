@@ -5,7 +5,7 @@ import { splitStringUsingRegex } from 'AIJourney/utils'
 import css from './AnimatedText.less'
 
 const text =
-    'AI Journey automatically creates and sends personalized SMS messages to shoppers who abandon their cart. No need for templates — Gorgias handles everything, from syncing opted-in subscribers from your platforms to personalizing and delivering each message. \n We know your brand and your shoppers. By combining your existing tone of voice and brand guidelines with the invaluable data we have — including cart contents, pages visited, search history, past orders, and previous conversations — AI Journey crafts impactful, on-brand, and hyper-personalized messages that delight your customers and drive more conversions.'
+    "Gorgias' new AI Journey will help you automatically craft impactful, on-brand and hyper personalized SMS to delight your customers and drive up your conversion rates."
 
 const charVariants = {
     hidden: { opacity: 0 },

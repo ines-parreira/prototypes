@@ -14,23 +14,10 @@
         transition:
             height 0.2s linear,
             background 0.2s linear;
-        margin: var(--layout-spacing-s) 0;
         max-width: 400px;
 
         &--disabled {
             opacity: 0.5;
-        }
-    }
-
-    @media (max-width: 900px) {
-        .fakeBorder {
-            margin: var(--layout-spacing-xxs) 0;
-        }
-    }
-
-    @media (min-width: 1920px) {
-        .fakeBorder {
-            margin: var(--layout-spacing-l) 0;
         }
     }
 
@@ -84,5 +71,23 @@
         pointer-events: none;
         white-space: nowrap;
         color: var(--neutral-grey-0);
+    }
+
+    .linkButton {
+        width: 100%;
+        height: 40px;
+        color: var(--neutral-grey-6);
+        border-radius: var(--layout-spacing-s);
+        border: 1px solid #080b20;
+        font-weight: 500;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: var(--neutral-grey-2);
+            color: var(--neutral-grey-6);
+        }
     }
 }

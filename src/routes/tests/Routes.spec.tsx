@@ -829,7 +829,10 @@ describe('<Routes/>', () => {
             )
 
             expect(
-                screen.getByText('Conversation Setup step'),
+                screen.getByText("Your Agent's phone number"),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Select the number of follow-ups'),
             ).toBeInTheDocument()
         })
 
@@ -850,7 +853,12 @@ describe('<Routes/>', () => {
                 </Provider>,
             )
 
-            expect(screen.getByText('Activation step')).toBeInTheDocument()
+            expect(screen.getByText('Customer scenario')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Select the phone number to preview your campaign',
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should redirect to first store when no store is passed in the URL', async () => {

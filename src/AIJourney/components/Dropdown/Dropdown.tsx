@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
-import arrowIcon from 'assets/img/ai-journey/arrow.svg'
-import checkedIcon from 'assets/img/ai-journey/checked.svg'
 import selectedIcon from 'assets/img/ai-journey/selected.svg'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
 
@@ -54,14 +52,13 @@ export const Dropdown = ({ options, value, onChange }: DropdownProps) => {
                 className={css.dropdownSelect}
                 onClick={() => setIsOpen(!isOpen)}
             >
-                {selectedOption && <img src={checkedIcon} alt="icon" />}
                 <span className={selectedOptionClass}>
                     {selectedOption?.phone_number_friendly.replace(
                         /^[^\s]+\s/,
                         '',
                     ) || 'Select'}
                 </span>
-                <img src={arrowIcon} alt="arrow" />
+                <i className="material-icons-outlined">keyboard_arrow_down</i>
             </div>
             <ul className={dropdownOptionsClass} role="listbox">
                 {hasAvailableOptions ? (

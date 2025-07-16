@@ -47,7 +47,11 @@ describe('<EnableDiscountField />', () => {
     })
     it('should render field information and info', () => {
         render(<EnableDiscountField />)
-        expect(screen.getByText('Discount code')).toBeInTheDocument()
-        expect(screen.getByText('Boost conversion by 50%')).toBeInTheDocument()
+        expect(screen.getByText('Include a discount code')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'A discount code will be included with the follow-up message',
+            ),
+        ).toBeInTheDocument()
     })
 })

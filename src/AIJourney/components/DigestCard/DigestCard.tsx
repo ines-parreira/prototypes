@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import classNames from 'classnames'
+import { motion } from 'framer-motion'
 
 import { PerformanceBadge } from '../PerformanceBadge/PerformanceBadge'
 
@@ -22,7 +23,12 @@ export const DigestCard = ({ content, metrics }: DigestCardProps) => {
     }, [])
 
     return (
-        <div className={css.digestCard}>
+        <motion.div
+            className={css.digestCard}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7 }}
+        >
             <div className={css.digestHeader}>
                 <PerformanceBadge />
                 <div className={css.digestContent}>{content}</div>
@@ -57,6 +63,6 @@ export const DigestCard = ({ content, metrics }: DigestCardProps) => {
                     </div>
                 ))}
             </div>
-        </div>
+        </motion.div>
     )
 }

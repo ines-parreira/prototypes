@@ -16,9 +16,13 @@ describe('<PhoneNumberField />', () => {
                 value={mockPhoneNumbers[0]}
             />,
         )
-        expect(screen.getByText('Phone number')).toBeInTheDocument()
         expect(
-            screen.getByText('Phone number used for the conversation'),
+            screen.getByText("Your Agent's phone number"),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Phone number used for the conversation with the customer',
+            ),
         ).toBeInTheDocument()
     })
 

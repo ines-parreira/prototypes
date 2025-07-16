@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { JourneyStatusEnum } from '@gorgias/convert-client'
@@ -11,13 +12,9 @@ import {
     useCreateNewJourney,
     useJourneyConfiguration,
     useJourneys,
-    useTestSms,
     useUpdateJourney,
 } from 'AIJourney/queries'
-import { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useListProducts } from 'models/integration/queries'
-import { IntegrationDataItem } from 'models/integration/types'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -27,25 +24,15 @@ import {
     FollowUpField,
     MaximumDiscountField,
     PhoneNumberField,
-    ProductSelectField,
-    TestSMSField,
 } from './fields'
 
-import css from './OnboardingCard.less'
+import css from './Setup.less'
 
-const GradientBackground = () => {
-    return <div className={css.gradientBackground} />
-}
-
-type OnboardingCardProps = {
-    currentStep: string
-}
-
-export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
-    const isActivationStep = currentStep === 'Activation'
+export const Setup = () => {
     const history = useHistory()
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
+    const [isVisible, setIsVisible] = useState(true)
 
     const { integrations } = useIntegrations()
 
@@ -75,23 +62,6 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const { eligiblePhoneNumbers, marketingCapabilityPhoneNumbers } =
         useAiJourneyPhoneList(currentIntegration?.id)
 
-    const integrationDataItemsResponse = useListProducts(
-        integrationId ?? 0,
-        !!integrationId,
-        { limit: 5 },
-        { refetchOnWindowFocus: false, refetchOnMount: false },
-    )
-
-    const products = useMemo(() => {
-        const data = integrationDataItemsResponse?.data?.pages?.reduce(
-            (acc, page) => [...acc, ...page.data.data],
-            [] as IntegrationDataItem<Product>[],
-        )
-        return (data || [])
-            .filter((item) => !!item.data.image && !!item.data.title)
-            .map((item) => item.data)
-    }, [integrationDataItemsResponse])
-
     const currentPhoneNumber = marketingCapabilityPhoneNumbers.find(
         (phoneNumber) =>
             phoneNumber.integrations.find(
@@ -101,7 +71,6 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const createNewJourney = useCreateNewJourney()
     const updateJourney = useUpdateJourney()
-    const testSms = useTestSms()
 
     const [followUpValue, setFollowUpValue] = useState(
         journeyParams?.max_follow_up_messages || undefined,
@@ -117,9 +86,6 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const [phoneNumberValue, setPhoneNumberValue] = useState<
         NewPhoneNumber | undefined
     >(currentPhoneNumber)
-
-    const [testSmsNumber, setTestSmsNumber] = useState('')
-    const [selectedProduct, setSelectedProduct] = useState(products[0])
 
     useEffect(() => {
         if (journeyParams) {
@@ -146,14 +112,6 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const handlePhoneNumberChange = (newValue: NewPhoneNumber) => {
         setPhoneNumberValue(newValue)
-    }
-
-    const handleTestSmsNumberChange = (newValue: string) => {
-        setTestSmsNumber(newValue)
-    }
-
-    const handleProductSelectChange = (newValue: Product) => {
-        setSelectedProduct(newValue)
     }
 
     const handleCreate = async () => {
@@ -206,7 +164,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
             await updateJourney.mutateAsync({
                 journeyId: abandonedCartJourney?.id,
                 params: {
-                    state: JourneyStatusEnum.Active,
+                    state: JourneyStatusEnum.Draft,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: followUpValue,
@@ -230,57 +188,24 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         }
     }
 
-    const handleTestSms = async () => {
+    const handleContinue = async () => {
         try {
-            if (!abandonedCartJourney?.id || !testSmsNumber) {
-                void dispatch(
-                    notify({
-                        message: `Missing information: test number: ${testSmsNumber}, journeyID: ${abandonedCartJourney?.id}`,
-                        status: NotificationStatus.Error,
-                    }),
-                )
-                return
+            if (abandonedCartJourney) {
+                await handleUpdate()
+            } else {
+                await handleCreate()
             }
-
-            await testSms.mutateAsync({
-                // TODO use generic phone number formatting
-                phoneNumber: `+1${testSmsNumber.replace(/\D/g, '')}`,
-                journeyId: abandonedCartJourney?.id,
-                product: {
-                    product_id: String(selectedProduct.id),
-                    variant_id: String(selectedProduct.variants[0]?.id),
-                    price: Number(selectedProduct.variants[0]?.price),
-                },
-            })
+            setIsVisible(false)
+            setTimeout(() => {
+                history.push(`/app/ai-journey/${shopName}/activation`)
+            }, 700)
         } catch (error) {
             void dispatch(
                 notify({
-                    message: `Error sending test SMS: ${error}`,
+                    message: `Error creating new journey: ${error}`,
                     status: NotificationStatus.Error,
                 }),
             )
-        }
-    }
-
-    const handleContinue = async () => {
-        if (!isActivationStep) {
-            try {
-                if (abandonedCartJourney) {
-                    await handleUpdate()
-                } else {
-                    await handleCreate()
-                }
-                history.push(`/app/ai-journey/${shopName}/activation`)
-            } catch (error) {
-                void dispatch(
-                    notify({
-                        message: `Error creating new journey: ${error}`,
-                        status: NotificationStatus.Error,
-                    }),
-                )
-            }
-        } else {
-            history.push(`/app/ai-journey/${shopName}/performance`)
         }
     }
 
@@ -290,59 +215,48 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         ? !!discountValue && isDiscountValueValid
         : true
 
-    const shouldDisableButton = isActivationStep
-        ? !selectedProduct || !testSmsNumber
-        : !isDiscountFieldValid || !phoneNumberValue
+    const shouldDisableButton = !isDiscountFieldValid || !phoneNumberValue
 
     return (
-        <div className={css.onboardingCard}>
-            <GradientBackground />
-            <div className={css.container}>
-                <div style={{ marginBottom: '16px' }}>
-                    <span>{currentStep} step</span>
-                </div>
-                {isActivationStep ? (
-                    <>
-                        <ProductSelectField
-                            options={products}
-                            onChange={handleProductSelectChange}
-                        />
-                        <TestSMSField
-                            value={testSmsNumber}
-                            onChange={handleTestSmsNumberChange}
-                            onActionClick={handleTestSms}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <PhoneNumberField
-                            options={eligiblePhoneNumbers}
-                            value={phoneNumberValue}
-                            onChange={handlePhoneNumberChange}
-                        />
-                        <FollowUpField
-                            value={followUpValue}
-                            options={followUpOptions}
-                            onChange={setFollowUpValue}
-                        />
-                        <EnableDiscountField
-                            isEnabled={isDiscountEnabled}
-                            onChange={handleDiscountToggle}
-                        />
-                        <MaximumDiscountField
-                            value={discountValue}
-                            isDisabled={!isDiscountEnabled}
-                            onChange={handleMaximumDiscountChange}
-                            onValidationChange={handleValidationChange}
-                        />
-                    </>
-                )}
+        <motion.div
+            className={css.container}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isVisible ? 1 : 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <PhoneNumberField
+                options={eligiblePhoneNumbers}
+                value={phoneNumberValue}
+                onChange={handlePhoneNumberChange}
+            />
+            <FollowUpField
+                value={followUpValue}
+                options={followUpOptions}
+                onChange={setFollowUpValue}
+            />
+            <EnableDiscountField
+                isEnabled={isDiscountEnabled}
+                onChange={handleDiscountToggle}
+            />
+            <MaximumDiscountField
+                value={discountValue}
+                isDisabled={!isDiscountEnabled}
+                onChange={handleMaximumDiscountChange}
+                onValidationChange={handleValidationChange}
+            />
+
+            <div className={css.buttonsContainer}>
+                <Button
+                    variant="link"
+                    redirectLink={`/app/ai-journey/${shopName}`}
+                    label="Cancel"
+                />
                 <Button
                     label="Continue"
                     onClick={handleContinue}
                     isDisabled={shouldDisableButton}
                 />
             </div>
-        </div>
+        </motion.div>
     )
 }

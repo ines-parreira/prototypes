@@ -1,39 +1,43 @@
 import { OnboardingStepSelector } from 'AIJourney/components/OnboardingStepSelector/OnboardingStepSelector'
+import { STEPS_NAMES } from 'AIJourney/constants'
+import lightningIcon from 'assets/img/ai-journey/lightning.svg'
 
-import { OnboardingCard } from '../../components/OnboardingCard/OnboardingCard'
+import { Activation } from '../Activation/Activation'
+import { Setup } from '../Setup/Setup'
 
 import css from './AiJourneyOnboarding.less'
 
 type AiJourneyOnboardingProps = {
-    step?: string
+    step: string
 }
 
-export const AiJourneyOnboarding = ({
-    step = 'conversation-setup',
-}: AiJourneyOnboardingProps) => {
-    const isActivationStep = step === 'activation'
-
-    const steps = [
+export const AiJourneyOnboarding = ({ step }: AiJourneyOnboardingProps) => {
+    const ONBOARDING_STEPS = [
         {
-            stepName: 'Conversation setup',
+            stepName: STEPS_NAMES.CONVERSATION_SETUP,
             stepIndicator: 1,
-            isActive: !isActivationStep,
         },
         {
-            stepName: 'Activation',
+            stepName: STEPS_NAMES.ACTIVATION,
             stepIndicator: 2,
-            isActive: isActivationStep,
         },
     ]
 
     return (
         <div className={css.container}>
-            <OnboardingStepSelector steps={steps} />
-            <OnboardingCard
-                currentStep={
-                    isActivationStep ? 'Activation' : 'Conversation Setup'
-                }
+            <div className={css.header}>
+                <img src={lightningIcon} alt="lightning" />
+                <span>SMS Abandoned Cart flow</span>
+            </div>
+            <OnboardingStepSelector
+                steps={ONBOARDING_STEPS}
+                activeStep={step}
             />
+            {step === STEPS_NAMES.CONVERSATION_SETUP ? (
+                <Setup />
+            ) : (
+                <Activation />
+            )}
         </div>
     )
 }

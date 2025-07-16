@@ -24,19 +24,20 @@ export const LandingPage = () => {
         }, 700)
     }
 
-    const { integrations, isLoading } = useIntegrations()
+    const { integrations, isLoading: isLoadingIntegrations } = useIntegrations()
 
     const currentIntegration = useMemo(() => {
-        if (isLoading) return undefined
+        if (isLoadingIntegrations) return undefined
         return integrations.find((i) => i.name === shopName)
-    }, [integrations, shopName, isLoading])
+    }, [integrations, shopName, isLoadingIntegrations])
 
-    const { data: merchantAiJourneys, isError } = useJourneys(
-        currentIntegration?.id,
-        {
-            enabled: !!currentIntegration || !isLoading,
-        },
-    )
+    const {
+        data: merchantAiJourneys,
+        isError,
+        isLoading: isLoadingJourneys,
+    } = useJourneys(currentIntegration?.id, {
+        enabled: !!currentIntegration || !isLoadingIntegrations,
+    })
 
     const abandonedCartJourney = merchantAiJourneys?.find(
         (journey) => journey.type === 'cart_abandoned',
@@ -66,18 +67,29 @@ export const LandingPage = () => {
             </motion.div>
         )
 
+    const isPageLoading = isLoadingIntegrations || isLoadingJourneys
+
     return (
         <motion.div
             className={css.container}
             animate={{ opacity: isVisible ? 1 : 0 }}
             transition={{ duration: 0.5 }}
         >
-            <PerformanceBadge />
-            <AnimatedText />
-            <div className={css.additionalInfo}>
-                <AdditionalInfo />
-                <Button label="Continue" onClick={handleContinue} />
-            </div>
+            {!isPageLoading && (
+                <>
+                    <PerformanceBadge />
+                    <AnimatedText />
+                    <div className={css.additionalInfo}>
+                        <AdditionalInfo />
+                        <div className={css.continueButton}>
+                            <Button
+                                label="Try out now"
+                                onClick={handleContinue}
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
         </motion.div>
     )
 }

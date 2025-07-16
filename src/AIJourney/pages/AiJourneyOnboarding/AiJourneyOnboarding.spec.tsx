@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { STEPS_NAMES } from 'AIJourney/constants'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { renderWithRouter } from 'utils/testing'
@@ -18,7 +19,9 @@ describe('<AiJourneyOnboarding />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <AiJourneyOnboarding />
+                        <AiJourneyOnboarding
+                            step={STEPS_NAMES.CONVERSATION_SETUP}
+                        />
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,

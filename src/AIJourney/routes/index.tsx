@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
-import { LandingPage, Performance } from 'AIJourney/pages'
-import { AiJourneyOnboarding } from 'AIJourney/pages/AiJourneyOnboarding/AiJourneyOnboarding'
+import { STEPS_NAMES } from 'AIJourney/constants'
+import { AiJourneyOnboarding, LandingPage, Performance } from 'AIJourney/pages'
 import {
     IntegrationsProvider,
     TokenProvider,
@@ -62,7 +62,7 @@ export function AiJourneyRoutes({ match: { path } }: RouteComponentProps) {
                                 content={(props) => (
                                     <AiJourneyOnboarding
                                         {...props}
-                                        step="conversation-setup"
+                                        step={STEPS_NAMES.CONVERSATION_SETUP}
                                     />
                                 )}
                                 navbar={AiJourneyNavbar}
@@ -77,7 +77,7 @@ export function AiJourneyRoutes({ match: { path } }: RouteComponentProps) {
                                 content={(props) => (
                                     <AiJourneyOnboarding
                                         {...props}
-                                        step="activation"
+                                        step={STEPS_NAMES.ACTIVATION}
                                     />
                                 )}
                                 navbar={AiJourneyNavbar}

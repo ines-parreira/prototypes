@@ -2,10 +2,28 @@
 
 :local {
     .container {
-        display: grid;
-        padding: var(--layout-spacing-s);
-        grid-template-columns: 1fr [col-start] 400px [col-start] 1fr [col-start];
-        grid-template-rows: auto 1fr;
+        display: flex;
+        padding-top: var(--layout-spacing-xl);
+        gap: var(--layout-spacing-l);
+        flex-direction: column;
+        align-items: center;
+
         width: 100vw;
+
+        background: linear-gradient(
+            145deg,
+            var(--accessory-magenta-2) 0%,
+            var(--neutral-grey-0) 30%
+        );
+    }
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: var(--layout-spacing-xs);
+        font-size: 20px;
+        font-weight: 600;
     }
 }

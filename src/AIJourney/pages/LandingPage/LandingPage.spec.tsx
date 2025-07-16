@@ -25,6 +25,14 @@ jest.mock('AIJourney/queries', () => ({
     })),
 }))
 
+jest.mock('AIJourney/providers', () => ({
+    ...jest.requireActual('AIJourney/providers'),
+    useIntegrations: jest.fn(),
+}))
+
+const mockUseIntegrations = require('AIJourney/providers')
+    .useIntegrations as jest.Mock
+
 const mockUseJourneys = useJourneys as jest.Mock
 
 describe('<LandingPage />', () => {
@@ -34,6 +42,11 @@ describe('<LandingPage />', () => {
     })
 
     it('should render AI Journey landing page', () => {
+        mockUseIntegrations.mockImplementation(() => ({
+            integrations: [{ id: 1, name: 'shopify-store' }],
+            isLoading: false,
+        }))
+
         renderWithRouter(
             <QueryClientProvider client={appQueryClient}>
                 <IntegrationsProvider>
@@ -53,7 +66,7 @@ describe('<LandingPage />', () => {
             </QueryClientProvider>,
         )
 
-        const buttonLabel = screen.getByText('Continue')
+        const buttonLabel = screen.getByText('Try out now')
         expect(buttonLabel).toBeInTheDocument()
 
         const button = screen.getByTestId('ai-journey-button')
@@ -65,7 +78,7 @@ describe('<LandingPage />', () => {
 
     it('should redirect to performance page when AI Journey is already active', async () => {
         mockUseJourneys.mockImplementationOnce(() => ({
-            data: [{ type: 'cart_abandoned', state: 'active =' }],
+            data: [{ type: 'cart_abandoned', state: 'active' }],
             isError: false,
         }))
 

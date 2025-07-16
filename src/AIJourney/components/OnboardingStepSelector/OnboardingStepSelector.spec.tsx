@@ -24,7 +24,9 @@ describe('<OnboardingStepSelector />', () => {
         })
     })
     it('should render active step with correct modifier', () => {
-        const { container } = render(<OnboardingStepSelector steps={steps} />)
+        const { container } = render(
+            <OnboardingStepSelector steps={steps} activeStep="Activation" />,
+        )
 
         const activeStepName = container.querySelectorAll('.step--active')
         expect(activeStepName.length).toBe(1)

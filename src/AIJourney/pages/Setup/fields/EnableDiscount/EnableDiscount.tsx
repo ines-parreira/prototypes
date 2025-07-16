@@ -20,8 +20,8 @@ export const EnableDiscountField = ({
     return (
         <div className={css.enableDiscountField}>
             <FieldPresentation
-                name="Discount code"
-                description="Boost conversion by 50%"
+                name="Include a discount code"
+                description="A discount code will be included with the follow-up message"
             />
             <Switch isChecked={isEnabled} onChange={handleChange} />
         </div>

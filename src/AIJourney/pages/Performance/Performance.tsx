@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { motion } from 'framer-motion'
+
 import {
     AnalyticsCard,
     DigestCard,
@@ -89,20 +91,32 @@ export const Performance = () => {
     return (
         <div className={css.container}>
             <DigestCard content={digestContent} metrics={digestMetrics} />
-            <div className={css.header}>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.6 }}
+                className={css.header}
+            >
                 <div>
                     <span className={css.filterPrimaryText}>Journeys</span>
                     <span className={css.filterSecondaryText}>
                         {` (${filteredUpcomingJourneys.length + filteredUserJourneys.length})`}
                     </span>
                 </div>
-                <Selector
-                    value={filter}
-                    options={FILTERS}
-                    onChange={setFilter}
-                />
-            </div>
-            <div className={css.dashboardsContainer}>
+                <div style={{ maxWidth: '600px' }}>
+                    <Selector
+                        value={filter}
+                        options={FILTERS}
+                        onChange={setFilter}
+                    />
+                </div>
+            </motion.div>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 1.2 }}
+                className={css.dashboardsContainer}
+            >
                 {filteredUserJourneys.map((journey, index) => (
                     <AnalyticsCard
                         analyticsData={analyticsData}
@@ -113,7 +127,7 @@ export const Performance = () => {
                 {filteredUpcomingJourneys.map((journey, index) => (
                     <JourneyPlaceholder name={journey.name} key={index} />
                 ))}
-            </div>
+            </motion.div>
         </div>
     )
 }

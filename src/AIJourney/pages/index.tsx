@@ -1,3 +1,5 @@
 export { LandingPage } from './LandingPage/LandingPage'
 export { AiJourneyOnboarding } from './AiJourneyOnboarding/AiJourneyOnboarding'
 export { Performance } from './Performance/Performance'
+export { Setup } from './Setup/Setup'
+export { Activation } from './Activation/Activation'
