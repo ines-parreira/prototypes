@@ -46,8 +46,7 @@ describe('<ModifiersPopover/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    // TODO(React18): Fix this test
-    it.skip('is able to perform actions with inputs', async () => {
+    it('is able to perform actions with inputs', async () => {
         render(<ModifiersPopover {...defaultProps} />)
 
         // Cannot target by label because we cannot wrap our select boxes into labels properly ;(
@@ -91,19 +90,21 @@ describe('<ModifiersPopover/>', () => {
         expect(screen.getByText(/Test 2/i)).toBeInTheDocument()
     })
 
-    // TODO(React18): fix this test
-    it.skip('can submit the form when all required fields are filled out', async () => {
+    it('can submit the form when all required fields are filled out', async () => {
         const onApplyMock = jest.fn()
         const user = userEvent.setup()
 
-        const { container } = render(
-            <ModifiersPopover {...defaultProps} onApply={onApplyMock} />,
-        )
+        render(<ModifiersPopover {...defaultProps} onApply={onApplyMock} />)
 
         // Step 1: Verify initial state
         await user.click(screen.getByRole('button', { name: /Apply/i }))
         expect(onApplyMock).not.toHaveBeenCalled()
-        expect(container).toMatchSnapshot('visible error messages')
+
+        // Check that error messages are visible for required fields
+        expect(screen.getAllByText('Please fill out this field.')).toHaveLength(
+            4,
+        )
+        expect(screen.getByText('Please check this box.')).toBeInTheDocument()
 
         // Step 2: Fill out required fields
         const selectOptions = [
