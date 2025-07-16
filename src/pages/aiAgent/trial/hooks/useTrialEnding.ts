@@ -6,6 +6,7 @@ const EMPTY_TRIAL_ENDING = {
     remainingDays: 0,
     trialEndDatetime: undefined,
     trialTerminationDatetime: undefined,
+    forceHideModal: true,
 }
 
 export const useTrialEnding = (storeName: string) => {
@@ -43,5 +44,8 @@ export const useTrialEnding = (storeName: string) => {
         remainingDays,
         trialEndDatetime: trialEndDate.toISOString(),
         trialTerminationDatetime,
+        // TODO: remove this once we have done a proper release
+        // Ticket: https://linear.app/gorgias/issue/AIORC-4791/reactivate-the-trial-ending-trial-ended-modal-after-release
+        forceHideModal: true,
     }
 }

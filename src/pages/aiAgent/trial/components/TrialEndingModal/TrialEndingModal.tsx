@@ -17,7 +17,8 @@ export const TrialEndedModal = ({
 }) => {
     const storeName = storeConfiguration.storeName
     const { manageTrialModal } = useTrialModalProps({ storeName })
-    const { trialTerminationDatetime } = useTrialEnding(storeName)
+    const { trialTerminationDatetime, forceHideModal } =
+        useTrialEnding(storeName)
     const trialMilestone = useSalesTrialRevampMilestone()
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
@@ -37,7 +38,7 @@ export const TrialEndedModal = ({
         !!trialTerminationDatetime &&
         moment(trialTerminationDatetime).isBefore(now)
 
-    if (!isTrialEndedModalOpen) {
+    if (!isTrialEndedModalOpen || forceHideModal) {
         return null
     }
 
@@ -70,7 +71,8 @@ export const TrialEndingTomorrowModal = ({
 }) => {
     const storeName = storeConfiguration.storeName
     const { manageTrialModal } = useTrialModalProps({ storeName })
-    const { remainingDays, trialEndDatetime } = useTrialEnding(storeName)
+    const { remainingDays, trialEndDatetime, forceHideModal } =
+        useTrialEnding(storeName)
     const trialMilestone = useSalesTrialRevampMilestone()
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
@@ -92,7 +94,7 @@ export const TrialEndingTomorrowModal = ({
         !!trialEndDatetime &&
         remainingDays === 1
 
-    if (!isTrialEndingTomorrowModalOpen) {
+    if (!isTrialEndingTomorrowModalOpen || forceHideModal) {
         return null
     }
 

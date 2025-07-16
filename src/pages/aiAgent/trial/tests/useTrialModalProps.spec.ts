@@ -120,6 +120,7 @@ describe('useTrialModalProps', () => {
             remainingDays: 14,
             trialEndDatetime: getTrialEndTime(14),
             trialTerminationDatetime: null,
+            forceHideModal: false,
         })
 
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
@@ -430,6 +431,7 @@ describe('useTrialModalProps', () => {
                 remainingDays: 7,
                 trialEndDatetime: getTrialEndTime(7),
                 trialTerminationDatetime: null,
+                forceHideModal: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -484,6 +486,7 @@ describe('useTrialModalProps', () => {
                 remainingDays: 3,
                 trialEndDatetime: getTrialEndTime(3),
                 trialTerminationDatetime: null,
+                forceHideModal: false,
             })
 
             rerender()
@@ -529,6 +532,7 @@ describe('useTrialModalProps', () => {
                     remainingDays: 0,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
+                    forceHideModal: false,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -551,6 +555,7 @@ describe('useTrialModalProps', () => {
                     remainingDays: -1,
                     trialEndDatetime: getTrialEndTime(-1),
                     trialTerminationDatetime: null,
+                    forceHideModal: false,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -573,6 +578,7 @@ describe('useTrialModalProps', () => {
                     remainingDays: 1,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
+                    forceHideModal: false,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -604,6 +610,7 @@ describe('useTrialModalProps', () => {
                         remainingDays,
                         trialEndDatetime: getTrialEndTime(remainingDays),
                         trialTerminationDatetime: null,
+                        forceHideModal: false,
                     })
 
                     const { result } = renderHookWithRouter(() =>
@@ -627,6 +634,7 @@ describe('useTrialModalProps', () => {
                     remainingDays: 365,
                     trialEndDatetime: getTrialEndTime(365),
                     trialTerminationDatetime: null,
+                    forceHideModal: false,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -649,6 +657,7 @@ describe('useTrialModalProps', () => {
                     remainingDays: 5,
                     trialEndDatetime: getTrialEndTime(5),
                     trialTerminationDatetime: null,
+                    forceHideModal: false,
                 })
 
                 const { result, rerender } = renderHookWithRouter(() =>
@@ -671,6 +680,7 @@ describe('useTrialModalProps', () => {
                     remainingDays: 1,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
+                    forceHideModal: false,
                 })
                 rerender()
 
@@ -689,6 +699,7 @@ describe('useTrialModalProps', () => {
                     remainingDays: 0,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
+                    forceHideModal: false,
                 })
                 rerender()
 

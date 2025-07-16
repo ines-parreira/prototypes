@@ -183,6 +183,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -200,6 +201,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-17T00:00:00.000Z', // Future date
             remainingDays: 1,
             trialEndDatetime: '2023-11-17T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -216,6 +218,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -232,6 +235,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -248,6 +252,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -270,6 +275,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -292,6 +298,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -320,6 +327,7 @@ describe('TrialEndingTomorrowModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -339,6 +347,7 @@ describe('TrialEndingTomorrowModal', () => {
             trialTerminationDatetime: '2023-11-17T00:00:00.000Z',
             remainingDays: 2,
             trialEndDatetime: '2023-11-17T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -362,6 +371,7 @@ describe('TrialEndingTomorrowModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -380,6 +390,7 @@ describe('TrialEndingTomorrowModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -404,6 +415,7 @@ describe('TrialEndingTomorrowModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
+            forceHideModal: false,
         })
 
         renderWithStoreAndQueryClientProvider(
