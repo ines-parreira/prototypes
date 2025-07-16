@@ -27,6 +27,7 @@ describe('<HelpCenterEditModalFooter />', () => {
             onSave: mockedOnSave,
             onDelete: mockedOnDelete,
         },
+        isDraftAllowed: true,
     }
 
     beforeEach(() => {
@@ -176,5 +177,62 @@ describe('<HelpCenterEditModalFooter />', () => {
         expect(getByAltText('down')).toBeInTheDocument()
         expect(getByText('15')).toBeInTheDocument() // rating.up value
         expect(getByText('2')).toBeInTheDocument() // rating.down value
+    })
+
+    it('should render only save and publish button without dropdown when isDraftAllowed is false', () => {
+        const { getByRole, queryByRole } = render(
+            <HelpCenterEditModalFooter {...props} isDraftAllowed={false} />,
+        )
+
+        const saveAndPublishButton = getByRole('button', {
+            name: /Save & Publish/i,
+        })
+        expect(saveAndPublishButton).toBeInTheDocument()
+        expect(saveAndPublishButton).not.toBeDisabled()
+
+        // Dropdown toggle should not be present when isDraftAllowed is false
+        const dropdownToggle = queryByRole('button', {
+            name: /arrow_drop_down/i,
+        })
+        expect(dropdownToggle).not.toBeInTheDocument()
+
+        fireEvent.click(saveAndPublishButton)
+
+        expect(mockedOnSave).toHaveBeenCalledTimes(1)
+        expect(mockedOnSave).toHaveBeenCalledWith(true)
+    })
+
+    it('should render only save and publish button without dropdown for new articles when isDraftAllowed is false', () => {
+        const mockedOnCreate = jest.fn()
+
+        const { getByRole, queryByRole } = render(
+            <HelpCenterEditModalFooter
+                {...{
+                    ...props,
+                    articleMode: {
+                        mode: 'new',
+                        onCreate: mockedOnCreate,
+                    },
+                }}
+                isDraftAllowed={false}
+            />,
+        )
+
+        const saveAndPublishButton = getByRole('button', {
+            name: /Save & Publish/i,
+        })
+        expect(saveAndPublishButton).toBeInTheDocument()
+        expect(saveAndPublishButton).not.toBeDisabled()
+
+        // Dropdown toggle should not be present when isDraftAllowed is false
+        const dropdownToggle = queryByRole('button', {
+            name: /arrow_drop_down/i,
+        })
+        expect(dropdownToggle).not.toBeInTheDocument()
+
+        fireEvent.click(saveAndPublishButton)
+
+        expect(mockedOnCreate).toHaveBeenCalledTimes(1)
+        expect(mockedOnCreate).toHaveBeenCalledWith(true)
     })
 })

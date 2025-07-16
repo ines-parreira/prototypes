@@ -52,6 +52,8 @@ type Props = {
     // article translation being edited)
     articleMode: ArticleMode
 
+    isDraftAllowed?: boolean
+
     onChangesDiscard: () => void
     onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
     customFooterContent?: React.ReactNode
@@ -69,6 +71,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     onCopyLinkToClipboard,
     articleMode,
     customFooterContent,
+    isDraftAllowed = true,
 }: Props) => {
     const {
         setEditModal,
@@ -157,6 +160,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 }
                 counters={counters}
                 canSave={canSaveArticle}
+                isDraftAllowed={isDraftAllowed}
                 requiredFields={requiredFieldsArticle}
                 onDiscard={onChangesDiscard}
                 articleMode={articleMode}

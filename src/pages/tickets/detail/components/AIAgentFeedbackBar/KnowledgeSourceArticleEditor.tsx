@@ -442,6 +442,7 @@ const KnowledgeSourceArticleEditor = ({
                             autoFocus={autoFocus}
                             articleMode={articleMode}
                             customFooterContent={footerContent}
+                            isDraftAllowed={false}
                         />
                     )}
                     {!isEditorInBasicView && (
@@ -460,6 +461,7 @@ const KnowledgeSourceArticleEditor = ({
                             autoFocus={autoFocus}
                             articleMode={articleMode}
                             customFooterContent={footerContent}
+                            isDraftAllowed={false}
                         />
                     )}
                 </HelpCenterEditModal>

@@ -35,6 +35,7 @@ import css from './HelpCenterEditModalFooter.less'
 type Props = {
     rating?: Rating
     canSave: boolean
+    isDraftAllowed: boolean
     requiredFields: typeof articleRequiredFields
     onDiscard: () => void
     counters?: { charCount: number }
@@ -46,6 +47,7 @@ type Props = {
 export const HelpCenterEditModalFooter: React.FC<Props> = ({
     rating,
     canSave,
+    isDraftAllowed,
     requiredFields,
     onDiscard,
     counters,
@@ -81,7 +83,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     Save &amp; Publish
                 </Button>
 
-                {canManageArticle && canSave && (
+                {isDraftAllowed && canManageArticle && canSave && (
                     <DropdownToggle tag="span">
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
@@ -118,7 +120,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                 >
                     Save &amp; Publish
                 </Button>
-                {canManageArticle && canSave && (
+                {isDraftAllowed && canManageArticle && canSave && (
                     <DropdownToggle tag="span">
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
