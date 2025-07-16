@@ -11,7 +11,7 @@ import {
 
 import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { OrderDirection } from 'models/api/types'
+import { GorgiasApiError, OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -23,6 +23,7 @@ import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 import { MacrosCreateDropdown } from './MacrosCreateDropdown'
 import MacrosSettingsTable from './MacrosSettingsTable'
@@ -50,7 +51,7 @@ export function MacrosSettingsContent() {
         },
     )
 
-    const { mutate: createMacro } = useCreateMacro('Failed to duplicate macro')
+    const { mutate: createMacro } = useCreateMacro()
     const { mutate: deleteMacro } = useDeleteMacro()
     const [selectedMacrosIds, setSelectedMacrosIds] = useState<number[]>([])
 
@@ -109,6 +110,18 @@ export function MacrosSettingsContent() {
             {
                 onSuccess: (resp) => {
                     history.push(`/app/settings/macros/${resp.data.id}`)
+                },
+                onError: (error) => {
+                    void dispatch(
+                        notify({
+                            title:
+                                (error as GorgiasApiError).response.data.error
+                                    .msg ?? 'Failed to duplicate macro',
+                            message: errorToChildren(error)!,
+                            allowHTML: true,
+                            status: NotificationStatus.Error,
+                        }),
+                    )
                 },
             },
         )

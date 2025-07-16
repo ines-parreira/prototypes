@@ -1,6 +1,10 @@
-import { useQueryClient } from '@tanstack/react-query'
+import { UseMutationOptions, useQueryClient } from '@tanstack/react-query'
 
 import {
+    CreateMacroBody,
+    HttpError,
+    HttpResponse,
+    Macro,
     queryKeys,
     useCreateMacro as useCreateMacroPrimitive,
 } from '@gorgias/helpdesk-queries'
@@ -14,7 +18,16 @@ import { errorToChildren } from 'utils'
 const queryKey = queryKeys.macros.listMacros() as string[]
 queryKey.pop()
 
-export function useCreateMacro(errorMessage?: string) {
+export function useCreateMacro(
+    overrides?: UseMutationOptions<
+        HttpResponse<Macro>,
+        HttpError<unknown>,
+        {
+            data: CreateMacroBody
+        },
+        unknown
+    >,
+) {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
 
@@ -30,9 +43,7 @@ export function useCreateMacro(errorMessage?: string) {
                     notify({
                         title:
                             (error as GorgiasApiError).response.data.error
-                                .msg ??
-                            errorMessage ??
-                            'Failed to create macro',
+                                .msg ?? 'Failed to create macro',
                         message: errorToChildren(error)!,
                         allowHTML: true,
                         status: NotificationStatus.Error,
@@ -47,6 +58,7 @@ export function useCreateMacro(errorMessage?: string) {
                     }),
                 )
             },
+            ...overrides,
         },
     })
 }

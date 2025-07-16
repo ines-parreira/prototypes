@@ -75,7 +75,7 @@ describe('useCreateMacro', () => {
     it('should handle failed request', () => {
         const errorMessage = 'nope'
         const onSettled = jest.fn()
-        const { result } = renderHook(() => useCreateMacro(errorMessage))
+        const { result } = renderHook(() => useCreateMacro())
         void result.current.mutateAsync(
             {
                 data: {
@@ -94,7 +94,7 @@ describe('useCreateMacro', () => {
         )?.onError({
             response: {
                 data: {
-                    error: {},
+                    error: { msg: errorMessage },
                 },
             },
         })

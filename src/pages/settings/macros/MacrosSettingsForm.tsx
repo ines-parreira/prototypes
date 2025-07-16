@@ -1,25 +1,40 @@
-import { MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
+import {
+    MouseEvent,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
-import { connect, ConnectedProps } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
-import type { Language, Macro } from '@gorgias/helpdesk-queries'
+import {
+    CreateMacroBody,
+    type Language,
+    UpdateMacroBody,
+    useGetMacro,
+} from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
 import { DEFAULT_ACTIONS } from 'config'
-import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
+import {
+    useBulkArchiveMacros,
+    useBulkUnarchiveMacros,
+    useCreateMacro,
+    useDeleteMacro,
+    useUpdateMacro,
+} from 'hooks/macros'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {
-    createMacro,
-    deleteMacro,
-    fetchMacro,
-    updateMacro,
-} from 'models/macro/resources'
+import { isGorgiasApiError } from 'models/api/types'
 import { MacroDraft } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
@@ -30,81 +45,110 @@ import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import MacroEdit from 'pages/tickets/common/macros/components/MacroEdit'
 import { getHumanAgents } from 'state/agents/selectors'
-import {
-    macroCreated,
-    macroDeleted,
-    macroFetched,
-    macroUpdated,
-} from 'state/entities/macros/actions'
-import { MacroApiError } from 'state/macro/types'
-import { getDefaultMacro, getErrorReason } from 'state/macro/utils'
+import { getDefaultMacro } from 'state/macro/utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
 import { errorToChildren } from 'utils'
 
 import css from './MacrosSettingsForm.less'
 
-export function MacrosSettingsFormContainer({
-    agents,
-    macroCreated,
-    macroDeleted,
-    macroFetched,
-    macroUpdated,
-    macros,
-    notify,
-}: ConnectedProps<typeof connector>) {
+const MacrosSettingsForm = () => {
     const appNode = useAppNode()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const { macroId } = useParams<{ macroId?: string }>()
-    const isArchived = !!macroId && !!macros[macroId]?.archived_datetime
+    const agents = useAppSelector(getHumanAgents)
+    const dispatch = useAppDispatch()
+    const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro())
+    const isMacroLoaded = useRef(false)
+
+    const { data, isInitialLoading } = useGetMacro(parseInt(macroId!), {
+        query: {
+            enabled: !!macroId,
+            onError: (error) => {
+                void dispatch(
+                    notify({
+                        title: isGorgiasApiError(error)
+                            ? error.response?.data.error.msg
+                            : 'Failed to fetch macro',
+                        status: NotificationStatus.Error,
+                    }),
+                )
+                history.push('/app/settings/macros')
+            },
+        },
+    })
+    const macro = useMemo(() => data?.data, [data])
+
+    useEffect(() => {
+        if (macroId && macro) {
+            const { actions, name, language } = macro
+
+            setMacroForm({
+                actions,
+                name,
+                language,
+            })
+            isMacroLoaded.current = true
+        }
+    }, [macro, macroId])
+
+    const { mutateAsync: createMacro } = useCreateMacro()
+    const { mutateAsync: duplicateMacro } = useCreateMacro({
+        onError: (error) => {
+            void dispatch(
+                notify({
+                    title: 'Failed to duplicate macro',
+                    message: errorToChildren(error)!,
+                    allowHTML: true,
+                    status: NotificationStatus.Error,
+                }),
+            )
+        },
+        onSuccess: (res) => {
+            void dispatch(
+                notify({
+                    message: 'Successfully duplicated macro',
+                    status: NotificationStatus.Success,
+                }),
+            )
+            history.push(`/app/settings/macros/${res.data.id}`)
+        },
+    })
+    const { mutateAsync: updateMacro } = useUpdateMacro()
+    const { mutateAsync: deleteMacro } = useDeleteMacro()
+
+    const isArchived = !!macro ? !!macro.archived_datetime : undefined
 
     const { mutate: bulkArchiveMacros, isLoading: isArchivingPending } =
         useBulkArchiveMacros()
     const { mutate: bulkUnarchiveMacros, isLoading: isUnarchivingPending } =
         useBulkUnarchiveMacros()
 
-    const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro())
+    const handleActionsChange = useCallback(
+        (actions?: List<any> | null) => {
+            const filteredActions = actions?.filter((action: Map<any, any>) =>
+                DEFAULT_ACTIONS.includes(action.get('name')),
+            )
 
-    const [{ loading: isFetchPending }, handleMacroFetch] =
-        useAsyncFn(async () => {
-            if (!macroId) {
-                return
-            }
-            try {
-                const res = await fetchMacro(parseInt(macroId))
-                macroFetched(res)
-            } catch {
-                void notify({
-                    message: 'Failed to fetch macro',
-                    status: NotificationStatus.Error,
-                })
-                history.push('/app/settings/macros')
-            }
-        }, [macroId])
+            setMacroForm({
+                ...macroForm,
+                actions: _uniqWith(
+                    filteredActions ? filteredActions.toJS() : {},
+                    (first, second) => {
+                        if (
+                            first.name === MacroActionName.Http ||
+                            first.name === MacroActionName.SetCustomFieldValue
+                        ) {
+                            return false
+                        }
 
-    const handleActionsChange = (actions?: List<any> | null) => {
-        const filteredActions = actions?.filter((action: Map<any, any>) =>
-            DEFAULT_ACTIONS.includes(action.get('name')),
-        )
-
-        setMacroForm({
-            ...macroForm,
-            actions: _uniqWith(
-                filteredActions ? filteredActions.toJS() : {},
-                (first, second) => {
-                    if (
-                        first.name === MacroActionName.Http ||
-                        first.name === MacroActionName.SetCustomFieldValue
-                    ) {
-                        return false
-                    }
-
-                    return first.name === second.name
-                },
-            ),
-        })
-    }
+                        return first.name === second.name
+                    },
+                ),
+            })
+        },
+        [macroForm],
+    )
 
     const [{ loading: isSubmitPending }, handleFormSubmit] =
         useAsyncFn(async () => {
@@ -123,62 +167,64 @@ export function MacrosSettingsFormContainer({
                                     action.arguments.value !== '')),
                     ) ?? null,
                 language: language || null,
-            } as Macro
+            }
 
-            let res
-            try {
-                if (macroId) {
-                    res = await updateMacro({
-                        ...macros[macroId],
-                        ...macroFormData,
-                    } as Macro)
-                    macroUpdated(res)
-                } else {
-                    res = await createMacro(macroFormData)
-                    macroCreated(res)
-                }
-                void notify({
-                    message: `Successfully ${
-                        macroId ? 'updated' : 'created'
-                    } macro.`,
-                    status: NotificationStatus.Success,
-                })
-                history.push('/app/settings/macros')
-            } catch (error) {
-                const gorgiasError = error as MacroApiError
-                const message = gorgiasError.response.data.error.msg
-                const reason = getErrorReason(gorgiasError)
-                void notify({
-                    message: `${message} ${reason}`,
-                    status: NotificationStatus.Error,
-                })
+            if (macroId) {
+                await updateMacro(
+                    {
+                        id: parseInt(macroId),
+                        data: {
+                            ...macro,
+                            ...(macroFormData as UpdateMacroBody),
+                        },
+                    },
+                    {
+                        onSuccess: () => {
+                            void dispatch(
+                                notify({
+                                    message: 'Successfully updated macro',
+                                    status: NotificationStatus.Success,
+                                }),
+                            )
+                            history.push('/app/settings/macros')
+                        },
+                    },
+                )
+            } else {
+                await createMacro(
+                    {
+                        data: macroFormData as CreateMacroBody,
+                    },
+                    {
+                        onSuccess: () => {
+                            void dispatch(
+                                notify({
+                                    message: 'Successfully created macro',
+                                    status: NotificationStatus.Success,
+                                }),
+                            )
+                            history.push('/app/settings/macros')
+                        },
+                    },
+                )
             }
         }, [macroId, macroForm])
+
     const [{ loading: isDuplicatePending }, handleMacroDuplicate] =
         useAsyncFn(async () => {
-            if (!macroId) {
+            if (!macro) {
                 return
             }
-            const { actions, name, language } = macros[macroId]
-            try {
-                const res = await createMacro({
+            const { actions, name, language } = macro
+
+            await duplicateMacro({
+                data: {
                     actions,
                     name: `(Copy) ${name}`,
                     language,
-                })
-                macroCreated(res)
-                void notify({
-                    message: `Successfully duplicated macro.`,
-                    status: NotificationStatus.Success,
-                })
-                history.push(`/app/settings/macros/${res.id}`)
-            } catch {
-                void notify({
-                    message: 'Failed to duplicate macro.',
-                    status: NotificationStatus.Error,
-                })
-            }
-        }, [macros, macroId])
+                },
+            })
+        }, [macro])
 
     const handleMacroArchiveOrUnarchive = (
         e: MouseEvent<HTMLButtonElement>,
@@ -202,43 +248,22 @@ export function MacrosSettingsFormContainer({
             if (!macroId) {
                 return
             }
-            try {
-                const macroIdNumber = parseInt(macroId)
-                await deleteMacro(macroIdNumber)
-                macroDeleted(macroIdNumber)
-                void notify({
-                    message: 'Successfully deleted macro',
-                    status: NotificationStatus.Success,
-                })
-                history.push('/app/settings/macros')
-            } catch (error) {
-                void notify({
-                    title: (error as MacroApiError).response.data.error.msg,
-                    message: errorToChildren(error)!,
-                    allowHTML: true,
-                    status: NotificationStatus.Error,
-                })
-            }
+            await deleteMacro(
+                { id: parseInt(macroId) },
+                {
+                    onSuccess: () => {
+                        void dispatch(
+                            notify({
+                                message: 'Successfully deleted macro',
+                                status: NotificationStatus.Success,
+                            }),
+                        )
+                        history.push('/app/settings/macros')
+                    },
+                },
+            )
         },
     )
-
-    useEffect(() => {
-        if (macroId) {
-            void handleMacroFetch()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [macroId])
-
-    useEffect(() => {
-        if (macroId && macros[macroId]) {
-            const { actions, name, language } = macros[macroId]
-            setMacroForm({
-                actions,
-                name,
-                language,
-            })
-        }
-    }, [macros, macroId])
 
     const hasInputError = !macroForm.name
 
@@ -260,9 +285,9 @@ export function MacrosSettingsFormContainer({
                         <BreadcrumbItem active>
                             {!macroId
                                 ? 'Add macro'
-                                : !macros[macroId]
+                                : !data?.data.id
                                   ? 'Edit'
-                                  : `Edit: ${macros[macroId].name}`}
+                                  : `Edit: ${data.data.name}`}
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
@@ -270,7 +295,7 @@ export function MacrosSettingsFormContainer({
             <div
                 className={classnames(css.container, settingsCss.pageContainer)}
             >
-                {isFetchPending ? (
+                {isInitialLoading || (!isMacroLoaded.current && !!macroId) ? (
                     <Loader />
                 ) : (
                     <Form
@@ -284,7 +309,7 @@ export function MacrosSettingsFormContainer({
                         <MacroEdit
                             actions={fromJS(macroForm.actions)}
                             agents={agents}
-                            currentMacro={fromJS(macroForm)}
+                            currentMacro={macroForm}
                             name={macroForm.name ?? ''}
                             language={macroForm.language ?? ''}
                             setActions={(actions) =>
@@ -372,18 +397,4 @@ export function MacrosSettingsFormContainer({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        agents: getHumanAgents(state),
-        macros: state.entities.macros,
-    }),
-    {
-        macroCreated,
-        macroDeleted,
-        macroFetched,
-        macroUpdated,
-        notify,
-    },
-)
-
-export default connector(MacrosSettingsFormContainer)
+export default MacrosSettingsForm
