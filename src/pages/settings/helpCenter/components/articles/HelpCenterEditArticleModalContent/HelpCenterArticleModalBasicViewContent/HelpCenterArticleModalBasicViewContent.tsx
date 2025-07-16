@@ -73,6 +73,7 @@ type Props = {
     articleMode: ArticleMode
 
     isDraftAllowed?: boolean
+    isFullscreenAllowed?: boolean
 
     onChangesDiscard: () => void
     onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
@@ -94,6 +95,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     articleMode,
     customFooterContent,
     isDraftAllowed = true,
+    isFullscreenAllowed = true,
 }: Props) => {
     const screenSize = useScreenSize()
     const { isPassingRulesCheck } = useAbilityChecker()
@@ -164,7 +166,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 onLanguageSelect={onArticleLanguageSelect}
                 onClose={onArticleModalClose}
                 onResize={
-                    screenSize !== SCREEN_SIZE.SMALL
+                    isFullscreenAllowed && screenSize !== SCREEN_SIZE.SMALL
                         ? () => setIsFullscreenEditModal(!isFullscreenEditModal)
                         : undefined
                 }

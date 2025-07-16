@@ -14,6 +14,7 @@ export enum KnowledgeSourceSideBarMode {
 export type KnowledgeSourceSideBarContextValue = {
     selectedResource: KnowledgeResourcePreview | null
     mode: KnowledgeSourceSideBarMode | null
+    isClosing: boolean
     openPreview: (resource: KnowledgeResourcePreview) => void
     openEdit: (resource: KnowledgeResourcePreview) => void
     openCreate: (type: AiAgentKnowledgeResourceTypeEnum) => void

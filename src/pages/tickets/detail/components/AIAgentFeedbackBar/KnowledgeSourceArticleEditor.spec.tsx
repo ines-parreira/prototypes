@@ -127,7 +127,6 @@ const mockDeleteArticleTranslation = jest.fn()
 const mockSetSelectedArticle = jest.fn()
 const mockSetSelectedArticleLanguage = jest.fn()
 const mockSetIsEditorCodeViewActive = jest.fn()
-const mockSetSelectedCategoryId = jest.fn()
 const mockSetSelectedTemplateKey = jest.fn()
 const mockSetSelectedArticleTranslations = jest.fn()
 const mockSetSelectedExistingArticleTranslation = jest.fn()
@@ -167,7 +166,6 @@ describe('KnowledgeSourceArticleEditor', () => {
 
     const defaultEditionManagerState = {
         selectedCategoryId: 1,
-        setSelectedCategoryId: mockSetSelectedCategoryId,
         selectedArticleLanguage: 'en-US' as LocaleCode,
         setSelectedArticleLanguage: mockSetSelectedArticleLanguage,
         selectedArticle: mockArticle,
@@ -347,57 +345,6 @@ describe('KnowledgeSourceArticleEditor', () => {
             renderComponent(createModePropsWithArticleId)
 
             expect(mockSetSelectedArticle).not.toHaveBeenCalled()
-        })
-
-        it('creates new article with category from modal params when categoryId is provided', () => {
-            useModalManagerMock.mockReturnValue({
-                ...defaultModalManagerState,
-                getParams: jest.fn().mockReturnValue({ categoryId: 42 }),
-            })
-
-            useEditionManagerMock.mockReturnValue({
-                ...defaultEditionManagerState,
-                selectedArticle: null,
-            })
-
-            renderComponent(createModeProps)
-
-            expect(mockSetSelectedArticle).toHaveBeenCalled()
-            expect(mockSetSelectedCategoryId).toHaveBeenCalledWith(42)
-        })
-
-        it('creates new article with null category when modal params return null', () => {
-            useModalManagerMock.mockReturnValue({
-                ...defaultModalManagerState,
-                getParams: jest.fn().mockReturnValue(null),
-            })
-
-            useEditionManagerMock.mockReturnValue({
-                ...defaultEditionManagerState,
-                selectedArticle: null,
-            })
-
-            renderComponent(createModeProps)
-
-            expect(mockSetSelectedArticle).toHaveBeenCalled()
-            expect(mockSetSelectedCategoryId).toHaveBeenCalledWith(null)
-        })
-
-        it('creates new article with null category when modal params have no categoryId', () => {
-            useModalManagerMock.mockReturnValue({
-                ...defaultModalManagerState,
-                getParams: jest.fn().mockReturnValue({}),
-            })
-
-            useEditionManagerMock.mockReturnValue({
-                ...defaultEditionManagerState,
-                selectedArticle: null,
-            })
-
-            renderComponent(createModeProps)
-
-            expect(mockSetSelectedArticle).toHaveBeenCalled()
-            expect(mockSetSelectedCategoryId).toHaveBeenCalledWith(null)
         })
     })
 
@@ -735,26 +682,6 @@ describe('KnowledgeSourceArticleEditor', () => {
     })
 
     describe('when closing the editor', () => {
-        it('calls onClose when backdrop is clicked without changes', () => {
-            useArticleValidationMock.mockReturnValue({
-                ...defaultArticleValidationState,
-                canSaveArticle: false,
-                articleModified: false,
-            })
-
-            useEditionManagerMock.mockReturnValue({
-                ...defaultEditionManagerState,
-                isEditorCodeViewActive: false,
-            })
-
-            renderComponent()
-
-            const backdrop = document.querySelector('.backdrop')
-            fireEvent.click(backdrop as Element)
-
-            expect(mockOnClose).toHaveBeenCalled()
-        })
-
         it('shows discard confirmation when closing with unsaved changes', () => {
             useArticleValidationMock.mockReturnValue({
                 ...defaultArticleValidationState,
@@ -1072,59 +999,6 @@ describe('KnowledgeSourceArticleEditor', () => {
             })
 
             expect(mockOnSubmitNewMissingKnowledge).not.toHaveBeenCalled()
-        })
-    })
-
-    describe('when handling fullscreen modal styles', () => {
-        it('renders modal without custom inline styles when isFullscreenEditModal is true', () => {
-            useEditionManagerMock.mockReturnValue({
-                ...defaultEditionManagerState,
-                isFullscreenEditModal: true,
-            })
-
-            const { container } = renderComponent()
-
-            const modalElement = container.querySelector('.modal')
-
-            expect(modalElement).toBeInTheDocument()
-            expect(modalElement).not.toHaveStyle('width: 612px')
-            expect(modalElement).not.toHaveStyle('right: -612px')
-        })
-
-        it('renders modal with custom inline styles when isFullscreenEditModal is false and modal is opened', () => {
-            useEditionManagerMock.mockReturnValue({
-                ...defaultEditionManagerState,
-                isFullscreenEditModal: false,
-                editModal: {
-                    isOpened: true,
-                    view: HelpCenterArticleModalView.BASIC,
-                },
-            })
-
-            const { container } = renderComponent()
-
-            const modalElement = container.querySelector('.modal')
-
-            expect(modalElement).toBeInTheDocument()
-            expect(modalElement).toHaveStyle('width: 612px')
-        })
-
-        it('renders modal with custom inline styles without transform when isFullscreenEditModal is false and modal is not opened', () => {
-            useEditionManagerMock.mockReturnValue({
-                ...defaultEditionManagerState,
-                isFullscreenEditModal: false,
-                editModal: {
-                    isOpened: false,
-                    view: HelpCenterArticleModalView.BASIC,
-                },
-            })
-
-            const { container } = renderComponent()
-
-            const modalElement = container.querySelector('.modal')
-
-            expect(modalElement).toBeInTheDocument()
-            expect(modalElement).toHaveStyle('width: 612px')
         })
     })
 

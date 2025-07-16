@@ -653,6 +653,7 @@ describe('AiAgentReasoning', () => {
             // Mock the hook to return our mock function
             useKnowledgeSourceSideBarMock.mockReturnValue({
                 openPreview: mockOpenPreview,
+                isClosing: false,
                 selectedResource: null,
                 mode: null,
                 openEdit: jest.fn(),

@@ -62,7 +62,7 @@ describe('KnowledgeSourceSideBarProvider', () => {
         jest.useFakeTimers()
 
         useNavBarMocked.mockReturnValue({
-            navBarDisplay: 'open',
+            navBarDisplay: NavBarDisplayMode.Open,
             setNavBarDisplay,
         } as any)
 
@@ -140,10 +140,11 @@ describe('KnowledgeSourceSideBarProvider', () => {
 
         act(() => {
             screen.getByText('Close').click()
+            jest.runAllTimers()
         })
 
-        expect(screen.getByTestId('mode')).toHaveTextContent('')
-        expect(screen.getByTestId('title')).toHaveTextContent('')
+        expect(screen.getByTestId('mode')).toBeEmptyDOMElement()
+        expect(screen.getByTestId('title')).toBeEmptyDOMElement()
     })
 
     it('calls setNavBarDisplay and setIsEnabled on openPreview (inside setTimeout)', () => {

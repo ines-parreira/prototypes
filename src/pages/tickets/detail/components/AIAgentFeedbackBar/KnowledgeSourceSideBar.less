@@ -1,38 +1,31 @@
-@import (reference) '~css/typography';
-
 :local {
-    .root {
-        :global {
-            .backdrop.opened {
-                opacity: 0;
-            }
-        }
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background-color: var(--overlay-background, rgba(0, 0, 0, 0.4));
+        z-index: 50;
     }
 
-    .previewContent {
-        grid-row: span 2;
-
-        .title {
-            .heading-section-semibold;
-        }
-    }
-
-    .lastUpdatedAt {
-        .caption-regular;
-        color: var(--neutral-grey-5);
-        margin-bottom: var(--layout-spacing-xs);
-    }
-
-    .guidanceEditorContainer {
+    .sidebarContent {
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        max-width: 612px;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--neutral-grey-0);
+        border-left: 1px solid var(--neutral-grey-2);
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.24);
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-m);
     }
 
-    .footer {
-        gap: var(--layout-spacing-xs);
-        .deleteButton {
-            margin-left: auto;
-        }
+    .root {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-y: auto;
+        color: var(--neutral-grey-6);
     }
 }

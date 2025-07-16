@@ -32,6 +32,8 @@ export function KnowledgeSourceSideBarProvider({
         useState<KnowledgeResourcePreview | null>(null)
     const [sideBarMode, setSideBarMode] =
         useState<KnowledgeSourceSideBarMode | null>(null)
+    // This is used to have a smooth animation when closing the side bar
+    const [isClosing, setIsClosing] = useState(false)
 
     const onOpen = useCallback(() => {
         navBarDisplayInitialValue.current = navBarDisplay
@@ -96,15 +98,22 @@ export function KnowledgeSourceSideBarProvider({
     )
 
     const closeModal = useCallback(() => {
-        setSelectedResource(null)
-        setSideBarMode(null)
-        onClose()
+        // Trigger drawer to close but don't immediately update state
+        setIsClosing(true)
+
+        setTimeout(() => {
+            setSelectedResource(null)
+            setSideBarMode(null)
+            setIsClosing(false)
+            onClose()
+        }, 300)
     }, [onClose])
 
     const value = useMemo(
         () => ({
             selectedResource,
             mode: sideBarMode,
+            isClosing,
             openPreview,
             openEdit,
             openCreate,
@@ -113,6 +122,7 @@ export function KnowledgeSourceSideBarProvider({
         [
             selectedResource,
             sideBarMode,
+            isClosing,
             openPreview,
             openEdit,
             openCreate,

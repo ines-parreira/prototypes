@@ -166,6 +166,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
+            isClosing: false,
             openPreview: jest.fn(),
             openEdit: jest.fn(),
             openCreate: jest.fn(),
@@ -1390,6 +1391,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                 content: 'Test content',
             },
             mode: null,
+            isClosing: false,
             openPreview: jest.fn(),
             openEdit: jest.fn(),
             openCreate: jest.fn(),
@@ -1454,6 +1456,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                 content: 'Test content',
             },
             mode: null,
+            isClosing: false,
             openPreview: jest.fn(),
             openEdit: jest.fn(),
             openCreate: jest.fn(),
@@ -1511,6 +1514,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
+            isClosing: false,
             openPreview: jest.fn(),
             openEdit: jest.fn(),
             openCreate: jest.fn(),

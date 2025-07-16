@@ -1,4 +1,5 @@
 import HelpCenterEditModalFooter from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
+import HelpCenterEditModalHeader from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -41,6 +42,10 @@ jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter',
 )
 
+jest.mock(
+    'pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader',
+)
+
 describe('HelpCenterArticleModalBasicViewContent', () => {
     const mockOnArticleLanguageSelect = jest.fn()
     const mockOnArticleModalClose = jest.fn()
@@ -71,11 +76,15 @@ describe('HelpCenterArticleModalBasicViewContent', () => {
         onCopyLinkToClipboard: mockOnCopyLinkToClipboard,
     }
 
-    const renderComponent = (isDraftAllowed?: boolean) => {
-        const props =
-            isDraftAllowed !== undefined
-                ? { ...defaultProps, isDraftAllowed }
-                : defaultProps
+    const renderComponent = (
+        isDraftAllowed?: boolean,
+        isFullscreenAllowed?: boolean,
+    ) => {
+        const props = {
+            ...defaultProps,
+            ...(isDraftAllowed !== undefined && { isDraftAllowed }),
+            ...(isFullscreenAllowed !== undefined && { isFullscreenAllowed }),
+        }
 
         const initialState: Partial<RootState> = {
             entities: {
@@ -117,6 +126,9 @@ describe('HelpCenterArticleModalBasicViewContent', () => {
         ;(HelpCenterEditModalFooter as jest.Mock).mockReturnValue(
             <div data-testid="help-center-edit-modal-footer">Footer</div>,
         )
+        ;(HelpCenterEditModalHeader as jest.Mock).mockReturnValue(
+            <div data-testid="help-center-edit-modal-header">Header</div>,
+        )
     })
 
     describe('when isDraftAllowed is true', () => {
@@ -152,6 +164,60 @@ describe('HelpCenterArticleModalBasicViewContent', () => {
             expect(HelpCenterEditModalFooter).toHaveBeenCalledWith(
                 expect.objectContaining({
                     isDraftAllowed: true,
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('when isFullscreenAllowed is true', () => {
+        it('should pass onResize function to HelpCenterEditModalHeader when screen size is not small', () => {
+            mockUseScreenSize.mockReturnValue('large')
+            renderComponent(undefined, true)
+
+            expect(HelpCenterEditModalHeader).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onResize: expect.any(Function),
+                }),
+                {},
+            )
+        })
+
+        it('should pass undefined onResize to HelpCenterEditModalHeader when screen size is small', () => {
+            mockUseScreenSize.mockReturnValue('small')
+            renderComponent(undefined, true)
+
+            expect(HelpCenterEditModalHeader).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onResize: undefined,
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('when isFullscreenAllowed is false', () => {
+        it('should pass undefined onResize to HelpCenterEditModalHeader regardless of screen size', () => {
+            mockUseScreenSize.mockReturnValue('large')
+            renderComponent(undefined, false)
+
+            expect(HelpCenterEditModalHeader).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onResize: undefined,
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('when isFullscreenAllowed is undefined', () => {
+        it('should pass onResize function to HelpCenterEditModalHeader (default value true)', () => {
+            mockUseScreenSize.mockReturnValue('large')
+            renderComponent()
+
+            expect(HelpCenterEditModalHeader).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onResize: expect.any(Function),
                 }),
                 {},
             )

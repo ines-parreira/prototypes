@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useModalManager } from 'hooks/useModalManager'
 import {
     Article,
     ArticleTranslationWithRating,
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
+import Loader from 'pages/common/components/Loader/Loader'
 import {
     ActionType,
     OptionItem,
@@ -16,12 +16,7 @@ import {
 import HelpCenterArticleModalAdvancedViewContent from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
 import HelpCenterArticleModalBasicViewContent from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
 import { HelpCenterArticleModalView } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
-import { HelpCenterEditModal } from 'pages/settings/helpCenter/components/articles/HelpCenterEditModal'
-import {
-    DRAWER_TRANSITION_DURATION_MS,
-    HELP_CENTER_DEFAULT_LAYOUT,
-    MODALS,
-} from 'pages/settings/helpCenter/constants'
+import { HELP_CENTER_DEFAULT_LAYOUT } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { getArticleMode } from 'pages/settings/helpCenter/types/articleMode'
@@ -54,8 +49,6 @@ import {
 } from './types'
 import { getHelpCenterArticleUrl } from './utils'
 
-import css from './KnowledgeSourceArticleEditor.less'
-
 type KnowledgeSourceArticleEditorProps = {
     article: Article | null
     isCreateMode: boolean
@@ -80,7 +73,6 @@ const KnowledgeSourceArticleEditor = ({
     const nextActionRef = useRef<(() => void) | (() => Promise<void>) | null>(
         null,
     )
-    const articleModal = useModalManager(MODALS.ARTICLE, { autoDestroy: false })
 
     const { openEdit } = useKnowledgeSourceSideBar()
 
@@ -95,22 +87,16 @@ const KnowledgeSourceArticleEditor = ({
         editModal,
         selectedTemplateKey,
         setSelectedTemplateKey,
-        isFullscreenEditModal,
     } = useEditionManager()
 
     // handle create mode setup
     if (isCreateMode && !article?.id && !selectedArticle) {
-        const categoryFromModalParams =
-            articleModal.getParams()?.categoryId ?? null
-
         setSelectedArticle({
             translation: getNewArticleTranslation(
                 selectedArticleLanguage,
-                categoryFromModalParams,
+                null,
             ),
         })
-
-        setSelectedCategoryId(categoryFromModalParams)
     }
 
     // handle edit mode setup
@@ -143,14 +129,12 @@ const KnowledgeSourceArticleEditor = ({
         dispatch(changeViewLanguage(helpCenter.default_locale))
         setSelectedArticleLanguage(helpCenter.default_locale)
         dispatch(resetState())
-        articleModal.closeModal()
     }, [
         onClose,
         dispatch,
         helpCenter.default_locale,
         setSelectedArticleLanguage,
         setSelectedTemplateKey,
-        articleModal,
     ])
 
     const shouldAddToMissingKnowledge = useMemo(() => {
@@ -245,7 +229,7 @@ const KnowledgeSourceArticleEditor = ({
     )
 
     const {
-        isLoading,
+        isLoading: isLoadingFeedbackArticleActions,
         createArticle,
         updateArticle,
         deleteArticle,
@@ -263,7 +247,7 @@ const KnowledgeSourceArticleEditor = ({
             selectedArticle,
             selectedTranslation,
             selectedCategoryId,
-            isLoading,
+            isLoading: isLoadingFeedbackArticleActions,
             isEditorCodeViewActive,
         })
 
@@ -427,72 +411,51 @@ const KnowledgeSourceArticleEditor = ({
         return <></>
     }, [isCreateMode, isConsideredMissingKnowledge, dispatch])
 
-    const modalStyle = isFullscreenEditModal
-        ? undefined
-        : {
-              width: '612px',
-              maxWidth: '612px',
-              right: '-612px',
-              ...(editModal.isOpened && {
-                  transform: 'translateX(-612px)',
-              }),
-          }
+    const isLoading =
+        isFetchingArticleTranslations || (!isCreateMode && !article?.id)
 
     return (
         <>
-            <div className={css.root}>
-                <HelpCenterEditModal
-                    isLoading={
-                        isFetchingArticleTranslations ||
-                        (!isCreateMode && !article?.id)
+            {isLoading && <Loader minHeight="90px" size="40px" />}
+
+            {!isLoading && isEditorInBasicView && (
+                <HelpCenterArticleModalBasicViewContent
+                    canSaveArticle={canSaveArticle}
+                    onArticleChange={onArticleChange}
+                    onEditorReady={onEditorReady}
+                    onArticleLanguageSelect={onArticleLanguageSelectAttempt}
+                    onArticleLanguageSelectActionClick={
+                        onArticleLanguageSelectActionClick
                     }
-                    portalRootId="root"
-                    onBackdropClick={onDiscardChangesAttempt}
-                    transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
-                    modalStyle={modalStyle}
-                >
-                    {isEditorInBasicView && (
-                        <HelpCenterArticleModalBasicViewContent
-                            canSaveArticle={canSaveArticle}
-                            onArticleChange={onArticleChange}
-                            onEditorReady={onEditorReady}
-                            onArticleLanguageSelect={
-                                onArticleLanguageSelectAttempt
-                            }
-                            onArticleLanguageSelectActionClick={
-                                onArticleLanguageSelectActionClick
-                            }
-                            onArticleModalClose={onClose}
-                            onChangesDiscard={onDiscardChangesAttempt}
-                            onCopyLinkToClipboard={onCopyLinkToClipboard}
-                            requiredFieldsArticle={requiredFieldsArticle}
-                            autoFocus={autoFocus}
-                            articleMode={articleMode}
-                            customFooterContent={footerContent}
-                            isDraftAllowed={false}
-                        />
-                    )}
-                    {!isEditorInBasicView && (
-                        <HelpCenterArticleModalAdvancedViewContent
-                            onArticleLanguageSelect={
-                                onArticleLanguageSelectAttempt
-                            }
-                            onArticleModalClose={onDiscardChangesAttempt}
-                            onArticleLanguageSelectActionClick={
-                                onArticleLanguageSelectActionClick
-                            }
-                            canSaveArticle={canSaveArticle}
-                            requiredFieldsArticle={requiredFieldsArticle}
-                            onChangesDiscard={onDiscardChangesAttempt}
-                            onCopyLinkToClipboard={onCopyLinkToClipboard}
-                            autoFocus={autoFocus}
-                            articleMode={articleMode}
-                            customFooterContent={footerContent}
-                            isDraftAllowed={false}
-                        />
-                    )}
-                </HelpCenterEditModal>
-            </div>
+                    onArticleModalClose={onClose}
+                    onChangesDiscard={onDiscardChangesAttempt}
+                    onCopyLinkToClipboard={onCopyLinkToClipboard}
+                    requiredFieldsArticle={requiredFieldsArticle}
+                    autoFocus={autoFocus}
+                    articleMode={articleMode}
+                    customFooterContent={footerContent}
+                    isDraftAllowed={false}
+                    isFullscreenAllowed={false}
+                />
+            )}
+
+            {!isLoading && !isEditorInBasicView && (
+                <HelpCenterArticleModalAdvancedViewContent
+                    onArticleLanguageSelect={onArticleLanguageSelectAttempt}
+                    onArticleModalClose={onDiscardChangesAttempt}
+                    onArticleLanguageSelectActionClick={
+                        onArticleLanguageSelectActionClick
+                    }
+                    canSaveArticle={canSaveArticle}
+                    requiredFieldsArticle={requiredFieldsArticle}
+                    onChangesDiscard={onDiscardChangesAttempt}
+                    onCopyLinkToClipboard={onCopyLinkToClipboard}
+                    autoFocus={autoFocus}
+                    articleMode={articleMode}
+                    customFooterContent={footerContent}
+                    isDraftAllowed={false}
+                />
+            )}
 
             {isExistingArticle(selectedArticle) && (
                 <HelpCenterArticleDeleteModal

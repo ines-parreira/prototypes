@@ -1,0 +1,23 @@
+@import (reference) '~css/typography';
+
+:local {
+    .header {
+        margin-top: var(--layout-spacing-s);
+    }
+
+    .previewContent {
+        grid-row: span 2;
+        border-bottom: 0;
+
+        .title {
+            .heading-section-semibold;
+            color: var(--neutral-grey-6);
+        }
+    }
+
+    .lastUpdatedAt {
+        .caption-regular;
+        color: var(--neutral-grey-5);
+        margin-bottom: var(--layout-spacing-xs);
+    }
+}

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { Drawer } from 'components/Drawer/Drawer'
 import { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
-import { Drawer } from 'pages/common/components/Drawer'
 import { HelpCenterArticleModalView } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -10,8 +10,6 @@ import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionMa
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourcePreview from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview'
-import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar.less'
-import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 
 import KnowledgeSourceArticleEditor from './KnowledgeSourceArticleEditor'
 import { ManageGuidanceForm } from './ManageGuidanceForm'
@@ -19,6 +17,8 @@ import {
     AiAgentKnowledgeResourceTypeEnum,
     SuggestedResourceValue,
 } from './types'
+
+import css from './KnowledgeSourceSideBar.less'
 
 type KnowledgeSourceSideBarProps = {
     articles: NonNullable<
@@ -51,10 +51,8 @@ const KnowledgeSourceSideBar = ({
     onKnowledgeResourceEditClick,
     onKnowledgeResourceSaved,
 }: KnowledgeSourceSideBarProps) => {
-    const { selectedResource, mode, closeModal, openEdit } =
+    const { selectedResource, mode, isClosing, closeModal, openEdit } =
         useKnowledgeSourceSideBar()
-    const { getHasUnsavedChanges, openUnsavedChangesModal } =
-        useUnsavedChangesModal()
     const helpCenter = useCurrentHelpCenter()
     const { setEditModal } = useEditionManager()
     const { isPassingRulesCheck } = useAbilityChecker()
@@ -141,58 +139,74 @@ const KnowledgeSourceSideBar = ({
         openEdit(selectedResource)
     }, [onKnowledgeResourceEditClick, openEdit, selectedResource])
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape' && !!mode) {
+                onClose()
+            }
+        }
+
+        if (!!mode) {
+            document.addEventListener('keydown', handleKeyDown)
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [mode, onClose])
+
     return (
         <>
-            {!shouldDisplayArticleEditor && (
-                <Drawer
-                    fullscreen={false}
-                    isLoading={false}
-                    aria-label={'knowledge resource sidebar'}
-                    open={!!mode}
-                    portalRootId="app-root"
-                    onBackdropClick={() =>
-                        getHasUnsavedChanges()
-                            ? openUnsavedChangesModal()
-                            : closeModal()
-                    }
-                    rootClassName={css.root}
-                >
-                    {isPreviewMode && (
-                        <KnowledgeSourcePreview
-                            {...selectedResource}
-                            lastUpdatedAt={resourceUpdatedAt}
-                            onClose={closeModal}
-                            onEdit={onEditClick}
-                            shopName={shopName}
-                            shopType={shopType}
-                        />
-                    )}
+            <Drawer.Root
+                open={!!mode && !isClosing}
+                modal={false}
+                handleOnly
+                direction="right"
+            >
+                <Drawer.Portal>
+                    <Drawer.Overlay className={css.overlay} />
+                    <Drawer.Content className={css.sidebarContent}>
+                        <div className={css.root}>
+                            {isPreviewMode && (
+                                <KnowledgeSourcePreview
+                                    {...selectedResource}
+                                    lastUpdatedAt={resourceUpdatedAt}
+                                    onClose={closeModal}
+                                    onEdit={onEditClick}
+                                    shopName={shopName}
+                                    shopType={shopType}
+                                />
+                            )}
 
-                    {(isEditMode || isCreateMode) && isGuidance && (
-                        <ManageGuidanceForm
-                            shopName={shopName}
-                            shopType={shopType}
-                            url={selectedResource.url}
-                            guidance={selectedGuidance}
-                            helpCenter={helpCenter}
-                            onSubmitNewMissingKnowledge={
-                                onSubmitNewMissingKnowledge
-                            }
-                            onSaveClick={onKnowledgeResourceSaved}
-                        />
-                    )}
-                </Drawer>
-            )}
+                            {(isEditMode || isCreateMode) && isGuidance && (
+                                <ManageGuidanceForm
+                                    shopName={shopName}
+                                    shopType={shopType}
+                                    url={selectedResource.url}
+                                    guidance={selectedGuidance}
+                                    helpCenter={helpCenter}
+                                    onSubmitNewMissingKnowledge={
+                                        onSubmitNewMissingKnowledge
+                                    }
+                                    onSaveClick={onKnowledgeResourceSaved}
+                                />
+                            )}
 
-            {shouldDisplayArticleEditor && (
-                <KnowledgeSourceArticleEditor
-                    article={selectedArticle}
-                    isCreateMode={isCreateMode}
-                    onClose={onClose}
-                    onSubmitNewMissingKnowledge={onSubmitNewMissingKnowledge}
-                    onSaveClick={onKnowledgeResourceSaved}
-                />
-            )}
+                            {shouldDisplayArticleEditor && (
+                                <KnowledgeSourceArticleEditor
+                                    article={selectedArticle}
+                                    isCreateMode={isCreateMode}
+                                    onClose={onClose}
+                                    onSubmitNewMissingKnowledge={
+                                        onSubmitNewMissingKnowledge
+                                    }
+                                    onSaveClick={onKnowledgeResourceSaved}
+                                />
+                            )}
+                        </div>
+                    </Drawer.Content>
+                </Drawer.Portal>
+            </Drawer.Root>
         </>
     )
 }

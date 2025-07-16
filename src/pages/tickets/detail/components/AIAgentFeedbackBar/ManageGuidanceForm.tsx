@@ -11,7 +11,6 @@ import { HelpCenter } from 'models/helpCenter/types'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
-import guidanceFormCss from 'pages/aiAgent/components/GuidanceForm/GuidanceForm.less'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
@@ -26,7 +25,6 @@ import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import InputField from 'pages/common/forms/input/InputField'
 import { AddMissingKnowledgeCheckbox } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AddMissingKnowledgeCheckbox'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar.less'
 import {
     AiAgentKnowledgeResourceTypeEnum,
     SuggestedResourceValue,
@@ -37,6 +35,8 @@ import { NotificationStatus } from 'state/notifications/types'
 import { onApiError } from 'state/utils'
 
 import { getGuidanceUrl } from './utils'
+
+import css from './ManageGuidanceForm.less'
 
 const FORM_ACTION_TYPE = {
     CREATE: 'create',
@@ -380,7 +380,7 @@ export const ManageGuidanceForm = ({
                 onSave={handleUnsavedChangesModalSave}
             />
 
-            <Drawer.Header>
+            <Drawer.Header className={css.header}>
                 Guidance
                 <Drawer.HeaderActions
                     onClose={guardUnsavedChanges}
@@ -409,7 +409,7 @@ export const ManageGuidanceForm = ({
                     value={formState.name}
                     maxLength={135}
                 />
-                <div className={guidanceFormCss.editorContainer}>
+                <div className={css.editorContainer}>
                     <GuidanceEditor
                         content={formState.content}
                         handleUpdateContent={onContentChange}

@@ -7,20 +7,26 @@ import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenter
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 
 import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
-jest.mock('pages/common/components/Drawer', () => ({
-    Drawer: ({ onBackdropClick, children }: any) => (
-        <div data-testid="mock-drawer">
-            <div data-testid="mock-backdrop" onClick={onBackdropClick}>
+jest.mock('components/Drawer/Drawer', () => ({
+    Drawer: {
+        Root: ({ open, children }: any) =>
+            open ? <div data-testid="mock-drawer">{children}</div> : null,
+        Portal: ({ children }: any) => children,
+        Overlay: ({ onClick }: any) => (
+            <div data-testid="mock-backdrop" onClick={onClick}>
                 Backdrop
             </div>
-            {children}
-        </div>
-    ),
+        ),
+        Content: ({ children, className }: any) => (
+            <div data-testid="mock-drawer-content" className={className}>
+                {children}
+            </div>
+        ),
+    },
 }))
 
 jest.mock(
@@ -69,10 +75,6 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider',
-)
-
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(() => ({ name: 'mock-help-center' })),
 }))
@@ -88,7 +90,6 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 
 const useKnowledgeSourceSideBarMock = useKnowledgeSourceSideBar as jest.Mock
-const useUnsavedChangesModalMock = useUnsavedChangesModal as jest.Mock
 const useCurrentHelpCenterMock = useCurrentHelpCenter as jest.Mock
 const useEditionManagerMock = useEditionManager as jest.Mock
 const useAbilityCheckerMock = useAbilityChecker as jest.Mock
@@ -119,8 +120,6 @@ describe('KnowledgeSourceSideBar', () => {
     const mockCloseModal = jest.fn()
     const mockOpenEdit = jest.fn()
     const mockSetEditModal = jest.fn()
-    const mockGetHasUnsavedChanges = jest.fn(() => false)
-    const mockOpenUnsavedChangesModal = jest.fn()
     const mockIsPassingRulesCheck = jest.fn()
 
     const helpCenterResource = {
@@ -155,11 +154,6 @@ describe('KnowledgeSourceSideBar', () => {
 
         useAbilityCheckerMock.mockReturnValue({
             isPassingRulesCheck: mockIsPassingRulesCheck,
-        })
-
-        useUnsavedChangesModalMock.mockReturnValue({
-            getHasUnsavedChanges: mockGetHasUnsavedChanges,
-            openUnsavedChangesModal: mockOpenUnsavedChangesModal,
         })
 
         useKnowledgeSourceSideBarMock.mockReturnValue({
@@ -356,40 +350,6 @@ describe('KnowledgeSourceSideBar', () => {
         expect(
             screen.queryByTestId('mock-article-editor'),
         ).not.toBeInTheDocument()
-    })
-
-    it('calls closeModal on backdrop click if there are no unsaved changes', () => {
-        useKnowledgeSourceSideBarMock.mockReturnValue({
-            selectedResource: helpCenterResource,
-            mode: KnowledgeSourceSideBarMode.PREVIEW,
-            closeModal: mockCloseModal,
-            openEdit: mockOpenEdit,
-        })
-
-        render(<KnowledgeSourceSideBar {...baseProps} />)
-
-        fireEvent.click(screen.getByTestId('mock-backdrop'))
-
-        expect(mockCloseModal).toHaveBeenCalled()
-        expect(mockOpenUnsavedChangesModal).not.toHaveBeenCalled()
-    })
-
-    it('opens unsaved changes modal instead of closing if there are unsaved changes', () => {
-        mockGetHasUnsavedChanges.mockReturnValue(true)
-
-        useKnowledgeSourceSideBarMock.mockReturnValue({
-            selectedResource: helpCenterResource,
-            mode: KnowledgeSourceSideBarMode.PREVIEW,
-            closeModal: mockCloseModal,
-            openEdit: mockOpenEdit,
-        })
-
-        render(<KnowledgeSourceSideBar {...baseProps} />)
-
-        fireEvent.click(screen.getByTestId('mock-backdrop'))
-
-        expect(mockOpenUnsavedChangesModal).toHaveBeenCalled()
-        expect(mockCloseModal).not.toHaveBeenCalled()
     })
 
     it('displays correct last updated date from guidance article', () => {

@@ -193,6 +193,7 @@ describe('MissingKnowledgeSelect', () => {
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
+            isClosing: false,
             openPreview: jest.fn(),
             openEdit: jest.fn(),
             openCreate: jest.fn(),
@@ -666,6 +667,7 @@ describe('MissingKnowledgeSelect', () => {
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
+            isClosing: false,
             openPreview: openPreviewMock,
             openEdit: jest.fn(),
             openCreate: jest.fn(),

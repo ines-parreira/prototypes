@@ -11,7 +11,7 @@ import { getKnowledgeResourceTypeLabel } from 'pages/tickets/detail/components/A
 import { formatDatetime } from 'utils'
 import { sanitizeHtmlDefault, unescapeAmpAndDollarEntities } from 'utils/html'
 
-import css from './KnowledgeSourceSideBar.less'
+import css from './KnowledgeSourcePreview.less'
 
 type KnowledgeSourcePreviewProps = {
     onClose: () => void
@@ -55,7 +55,7 @@ const KnowledgeSourcePreview = ({
 
     return (
         <>
-            <Drawer.Header>
+            <Drawer.Header className={css.header}>
                 {typeLabel}
                 <Drawer.HeaderActions
                     onClose={onClose}

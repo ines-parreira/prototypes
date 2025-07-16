@@ -63,6 +63,7 @@ describe('KnowledgeSourceFeedback', () => {
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
+            isClosing: false,
             openPreview: mockOpenPreview,
             openEdit: jest.fn(),
             openCreate: jest.fn(),
