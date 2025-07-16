@@ -123,6 +123,10 @@ const SalesOverview = () => {
                         <CampaignStatsFilters isSelectStoreWithData>
                             <FiltersPanelWrapper
                                 persistentFilters={filteredPersistentFilters}
+                                optionalFilters={
+                                    AiSalesAgentReportConfig.reportFilters
+                                        .optional
+                                }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

@@ -15,16 +15,12 @@ import {
     DataExportFormat,
     ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
-import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { STATS_ROUTES } from 'routes/constants'
 
 export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
     FilterKey.AggregationWindow,
     FilterKey.StoreIntegrations,
-]
-export const AI_SALES_AGENTS_OPTIONAL_FILTERS = [
-    ...(getAiSalesAgentEmailEnabledFlag() ? [FilterKey.Channels] : []),
 ]
 
 export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
@@ -33,7 +29,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
     reportPath: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
     reportFilters: {
         persistent: AI_SALES_AGENTS_PERSISTENT_FILTERS,
-        optional: AI_SALES_AGENTS_OPTIONAL_FILTERS,
+        optional: [FilterKey.Channels],
     },
     charts: {
         [AiSalesAgentChart.AiSalesAgentTotalSalesConv]: {
