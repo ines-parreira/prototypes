@@ -51,6 +51,7 @@ export function AgentLabel({
     isAIAgent = false,
     badgeColor,
     id,
+    status,
 }: {
     className?: string
     maxWidth?: string
@@ -62,6 +63,7 @@ export function AgentLabel({
     isAIAgent?: boolean
     badgeColor?: string
     id?: string
+    status?: 'away' | 'offline' | 'online'
 }) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
@@ -74,6 +76,7 @@ export function AgentLabel({
                         name={name}
                         size="sm"
                         url={profilePictureUrl ?? undefined}
+                        status={status}
                     />
                 ) : (
                     <DEPRECATED_Avatar

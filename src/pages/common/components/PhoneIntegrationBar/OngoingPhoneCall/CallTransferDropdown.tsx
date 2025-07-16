@@ -26,7 +26,11 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import DropdownSection from '../../dropdown/DropdownSection'
-import { getAvailabilityBadgeColor, mergeAgentData } from './utils'
+import {
+    getAvailabilityBadgeColor,
+    getAvailabilityStatus,
+    mergeAgentData,
+} from './utils'
 
 import css from './CallTransferDropdown.less'
 
@@ -144,6 +148,7 @@ export default function CallTransferDropdown({
                                 badgeColor={getAvailabilityBadgeColor(
                                     option.status,
                                 )}
+                                status={getAvailabilityStatus(option.status)}
                             />
                         </DropdownItem>
                     ))}

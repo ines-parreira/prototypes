@@ -46,3 +46,18 @@ export const getAvailabilityBadgeColor = (
             return
     }
 }
+
+export const getAvailabilityStatus = (
+    status: string | undefined,
+): 'away' | 'offline' | 'online' | undefined => {
+    switch (status) {
+        case AvailabilityStatusTag.Offline:
+            return 'offline'
+        case AvailabilityStatusTag.Busy:
+            return 'away'
+        case AvailabilityStatusTag.Online:
+            return 'online'
+        default:
+            return
+    }
+}

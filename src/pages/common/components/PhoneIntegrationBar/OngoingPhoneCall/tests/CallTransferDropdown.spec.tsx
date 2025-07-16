@@ -23,19 +23,26 @@ import { mockIncomingCall } from 'tests/twilioMocks'
 import { mockStore } from 'utils/testing'
 
 import CallTransferDropdown from '../CallTransferDropdown'
-import { getAvailabilityBadgeColor, mergeAgentData } from '../utils'
+import {
+    getAvailabilityBadgeColor,
+    getAvailabilityStatus,
+    mergeAgentData,
+} from '../utils'
 
 jest.mock('pages/common/utils/labels', () => ({
     AgentLabel: ({
         name,
         badgeColor,
+        status,
     }: {
         name: string
         badgeColor?: string
+        status?: string
     }) => (
         <div>
             {name}
             <div data-testid="badge">{badgeColor}</div>
+            <div data-testid="status">{status}</div>
         </div>
     ),
 }))
@@ -45,6 +52,7 @@ jest.mock('@gorgias/helpdesk-queries')
 const mockUseTransferCall = useTransferCall as jest.Mock
 const mockUseListUsers = useListUsers as jest.Mock
 const mockGetAvailabilityBadgeColor = getAvailabilityBadgeColor as jest.Mock
+const mockGetAvailabilityStatus = getAvailabilityStatus as jest.Mock
 const mockMergeAgentData = mergeAgentData as jest.Mock
 
 describe('CallTransferDropdown', () => {
@@ -127,6 +135,7 @@ describe('CallTransferDropdown', () => {
         mockGetAvailabilityBadgeColor.mockImplementation(
             (status: string) => status,
         )
+        mockGetAvailabilityStatus.mockImplementation((status: string) => status)
         mockMergeAgentData.mockReturnValue([
             {
                 id: 1,
@@ -140,6 +149,7 @@ describe('CallTransferDropdown', () => {
         const agent1 = screen.getByText('Agent 1')
         expect(agent1).toBeInTheDocument()
         expect(within(agent1).getByTestId('badge')).toHaveTextContent('online')
+        expect(within(agent1).getByTestId('status')).toHaveTextContent('online')
     })
 
     it('does not render the dropdown body when isOpen is false', () => {

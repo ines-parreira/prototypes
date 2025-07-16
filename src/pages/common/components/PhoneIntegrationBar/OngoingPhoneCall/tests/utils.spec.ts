@@ -1,6 +1,10 @@
 import { AvailabilityStatusTag } from 'config/types/user'
 
-import { getAvailabilityBadgeColor, mergeAgentData } from '../utils'
+import {
+    getAvailabilityBadgeColor,
+    getAvailabilityStatus,
+    mergeAgentData,
+} from '../utils'
 
 describe('utils', () => {
     describe('mergeAgentData', () => {
@@ -89,6 +93,36 @@ describe('utils', () => {
         it('should return undefined for unknown status', () => {
             const status = 'unknown'
             const badgeColor = getAvailabilityBadgeColor(status)
+
+            expect(badgeColor).toBeUndefined()
+        })
+    })
+
+    describe('getAvailabilityStatus', () => {
+        it('should return the correct status for available status', () => {
+            const status = AvailabilityStatusTag.Online
+            const badgeColor = getAvailabilityStatus(status)
+
+            expect(badgeColor).toBe('online')
+        })
+
+        it('should return the correct status for offline status', () => {
+            const status = AvailabilityStatusTag.Offline
+            const badgeColor = getAvailabilityStatus(status)
+
+            expect(badgeColor).toBe('offline')
+        })
+
+        it('should return the correct status for busy status', () => {
+            const status = AvailabilityStatusTag.Busy
+            const badgeColor = getAvailabilityStatus(status)
+
+            expect(badgeColor).toBe('away')
+        })
+
+        it('should return undefined for unknown status', () => {
+            const status = 'unknown'
+            const badgeColor = getAvailabilityStatus(status)
 
             expect(badgeColor).toBeUndefined()
         })
