@@ -11,6 +11,7 @@ import {
     useCreateNewJourney,
     useJourneyConfiguration,
     useJourneys,
+    useTestSms,
     useUpdateJourney,
 } from 'AIJourney/queries'
 import { Product } from 'constants/integrations/types/shopify'
@@ -52,8 +53,12 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         return integrations.find((i) => i.name === shopName)
     }, [integrations, shopName])
 
-    const { data: merchantAiJourneys } = useJourneys(currentIntegration?.id, {
-        enabled: !!currentIntegration?.id,
+    const integrationId = useMemo(() => {
+        return currentIntegration?.id
+    }, [currentIntegration])
+
+    const { data: merchantAiJourneys } = useJourneys(integrationId, {
+        enabled: !!integrationId,
     })
 
     const abandonedCartJourney = merchantAiJourneys?.find(
@@ -63,7 +68,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const { data: journeyParams } = useJourneyConfiguration(
         abandonedCartJourney?.id,
         {
-            enabled: !!currentIntegration?.id && !!abandonedCartJourney?.id,
+            enabled: !!integrationId && !!abandonedCartJourney?.id,
         },
     )
 
@@ -71,8 +76,8 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
         useAiJourneyPhoneList(currentIntegration?.id)
 
     const integrationDataItemsResponse = useListProducts(
-        currentIntegration?.id ?? 0,
-        !!currentIntegration?.id,
+        integrationId ?? 0,
+        !!integrationId,
         { limit: 5 },
         { refetchOnWindowFocus: false, refetchOnMount: false },
     )
@@ -96,6 +101,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const createNewJourney = useCreateNewJourney()
     const updateJourney = useUpdateJourney()
+    const testSms = useTestSms()
 
     const [followUpValue, setFollowUpValue] = useState(
         journeyParams?.max_follow_up_messages || undefined,
@@ -113,7 +119,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     >(currentPhoneNumber)
 
     const [testSmsNumber, setTestSmsNumber] = useState('')
-    const [selectedProduct, setSelectedProduct] = useState({} as Product)
+    const [selectedProduct, setSelectedProduct] = useState(products[0])
 
     useEffect(() => {
         if (journeyParams) {
@@ -123,7 +129,6 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                 journeyParams.max_discount_percent?.toString() || '',
             )
             setPhoneNumberValue(currentPhoneNumber)
-            setTestSmsNumber('')
         }
     }, [journeyParams, currentPhoneNumber])
 
@@ -153,9 +158,9 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
 
     const handleCreate = async () => {
         try {
-            if (!currentIntegration?.id || !currentIntegration?.name) {
+            if (!integrationId || !currentIntegration?.name) {
                 throw new Error(
-                    `Missing integration information: ID: ${currentIntegration?.id}, name: ${currentIntegration?.name}`,
+                    `Missing integration information: ID: ${integrationId}, name: ${currentIntegration?.name}`,
                 )
             }
 
@@ -189,21 +194,19 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
     const handleUpdate = async () => {
         try {
             if (
-                !currentIntegration?.id ||
+                !integrationId ||
                 !currentIntegration?.name ||
                 !abandonedCartJourney?.id
             ) {
                 throw new Error(
-                    `Missing integration information: ID: ${currentIntegration?.id}, name: ${currentIntegration?.name}, journey ID: ${abandonedCartJourney?.id}`,
+                    `Missing integration information: ID: ${integrationId}, name: ${currentIntegration?.name}, journey ID: ${abandonedCartJourney?.id}`,
                 )
             }
 
             await updateJourney.mutateAsync({
                 journeyId: abandonedCartJourney?.id,
                 params: {
-                    // Hardcoded this state to avoid activating stores unnecessarily and keep the onboarding flow available
-                    // TODO: pass this as a dynamic parameter for final release
-                    state: JourneyStatusEnum.Draft,
+                    state: JourneyStatusEnum.Active,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: followUpValue,
@@ -224,6 +227,38 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                 }),
             )
             throw error
+        }
+    }
+
+    const handleTestSms = async () => {
+        try {
+            if (!abandonedCartJourney?.id || !testSmsNumber) {
+                void dispatch(
+                    notify({
+                        message: `Missing information: test number: ${testSmsNumber}, journeyID: ${abandonedCartJourney?.id}`,
+                        status: NotificationStatus.Error,
+                    }),
+                )
+                return
+            }
+
+            await testSms.mutateAsync({
+                // TODO use generic phone number formatting
+                phoneNumber: `+1${testSmsNumber.replace(/\D/g, '')}`,
+                journeyId: abandonedCartJourney?.id,
+                product: {
+                    product_id: String(selectedProduct.id),
+                    variant_id: String(selectedProduct.variants[0]?.id),
+                    price: Number(selectedProduct.variants[0]?.price),
+                },
+            })
+        } catch (error) {
+            void dispatch(
+                notify({
+                    message: `Error sending test SMS: ${error}`,
+                    status: NotificationStatus.Error,
+                }),
+            )
         }
     }
 
@@ -275,6 +310,7 @@ export const OnboardingCard = ({ currentStep }: OnboardingCardProps) => {
                         <TestSMSField
                             value={testSmsNumber}
                             onChange={handleTestSmsNumberChange}
+                            onActionClick={handleTestSms}
                         />
                     </>
                 ) : (

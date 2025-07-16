@@ -9,6 +9,7 @@ import css from './InputAction.less'
 type InputActionProps = {
     value?: string
     onChange?: (value: string) => void
+    onActionClick?: () => void
 }
 
 const createUnderscores = (count: number): string => {
@@ -27,6 +28,7 @@ const getCursorPosition = (digits: string) => {
 export const InputAction = ({
     value,
     onChange = () => {},
+    onActionClick,
 }: InputActionProps) => {
     const [isSending, setIsSending] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -78,11 +80,13 @@ export const InputAction = ({
         }
     }
 
-    const handleClick = () => {
+    const handleActionClick = async () => {
         setIsSending(true)
-        setTimeout(() => {
+        try {
+            await onActionClick?.()
+        } finally {
             setIsSending(false)
-        }, 2000)
+        }
     }
 
     const actionClass = classNames(css.action, {
@@ -114,7 +118,7 @@ export const InputAction = ({
             />
             <button
                 className={actionClass}
-                onClick={handleClick}
+                onClick={handleActionClick}
                 disabled={!value || isSending}
             >
                 {isSending ? 'Sending SMS...' : 'Send test SMS'}

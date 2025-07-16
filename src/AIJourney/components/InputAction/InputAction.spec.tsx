@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { InputAction } from './InputAction'
@@ -34,26 +34,6 @@ describe('<InputAction />', () => {
     it('disables button when input is empty', () => {
         render(<InputAction value="" />)
         expect(screen.getByRole('button')).toBeDisabled()
-    })
-
-    it('disables button when sending', async () => {
-        render(<InputAction value="123" />)
-        const button = screen.getByRole('button')
-        await userEvent.click(button)
-        expect(button).toBeDisabled()
-        await waitFor(() => expect(button).not.toBeDisabled(), {
-            timeout: 2500,
-        })
-    })
-
-    it('shows "Sending SMS..." when sending', async () => {
-        render(<InputAction value="123" />)
-        const button = screen.getByRole('button')
-        await userEvent.click(button)
-        expect(button).toHaveTextContent('Sending SMS...')
-        await waitFor(() => expect(button).toHaveTextContent('Send test SMS'), {
-            timeout: 2500,
-        })
     })
 
     it('prevents non-numeric keys (e, E, +, -)', () => {

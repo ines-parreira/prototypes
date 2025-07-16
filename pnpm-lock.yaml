@@ -23,8 +23,8 @@ catalogs:
       version: 18.2.0
   rest-api-sdk:
     '@gorgias/convert-client':
-      specifier: 0.2.14
-      version: 0.2.14
+      specifier: 0.2.16
+      version: 0.2.16
     '@gorgias/help-center-client':
       specifier: 0.2.13
       version: 0.2.13
@@ -137,7 +137,7 @@ importers:
         version: 0.2.1
       '@gorgias/convert-client':
         specifier: catalog:rest-api-sdk
-        version: 0.2.14
+        version: 0.2.16
       '@gorgias/design-tokens':
         specifier: ^0.10.5
         version: 0.10.5
@@ -2547,11 +2547,11 @@ packages:
       eslint-plugin-react: ^7.34.3
       eslint-plugin-react-hooks: ^4.6.2
 
-  '@gorgias/convert-client@0.2.14':
-    resolution: {integrity: sha512-+NRsS51FV+k1rvBCzAPSHL5Cm5z+MQ15Ah3t90WmneWfe95Ye2tTqkT55um/AHDZLNKveJ0YvueMAO1uHQhBiw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.2.14/cb737bd4a11f151327012c73b7d82786b56b2f03}
+  '@gorgias/convert-client@0.2.16':
+    resolution: {integrity: sha512-IydVQ70jgtEpSvirfizLYgn72iFJu9SD94wAFkYcyncCe/MY2omyiO0Uwc8+NfkvuHMW1bUpSNucgvsJulsypQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.2.16/cd0db7620f741e38bc079c26dc9197ddbcb58cf4}
 
-  '@gorgias/convert-types@0.2.10':
-    resolution: {integrity: sha512-6ic2hwyS4H8blnGuIsZ7TjU0Sqe7jcRPTLbO0+evigpyWNSfwOyyhXzJp4LC+hCCqIa+z5oCjqe47ofxXwhs3A==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.2.10/18d34720f87e3a47aec2355b15dd2220ca617a90}
+  '@gorgias/convert-types@0.2.12':
+    resolution: {integrity: sha512-KkYt4H92kEO+V1wjQTdp20htxBzoTskXJYJTLeS58bkatz/bpk/2/NgosMpFDkRoqIT+YWZaQCiphhAF+wwmVQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.2.12/eaceac5203d7c2046f67cb9e3532a992b154e49c}
 
   '@gorgias/design-tokens@0.10.2':
     resolution: {integrity: sha512-WfZ76lyPNHThtjOaW2OHI1CwprcQriO7+DGeOLhgg+xq6rKO28NrCtV4Rs5c4lv9Qh8h2Gji8RnIKuYDa1y8jw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.2/c38285ac14e6bcfc888beddf1b8057129a59afba}
@@ -13466,15 +13466,15 @@ snapshots:
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
 
-  '@gorgias/convert-client@0.2.14':
+  '@gorgias/convert-client@0.2.16':
     dependencies:
-      '@gorgias/convert-types': 0.2.10
+      '@gorgias/convert-types': 0.2.12
       '@gorgias/sdk-client': 0.9.3
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/convert-types@0.2.10': {}
+  '@gorgias/convert-types@0.2.12': {}
 
   '@gorgias/design-tokens@0.10.2': {}
 

@@ -5,16 +5,25 @@ import css from './TestSMS.less'
 type TestSMSProps = {
     value?: string
     onChange?: (value: string) => void
+    onActionClick?: () => void
 }
 
-export const TestSMSField = ({ value, onChange }: TestSMSProps) => {
+export const TestSMSField = ({
+    value,
+    onChange,
+    onActionClick,
+}: TestSMSProps) => {
     return (
         <div className={css.testSmsField}>
             <FieldPresentation
                 name="Test phone number"
                 description="Select the phone number to preview your campaign"
             />
-            <InputAction value={value} onChange={onChange} />
+            <InputAction
+                value={value}
+                onChange={onChange}
+                onActionClick={onActionClick}
+            />
         </div>
     )
 }
