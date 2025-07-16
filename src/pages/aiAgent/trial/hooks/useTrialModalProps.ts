@@ -28,7 +28,8 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 export const EXTERNAL_URLS = {
     BOOK_DEMO: 'https://www.gorgias.com/demo/customers/automate',
-    SHOPPING_ASSISTANT_INFO: 'https://www.gorgias.com/ai-shopping-assistant',
+    SHOPPING_ASSISTANT_INFO:
+        'https://www.gorgias.com/ai-agent/shopping-assistant',
 } as const
 
 export type TrialModalProps = {
@@ -271,7 +272,7 @@ const useTrialStartedBanner = (
         if (gmvInfluencedRate > 0.01) {
             return `So far, it's influenced ${gmvInfluenced} of GMV for your store.`
         }
-        return `Increase conversion by +50% by setting up your sales and discount strategy.`
+        return `Increase conversion by +50% by setting up your sales strategy and customer engagement tactics.`
     }, [gmvInfluenced, gmvInfluencedRate])
 
     const trialEndsText =

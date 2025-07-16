@@ -844,7 +844,7 @@ describe('useTrialModalProps', () => {
             result.current.trialAlertBanner.secondaryAction?.onClick()
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
-                'https://www.gorgias.com/ai-shopping-assistant',
+                'https://www.gorgias.com/ai-agent/shopping-assistant',
                 '_blank',
             )
         })

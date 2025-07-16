@@ -415,7 +415,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getByText('How AI Agent can 2x conversion rate'))
 
             expect(window.open).toHaveBeenCalledWith(
-                'https://www.gorgias.com/ai-shopping-assistant',
+                'https://www.gorgias.com/ai-agent/shopping-assistant',
                 '_blank',
             )
 
