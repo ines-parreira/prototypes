@@ -8,7 +8,7 @@ import scrollIntoView, {
 /**
  * Scroll DOM node into view
  */
-function scrollToNode(node: HTMLElement, options?: StandardBehaviorOptions) {
+function scrollToNode(node: Element, options?: StandardBehaviorOptions) {
     return scrollIntoView(node, {
         scrollMode: 'if-needed',
         block: 'nearest',
@@ -24,7 +24,11 @@ export function scrollToReactNode(
     node: HTMLElement | Component,
     options?: StandardBehaviorOptions,
 ) {
-    return scrollToNode(findDOMNode(node) as HTMLElement, options)
+    const domNode = findDOMNode(node)
+    if (!domNode || domNode instanceof Text) {
+        return
+    }
+    return scrollToNode(domNode, options)
 }
 
 export enum MoveIndexDirection {
