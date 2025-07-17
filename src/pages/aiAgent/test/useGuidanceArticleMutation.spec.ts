@@ -105,12 +105,14 @@ describe('useGuidanceArticleMutation', () => {
                 }),
             )
 
-            await act(async () => {
-                await result.current.duplicateGuidanceArticle(
-                    articleId,
-                    shopName,
-                )
-            })
+            await expect(async () => {
+                await act(async () => {
+                    await result.current.duplicateGuidanceArticle(
+                        articleId,
+                        shopName,
+                    )
+                })
+            }).rejects.toThrow('Copy failed')
 
             expect(mockedReportError).toHaveBeenCalledWith(error, {
                 tags: { team: 'convai-knowledge' },

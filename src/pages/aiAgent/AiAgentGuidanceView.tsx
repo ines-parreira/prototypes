@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useDebouncedValue from 'hooks/useDebouncedValue'
+import { isGorgiasApiError } from 'models/api/types'
 import { LocaleCode } from 'models/helpCenter/types'
 import { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
@@ -117,11 +118,20 @@ export const AiAgentGuidanceView = ({
                     message,
                 }),
             )
-        } catch {
+        } catch (error) {
+            /* istanbul ignore next */
+            const isDuplicateError =
+                isGorgiasApiError(error) &&
+                error.response?.data.error.msg &&
+                error.response.data.error.msg.includes('already exists')
+            /* istanbul ignore next */
+            const message = isDuplicateError
+                ? error.response?.data.error.msg
+                : 'Error during guidance article duplication.'
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: 'Error during guidance article duplication.',
+                    message: message,
                 }),
             )
         }

@@ -271,6 +271,8 @@ export const useGuidanceArticleMutation = ({
                         context: 'Error during guidance article duplication',
                     },
                 })
+
+                throw error
             }
         },
         [copyArticleAsync, guidanceHelpCenterId],

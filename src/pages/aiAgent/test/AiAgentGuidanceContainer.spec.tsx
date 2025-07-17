@@ -4,7 +4,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen, within } from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,10 +12,13 @@ import thunk from 'redux-thunk'
 import { toImmutable } from 'common/utils'
 import { useFlag } from 'core/flags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import history from 'pages/history'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { reportError } from 'utils/errors'
 import { assumeMock, renderWithRouter } from 'utils/testing'
@@ -41,7 +44,10 @@ import { useGuidanceArticles } from '../hooks/useGuidanceArticles'
 import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('pages/history')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+const useAppDispatchMock = assumeMock(useAppDispatch)
+jest.mock('state/notifications/actions')
+
 jest.mock('sanitize-html', () => () => jest.fn())
 jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
@@ -76,8 +82,18 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: () => [
-        { id: 1, name: 'test-shop', type: 'shopify' },
-        { id: 2, name: 'another-shop', type: 'shopify' },
+        {
+            id: 1,
+            name: 'test-shop',
+            type: 'shopify',
+            meta: { shopName: 'test-shop' },
+        },
+        {
+            id: 2,
+            name: 'another-shop',
+            type: 'shopify',
+            meta: { shopName: 'another-shop' },
+        },
     ],
 }))
 
@@ -179,6 +195,7 @@ const mockedAiAgentStoreConfigurationContext = {
     createStoreConfiguration: jest.fn(),
     isPendingCreateOrUpdate: false,
 }
+const dispatchMock = jest.fn()
 
 describe('<AiAgentGuidanceContainer />', () => {
     beforeEach(() => {
@@ -213,6 +230,8 @@ describe('<AiAgentGuidanceContainer />', () => {
         useStoreActivationsMock.mockReturnValue({
             storeActivations: {},
         } as any)
+
+        useAppDispatchMock.mockReturnValue(dispatchMock)
     })
 
     it('should render loader', () => {
@@ -632,6 +651,132 @@ describe('<AiAgentGuidanceContainer />', () => {
                     locale: guidanceArticles[0].locale,
                 },
             )
+        })
+    })
+
+    it('should show error notification when duplicateGuidanceArticle throws', async () => {
+        const duplicateGuidanceArticle = jest
+            .fn()
+            .mockRejectedValue(new Error('fail'))
+        const guidanceArticles = [getGuidanceArticleFixture(1)]
+
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultGuidanceAiSuggestionsProps,
+            isGuidancesOnly: true,
+            guidanceArticles,
+        })
+        mockedUseGuidanceArticleMutation.mockReturnValue({
+            ...defaultGuidanceArticleMutationProps,
+            duplicateGuidanceArticle,
+        })
+
+        renderComponent()
+
+        // Click duplicate button to open dropdown
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Duplicate guidance' }),
+        )
+
+        // Wait for dropdown to open
+        await waitFor(() => {
+            expect(screen.getByText('DUPLICATE TO')).toBeInTheDocument()
+        })
+
+        fireEvent.click(screen.getByText('another-shop'))
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                message: `Error during guidance article duplication.`,
+                status: NotificationStatus.Error,
+            })
+        })
+    })
+
+    it('should show already exists error notification when duplicateGuidanceArticle throws with duplicate error', async () => {
+        const duplicateGuidanceArticle = jest.fn().mockRejectedValue({
+            isAxiosError: true,
+            response: {
+                data: {
+                    error: {
+                        msg: 'A guidance with this name already exists',
+                    },
+                },
+            },
+        })
+        const guidanceArticles = [getGuidanceArticleFixture(1)]
+
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultGuidanceAiSuggestionsProps,
+            isGuidancesOnly: true,
+            guidanceArticles,
+        })
+        mockedUseGuidanceArticleMutation.mockReturnValue({
+            ...defaultGuidanceArticleMutationProps,
+            duplicateGuidanceArticle,
+        })
+
+        renderComponent()
+
+        // Open duplicate dropdown
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Duplicate guidance' }),
+        )
+        await waitFor(() => {
+            expect(screen.getByText('another-shop')).toBeInTheDocument()
+        })
+
+        // Select another shop to trigger duplication
+        fireEvent.click(screen.getByText('another-shop'))
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                status: NotificationStatus.Error,
+                message: 'A guidance with this name already exists',
+            })
+        })
+    })
+
+    it('should show generic error notification when duplicateGuidanceArticle throws with API error but no duplicate message', async () => {
+        const duplicateGuidanceArticle = jest.fn().mockRejectedValue({
+            isAxiosError: true,
+            response: {
+                data: {
+                    error: {
+                        msg: 'Some other API error',
+                    },
+                },
+            },
+        })
+        const guidanceArticles = [getGuidanceArticleFixture(1)]
+
+        mockedUseGuidanceAiSuggestions.mockReturnValue({
+            ...defaultGuidanceAiSuggestionsProps,
+            isGuidancesOnly: true,
+            guidanceArticles,
+        })
+        mockedUseGuidanceArticleMutation.mockReturnValue({
+            ...defaultGuidanceArticleMutationProps,
+            duplicateGuidanceArticle,
+        })
+
+        renderComponent()
+
+        // Open duplicate dropdown
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Duplicate guidance' }),
+        )
+        await waitFor(() => {
+            expect(screen.getByText('another-shop')).toBeInTheDocument()
+        })
+
+        // Select another shop to trigger duplication
+        fireEvent.click(screen.getByText('another-shop'))
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                status: NotificationStatus.Error,
+                message: 'Error during guidance article duplication.',
+            })
         })
     })
 })
