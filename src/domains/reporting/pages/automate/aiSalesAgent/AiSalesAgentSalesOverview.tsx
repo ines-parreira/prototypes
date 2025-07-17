@@ -102,7 +102,7 @@ const AiSalesAgentSalesOverview = () => {
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
                     <div className={css.wrapper}>
-                        {!earlyAccessPlan && (
+                        {earlyAccessPlan && (
                             <AIButton
                                 intent="primary"
                                 size="medium"

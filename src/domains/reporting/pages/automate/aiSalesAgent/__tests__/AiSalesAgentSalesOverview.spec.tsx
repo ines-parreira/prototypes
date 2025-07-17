@@ -379,17 +379,17 @@ describe('AiSalesAgentSalesOverview', () => {
             } as any)
         })
 
-        it('should render Upgrade Now button when earlyAccessPlan is null', () => {
+        it('should not render Upgrade Now button when earlyAccessPlan is null', () => {
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
                 data: null,
             } as any)
 
             renderComponent()
 
-            expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
+            expect(screen.queryByText('Upgrade Now')).not.toBeInTheDocument()
         })
 
-        it('should not render Upgrade Now button when earlyAccessPlan is present', () => {
+        it('should render Upgrade Now button when earlyAccessPlan is present', () => {
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
                 data: {
                     id: 'plan-123',
@@ -399,7 +399,7 @@ describe('AiSalesAgentSalesOverview', () => {
 
             renderComponent()
 
-            expect(screen.queryByText('Upgrade Now')).not.toBeInTheDocument()
+            expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
         })
 
         it('should render Start trial button regardless of earlyAccessPlan when canStartTrial is true', () => {
