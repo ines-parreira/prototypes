@@ -62,9 +62,15 @@ describe('useAiJourneyPhoneList', () => {
             // Should exclude phone 3 (no MKT prefix)
             // Should exclude phone 4 (no SMS capability)
             // Should exclude phone 5 (no SMS integration)
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(2)
-            expect(result.current.eligiblePhoneNumbers[0].id).toBe('1')
-            expect(result.current.eligiblePhoneNumbers[1].id).toBe('2')
+            expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(
+                2,
+            )
+            expect(result.current.marketingCapabilityPhoneNumbers[0].id).toBe(
+                '1',
+            )
+            expect(result.current.marketingCapabilityPhoneNumbers[1].id).toBe(
+                '2',
+            )
         })
 
         it('should filter out phones without SMS capability', () => {
@@ -80,8 +86,12 @@ describe('useAiJourneyPhoneList', () => {
                 wrapper: createWrapper(),
             })
 
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(1)
-            expect(result.current.eligiblePhoneNumbers[0].id).toBe('2')
+            expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(
+                1,
+            )
+            expect(result.current.marketingCapabilityPhoneNumbers[0].id).toBe(
+                '2',
+            )
         })
 
         it('should filter out phones without SMS integration', () => {
@@ -97,8 +107,12 @@ describe('useAiJourneyPhoneList', () => {
                 wrapper: createWrapper(),
             })
 
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(1)
-            expect(result.current.eligiblePhoneNumbers[0].id).toBe('1')
+            expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(
+                1,
+            )
+            expect(result.current.marketingCapabilityPhoneNumbers[0].id).toBe(
+                '1',
+            )
         })
 
         it('should filter out phones without MKT prefix', () => {
@@ -114,57 +128,12 @@ describe('useAiJourneyPhoneList', () => {
                 wrapper: createWrapper(),
             })
 
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(1)
-            expect(result.current.eligiblePhoneNumbers[0].id).toBe('1')
-        })
-    })
-
-    describe('eligiblePhoneNumbers filtering', () => {
-        it('should include all marketing phones when no SMS integrations are in use', () => {
-            mockUseSmsIntegrations.mockReturnValue({
-                data: [],
-                isLoading: false,
-                error: null,
-            })
-
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
-                wrapper: createWrapper(),
-            })
-
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(2)
-        })
-
-        it('should handle multiple SMS integrations in use', () => {
-            mockUseSmsIntegrations.mockReturnValue({
-                data: [
-                    { sms_integration_id: 'sms-1', store_integration_id: 1 },
-                    { sms_integration_id: 'sms-2', store_integration_id: 2 },
-                ],
-                isLoading: false,
-                error: null,
-            })
-
-            const { result } = renderHook(() => useAiJourneyPhoneList(1), {
-                wrapper: createWrapper(),
-            })
-
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(1)
-        })
-    })
-
-    describe('loading and error states', () => {
-        it('should return loading state from useSmsIntegrations', () => {
-            mockUseSmsIntegrations.mockReturnValue({
-                data: [],
-                isLoading: true,
-                error: null,
-            })
-
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
-                wrapper: createWrapper(),
-            })
-
-            expect(result.current.isLoading).toBe(true)
+            expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(
+                1,
+            )
+            expect(result.current.marketingCapabilityPhoneNumbers[0].id).toBe(
+                '1',
+            )
         })
     })
 
@@ -176,7 +145,9 @@ describe('useAiJourneyPhoneList', () => {
                 wrapper: createWrapper(),
             })
 
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(0)
+            expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(
+                0,
+            )
         })
 
         it('should handle undefined SMS integrations data', () => {
@@ -191,7 +162,9 @@ describe('useAiJourneyPhoneList', () => {
             })
 
             // Should still return marketing phones when SMS integrations data is undefined
-            expect(result.current.eligiblePhoneNumbers).toHaveLength(2)
+            expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(
+                2,
+            )
         })
     })
 
@@ -210,8 +183,8 @@ describe('useAiJourneyPhoneList', () => {
             wrapper: createWrapper(),
         })
 
-        expect(result.current.eligiblePhoneNumbers).toHaveLength(1)
-        expect(result.current.eligiblePhoneNumbers[0].id).toBe('1')
+        expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(1)
+        expect(result.current.marketingCapabilityPhoneNumbers[0].id).toBe('1')
     })
 
     it('should handle phone numbers with no integrations', () => {
@@ -226,7 +199,7 @@ describe('useAiJourneyPhoneList', () => {
             wrapper: createWrapper(),
         })
 
-        expect(result.current.eligiblePhoneNumbers).toHaveLength(0)
+        expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(0)
     })
 
     it('should handle phone numbers with undefined SMS integration id', () => {
@@ -247,6 +220,6 @@ describe('useAiJourneyPhoneList', () => {
             wrapper: createWrapper(),
         })
 
-        expect(result.current.eligiblePhoneNumbers).toHaveLength(1)
+        expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(1)
     })
 })

@@ -56,8 +56,7 @@ export const Setup = () => {
         },
     )
 
-    const { eligiblePhoneNumbers, marketingCapabilityPhoneNumbers } =
-        useAiJourneyPhoneList(currentIntegration?.id)
+    const { marketingCapabilityPhoneNumbers } = useAiJourneyPhoneList()
 
     const currentPhoneNumber = marketingCapabilityPhoneNumbers.find(
         (phoneNumber) =>
@@ -192,7 +191,7 @@ export const Setup = () => {
             transition={{ duration: 0.5 }}
         >
             <PhoneNumberField
-                options={eligiblePhoneNumbers}
+                options={marketingCapabilityPhoneNumbers}
                 value={phoneNumberValue}
                 onChange={handlePhoneNumberChange}
             />
