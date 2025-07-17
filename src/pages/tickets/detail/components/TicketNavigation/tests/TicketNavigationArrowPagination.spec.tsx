@@ -5,6 +5,7 @@ import { fromJS } from 'immutable'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
@@ -15,6 +16,11 @@ import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = useAppSelector as jest.Mock
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
@@ -54,6 +60,7 @@ describe('TicketNavigationArrowPagination', () => {
             goToTicket: mockGoToNextTicket,
             isDisabled: false,
         })
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render & test buttons: enabled PREV & enabled NEXT with tooltips', () => {
@@ -125,5 +132,35 @@ describe('TicketNavigationArrowPagination', () => {
 
         expect(prevArrow).toBeInTheDocument()
         expect(nextArrow).toBeInTheDocument
+    })
+
+    it('should render separator when TicketAllowPriorityUsage flag is enabled and arrows are displayed', () => {
+        mockUseIsTicketNavigationAvailable.mockReturnValue(true)
+        mockUseFlag.mockReturnValue(true)
+
+        const { container } = render(
+            <TicketNavigationArrowPagination ticketId={ticketId} />,
+        )
+
+        expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
+        expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
+
+        const separator = container.querySelector('[class*="separator"]')
+        expect(separator).toBeInTheDocument()
+    })
+
+    it('should not render separator when TicketAllowPriorityUsage flag is disabled even if arrows are displayed', () => {
+        mockUseIsTicketNavigationAvailable.mockReturnValue(true)
+        mockUseFlag.mockReturnValue(false)
+
+        const { container } = render(
+            <TicketNavigationArrowPagination ticketId={ticketId} />,
+        )
+
+        expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
+        expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
+
+        const separator = container.querySelector('[class*="separator"]')
+        expect(separator).not.toBeInTheDocument()
     })
 })

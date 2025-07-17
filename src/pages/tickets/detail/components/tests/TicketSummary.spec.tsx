@@ -197,14 +197,10 @@ describe('TicketSummarySection', () => {
 describe('TicketSummaryButton', () => {
     it('renders with icon and children and handles click', () => {
         const handleClick = jest.fn()
-        render(
-            <TicketSummaryButton onClick={handleClick}>
-                Click Me
-            </TicketSummaryButton>,
-        )
+        render(<TicketSummaryButton onClick={handleClick} />)
 
-        expect(screen.getByText('Click Me')).toBeInTheDocument()
-        fireEvent.click(screen.getByText('Click Me'))
+        fireEvent.click(screen.getByText('Summarize'))
+
         expect(handleClick).toHaveBeenCalledTimes(1)
     })
 

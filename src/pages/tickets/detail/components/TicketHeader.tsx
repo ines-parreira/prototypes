@@ -299,66 +299,147 @@ const TicketHeader = ({
                 />
 
                 <div className={css.actions}>
-                    {setPriorityFlagEnabled && (
-                        <TicketPriorityDropdown
-                            priority={ticket.get('priority') as TicketPriority}
-                            onPriorityChange={handlePriorityChange}
-                        />
-                    )}
-                    <TicketSnooze datetime={snoozedUntil} timezone={timezone} />
-                    {enableAITicketSummary && <TicketSummaryPopover />}
-
-                    <TicketNavigationArrowPagination
-                        ticketId={ticket.get('id')}
-                    />
-
-                    <TicketTrash
-                        className={css.headerIcon}
-                        trashed={
-                            isTrashed &&
-                            !ticket.getIn(['_internal', 'loading', 'setTrash'])
-                        }
-                    />
-
-                    <TicketSpam
-                        className={css.headerIcon}
-                        spam={
-                            ticket.get('spam') &&
-                            !ticket.getIn(['_internal', 'loading', 'setSpam'])
-                        }
-                    />
-
-                    {isUpdate && (
+                    {setPriorityFlagEnabled ? (
                         <>
-                            <Snooze
-                                until={snoozedUntil}
-                                onUpdate={handleSnoozeTicket}
-                            />
-                            <ConfirmationPopover
-                                buttonProps={{
-                                    autoFocus: true,
-                                    intent: 'destructive',
-                                }}
-                                content={
-                                    <>
-                                        You are about to <b>delete</b> this
-                                        ticket.
-                                    </>
+                            <TicketTrash
+                                className={css.headerIcon}
+                                trashed={
+                                    isTrashed &&
+                                    !ticket.getIn([
+                                        '_internal',
+                                        'loading',
+                                        'setTrash',
+                                    ])
                                 }
-                                fade={false}
-                                id="ticket-actions-button"
-                                isOpen={askTrashConfirmation}
-                                onConfirm={trashTicket}
-                                toggle={() => setAskTrashConfirmation(false)}
-                            >
-                                {({ onDisplayConfirmation }) => (
-                                    <TicketActions
-                                        actions={createActions(
-                                            onDisplayConfirmation,
-                                        )}
+                            />
+                            <TicketSpam
+                                className={css.headerIcon}
+                                spam={
+                                    ticket.get('spam') &&
+                                    !ticket.getIn([
+                                        '_internal',
+                                        'loading',
+                                        'setSpam',
+                                    ])
+                                }
+                            />
+                            <TicketSnooze
+                                datetime={snoozedUntil}
+                                timezone={timezone}
+                            />
+                            <TicketPriorityDropdown
+                                priority={
+                                    ticket.get('priority') as TicketPriority
+                                }
+                                onPriorityChange={handlePriorityChange}
+                            />
+                            {isUpdate && (
+                                <Snooze
+                                    until={snoozedUntil}
+                                    onUpdate={handleSnoozeTicket}
+                                />
+                            )}
+                            {enableAITicketSummary && <TicketSummaryPopover />}
+                            {isUpdate && (
+                                <ConfirmationPopover
+                                    buttonProps={{
+                                        autoFocus: true,
+                                        intent: 'destructive',
+                                    }}
+                                    content={
+                                        <>
+                                            You are about to <b>delete</b> this
+                                            ticket.
+                                        </>
+                                    }
+                                    fade={false}
+                                    id="ticket-actions-button"
+                                    isOpen={askTrashConfirmation}
+                                    onConfirm={trashTicket}
+                                    toggle={() =>
+                                        setAskTrashConfirmation(false)
+                                    }
+                                >
+                                    {({ onDisplayConfirmation }) => (
+                                        <TicketActions
+                                            actions={createActions(
+                                                onDisplayConfirmation,
+                                            )}
+                                        />
+                                    )}
+                                </ConfirmationPopover>
+                            )}
+                            <TicketNavigationArrowPagination
+                                ticketId={ticket.get('id')}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <TicketSnooze
+                                datetime={snoozedUntil}
+                                timezone={timezone}
+                            />
+                            {enableAITicketSummary && <TicketSummaryPopover />}
+                            <TicketNavigationArrowPagination
+                                ticketId={ticket.get('id')}
+                            />
+                            <TicketTrash
+                                className={css.headerIcon}
+                                trashed={
+                                    isTrashed &&
+                                    !ticket.getIn([
+                                        '_internal',
+                                        'loading',
+                                        'setTrash',
+                                    ])
+                                }
+                            />
+                            <TicketSpam
+                                className={css.headerIcon}
+                                spam={
+                                    ticket.get('spam') &&
+                                    !ticket.getIn([
+                                        '_internal',
+                                        'loading',
+                                        'setSpam',
+                                    ])
+                                }
+                            />
+                            {isUpdate && (
+                                <>
+                                    <Snooze
+                                        until={snoozedUntil}
+                                        onUpdate={handleSnoozeTicket}
                                     />
-                                )}
-                            </ConfirmationPopover>
+                                    <ConfirmationPopover
+                                        buttonProps={{
+                                            autoFocus: true,
+                                            intent: 'destructive',
+                                        }}
+                                        content={
+                                            <>
+                                                You are about to <b>delete</b>{' '}
+                                                this ticket.
+                                            </>
+                                        }
+                                        fade={false}
+                                        id="ticket-actions-button"
+                                        isOpen={askTrashConfirmation}
+                                        onConfirm={trashTicket}
+                                        toggle={() =>
+                                            setAskTrashConfirmation(false)
+                                        }
+                                    >
+                                        {({ onDisplayConfirmation }) => (
+                                            <TicketActions
+                                                actions={createActions(
+                                                    onDisplayConfirmation,
+                                                )}
+                                            />
+                                        )}
+                                    </ConfirmationPopover>
+                                </>
+                            )}
                         </>
                     )}
                 </div>

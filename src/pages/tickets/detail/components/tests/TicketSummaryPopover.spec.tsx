@@ -19,9 +19,9 @@ const logEventMock = logEvent as jest.Mock
 jest.mock('pages/tickets/detail/components/TicketSummary', () => {
     const React = require('react')
 
-    const Button = React.forwardRef(({ onClick, children }: any, ref: any) => (
+    const Button = React.forwardRef(({ onClick }: any, ref: any) => (
         <button onClick={onClick} ref={ref}>
-            {children}
+            Summarize
         </button>
     ))
 

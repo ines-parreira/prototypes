@@ -6,7 +6,9 @@ import { TicketSummaryProperty } from '@gorgias/helpdesk-types'
 import { Badge, Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'
+import { useFlag } from 'core/flags'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/TicketSummary.less'
 import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
@@ -101,9 +103,7 @@ const TicketSummarySection = ({
                     <TicketSummaryButton
                         onClick={manuallyRequestInitialSummary}
                         className={css.initButton}
-                    >
-                        Summarize
-                    </TicketSummaryButton>
+                    />
                 )}
             </div>
             {hasRequested && (
@@ -169,20 +169,39 @@ type TicketSummaryButtonProps = {
 export const TicketSummaryButton = forwardRef<
     HTMLButtonElement,
     TicketSummaryButtonProps
->(({ onClick, className, children, leadingIcon = <AISummaryIcon /> }, ref) => {
+>(({ onClick, className, leadingIcon = <AISummaryIcon /> }, ref) => {
+    const setPriorityFlagEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+    )
+
     return (
-        <Button
-            size="small"
-            intent="secondary"
-            fillStyle="fill"
-            leadingIcon={leadingIcon}
-            onClick={onClick}
-            ref={ref}
-            className={className}
-            data-candu-trigger-summary
-        >
-            {children}
-        </Button>
+        <>
+            {setPriorityFlagEnabled ? (
+                <IconButton
+                    size="small"
+                    intent="secondary"
+                    fillStyle="ghost"
+                    icon={leadingIcon as string} // TODO: while waiting for the type fix in merchant-ui-kit
+                    onClick={onClick}
+                    ref={ref}
+                    className={className}
+                    data-candu-trigger-summary
+                />
+            ) : (
+                <Button
+                    size="small"
+                    intent="secondary"
+                    fillStyle="fill"
+                    leadingIcon={leadingIcon}
+                    onClick={onClick}
+                    ref={ref}
+                    className={className}
+                    data-candu-trigger-summary
+                >
+                    Summarize
+                </Button>
+            )}
+        </>
     )
 })
 

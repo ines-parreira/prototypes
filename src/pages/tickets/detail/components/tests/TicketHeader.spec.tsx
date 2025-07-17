@@ -12,6 +12,7 @@ import thunk from 'redux-thunk'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
@@ -145,7 +146,21 @@ describe('<TicketHeader />', () => {
         useAppDispatchMock.mockReturnValue(dispatch)
         mockUseIsTicketNavigationAvailable.mockReturnValue(false)
         useParamsMock.mockReturnValue({})
+        mockUseFlagForFeature(FeatureFlagKey.TicketAllowPriorityUsage, false)
+        mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, false)
     })
+
+    const mockUseFlagForFeature = (
+        flagKey: FeatureFlagKey,
+        returnValue: boolean,
+    ) => {
+        useFlagMock.mockImplementation(
+            (key: FeatureFlagKey, defaultValue: boolean) => {
+                if (key === flagKey) return returnValue
+                return defaultValue
+            },
+        )
+    }
 
     it('should render new ticket', () => {
         const { container } = render(
@@ -153,12 +168,16 @@ describe('<TicketHeader />', () => {
                 <TicketHeader {...minProps} />
             </Provider>,
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        const actions = container.querySelector('[class*="actions"]')!
+
+        expect(actions.children).toHaveLength(0)
+        expect(screen.queryByText('Snooze')).not.toBeInTheDocument()
     })
 
     it('should render existing ticket', () => {
         mockUseIsTicketNavigationAvailable.mockReturnValue(true)
-        const { container, getByText } = render(
+        render(
             <Provider
                 store={mockStore({ ...defaultStore, ticket: fromJS(ticket) })}
             >
@@ -166,15 +185,15 @@ describe('<TicketHeader />', () => {
             </Provider>,
         )
 
-        expect(getByText('keyboard_arrow_left')).toBeInTheDocument()
-        expect(getByText('keyboard_arrow_right')).toBeInTheDocument()
-
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
+        expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
+        expect(screen.getByText('Snooze')).toBeInTheDocument()
+        expect(screen.getByText('more_vert')).toBeInTheDocument()
     })
 
     it('should render spam ticket', () => {
         const spamTicket = fromJS({ ...ticket, spam: true })
-        const { container } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...defaultStore,
@@ -185,12 +204,12 @@ describe('<TicketHeader />', () => {
             </Provider>,
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('flag')).toBeInTheDocument()
     })
 
     it('should render trashed ticket', () => {
         const trashedTicket = fromJS({ ...ticket, trashed_datetime: true })
-        const { container } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...defaultStore,
@@ -201,7 +220,7 @@ describe('<TicketHeader />', () => {
             </Provider>,
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('delete')).toBeInTheDocument()
     })
 
     it('should mark a ticket as unread when clicking "Mark as unread" button', async () => {
@@ -355,7 +374,8 @@ describe('<TicketHeader />', () => {
     })
 
     it('should render AI ticket summary popover when enableAITicketSummary feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+        mockUseFlagForFeature(FeatureFlagKey.TicketAllowPriorityUsage, false)
+        mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, true)
 
         const { getByText } = render(
             <Provider store={mockStore(defaultStore)}>
@@ -367,13 +387,13 @@ describe('<TicketHeader />', () => {
     })
 
     it('should not render AI ticket summary popover when enableAITicketSummary feature flag is disabled', () => {
-        const { queryByText } = render(
+        render(
             <Provider store={mockStore(defaultStore)}>
                 <TicketHeader {...minProps} />
             </Provider>,
         )
 
-        expect(queryByText('Summarize')).not.toBeInTheDocument()
+        expect(screen.queryByText('Summarize')).not.toBeInTheDocument()
     })
 
     it('should render priority dropdown when feature flag is enabled', () => {
@@ -408,5 +428,67 @@ describe('<TicketHeader />', () => {
         )
 
         expect(screen.queryByText(/critical/i)).not.toBeInTheDocument()
+    })
+
+    it('should render elements in correct order when setPriorityFlagEnabled is true', () => {
+        const existingTicket = fromJS({
+            ...ticket,
+            priority: TicketPriority.Normal,
+        })
+        mockUseFlagForFeature(FeatureFlagKey.TicketAllowPriorityUsage, true)
+        mockUseIsTicketNavigationAvailable.mockReturnValue(true)
+
+        const { container } = render(
+            <Provider
+                store={mockStore({
+                    ...defaultStore,
+                    ticket: existingTicket,
+                })}
+            >
+                <TicketHeader {...minProps} ticket={existingTicket} />
+            </Provider>,
+        )
+
+        expect(screen.getByText(/normal/i)).toBeInTheDocument()
+
+        const actions = container.querySelector('[class*="actions"]')!
+        const navigationButtons = container.querySelector(
+            '[class*="arrowPaginationWrapper"]',
+        )!
+
+        expect(actions.children[actions.children.length - 1]).toBe(
+            navigationButtons,
+        )
+    })
+
+    it('should render elements in correct order when setPriorityFlagEnabled is false', () => {
+        const existingTicket = fromJS({
+            ...ticket,
+            priority: TicketPriority.Normal,
+        })
+        mockUseFlagForFeature(FeatureFlagKey.TicketAllowPriorityUsage, false)
+        mockUseIsTicketNavigationAvailable.mockReturnValue(true)
+
+        const { container } = render(
+            <Provider
+                store={mockStore({
+                    ...defaultStore,
+                    ticket: existingTicket,
+                })}
+            >
+                <TicketHeader {...minProps} ticket={existingTicket} />
+            </Provider>,
+        )
+
+        expect(screen.queryByText(/normal/i)).not.toBeInTheDocument()
+
+        const actions = container.querySelector('[class*="actions"]')!
+        const ellipsisButton = container.querySelector(
+            '[id="ticket-actions-button"]',
+        )!
+
+        expect(actions.children[actions.children.length - 1]).toBe(
+            ellipsisButton,
+        )
     })
 })
