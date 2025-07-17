@@ -76,7 +76,7 @@ describe('useCheckOnboardingCompleted', () => {
         expect(notifyActionMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message:
-                'An Existing Store configuration is already set up. Redirecting to the AI agent settings.',
+                'This store has already completed its onboarding. Redirecting to the AI agent settings.',
             id: 'onboarding-already-completed',
         })
         expect(mockHistoryPush).toHaveBeenCalledWith(
