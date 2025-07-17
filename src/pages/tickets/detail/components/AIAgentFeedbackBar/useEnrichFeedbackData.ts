@@ -35,7 +35,7 @@ import { getHelpCenterArticleUrl } from './utils'
 const DEFAULT_STALE_TIME = 10 * 60 * 1000
 const DEFAULT_CACHE_TIME = 10 * 60 * 1000
 
-const knowledgeResourceOrder = [
+export const knowledgeResourceOrder = [
     AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
     AiAgentKnowledgeResourceTypeEnum.ACTION,
     AiAgentKnowledgeResourceTypeEnum.ARTICLE,

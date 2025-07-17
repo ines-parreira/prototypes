@@ -2,7 +2,7 @@ import { MouseEvent } from 'react'
 
 import cn from 'classnames'
 
-import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -33,6 +33,7 @@ type KnowledgeSourceProps = {
     ) => void
     shopName: string
     shopType: string
+    isMetadataLoading?: boolean
     onKnowledgeResourceClick: (
         resourceId: string,
         resourceType: AiAgentKnowledgeResourceTypeEnum,
@@ -55,6 +56,7 @@ const KnowledgeSourceFeedback = ({
     shopName,
     shopType,
     onKnowledgeResourceClick,
+    isMetadataLoading,
 }: KnowledgeSourceProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
     const enableKnowledgeManagementFromTicketView = useFlag(
@@ -90,6 +92,10 @@ const KnowledgeSourceFeedback = ({
     }
 
     const onClick = () => {
+        if (isMetadataLoading) {
+            return
+        }
+
         onKnowledgeResourceClick(
             resource.resource.id,
             resource.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
@@ -133,7 +139,13 @@ const KnowledgeSourceFeedback = ({
                         })}
                         onClick={onClick}
                     >
-                        {icon}
+                        {isMetadataLoading ? (
+                            <div className={css.iconSkeleton}>
+                                <Skeleton width={20} height={20} circle />
+                            </div>
+                        ) : (
+                            icon
+                        )}
                         <span>{renderedTitle}</span>
                         {!!href && (
                             <i
@@ -181,7 +193,7 @@ const ThumbButton = ({
     className,
     tooltip,
     onClick,
-    isDisabled = false,
+    isDisabled,
 }: ThumbButtonProps) => {
     const thumbId = `${icon}-${id}`
     return (

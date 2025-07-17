@@ -150,6 +150,42 @@ describe('KnowledgeSourceFeedback', () => {
         expect(thumbsDown).toHaveAttribute('aria-disabled', 'true')
     })
 
+    it('should render thumb up button as selected when feedback is positive', () => {
+        render(
+            <KnowledgeSourceFeedback
+                {...defaultProps}
+                resource={mockResource({
+                    feedback: { feedbackValue: 'UP' },
+                })}
+            />,
+        )
+
+        const thumbUpIcon = screen.getByText('thumb_up')
+        const thumbDownIcon = screen.getByText('thumb_down')
+
+        expect(thumbUpIcon).not.toHaveClass('material-icons-outlined')
+
+        expect(thumbDownIcon).toHaveClass('material-icons-outlined')
+    })
+
+    it('should render thumb down button as selected when feedback is negative', () => {
+        render(
+            <KnowledgeSourceFeedback
+                {...defaultProps}
+                resource={mockResource({
+                    feedback: { feedbackValue: 'DOWN' },
+                })}
+            />,
+        )
+
+        const thumbUpIcon = screen.getByText('thumb_up')
+        const thumbDownIcon = screen.getByText('thumb_down')
+
+        expect(thumbDownIcon).not.toHaveClass('material-icons-outlined')
+
+        expect(thumbUpIcon).toHaveClass('material-icons-outlined')
+    })
+
     describe('when knowledge source is clicked', () => {
         const renderComponentAndClickSource = (
             resource: KnowledgeResource,
@@ -218,6 +254,18 @@ describe('KnowledgeSourceFeedback', () => {
                 shopName: 'test-shop',
                 shopType: 'test-type',
             })
+        })
+
+        it('should not call any functions when isMetadataLoading is true', () => {
+            const onKnowledgeResourceClick = jest.fn()
+            useFlagMock.mockReturnValue(true)
+            renderComponentAndClickSource(mockResource(), {
+                onKnowledgeResourceClick,
+                isMetadataLoading: true,
+            })
+
+            expect(onKnowledgeResourceClick).not.toHaveBeenCalled()
+            expect(mockOpenPreview).not.toHaveBeenCalled()
         })
     })
 })

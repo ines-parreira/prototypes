@@ -25,11 +25,15 @@ import MissingKnowledgeSelect from 'pages/tickets/detail/components/AIAgentFeedb
 import {
     AiAgentBinaryFeedbackEnum,
     AiAgentFeedbackTypeEnum,
+    AiAgentKnowledgeResourceTypeEnum,
     AutoSaveState,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { UnsavedChangesModalProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
-import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import {
+    knowledgeResourceOrder,
+    useEnrichFeedbackData,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { getHelpCenterIdByResourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -62,7 +66,7 @@ const AIAgentSimplifiedFeedback = () => {
     const { goToTicket: goToNextTicket, isEnabled: isNextEnabled } =
         useGoToNextTicket(ticketId.toString(), TicketAIAgentFeedbackTab.AIAgent)
 
-    const { data: feedback } = useGetFeedback({
+    const { data: feedback, isLoading: isLoadingFeedback } = useGetFeedback({
         objectId: ticketId.toString(),
         objectType: 'TICKET',
     })
@@ -153,50 +157,57 @@ const AIAgentSimplifiedFeedback = () => {
         objectType: 'TICKET',
     })
 
-    const handleIconClick = async (
-        value: AiAgentBinaryFeedbackEnum,
-        resource: KnowledgeResource,
-    ) => {
-        const upsertId = resource.feedback?.id?.toString() ?? uuidv4()
+    const handleIconClick = useCallback(
+        async (
+            value: AiAgentBinaryFeedbackEnum,
+            resource: KnowledgeResource,
+        ) => {
+            const upsertId = resource.feedback?.id?.toString() ?? uuidv4()
 
-        try {
-            if (
-                loadingMutations?.includes(upsertId) ||
-                resource.feedback?.feedbackValue === value
-            )
-                return
+            try {
+                if (
+                    loadingMutations?.includes(upsertId) ||
+                    resource.feedback?.feedbackValue === value
+                )
+                    return
 
-            setLoadingMutations((oldValue) => [...(oldValue ?? []), upsertId])
+                setLoadingMutations((oldValue) => [
+                    ...(oldValue ?? []),
+                    upsertId,
+                ])
 
-            const executionId =
-                resource.executionId ?? feedback?.executions?.[0]?.executionId
+                const executionId =
+                    resource.executionId ??
+                    feedback?.executions?.[0]?.executionId
 
-            // should never happen, since we're showing that we're still processing the details of this conversation
-            // if there are no executions
-            if (!executionId) return
+                // should never happen, since we're showing that we're still processing the details of this conversation
+                // if there are no executions
+                if (!executionId) return
 
-            await upsertFeedback({
-                feedbackToUpsert: [
-                    {
-                        id: resource.feedback?.id,
-                        objectId: ticketId.toString(),
-                        objectType: 'TICKET',
-                        executionId,
-                        targetType: 'KNOWLEDGE_RESOURCE',
-                        targetId: resource.resource.id,
-                        feedbackValue: value,
-                        feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
-                    },
-                ],
-            })
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setLoadingMutations((oldValue) =>
-                oldValue?.filter((id) => id !== upsertId),
-            )
-        }
-    }
+                await upsertFeedback({
+                    feedbackToUpsert: [
+                        {
+                            id: resource.feedback?.id,
+                            objectId: ticketId.toString(),
+                            objectType: 'TICKET',
+                            executionId,
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: resource.resource.id,
+                            feedbackValue: value,
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        },
+                    ],
+                })
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setLoadingMutations((oldValue) =>
+                    oldValue?.filter((id) => id !== upsertId),
+                )
+            }
+        },
+        [loadingMutations, upsertFeedback, ticketId, feedback?.executions],
+    )
 
     const handleFreeFormFeedbackChange = useCallback(
         async (value: string) => {
@@ -276,6 +287,73 @@ const AIAgentSimplifiedFeedback = () => {
         )
     }, [helpCenters, selectedResource, storeConfiguration])
 
+    const knowledgeResources = useMemo(() => {
+        if (isLoadingEnrichedData !== false) {
+            const resources = feedback?.executions
+                .flatMap((execution) =>
+                    execution.resources.map((resource) => ({
+                        executionId: execution.executionId,
+                        ...resource,
+                    })),
+                )
+                .sort((a, b) => {
+                    const aIndex = knowledgeResourceOrder.indexOf(
+                        a.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                    )
+                    const bIndex = knowledgeResourceOrder.indexOf(
+                        b.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                    )
+
+                    return aIndex - bIndex
+                })
+            return resources?.map((resource) => (
+                <KnowledgeSourceFeedback
+                    key={resource.id}
+                    onIconClick={handleIconClick}
+                    resource={{
+                        executionId: resource.executionId,
+                        resource: {
+                            id: resource.id,
+                            resourceId: resource.resourceId,
+                            resourceType: resource.resourceType,
+                            resourceSetId: resource.resourceSetId,
+                            resourceLocale: resource.resourceLocale,
+                            resourceTitle: resource.resourceTitle,
+                            feedback: resource.feedback,
+                        },
+                        metadata: {
+                            title: resource.resourceTitle,
+                            content: 'Content is loading...',
+                        },
+                        feedback: resource.feedback,
+                    }}
+                    shopName={shopName}
+                    shopType={shopType}
+                    onKnowledgeResourceClick={onKnowledgeResourceClick}
+                    isMetadataLoading
+                />
+            ))
+        }
+        return enrichedData?.knowledgeResources.map((resource) => (
+            <KnowledgeSourceFeedback
+                key={resource.resource.id}
+                onIconClick={handleIconClick}
+                resource={resource}
+                shopName={shopName}
+                shopType={shopType}
+                onKnowledgeResourceClick={onKnowledgeResourceClick}
+            />
+        ))
+    }, [
+        isLoadingEnrichedData,
+        feedback,
+        enrichedData,
+        shopName,
+        shopType,
+        onKnowledgeResourceClick,
+        handleIconClick,
+    ])
+
     return (
         <>
             <div className={css.container}>
@@ -298,31 +376,16 @@ const AIAgentSimplifiedFeedback = () => {
                         </div>
 
                         <div className={css.sources}>
-                            {(enrichedData?.knowledgeResources.length ?? -1) !==
-                            feedback?.executions.flatMap(
-                                (execution) => execution.resources,
-                            ).length
+                            {isLoadingFeedback
                                 ? Array.from({ length: 3 }).map((_, index) => (
                                       <KnowledgeSourceFeedbackSkeleton
                                           key={index}
                                       />
                                   ))
-                                : (enrichedData?.knowledgeResources.length ??
-                                        0) > 0
-                                  ? enrichedData?.knowledgeResources.map(
-                                        (resource) => (
-                                            <KnowledgeSourceFeedback
-                                                key={resource.resource.id}
-                                                onIconClick={handleIconClick}
-                                                resource={resource}
-                                                shopName={shopName}
-                                                shopType={shopType}
-                                                onKnowledgeResourceClick={
-                                                    onKnowledgeResourceClick
-                                                }
-                                            />
-                                        ),
-                                    )
+                                : (feedback?.executions.flatMap(
+                                        (execution) => execution.resources,
+                                    ).length ?? 0) > 0
+                                  ? knowledgeResources
                                   : 'No knowledge used'}
                         </div>
 

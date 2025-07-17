@@ -208,7 +208,10 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                    {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                        resources: [],
+                    },
                 ],
             },
         })
@@ -245,7 +248,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { id: 123, storeConfiguration: 'test', resources: [] },
+                ],
+            },
         })
 
         render(<AIAgentSimplifiedFeedback />)
@@ -268,7 +275,10 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                    {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
                 ],
             },
         })
@@ -344,7 +354,10 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                    {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
                 ],
             },
         })
@@ -465,7 +478,15 @@ describe('AIAgentSimplifiedFeedback', () => {
 
     it('should display loading indicator in initial state', () => {
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
+                ],
+            },
         })
 
         // Keep isLoading true to trigger the isInitialLoad state
@@ -497,7 +518,10 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5' },
+                    {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
                 ],
             },
         })
@@ -541,7 +565,11 @@ describe('AIAgentSimplifiedFeedback', () => {
     it('should update freeFormFeedback from enrichedData when not in loadingFreeFormMutation state', () => {
         // Set up feedback data with existing freeForm feedback
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { id: 123, storeConfiguration: 'test', resources: [] },
+                ],
+            },
         })
 
         // Initial render without feedback value
@@ -585,7 +613,15 @@ describe('AIAgentSimplifiedFeedback', () => {
 
     it('should transition from initial loading to loaded state', async () => {
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
+                ],
+            },
         })
 
         // First render with loading state
@@ -606,9 +642,32 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: '123',
                             title: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
                         },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
                         feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: '123',
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
                             feedbackValue: 'UP',
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                         },
                     },
                 ],
@@ -632,7 +691,15 @@ describe('AIAgentSimplifiedFeedback', () => {
 
     it('should render heading, badge and feedback when executions exist', () => {
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -644,9 +711,32 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: '123',
                             title: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
                         },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
                         feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: '123',
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
                             feedbackValue: 'UP',
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                         },
                     },
                 ],
@@ -676,7 +766,15 @@ describe('AIAgentSimplifiedFeedback', () => {
         useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -688,9 +786,32 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: '123',
                             title: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
                         },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
                         feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 123,
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
                             feedbackValue: 'DOWN',
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                         },
                         executionId: 123,
                     },
@@ -730,7 +851,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { id: 123, storeConfiguration: 'test', resources: [] },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -824,7 +949,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         const existingFeedback = 'Existing feedback text'
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { id: 123, storeConfiguration: 'test', resources: [] },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -944,7 +1073,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         // Set up component with test data
         useUpsertFeedbackMock.mockReturnValue({ mutateAsync: mutateAsyncMock })
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { id: 123, storeConfiguration: 'test', resources: [] },
+                ],
+            },
         })
 
         // Mock enriched data with a deleted resource
@@ -1070,7 +1203,15 @@ describe('AIAgentSimplifiedFeedback', () => {
         // Testing the condition "if (loadingMutations?.includes(upsertId) || resource.feedback?.feedbackValue === value)" directly
         // We'll use the second part of the condition by setting up a resource with the same feedback value
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -1082,10 +1223,32 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: '123',
                             title: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
                         },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
                         feedback: {
                             id: 456,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 123,
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
                             feedbackValue: 'UP', // Already has UP value
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                         },
                         executionId: 123,
                     },
@@ -1114,7 +1277,15 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // Setup resource with UP feedback value
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -1126,10 +1297,32 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: '123',
                             title: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                            },
                         },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
                         feedback: {
                             id: 456,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 123,
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
                             feedbackValue: 'UP', // Already has UP value
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                         },
                         executionId: 123,
                     },
@@ -1170,6 +1363,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                                 createdDatetime: '2023-01-01T00:00:00.000Z',
                             },
                         ],
+                        resources: [],
                     },
                 ],
             },
@@ -1615,7 +1809,15 @@ describe('AIAgentSimplifiedFeedback', () => {
 
     it('should handle null enrichedFeedbackMetadata from useEnrichFeedbackData', () => {
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                    },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue(null)
@@ -1635,7 +1837,11 @@ describe('AIAgentSimplifiedFeedback', () => {
         }))
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    { id: 123, storeConfiguration: 'test', resources: [] },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -1657,7 +1863,11 @@ describe('AIAgentSimplifiedFeedback', () => {
     describe('useFeedbackTracking integration', () => {
         it('should call useFeedbackTracking with correct parameters', () => {
             useGetFeedbackMock.mockReturnValue({
-                data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+                data: {
+                    executions: [
+                        { id: 123, storeConfiguration: 'test', resources: [] },
+                    ],
+                },
             })
 
             useEnrichFeedbackDataMock.mockReturnValue({
@@ -1672,6 +1882,615 @@ describe('AIAgentSimplifiedFeedback', () => {
                 accountId: 1,
                 userId: 789,
             })
+        })
+    })
+
+    describe('Loading states', () => {
+        it('should render skeleton loading indicators when isLoadingFeedback is true', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            id: 123,
+                            storeConfiguration: 'test',
+                            resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        },
+                    ],
+                },
+                isLoading: true,
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('No knowledge used'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should handle early return when executionId is missing in handleIconClick', async () => {
+            const mutateAsyncMock = jest.fn()
+            useUpsertFeedbackMock.mockReturnValue({
+                mutateAsync: mutateAsyncMock,
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            id: 123,
+                            storeConfiguration: 'test',
+                            resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [
+                        {
+                            resource: {
+                                id: '123',
+                                title: 'Test Article',
+                                resourceType: 'ARTICLE',
+                                resourceSetId: 'set1',
+                                resourceLocale: null,
+                                metadata: {
+                                    title: 'Test Article',
+                                    url: 'https://example.com',
+                                    isDeleted: false,
+                                },
+                            },
+                            id: '123',
+                            resourceId: '123',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            resourceTitle: 'Test Article',
+                            feedback: {
+                                id: 1,
+                                objectType: 'TICKET',
+                                objectId: '123',
+                                targetType: 'KNOWLEDGE_RESOURCE',
+                                targetId: '123',
+                                feedbackValue: null,
+                                submittedBy: 1,
+                                createdDatetime: '2023-10-01T00:00:00Z',
+                                updatedDatetime: '2023-10-01T00:00:00Z',
+                                feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                            },
+                        },
+                    ],
+                    freeForm: {},
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            const thumbsUpButton = screen.getByText('thumb_up')
+            await act(async () => {
+                fireEvent.click(thumbsUpButton)
+            })
+
+            expect(mutateAsyncMock).not.toHaveBeenCalled()
+        })
+
+        it('should not render next ticket button when not in AI Agent section', () => {
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getViewsState)
+                    return { getIn: () => 'Different Section' } // Not 'AI Agent'
+                if (selector === getSectionIdByName)
+                    return { 'AI Agent': 'AI Agent' }
+                if (selector === getTicketState) return new Map([['id', 123]])
+                if (selector === getCurrentAccountState)
+                    return new Map([
+                        ['id', 1],
+                        ['domain', 'test.com'],
+                    ] as any)
+                if (selector === getDateAndTimeFormatter)
+                    return () => 'MMMM DD, YYYY'
+                if (selector.toString().includes('state.currentUser'))
+                    return new Map([['id', 789]])
+                return null
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        { id: 123, storeConfiguration: 'test', resources: [] },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.queryByText('Review next ticket'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render KnowledgeSourceSideBar when helpCenter is null', () => {
+            useKnowledgeSourceSideBarMocked.mockReturnValue({
+                selectedResource: {
+                    knowledgeResourceType:
+                        AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    id: '123',
+                    url: 'https://example.com',
+                    title: 'Test Article',
+                    content: 'Test content',
+                },
+                mode: null,
+                isClosing: false,
+                openPreview: jest.fn(),
+                openEdit: jest.fn(),
+                openCreate: jest.fn(),
+                closeModal: jest.fn(),
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        { id: 123, storeConfiguration: 'test', resources: [] },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                },
+                helpCenters: [],
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.queryByText('KnowledgeSourceSideBar'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render MissingKnowledgeSelect when shopName is empty', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            id: 123,
+                            storeConfiguration: '',
+                            resources: [],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('No knowledge used')).toBeInTheDocument()
+        })
+    })
+
+    describe('Edge cases and optional chaining coverage', () => {
+        it('should handle undefined feedback executions in lastUpdatedMutations calculation', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: null, // Set feedback data to null to avoid executions access
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle undefined storeConfiguration shopName fallback', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            // storeConfiguration is undefined
+                            resources: [],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle undefined loadingMutations in handleIconClick', async () => {
+            const mutateAsyncMock = jest.fn().mockResolvedValue({})
+            useUpsertFeedbackMock.mockReturnValue({
+                mutateAsync: mutateAsyncMock,
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'test-execution',
+                            resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [
+                        {
+                            resource: {
+                                id: '123',
+                                title: 'Test Article',
+                                resourceType: 'ARTICLE',
+                            },
+                            feedback: {
+                                // id is undefined to test resource.feedback?.id fallback
+                                feedbackValue: 'DOWN',
+                            },
+                            executionId: 'test-execution',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            const thumbsUpButton = screen.getByText('thumb_up')
+            await act(async () => {
+                fireEvent.click(thumbsUpButton)
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalledWith({
+                feedbackToUpsert: [
+                    expect.objectContaining({
+                        id: undefined,
+                        feedbackValue: 'UP',
+                    }),
+                ],
+            })
+        })
+
+        it('should handle undefined enrichedData freeForm properties in handleFreeFormFeedbackChange', async () => {
+            const mutateAsyncMock = jest.fn().mockResolvedValue({})
+            useUpsertFeedbackMock.mockReturnValue({
+                mutateAsync: mutateAsyncMock,
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'test-execution',
+                            resources: [],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: {
+                        feedback: {
+                            feedbackValue: '',
+                        },
+                    },
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            const textarea = screen.getByRole('textbox')
+            fireEvent.change(textarea, { target: { value: 'Test feedback' } })
+
+            await act(async () => {
+                jest.runAllTimers()
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalledWith({
+                feedbackToUpsert: [
+                    expect.objectContaining({
+                        id: undefined,
+                        executionId: 'test-execution',
+                        feedbackValue: 'Test feedback',
+                    }),
+                ],
+            })
+        })
+
+        it('should handle selectedResource without helpCenterId to test storeConfiguration fallback', () => {
+            useKnowledgeSourceSideBarMocked.mockReturnValue({
+                selectedResource: {
+                    knowledgeResourceType:
+                        AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    id: '123',
+                    url: 'https://example.com',
+                    title: 'Test Article',
+                    content: 'Test content',
+                },
+                mode: null,
+                isClosing: false,
+                openPreview: jest.fn(),
+                openEdit: jest.fn(),
+                openCreate: jest.fn(),
+                closeModal: jest.fn(),
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                },
+                helpCenters: helpCentersMock,
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('KnowledgeSourceSideBar'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle undefined resources in knowledgeResources loading state mapping', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'test-execution',
+                            resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: true,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('No knowledge used'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should handle undefined executions in ternary condition for knowledge resources', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: null,
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle undefined suggestedResources in MissingKnowledgeSelect', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            id: 123,
+                            storeConfiguration: { shopName: 'test-shop' },
+                            resources: [],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle undefined storeConfiguration helpCenterId in CreateKnowledgeSection', () => {
+            jest.doMock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
+                useStoreConfiguration: () => ({
+                    storeConfiguration: {
+                        shopName: 'test-shop',
+                        shopType: 'shopify',
+                        guidanceHelpCenterId: 123,
+                    },
+                }),
+            }))
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            id: 123,
+                            storeConfiguration: { shopName: 'test-shop' },
+                            resources: [],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('Review knowledge used'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle undefined executions in dependency array', async () => {
+            const mutateAsyncMock = jest.fn().mockResolvedValue({})
+            useUpsertFeedbackMock.mockReturnValue({
+                mutateAsync: mutateAsyncMock,
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'test-execution',
+                            resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [
+                        {
+                            resource: {
+                                id: '123',
+                                title: 'Test Article',
+                                resourceType: 'ARTICLE',
+                            },
+                            feedback: {
+                                feedbackValue: 'DOWN',
+                            },
+                            executionId: 'test-execution',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            const thumbsUpButton = screen.getByText('thumb_up')
+            await act(async () => {
+                fireEvent.click(thumbsUpButton)
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalled()
+        })
+
+        it('should handle empty oldValue in setLoadingMutations spread operator', async () => {
+            const mutateAsyncMock = jest
+                .fn()
+                .mockImplementation(
+                    () =>
+                        new Promise((resolve) =>
+                            setTimeout(() => resolve({}), 50),
+                        ),
+                )
+            useUpsertFeedbackMock.mockReturnValue({
+                mutateAsync: mutateAsyncMock,
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'test-execution',
+                            resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [
+                        {
+                            resource: {
+                                id: '123',
+                                title: 'Test Article',
+                                resourceType: 'ARTICLE',
+                            },
+                            feedback: {
+                                feedbackValue: 'DOWN',
+                            },
+                            executionId: 'test-execution',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            const thumbsUpButton = screen.getByText('thumb_up')
+
+            await act(async () => {
+                fireEvent.click(thumbsUpButton)
+                fireEvent.click(thumbsUpButton)
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalled()
         })
     })
 })
