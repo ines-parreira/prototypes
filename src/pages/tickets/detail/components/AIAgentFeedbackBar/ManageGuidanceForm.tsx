@@ -457,6 +457,8 @@ export const ManageGuidanceForm = ({
                                 <b>{formState.name}</b> Guidance?
                             </p>
                         }
+                        // Render popover at document body level to escape drawer's stacking context
+                        containerElement={document.body}
                     >
                         Delete Guidance
                     </ConfirmButton>

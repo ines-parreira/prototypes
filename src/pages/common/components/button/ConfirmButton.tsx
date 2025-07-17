@@ -17,6 +17,9 @@ type Props = {
     showCancelButton?: ComponentProps<
         typeof ConfirmationPopover
     >['showCancelButton']
+    containerElement?: ComponentProps<
+        typeof ConfirmationPopover
+    >['containerElement']
 } & ButtonProps
 
 export default function ConfirmButton({
@@ -31,6 +34,7 @@ export default function ConfirmButton({
     confirmLabel = 'Confirm',
     cancelLabel,
     showCancelButton,
+    containerElement = null,
     ...other
 }: Props) {
     return (
@@ -50,6 +54,7 @@ export default function ConfirmButton({
             confirmLabel={confirmLabel}
             cancelLabel={cancelLabel}
             showCancelButton={showCancelButton}
+            containerElement={containerElement}
         >
             {({ uid, onDisplayConfirmation, elementRef }) => (
                 <Button
