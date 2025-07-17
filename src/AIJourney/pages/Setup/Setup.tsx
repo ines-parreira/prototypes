@@ -3,16 +3,13 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
-
 import { Button } from 'AIJourney/components'
-import { useAiJourneyPhoneList } from 'AIJourney/hooks'
+import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useIntegrations } from 'AIJourney/providers'
 import {
     useCreateNewJourney,
     useJourneyConfiguration,
     useJourneys,
-    useUpdateJourney,
 } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
@@ -70,7 +67,6 @@ export const Setup = () => {
     )
 
     const createNewJourney = useCreateNewJourney()
-    const updateJourney = useUpdateJourney()
 
     const [followUpValue, setFollowUpValue] = useState(
         journeyParams?.max_follow_up_messages || undefined,
@@ -149,44 +145,15 @@ export const Setup = () => {
         }
     }
 
-    const handleUpdate = async () => {
-        try {
-            if (
-                !integrationId ||
-                !currentIntegration?.name ||
-                !abandonedCartJourney?.id
-            ) {
-                throw new Error(
-                    `Missing integration information: ID: ${integrationId}, name: ${currentIntegration?.name}, journey ID: ${abandonedCartJourney?.id}`,
-                )
-            }
-
-            await updateJourney.mutateAsync({
-                journeyId: abandonedCartJourney?.id,
-                params: {
-                    state: JourneyStatusEnum.Draft,
-                },
-                journeyConfigs: {
-                    max_follow_up_messages: followUpValue,
-                    offer_discount: isDiscountEnabled,
-                    max_discount_percent: Number(discountValue),
-                    sms_sender_integration_id:
-                        phoneNumberValue?.integrations.find(
-                            (integration) => integration.type === 'sms',
-                        )?.id,
-                    sms_sender_number: phoneNumberValue?.phone_number,
-                },
-            })
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: `Error updating journey: ${error}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
-            throw error
-        }
-    }
+    const { handleUpdate } = useJourneyUpdateHandler({
+        integrationId,
+        currentIntegration,
+        abandonedCartJourney,
+        followUpValue,
+        isDiscountEnabled,
+        discountValue,
+        phoneNumberValue,
+    })
 
     const handleContinue = async () => {
         try {

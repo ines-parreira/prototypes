@@ -26,6 +26,12 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
+jest.mock('AIJourney/hooks', () => ({
+    useJourneyUpdateHandler: jest.fn(() => ({
+        handleUpdate: jest.fn().mockResolvedValueOnce(undefined), // Mock it to resolve
+    })),
+}))
+
 jest.mock('AIJourney/providers', () => ({
     ...jest.requireActual('AIJourney/providers'),
     useIntegrations: jest.fn(),
@@ -145,8 +151,6 @@ describe('<Activation />', () => {
     })
 
     it('should redirect from Activation to performance on continue', async () => {
-        jest.clearAllMocks()
-
         mockUseJourneys.mockImplementation(() => ({
             data: [],
             isError: false,

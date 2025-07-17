@@ -782,7 +782,7 @@ describe('<Setup />', () => {
             expect(mockUpdateMutateAsync).toHaveBeenCalledWith({
                 journeyId: 'journey-123',
                 params: {
-                    state: 'draft',
+                    state: 'active',
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,

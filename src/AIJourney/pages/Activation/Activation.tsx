@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Button } from 'AIJourney/components/Button/Button'
+import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneys, useTestSms } from 'AIJourney/queries'
 import { Product } from 'constants/integrations/types/shopify'
@@ -21,6 +22,7 @@ export const Activation = () => {
     const history = useHistory()
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
+
     const [isVisible, setIsVisible] = useState(true)
 
     const [selectedProduct, setSelectedProduct] = useState({} as Product)
@@ -70,6 +72,13 @@ export const Activation = () => {
         setTestSmsNumber(newValue)
     }
 
+    const { handleUpdate } = useJourneyUpdateHandler({
+        integrationId,
+        currentIntegration,
+        abandonedCartJourney,
+        activation: true,
+    })
+
     const handleTestSms = async () => {
         try {
             if (!abandonedCartJourney?.id || !testSmsNumber) {
@@ -101,11 +110,21 @@ export const Activation = () => {
         }
     }
 
-    const handleContinue = () => {
-        setIsVisible(false)
-        setTimeout(() => {
-            history.push(`/app/ai-journey/${shopName}/performance`)
-        }, 700)
+    const handleContinue = async () => {
+        try {
+            await handleUpdate()
+            setIsVisible(false)
+            setTimeout(() => {
+                history.push(`/app/ai-journey/${shopName}/performance`)
+            }, 700)
+        } catch (error) {
+            void dispatch(
+                notify({
+                    message: `Error updating journey: ${error}`,
+                    status: NotificationStatus.Error,
+                }),
+            )
+        }
     }
 
     const shouldDisableButton = !selectedProduct || !testSmsNumber
