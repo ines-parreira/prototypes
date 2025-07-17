@@ -1,51 +1,39 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
-import { getGorgiasKsApiClient } from 'rest_api/knowledge_service_api/client'
 import {
-    Components,
-    Paths,
-} from 'rest_api/knowledge_service_api/client.generated'
+    FindFeedbackParams,
+    FindFeedbackResult,
+    queryKeys,
+    useUpsertFeedback as useUpsertFeedbackMutation,
+} from '@gorgias/knowledge-service-queries'
 
-import { feedbackDefinitionKeys } from './queries'
 import { optimisticallyUpdateFeedback } from './utils'
 
-const mutationKeys = {
-    all: ['mutation', 'feedback'] as const,
-}
-
 export const useUpsertFeedback = (
-    params: Paths.FindFeedbackFeedback.QueryParameters,
+    params: FindFeedbackParams,
     { onSettled }: { onSettled?: () => void } = {},
 ) => {
     const queryClient = useQueryClient()
+    const queryKey = queryKeys.feedback.findFeedback(params)
 
-    return useMutation({
-        mutationKey: mutationKeys.all,
-        mutationFn: async (
-            data: Components.Schemas.FeedbackUpsertRequestDto,
-        ) => {
-            const client = await getGorgiasKsApiClient()
-            return client.upsertFeedbackFeedback({}, data)
-        },
-        onMutate: async (data: Components.Schemas.FeedbackUpsertRequestDto) => {
-            await queryClient.cancelQueries({
-                queryKey: feedbackDefinitionKeys.list(params),
-            })
-            // Optimistically update the feedback
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                optimisticallyUpdateFeedback(params, data),
-            )
-        },
-        onSettled: () => {
-            onSettled?.()
-            if (
-                queryClient.isMutating({ mutationKey: mutationKeys.all }) === 1
-            ) {
-                queryClient.invalidateQueries({
-                    queryKey: feedbackDefinitionKeys.list(params),
-                })
-            }
+    return useUpsertFeedbackMutation({
+        mutation: {
+            mutationKey: queryKey,
+            onSettled: () => {
+                onSettled?.()
+                if (queryClient.isMutating({ mutationKey: queryKey }) === 1) {
+                    queryClient.invalidateQueries({ queryKey })
+                }
+            },
+            onMutate: async (data) => {
+                await queryClient.cancelQueries({ queryKey })
+
+                // Optimistically update the feedback
+                queryClient.setQueryData<FindFeedbackResult>(
+                    queryKeys.feedback.findFeedback(params),
+                    optimisticallyUpdateFeedback(params, data.data),
+                )
+            },
         },
     })
 }

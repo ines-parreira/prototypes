@@ -2,6 +2,12 @@ import { useEffect, useMemo } from 'react'
 
 import _flatten from 'lodash/flatten'
 
+import {
+    FeedbackExecutionsItem,
+    FindAiReasoningAiReasoningResult,
+    FindFeedbackResult,
+} from '@gorgias/knowledge-service-types'
+
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
@@ -24,10 +30,6 @@ import {
     SuggestedResource,
     suggestedResourceValueSchema,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import {
-    Components,
-    Paths,
-} from 'rest_api/knowledge_service_api/client.generated'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { getHelpCenterArticleUrl } from './utils'
@@ -50,7 +52,7 @@ export const knowledgeResourceOrder = [
  * Extracts distinct help center IDs from resources
  */
 const useExtractDistinctHelpCenterFromResources = (
-    executions?: Components.Schemas.FeedbackDto['executions'],
+    executions?: FeedbackExecutionsItem[],
     storeConfiguration?: StoreConfiguration,
 ) => {
     return useMemo(() => {
@@ -430,7 +432,7 @@ const getResourceType = (
  * Merges all fetched resources into final enriched data structure
  */
 const useProcessResources = (
-    executions: Components.Schemas.FeedbackDto['executions'] = [],
+    executions: FeedbackExecutionsItem[] = [],
     shopName: string,
     resourceData: {
         articles: NonNullable<
@@ -867,7 +869,7 @@ export const useGetKnowledgeResourceMetadata = ({
     storeConfiguration,
     queriesEnabled,
 }: {
-    data?: Components.Schemas.FeedbackDto
+    data?: FindFeedbackResult['data']
     storeConfiguration?: StoreConfiguration
     queriesEnabled: boolean
 }) => {
@@ -992,7 +994,7 @@ export const useEnrichFeedbackData = ({
     data,
     storeConfiguration,
 }: {
-    data?: Components.Schemas.FeedbackDto
+    data?: FindFeedbackResult['data']
     storeConfiguration?: StoreConfiguration
 }) => {
     const shopName = storeConfiguration?.storeName ?? ''
@@ -1052,7 +1054,7 @@ export const useGetResourcesReasoningMetadata = ({
 }: {
     resources: KnowledgeReasoningResource[]
     storeConfiguration?:
-        | Paths.FindAiReasoningAiReasoning.Responses.$200['storeConfiguration']
+        | FindAiReasoningAiReasoningResult['data']['storeConfiguration']
         | null
     queriesEnabled?: boolean
 }) => {

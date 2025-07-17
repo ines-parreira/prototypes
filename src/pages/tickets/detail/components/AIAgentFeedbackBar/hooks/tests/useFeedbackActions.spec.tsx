@@ -272,18 +272,20 @@ describe('useFeedbackActions', () => {
                 expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
                 expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        feedbackToUpsert: [
-                            expect.objectContaining({
-                                objectId: MOCK_TICKET_ID.toString(),
-                                objectType: 'TICKET',
-                                executionId: MOCK_EXEC_ID,
-                                targetType: 'TICKET',
-                                targetId: MOCK_TICKET_ID.toString(),
-                                feedbackType: 'SUGGESTED_RESOURCE',
-                                feedbackValue:
-                                    expect.stringContaining(choiceType),
-                            }),
-                        ],
+                        data: {
+                            feedbackToUpsert: [
+                                expect.objectContaining({
+                                    objectId: MOCK_TICKET_ID.toString(),
+                                    objectType: 'TICKET',
+                                    executionId: MOCK_EXEC_ID,
+                                    targetType: 'TICKET',
+                                    targetId: MOCK_TICKET_ID.toString(),
+                                    feedbackType: 'SUGGESTED_RESOURCE',
+                                    feedbackValue:
+                                        expect.stringContaining(choiceType),
+                                }),
+                            ],
+                        },
                     }),
                 )
             },
@@ -303,13 +305,15 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: expect.stringContaining(
-                                'STORE_WEBSITE_QUESTION_SNIPPET',
-                            ),
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue: expect.stringContaining(
+                                    'STORE_WEBSITE_QUESTION_SNIPPET',
+                                ),
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -350,11 +354,13 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: null,
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue: null,
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -403,11 +409,13 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: null,
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue: null,
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -439,11 +447,13 @@ describe('useFeedbackActions', () => {
                 expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
                 expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        feedbackToUpsert: [
-                            expect.objectContaining({
-                                feedbackValue: null,
-                            }),
-                        ],
+                        data: {
+                            feedbackToUpsert: [
+                                expect.objectContaining({
+                                    feedbackValue: null,
+                                }),
+                            ],
+                        },
                     }),
                 )
             },
@@ -491,15 +501,19 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: expect.stringContaining('ARTICLE'),
-                        }),
-                        expect.objectContaining({ feedbackValue: null }),
-                        expect.objectContaining({
-                            feedbackValue: expect.stringContaining('ACTION'),
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue:
+                                    expect.stringContaining('ARTICLE'),
+                            }),
+                            expect.objectContaining({ feedbackValue: null }),
+                            expect.objectContaining({
+                                feedbackValue:
+                                    expect.stringContaining('ACTION'),
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -530,11 +544,13 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: null,
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue: null,
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -557,11 +573,13 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: null, // Should be null when resource not found
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue: null, // Should be null when resource not found
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -585,13 +603,15 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: expect.stringContaining(
-                                '"resourceSetId":null',
-                            ),
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue: expect.stringContaining(
+                                    '"resourceSetId":null',
+                                ),
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -629,17 +649,19 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            objectId: MOCK_TICKET_ID.toString(),
-                            objectType: 'TICKET',
-                            executionId: MOCK_EXEC_ID,
-                            targetType: 'TICKET',
-                            targetId: MOCK_TICKET_ID.toString(),
-                            feedbackType: 'SUGGESTED_RESOURCE',
-                            feedbackValue: JSON.stringify(mockResource),
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                objectId: MOCK_TICKET_ID.toString(),
+                                objectType: 'TICKET',
+                                executionId: MOCK_EXEC_ID,
+                                targetType: 'TICKET',
+                                targetId: MOCK_TICKET_ID.toString(),
+                                feedbackType: 'SUGGESTED_RESOURCE',
+                                feedbackValue: JSON.stringify(mockResource),
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -660,11 +682,13 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: [
-                        expect.objectContaining({
-                            feedbackValue: JSON.stringify(guidanceResource),
-                        }),
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue: JSON.stringify(guidanceResource),
+                            }),
+                        ],
+                    },
                 }),
             )
         })
@@ -794,11 +818,13 @@ describe('useFeedbackActions', () => {
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    feedbackToUpsert: choices.map(() =>
-                        expect.objectContaining({
-                            feedbackValue: null, // Should be null when resources are undefined
-                        }),
-                    ),
+                    data: {
+                        feedbackToUpsert: choices.map(() =>
+                            expect.objectContaining({
+                                feedbackValue: null, // Should be null when resources are undefined
+                            }),
+                        ),
+                    },
                 }),
             )
         })
@@ -843,11 +869,13 @@ describe('useFeedbackActions', () => {
 
                 expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        feedbackToUpsert: [
-                            expect.objectContaining({
-                                feedbackValue: null,
-                            }),
-                        ],
+                        data: {
+                            feedbackToUpsert: [
+                                expect.objectContaining({
+                                    feedbackValue: null,
+                                }),
+                            ],
+                        },
                     }),
                 )
 

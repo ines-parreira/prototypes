@@ -1,16 +1,42 @@
 import { cloneDeep } from 'lodash'
 
-import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import {
-    Components,
-    Paths,
-} from 'rest_api/knowledge_service_api/client.generated'
+    FeedbackUpsertRequest,
+    FindFeedbackParams,
+    FindFeedbackResult,
+    setDefaultConfig,
+} from '@gorgias/knowledge-service-client'
 
-export const generateUniqueId = (newData: Components.Schemas.FeedbackDto) => {
+import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { isProduction, isStaging } from 'utils/environment'
+import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
+
+export function getKsApiBaseURL(): string {
+    return isProduction()
+        ? `https://knowledge-service.gorgias.help`
+        : isStaging()
+          ? 'https://knowledge-service.gorgias.rehab'
+          : `http://localhost:9500`
+}
+
+export const setKSDefaultConfig = () =>
+    setDefaultConfig(async () => {
+        const gorgiasAppAuthService = new GorgiasAppAuthService()
+        const accessToken = await gorgiasAppAuthService.getAccessToken()
+        return {
+            baseURL: getKsApiBaseURL(),
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: accessToken,
+            },
+        }
+    })
+
+export const generateUniqueId = (newData: FindFeedbackResult['data']) => {
     let maxId = 0
     if (!newData.executions) return maxId
 
-    if (newData?.executions) {
+    if (newData.executions) {
         for (const execution of newData.executions) {
             for (const feedback of execution.feedback) {
                 if (typeof feedback.id === 'number' && feedback.id > maxId) {
@@ -23,11 +49,8 @@ export const generateUniqueId = (newData: Components.Schemas.FeedbackDto) => {
 }
 
 export const optimisticallyUpdateFeedback =
-    (
-        params: Paths.FindFeedbackFeedback.QueryParameters,
-        data: Components.Schemas.FeedbackUpsertRequestDto,
-    ) =>
-    (prevData?: Components.Schemas.FeedbackDto) => {
+    (params: FindFeedbackParams, data: FeedbackUpsertRequest) =>
+    (prevData?: FindFeedbackResult) => {
         if (!prevData) return prevData
         const newData = cloneDeep(prevData)
 
@@ -53,7 +76,7 @@ export const optimisticallyUpdateFeedback =
                         feedbackType: item.feedbackType,
                         feedbackValue: item.feedbackValue,
                     } as const
-                    const freeformExecution = newData?.executions?.find(
+                    const freeformExecution = newData.data.executions.find(
                         (execution) =>
                             execution.feedback.find(
                                 (f) => f.feedbackType === item.feedbackType,
@@ -73,19 +96,21 @@ export const optimisticallyUpdateFeedback =
                     }
 
                     if (!optimisticallyUpdatedFeedback) {
-                        newData.executions[0]?.feedback.push(newFeedback)
+                        newData.data.executions[0]?.feedback.push(newFeedback)
                     }
                     break
                 }
                 case AiAgentFeedbackTypeEnum.SUGGESTED_RESOURCE: {
                     const newFeedback = {
                         ...baseNewFeedback,
-                        id: baseNewFeedback.id ?? generateUniqueId(newData),
+                        id:
+                            baseNewFeedback.id ??
+                            generateUniqueId(newData.data),
                         targetType: item.targetType,
                         feedbackType: item.feedbackType,
                         feedbackValue: item.feedbackValue,
                     } as const
-                    const suggestedExecution = newData?.executions?.find(
+                    const suggestedExecution = newData.data.executions.find(
                         (execution) =>
                             execution.executionId === item.executionId,
                     )
@@ -111,7 +136,7 @@ export const optimisticallyUpdateFeedback =
                         optimisticallyUpdatedFeedback = true
                     }
                     if (!optimisticallyUpdatedFeedback) {
-                        newData.executions[0]?.feedback.push(newFeedback)
+                        newData.data.executions[0]?.feedback.push(newFeedback)
                     }
                     break
                 }
@@ -124,7 +149,7 @@ export const optimisticallyUpdateFeedback =
                     } as const
 
                     const knowledgeResourceExecution =
-                        newData?.executions?.find((execution) =>
+                        newData.data.executions.find((execution) =>
                             execution.resources.find(
                                 (resource) => resource.id === item.targetId,
                             ),
@@ -132,7 +157,7 @@ export const optimisticallyUpdateFeedback =
 
                     if (!knowledgeResourceExecution) return
 
-                    const resource = knowledgeResourceExecution?.resources.find(
+                    const resource = knowledgeResourceExecution.resources.find(
                         (resource) => resource.feedback?.id === item.id,
                     )
 

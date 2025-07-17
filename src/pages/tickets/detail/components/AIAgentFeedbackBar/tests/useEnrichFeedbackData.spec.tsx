@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
+import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
+
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import {
@@ -14,7 +16,6 @@ import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
-import { Components } from 'rest_api/knowledge_service_api/client.generated'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
@@ -637,7 +638,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const mockArticles = [
             {
@@ -798,7 +799,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         // Mock console.error to prevent test output pollution
         const originalConsoleError = console.error
@@ -851,7 +852,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const { result } = renderHook(
             () =>
@@ -894,7 +895,7 @@ describe('useEnrichFeedbackData', () => {
             objectType: 'TICKET',
             objectId: '123',
             executions: [],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         renderHook(
             () =>
@@ -939,7 +940,7 @@ describe('useEnrichFeedbackData', () => {
                     },
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const mockGuidanceArticles = [
             { id: 1, title: 'Guidance Title', content: 'Guidance Content' },
@@ -977,7 +978,7 @@ describe('useEnrichFeedbackData', () => {
             objectType: 'TICKET',
             objectId: '123',
             executions: [],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const { result } = renderHook(
             () =>
@@ -1080,7 +1081,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
             storeWebsiteQuestions: mockStoreWebsiteQuestions,
@@ -1193,7 +1194,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
             ingestedFiles: mockIngestedFiles,
@@ -1244,7 +1245,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
             storeWebsiteQuestions: [],
@@ -1294,7 +1295,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -1352,7 +1353,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -1400,7 +1401,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -1447,7 +1448,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
             storeWebsiteQuestions: [
@@ -1514,7 +1515,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
             storeWebsiteQuestions: [
@@ -1571,7 +1572,7 @@ describe('useEnrichFeedbackData', () => {
                     storeConfiguration: mockStoreConfiguration,
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const { result } = renderHook(
             () =>
@@ -1597,7 +1598,7 @@ describe('useEnrichFeedbackData', () => {
             objectType: 'TICKET',
             objectId: '123',
             executions: [],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const { result } = renderHook(
             () =>
@@ -1646,7 +1647,7 @@ describe('useEnrichFeedbackData', () => {
                     },
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const useEnrichFeedbackDataModule = require('../useEnrichFeedbackData')
         const getResourceMetadataSpy = jest.spyOn(
@@ -1711,7 +1712,7 @@ describe('useEnrichFeedbackData', () => {
                     },
                 },
             ],
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         const useEnrichFeedbackDataModule = require('../useEnrichFeedbackData')
         const getResourceMetadataSpy = jest.spyOn(

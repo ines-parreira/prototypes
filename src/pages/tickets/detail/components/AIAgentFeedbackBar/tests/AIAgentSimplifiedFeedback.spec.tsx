@@ -228,18 +228,20 @@ describe('AIAgentSimplifiedFeedback', () => {
         })
 
         expect(mutateAsyncMock).toHaveBeenCalledWith({
-            feedbackToUpsert: [
-                {
-                    executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
-                    feedbackType: 'TICKET_FREEFORM',
-                    feedbackValue: 'Great answer!',
-                    id: undefined,
-                    objectId: '123',
-                    objectType: 'TICKET',
-                    targetId: '123',
-                    targetType: 'TICKET',
-                },
-            ],
+            data: {
+                feedbackToUpsert: [
+                    {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                        feedbackType: 'TICKET_FREEFORM',
+                        feedbackValue: 'Great answer!',
+                        id: undefined,
+                        objectId: '123',
+                        objectType: 'TICKET',
+                        targetId: '123',
+                        targetType: 'TICKET',
+                    },
+                ],
+            },
         })
     })
 
@@ -333,18 +335,20 @@ describe('AIAgentSimplifiedFeedback', () => {
         })
 
         expect(mutateAsyncMock).toHaveBeenCalledWith({
-            feedbackToUpsert: [
-                {
-                    executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
-                    feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
-                    feedbackValue: 'UP',
-                    id: 1,
-                    objectId: '123',
-                    objectType: 'TICKET',
-                    targetId: '123',
-                    targetType: 'KNOWLEDGE_RESOURCE',
-                },
-            ],
+            data: {
+                feedbackToUpsert: [
+                    {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                        feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        feedbackValue: 'UP',
+                        id: 1,
+                        objectId: '123',
+                        objectType: 'TICKET',
+                        targetId: '123',
+                        targetType: 'KNOWLEDGE_RESOURCE',
+                    },
+                ],
+            },
         })
     })
     it('should call mutate with thumbs up feedback', async () => {
@@ -412,18 +416,20 @@ describe('AIAgentSimplifiedFeedback', () => {
         })
 
         expect(mutateAsyncMock).toHaveBeenCalledWith({
-            feedbackToUpsert: [
-                {
-                    executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
-                    feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
-                    feedbackValue: 'DOWN',
-                    id: 1,
-                    objectId: '123',
-                    objectType: 'TICKET',
-                    targetId: '123',
-                    targetType: 'KNOWLEDGE_RESOURCE',
-                },
-            ],
+            data: {
+                feedbackToUpsert: [
+                    {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                        feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        feedbackValue: 'DOWN',
+                        id: 1,
+                        objectId: '123',
+                        objectType: 'TICKET',
+                        targetId: '123',
+                        targetType: 'KNOWLEDGE_RESOURCE',
+                    },
+                ],
+            },
         })
     })
 
@@ -833,16 +839,18 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // The mutation should be called with the expected parameters
         expect(mutateAsyncMock).toHaveBeenCalledWith({
-            feedbackToUpsert: [
-                expect.objectContaining({
-                    executionId: 123,
-                    feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
-                    feedbackValue: 'UP',
-                    objectId: '123',
-                    targetId: '123',
-                    targetType: 'KNOWLEDGE_RESOURCE',
-                }),
-            ],
+            data: {
+                feedbackToUpsert: [
+                    expect.objectContaining({
+                        executionId: 123,
+                        feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                        feedbackValue: 'UP',
+                        objectId: '123',
+                        targetId: '123',
+                        targetType: 'KNOWLEDGE_RESOURCE',
+                    }),
+                ],
+            },
         })
     })
 
@@ -889,15 +897,17 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // Verify the mutation was called with the correct parameters
         expect(mutateAsyncMock).toHaveBeenCalledWith({
-            feedbackToUpsert: [
-                expect.objectContaining({
-                    executionId: 123,
-                    feedbackType: 'TICKET_FREEFORM',
-                    feedbackValue: 'New feedback text',
-                    objectId: '123',
-                    targetType: 'TICKET',
-                }),
-            ],
+            data: {
+                feedbackToUpsert: [
+                    expect.objectContaining({
+                        executionId: 123,
+                        feedbackType: 'TICKET_FREEFORM',
+                        feedbackValue: 'New feedback text',
+                        objectId: '123',
+                        targetType: 'TICKET',
+                    }),
+                ],
+            },
         })
     })
 
@@ -2184,12 +2194,14 @@ describe('AIAgentSimplifiedFeedback', () => {
             })
 
             expect(mutateAsyncMock).toHaveBeenCalledWith({
-                feedbackToUpsert: [
-                    expect.objectContaining({
-                        id: undefined,
-                        feedbackValue: 'UP',
-                    }),
-                ],
+                data: {
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            id: undefined,
+                            feedbackValue: 'UP',
+                        }),
+                    ],
+                },
             })
         })
 
@@ -2233,13 +2245,15 @@ describe('AIAgentSimplifiedFeedback', () => {
             })
 
             expect(mutateAsyncMock).toHaveBeenCalledWith({
-                feedbackToUpsert: [
-                    expect.objectContaining({
-                        id: undefined,
-                        executionId: 'test-execution',
-                        feedbackValue: 'Test feedback',
-                    }),
-                ],
+                data: {
+                    feedbackToUpsert: [
+                        expect.objectContaining({
+                            id: undefined,
+                            executionId: 'test-execution',
+                            feedbackValue: 'Test feedback',
+                        }),
+                    ],
+                },
             })
         })
 

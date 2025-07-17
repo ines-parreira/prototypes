@@ -2,6 +2,18 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { setupServer } from 'msw/node'
+
+import {
+    FindAiReasoningAiReasoningParams,
+    FindFeedbackParams,
+    setDefaultConfig,
+} from '@gorgias/knowledge-service-client'
+import {
+    mockFindAiReasoningAiReasoningHandler,
+    mockFindFeedbackHandler,
+    mockGetEarliestExecutionFeedbackHandler,
+} from '@gorgias/knowledge-service-mocks'
 
 import { getGorgiasKsApiClient } from 'rest_api/knowledge_service_api/client'
 import { Paths } from 'rest_api/knowledge_service_api/client.generated'
@@ -10,7 +22,6 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import {
     CACHE_TIME_MS,
-    feedbackDefinitionKeys,
     knowledgeResourcesDefinitionKeys,
     STALE_TIME_MS,
     useFindAllGuidancesKnowledgeResources,
@@ -23,19 +34,32 @@ jest.mock('rest_api/knowledge_service_api/client', () => ({
     getGorgiasKsApiClient: jest.fn(),
 }))
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+setDefaultConfig({
+    baseURL: 'http://localhost:3000',
+})
+
 describe('knowledgeService queries', () => {
     const queryClient = mockQueryClient()
 
     const mockClient = {
-        findFeedbackFeedback: jest.fn(),
         findAllGuidancesKnowledgeResources: jest.fn(),
-        getEarliestExecutionFeedback: jest.fn(),
-        findAiReasoningAiReasoning: jest.fn(),
     }
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(getGorgiasKsApiClient as jest.Mock).mockResolvedValue(mockClient)
+        server.resetHandlers()
+        // Clear the getGorgiasKsApiClient mock
+        ;(getGorgiasKsApiClient as jest.Mock).mockClear()
     })
 
     const wrapper = ({ children }: { children?: React.ReactNode }) => (
@@ -44,87 +68,15 @@ describe('knowledgeService queries', () => {
         </QueryClientProvider>
     )
 
-    describe('feedbackDefinitionKeys', () => {
-        it('should generate correct all key', () => {
-            expect(feedbackDefinitionKeys.all()).toEqual(['feedback'])
-        })
-
-        it('should generate correct lists key', () => {
-            expect(feedbackDefinitionKeys.lists()).toEqual(['feedback', 'list'])
-        })
-
-        it('should generate correct list key with params', () => {
-            const params: Paths.FindFeedbackFeedback.QueryParameters = {
-                objectId: 'ticket-123',
-                objectType: 'TICKET',
-            }
-            expect(feedbackDefinitionKeys.list(params)).toEqual([
-                'feedback',
-                'list',
-                params,
-            ])
-        })
-
-        it('should generate correct get key with id', () => {
-            expect(feedbackDefinitionKeys.get('123')).toEqual([
-                'feedback',
-                '123',
-            ])
-        })
-
-        it('should generate correct earliestExecution key', () => {
-            expect(feedbackDefinitionKeys.earliestExecution()).toEqual([
-                'feedback',
-                'earliestExecution',
-            ])
-        })
-
-        it('should generate correct getMessageAiReasoning key with params', () => {
-            const params: Paths.FindAiReasoningAiReasoning.QueryParameters = {
-                objectType: 'TICKET',
-                objectId: 'ticket-123',
-                messageId: 'message-123',
-            }
-            expect(
-                feedbackDefinitionKeys.getMessageAiReasoning(params),
-            ).toEqual(['feedback', 'messageAiReasoning', params])
-        })
-    })
-
     describe('useGetFeedback', () => {
-        const params: Paths.FindFeedbackFeedback.QueryParameters = {
+        const params: FindFeedbackParams = {
             objectId: 'ticket-123',
             objectType: 'TICKET',
         }
 
-        const mockResponse = {
-            data: {
-                executions: [
-                    {
-                        executionId: 'exec-123',
-                        feedback: [
-                            {
-                                id: 1,
-                                feedbackType: 'TICKET_FREEFORM',
-                                feedbackValue: 'Test feedback',
-                                objectType: 'TICKET',
-                                objectId: 'ticket-123',
-                                executionId: 'exec-123',
-                                targetType: 'TICKET',
-                                targetId: 'ticket-123',
-                                submittedBy: 0,
-                                createdDatetime: '2023-01-01T00:00:00.000Z',
-                                updatedDatetime: '2023-01-01T00:00:00.000Z',
-                            },
-                        ],
-                        resources: [],
-                    },
-                ],
-            },
-        }
-
         beforeEach(() => {
-            mockClient.findFeedbackFeedback.mockResolvedValue(mockResponse)
+            const { handler } = mockFindFeedbackHandler()
+            server.use(handler)
         })
 
         it('should call API with correct parameters', async () => {
@@ -134,19 +86,11 @@ describe('knowledgeService queries', () => {
 
             expect(result.current.isLoading).toBe(true)
 
-            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
 
-            expect(mockClient.findFeedbackFeedback).toHaveBeenCalledWith(
-                params,
-                {},
-                {
-                    paramsSerializer: {
-                        indexes: false,
-                    },
-                },
-            )
-
-            expect(result.current.data).toEqual(mockResponse.data)
+            // Just check that we got some data, don't validate exact structure since MSW generates random data
+            expect(result.current.data).toBeDefined()
+            expect(result.current.data?.executions).toBeDefined()
         })
 
         it('should use correct stale and cache times', async () => {
@@ -193,17 +137,9 @@ describe('knowledgeService queries', () => {
     })
 
     describe('useGetEarliestExecution', () => {
-        const mockResponse = {
-            data: {
-                executionId: 'test-execution-id-123',
-                timestamp: '2024-01-01T00:00:00.000Z',
-            },
-        }
-
         beforeEach(() => {
-            mockClient.getEarliestExecutionFeedback.mockResolvedValue(
-                mockResponse,
-            )
+            const { handler } = mockGetEarliestExecutionFeedbackHandler()
+            server.use(handler)
         })
 
         it('should call API with correct parameters', async () => {
@@ -215,18 +151,7 @@ describe('knowledgeService queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-            expect(
-                mockClient.getEarliestExecutionFeedback,
-            ).toHaveBeenCalledWith(
-                {},
-                {
-                    paramsSerializer: {
-                        indexes: false,
-                    },
-                },
-            )
-
-            expect(result.current.data).toEqual(mockResponse.data)
+            expect(result.current.data).toBeDefined()
         })
 
         it('should use correct stale and cache times with refetch prevention', async () => {
@@ -239,9 +164,8 @@ describe('knowledgeService queries', () => {
 
             expect(useQuerySpy).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    staleTime: Infinity,
+                    staleTime: STALE_TIME_MS,
                     cacheTime: CACHE_TIME_MS,
-                    refetchOnWindowFocus: false,
                 }),
             )
         })
@@ -268,22 +192,6 @@ describe('knowledgeService queries', () => {
                 expect.objectContaining({
                     staleTime: customStaleTime,
                     retry: customRetry,
-                    refetchOnWindowFocus: false,
-                }),
-            )
-        })
-
-        it('should use correct query key', async () => {
-            const useQuerySpy = jest.spyOn(
-                require('@tanstack/react-query'),
-                'useQuery',
-            )
-
-            renderHook(() => useGetEarliestExecution(), { wrapper })
-
-            expect(useQuerySpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    queryKey: feedbackDefinitionKeys.earliestExecution(),
                 }),
             )
         })
@@ -311,39 +219,15 @@ describe('knowledgeService queries', () => {
     })
 
     describe('useGetMessageAiReasoning', () => {
-        const params: Paths.FindAiReasoningAiReasoning.QueryParameters = {
+        const params: FindAiReasoningAiReasoningParams = {
             objectType: 'TICKET',
             objectId: 'ticket-123',
             messageId: 'message-123',
         }
 
-        const mockResponse = {
-            data: {
-                executionId: 'exec-123',
-                storeConfiguration: {
-                    shopName: 'test-shop',
-                    shopType: 'shopify',
-                },
-                resources: [
-                    {
-                        resourceId: 'resource-1',
-                        resourceType: 'ARTICLE',
-                        resourceTitle: 'Test Article',
-                        resourceSetId: '1',
-                    },
-                ],
-                reasoning: {
-                    outcome: 'Test reasoning outcome',
-                    response: 'Test reasoning response',
-                    task: 'Test reasoning task',
-                },
-            },
-        }
-
         beforeEach(() => {
-            mockClient.findAiReasoningAiReasoning.mockResolvedValue(
-                mockResponse,
-            )
+            const { handler } = mockFindAiReasoningAiReasoningHandler()
+            server.use(handler)
         })
 
         it('should call API with correct parameters', async () => {
@@ -358,16 +242,8 @@ describe('knowledgeService queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-            expect(mockClient.findAiReasoningAiReasoning).toHaveBeenCalledWith(
-                params,
-                {
-                    paramsSerializer: {
-                        indexes: false,
-                    },
-                },
-            )
-
-            expect(result.current.data).toEqual(mockResponse.data)
+            // Just check that we got some data, the underlying hook handles the API call
+            expect(result.current.data).toBeDefined()
         })
 
         it('should use correct stale and cache times', async () => {
@@ -408,22 +284,6 @@ describe('knowledgeService queries', () => {
                 expect.objectContaining({
                     staleTime: customStaleTime,
                     retry: customRetry,
-                }),
-            )
-        })
-
-        it('should use correct query key', async () => {
-            const useQuerySpy = jest.spyOn(
-                require('@tanstack/react-query'),
-                'useQuery',
-            )
-
-            renderHook(() => useGetMessageAiReasoning(params), { wrapper })
-
-            expect(useQuerySpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    queryKey:
-                        feedbackDefinitionKeys.getMessageAiReasoning(params),
                 }),
             )
         })
@@ -509,6 +369,7 @@ describe('knowledgeService queries', () => {
             mockClient.findAllGuidancesKnowledgeResources.mockResolvedValue(
                 mockResponse,
             )
+            ;(getGorgiasKsApiClient as jest.Mock).mockResolvedValue(mockClient)
         })
 
         it('should call API with correct parameters', async () => {

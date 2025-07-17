@@ -1,4 +1,16 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { QueryKey, useQuery, UseQueryOptions } from '@tanstack/react-query'
+
+import {
+    FindAiReasoningAiReasoningResult,
+    FindFeedbackParams,
+    FindFeedbackResult,
+    GetEarliestExecutionFeedbackResult,
+} from '@gorgias/knowledge-service-client'
+import {
+    useFindAiReasoningAiReasoning,
+    useFindFeedback,
+    useGetEarliestExecutionFeedback,
+} from '@gorgias/knowledge-service-queries'
 
 import { getGorgiasKsApiClient } from 'rest_api/knowledge_service_api/client'
 import { Paths } from 'rest_api/knowledge_service_api/client.generated'
@@ -11,26 +23,6 @@ export enum ReasoningResponseType {
     TASK = 'TASK',
 }
 
-const FEEDBACK_QUERY_KEY = 'feedback'
-
-export const feedbackDefinitionKeys = {
-    all: () => [FEEDBACK_QUERY_KEY] as const,
-    lists: () => [...feedbackDefinitionKeys.all(), 'list'] as const,
-    list: (params: Paths.FindFeedbackFeedback.QueryParameters) =>
-        [...feedbackDefinitionKeys.lists(), params] as const,
-    get: (id: string) => [FEEDBACK_QUERY_KEY, id] as const,
-    earliestExecution: () =>
-        [...feedbackDefinitionKeys.all(), 'earliestExecution'] as const,
-    getMessageAiReasoning: (
-        params: Paths.FindAiReasoningAiReasoning.QueryParameters,
-    ) =>
-        [
-            ...feedbackDefinitionKeys.all(),
-            'messageAiReasoning',
-            params,
-        ] as const,
-}
-
 const KNOWLEDGE_RESOURCES_QUERY_KEY = 'knowledge-resources'
 
 export const knowledgeResourcesDefinitionKeys = {
@@ -41,30 +33,26 @@ export const knowledgeResourcesDefinitionKeys = {
 }
 
 export const useGetFeedback = (
-    params: Paths.FindFeedbackFeedback.QueryParameters,
+    params: FindFeedbackParams,
     overrides?: UseQueryOptions<
-        Awaited<Paths.FindFeedbackFeedback.Responses.$200>
+        FindFeedbackResult,
+        any,
+        FindFeedbackResult,
+        QueryKey
     >,
 ) => {
-    return useQuery({
-        queryKey: feedbackDefinitionKeys.list(params),
-        queryFn: async () => {
-            const client = await getGorgiasKsApiClient()
-            const response = await client.findFeedbackFeedback(
-                params,
-                {},
-                {
-                    paramsSerializer: {
-                        indexes: false,
-                    },
-                },
-            )
-            return response.data
+    const { data, ...rest } = useFindFeedback(params, {
+        query: {
+            staleTime: STALE_TIME_MS,
+            cacheTime: CACHE_TIME_MS,
+            ...overrides,
         },
-        staleTime: STALE_TIME_MS,
-        cacheTime: CACHE_TIME_MS,
-        ...overrides,
     })
+
+    return {
+        data: data?.data,
+        ...rest,
+    }
 }
 
 export const useFindAllGuidancesKnowledgeResources = <T>(
@@ -98,49 +86,41 @@ export const useFindAllGuidancesKnowledgeResources = <T>(
 
 export const useGetEarliestExecution = (
     overrides?: UseQueryOptions<
-        Awaited<Paths.GetEarliestExecutionFeedback.Responses.$200>
+        GetEarliestExecutionFeedbackResult,
+        any,
+        GetEarliestExecutionFeedbackResult,
+        QueryKey
     >,
 ) => {
-    return useQuery({
-        queryKey: feedbackDefinitionKeys.earliestExecution(),
-        queryFn: async () => {
-            const client = await getGorgiasKsApiClient()
-            const response = await client.getEarliestExecutionFeedback(
-                {},
-                {
-                    paramsSerializer: {
-                        indexes: false,
-                    },
-                },
-            )
-            return response.data
+    const { data, ...rest } = useGetEarliestExecutionFeedback({
+        query: {
+            staleTime: STALE_TIME_MS,
+            cacheTime: CACHE_TIME_MS,
+            ...overrides,
         },
-        staleTime: Infinity, // The earliest execution is not updated so getting it once is enough.
-        cacheTime: CACHE_TIME_MS,
-        refetchOnWindowFocus: false, // Prevent refetch when switching browser tabs
-        ...overrides,
     })
+
+    return {
+        data: data?.data,
+        ...rest,
+    }
 }
 
 export const useGetMessageAiReasoning = (
-    params: Paths.FindAiReasoningAiReasoning.QueryParameters,
+    params: Parameters<typeof useFindAiReasoningAiReasoning>[0],
     overrides?: UseQueryOptions<
-        Awaited<Paths.FindAiReasoningAiReasoning.Responses.$200>
+        FindAiReasoningAiReasoningResult,
+        any,
+        FindAiReasoningAiReasoningResult,
+        QueryKey
     >,
 ) => {
-    return useQuery({
-        queryKey: feedbackDefinitionKeys.getMessageAiReasoning(params),
-        queryFn: async () => {
-            const client = await getGorgiasKsApiClient()
-            const response = await client.findAiReasoningAiReasoning(params, {
-                paramsSerializer: {
-                    indexes: false,
-                },
-            })
-            return response.data
+    const { data, ...rest } = useFindAiReasoningAiReasoning(params, {
+        query: {
+            staleTime: STALE_TIME_MS,
+            cacheTime: CACHE_TIME_MS,
+            ...overrides,
         },
-        staleTime: STALE_TIME_MS,
-        cacheTime: CACHE_TIME_MS,
-        ...overrides,
     })
+    return { data: data?.data, ...rest }
 }

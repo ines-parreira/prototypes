@@ -185,18 +185,20 @@ const AIAgentSimplifiedFeedback = () => {
                 if (!executionId) return
 
                 await upsertFeedback({
-                    feedbackToUpsert: [
-                        {
-                            id: resource.feedback?.id,
-                            objectId: ticketId.toString(),
-                            objectType: 'TICKET',
-                            executionId,
-                            targetType: 'KNOWLEDGE_RESOURCE',
-                            targetId: resource.resource.id,
-                            feedbackValue: value,
-                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
-                        },
-                    ],
+                    data: {
+                        feedbackToUpsert: [
+                            {
+                                id: resource.feedback?.id,
+                                objectId: ticketId.toString(),
+                                objectType: 'TICKET',
+                                executionId,
+                                targetType: 'KNOWLEDGE_RESOURCE',
+                                targetId: resource.resource.id,
+                                feedbackValue: value,
+                                feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
+                            },
+                        ],
+                    },
                 })
             } catch (error) {
                 console.error(error)
@@ -206,7 +208,7 @@ const AIAgentSimplifiedFeedback = () => {
                 )
             }
         },
-        [loadingMutations, upsertFeedback, ticketId, feedback?.executions],
+        [loadingMutations, upsertFeedback, ticketId, feedback],
     )
 
     const handleFreeFormFeedbackChange = useCallback(
@@ -222,18 +224,20 @@ const AIAgentSimplifiedFeedback = () => {
             if (!executionId) return
 
             await upsertFeedback({
-                feedbackToUpsert: [
-                    {
-                        id: enrichedData?.freeForm?.feedback?.id,
-                        objectId: ticketId.toString(),
-                        objectType: 'TICKET',
-                        executionId: executionId,
-                        targetType: 'TICKET',
-                        targetId: ticketId.toString(),
-                        feedbackValue: value,
-                        feedbackType: 'TICKET_FREEFORM',
-                    },
-                ],
+                data: {
+                    feedbackToUpsert: [
+                        {
+                            id: enrichedData?.freeForm?.feedback?.id,
+                            objectId: ticketId.toString(),
+                            objectType: 'TICKET',
+                            executionId: executionId,
+                            targetType: 'TICKET',
+                            targetId: ticketId.toString(),
+                            feedbackValue: value,
+                            feedbackType: 'TICKET_FREEFORM',
+                        },
+                    ],
+                },
             })
 
             setLoadingFreeFormMutation(false)

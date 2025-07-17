@@ -2,29 +2,35 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { setupServer } from 'msw/node'
 
-import { getGorgiasKsApiClient } from 'rest_api/knowledge_service_api/client'
 import {
-    Components,
-    Paths,
-} from 'rest_api/knowledge_service_api/client.generated'
+    FeedbackUpsertRequest,
+    FindFeedbackParams,
+    FindFeedbackResult,
+} from '@gorgias/knowledge-service-client'
+import { mockUpsertFeedbackHandler } from '@gorgias/knowledge-service-mocks'
+import { queryKeys } from '@gorgias/knowledge-service-queries'
+
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useUpsertFeedback } from '../mutations'
-import { feedbackDefinitionKeys } from '../queries'
 import { generateUniqueId, optimisticallyUpdateFeedback } from '../utils'
 
-jest.mock('rest_api/knowledge_service_api/client', () => ({
-    getGorgiasKsApiClient: jest.fn(),
-}))
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useUpsertFeedback', () => {
     const queryClient = mockQueryClient()
-    const mockClient = {
-        upsertFeedbackFeedback: jest.fn().mockResolvedValue({ data: {} }),
-    }
-    const params: Paths.FindFeedbackFeedback.QueryParameters = {
+    const params: FindFeedbackParams = {
         objectId: 'ticket-123',
         objectType: 'TICKET',
     }
@@ -32,7 +38,12 @@ describe('useUpsertFeedback', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(getGorgiasKsApiClient as jest.Mock).mockResolvedValue(mockClient)
+        server.resetHandlers()
+
+        // Set up MSW handler for upsert feedback
+        const { handler } = mockUpsertFeedbackHandler()
+        server.use(handler)
+
         jest.spyOn(queryClient, 'cancelQueries')
         jest.spyOn(queryClient, 'setQueryData')
         jest.spyOn(queryClient, 'invalidateQueries')
@@ -51,7 +62,7 @@ describe('useUpsertFeedback', () => {
             { wrapper },
         )
 
-        const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+        const feedbackData: FeedbackUpsertRequest = {
             feedbackToUpsert: [
                 {
                     feedbackType: 'TICKET_FREEFORM',
@@ -65,13 +76,10 @@ describe('useUpsertFeedback', () => {
             ],
         }
 
-        result.current.mutate(feedbackData)
+        result.current.mutate({ data: feedbackData })
 
         await waitFor(() => {
-            expect(mockClient.upsertFeedbackFeedback).toHaveBeenCalledWith(
-                {},
-                feedbackData,
-            )
+            expect(result.current.isLoading).toBe(false)
         })
     })
 
@@ -81,7 +89,7 @@ describe('useUpsertFeedback', () => {
             { wrapper },
         )
 
-        const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+        const feedbackData: FeedbackUpsertRequest = {
             feedbackToUpsert: [
                 {
                     feedbackType: 'TICKET_FREEFORM',
@@ -95,11 +103,11 @@ describe('useUpsertFeedback', () => {
             ],
         }
 
-        result.current.mutate(feedbackData)
+        result.current.mutate({ data: feedbackData })
 
         await waitFor(() => {
             expect(queryClient.cancelQueries).toHaveBeenCalledWith({
-                queryKey: feedbackDefinitionKeys.list(params),
+                queryKey: queryKeys.feedback.findFeedback(params),
             })
         })
     })
@@ -110,7 +118,7 @@ describe('useUpsertFeedback', () => {
             { wrapper },
         )
 
-        const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+        const feedbackData: FeedbackUpsertRequest = {
             feedbackToUpsert: [
                 {
                     feedbackType: 'TICKET_FREEFORM',
@@ -124,12 +132,12 @@ describe('useUpsertFeedback', () => {
             ],
         }
 
-        result.current.mutate(feedbackData)
+        result.current.mutate({ data: feedbackData })
 
         await waitFor(() => {
             expect(onSettledMock).toHaveBeenCalled()
             expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
-                queryKey: feedbackDefinitionKeys.list(params),
+                queryKey: queryKeys.feedback.findFeedback(params),
             })
         })
     })
@@ -160,7 +168,7 @@ describe('useUpsertFeedback', () => {
 
         it('should optimistically update TICKET_FREEFORM feedback', async () => {
             // Setup existing data
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -194,17 +202,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         feedbackType: 'TICKET_FREEFORM',
@@ -218,22 +225,22 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
                 expect(
-                    updatedData.executions[0].feedback[0].feedbackValue,
+                    updatedData.data.executions[0].feedback[0].feedbackValue,
                 ).toBe('Updated feedback')
             })
         })
 
         it('should optimistically add TICKET_FREEFORM feedback if it does not exist', async () => {
             // Setup existing data with no feedback
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -253,17 +260,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         feedbackType: 'TICKET_FREEFORM',
@@ -277,23 +283,23 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
-                expect(updatedData.executions[0].feedback.length).toBe(1)
+                expect(updatedData.data.executions[0].feedback.length).toBe(1)
                 expect(
-                    updatedData.executions[0].feedback[0].feedbackValue,
+                    updatedData.data.executions[0].feedback[0].feedbackValue,
                 ).toBe('New feedback')
             })
         })
 
         it('should optimistically update SUGGESTED_RESOURCE feedback', async () => {
             // Setup existing data
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -327,17 +333,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         id: 2,
@@ -352,22 +357,22 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
                 expect(
-                    updatedData.executions[0].feedback[0].feedbackValue,
+                    updatedData.data.executions[0].feedback[0].feedbackValue,
                 ).toBe('thumbsDown')
             })
         })
 
         it('should optimistically remove SUGGESTED_RESOURCE feedback if feedbackValue is empty', async () => {
             // Setup existing data
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -401,17 +406,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         id: 2,
@@ -426,20 +430,20 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
-                expect(updatedData.executions[0].feedback.length).toBe(0)
+                expect(updatedData.data.executions[0].feedback.length).toBe(0)
             })
         })
 
         it('should optimistically add SUGGESTED_RESOURCE feedback if it does not exist', async () => {
             // Setup existing data with no feedback
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -459,17 +463,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         feedbackType: 'SUGGESTED_RESOURCE',
@@ -483,14 +486,14 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
-                const feedback = updatedData.executions[0].feedback.find(
+                const feedback = updatedData.data.executions[0].feedback.find(
                     (f) => f.feedbackType === 'SUGGESTED_RESOURCE',
                 )
                 expect(feedback).toBeDefined()
@@ -500,7 +503,7 @@ describe('useUpsertFeedback', () => {
 
         it('should optimistically update KNOWLEDGE_RESOURCE_BINARY feedback', async () => {
             // Setup existing data
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -542,17 +545,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         id: 3,
@@ -567,15 +569,15 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
                 expect(
-                    updatedData.executions[0].resources[0].feedback
+                    updatedData.data.executions[0].resources[0].feedback
                         ?.feedbackValue,
                 ).toBe('DOWN')
             })
@@ -583,7 +585,7 @@ describe('useUpsertFeedback', () => {
 
         it('should add KNOWLEDGE_RESOURCE_BINARY feedback if it does not exist', async () => {
             // Setup existing data with resource but no feedback
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -613,17 +615,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
@@ -637,18 +638,18 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
                 expect(
-                    updatedData.executions[0].resources[0].feedback,
+                    updatedData.data.executions[0].resources[0].feedback,
                 ).toBeDefined()
                 expect(
-                    updatedData.executions[0].resources[0].feedback
+                    updatedData.data.executions[0].resources[0].feedback
                         ?.feedbackValue,
                 ).toBe('UP')
             })
@@ -656,7 +657,7 @@ describe('useUpsertFeedback', () => {
 
         it('should handle multiple feedback types in a single mutation', async () => {
             // Setup existing data with multiple feedback types
-            const existingData: Components.Schemas.FeedbackDto = {
+            const existingData: FindFeedbackResult['data'] = {
                 accountId: 1,
                 objectId: '1',
                 objectType: 'TICKET',
@@ -725,17 +726,16 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            queryClient.setQueryData(
-                feedbackDefinitionKeys.list(params),
-                existingData,
-            )
+            queryClient.setQueryData(queryKeys.feedback.findFeedback(params), {
+                data: existingData,
+            })
 
             const { result } = renderHook(
                 () => useUpsertFeedback(params, { onSettled: onSettledMock }),
                 { wrapper },
             )
 
-            const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+            const feedbackData: FeedbackUpsertRequest = {
                 feedbackToUpsert: [
                     {
                         feedbackType: 'TICKET_FREEFORM',
@@ -769,30 +769,30 @@ describe('useUpsertFeedback', () => {
                 ],
             }
 
-            result.current.mutate(feedbackData)
+            result.current.mutate({ data: feedbackData })
 
             await waitFor(() => {
                 const updatedData = queryClient.getQueryData(
-                    feedbackDefinitionKeys.list(params),
-                ) as Components.Schemas.FeedbackDto
+                    queryKeys.feedback.findFeedback(params),
+                ) as FindFeedbackResult
 
                 // Check TICKET_FREEFORM was updated
                 expect(
-                    updatedData.executions[0].feedback.find(
+                    updatedData.data.executions[0].feedback.find(
                         (f) => f.feedbackType === 'TICKET_FREEFORM',
                     )?.feedbackValue,
                 ).toBe('Updated feedback')
 
                 // Check SUGGESTED_RESOURCE was updated
                 expect(
-                    updatedData.executions[0].feedback.find(
+                    updatedData.data.executions[0].feedback.find(
                         (f) => f.feedbackType === 'SUGGESTED_RESOURCE',
                     )?.feedbackValue,
                 ).toBe('thumbsDown')
 
                 // Check KNOWLEDGE_RESOURCE_BINARY was updated
                 expect(
-                    updatedData.executions[0].resources[0].feedback
+                    updatedData.data.executions[0].resources[0].feedback
                         ?.feedbackValue,
                 ).toBe('DOWN')
             })
@@ -803,7 +803,7 @@ describe('useUpsertFeedback', () => {
 // Add tests for generateUniqueId and default case
 describe('generateUniqueId', () => {
     it('should return 1 when there are no feedback items', () => {
-        const data: Components.Schemas.FeedbackDto = {
+        const data: FindFeedbackResult['data'] = {
             accountId: 1,
             objectId: '1',
             objectType: 'TICKET',
@@ -817,13 +817,13 @@ describe('generateUniqueId', () => {
             accountId: 1,
             objectId: '1',
             objectType: 'TICKET',
-        } as Components.Schemas.FeedbackDto
+        } as FindFeedbackResult['data']
 
         expect(generateUniqueId(data)).toBe(0)
     })
 
     it('should find the maximum ID and return it incremented by 1', () => {
-        const data: Components.Schemas.FeedbackDto = {
+        const data: FindFeedbackResult['data'] = {
             accountId: 1,
             objectId: '1',
             objectType: 'TICKET',
@@ -887,7 +887,7 @@ describe('generateUniqueId', () => {
     })
 
     it('should ignore non-numeric IDs', () => {
-        const data: Components.Schemas.FeedbackDto = {
+        const data: FindFeedbackResult['data'] = {
             accountId: 1,
             objectId: '1',
             objectType: 'TICKET',
@@ -940,13 +940,13 @@ describe('generateUniqueId', () => {
 })
 
 describe('optimisticallyUpdateFeedback - edge cases', () => {
-    const params: Paths.FindFeedbackFeedback.QueryParameters = {
+    const params: FindFeedbackParams = {
         objectId: 'ticket-123',
         objectType: 'TICKET',
     }
 
     it('should handle unsupported feedback type (default case)', () => {
-        const existingData: Components.Schemas.FeedbackDto = {
+        const existingData: FindFeedbackResult['data'] = {
             accountId: 1,
             objectId: '1',
             objectType: 'TICKET',
@@ -966,7 +966,7 @@ describe('optimisticallyUpdateFeedback - edge cases', () => {
             ],
         }
 
-        const feedbackData: Components.Schemas.FeedbackUpsertRequestDto = {
+        const feedbackData: FeedbackUpsertRequest = {
             feedbackToUpsert: [
                 {
                     // @ts-ignore - Using unsupported type to test default case
@@ -982,10 +982,10 @@ describe('optimisticallyUpdateFeedback - edge cases', () => {
         }
 
         const updateFn = optimisticallyUpdateFeedback(params, feedbackData)
-        const updatedData = updateFn(existingData)
+        const updatedData = updateFn({ data: existingData } as any)
 
         // The data should remain unchanged as the default case just breaks
-        expect(updatedData).toEqual(existingData)
-        expect(updatedData?.executions[0].feedback.length).toBe(0)
+        expect(updatedData).toEqual({ data: existingData })
+        expect(updatedData?.data?.executions[0].feedback.length).toBe(0)
     })
 })

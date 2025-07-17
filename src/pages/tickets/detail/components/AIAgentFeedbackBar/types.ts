@@ -1,6 +1,11 @@
 import { z } from 'zod'
 
-import { Components } from 'rest_api/knowledge_service_api/client.generated'
+import {
+    FeedbackExecutionsItem,
+    FeedbackExecutionsItemFeedbackItem,
+    FeedbackExecutionsItemResourcesItem,
+    FindFeedbackResult,
+} from '@gorgias/knowledge-service-types'
 
 export enum TicketEventEnum {
     CLOSE = 'CLOSE',
@@ -39,30 +44,32 @@ export type ResourceMetadata = {
     isDeleted?: boolean
 }
 
+export type FeedbackDto = FindFeedbackResult['data']
+
 export type KnowledgeResource = {
-    executionId: Components.Schemas.FeedbackDto['executions'][0]['executionId']
-    resource: Components.Schemas.FeedbackDto['executions'][0]['resources'][0]
+    executionId: FeedbackExecutionsItem['executionId']
+    resource: FeedbackExecutionsItemResourcesItem
     feedback?:
-        | Components.Schemas.FeedbackDto['executions'][0]['feedback'][0]
-        | Components.Schemas.FeedbackDto['executions'][0]['resources'][0]['feedback']
+        | FeedbackExecutionsItemFeedbackItem
+        | FeedbackExecutionsItemResourcesItem['feedback']
         | null
     metadata: ResourceMetadata
 }
 
 export type SuggestedResource = {
-    executionId: Components.Schemas.FeedbackDto['executions'][0]['executionId']
-    feedback: Components.Schemas.FeedbackDto['executions'][0]['feedback'][0]
+    executionId: FeedbackExecutionsItem['executionId']
+    feedback: FeedbackExecutionsItemFeedbackItem
     parsedResource: SuggestedResourceValue
     metadata: ResourceMetadata
 }
 
 export type FreeForm = {
-    executionId: Components.Schemas.FeedbackDto['executions'][0]['executionId']
-    feedback: Components.Schemas.FeedbackDto['executions'][0]['feedback'][0]
+    executionId: FeedbackExecutionsItem['executionId']
+    feedback: FeedbackExecutionsItemFeedbackItem
 }
 
 export type AiAgentKnowledgeResourceType =
-    Components.Schemas.FeedbackDto['executions'][0]['resources'][0]['resourceType']
+    FeedbackExecutionsItemResourcesItem['resourceType']
 
 export enum AiAgentKnowledgeResourceTypeEnum {
     GUIDANCE = 'GUIDANCE',

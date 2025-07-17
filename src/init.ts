@@ -23,6 +23,7 @@ import { store } from 'common/store'
 import { EditableUserProfile } from 'config/types/user'
 import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
 import { initializeNewReleaseHandler } from 'models/api/resources'
+import { setKSDefaultConfig } from 'models/knowledgeService/utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -47,6 +48,8 @@ setDefaultConfig({
         'X-Gorgias-User-Client': 'web',
     },
 })
+
+setKSDefaultConfig()
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default timezone

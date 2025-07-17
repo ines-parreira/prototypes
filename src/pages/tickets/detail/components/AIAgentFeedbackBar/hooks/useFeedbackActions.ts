@@ -2,12 +2,13 @@ import React, { useCallback } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
+import { FeedbackMutation } from '@gorgias/knowledge-service-types'
+
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { ChoiceOption } from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
-import { Components } from 'rest_api/knowledge_service_api/client.generated'
 
 import {
     AiAgentKnowledgeResourceTypeEnum,
@@ -169,9 +170,7 @@ export const useFeedbackActions = ({
     )
 
     const upsertMissingKnowledge = useCallback(
-        async (
-            getFeedbackToUpsert: () => Components.Schemas.FeedbackMutationDto[],
-        ) => {
+        async (getFeedbackToUpsert: () => FeedbackMutation[]) => {
             const upsertId = uuidv4()
             try {
                 setLoadingMutations((oldValue) => [
@@ -182,8 +181,10 @@ export const useFeedbackActions = ({
                 const feedbackToUpsert = getFeedbackToUpsert()
                 if (feedbackToUpsert.length > 0) {
                     await upsertFeedback({
-                        feedbackToUpsert,
-                    } as unknown as Components.Schemas.FeedbackUpsertRequestDto)
+                        data: {
+                            feedbackToUpsert,
+                        },
+                    } as unknown as Parameters<typeof upsertFeedback>[0])
                 }
             } catch (error) {
                 console.error(error)
@@ -290,7 +291,7 @@ export const useFeedbackActions = ({
                             feedbackType: 'SUGGESTED_RESOURCE',
                         }
                     })
-                    .filter(Boolean) as Components.Schemas.FeedbackMutationDto[]
+                    .filter(Boolean) as FeedbackMutation[]
 
             await upsertMissingKnowledge(getFeedbackToUpsert)
         },
@@ -323,7 +324,7 @@ export const useFeedbackActions = ({
                         feedbackValue: JSON.stringify(resource),
                         feedbackType: 'SUGGESTED_RESOURCE',
                     },
-                ] as Components.Schemas.FeedbackMutationDto[]
+                ] as FeedbackMutation[]
             }
 
             await upsertMissingKnowledge(getFeedbackToUpsert)
