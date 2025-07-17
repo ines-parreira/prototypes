@@ -16,7 +16,7 @@ import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgen
 export const AI_AGENT_AUTOMATED_INTERACTIONS_LABEL =
     'AI Agent automated interactions'
 export const AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP: TooltipData = {
-    title: 'Number of automated interactions for the selected date period separated by Support or Sales skill usage',
+    title: 'Number of automated interactions for the selected date period separated by Support or Sales skill usage. Only data after May 1 is displayed.',
 }
 
 export const AutomateCustomColors = [
