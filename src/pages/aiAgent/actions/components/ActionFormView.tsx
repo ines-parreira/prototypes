@@ -190,10 +190,10 @@ const ActionFormView = ({
                         caption={
                             <div>
                                 Enabling will allow AI Agent to perform this
-                                Action indepedently from Guidance.
-                                <br />
-                                Actions can still be be used in Guidance when
-                                disabled here.
+                                Action to resolve customer requests. When
+                                enabled, Actions can also be referenced in
+                                Guidance to instruct AI Agent how to follow
+                                end-to-end processes.
                             </div>
                         }
                         label="Enable Action"
