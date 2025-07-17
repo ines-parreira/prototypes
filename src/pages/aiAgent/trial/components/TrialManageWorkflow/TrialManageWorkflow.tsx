@@ -9,6 +9,7 @@ import { SegmentEvent } from 'common/segment/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
     ModalBodyWrapper,
@@ -109,6 +110,8 @@ export const TrialManageWorkflow = ({
         }
     }, [pageName, displayTrialBanner])
 
+    const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
+
     const trialMilestone = useSalesTrialRevampMilestone()
     if (trialMilestone === 'off') return undefined
 
@@ -123,10 +126,14 @@ export const TrialManageWorkflow = ({
                     {...trialModalProps.manageTrialModal}
                     title="Manage your Shopping Assistant trial"
                     onClose={closeManageTrialModal}
-                    primaryAction={{
-                        label: 'Upgrade Now',
-                        onClick: openTrialUpgradeModal,
-                    }}
+                    primaryAction={
+                        earlyAccessPlan
+                            ? {
+                                  label: 'Upgrade Now',
+                                  onClick: openTrialUpgradeModal,
+                              }
+                            : undefined
+                    }
                     secondaryAction={{
                         label: 'Opt Out',
                         onClick: onOptOutClick,

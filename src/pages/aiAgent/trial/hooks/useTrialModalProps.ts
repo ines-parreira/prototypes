@@ -251,6 +251,7 @@ const useTrialStartedBanner = (
         isUpgradePlanLoading,
     ])
 
+    const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
     const primaryAction = useMemo(() => {
         if (canBookDemo) {
             return {
@@ -261,12 +262,14 @@ const useTrialStartedBanner = (
             }
         }
 
+        if (!earlyAccessPlan) return undefined
+
         return {
             label: 'Upgrade Now',
             onClick: handleUpgradePlan,
             isLoading: isUpgradePlanLoading,
         }
-    }, [canBookDemo, handleUpgradePlan, isUpgradePlanLoading])
+    }, [canBookDemo, earlyAccessPlan, handleUpgradePlan, isUpgradePlanLoading])
 
     const description = useMemo(() => {
         if (gmvInfluencedRate > 0.01) {

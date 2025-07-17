@@ -11,6 +11,7 @@ import { user } from 'fixtures/users'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
+import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
     useTrialEligibility,
@@ -75,6 +76,9 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 jest.mock('common/segment')
 jest.mock('hooks/useModalManager')
+jest.mock('models/billing/queries', () => ({
+    useEarlyAccessAutomatePlan: jest.fn(),
+}))
 
 // Mock modal components
 jest.mock(
@@ -157,6 +161,7 @@ const mockUseTrialModalProps = useTrialModalProps as jest.Mock
 const mockUseUpgradePlan = useUpgradePlan as jest.Mock
 const mockLogEvent = logEvent as jest.Mock
 const mockUseModalManager = useModalManager as jest.Mock
+const mockUseEarlyAccessAutomatePlan = useEarlyAccessAutomatePlan as jest.Mock
 
 const setupUseAppSelectorMock = ({
     hasAutomate = true,
@@ -272,6 +277,8 @@ describe('SalesPaywallMiddleware', () => {
         mockLogEvent.mockClear()
         // Default useAppSelector mock
         setupUseAppSelectorMock()
+        // Default useEarlyAccessAutomatePlan mock to null (no plan)
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null })
     })
     it('should render automate paywall when it doesnt has automate', () => {
         setupUseAppSelectorMock({ hasAutomate: false })
@@ -461,6 +468,13 @@ describe('SalesPaywallMiddleware', () => {
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
         })
+        // Mock earlyAccessPlan to have value for Upgrade Now button to appear
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            data: {
+                id: 'early-access-123',
+                name: 'Early Access Plan',
+            },
+        })
 
         renderMiddleware()
 
@@ -521,6 +535,13 @@ describe('SalesPaywallMiddleware', () => {
             [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
             [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
         })
+        // Mock earlyAccessPlan to have value for Upgrade Now button to appear
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            data: {
+                id: 'early-access-123',
+                name: 'Early Access Plan',
+            },
+        })
 
         renderMiddleware()
 
@@ -539,6 +560,56 @@ describe('SalesPaywallMiddleware', () => {
         expect(buttons[1]).toHaveTextContent(
             'Start 14-Day Trial At No Additional Cost',
         )
+    })
+
+    it('should not render Upgrade Now button when earlyAccessPlan is null', () => {
+        useTrialEligibilityMock.mockReturnValue({
+            canStartTrial: true,
+            isLoading: false,
+        })
+        mockUseSalesTrialRevampMilestone.mockReturnValue('off')
+        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            canSeeTrialCTA: false,
+            canStartTrial: false,
+            hasTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            canBookDemo: false,
+        })
+        mockUseActivateAiAgentTrial.mockReturnValue({
+            canStartTrial: true,
+            routes: {},
+            startTrial: jest.fn(),
+            isLoading: false,
+            canStartTrialFromFeatureFlag: false,
+            shopName: 'test-shop',
+        })
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 5 },
+        })
+        mockFlags({
+            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
+        })
+        // Mock earlyAccessPlan to be null so Upgrade Now button doesn't appear
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            data: null,
+        })
+
+        renderMiddleware()
+
+        const paywallView = screen.getByText(/Paywall View Mock/)
+        expect(paywallView).toBeInTheDocument()
+
+        // Should only have Start trial button, not Upgrade Now button
+        const buttons = paywallView.querySelectorAll('button')
+        expect(buttons).toHaveLength(1)
+        expect(buttons[0]).toHaveTextContent(
+            'Start 14-Day Trial At No Additional Cost',
+        )
+        expect(screen.queryByText('Upgrade Now')).not.toBeInTheDocument()
     })
 
     it('should render the child component when it has automate on generation 6 plan', () => {
@@ -1102,6 +1173,13 @@ describe('SalesPaywallMiddleware', () => {
                 upgradePlanAsync: mockUpgradePlan,
                 isLoading: false,
             })
+            // Mock earlyAccessPlan to have value for Upgrade Now button to appear
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {
+                    id: 'early-access-123',
+                    name: 'Early Access Plan',
+                },
+            })
 
             renderMiddleware()
 
@@ -1141,6 +1219,13 @@ describe('SalesPaywallMiddleware', () => {
                 upgradePlanAsync: mockUpgradePlan,
                 isLoading: false,
             })
+            // Mock earlyAccessPlan to have value for Upgrade Now button to appear
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {
+                    id: 'early-access-123',
+                    name: 'Early Access Plan',
+                },
+            })
 
             renderMiddleware()
 
@@ -1169,6 +1254,13 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
                 hasOptedOut: false,
                 hasActiveTrial: false,
+            })
+            // Mock earlyAccessPlan to have value for Upgrade Now button to appear
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {
+                    id: 'early-access-123',
+                    name: 'Early Access Plan',
+                },
             })
 
             renderMiddleware()
@@ -1369,6 +1461,11 @@ describe('SalesPaywallMiddleware', () => {
             setupUseAppSelectorMock({
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
+            })
+
+            // Mock earlyAccessPlan to exist so the Upgrade Now button shows
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: { id: 'early-access-plan' },
             })
 
             mockFlags({
@@ -1576,6 +1673,13 @@ describe('SalesPaywallMiddleware', () => {
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
             })
+            // Mock earlyAccessPlan to have value for Upgrade Now button to appear
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {
+                    id: 'early-access-123',
+                    name: 'Early Access Plan',
+                },
+            })
 
             renderMiddleware()
 
@@ -1724,6 +1828,13 @@ describe('SalesPaywallMiddleware', () => {
 
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            })
+            // Mock earlyAccessPlan to have value for Upgrade Now button to appear
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {
+                    id: 'early-access-123',
+                    name: 'Early Access Plan',
+                },
             })
 
             renderMiddleware()

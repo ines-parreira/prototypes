@@ -15,6 +15,7 @@ import {
     useCanUseAiSalesAgent,
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
+import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import AIAgentTrialSuccessModal from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
@@ -79,6 +80,7 @@ const AiSalesAgentSalesOverview = () => {
         autoDisplayEarlyAccessDisabled:
             atLeastOneStoreHasActiveTrial || isLoading || canStartTrial,
     })
+    const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
 
     const component: React.ReactNode = (
         <AIAgentTrialSuccessModal
@@ -100,14 +102,16 @@ const AiSalesAgentSalesOverview = () => {
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
                     <div className={css.wrapper}>
-                        <AIButton
-                            intent="primary"
-                            size="medium"
-                            onClick={showEarlyAccessModal}
-                            className={css.upgradeButton}
-                        >
-                            Upgrade Now
-                        </AIButton>
+                        {!earlyAccessPlan && (
+                            <AIButton
+                                intent="primary"
+                                size="medium"
+                                onClick={showEarlyAccessModal}
+                                className={css.upgradeButton}
+                            >
+                                Upgrade Now
+                            </AIButton>
+                        )}
 
                         {canStartTrial && (
                             <Button

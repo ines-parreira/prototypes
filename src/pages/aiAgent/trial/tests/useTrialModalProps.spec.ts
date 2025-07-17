@@ -708,6 +708,121 @@ describe('useTrialModalProps', () => {
                 )
             })
         })
+
+        describe('primaryAction based on earlyAccessPlan', () => {
+            beforeEach(() => {
+                mockUseBillingState.mockReturnValue({
+                    data: {
+                        current_plans: {
+                            automate: { amount: 5000, currency: 'USD' },
+                            helpdesk: { amount: 10000, num_quota_tickets: 100 },
+                        },
+                    },
+                } as any)
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.05,
+                    isLoading: false,
+                })
+                mockUseTrialEnding.mockReturnValue({
+                    remainingDays: 7,
+                    trialEndDatetime: getTrialEndTime(7),
+                    trialTerminationDatetime: null,
+                    forceHideModal: false,
+                })
+            })
+
+            it('should return undefined primaryAction when earlyAccessPlan is null', () => {
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: null,
+                } as any)
+                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                    hasAnyTrialStarted: false,
+                    canBookDemo: false,
+                    canSeeSystemBanner: false,
+                    canSeeTrialCTA: false,
+                    canNotifyAdmin: false,
+                    hasCurrentStoreTrialOptedOut: false,
+                    hasAnyTrialOptedOut: false,
+                    hasAnyTrialExpired: false,
+                    hasCurrentStoreTrialStarted: false,
+                    hasCurrentStoreTrialExpired: false,
+                    hasAnyTrialOptedIn: false,
+                    hasAnyTrialActive: false,
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(
+                    result.current.trialStartedBanner.primaryAction,
+                ).toBeUndefined()
+            })
+
+            it('should return primaryAction when earlyAccessPlan has value', () => {
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: { amount: 9900 },
+                } as any)
+                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                    hasAnyTrialStarted: false,
+                    canBookDemo: false,
+                    canSeeSystemBanner: false,
+                    canSeeTrialCTA: false,
+                    canNotifyAdmin: false,
+                    hasCurrentStoreTrialOptedOut: false,
+                    hasAnyTrialOptedOut: false,
+                    hasAnyTrialExpired: false,
+                    hasCurrentStoreTrialStarted: false,
+                    hasCurrentStoreTrialExpired: false,
+                    hasAnyTrialOptedIn: false,
+                    hasAnyTrialActive: false,
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(result.current.trialStartedBanner.primaryAction).toEqual(
+                    {
+                        label: 'Upgrade Now',
+                        onClick: expect.any(Function),
+                        isLoading: false,
+                    },
+                )
+            })
+
+            it('should return Book a demo when canBookDemo is true regardless of earlyAccessPlan', () => {
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: null,
+                } as any)
+                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                    hasAnyTrialStarted: false,
+                    canBookDemo: true,
+                    canSeeSystemBanner: false,
+                    canSeeTrialCTA: false,
+                    canNotifyAdmin: false,
+                    hasCurrentStoreTrialOptedOut: false,
+                    hasAnyTrialOptedOut: false,
+                    hasAnyTrialExpired: false,
+                    hasCurrentStoreTrialStarted: false,
+                    hasCurrentStoreTrialExpired: false,
+                    hasAnyTrialOptedIn: false,
+                    hasAnyTrialActive: false,
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(result.current.trialStartedBanner.primaryAction).toEqual(
+                    {
+                        label: 'Book a demo',
+                        onClick: expect.any(Function),
+                    },
+                )
+            })
+        })
     })
 
     describe('useTrialAlertBanner', () => {

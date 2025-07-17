@@ -15,6 +15,7 @@ import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
@@ -186,6 +187,12 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 
+jest.mock('models/billing/queries', () => ({
+    useEarlyAccessAutomatePlan: jest.fn(),
+}))
+
+const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
+
 const mockUseFlags = useFlags as jest.Mock
 
 describe('AiSalesAgentSalesOverview', () => {
@@ -276,6 +283,9 @@ describe('AiSalesAgentSalesOverview', () => {
 
         // Mock useSalesTrialRevampMilestone
         mockUseSalesTrialRevampMilestone.mockReturnValue('off')
+
+        // Mock useEarlyAccessAutomatePlan - default to null (no plan)
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null } as any)
     })
 
     it('should render when store data is ready', () => {
@@ -355,5 +365,53 @@ describe('AiSalesAgentSalesOverview', () => {
         renderComponent()
 
         expect(screen.queryByText('ai-agent-paywall')).not.toBeInTheDocument()
+    })
+
+    describe('Upgrade Now button visibility', () => {
+        beforeEach(() => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseActivateAiAgentTrial.mockReturnValue({
+                routes: { customerEngagement: '/customer-engagement' },
+                startTrial: mockStartTrial,
+                canStartTrial: true,
+                canStartTrialFromFeatureFlag: false,
+                isLoading: false,
+            } as any)
+        })
+
+        it('should render Upgrade Now button when earlyAccessPlan is null', () => {
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: null,
+            } as any)
+
+            renderComponent()
+
+            expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
+        })
+
+        it('should not render Upgrade Now button when earlyAccessPlan is present', () => {
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {
+                    id: 'plan-123',
+                    name: 'Early Access Plan',
+                },
+            } as any)
+
+            renderComponent()
+
+            expect(screen.queryByText('Upgrade Now')).not.toBeInTheDocument()
+        })
+
+        it('should render Start trial button regardless of earlyAccessPlan when canStartTrial is true', () => {
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: { id: 'plan-123' },
+            } as any)
+
+            renderComponent()
+
+            expect(
+                screen.getByText('Start 14-Day Trial At No Additional Cost'),
+            ).toBeInTheDocument()
+        })
     })
 })

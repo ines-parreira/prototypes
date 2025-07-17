@@ -10,6 +10,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
+import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import AIAgentTrialSuccessModal, {
     MODAL_NAME as AI_TRIAL_MODAL_NAME,
 } from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
@@ -153,6 +154,7 @@ export const SalesPaywallMiddleware =
                 displayTrialButton ||
                 canStartTrialFromFeatureFlag,
         })
+        const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
 
         const eventData = {
             accountId: currentAccount.get('id'),
@@ -217,6 +219,7 @@ export const SalesPaywallMiddleware =
                 <PaywallWrapperComponent
                     showUpgradePaywall={showUpgradePaywall}
                     showEarlyAccessModal={onUpgradePlanClicked}
+                    displayUpgradeButton={!!earlyAccessPlan}
                     displayTrialButton={displayTrialButton}
                     startTrial={() => {
                         logEvent(
@@ -289,6 +292,7 @@ const PaywallWrapperComponent = ({
     displayTrialButton,
     startTrial,
     earlyAccessModal,
+    displayUpgradeButton = false,
     showSalesSettings,
     ChildComponent,
     eventData,
@@ -300,6 +304,7 @@ const PaywallWrapperComponent = ({
     displayTrialButton: boolean
     startTrial: () => void
     earlyAccessModal: React.ReactNode
+    displayUpgradeButton: boolean
     showSalesSettings: boolean
     ChildComponent: React.ComponentType<any>
     eventData: Record<string, string>
@@ -383,13 +388,15 @@ const PaywallWrapperComponent = ({
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
                     <div className={css.buttonsWrapper}>
-                        <Button
-                            size="medium"
-                            onClick={showEarlyAccessModal}
-                            className={css.upgradeButton}
-                        >
-                            Upgrade Now
-                        </Button>
+                        {displayUpgradeButton && (
+                            <Button
+                                size="medium"
+                                onClick={showEarlyAccessModal}
+                                className={css.upgradeButton}
+                            >
+                                Upgrade Now
+                            </Button>
+                        )}
                         {renderSecondaryActionButton()}
                     </div>
                 </AiAgentPaywallView>

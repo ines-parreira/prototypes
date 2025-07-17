@@ -6,6 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { logEvent } from 'common/segment/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
+import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialEndingTomorrowModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
@@ -33,6 +34,9 @@ jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
+jest.mock('models/billing/queries', () => ({
+    useEarlyAccessAutomatePlan: jest.fn(),
+}))
 
 // Mock React Router hooks
 jest.mock('react-router-dom', () => ({
@@ -61,6 +65,8 @@ describe('TrialManageWorkflow', () => {
     const mockUseLocation = useLocation as jest.Mock
     const mockUseSalesTrialRevampMilestone =
         useSalesTrialRevampMilestone as jest.Mock
+    const mockUseEarlyAccessAutomatePlan =
+        useEarlyAccessAutomatePlan as jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -145,6 +151,8 @@ describe('TrialManageWorkflow', () => {
         ;(useSalesTrialRevampMilestone as jest.Mock).mockReturnValue(
             'milestone-1',
         )
+        // Default to no early access plan
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null })
 
         // Mock components to render test content
         ;(TrialAlertBanner as jest.Mock).mockImplementation((props: any) => (
@@ -574,10 +582,63 @@ describe('TrialManageWorkflow', () => {
         )
         expect(call[0].advantages).toEqual(['$25 GMV uplift'])
         expect(call[0].onClose).toBe(mockCloseManageTrialModal)
+        expect(call[0].primaryAction).toBeUndefined()
+        expect(call[0].secondaryAction.label).toBe('Opt Out')
+        expect(typeof call[0].secondaryAction.onClick).toBe('function')
+    })
+
+    it('does not render primary action when earlyAccessPlan is null', () => {
+        const mockOpenTrialUpgradeModal = jest.fn()
+        ;(useShoppingAssistantTrialFlow as jest.Mock).mockReturnValue({
+            openManageTrialModal: mockOpenManageTrialModal,
+            isManageTrialModalOpen: true,
+            closeManageTrialModal: mockCloseManageTrialModal,
+            openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+        })
+
+        // Mock earlyAccessPlan to be null
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null })
+
+        render(
+            <TrialManageWorkflow
+                pageName="Strategy"
+                storeConfiguration={mockStoreConfiguration}
+            />,
+        )
+
+        const call = (TrialManageModal as jest.Mock).mock.calls[0]
+        expect(call[0].primaryAction).toBeUndefined()
+        expect(call[0].secondaryAction.label).toBe('Opt Out')
+    })
+
+    it('renders primary action when earlyAccessPlan has value', () => {
+        const mockOpenTrialUpgradeModal = jest.fn()
+        ;(useShoppingAssistantTrialFlow as jest.Mock).mockReturnValue({
+            openManageTrialModal: mockOpenManageTrialModal,
+            isManageTrialModalOpen: true,
+            closeManageTrialModal: mockCloseManageTrialModal,
+            openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+        })
+
+        // Mock earlyAccessPlan to have a value
+        mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            data: {
+                id: 'early-access-123',
+                name: 'Early Access Plan',
+            },
+        })
+
+        render(
+            <TrialManageWorkflow
+                pageName="Strategy"
+                storeConfiguration={mockStoreConfiguration}
+            />,
+        )
+
+        const call = (TrialManageModal as jest.Mock).mock.calls[0]
         expect(call[0].primaryAction.label).toBe('Upgrade Now')
         expect(typeof call[0].primaryAction.onClick).toBe('function')
         expect(call[0].secondaryAction.label).toBe('Opt Out')
-        expect(typeof call[0].secondaryAction.onClick).toBe('function')
     })
 
     describe('useEffect logging', () => {
@@ -967,6 +1028,13 @@ describe('TrialManageWorkflow', () => {
                 isManageTrialModalOpen: true,
                 closeManageTrialModal: mockCloseManageTrialModal,
                 openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+            })
+            // Mock earlyAccessPlan to have value so Upgrade Now button appears
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {
+                    id: 'early-access-123',
+                    name: 'Early Access Plan',
+                },
             })
 
             const user = userEvent.setup()
