@@ -1,11 +1,17 @@
-import { type ComponentProps, useEffect } from 'react'
+import { type ComponentProps, useEffect, useLayoutEffect } from 'react'
 
 import { Drawer as VaulDrawer } from 'vaul'
 
+type DrawerRootProps = ComponentProps<typeof VaulDrawer.Root> & {
+    // to correctly render and focus popovers used within the drawer set this to true
+    withPopovers?: boolean
+}
+
 function DrawerRoot({
     modal = false,
+    withPopovers = false,
     ...props
-}: ComponentProps<typeof VaulDrawer.Root>) {
+}: DrawerRootProps) {
     // Applying this while the actual library level fix (https://github.com/emilkowalski/vaul/pull/576) is not yet merged
     // for non-modal states (ie when you want the user to be able to interact with the page while the drawer is open)
     useEffect(() => {
@@ -16,7 +22,28 @@ function DrawerRoot({
         }
     }, [props.open, modal])
 
-    return <VaulDrawer.Root modal={modal} {...props} />
+    // Fix for focus trap in popovers and their inputs - https://github.com/emilkowalski/vaul/issues/497
+    useLayoutEffect(() => {
+        if (!withPopovers) {
+            return
+        }
+
+        document.addEventListener('focusin', (e) =>
+            e.stopImmediatePropagation(),
+        )
+        document.addEventListener('focusout', (e) =>
+            e.stopImmediatePropagation(),
+        )
+    }, [withPopovers])
+
+    return (
+        <VaulDrawer.Root
+            modal={modal}
+            noBodyStyles={withPopovers ? true : undefined}
+            disablePreventScroll={withPopovers ? false : undefined}
+            {...props}
+        />
+    )
 }
 
 export const Drawer = { ...VaulDrawer, Root: DrawerRoot }

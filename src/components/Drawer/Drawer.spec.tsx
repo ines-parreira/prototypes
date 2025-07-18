@@ -7,8 +7,20 @@ import { Drawer } from './Drawer'
 // Mock vaul drawer
 jest.mock('vaul', () => ({
     Drawer: {
-        Root: ({ children, modal, ...props }: any) => (
-            <div data-testid="vaul-drawer-root" data-modal={modal} {...props}>
+        Root: ({
+            children,
+            modal,
+            noBodyStyles,
+            disablePreventScroll,
+            ...props
+        }: any) => (
+            <div
+                data-testid="vaul-drawer-root"
+                data-modal={modal}
+                data-no-body-styles={noBodyStyles}
+                data-disable-prevent-scroll={disablePreventScroll}
+                {...props}
+            >
                 {children}
             </div>
         ),
@@ -246,6 +258,173 @@ describe('<Drawer />', () => {
             )
 
             expect(document.body.style.pointerEvents).toBe('auto')
+        })
+    })
+
+    describe('withPopovers prop behavior', () => {
+        let addEventListenerSpy: jest.SpyInstance
+        let removeEventListenerSpy: jest.SpyInstance
+
+        beforeEach(() => {
+            addEventListenerSpy = jest.spyOn(document, 'addEventListener')
+            removeEventListenerSpy = jest.spyOn(document, 'removeEventListener')
+        })
+
+        afterEach(() => {
+            addEventListenerSpy.mockRestore()
+            removeEventListenerSpy.mockRestore()
+        })
+
+        it('should default withPopovers to false', () => {
+            render(
+                <Drawer.Root>
+                    <div>Default drawer</div>
+                </Drawer.Root>,
+            )
+
+            expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+                'focusin',
+                expect.any(Function),
+            )
+            expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+                'focusout',
+                expect.any(Function),
+            )
+        })
+
+        it('should not add event listeners when withPopovers is false', () => {
+            render(
+                <Drawer.Root withPopovers={false}>
+                    <div>Drawer without popovers</div>
+                </Drawer.Root>,
+            )
+
+            expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+                'focusin',
+                expect.any(Function),
+            )
+            expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+                'focusout',
+                expect.any(Function),
+            )
+        })
+
+        it('should add focusin and focusout event listeners when withPopovers is true', () => {
+            render(
+                <Drawer.Root withPopovers={true}>
+                    <div>Drawer with popovers</div>
+                </Drawer.Root>,
+            )
+
+            expect(addEventListenerSpy).toHaveBeenCalledWith(
+                'focusin',
+                expect.any(Function),
+            )
+            expect(addEventListenerSpy).toHaveBeenCalledWith(
+                'focusout',
+                expect.any(Function),
+            )
+        })
+
+        it('should call stopImmediatePropagation on focusin event', () => {
+            render(
+                <Drawer.Root withPopovers={true}>
+                    <div>Drawer with popovers</div>
+                </Drawer.Root>,
+            )
+
+            const focusinHandler = addEventListenerSpy.mock.calls.find(
+                (call) => call[0] === 'focusin',
+            )?.[1]
+
+            expect(focusinHandler).toBeDefined()
+
+            const mockEvent = {
+                stopImmediatePropagation: jest.fn(),
+            }
+
+            focusinHandler(mockEvent)
+
+            expect(mockEvent.stopImmediatePropagation).toHaveBeenCalledTimes(1)
+        })
+
+        it('should call stopImmediatePropagation on focusout event', () => {
+            render(
+                <Drawer.Root withPopovers={true}>
+                    <div>Drawer with popovers</div>
+                </Drawer.Root>,
+            )
+
+            const focusoutHandler = addEventListenerSpy.mock.calls.find(
+                (call) => call[0] === 'focusout',
+            )?.[1]
+
+            expect(focusoutHandler).toBeDefined()
+
+            const mockEvent = {
+                stopImmediatePropagation: jest.fn(),
+            }
+
+            focusoutHandler(mockEvent)
+
+            expect(mockEvent.stopImmediatePropagation).toHaveBeenCalledTimes(1)
+        })
+
+        it('should pass noBodyStyles and disablePreventScroll props correctly when withPopovers is true', () => {
+            render(
+                <Drawer.Root withPopovers={true}>
+                    <div>Drawer with popovers</div>
+                </Drawer.Root>,
+            )
+
+            const drawerRoot = screen.getByTestId('vaul-drawer-root')
+            expect(drawerRoot).toHaveAttribute('data-no-body-styles', 'true')
+            expect(drawerRoot).toHaveAttribute(
+                'data-disable-prevent-scroll',
+                'false',
+            )
+        })
+
+        it('should pass noBodyStyles and disablePreventScroll props correctly when withPopovers is false', () => {
+            render(
+                <Drawer.Root withPopovers={false}>
+                    <div>Drawer without popovers</div>
+                </Drawer.Root>,
+            )
+
+            const drawerRoot = screen.getByTestId('vaul-drawer-root')
+            expect(drawerRoot).not.toHaveAttribute('data-no-body-styles')
+            expect(drawerRoot).not.toHaveAttribute(
+                'data-disable-prevent-scroll',
+            )
+        })
+
+        it('should handle withPopovers prop change from false to true', () => {
+            const { rerender } = render(
+                <Drawer.Root withPopovers={false}>
+                    <div>Drawer</div>
+                </Drawer.Root>,
+            )
+
+            expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+                'focusin',
+                expect.any(Function),
+            )
+
+            rerender(
+                <Drawer.Root withPopovers={true}>
+                    <div>Drawer</div>
+                </Drawer.Root>,
+            )
+
+            expect(addEventListenerSpy).toHaveBeenCalledWith(
+                'focusin',
+                expect.any(Function),
+            )
+            expect(addEventListenerSpy).toHaveBeenCalledWith(
+                'focusout',
+                expect.any(Function),
+            )
         })
     })
 })

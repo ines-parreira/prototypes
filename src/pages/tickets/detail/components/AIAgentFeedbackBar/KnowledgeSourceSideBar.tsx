@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { Drawer } from 'components/Drawer/Drawer'
 import { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
@@ -63,6 +63,8 @@ const KnowledgeSourceSideBar = ({
     const canUpdateArticle = isPassingRulesCheck(({ can }) =>
         can('update', 'ArticleEntity'),
     )
+
+    const containerRef = useRef<HTMLDivElement>(null)
 
     const isPreviewMode =
         mode === KnowledgeSourceSideBarMode.PREVIEW && !!selectedResource
@@ -160,15 +162,16 @@ const KnowledgeSourceSideBar = ({
     }, [mode, onClose])
 
     return (
-        <>
+        <div ref={containerRef}>
             <Drawer.Root
                 open={!!mode && !isClosing}
                 modal={false}
                 handleOnly
                 direction="right"
+                withPopovers={true}
+                container={containerRef.current}
             >
                 <Drawer.Portal>
-                    <Drawer.Overlay className={css.overlay} />
                     <Drawer.Content className={css.sidebarContent}>
                         <div className={css.root}>
                             {isPreviewMode && (
@@ -211,7 +214,7 @@ const KnowledgeSourceSideBar = ({
                     </Drawer.Content>
                 </Drawer.Portal>
             </Drawer.Root>
-        </>
+        </div>
     )
 }
 
