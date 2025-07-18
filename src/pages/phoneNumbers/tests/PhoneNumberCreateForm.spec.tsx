@@ -209,11 +209,15 @@ describe('<PhoneNumberCreateForm/>', () => {
             await userEvent.click(getByText('United States'))
 
             // Wait for US states to load
-            await screen.findByText('Alabama')
+            await waitFor(() => {
+                expect(screen.getByText('Alabama')).toBeInTheDocument()
+            })
             await userEvent.click(getByText('Alabama'))
 
             // Wait for area codes to load
-            await screen.findByText('Mobile (251)')
+            await waitFor(() => {
+                expect(screen.getByText('Mobile (251)')).toBeInTheDocument()
+            })
             await userEvent.click(getByText('Mobile (251)'))
 
             await userEvent.click(getByText('Add phone number'))
