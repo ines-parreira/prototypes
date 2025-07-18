@@ -37,6 +37,7 @@ export const FollowUpField = ({
                 options={followUpOptions}
                 value={value}
                 onChange={handleChange}
+                enableUnselect
             />
             <Info content="Follow-ups are triggered every 24 hours." />
         </div>

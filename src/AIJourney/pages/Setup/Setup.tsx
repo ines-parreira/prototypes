@@ -175,7 +175,7 @@ export const Setup = () => {
         }
     }
 
-    const followUpOptions = [1, 2, 3]
+    const followUpOptions = [0, 1, 2, 3]
 
     const isDiscountFieldValid = isDiscountEnabled
         ? !!discountValue && isDiscountValueValid

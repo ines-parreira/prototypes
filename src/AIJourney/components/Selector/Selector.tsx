@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, useCallback } from 'react'
+import {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react'
 
 import classNames from 'classnames'
 
@@ -8,20 +14,37 @@ type SelectorProps<T> = {
     options: T[]
     value?: T | null
     onChange?: ((option: T) => void) | Dispatch<SetStateAction<T>>
+    enableUnselect?: boolean
 }
 
 export const Selector = <T,>({
     options,
     value,
     onChange,
+    enableUnselect = false,
 }: SelectorProps<T>) => {
-    const selectedOptionIndex = options?.findIndex((option) => option === value)
+    const [selectedOptionIndex, setSelectedOptionIndex] = useState<
+        number | undefined
+    >(options.findIndex((option) => option === value))
+
+    useEffect(() => {
+        if (value) {
+            const index = options.findIndex((option) => option === value)
+            setSelectedOptionIndex(index >= 0 ? index : undefined)
+        }
+    }, [options, value])
 
     const handleOptionChange = useCallback(
         (optionIndex: number) => {
-            onChange?.(options[optionIndex])
+            if (enableUnselect && selectedOptionIndex === optionIndex) {
+                setSelectedOptionIndex(undefined)
+                onChange?.(undefined as T)
+            } else {
+                setSelectedOptionIndex(optionIndex)
+                onChange?.(options[optionIndex])
+            }
         },
-        [options, onChange],
+        [options, onChange, enableUnselect, selectedOptionIndex],
     )
 
     return (
