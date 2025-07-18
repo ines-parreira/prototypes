@@ -1054,6 +1054,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={{} as any}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -1091,6 +1092,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={complexEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -1185,6 +1187,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -1215,6 +1218,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={null as any}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -1253,6 +1257,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -1317,6 +1322,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
