@@ -4,7 +4,7 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useBillingPlan } from '../useBillingPlan'
-import { useBillingState } from '../useBillingState'
+import { ResponseBillingState, useBillingState } from '../useBillingState'
 
 jest.mock('billing/hooks/useBillingState')
 
@@ -12,22 +12,28 @@ const useBillingStateMock = assumeMock(useBillingState)
 
 describe('useBillingPlan()', () => {
     it('should return the plan for the given name', () => {
-        const state = mockBillingState({
+        const billingData = mockBillingState({
             current_plans: mockCurrentPlans(),
         })
-        useBillingStateMock.mockReturnValue(state)
+        useBillingStateMock.mockReturnValue({
+            data: billingData,
+            isFetching: false,
+        } as unknown as ResponseBillingState)
 
         const { result } = renderHook(() => useBillingPlan('helpdesk'))
-        expect(result.current).toEqual(state.current_plans.helpdesk)
+        expect(result.current).toEqual(billingData.current_plans.helpdesk)
     })
 
     it('should return null if that plan is not available', () => {
-        const state = mockBillingState({
+        const billingData = mockBillingState({
             current_plans: mockCurrentPlans({
                 voice: null,
             }),
         })
-        useBillingStateMock.mockReturnValue(state)
+        useBillingStateMock.mockReturnValue({
+            data: billingData,
+            isFetching: false,
+        } as unknown as ResponseBillingState)
 
         const { result } = renderHook(() => useBillingPlan('voice'))
         expect(result.current).toEqual(null)
@@ -35,11 +41,12 @@ describe('useBillingPlan()', () => {
 
     it('should return undefined if an invalid name is provided', () => {
         const plans = mockCurrentPlans()
-        useBillingStateMock.mockReturnValue(
-            mockBillingState({
+        useBillingStateMock.mockReturnValue({
+            data: mockBillingState({
                 current_plans: plans,
             }),
-        )
+            isFetching: false,
+        } as unknown as ResponseBillingState)
 
         // @ts-expect-error - invalid plan name
         const { result } = renderHook(() => useBillingPlan('invalid'))
@@ -47,7 +54,10 @@ describe('useBillingPlan()', () => {
     })
 
     it('should return null when the billing state is undefined', async () => {
-        useBillingStateMock.mockReturnValue(undefined)
+        useBillingStateMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as unknown as ResponseBillingState)
 
         const { result } = renderHook(() => useBillingPlan('helpdesk'))
         expect(result.current).toEqual(undefined)

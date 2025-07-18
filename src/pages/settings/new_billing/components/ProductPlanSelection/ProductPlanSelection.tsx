@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
+import { CustomerSummary } from '@gorgias/helpdesk-types'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -21,7 +22,7 @@ import {
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
     PRODUCT_INFO,
 } from '../../constants'
-import useAutomatedHelpdeskCancellationFlowAvailable from '../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
+import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
 import { formatNumTickets } from '../../utils/formatAmount'
 import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
@@ -48,6 +49,7 @@ export type ProductPlanSelectionProps = {
     periodEnd?: string
     currentUsage?: CurrentProductsUsages
     editingAvailable: boolean
+    customer?: CustomerSummary | null
 }
 
 const ProductPlanSelection = ({
@@ -62,9 +64,9 @@ const ProductPlanSelection = ({
     periodEnd,
     currentUsage,
     editingAvailable,
+    customer,
 }: ProductPlanSelectionProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
-
     const isActive = useMemo(() => {
         if (!currentPlan) return false
         if (isTrialing) return false
@@ -188,12 +190,13 @@ const ProductPlanSelection = ({
               [ProductType.Convert]: currentProducts.convert || null,
           }
         : null
-    const isAutomatedHelpdeskCancellationFlowAvailable =
-        useAutomatedHelpdeskCancellationFlowAvailable(
-            currentSubscriptionProducts?.helpdesk || null,
-        ) &&
-        editingAvailable &&
-        !isTrialing
+
+    const isCancellationAvailable = useIsCancellationAvailable({
+        helpdeskPlan: currentSubscriptionProducts?.helpdesk || null,
+        editingAvailable,
+        isTrialing,
+        customer,
+    })
 
     const handleOpen = useCallback(() => {
         const initialPlan =
@@ -293,10 +296,7 @@ const ProductPlanSelection = ({
                 </Button>
             )
         }
-        if (
-            type === ProductType.Helpdesk &&
-            isAutomatedHelpdeskCancellationFlowAvailable
-        ) {
+        if (type === ProductType.Helpdesk && isCancellationAvailable) {
             return (
                 <Button
                     fillStyle="ghost"
@@ -435,7 +435,7 @@ const ProductPlanSelection = ({
                     currentUsage={currentUsage}
                 />
             )}
-            {isAutomatedHelpdeskCancellationFlowAvailable &&
+            {isCancellationAvailable &&
                 currentSubscriptionProducts &&
                 periodEnd && (
                     <CancelProductModal

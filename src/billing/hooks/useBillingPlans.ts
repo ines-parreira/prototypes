@@ -4,5 +4,5 @@ import { useBillingState } from './useBillingState'
 
 export function useBillingPlans(): CurrentPlans | undefined {
     const state = useBillingState()
-    return state?.current_plans
+    return state.data?.current_plans
 }

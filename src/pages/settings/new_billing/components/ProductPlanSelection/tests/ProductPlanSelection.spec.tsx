@@ -503,4 +503,29 @@ describe('ProductPlanSelection', () => {
             ).not.toBeInTheDocument()
         },
     )
+
+    it('does not display the cancel auto-renewal button when currentSubscriptionProducts.helpdesk is null', () => {
+        const storeWithoutHelpdeskPlan = mockStore({
+            billing: fromJS(billingState),
+            currentAccount: fromJS({
+                current_subscription: {
+                    products: {},
+                },
+            }),
+        })
+
+        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
+            () => false,
+        )
+
+        render(
+            <Provider store={storeWithoutHelpdeskPlan}>
+                <ProductPlanSelection {...props} />
+            </Provider>,
+        )
+
+        expect(
+            screen.queryByText('Cancel auto-renewal'),
+        ).not.toBeInTheDocument()
+    })
 })

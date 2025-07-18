@@ -4,6 +4,7 @@ import _capitalize from 'lodash/capitalize'
 import { useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
+import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -113,7 +114,7 @@ const BillingProcessView = ({
 
     // Selected product to Subscribe or Update
     const { selectedProduct } = useParams<Params>()
-
+    const billingState = useBillingState()
     const {
         selectedPlans,
         setSelectedPlans,
@@ -181,7 +182,7 @@ const BillingProcessView = ({
         return message
     }, [selectedPlans, cadence])
 
-    if (hasCreditCard.isLoading) return <Loader />
+    if (hasCreditCard.isLoading || billingState.isFetching) return <Loader />
 
     const ctaText =
         isCurrentSubscriptionCanceled && hasCreditCard.data
@@ -330,6 +331,7 @@ const BillingProcessView = ({
                     <div className={css.products}>
                         <ProductPlanSelection
                             type={ProductType.Helpdesk}
+                            customer={billingState.data?.customer}
                             cadence={cadence}
                             currentPlan={currentHelpdeskPlan}
                             availablePlans={helpdeskAvailablePlans}

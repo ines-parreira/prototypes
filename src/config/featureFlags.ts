@@ -159,4 +159,5 @@ export enum FeatureFlagKey {
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     ShowReturnsStatusForOrders = 'linear.project_shopify_orders.show_returns',
+    DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',
 }

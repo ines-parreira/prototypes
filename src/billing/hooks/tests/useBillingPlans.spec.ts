@@ -4,7 +4,7 @@ import { assumeMock } from 'utils/testing'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useBillingPlans } from '../useBillingPlans'
-import { useBillingState } from '../useBillingState'
+import { ResponseBillingState, useBillingState } from '../useBillingState'
 
 jest.mock('billing/hooks/useBillingState')
 
@@ -12,17 +12,23 @@ const useBillingStateMock = assumeMock(useBillingState)
 
 describe('useBillingPlans()', () => {
     it('should return the current plans', async () => {
-        const state = mockBillingState({
+        const billingData = mockBillingState({
             current_plans: mockCurrentPlans(),
         })
-        useBillingStateMock.mockReturnValue(state)
+        useBillingStateMock.mockReturnValue({
+            data: billingData,
+            isFetching: false,
+        } as unknown as ResponseBillingState)
 
         const { result } = renderHook(() => useBillingPlans())
-        expect(result.current).toEqual(state.current_plans)
+        expect(result.current).toEqual(billingData.current_plans)
     })
 
     it('should return undefined when the billing state is undefined', async () => {
-        useBillingStateMock.mockReturnValue(undefined)
+        useBillingStateMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as unknown as ResponseBillingState)
 
         const { result } = renderHook(() => useBillingPlans())
         expect(result.current).toEqual(undefined)

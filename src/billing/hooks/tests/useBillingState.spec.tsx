@@ -39,11 +39,11 @@ describe('useBillingState()', () => {
         const { result } = renderBillingStateHook()
 
         await waitFor(() => {
-            expect(result.current).toEqual(getStateMock.data)
+            expect(result.current.data).toEqual(getStateMock.data)
         })
     })
 
-    it('should return undefined while the request is loading', async () => {
+    it('should return isFetching as true while the request is loading', async () => {
         jest.useFakeTimers()
         const getStateMock = mockGetBillingStateHandler(async ({ data }) => {
             await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -53,7 +53,7 @@ describe('useBillingState()', () => {
         server.use(getStateMock.handler)
 
         const { result } = renderBillingStateHook()
-        expect(result.current).toBeUndefined()
+        expect(result.current.isFetching).toBe(true)
 
         jest.useRealTimers()
     })
@@ -70,6 +70,6 @@ describe('useBillingState()', () => {
 
         const { result } = renderBillingStateHook()
 
-        expect(result.current).toBeUndefined()
+        expect(result.current.data).toBeUndefined()
     })
 })

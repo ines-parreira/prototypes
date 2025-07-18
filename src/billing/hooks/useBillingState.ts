@@ -1,16 +1,32 @@
-import { BillingState, useGetBillingState } from '@gorgias/helpdesk-queries'
+import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+
+import {
+    BillingState,
+    HttpResponse,
+    useGetBillingState,
+} from '@gorgias/helpdesk-queries'
 
 const STALE_TIME = 1000 * 60 * 60 // 1h
 const CACHE_TIME = 1000 * 60 * 65 // 1h5m
 
-export function useBillingState(): BillingState | undefined {
-    const { data } = useGetBillingState({
+export type ResponseBillingState = Omit<
+    UseQueryResult<HttpResponse<BillingState>>,
+    'data'
+> & {
+    data: BillingState | undefined
+}
+
+export function useBillingState(
+    overrides?: UseQueryOptions<HttpResponse<BillingState>>,
+): ResponseBillingState {
+    const { data, ...rest } = useGetBillingState({
         query: {
             staleTime: STALE_TIME,
             cacheTime: CACHE_TIME,
             refetchOnWindowFocus: false,
+            ...overrides,
         },
     })
 
-    return data?.data
+    return { data: data?.data, ...rest }
 }
