@@ -1,11 +1,13 @@
-import { PaginationMetaNextCursor } from '@gorgias/helpdesk-types'
+import {
+    PaginationMetaNextCursor,
+    SearchTicketsOrderBy,
+} from '@gorgias/helpdesk-types'
 
 /* istanbul ignore file */
 import { appQueryClient } from 'api/queryClient'
 import { viewItemsDefinitionKeys } from 'models/view/queries'
 import { getViewTicketUpdates } from 'models/view/resources'
 
-import { SortOrder } from './hooks/useSortOrder'
 import type { TicketPartial } from './types'
 import transformApiTicketPartial from './utils/transformApiTicketPartial'
 
@@ -27,11 +29,15 @@ export default class TicketUpdatesManager {
     private loading = false
     private nextCursor: PaginationMetaNextCursor = null
     private pollTimeout: ReturnType<typeof setTimeout> | null = null
-    private sortOrder: SortOrder
+    private sortOrder: SearchTicketsOrderBy
     private tickets: TicketPartial[] = []
     private viewId: number
 
-    constructor(viewId: number, sortOrder: SortOrder, cursorPolling = false) {
+    constructor(
+        viewId: number,
+        sortOrder: SearchTicketsOrderBy,
+        cursorPolling = false,
+    ) {
         this.viewId = viewId
         this.sortOrder = sortOrder
         this.cursorPolling = cursorPolling
@@ -80,7 +86,7 @@ export default class TicketUpdatesManager {
     }
 
     private async getPage(
-        sortOrder: SortOrder,
+        sortOrder: SearchTicketsOrderBy,
         cursor: PaginationMetaNextCursor,
     ) {
         const response = await appQueryClient.fetchQuery({

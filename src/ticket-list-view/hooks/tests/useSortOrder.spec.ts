@@ -1,5 +1,7 @@
 import { act } from '@testing-library/react'
 
+import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
+
 import useLocalStorage from 'hooks/useLocalStorage'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -25,7 +27,10 @@ describe('useSortOrder', () => {
 
     it('should return the default sort order if the given order is not supported', () => {
         const { result } = renderHook(() =>
-            useSortOrder(1, 'snoozed_datetime:desc'),
+            useSortOrder(
+                1,
+                'snoozed_datetime:desc' as ListViewItemsUpdatesOrderBy,
+            ),
         )
         expect(result.current).toEqual([
             'last_message_datetime:asc',
@@ -35,8 +40,9 @@ describe('useSortOrder', () => {
 
     it('should update the sort order if a new order is given', () => {
         const { rerender, result } = renderHook(
-            (sortOrder: string) => useSortOrder(1, sortOrder),
-            { initialProps: '' },
+            (sortOrder: ListViewItemsUpdatesOrderBy) =>
+                useSortOrder(1, sortOrder),
+            { initialProps: 'last_message_datetime:asc' },
         )
 
         expect(result.current).toEqual([
@@ -60,7 +66,9 @@ describe('useSortOrder', () => {
             jest.fn(),
         ])
 
-        const { result } = renderHook(() => useSortOrder(1, ''))
+        const { result } = renderHook(() =>
+            useSortOrder(1, 'last_received_message_datetime:asc'),
+        )
         expect(result.current).toEqual([
             'last_received_message_datetime:asc',
             expect.any(Function),
@@ -71,7 +79,9 @@ describe('useSortOrder', () => {
         const persist = jest.fn()
         useLocalStorageMock.mockReturnValue([{}, persist])
 
-        const { result } = renderHook(() => useSortOrder(1, ''))
+        const { result } = renderHook(() =>
+            useSortOrder(1, 'last_message_datetime:asc'),
+        )
 
         act(() => {
             result.current[1]('last_message_datetime:asc')

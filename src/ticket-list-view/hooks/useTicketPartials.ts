@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
 import TicketUpdatesManager from '../TicketUpdatesManager'
 import { TicketPartial } from '../types'
-import { SortOrder } from './useSortOrder'
 
 type State = {
     cursor: CursorPaginationMeta['next_cursor']
@@ -17,7 +17,7 @@ type State = {
 
 export default function useTicketPartials(
     viewId: number,
-    sortOrder: SortOrder,
+    sortOrder: SearchTicketsOrderBy,
 ) {
     const hasCursorPolling = useFlag(FeatureFlagKey.DTPCursorPolling)
     const [{ cursor, initialLoaded, partials }, setState] = useState<State>({

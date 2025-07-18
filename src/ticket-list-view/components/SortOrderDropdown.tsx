@@ -1,27 +1,34 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import cn from 'classnames'
 
+import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
-import { SortOrder, sortOrderOptions } from '../hooks/useSortOrder'
+import { sortOrderOptions } from '../hooks/useSortOrder'
 
 import css from './SortOrderDropdown.less'
 
 type Props = {
-    onChange: (sortOrder: SortOrder) => void
-    value: SortOrder
+    onChange: (sortOrder: ListViewItemsUpdatesOrderBy) => void
+    value: ListViewItemsUpdatesOrderBy
 }
 
 export default function SortingDropdown({ onChange, value }: Props) {
     const targetRef = useRef<HTMLButtonElement>(null)
     const [isOpen, setIsOpen] = useState(false)
+
+    const isPriorityUsageEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+    )
 
     return (
         <>
@@ -49,7 +56,7 @@ export default function SortingDropdown({ onChange, value }: Props) {
                 placement="bottom-end"
             >
                 <DropdownBody>
-                    {sortOrderOptions.map((option) => (
+                    {sortOrderOptions(isPriorityUsageEnabled).map((option) => (
                         <DropdownItem
                             key={option.value}
                             onClick={onChange}

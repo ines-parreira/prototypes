@@ -16,6 +16,7 @@ import { fromJS } from 'immutable'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
+import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -32,7 +33,7 @@ import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { TICKET_HEIGHT } from '../constants'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import useSelection from '../hooks/useSelection'
-import useSortOrder, { SortOrder } from '../hooks/useSortOrder'
+import useSortOrder from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
 import { TicketCompact } from '../types'
 import BulkActions from './bulk-actions/BulkActions'
@@ -81,9 +82,12 @@ export default function TicketListView({
     const editViewRef = useRef(null)
     const areViewFiltersInvalid = !!view?.deactivated_datetime
     const isViewNull = view === null
-    const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
+    const defaultSortOrder =
+        `${view?.order_by || ''}:${view?.order_dir || ''}` as ListViewItemsUpdatesOrderBy
     const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
-    const prevSortOrder = useRef<SortOrder | undefined>(sortOrder)
+    const prevSortOrder = useRef<ListViewItemsUpdatesOrderBy | undefined>(
+        sortOrder,
+    )
     const {
         bulkToggleUnread,
         loadMore,

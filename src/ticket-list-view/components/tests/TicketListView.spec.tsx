@@ -13,11 +13,13 @@ import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 import { setViewEditMode } from 'state/views/actions'
 import useSelection from 'ticket-list-view/hooks/useSelection'
+import useSortOrder, {
+    sortOrderOptions,
+} from 'ticket-list-view/hooks/useSortOrder'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import { TicketPartial } from 'ticket-list-view/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import useSortOrder from '../../hooks/useSortOrder'
 import Ticket from '../Ticket'
 import TicketListView, { listInfoProps } from '../TicketListView'
 
@@ -36,14 +38,16 @@ const useTicketsMock = useTickets as jest.Mock
 jest.mock('ticket-list-view/hooks/useSelection')
 const useSelectionMock = assumeMock(useSelection)
 
+jest.mock('ticket-list-view/hooks/useSortOrder')
+const useSortOrderMock = useSortOrder as jest.Mock
+const mockSortOrderOptions = sortOrderOptions as jest.Mock
+mockSortOrderOptions.mockReturnValue([])
+
 jest.mock('../Ticket', () => jest.fn())
 const TicketMock = Ticket as jest.Mock
 
 jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
 jest.mock('../bulk-actions/BulkActions', () => () => <div>BulkActions</div>)
-
-jest.mock('../../hooks/useSortOrder')
-const useSortOrderMock = useSortOrder as jest.Mock
 
 jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag')
 const useDesktopOnlyShowGlobalNavFeatureFlagMock =

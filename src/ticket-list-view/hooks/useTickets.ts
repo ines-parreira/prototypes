@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
+
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useElementSize from 'hooks/useElementSize'
 import usePrevious from 'hooks/usePrevious'
@@ -12,14 +14,13 @@ import useTicketIds from '../hooks/useTicketIds'
 import { SortField, TicketPartial } from '../types'
 import usePrevNextTicketId from './usePrevNextTicketId'
 import useScrollOffset from './useScrollOffset'
-import { SortOrder } from './useSortOrder'
 import useStaleTickets from './useStaleTickets'
 import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
 
 export default function useTickets(
     viewId: number,
-    sortOrder: SortOrder,
+    sortOrder: SearchTicketsOrderBy,
     ticketId?: number,
     registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void,
 ) {

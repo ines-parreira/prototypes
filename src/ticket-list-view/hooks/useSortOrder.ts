@@ -1,75 +1,95 @@
 import { useCallback, useMemo } from 'react'
 
+import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useLocalStorage from 'hooks/useLocalStorage'
 
-export const sortOrderOptions = [
-    {
-        value: 'last_message_datetime:asc',
-        label: '↑ Last message',
-        tooltipText: 'Tickets with the oldest last message appear first',
-    },
-    {
-        value: 'last_message_datetime:desc',
-        label: '↓ Last message',
-        tooltipText: 'Tickets with the newest last message appear first',
-    },
-    {
-        value: 'last_received_message_datetime:asc',
-        label: '↑ Last received message',
-        tooltipText:
-            'Tickets with the oldest last received message appear first',
-    },
-    {
-        value: 'last_received_message_datetime:desc',
-        label: '↓ Last received message',
-        tooltipText:
-            'Tickets with the newest last received message appear first',
-    },
-    {
-        value: 'created_datetime:asc',
-        label: '↑ Created',
-        tooltipText: 'Oldest created tickets appear first',
-    },
-    {
-        value: 'created_datetime:desc',
-        label: '↓ Created',
-        tooltipText: 'Newest created tickets appear first',
-    },
-    {
-        value: 'updated_datetime:asc',
-        label: '↑ Updated',
-        tooltipText: 'Oldest updated tickets appear first',
-    },
-    {
-        value: 'updated_datetime:desc',
-        label: '↓ Updated',
-        tooltipText: 'Newest updated tickets appear first',
-    },
-    {
-        value: 'priority:asc',
-        label: '↑ Priority',
-        tooltipText: 'Lowest priority tickets appear first',
-    },
-    {
-        value: 'priority:desc',
-        label: '↓ Priority',
-        tooltipText: 'Highest priority tickets appear first',
-    },
-] as const
+export const sortOrderOptions = (isPriorityUsageEnabled?: boolean) =>
+    [
+        {
+            value: 'last_message_datetime:asc',
+            label: '↑ Last message',
+            tooltipText: 'Tickets with the oldest last message appear first',
+        },
+        {
+            value: 'last_message_datetime:desc',
+            label: '↓ Last message',
+            tooltipText: 'Tickets with the newest last message appear first',
+        },
+        {
+            value: 'last_received_message_datetime:asc',
+            label: '↑ Last received message',
+            tooltipText:
+                'Tickets with the oldest last received message appear first',
+        },
+        {
+            value: 'last_received_message_datetime:desc',
+            label: '↓ Last received message',
+            tooltipText:
+                'Tickets with the newest last received message appear first',
+        },
+        {
+            value: 'created_datetime:asc',
+            label: '↑ Created',
+            tooltipText: 'Oldest created tickets appear first',
+        },
+        {
+            value: 'created_datetime:desc',
+            label: '↓ Created',
+            tooltipText: 'Newest created tickets appear first',
+        },
+        {
+            value: 'updated_datetime:asc',
+            label: '↑ Updated',
+            tooltipText: 'Oldest updated tickets appear first',
+        },
+        {
+            value: 'updated_datetime:desc',
+            label: '↓ Updated',
+            tooltipText: 'Newest updated tickets appear first',
+        },
+        ...(isPriorityUsageEnabled
+            ? [
+                  {
+                      value: 'priority:asc',
+                      label: '↑ Priority',
+                      tooltipText: 'Lowest priority tickets appear first',
+                  },
+                  {
+                      value: 'priority:desc',
+                      label: '↓ Priority',
+                      tooltipText: 'Highest priority tickets appear first',
+                  },
+              ]
+            : []),
+    ] as {
+        value: ListViewItemsUpdatesOrderBy
+        label: string
+        tooltipText: string
+    }[]
 
-const sortOrderValues = sortOrderOptions.map((o) => o.value)
+const getSortOrderValues = (isPriorityUsageEnabled?: boolean) =>
+    sortOrderOptions(isPriorityUsageEnabled).map((o) => o.value)
 
-export type SortOrder = (typeof sortOrderValues)[number]
+const initialSortOrders: Record<number, ListViewItemsUpdatesOrderBy> = {}
 
-const initialSortOrders: Record<number, SortOrder> = {}
+export default function useSortOrder(
+    viewId: number,
+    viewSortOrder: ListViewItemsUpdatesOrderBy,
+) {
+    const isPriorityUsageEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+    )
+    const sortOrderValues = getSortOrderValues(isPriorityUsageEnabled)
 
-export default function useSortOrder(viewId: number, viewSortOrder: string) {
     const defaultSortOrder = useMemo(
         () =>
-            sortOrderValues.includes(viewSortOrder as SortOrder)
-                ? (viewSortOrder as SortOrder)
+            sortOrderValues.includes(viewSortOrder)
+                ? viewSortOrder
                 : sortOrderValues[0],
-        [viewSortOrder],
+        [sortOrderValues, viewSortOrder],
     )
 
     const [sortOrders, setSortOrders] = useLocalStorage(
@@ -83,7 +103,7 @@ export default function useSortOrder(viewId: number, viewSortOrder: string) {
     )
 
     const setSortOrder = useCallback(
-        (order: SortOrder) => {
+        (order: ListViewItemsUpdatesOrderBy) => {
             setSortOrders({ ...sortOrders, [viewId]: order })
         },
         [setSortOrders, sortOrders, viewId],
