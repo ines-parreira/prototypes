@@ -60,157 +60,203 @@ const isSeparator = (
 ): button is HorizontalSeparator | VerticalSeparator =>
     button === '|' || button === '-'
 
-const toolbarButtons: (Button | HorizontalSeparator | VerticalSeparator)[] = [
-    {
-        command: 'paragraphFormat',
-    },
-    '|',
-    {
-        command: 'fontFamily',
-    },
-    '|',
-    {
-        command: 'fontSize',
-    },
-    {
+const buttons = {
+    paragraphFormat: { command: 'paragraphFormat' },
+    fontFamily: { command: 'fontFamily' },
+    fontSize: { command: 'fontSize' },
+    lineHeight: {
         command: 'lineHeight',
         icon: 'lineHeight',
         materialIcon: 'height',
     },
-    '|',
-    {
-        command: 'bold',
-        icon: 'bold',
-        materialIcon: 'format_bold',
-    },
-    {
+    bold: { command: 'bold', icon: 'bold', materialIcon: 'format_bold' },
+    italic: {
         command: 'italic',
         icon: 'italic',
         materialIcon: 'format_italic',
     },
-    {
+    underline: {
         command: 'underline',
         icon: 'underline',
         materialIcon: 'format_underlined',
     },
-    {
+    strikeThrough: {
         command: 'strikeThrough',
         icon: 'strikeThrough',
         materialIcon: 'strikethrough_s',
     },
-    '|',
-    {
+    textColor: {
         command: 'textColor',
         icon: 'textColor',
         materialIcon: 'format_color_text',
     },
-    {
+    backgroundColor: {
         command: 'backgroundColor',
         icon: 'backgroundColor',
         materialIcon: 'border_color',
     },
-    '|',
-    {
+    clearFormatting: {
         command: 'clearFormatting',
         icon: 'clearFormatting',
         materialIcon: 'format_clear',
     },
-    '|',
-    {
-        command: 'undo',
-        icon: 'undo',
-        materialIcon: 'undo',
-    },
-    {
-        command: 'redo',
-        icon: 'redo',
-        materialIcon: 'redo',
-    },
-    '-',
-    {
+    undo: { command: 'undo', icon: 'undo', materialIcon: 'undo' },
+    redo: { command: 'redo', icon: 'redo', materialIcon: 'redo' },
+    alignLeft: {
         command: 'alignLeft',
         icon: 'align-left',
         materialIcon: 'format_align_left',
     },
-    {
+    alignCenter: {
         command: 'alignCenter',
         icon: 'align-center',
         materialIcon: 'format_align_center',
     },
-    {
+    alignRight: {
         command: 'alignRight',
         icon: 'align-right',
         materialIcon: 'format_align_right',
     },
-    {
+    alignJustify: {
         command: 'alignJustify',
         icon: 'align-justify',
         materialIcon: 'format_align_justify',
     },
-    '|',
-    {
+    outdent: {
         command: 'outdent',
         icon: 'outdent',
         materialIcon: 'format_indent_decrease',
     },
-    {
+    indent: {
         command: 'indent',
         icon: 'indent',
         materialIcon: 'format_indent_increase',
     },
-    '|',
-    {
+    formatUL: {
         command: 'formatUL',
         icon: 'formatUL',
         materialIcon: 'format_list_bulleted',
     },
-    {
+    formatOLSimple: {
         command: 'formatOLSimple',
         icon: 'formatOLSimple',
         materialIcon: 'format_list_numbered',
     },
-    '|',
-    {
+    insertFile: {
         command: 'insertFile',
         icon: 'insertFile',
         materialIcon: 'attach_file',
     },
-    {
+    insertImage: {
         command: 'insertImage',
         icon: 'insertImage',
         materialIcon: 'image',
     },
-    {
+    insertVideo: {
         command: 'insertVideo',
         icon: 'insertVideo',
         materialIcon: 'video_library',
     },
-    {
+    insertLink: {
         command: 'insertLink',
         icon: 'insertLink',
         materialIcon: 'link',
     },
-    {
+    insertTable: {
         command: 'insertTable',
         icon: 'insertTable',
         materialIcon: 'table_chart',
     },
-    {
+    insertHR: {
         command: 'insertHR',
         icon: 'insertHR',
         materialIcon: 'horizontal_rule',
     },
-    {
+    emoticons: {
         command: 'emoticons',
         icon: 'emoticons',
         materialIcon: 'insert_emoticon',
     },
-    '|',
-    {
-        command: 'html',
-        icon: 'html',
-        materialIcon: 'code',
-    },
+    html: { command: 'html', icon: 'html', materialIcon: 'code' },
+} as const
+
+const separators = {
+    vertical: '|' as const,
+    horizontal: '-' as const,
+} as const
+
+const toolbarButtons: (Button | HorizontalSeparator | VerticalSeparator)[] = [
+    buttons.paragraphFormat,
+    separators.vertical,
+    buttons.fontFamily,
+    separators.vertical,
+    buttons.fontSize,
+    buttons.lineHeight,
+    separators.vertical,
+    buttons.bold,
+    buttons.italic,
+    buttons.underline,
+    buttons.strikeThrough,
+    separators.vertical,
+    buttons.textColor,
+    buttons.backgroundColor,
+    separators.vertical,
+    buttons.clearFormatting,
+    separators.vertical,
+    buttons.undo,
+    buttons.redo,
+    separators.horizontal,
+    buttons.alignLeft,
+    buttons.alignCenter,
+    buttons.alignRight,
+    buttons.alignJustify,
+    separators.vertical,
+    buttons.outdent,
+    buttons.indent,
+    separators.vertical,
+    buttons.formatUL,
+    buttons.formatOLSimple,
+    separators.vertical,
+    buttons.insertFile,
+    buttons.insertImage,
+    buttons.insertVideo,
+    buttons.insertLink,
+    buttons.insertTable,
+    buttons.insertHR,
+    buttons.emoticons,
+    separators.vertical,
+    buttons.html,
+]
+
+const toolbarButtonsXS: (Button | HorizontalSeparator | VerticalSeparator)[] = [
+    buttons.paragraphFormat,
+    separators.vertical,
+    buttons.fontFamily,
+    separators.vertical,
+    buttons.fontSize,
+    buttons.lineHeight,
+    separators.vertical,
+    buttons.bold,
+    buttons.italic,
+    buttons.underline,
+    buttons.strikeThrough,
+    buttons.textColor,
+    separators.horizontal,
+    buttons.alignLeft,
+    buttons.alignCenter,
+    buttons.alignRight,
+    buttons.alignJustify,
+    buttons.outdent,
+    buttons.indent,
+    separators.vertical,
+    buttons.formatUL,
+    buttons.formatOLSimple,
+    separators.vertical,
+    buttons.insertFile,
+    buttons.insertImage,
+    buttons.insertVideo,
+    buttons.insertLink,
+    buttons.emoticons,
 ]
 
 // Override button icons
@@ -329,4 +375,16 @@ const config = {
     pasteAllowedStyleProps: ['text-decoration'],
 }
 
-export { FroalaEditor, config }
+const configXS = {
+    ...config,
+    toolbarButtons: {
+        moreText: {
+            buttons: toolbarButtonsXS.map((button) =>
+                isSeparator(button) ? button : button.command,
+            ),
+            buttonsVisible: toolbarButtonsXS.length,
+        },
+    },
+}
+
+export { FroalaEditor, config, configXS }

@@ -16,7 +16,7 @@ import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { config, FroalaEditor } from './froala-config'
+import { config, configXS, FroalaEditor } from './froala-config'
 import FroalaEditorComponent from './FroalaEditorComponent'
 import {
     createOnCloseEventHandler,
@@ -33,6 +33,7 @@ type Props = {
     locale: LocaleCode
     value?: string
     className?: string
+    useXSLayout?: boolean
     onChange: (value: string, charCount?: number) => void
     onEditorReady?: (content: string) => void
 }
@@ -46,6 +47,7 @@ const HelpCenterEditor = ({
     locale,
     value = '',
     className,
+    useXSLayout = false,
     onChange,
     onEditorReady,
 }: Props) => {
@@ -117,7 +119,7 @@ const HelpCenterEditor = ({
                 onModelChange={onModelChange}
                 tag="textarea"
                 config={{
-                    ...config,
+                    ...(useXSLayout ? configXS : config),
                     ...(hasOnePagerLayout && onePagerConfig),
                     editorClass: classnames(config.editorClass, className),
                     events: {

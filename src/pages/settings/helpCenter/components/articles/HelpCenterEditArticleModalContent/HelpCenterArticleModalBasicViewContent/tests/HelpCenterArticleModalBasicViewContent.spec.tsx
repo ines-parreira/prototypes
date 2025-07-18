@@ -1,5 +1,6 @@
 import HelpCenterEditModalFooter from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader'
+import HelpCenterEditor from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -46,6 +47,10 @@ jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader',
 )
 
+jest.mock(
+    'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor',
+)
+
 describe('HelpCenterArticleModalBasicViewContent', () => {
     const mockOnArticleLanguageSelect = jest.fn()
     const mockOnArticleModalClose = jest.fn()
@@ -79,11 +84,13 @@ describe('HelpCenterArticleModalBasicViewContent', () => {
     const renderComponent = (
         isDraftAllowed?: boolean,
         isFullscreenAllowed?: boolean,
+        isXSLayout?: boolean,
     ) => {
         const props = {
             ...defaultProps,
             ...(isDraftAllowed !== undefined && { isDraftAllowed }),
             ...(isFullscreenAllowed !== undefined && { isFullscreenAllowed }),
+            ...(isXSLayout !== undefined && { isXSLayout }),
         }
 
         const initialState: Partial<RootState> = {
@@ -128,6 +135,9 @@ describe('HelpCenterArticleModalBasicViewContent', () => {
         )
         ;(HelpCenterEditModalHeader as jest.Mock).mockReturnValue(
             <div data-testid="help-center-edit-modal-header">Header</div>,
+        )
+        ;(HelpCenterEditor as jest.Mock).mockReturnValue(
+            <div data-testid="help-center-editor">Editor</div>,
         )
     })
 
@@ -221,6 +231,47 @@ describe('HelpCenterArticleModalBasicViewContent', () => {
                 }),
                 {},
             )
+        })
+    })
+
+    describe('XS Layout prop', () => {
+        describe('when isXSLayout is true', () => {
+            it('should pass useXSLayout as true to HelpCenterEditor', () => {
+                renderComponent(undefined, undefined, true)
+
+                expect(HelpCenterEditor).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        useXSLayout: true,
+                    }),
+                    {},
+                )
+            })
+        })
+
+        describe('when isXSLayout is false', () => {
+            it('should pass useXSLayout as false to HelpCenterEditor', () => {
+                renderComponent(undefined, undefined, false)
+
+                expect(HelpCenterEditor).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        useXSLayout: false,
+                    }),
+                    {},
+                )
+            })
+        })
+
+        describe('when isXSLayout is undefined', () => {
+            it('should pass useXSLayout as false to HelpCenterEditor (default value)', () => {
+                renderComponent()
+
+                expect(HelpCenterEditor).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        useXSLayout: false,
+                    }),
+                    {},
+                )
+            })
         })
     })
 })

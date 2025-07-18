@@ -439,6 +439,7 @@ const KnowledgeSourceArticleEditor = ({
                     customFooterContent={footerContent}
                     isDraftAllowed={false}
                     isFullscreenAllowed={false}
+                    isXSLayout={true}
                 />
             )}
 

@@ -74,6 +74,7 @@ type Props = {
 
     isDraftAllowed?: boolean
     isFullscreenAllowed?: boolean
+    isXSLayout?: boolean
 
     onChangesDiscard: () => void
     onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
@@ -96,6 +97,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     customFooterContent,
     isDraftAllowed = true,
     isFullscreenAllowed = true,
+    isXSLayout = false,
 }: Props) => {
     const screenSize = useScreenSize()
     const { isPassingRulesCheck } = useAbilityChecker()
@@ -225,6 +227,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 value={selectedArticle.translation.content}
                 onChange={onArticleContentEdit}
                 onEditorReady={onEditorReady}
+                useXSLayout={isXSLayout}
             />
             <HelpCenterEditModalFooter
                 rating={
