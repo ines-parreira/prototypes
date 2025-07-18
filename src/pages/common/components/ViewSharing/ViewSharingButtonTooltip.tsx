@@ -12,7 +12,7 @@ export default function ViewSharingButtonTooltip({
     if (isSystem) {
         return (
             <UncontrolledTooltip target="view-sharing-button" placement="left">
-                System views are not editable
+                Default views are not editable
             </UncontrolledTooltip>
         )
     }

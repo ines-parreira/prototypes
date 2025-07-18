@@ -53,8 +53,7 @@ describe('SidebarSettings', () => {
 
     it('should render sidebar system views settings', () => {
         const { getByText } = render(<WrappedGeneralSettings />)
-        expect(getByText('Sidebar')).toBeInTheDocument()
-        expect(getByText('System views')).toBeInTheDocument()
+        expect(getByText('Default views')).toBeInTheDocument()
     })
 
     it('should render checkboxes for the system views', () => {

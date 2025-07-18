@@ -182,7 +182,7 @@ const SettingsNavbar = () => {
                         />
                         <Item
                             to="sidebar"
-                            text="Sidebar"
+                            text="Default views"
                             requiredRole={ADMIN_ROLE}
                         />
                     </Navigation.SectionContent>

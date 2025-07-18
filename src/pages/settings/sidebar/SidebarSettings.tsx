@@ -102,7 +102,7 @@ const SidebarSettings = () => {
 
     return (
         <div className="full-width flex flex-column">
-            <PageHeader title="Sidebar" />
+            <PageHeader title="Default views" />
 
             <div className={classNames('flex', 'full-height', css.container)}>
                 <div
@@ -113,11 +113,6 @@ const SidebarSettings = () => {
                     )}
                 >
                     <div className={css.infoContent}>
-                        <div
-                            className={classNames(settingsCss.mb4, css.heading)}
-                        >
-                            System views
-                        </div>
                         <div
                             className={classNames(
                                 settingsCss.mb24,
