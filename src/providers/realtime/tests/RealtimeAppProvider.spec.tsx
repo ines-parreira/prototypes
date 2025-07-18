@@ -108,17 +108,21 @@ describe('RealtimeAppProvider', () => {
         const pnError = new Error(`PubNub Status error`)
         render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
 
-        MockRealtimeProvider.mock.calls[0][0].onErrorStatus({
-            statusCode: '400',
-            operation: 'foo',
-            category: 'bar',
-        })
+        MockRealtimeProvider.mock.calls[0][0].onErrorStatus(
+            {
+                statusCode: '400',
+                operation: 'foo',
+                category: 'bar',
+            },
+            '1.0.0',
+        )
 
         expect(mockReportError).toHaveBeenCalledWith(pnError, {
             tags: {
                 operation: 'foo',
                 statusCode: '400',
                 category: 'bar',
+                pnSdkVersion: '1.0.0',
             },
             extra: {
                 status: {

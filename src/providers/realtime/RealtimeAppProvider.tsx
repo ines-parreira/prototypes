@@ -86,7 +86,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
     }, [isLoggingEnabled])
 
     const handleErrorStatus = useCallback(
-        (status: RealtimeStatus) => {
+        (status: RealtimeStatus, pnSdkVersion?: string) => {
             status.category === 'PNNetworkIssuesCategory' &&
                 isRealtimeEnabled &&
                 isErrorThresholdEnabled &&
@@ -110,6 +110,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
                         statusCode: status.statusCode ?? 'unknown',
                         category: status.category ?? 'unknown',
                         ...(message && { message }),
+                        ...(pnSdkVersion && { pnSdkVersion }),
                     },
                     extra: { status: toPlainObject(status) },
                 })
