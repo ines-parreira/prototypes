@@ -741,13 +741,7 @@ export const isCurrentlyOnView = (
     viewId = '',
     viewsState: ViewsState = fromJS({}),
 ): boolean => {
-    const prefix = [
-        '/app/tickets',
-        '/app/views',
-        '/app/customers',
-        // TODO(customers-migration): remove this path when we updated all links in email templates.
-        '/app/users',
-    ]
+    const prefix = ['/app/tickets', '/app/views', '/app/customers']
 
     let urls = prefix.map((p) => `${p}/${viewId}`)
 

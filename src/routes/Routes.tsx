@@ -149,8 +149,6 @@ export function AppRoutes() {
         <Switch>
             <Route path={`${path}/customers`} render={CustomersRoutes} />
             <Route path={`${path}/customer`} render={CustomerRoutes} />
-            <Route path={`${path}/users`} render={UsersRoutes} />
-            <Route path={`${path}/user`} render={UserRoutes} />
             <Route path={`${path}/ticket`} render={TicketRoutes} />
             <Route path={`${path}/admin/tasks`} render={AdminTasksRoutes} />
             {!isModuleRestrictedToCurrentUser(`${path}/stats`) && (
@@ -249,93 +247,6 @@ export function CustomerRoutes({ match: { path } }: RouteComponentProps) {
                         navbar={CustomerNavbarContainer}
                         infobar={CustomerInfobarContainer}
                         infobarOnMobile
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/:customerId/edit-widgets`}
-                exact
-                render={() => (
-                    <App
-                        content={withUserRoleRequired(
-                            CustomerSourceContainer,
-                            ADMIN_ROLE,
-                            undefined,
-                            location.pathname.replace('/edit-widgets', ''),
-                        )}
-                        navbar={CustomerNavbarContainer}
-                        infobar={CustomerInfobarContainer}
-                        isEditingWidgets
-                        noContainerWidthLimit
-                        containerPadding
-                    />
-                )}
-            />
-        </Switch>
-    )
-}
-
-export function UsersRoutes({ match: { path } }: RouteComponentProps) {
-    return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={() => (
-                    <App
-                        content={CustomerListContainer}
-                        navbar={CustomerNavbarContainer}
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={() => (
-                    <App
-                        content={CustomerListContainer}
-                        navbar={CustomerNavbarContainer}
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/search`}
-                exact
-                render={() => (
-                    <App
-                        content={CustomerListContainer}
-                        navbar={CustomerNavbarContainer}
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/:viewId/:viewSlug?`}
-                exact
-                render={() => (
-                    <App
-                        content={CustomerListContainer}
-                        navbar={CustomerNavbarContainer}
-                    />
-                )}
-            />
-        </Switch>
-    )
-}
-
-export function UserRoutes({ match: { path } }: RouteComponentProps) {
-    return (
-        <Switch>
-            <Route
-                path={`${path}/:customerId`}
-                exact
-                render={() => (
-                    <App
-                        content={CustomerDetailContainer}
-                        navbar={CustomerNavbarContainer}
-                        infobar={CustomerInfobarContainer}
-                        noContainerWidthLimit
-                        infobarOnMobile
-                        containerPadding
                     />
                 )}
             />
