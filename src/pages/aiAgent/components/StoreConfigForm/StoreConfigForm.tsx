@@ -204,6 +204,7 @@ export const StoreConfigForm = ({
         isPendingCreateOrUpdate,
         isChatChannelEnabled,
         isEmailChannelEnabled,
+        isSmsChannelEnabled,
     } = useStoreConfigurationForm(shopName, shopType, faqHelpCenters)
 
     const { data: { data: accountCustomFields = [] } = {} } =
@@ -798,6 +799,21 @@ export const StoreConfigForm = ({
                                 )
                             }}
                             setIsFormDirty={setIsFormDirty}
+                            monitoredSmsIntegrations={
+                                formValues.monitoredSmsIntegrations
+                            }
+                            isSmsChannelEnabled={isSmsChannelEnabled}
+                            smsChannelDeactivatedDatetime={
+                                formValues.smsChannelDeactivatedDatetime
+                            }
+                            updateSmsChannelDeactivatedDatetime={(
+                                deactivatedDatetime,
+                            ) => {
+                                updateValue(
+                                    'smsChannelDeactivatedDatetime',
+                                    deactivatedDatetime,
+                                )
+                            }}
                         />
                     )}
 

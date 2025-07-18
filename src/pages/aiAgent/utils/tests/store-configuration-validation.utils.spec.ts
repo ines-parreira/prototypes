@@ -15,20 +15,18 @@ import {
 } from '../store-configuration-validation.utils'
 
 const VALID_FORM_VALUES: ValidFormValues = {
-    conversationBot: {
-        name: 'AI Agent',
-        id: 0,
-        email: 'bot@gorgias.com',
-    },
+    conversationBot: { name: 'AI Agent', id: 0, email: 'bot@gorgias.com' },
     useEmailIntegrationSignature: true,
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
+    smsChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     ticketSampleRate: null,
     silentHandover: null,
     monitoredEmailIntegrations: [],
+    monitoredSmsIntegrations: [],
     tags: null,
     excludedTopics: [],
     signature: 'Signature',
@@ -58,10 +56,7 @@ const WIZARD_FORM_VALUES: WizardFormValues = {
     onCompletePathway: null,
 }
 
-const EMAIL_INTEGRATION = {
-    email: 'test@mail.com',
-    id: 1,
-}
+const EMAIL_INTEGRATION = { email: 'test@mail.com', id: 1 }
 
 describe('store-configuration-validation', () => {
     describe('getValidStoreConfigurationFormValues', () => {
@@ -127,6 +122,7 @@ describe('store-configuration-validation', () => {
                 useEmailIntegrationSignature: true,
                 monitoredChatIntegrations: [],
                 monitoredEmailIntegrations: [],
+                monitoredSmsIntegrations: [],
             }
             expect(
                 getValidStoreConfigurationFormValues(
@@ -163,10 +159,7 @@ describe('store-configuration-validation', () => {
         it('should return default values for signature and monitored integrations if wizard is not completed', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
-                wizard: {
-                    ...WIZARD_FORM_VALUES,
-                    completedDatetime: null,
-                },
+                wizard: { ...WIZARD_FORM_VALUES, completedDatetime: null },
                 useEmailIntegrationSignature: false,
                 signature: null,
                 monitoredEmailIntegrations: null,
@@ -183,6 +176,7 @@ describe('store-configuration-validation', () => {
                 signature: '',
                 monitoredChatIntegrations: [],
                 monitoredEmailIntegrations: [],
+                monitoredSmsIntegrations: [],
             }
 
             expect(
@@ -406,9 +400,7 @@ describe('store-configuration-validation', () => {
                     false,
                     false,
                     undefined,
-                    {
-                        ...DEFAULT_OPTIONS,
-                    },
+                    { ...DEFAULT_OPTIONS },
                 ),
             ).toThrow(StoreConfigurationValidationMessage.EmailIntegrationError)
         })
@@ -507,9 +499,7 @@ describe('store-configuration-validation', () => {
                         false,
                         false,
                         undefined,
-                        {
-                            ...DEFAULT_OPTIONS,
-                        },
+                        { ...DEFAULT_OPTIONS },
                     ),
                 ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
             })
@@ -527,9 +517,7 @@ describe('store-configuration-validation', () => {
                         false,
                         false,
                         undefined,
-                        {
-                            ...DEFAULT_OPTIONS,
-                        },
+                        { ...DEFAULT_OPTIONS },
                     ),
                 ).toThrow(StoreConfigurationValidationMessage.SignatureLength)
             })
@@ -547,9 +535,7 @@ describe('store-configuration-validation', () => {
                         false,
                         false,
                         undefined,
-                        {
-                            ...DEFAULT_OPTIONS,
-                        },
+                        { ...DEFAULT_OPTIONS },
                     ),
                 ).toThrow(
                     StoreConfigurationValidationMessage.EmailIntegrationError,
@@ -597,10 +583,7 @@ describe('store-configuration-validation', () => {
                         false,
                         false,
                         undefined,
-                        {
-                            ...DEFAULT_OPTIONS,
-                            isAiAgentChatEnabled: true,
-                        },
+                        { ...DEFAULT_OPTIONS, isAiAgentChatEnabled: true },
                     ),
                 ).toThrow(
                     StoreConfigurationValidationMessage.ChatIntegrationError,

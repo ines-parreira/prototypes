@@ -1,0 +1,25 @@
+@import (reference) '~css/typography';
+
+:local {
+    .formGroup {
+        margin-bottom: var(--layout-spacing-l);
+
+        .formGroupDescription {
+            margin-bottom: var(--layout-spacing-s);
+        }
+    }
+
+    .label {
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .formInputFooterInfo {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: var(--layout-spacing-xxs);
+
+        &.error {
+            color: var(--feedback-error);
+        }
+    }
+}

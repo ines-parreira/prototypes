@@ -22,7 +22,7 @@ import {
 
 import css from './ChatSettingsFormComponent.less'
 
-type EmailFormComponentProps = {
+type ChatSettingsFormComponentProps = {
     updateValue: UpdateValue<FormValues>
     monitoredChatIntegrations: number[] | null
     chatChannels: InstallationStatusInjectedChatItem[]
@@ -47,7 +47,7 @@ export const ChatSettingsFormComponent = ({
     isDisabled,
     dropDownWithDisabledText = false,
     dropDownDisabledText,
-}: EmailFormComponentProps) => {
+}: ChatSettingsFormComponentProps) => {
     const useInitialValue = React.useRef(true)
 
     const { onLeaveContext, dirtySections } = useAiAgentFormChangesContext()

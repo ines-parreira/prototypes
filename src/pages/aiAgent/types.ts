@@ -35,6 +35,7 @@ export type FormValues = {
     useEmailIntegrationSignature: boolean | null
     emailChannelDeactivatedDatetime: string | null | undefined
     chatChannelDeactivatedDatetime: string | null | undefined
+    smsChannelDeactivatedDatetime: string | null | undefined
     trialModeActivatedDatetime: string | null
     previewModeActivatedDatetime: string | null
     previewModeValidUntilDatetime: string | null
@@ -42,6 +43,7 @@ export type FormValues = {
     silentHandover: boolean | null
     monitoredEmailIntegrations: { id: number; email: string }[] | null
     monitoredChatIntegrations: number[] | null
+    monitoredSmsIntegrations: number[] | null
     tags: Tag[] | null
     excludedTopics: string[] | null
     signature: string | null
@@ -64,7 +66,10 @@ export type UpdateValue<FormValues> = <Key extends keyof FormValues>(
 
 export type ValidFormValues = NonNullFields<
     FormValues,
-    'monitoredEmailIntegrations' | 'signature' | 'monitoredChatIntegrations'
+    | 'monitoredEmailIntegrations'
+    | 'signature'
+    | 'monitoredChatIntegrations'
+    | 'monitoredSmsIntegrations'
 >
 
 export type AIGuidance = Omit<

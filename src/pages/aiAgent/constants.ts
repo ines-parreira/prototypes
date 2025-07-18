@@ -46,6 +46,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     // Since null is a valid value for that field, we need to explicitly set it to undefined
     emailChannelDeactivatedDatetime: undefined,
     chatChannelDeactivatedDatetime: undefined,
+    smsChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
@@ -53,6 +54,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     silentHandover: null,
     monitoredEmailIntegrations: null,
     monitoredChatIntegrations: null,
+    monitoredSmsIntegrations: null,
     tags: null,
     excludedTopics: null,
     conversationBot: {
@@ -157,6 +159,7 @@ export const INITIAL_FORM_VALUES = {
     previewModeValidUntilDatetime: null,
     emailChannelDeactivatedDatetime: new Date().toISOString(),
     chatChannelDeactivatedDatetime: new Date().toISOString(),
+    smsChannelDeactivatedDatetime: new Date().toISOString(),
     silentHandover: false,
     monitoredEmailIntegrations: [],
     tags: [],
@@ -167,6 +170,7 @@ export const INITIAL_FORM_VALUES = {
     customToneOfVoiceGuidance: CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
     helpCenter: null,
     monitoredChatIntegrations: [],
+    monitoredSmsIntegrations: [],
     customFieldIds: [],
     scopes: [],
     conversationBot: {

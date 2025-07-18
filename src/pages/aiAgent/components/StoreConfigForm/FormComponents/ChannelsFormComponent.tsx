@@ -19,6 +19,8 @@ import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getHasAutomate } from 'state/billing/selectors'
 
+import { SmsSettingsFormComponent } from './SmsSettingsFormComponent'
+
 import css from '../StoreConfigForm.less'
 
 type Props = {
@@ -37,6 +39,11 @@ type Props = {
     isEmailChannelEnabled: boolean
     emailChannelDeactivatedDatetime: string | null | undefined
     updateEmailChannelDeactivatedDatetime: (datetime: string | null) => void
+
+    monitoredSmsIntegrations: number[] | null
+    isSmsChannelEnabled: boolean
+    smsChannelDeactivatedDatetime: string | null | undefined
+    updateSmsChannelDeactivatedDatetime: (datetime: string | null) => void
 
     setIsFormDirty: (
         element: StoreConfigFormSection,
@@ -61,10 +68,17 @@ export const ChannelsFormComponent = ({
     emailChannelDeactivatedDatetime,
     updateEmailChannelDeactivatedDatetime,
 
+    monitoredSmsIntegrations,
+    isSmsChannelEnabled,
+    smsChannelDeactivatedDatetime,
+    updateSmsChannelDeactivatedDatetime,
+
     setIsFormDirty,
 }: Props) => {
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
+    const isAiAgentSmsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentSms]
 
     const isAiAgentActivationEnabled =
         !!useFlags()[FeatureFlagKey.AiAgentActivation]
@@ -204,6 +218,41 @@ export const ChannelsFormComponent = ({
                     useEmailIntegrationSignature={useEmailIntegrationSignature}
                 />
             </ConfigurationSection>
+            {isAiAgentSmsEnabled && (
+                <ConfigurationSection
+                    title="Sms for AI Journey"
+                    data-candu-id="ai-agent-configuration-sms-settings"
+                >
+                    {showToggles && (
+                        <div className={css.sectionBlock}>
+                            <ChannelToggleInput
+                                isToggled={isSmsChannelEnabled}
+                                onUpdate={(isToggled) => {
+                                    updateSmsChannelDeactivatedDatetime(
+                                        isToggled
+                                            ? null
+                                            : new Date().toISOString(),
+                                    )
+                                }}
+                                channel="sms"
+                                isDisabled={!hasAutomate}
+                                deactivatedDatetime={
+                                    smsChannelDeactivatedDatetime
+                                }
+                                type={SettingsBannerType.Sms}
+                            />
+                        </div>
+                    )}
+
+                    <div className={css.settingsSectionBlock}>
+                        <SmsSettingsFormComponent
+                            updateValue={updateValue}
+                            monitoredSmsIntegrations={monitoredSmsIntegrations}
+                            isRequired={smsChannelDeactivatedDatetime === null}
+                        />
+                    </div>
+                </ConfigurationSection>
+            )}
         </>
     )
 }

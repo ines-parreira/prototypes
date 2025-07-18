@@ -8,6 +8,7 @@ export const getStoreConfigurationFormValuesFixture = (
 ): FormValues => ({
     chatChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
     emailChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
+    smsChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
@@ -15,6 +16,7 @@ export const getStoreConfigurationFormValuesFixture = (
     silentHandover: false,
     monitoredEmailIntegrations: [],
     monitoredChatIntegrations: [],
+    monitoredSmsIntegrations: [],
     tags: [],
     excludedTopics: [],
     signature: 'This response was created by AI',
@@ -49,6 +51,7 @@ export const getOnboardingWizardFormValuesFixture = (
 ): FormValues => ({
     chatChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
     emailChannelDeactivatedDatetime: null,
+    smsChannelDeactivatedDatetime: null,
     trialModeActivatedDatetime: '2024-06-05T11:27:06.939Z',
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
@@ -80,6 +83,7 @@ export const getOnboardingWizardFormValuesFixture = (
     helpCenterId: 1,
     ticketSampleRate: null,
     monitoredChatIntegrations: [],
+    monitoredSmsIntegrations: [],
     wizard: undefined,
     customFieldIds: null,
     handoverEmail: null,

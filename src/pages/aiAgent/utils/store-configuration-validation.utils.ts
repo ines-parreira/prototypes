@@ -246,5 +246,6 @@ export const getValidStoreConfigurationFormValues = (
             formValues.useEmailIntegrationSignature || false,
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations || [],
         monitoredChatIntegrations: formValues.monitoredChatIntegrations || [],
+        monitoredSmsIntegrations: formValues.monitoredSmsIntegrations || [],
     }
 }

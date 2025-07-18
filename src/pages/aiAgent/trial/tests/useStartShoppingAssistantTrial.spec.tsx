@@ -134,6 +134,8 @@ describe('useStartShoppingAssistantTrial', () => {
             handoverEmail: null,
             handoverEmailIntegrationId: null,
             handoverHttpIntegrationId: null,
+            smsChannelDeactivatedDatetime: null,
+            monitoredSmsIntegrations: [],
         },
         sales: {
             enabled: false,

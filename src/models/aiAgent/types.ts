@@ -67,6 +67,7 @@ export type StoreConfiguration = {
     tags: Tag[]
     conversationBot: ConversationBot
     monitoredEmailIntegrations: EmailIntegration[]
+    monitoredSmsIntegrations: number[]
     monitoredChatIntegrations: number[]
 
     silentHandover: boolean
@@ -83,6 +84,7 @@ export type StoreConfiguration = {
 
     chatChannelDeactivatedDatetime: string | null
     emailChannelDeactivatedDatetime: string | null
+    smsChannelDeactivatedDatetime: string | null
     previewModeValidUntilDatetime: string | null
     isPreviewModeActive?: boolean
 
@@ -133,8 +135,10 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'signature'
     | 'useEmailIntegrationSignature'
     | 'monitoredChatIntegrations'
+    | 'monitoredSmsIntegrations'
     | 'chatChannelDeactivatedDatetime'
     | 'emailChannelDeactivatedDatetime'
+    | 'smsChannelDeactivatedDatetime'
     | 'excludedTopics'
     | 'customFieldIds'
     | 'handoverEmail'

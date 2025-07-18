@@ -19,7 +19,7 @@ import Tip from 'pages/common/components/tip/Tip'
 type Props = {
     isToggled: boolean
     onUpdate: (value: boolean) => void
-    channel: 'email' | 'chat'
+    channel: 'email' | 'chat' | 'sms'
     isDisabled?: boolean
     deactivatedDatetime?: string | null
     type: SettingsBannerType
@@ -60,6 +60,12 @@ export const ChannelToggleInput = ({
             <p>
                 When shoppers message in Chat, AI Agent automatically picks up
                 the ticket to respond.
+            </p>
+        ),
+        [SettingsBannerType.Sms]: (
+            <p>
+                🚨 At the moment SMS channel is only available for AI Journey
+                scenarios and admin usage.
             </p>
         ),
         [SettingsBannerType.Email]: (

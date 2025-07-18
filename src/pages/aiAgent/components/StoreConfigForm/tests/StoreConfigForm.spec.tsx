@@ -398,11 +398,14 @@ describe('<StoreConfigForm />', () => {
         handoverMethod: null,
         handoverEmailIntegrationId: null,
         handoverHttpIntegrationId: null,
+        monitoredSmsIntegrations: [],
+        smsChannelDeactivatedDatetime: null,
     }
 
     const initialFormValues: FormValues = {
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
+        smsChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
         previewModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
         ticketSampleRate: null,
@@ -424,6 +427,7 @@ describe('<StoreConfigForm />', () => {
         previewModeValidUntilDatetime: '2024-07-30T12:55:07.585Z',
         monitoredChatIntegrations: null,
         monitoredEmailIntegrations: [{ id: 1, email: MOCK_EMAIL_ADDRESS }],
+        monitoredSmsIntegrations: [],
         wizard: undefined,
         customFieldIds: [],
         handoverEmail: null,
