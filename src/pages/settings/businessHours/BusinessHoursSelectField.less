@@ -1,0 +1,59 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .labelWithTooltip {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        margin-bottom: var(--layout-spacing-xxs);
+    }
+
+    .error {
+        color: var(--feedback-error-2);
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .caption {
+        .caption-regular();
+    }
+
+    .createNewButton {
+        width: 100%;
+        color: var(--main-primary) !important;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+        &:hover {
+            background-color: var(--neutral-grey-3);
+        }
+    }
+
+    .noQueues {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+
+        .description {
+            display: flex;
+            flex-direction: column;
+            gap: var(--layout-spacing-xxs);
+
+            .title {
+                .body-semibold();
+            }
+        }
+
+        .button {
+            width: fit-content;
+            padding: 0;
+        }
+    }
+}

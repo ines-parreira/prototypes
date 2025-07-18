@@ -1,6 +1,8 @@
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
+
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { renderWithStore } from 'utils/testing'
 
@@ -9,7 +11,7 @@ import BusinessHoursDisplay from '../BusinessHoursDisplay'
 const renderComponent = ({
     businessHours,
 }: {
-    businessHours?: any
+    businessHours?: BusinessHoursConfig
 } = {}) => {
     const storeState = {
         currentAccount: fromJS({
@@ -54,7 +56,12 @@ describe('BusinessHoursDisplay', () => {
             },
         ]
 
-        renderComponent({ businessHours: customBusinessHours })
+        renderComponent({
+            businessHours: {
+                business_hours: customBusinessHours,
+                timezone: 'Europe/Bucharest',
+            },
+        })
 
         expect(screen.getByText('Custom')).toBeInTheDocument()
         expect(
@@ -71,7 +78,12 @@ describe('BusinessHoursDisplay', () => {
             },
         ]
 
-        renderComponent({ businessHours: unknownDayBusinessHours })
+        renderComponent({
+            businessHours: {
+                business_hours: unknownDayBusinessHours,
+                timezone: 'Europe/Bucharest',
+            },
+        })
 
         expect(screen.getByText('Custom')).toBeInTheDocument()
         expect(screen.getByText('12:00 PM-8:00 PM')).toBeInTheDocument()

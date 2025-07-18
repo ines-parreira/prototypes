@@ -25,8 +25,8 @@ export default function ListCustomBusinessHoursTableRow({
                     <Label>{businessHours.name}</Label>
                     <BusinessHoursScheduleDisplay
                         className={css.schedule}
-                        schedule={
-                            businessHours.business_hours_config.business_hours
+                        businessHoursConfig={
+                            businessHours.business_hours_config
                         }
                     />
                 </div>

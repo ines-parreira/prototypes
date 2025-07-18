@@ -8,9 +8,9 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import history from 'pages/history'
+import { BUSINESS_HOURS_BASE_URL } from 'pages/settings/businessHours/constants'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import { BUSINESS_HOURS_BASE_URL } from '../../constants'
 import useDeleteCustomBusinessHours from '../useDeleteCustomBusinessHours'
 
 const mockNotify = {

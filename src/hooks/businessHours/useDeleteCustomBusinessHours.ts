@@ -5,8 +5,7 @@ import {
 
 import { useNotify } from 'hooks/useNotify'
 import history from 'pages/history'
-
-import { BUSINESS_HOURS_BASE_URL } from '../constants'
+import { BUSINESS_HOURS_BASE_URL } from 'pages/settings/businessHours/constants'
 
 export default function useDeleteCustomBusinessHours(
     businessHours: BusinessHoursDetails,

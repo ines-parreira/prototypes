@@ -132,5 +132,6 @@ export const getDefaultValues = (
     return merge(defaultValues, {
         name: integration.name,
         meta: integration.meta,
+        business_hours_id: integration.business_hours_id,
     })
 }

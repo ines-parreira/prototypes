@@ -6,10 +6,10 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import { FormSubmitButton } from 'core/forms'
 import FormActions from 'core/forms/components/FormActions'
 import FormActionsGroup from 'core/forms/components/FormActionsGroup'
+import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import ConfirmButtonWithModal from 'pages/common/components/button/ConfirmButtonWithModal'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
-import useDeleteCustomBusinessHours from './hooks/useDeleteCustomBusinessHours'
 
 type Props = {
     businessHours: BusinessHoursDetails

@@ -7,10 +7,13 @@ import {
 } from '@gorgias/helpdesk-queries'
 import { Label } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import BusinessHoursSelectField from 'pages/settings/businessHours/BusinessHoursSelectField'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 
 import css from './VoiceIntegrationSettingsFormGeneralSection.less'
@@ -22,6 +25,8 @@ type Props = {
 function VoiceIntegrationSettingsFormGeneralSection({
     integration,
 }: Props): JSX.Element {
+    const isCBHEnabled = useFlag(FeatureFlagKey.CustomBusinessHours)
+
     const methods = useFormContext<
         UpdateAllPhoneIntegrationSettings | PhoneIntegration
     >()
@@ -70,6 +75,15 @@ function VoiceIntegrationSettingsFormGeneralSection({
                     )}
                 </div>
             </div>
+            {isCBHEnabled && (
+                <div>
+                    <FormField
+                        field={BusinessHoursSelectField}
+                        name="business_hours_id"
+                        isRequired
+                    />
+                </div>
+            )}
         </>
     )
 }

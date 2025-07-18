@@ -226,6 +226,7 @@ describe('getDefaultValues', () => {
     it('should return default values for form', () => {
         const baseIntegration = {
             name: 'name',
+            business_hours_id: null,
             meta: {
                 preferences: {},
             },
@@ -234,6 +235,7 @@ describe('getDefaultValues', () => {
 
         expect(values).toEqual({
             name: 'name',
+            business_hours_id: null,
             meta: {
                 preferences: {
                     record_inbound_calls: false,
@@ -271,6 +273,7 @@ describe('getDefaultValues', () => {
     it('should return actual values instead of default ones when they are defined', () => {
         const baseIntegration = {
             name: 'name',
+            business_hours_id: 1,
             meta: {
                 preferences: {
                     record_inbound_calls: true,
@@ -299,6 +302,7 @@ describe('getDefaultValues', () => {
 
         expect(values).toEqual({
             name: 'name',
+            business_hours_id: 1,
             meta: {
                 preferences: {
                     record_inbound_calls: true,

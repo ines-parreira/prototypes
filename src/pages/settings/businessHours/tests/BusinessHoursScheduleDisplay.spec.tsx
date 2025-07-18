@@ -27,18 +27,21 @@ const renderComponent = ({
 
     return renderWithStore(
         <BusinessHoursScheduleDisplay
-            schedule={[
-                {
-                    days: '1,2,3,4,5',
-                    from_time: '09:00',
-                    to_time: '17:00',
-                },
-                {
-                    days: '6,7',
-                    from_time: '10:00',
-                    to_time: '18:00',
-                },
-            ]}
+            businessHoursConfig={{
+                business_hours: [
+                    {
+                        days: '1,2,3,4,5',
+                        from_time: '09:00',
+                        to_time: '17:00',
+                    },
+                    {
+                        days: '6,7',
+                        from_time: '10:00',
+                        to_time: '18:00',
+                    },
+                ],
+                timezone: 'UTC',
+            }}
         />,
         storeState as any,
     )
