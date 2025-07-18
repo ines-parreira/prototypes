@@ -1,14 +1,16 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { MouseEventHandler, useMemo, useRef } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     SavedFilter,
     SavedFilterAPI,
 } from 'domains/reporting/models/stat/types'
+import { List } from 'domains/reporting/pages/common/components/List'
 import { fromApiFormatted } from 'domains/reporting/pages/common/filters/helpers'
 import css from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
+import { PinSavedFilterButton } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton'
 import {
     applySavedFilter,
     getSavedFilterAppliedId,
@@ -17,7 +19,7 @@ import {
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
+import { useToggle } from 'hooks/useToggle'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -26,13 +28,18 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 type SavedFilterType = Pick<SavedFilter, 'id' | 'name'>
 
-type Props = {
+type PinnedFilter = {
+    id: number | null
+    pin: (filterId: number) => any
+}
+
+export type ApplySavedFilterProps = {
     savedFilters: Array<SavedFilterAPI>
     canEdit: boolean
     isDisabled?: boolean
+    pinnedFilter?: PinnedFilter
 }
 
-const APPLY_SAVED_FILTER_ID = 'apply-saved-filter'
 export const APPLY_SAVED_FILTER_TOOLTIP = 'Apply Saved Filter to current report'
 export const CREATE_SAVED_FILTERS_LABEL = 'Create Saved Filters'
 export const NO_FILTERS_CONTENT =
@@ -50,109 +57,141 @@ const logSavedFilterSelection = ({ name, id }: SavedFilterType) => {
     })
 }
 
-export const getApplyFiltersButtonName = (
-    filters: Array<SavedFilterAPI>,
-    id: number | null,
-) => {
-    if (!id) {
-        return APPLY_SAVED_FILTERS
-    }
-    return (
-        filters.find((filter) => filter.id === id)?.name || APPLY_SAVED_FILTERS
-    )
+const findItemById = <T extends { id: string | number }>(
+    id: T['id'],
+    items: T[],
+) => items.find((item) => item.id === id)
+
+const Truncate = ({ text, maxChars }: { text: string; maxChars: number }) => {
+    let content = text
+    if (text.length > maxChars) content = text.slice(0, maxChars) + '...'
+    return <>{content}</>
 }
 
-const ApplySavedFilters = ({ savedFilters, canEdit, isDisabled }: Props) => {
+const stopPropagation: MouseEventHandler<HTMLElement> = (event) =>
+    event.stopPropagation()
+
+const ApplySavedFilters = ({
+    savedFilters,
+    canEdit,
+    isDisabled,
+    pinnedFilter,
+}: ApplySavedFilterProps) => {
+    const dispatch = useAppDispatch()
     const savedFilterAppliedId = useAppSelector(getSavedFilterAppliedId)
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
-    const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
+
     const buttonRef = useRef<HTMLDivElement>(null)
-    const dispatch = useAppDispatch()
+
+    const dropdown = useToggle(false)
+
     const createSavedFilterHandler = () => {
         dispatch(initialiseSavedFilterDraft())
-        setToggleDropdown(false)
+        dropdown.close()
     }
 
-    const applySavedFilterHandler = useCallback(
-        (filter: SavedFilter) => {
-            logSavedFilterSelection(filter)
-            dispatch(applySavedFilter(filter))
-            setToggleDropdown(false)
-        },
-        [dispatch],
-    )
+    const applySavedFilterHandler = (filter: SavedFilter) => {
+        logSavedFilterSelection(filter)
+        dispatch(applySavedFilter(filter))
+        dropdown.close()
+    }
 
-    const content = useMemo(() => {
-        if (!savedFilters.length) {
-            return (
-                <div className={css.content}>
-                    {canEdit ? NO_FILTERS_CONTENT : NOT_ADMIN_CONTENT}
-                </div>
-            )
+    const buttonLabel = useMemo(() => {
+        let text: string | undefined
+
+        if (savedFilterDraft) {
+            text = savedFilterDraft.name
+        } else if (savedFilterAppliedId) {
+            text = findItemById(savedFilterAppliedId, savedFilters)?.name
         }
 
-        return savedFilters.map((filter) => (
-            <DropdownItem
-                key={filter.id}
-                onClick={() =>
-                    applySavedFilterHandler(fromApiFormatted(filter))
-                }
-                option={{
-                    label: filter.name,
-                    value: filter.id,
-                }}
-                className={css.dropdownItem}
-                id={`dropdown-item-${filter.id}`}
-            >
-                <Tooltip
-                    target={`dropdown-item-${filter.id}`}
-                    placement="top"
-                    disabled={filter.name.length < MAX_FILTER_NAME_LENGTH}
-                >
-                    {filter.name}
-                </Tooltip>
-                <span>{filter.name}</span>
-            </DropdownItem>
-        ))
-    }, [savedFilters, canEdit, applySavedFilterHandler])
+        return text || APPLY_SAVED_FILTERS
+    }, [savedFilterDraft, savedFilterAppliedId, savedFilters])
 
-    const applyFiltersButtonName = useMemo(
-        () =>
-            savedFilterDraft
-                ? savedFilterDraft.name || APPLY_SAVED_FILTERS
-                : getApplyFiltersButtonName(savedFilters, savedFilterAppliedId),
-        [savedFilterAppliedId, savedFilters, savedFilterDraft],
+    const listEmptyElement = (
+        <div className={css.content}>
+            {canEdit ? NO_FILTERS_CONTENT : NOT_ADMIN_CONTENT}
+        </div>
     )
 
     return (
         <>
             <DropdownButton
-                onToggleClick={() => setToggleDropdown(!toggleDropdown)}
-                onClick={() => setToggleDropdown(!toggleDropdown)}
+                onToggleClick={dropdown.toggle}
+                onClick={() => dropdown.toggle()}
                 isDisabled={isDisabled}
                 fillStyle="fill"
                 intent="primary"
                 size="small"
                 ref={buttonRef}
-                id={APPLY_SAVED_FILTER_ID}
-                className={css.applyFiltersButton}
             >
-                {applyFiltersButtonName}
-                <Tooltip target={APPLY_SAVED_FILTER_ID} placement="top">
-                    {!!savedFilterDraft || !!savedFilterAppliedId
-                        ? applyFiltersButtonName
-                        : APPLY_SAVED_FILTER_TOOLTIP}
-                </Tooltip>
+                <Truncate
+                    text={buttonLabel}
+                    maxChars={APPLY_SAVED_FILTERS.length}
+                />
             </DropdownButton>
+            <Tooltip target={buttonRef} placement="top">
+                {!!savedFilterDraft || !!savedFilterAppliedId
+                    ? buttonLabel
+                    : APPLY_SAVED_FILTER_TOOLTIP}
+            </Tooltip>
             <Dropdown
-                onToggle={setToggleDropdown}
-                isOpen={toggleDropdown}
+                onToggle={dropdown.toggle}
+                isOpen={dropdown.isOpen}
                 target={buttonRef}
                 className={css.wrapper}
                 placement="bottom-end"
             >
-                <DropdownBody>{content}</DropdownBody>
-                <DropdownFooter>
+                <DropdownBody>
+                    <List
+                        data={savedFilters}
+                        listEmptyElement={listEmptyElement}
+                        renderItem={({ item: filter }) => {
+                            const targetId = `dropdown-item-${filter.id}`
+                            const showTooltip =
+                                filter.name.length >= MAX_FILTER_NAME_LENGTH
+
+                            return (
+                                <DropdownItem
+                                    onClick={() =>
+                                        applySavedFilterHandler(
+                                            fromApiFormatted(filter),
+                                        )
+                                    }
+                                    option={{
+                                        label: filter.name,
+                                        value: filter.id,
+                                    }}
+                                    id={targetId}
+                                    className={css.item}
+                                >
+                                    <Tooltip
+                                        target={targetId}
+                                        placement="top"
+                                        disabled={!showTooltip}
+                                    >
+                                        {filter.name}
+                                    </Tooltip>
+                                    <span className={css.truncate}>
+                                        {filter.name}
+                                    </span>
+                                    {canEdit && pinnedFilter && (
+                                        <PinSavedFilterButton
+                                            savedFilterId={filter.id}
+                                            onPin={pinnedFilter.pin}
+                                            isPinned={
+                                                pinnedFilter.id === filter.id
+                                            }
+                                            onClick={stopPropagation}
+                                            className={css.pin}
+                                        />
+                                    )}
+                                </DropdownItem>
+                            )
+                        }}
+                    />
+                </DropdownBody>
+                <DropdownFooter className={css.footer}>
                     <Button
                         fillStyle="ghost"
                         isDisabled={!canEdit}

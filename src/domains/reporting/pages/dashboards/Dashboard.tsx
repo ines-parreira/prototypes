@@ -1,6 +1,8 @@
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import FiltersPanelWrapper, {
+    FiltersPanelWrapperProps,
+} from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import {
@@ -22,17 +24,19 @@ import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useF
 import { updateChartPosition } from 'domains/reporting/pages/dashboards/utils'
 import { useGridSize } from 'hooks/useGridSize'
 
-type Props = {
+export type DashboardProps = {
     dashboard: DashboardSchema
+    pinnedFilter: FiltersPanelWrapperProps['pinnedFilter']
     onChartMove: (dashboard: DashboardSchema) => void
     onChartMoveEnd: () => void
 }
 
 export const Dashboard = ({
     dashboard,
+    pinnedFilter,
     onChartMove,
     onChartMoveEnd,
-}: Props) => {
+}: DashboardProps) => {
     const getGridCellSize = useGridSize()
 
     useCleanStatsFilters()
@@ -59,6 +63,7 @@ export const Dashboard = ({
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
                     <FiltersPanelWrapper
+                        pinnedFilter={pinnedFilter}
                         persistentFilters={persistentFilters}
                         optionalFilters={optionalFilters}
                         filterSettingsOverrides={{

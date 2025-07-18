@@ -174,12 +174,11 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   class="buttonsWrapper"
                 >
                   <div
-                    class="applyFiltersButton wrapper"
+                    class="wrapper"
                   >
                     <button
                       aria-disabled="false"
                       class="wrapper mainAction small fill primary small"
-                      id="apply-saved-filter"
                       type="button"
                     >
                       <span
@@ -944,12 +943,11 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         class="buttonsWrapper"
                       >
                         <div
-                          class="applyFiltersButton wrapper"
+                          class="wrapper"
                         >
                           <button
                             aria-disabled="false"
                             class="wrapper mainAction small fill primary small"
-                            id="apply-saved-filter"
                             type="button"
                           >
                             <span
@@ -1830,12 +1828,11 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       class="buttonsWrapper"
                     >
                       <div
-                        class="applyFiltersButton wrapper"
+                        class="wrapper"
                       >
                         <button
                           aria-disabled="false"
                           class="wrapper mainAction small fill primary small"
-                          id="apply-saved-filter"
                           type="button"
                         >
                           <span
@@ -2653,12 +2650,11 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         class="buttonsWrapper"
                       >
                         <div
-                          class="applyFiltersButton wrapper"
+                          class="wrapper"
                         >
                           <button
                             aria-disabled="false"
                             class="wrapper mainAction small fill primary small"
-                            id="apply-saved-filter"
                             type="button"
                           >
                             <span
@@ -3539,12 +3535,11 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       class="buttonsWrapper"
                     >
                       <div
-                        class="applyFiltersButton wrapper"
+                        class="wrapper"
                       >
                         <button
                           aria-disabled="false"
                           class="wrapper mainAction small fill primary small"
-                          id="apply-saved-filter"
                           type="button"
                         >
                           <span
@@ -4362,12 +4357,11 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         class="buttonsWrapper"
                       >
                         <div
-                          class="applyFiltersButton wrapper"
+                          class="wrapper"
                         >
                           <button
                             aria-disabled="false"
                             class="wrapper mainAction small fill primary small"
-                            id="apply-saved-filter"
                             type="button"
                           >
                             <span
@@ -5248,12 +5242,11 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       class="buttonsWrapper"
                     >
                       <div
-                        class="applyFiltersButton wrapper"
+                        class="wrapper"
                       >
                         <button
                           aria-disabled="false"
                           class="wrapper mainAction small fill primary small"
-                          id="apply-saved-filter"
                           type="button"
                         >
                           <span
@@ -6067,12 +6060,11 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="buttonsWrapper"
                 >
                   <div
-                    class="applyFiltersButton wrapper"
+                    class="wrapper"
                   >
                     <button
                       aria-disabled="false"
                       class="wrapper mainAction small fill primary small"
-                      id="apply-saved-filter"
                       type="button"
                     >
                       <span
@@ -6816,12 +6808,11 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="buttonsWrapper"
                 >
                   <div
-                    class="applyFiltersButton wrapper"
+                    class="wrapper"
                   >
                     <button
                       aria-disabled="false"
                       class="wrapper mainAction small fill primary small"
-                      id="apply-saved-filter"
                       type="button"
                     >
                       <span
@@ -7582,12 +7573,11 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   class="buttonsWrapper"
                 >
                   <div
-                    class="applyFiltersButton wrapper"
+                    class="wrapper"
                   >
                     <button
                       aria-disabled="false"
                       class="wrapper mainAction small fill primary small"
-                      id="apply-saved-filter"
                       type="button"
                     >
                       <span
@@ -8348,12 +8338,11 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   class="buttonsWrapper"
                 >
                   <div
-                    class="applyFiltersButton wrapper"
+                    class="wrapper"
                   >
                     <button
                       aria-disabled="false"
                       class="wrapper mainAction small fill primary small"
-                      id="apply-saved-filter"
                       type="button"
                     >
                       <span

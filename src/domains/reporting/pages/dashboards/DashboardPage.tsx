@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -61,6 +61,7 @@ export const DashboardPage = () => {
         <DashboardPageContent
             key={dashboard.data.id}
             dashboard={dashboard.data}
+            isPinnedFilterEnabled={isPinnedFilterEnabled}
         />
     )
 
@@ -77,8 +78,10 @@ export const DashboardPage = () => {
 
 const DashboardPageContent = ({
     dashboard,
+    isPinnedFilterEnabled,
 }: {
     dashboard: DashboardSchema
+    isPinnedFilterEnabled: boolean
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
     const isCurrentUserTeamLead = isTeamLead(currentUser)
@@ -98,6 +101,27 @@ const DashboardPageContent = ({
             onSuccess: closeModal,
         })
     }
+
+    const dashboardPinnedFilter = useMemo(() => {
+        if (!isPinnedFilterEnabled) return undefined
+
+        const handleUpdatePinnedFilter = (savedFilterId: number) => {
+            updateDashboardHandler({
+                dashboard: {
+                    ...dashboard,
+                    analytics_filter_id:
+                        dashboard.analytics_filter_id === savedFilterId
+                            ? null
+                            : savedFilterId,
+                },
+            })
+        }
+
+        return Object.freeze({
+            id: dashboard.analytics_filter_id,
+            pin: handleUpdatePinnedFilter,
+        })
+    }, [isPinnedFilterEnabled, dashboard, updateDashboardHandler])
 
     const [details, setDetails] = useState({
         name: dashboard.name,
@@ -154,6 +178,7 @@ const DashboardPageContent = ({
                 {dashboard.children.length ? (
                     <Dashboard
                         dashboard={dashboard}
+                        pinnedFilter={dashboardPinnedFilter}
                         onChartMove={handleMoveCharts}
                         onChartMoveEnd={handleMoveChartsEnd}
                     />

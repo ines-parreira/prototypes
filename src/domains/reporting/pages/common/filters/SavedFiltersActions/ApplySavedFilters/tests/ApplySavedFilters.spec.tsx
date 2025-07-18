@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -8,7 +6,6 @@ import ApplySavedFilers, {
     APPLY_SAVED_FILTER_TOOLTIP,
     APPLY_SAVED_FILTERS,
     CREATE_SAVED_FILTERS_LABEL,
-    getApplyFiltersButtonName,
     NO_FILTERS_CONTENT,
     NOT_ADMIN_CONTENT,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
@@ -173,67 +170,111 @@ describe('ApplySavedFilers', () => {
 
         expect(getByText(APPLY_SAVED_FILTERS)).toBeTruthy()
     })
-})
 
-const filters = [{ id: 1, name: 'Filter 1', filter_group: [] }]
+    describe('Apply filters button content', () => {
+        it('renders default message', () => {
+            const { queryByText } = renderWithStore(
+                <ApplySavedFilers canEdit savedFilters={savedFilters} />,
+                {
+                    ui: {
+                        stats: {
+                            filters: {
+                                appliedSavedFilterId: null,
+                                savedFilterDraft: null,
+                            },
+                        },
+                    },
+                } as RootState,
+            )
 
-describe('getApplyFiltersButtonName', () => {
-    it('should return APPLY_SAVED_FILTERS when id is null', () => {
-        const result = getApplyFiltersButtonName(filters, null)
-        expect(result).toBe(APPLY_SAVED_FILTERS)
-    })
+            expect(queryByText(APPLY_SAVED_FILTERS)).toBeInTheDocument()
+        })
 
-    it('should return APPLY_SAVED_FILTERS when id is undefined', () => {
-        const result = getApplyFiltersButtonName(filters, undefined as any)
-        expect(result).toBe(APPLY_SAVED_FILTERS)
-    })
+        it('renders filter name if selected', () => {
+            const selectedFilter = savedFilters[1]
 
-    it('should return APPLY_SAVED_FILTERS if id does not match any filter', () => {
-        const result = getApplyFiltersButtonName(
-            [
-                { id: 1, name: 'Filter 1', filter_group: [] },
-                { id: 2, name: 'Filter 2', filter_group: [] },
-            ],
-            999,
-        )
-        expect(result).toBe(APPLY_SAVED_FILTERS)
-    })
+            const { queryByText } = renderWithStore(
+                <ApplySavedFilers canEdit savedFilters={savedFilters} />,
+                {
+                    ui: {
+                        stats: {
+                            filters: {
+                                appliedSavedFilterId: selectedFilter.id,
+                                savedFilterDraft: null,
+                            },
+                        },
+                    },
+                } as RootState,
+            )
 
-    it('should return the filter name when a matching id is found', () => {
-        const result = getApplyFiltersButtonName(
-            [
-                { id: 1, name: 'Filter 1', filter_group: [] },
-                { id: 2, name: 'Filter 2', filter_group: [] },
-            ],
-            1,
-        )
-        expect(result).toBe('Filter 1')
-    })
+            expect(queryByText(selectedFilter.name)).toBeInTheDocument()
+        })
 
-    it('should return APPLY_SAVED_FILTERS when filters is empty', () => {
-        const result = getApplyFiltersButtonName([], 1)
-        expect(result).toBe(APPLY_SAVED_FILTERS)
-    })
+        it('renders default message if filter is not found', () => {
+            const { queryByText } = renderWithStore(
+                <ApplySavedFilers canEdit savedFilters={savedFilters} />,
+                {
+                    ui: {
+                        stats: {
+                            filters: {
+                                appliedSavedFilterId: 999,
+                                savedFilterDraft: null,
+                            },
+                        },
+                    },
+                } as RootState,
+            )
 
-    it('should return APPLY_SAVED_FILTERS when filter name is empty or null', () => {
-        const result = getApplyFiltersButtonName(
-            [
-                { id: 1, name: '', filter_group: [] },
-                { id: 2, name: null, filter_group: [] } as any,
-            ],
-            1,
-        )
-        expect(result).toBe(APPLY_SAVED_FILTERS)
-    })
+            expect(queryByText(APPLY_SAVED_FILTERS)).toBeInTheDocument()
+        })
 
-    it('should return the first filter name if multiple filters match the same id (edge case)', () => {
-        const result = getApplyFiltersButtonName(
-            [
-                { id: 1, name: 'Filter 1', filter_group: [] },
-                { id: 1, name: 'Filter 2', filter_group: [] },
-            ],
-            1,
-        )
-        expect(result).toBe('Filter 1')
+        it('renders draft name if exist', () => {
+            const selectedFilter = savedFilters[1]
+            const draftName = 'slim shady'
+
+            const { queryByText } = renderWithStore(
+                <ApplySavedFilers canEdit savedFilters={savedFilters} />,
+                {
+                    ui: {
+                        stats: {
+                            filters: {
+                                appliedSavedFilterId: selectedFilter.id,
+                                savedFilterDraft: {
+                                    ...selectedFilter,
+                                    name: draftName,
+                                },
+                            },
+                        },
+                    },
+                } as RootState,
+            )
+
+            expect(queryByText(draftName)).toBeInTheDocument()
+        })
+
+        it('truncates text if too long', () => {
+            const selectedFilter = savedFilters[1]
+            const draftName =
+                'hi! my name is what? my name is who? my name is chka-chka slim shady'
+
+            const { queryByText } = renderWithStore(
+                <ApplySavedFilers canEdit savedFilters={savedFilters} />,
+                {
+                    ui: {
+                        stats: {
+                            filters: {
+                                appliedSavedFilterId: selectedFilter.id,
+                                savedFilterDraft: {
+                                    ...selectedFilter,
+                                    name: draftName,
+                                },
+                            },
+                        },
+                    },
+                } as RootState,
+            )
+
+            expect(queryByText(/^hi!.*\.\.\.$/)).toBeInTheDocument()
+        })
     })
 })

@@ -5,16 +5,20 @@ import {
     FiltersPanelProps,
 } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import css from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
-import { SavedFiltersActions } from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions'
+import {
+    SavedFiltersActions,
+    SavedFiltersActionsProps,
+} from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions'
 import { SavedFiltersPanel } from 'domains/reporting/pages/common/filters/SavedFiltersPanel'
 import { getHideFiltersPanelOptionalFilters } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppSelector from 'hooks/useAppSelector'
 
-type Props = Omit<
+export type FiltersPanelWrapperProps = Omit<
     FiltersPanelProps,
     'cleanStatsFilters' | 'filterComponentMap'
 > & {
     withSavedFilters?: boolean
+    pinnedFilter?: SavedFiltersActionsProps['pinnedFilter']
 }
 
 export const FiltersPanelWrapper = ({
@@ -22,7 +26,8 @@ export const FiltersPanelWrapper = ({
     filterSettingsOverrides,
     persistentFilters,
     withSavedFilters = true,
-}: Props): ReactElement => {
+    pinnedFilter,
+}: FiltersPanelWrapperProps): ReactElement => {
     const shouldHideFilters = useAppSelector(getHideFiltersPanelOptionalFilters)
 
     return (
@@ -42,6 +47,7 @@ export const FiltersPanelWrapper = ({
                     <SavedFiltersActions
                         optionalFilters={optionalFilters}
                         shouldHideFilters={shouldHideFilters}
+                        pinnedFilter={pinnedFilter}
                     />
                 )}
             </div>

@@ -122,6 +122,7 @@ describe('DashboardPage', () => {
 
     const MOVE_CHART_BUTTON = 'chart move'
     const MOVE_CHART_END_BUTTON = 'chart move end'
+    const PIN_FILTER_BUTTON = 'pin filter'
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
@@ -132,16 +133,23 @@ describe('DashboardPage', () => {
 
         FiltersPanelWrapperMock.mockReturnValue(<div />)
 
-        DashboardMock.mockImplementation(({ onChartMove, onChartMoveEnd }) => (
-            <div>
-                <button onClick={() => onChartMove(dashboard)}>
-                    {MOVE_CHART_BUTTON}
-                </button>
-                <button onClick={() => onChartMoveEnd()}>
-                    {MOVE_CHART_END_BUTTON}
-                </button>
-            </div>
-        ))
+        DashboardMock.mockImplementation(
+            ({ onChartMove, onChartMoveEnd, pinnedFilter }) => (
+                <div>
+                    <button onClick={() => onChartMove(dashboard)}>
+                        {MOVE_CHART_BUTTON}
+                    </button>
+                    <button onClick={() => onChartMoveEnd()}>
+                        {MOVE_CHART_END_BUTTON}
+                    </button>
+                    {pinnedFilter && (
+                        <button onClick={() => pinnedFilter.pin(123)}>
+                            {PIN_FILTER_BUTTON}
+                        </button>
+                    )}
+                </div>
+            ),
+        )
 
         DrillDownModalMock.mockReturnValue(<div />)
 
@@ -398,5 +406,175 @@ describe('DashboardPage', () => {
         fireEvent.click(chartMoveButton)
 
         expect(updateDashboardMock).toHaveBeenCalledTimes(1)
+    })
+
+    describe('Pinned Filter functionality', () => {
+        let mockUpdateDashboardHandler: jest.Mock
+
+        beforeEach(() => {
+            useFlagMock.mockReturnValue(true)
+            mockUpdateDashboardHandler = jest.fn()
+            useDashboardActionsMock.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+            } as any)
+        })
+
+        it('should pin a filter when no filter is currently pinned', () => {
+            const testDashboard = { ...dashboard, analytics_filter_id: null }
+            useDashboardByIdMock.mockReturnValue({
+                data: testDashboard,
+                isLoading: false,
+            } as any)
+
+            renderWithStore(<DashboardPage />, defaultState)
+
+            const pinFilterButton = screen.getByRole('button', {
+                name: PIN_FILTER_BUTTON,
+            })
+            fireEvent.click(pinFilterButton)
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledTimes(1)
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    ...testDashboard,
+                    analytics_filter_id: 123,
+                },
+            })
+        })
+
+        it('should unpin a filter when the same filter is already pinned', () => {
+            const savedFilterId = 123
+            const testDashboard = {
+                ...dashboard,
+                analytics_filter_id: savedFilterId,
+            }
+            useDashboardByIdMock.mockReturnValue({
+                data: testDashboard,
+                isLoading: false,
+            } as any)
+
+            // Update the mock to simulate clicking the same filter that's already pinned
+            DashboardMock.mockImplementation(({ pinnedFilter }) => (
+                <div>
+                    {pinnedFilter && (
+                        <button onClick={() => pinnedFilter.pin(savedFilterId)}>
+                            {PIN_FILTER_BUTTON}
+                        </button>
+                    )}
+                </div>
+            ))
+
+            renderWithStore(<DashboardPage />, defaultState)
+
+            const pinFilterButton = screen.getByRole('button', {
+                name: PIN_FILTER_BUTTON,
+            })
+            fireEvent.click(pinFilterButton)
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledTimes(1)
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    ...testDashboard,
+                    analytics_filter_id: null,
+                },
+            })
+        })
+
+        it('should switch to a different filter when another filter is already pinned', () => {
+            const currentFilterId = 456
+            const newFilterId = 123
+            const testDashboard = {
+                ...dashboard,
+                analytics_filter_id: currentFilterId,
+            }
+            useDashboardByIdMock.mockReturnValue({
+                data: testDashboard,
+                isLoading: false,
+            } as any)
+
+            // Update the mock to simulate clicking a different filter
+            DashboardMock.mockImplementation(({ pinnedFilter }) => (
+                <div>
+                    {pinnedFilter && (
+                        <button onClick={() => pinnedFilter.pin(newFilterId)}>
+                            {PIN_FILTER_BUTTON}
+                        </button>
+                    )}
+                </div>
+            ))
+
+            renderWithStore(<DashboardPage />, defaultState)
+
+            const pinFilterButton = screen.getByRole('button', {
+                name: PIN_FILTER_BUTTON,
+            })
+            fireEvent.click(pinFilterButton)
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledTimes(1)
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    ...testDashboard,
+                    analytics_filter_id: newFilterId,
+                },
+            })
+        })
+
+        it('should pass the correct pinned filter id to Dashboard component', () => {
+            const savedFilterId = 789
+            useDashboardByIdMock.mockReturnValue({
+                data: { ...dashboard, analytics_filter_id: savedFilterId },
+                isLoading: false,
+            } as any)
+
+            renderWithStore(<DashboardPage />, defaultState)
+
+            expect(DashboardMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    pinnedFilter: expect.objectContaining({
+                        id: savedFilterId,
+                        pin: expect.any(Function),
+                    }),
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should not pass pinnedFilter when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+            const savedFilterId = 789
+            useDashboardByIdMock.mockReturnValue({
+                data: { ...dashboard, analytics_filter_id: savedFilterId },
+                isLoading: false,
+            } as any)
+
+            renderWithStore(<DashboardPage />, defaultState)
+
+            expect(DashboardMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    pinnedFilter: undefined,
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should not pass pinnedFilter when no filter is pinned', () => {
+            useDashboardByIdMock.mockReturnValue({
+                data: { ...dashboard, analytics_filter_id: null },
+                isLoading: false,
+            } as any)
+
+            renderWithStore(<DashboardPage />, defaultState)
+
+            expect(DashboardMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    pinnedFilter: expect.objectContaining({
+                        id: null,
+                        pin: expect.any(Function),
+                    }),
+                }),
+                expect.anything(),
+            )
+        })
     })
 })

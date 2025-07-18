@@ -91,6 +91,8 @@ describe('Dashboard', () => {
         },
     } as RootState
 
+    const dashboardPinnedFilter = { id: null, pin: jest.fn() }
+
     const renderComponent = (ui: React.ReactElement) => {
         return renderWithStore(
             <DndProvider backend={HTML5Backend}>{ui}</DndProvider>,
@@ -121,6 +123,7 @@ describe('Dashboard', () => {
                 onChartMove={jest.fn()}
                 onChartMoveEnd={jest.fn()}
                 dashboard={dashboard}
+                pinnedFilter={dashboardPinnedFilter}
             />,
         )
 
@@ -137,6 +140,7 @@ describe('Dashboard', () => {
                 onChartMove={onChartMove}
                 onChartMoveEnd={jest.fn()}
                 dashboard={dashboard}
+                pinnedFilter={dashboardPinnedFilter}
             />,
         )
 
@@ -166,6 +170,7 @@ describe('Dashboard', () => {
                 onChartMove={jest.fn()}
                 onChartMoveEnd={onChartMoveEnd}
                 dashboard={dashboard}
+                pinnedFilter={dashboardPinnedFilter}
             />,
         )
 
@@ -182,6 +187,7 @@ describe('Dashboard', () => {
                 onChartMove={jest.fn()}
                 onChartMoveEnd={jest.fn()}
                 dashboard={dashboard}
+                pinnedFilter={dashboardPinnedFilter}
             />,
         )
 

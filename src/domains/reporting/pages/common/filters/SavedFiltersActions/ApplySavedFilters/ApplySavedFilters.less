@@ -1,27 +1,41 @@
+@import '~css/typography';
+
 :local {
     .wrapper {
         width: 340px;
     }
+
     .content {
+        .body-regular();
+
         color: var(--neutral-grey-4);
         text-align: center;
-        letter-spacing: -0.14px;
-        padding: 12px;
-    }
-    .dropdownItem,
-    .applyFiltersButton {
-        & span {
-            max-width: 305px;
-            display: inline-block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+        padding: var(--layout-spacing-xs);
     }
 
-    .applyFiltersButton {
-        & span {
-            max-width: 130px;
-        }
+    .footer {
+        padding: var(--layout-spacing-xxs);
+    }
+
+    .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .pin {
+        flex-shrink: 0;
+    }
+
+    .item > .pin {
+        margin-left: auto;
+    }
+
+    .item > .pin[data-state='off'] {
+        display: none;
+    }
+
+    .item:hover > .pin {
+        display: inline-flex;
     }
 }

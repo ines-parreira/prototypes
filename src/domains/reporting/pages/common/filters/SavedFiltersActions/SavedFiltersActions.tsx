@@ -1,10 +1,12 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
 
 import { SavedFilterAPI } from 'domains/reporting/models/stat/types'
 import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
-import ApplySavedFilters from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import ApplySavedFilters, {
+    ApplySavedFilterProps,
+} from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import { areFiltersFilled } from 'domains/reporting/pages/common/filters/SavedFiltersActions/helpers'
 import css from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions.less'
 import { SaveFilters } from 'domains/reporting/pages/common/filters/SavedFiltersActions/SaveFilters/SaveFilters'
@@ -15,12 +17,17 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
-type Props = { optionalFilters: OptionalFilter[]; shouldHideFilters?: boolean }
+export type SavedFiltersActionsProps = {
+    optionalFilters: OptionalFilter[]
+    shouldHideFilters?: boolean
+    pinnedFilter?: ApplySavedFilterProps['pinnedFilter']
+}
 
 export const SavedFiltersActions = ({
     optionalFilters,
     shouldHideFilters,
-}: Props) => {
+    pinnedFilter,
+}: SavedFiltersActionsProps) => {
     const dispatch = useAppDispatch()
 
     const currentUser = useAppSelector(getCurrentUser)
@@ -55,6 +62,7 @@ export const SavedFiltersActions = ({
                 savedFilters={savedFilters}
                 canEdit={isCurrentUserTeamLead}
                 isDisabled={shouldHideFilters}
+                pinnedFilter={pinnedFilter}
             />
         </div>
     )
