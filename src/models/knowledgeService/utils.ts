@@ -1,6 +1,7 @@
 import { cloneDeep } from 'lodash'
 
 import {
+    client,
     FeedbackUpsertRequest,
     FindFeedbackParams,
     FindFeedbackResult,
@@ -9,7 +10,7 @@ import {
 
 import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { isProduction, isStaging } from 'utils/environment'
-import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
+import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 export function getKsApiBaseURL(): string {
     return isProduction()
@@ -21,13 +22,11 @@ export function getKsApiBaseURL(): string {
 
 export const setKSDefaultConfig = () =>
     setDefaultConfig(async () => {
-        const gorgiasAppAuthService = new GorgiasAppAuthService()
-        const accessToken = await gorgiasAppAuthService.getAccessToken()
+        client.client.interceptors.request.use(gorgiasAppsAuthInterceptor)
         return {
             baseURL: getKsApiBaseURL(),
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: accessToken,
             },
         }
     })

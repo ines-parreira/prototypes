@@ -1,7 +1,9 @@
-import { setDefaultConfig } from '@gorgias/knowledge-service-client'
+import { waitFor } from '@testing-library/react'
+
+import { client, setDefaultConfig } from '@gorgias/knowledge-service-client'
 
 import { isProduction, isStaging } from 'utils/environment'
-import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
+import authInterceptor from 'utils/gorgiasAppsAuth'
 
 import { getKsApiBaseURL, setKSDefaultConfig } from '../utils'
 
@@ -10,12 +12,11 @@ jest.mock('utils/environment', () => ({
     isStaging: jest.fn(),
 }))
 
-jest.mock('@gorgias/knowledge-service-client', () => ({
-    setDefaultConfig: jest.fn(),
-}))
+jest.mock('@gorgias/knowledge-service-client')
 
 jest.mock('utils/gorgiasAppsAuth', () => ({
     GorgiasAppAuthService: jest.fn(),
+    authInterceptor: jest.fn(),
 }))
 
 describe('knowledgeService utils', () => {
@@ -53,12 +54,7 @@ describe('knowledgeService utils', () => {
     })
 
     describe('setKSDefaultConfig', () => {
-        const mockGetAccessToken = jest.fn()
-
         beforeEach(() => {
-            ;(GorgiasAppAuthService as jest.Mock).mockImplementation(() => ({
-                getAccessToken: mockGetAccessToken,
-            }))
             ;(isProduction as jest.Mock).mockReturnValue(false)
             ;(isStaging as jest.Mock).mockReturnValue(false)
         })
@@ -71,22 +67,16 @@ describe('knowledgeService utils', () => {
         })
 
         it('should return correct config when async function is called', async () => {
-            const mockAccessToken = 'Bearer test-token'
-            mockGetAccessToken.mockResolvedValue(mockAccessToken)
-
             setKSDefaultConfig()
 
             const asyncConfigFn = (setDefaultConfig as jest.Mock).mock
                 .calls[0][0]
             const config = await asyncConfigFn()
 
-            expect(GorgiasAppAuthService).toHaveBeenCalledTimes(1)
-            expect(mockGetAccessToken).toHaveBeenCalledTimes(1)
             expect(config).toEqual({
                 baseURL: 'http://localhost:9500',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: mockAccessToken,
                 },
             })
         })
@@ -94,9 +84,6 @@ describe('knowledgeService utils', () => {
         it('should work with production environment', async () => {
             ;(isProduction as jest.Mock).mockReturnValue(true)
             ;(isStaging as jest.Mock).mockReturnValue(false)
-
-            const mockAccessToken = 'Bearer prod-token'
-            mockGetAccessToken.mockResolvedValue(mockAccessToken)
 
             setKSDefaultConfig()
 
@@ -107,7 +94,21 @@ describe('knowledgeService utils', () => {
             expect(config.baseURL).toBe(
                 'https://knowledge-service.gorgias.help',
             )
-            expect(config.headers.Authorization).toBe(mockAccessToken)
+        })
+
+        it('should set the auth interceptor', async () => {
+            setKSDefaultConfig()
+
+            const asyncConfigFn = (setDefaultConfig as jest.Mock).mock
+                .calls[0][0]
+
+            await asyncConfigFn()
+
+            await waitFor(() => {
+                expect(
+                    client.client.interceptors.request.use,
+                ).toHaveBeenCalledWith(authInterceptor)
+            })
         })
     })
 })
