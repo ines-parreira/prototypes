@@ -35,7 +35,7 @@ export const useTicketIsAfterFeedbackCollectionPeriod = () => {
     const { data: earliestExecution } = useGetEarliestExecution({
         refetchOnWindowFocus: false,
         cacheTime: CACHE_TIME,
-        staleTime: STALE_TIME,
+        staleTime: Infinity, // The earliest execution is not updated so getting it once is enough.
         enabled:
             isNewAgenticArchitectureEnabled &&
             createdDatetime &&

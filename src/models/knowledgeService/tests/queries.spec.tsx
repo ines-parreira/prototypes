@@ -164,7 +164,7 @@ describe('knowledgeService queries', () => {
 
             expect(useQuerySpy).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    staleTime: STALE_TIME_MS,
+                    staleTime: Infinity,
                     cacheTime: CACHE_TIME_MS,
                 }),
             )
