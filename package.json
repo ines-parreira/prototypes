@@ -398,7 +398,6 @@
         "storybook-react-rsbuild": "^1.0.1",
         "stream-browserify": "3.0.0",
         "stream-http": "3.2.0",
-        "style-loader": "0.23.1",
         "stylelint": "^16.9.0",
         "stylelint-prettier": "5.0.2",
         "swc_mut_cjs_exports": "^10.7.0",
