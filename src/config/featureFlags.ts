@@ -34,6 +34,7 @@ export enum FeatureFlagKey {
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
+    AiShoppingAssistantProductRecommendations = 'ai-shopping-assistant-product-recommendations',
     AiShoppingAssistantTrialExtension = 'ai-shopping-assistant-trial-extension',
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
     AiShoppingAssistantTrackingBundleWarningBanner = 'tracking-bundle-warning-banner',

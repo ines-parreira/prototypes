@@ -1,0 +1,31 @@
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex !important;
+        flex-direction: column;
+        gap: var(--layout-spacing-s) !important;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ececec;
+        border-radius: 12px;
+        background-color: var(--neutral-grey-0);
+        transition: ease-in-out 0.2s;
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+        padding: var(--layout-spacing-m);
+        gap: var(--layout-spacing-xs);
+    }
+
+    .title {
+        .heading-subsection-semibold();
+        color: var(--neutral-grey-6);
+    }
+
+    .text {
+        .body-regular();
+        color: var(--neutral-grey-5);
+    }
+}

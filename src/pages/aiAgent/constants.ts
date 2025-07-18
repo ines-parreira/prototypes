@@ -20,6 +20,7 @@ export const PREVIEW = 'Preview'
 export const SALES = 'Shopping Assistant'
 export const STRATEGY = 'Strategy'
 export const CUSTOMER_ENGAGEMENT = 'Customer Engagement'
+export const PRODUCT_RECOMMENDATIONS = 'Product Recommendations'
 export const ANALYTICS = 'Analytics'
 
 export const SIGNATURE_MAX_LENGTH = 250

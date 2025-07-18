@@ -49,6 +49,7 @@ import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContain
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
+import { AiAgentProductRecommendationsExclude } from 'pages/aiAgent/AiAgentProductRecommendations/AiAgentProductRecommendationsExclude'
 import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
 import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
@@ -412,6 +413,9 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     const isAiAgentScrapeStoreDomainEnabled =
         useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
+    const isAiShoppingAssistantProductRecommendationsEnabled =
+        !!useFlags()[FeatureFlagKey.AiShoppingAssistantProductRecommendations]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/ai-agent" />
     }
@@ -760,6 +764,20 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             )}
                         />
                     </AiAgentErrorBoundary>
+                    {isAiShoppingAssistantProductRecommendationsEnabled && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-product-recommendations"
+                            team={SentryTeam.MARKETING}
+                        >
+                            <Route
+                                path={`${path}/sales/product-recommendations/exclude`}
+                                exact
+                                component={SalesPaywallMiddleware(
+                                    AiAgentProductRecommendationsExclude,
+                                )}
+                            />
+                        </AiAgentErrorBoundary>
+                    )}
                     <AiAgentErrorBoundary
                         section="ai-agent-analytics"
                         team={SentryTeam.MARKETING}

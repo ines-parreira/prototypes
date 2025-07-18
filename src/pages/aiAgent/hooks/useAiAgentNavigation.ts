@@ -13,6 +13,7 @@ import {
     KNOWLEDGE,
     OPTIMIZE,
     PREVIEW,
+    PRODUCT_RECOMMENDATIONS,
     SALES,
     SETTINGS,
     SOURCES,
@@ -59,6 +60,7 @@ export const getAiAgentNavigationRoutes = (
         sales: `${basePath}/sales`,
         salesStrategy: `${basePath}/sales/strategy`,
         customerEngagement: `${basePath}/sales/customer-engagement`,
+        productRecommendationsExclude: `${basePath}/sales/product-recommendations/exclude`,
         analytics: `${basePath}/sales/analytics`,
         questionsContent: `${basePath}/knowledge/sources/questions-content`,
         productsContent: `${basePath}/knowledge/sources/products-content`,
@@ -142,6 +144,9 @@ const useNavigationItems = (
     const isAiShoppingAssistantEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
 
+    const isAiShoppingAssistantProductRecommendationsEnabled =
+        !!flags[FeatureFlagKey.AiShoppingAssistantProductRecommendations]
+
     return useMemo<NavigationItem[]>(
         () =>
             [
@@ -219,6 +224,12 @@ const useNavigationItems = (
                                   title: CUSTOMER_ENGAGEMENT,
                                   exact: true,
                               },
+                              isAiShoppingAssistantEnabled &&
+                                  isAiShoppingAssistantProductRecommendationsEnabled && {
+                                      route: routes.productRecommendationsExclude,
+                                      title: PRODUCT_RECOMMENDATIONS,
+                                      exact: true,
+                                  },
                           ].filter((x) => !!x) as NavigationItem[])
                         : undefined,
                 },
@@ -234,6 +245,7 @@ const useNavigationItems = (
             isAiAgentScrapeStoreDomainEnabled,
             isGorgiasUser,
             isAiShoppingAssistantEnabled,
+            isAiShoppingAssistantProductRecommendationsEnabled,
             routes,
         ],
     )
