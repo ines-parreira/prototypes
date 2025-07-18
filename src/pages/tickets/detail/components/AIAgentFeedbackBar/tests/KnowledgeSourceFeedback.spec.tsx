@@ -20,6 +20,7 @@ const defaultResource = {
         id: 'resource-1',
         resourceTitle: 'Test Article',
         resourceType: 'ARTICLE',
+        resourceSetId: 'help-center-1',
     },
 }
 
@@ -212,6 +213,7 @@ describe('KnowledgeSourceFeedback', () => {
             expect(onKnowledgeResourceClick).toHaveBeenCalledWith(
                 'resource-1',
                 'ARTICLE',
+                'help-center-1',
             )
         })
 

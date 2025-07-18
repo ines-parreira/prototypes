@@ -28,7 +28,7 @@ import {
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 
 import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import { knowledgeResourceShouldBeLink } from './utils'
+import { getHelpcenterIdAsString, knowledgeResourceShouldBeLink } from './utils'
 
 type MissingKnowledgeSelectProps = {
     helpCenterId?: number | null
@@ -43,6 +43,11 @@ type MissingKnowledgeSelectProps = {
     knowledgeResources?: KnowledgeResource[]
     shopName: string
     shopType: string
+    onKnowledgeResourceClick: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
+    ) => void
 }
 
 export type ChoiceOption = {
@@ -72,6 +77,7 @@ const MissingKnowledgeSelect = ({
     disabled,
     shopName,
     shopType,
+    onKnowledgeResourceClick,
 }: MissingKnowledgeSelectProps) => {
     const [values, setValues] = useState<string[]>([])
 
@@ -485,6 +491,9 @@ const MissingKnowledgeSelect = ({
                                 handleRemove={handleRemove}
                                 shopName={shopName}
                                 shopType={shopType}
+                                onKnowledgeResourceClick={
+                                    onKnowledgeResourceClick
+                                }
                             />
                         )
                     })}
@@ -501,6 +510,11 @@ type KnowledgeTagProps = {
     handleRemove: (option: string) => void
     shopName: string
     shopType: string
+    onKnowledgeResourceClick: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
+    ) => void
 }
 
 export const KnowledgeTag = ({
@@ -508,6 +522,7 @@ export const KnowledgeTag = ({
     handleRemove,
     shopName,
     shopType,
+    onKnowledgeResourceClick,
 }: KnowledgeTagProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
     const enableKnowledgeManagementFromTicketView = useFlag(
@@ -536,10 +551,18 @@ export const KnowledgeTag = ({
         ? knowledgeResourceShouldBeLink(type)
         : true
 
-    const onClick =
-        !enableKnowledgeManagementFromTicketView || isLink
-            ? undefined
-            : () => openPreview(popoverProps)
+    const onClick = () => {
+        onKnowledgeResourceClick(
+            choice.value,
+            choice.type,
+            getHelpcenterIdAsString(choice.meta?.helpCenterId),
+        )
+
+        if (enableKnowledgeManagementFromTicketView && !isLink) {
+            openPreview(popoverProps)
+        }
+    }
+
     return (
         <KnowledgeSourcePopover {...popoverProps} onClick={onClick}>
             {(ref, eventHandlers) => (

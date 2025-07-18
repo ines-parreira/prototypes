@@ -8,6 +8,7 @@ import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getA
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import {
     getHelpCenterArticleUrl,
+    getHelpcenterIdAsString,
     getHelpCenterIdByResourceType,
     getKnowledgeResourceTypeLabel,
     getKnowledgeUrl,
@@ -218,5 +219,31 @@ describe('parseKnowledgeResourceContent', () => {
         ).toBe(
             'Customer: Email is coolUse action: Get Subscriptions Use action: Update shipping address Order: Order Note some radonm listtesttest1test2something bold',
         )
+    })
+})
+
+describe('getHelpcenterIdAsString', () => {
+    describe('when helpCenterId is a number', () => {
+        it('returns string representation of the number', () => {
+            expect(getHelpcenterIdAsString(123)).toBe('123')
+        })
+    })
+
+    describe('when helpCenterId is a string', () => {
+        it('returns the string as is', () => {
+            expect(getHelpcenterIdAsString('456')).toBe('456')
+        })
+    })
+
+    describe('when helpCenterId is null', () => {
+        it('returns empty string', () => {
+            expect(getHelpcenterIdAsString(null)).toBe('')
+        })
+    })
+
+    describe('when helpCenterId is undefined', () => {
+        it('returns empty string', () => {
+            expect(getHelpcenterIdAsString(undefined)).toBe('')
+        })
     })
 })

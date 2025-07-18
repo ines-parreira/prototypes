@@ -21,6 +21,7 @@ describe('useFeedbackTracking', () => {
 
     const mockResourceId = 'resource-123'
     const mockResourceType = AiAgentKnowledgeResourceTypeEnum.ARTICLE
+    const mockResourceSetId = 'helpCenter-456'
 
     const expectedEventContext = {
         ticketId: defaultProps.ticketId,
@@ -37,6 +38,7 @@ describe('useFeedbackTracking', () => {
             result.current.onKnowledgeResourceClick(
                 mockResourceId,
                 mockResourceType,
+                mockResourceSetId,
             )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -45,6 +47,7 @@ describe('useFeedbackTracking', () => {
                     ...expectedEventContext,
                     resourceId: mockResourceId,
                     resourceType: mockResourceType,
+                    resourceSetId: mockResourceSetId,
                 },
             )
         })
@@ -59,6 +62,7 @@ describe('useFeedbackTracking', () => {
             result.current.onKnowledgeResourceEditClick(
                 mockResourceId,
                 mockResourceType,
+                mockResourceSetId,
             )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -67,6 +71,7 @@ describe('useFeedbackTracking', () => {
                     ...expectedEventContext,
                     resourceId: mockResourceId,
                     resourceType: mockResourceType,
+                    resourceSetId: mockResourceSetId,
                 },
             )
         })
@@ -78,13 +83,17 @@ describe('useFeedbackTracking', () => {
                 useFeedbackTracking(defaultProps),
             )
 
-            result.current.onKnowledgeResourceCreateClick(mockResourceType)
+            result.current.onKnowledgeResourceCreateClick(
+                mockResourceType,
+                mockResourceSetId,
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentFeedbackKnowledgeResourceCreateClicked,
                 {
                     ...expectedEventContext,
                     resourceType: mockResourceType,
+                    resourceSetId: mockResourceSetId,
                 },
             )
         })
@@ -99,6 +108,7 @@ describe('useFeedbackTracking', () => {
             result.current.onKnowledgeResourceSaved(
                 mockResourceId,
                 mockResourceType,
+                mockResourceSetId,
                 true,
             )
 
@@ -108,6 +118,7 @@ describe('useFeedbackTracking', () => {
                     ...expectedEventContext,
                     resourceId: mockResourceId,
                     resourceType: mockResourceType,
+                    resourceSetId: mockResourceSetId,
                     isNew: true,
                 },
             )
@@ -132,6 +143,7 @@ describe('useFeedbackTracking', () => {
             result.current.onKnowledgeResourceClick(
                 mockResourceId,
                 mockResourceType,
+                mockResourceSetId,
             )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -142,6 +154,7 @@ describe('useFeedbackTracking', () => {
                     userId: newProps.userId,
                     resourceId: mockResourceId,
                     resourceType: mockResourceType,
+                    resourceSetId: mockResourceSetId,
                 },
             )
         })

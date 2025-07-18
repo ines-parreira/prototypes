@@ -34,7 +34,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { onApiError } from 'state/utils'
 
-import { getGuidanceUrl } from './utils'
+import { getGuidanceUrl, getHelpcenterIdAsString } from './utils'
 
 import css from './ManageGuidanceForm.less'
 
@@ -64,6 +64,7 @@ type ManageGuidanceFormProps = {
     onSaveClick: (
         resourceId: string,
         resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
         isNew: boolean,
     ) => void
 }
@@ -184,6 +185,7 @@ export const ManageGuidanceForm = ({
             keepOpenForEditing: boolean,
         ) => {
             const locale = helpCenter.default_locale
+            const helpCenterId = getHelpcenterIdAsString(helpCenter.id)
 
             if (guidance) {
                 await updateGuidanceArticle(
@@ -201,6 +203,7 @@ export const ManageGuidanceForm = ({
                 onSaveClick(
                     guidance.id.toString(),
                     AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    helpCenterId,
                     false,
                 )
             } else {
@@ -221,6 +224,7 @@ export const ManageGuidanceForm = ({
                     onSaveClick(
                         articleId,
                         AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        helpCenterId,
                         true,
                     )
 

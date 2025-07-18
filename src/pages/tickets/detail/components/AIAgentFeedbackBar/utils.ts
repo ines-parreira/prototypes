@@ -183,3 +183,9 @@ export const parseKnowledgeResourceContent = (
 
     return withActions
 }
+
+export const getHelpcenterIdAsString = (
+    helpCenterId: number | string | null | undefined,
+) => {
+    return helpCenterId?.toString() ?? ''
+}

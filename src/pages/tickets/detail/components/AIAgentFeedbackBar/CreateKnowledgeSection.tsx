@@ -12,6 +12,7 @@ import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimpl
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
 import { AiAgentKnowledgeResourceTypeEnum } from './types'
+import { getHelpcenterIdAsString } from './utils'
 
 type LinkProps = {
     href?: string
@@ -38,6 +39,7 @@ type CreateKnowledgeSectionProps = {
     helpCenterId?: number | null
     onKnowledgeResourceCreateClick: (
         resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
     ) => void
 }
 
@@ -67,7 +69,10 @@ const CreateKnowledgeSection = ({
         return enableKnowledgeManagementFromTicketView
             ? {
                   onClick: () => {
-                      onKnowledgeResourceCreateClick(resourceType)
+                      onKnowledgeResourceCreateClick(
+                          resourceType,
+                          getHelpcenterIdAsString(helpCenterId),
+                      )
                       openCreate(resourceType)
                   },
               }

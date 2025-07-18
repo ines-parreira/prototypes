@@ -20,6 +20,7 @@ import { ManageGuidanceForm } from '../ManageGuidanceForm'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
 jest.mock('../utils', () => ({
+    ...jest.requireActual('../utils'),
     getGuidanceUrl: jest.fn(() => '/guidance/1'),
 }))
 
@@ -150,7 +151,7 @@ const createMockHooks = (overrides = {}) => {
 
 describe('ManageGuidanceForm', () => {
     const helpCenter = {
-        id: 1,
+        id: 987,
         default_locale: 'en',
     } as any
 
@@ -479,6 +480,7 @@ describe('ManageGuidanceForm', () => {
             expect(onSaveClickMock).toHaveBeenCalledWith(
                 '1',
                 AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                '987',
                 true,
             )
         })
@@ -540,7 +542,7 @@ describe('ManageGuidanceForm', () => {
                 title: 'New',
                 url: '/guidance/1',
                 knowledgeResourceType: 'GUIDANCE',
-                helpCenterId: '1',
+                helpCenterId: '987',
             })
         })
     })
@@ -633,6 +635,7 @@ describe('ManageGuidanceForm', () => {
             expect(onSaveClickMock).toHaveBeenCalledWith(
                 '1',
                 AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                '987',
                 false,
             )
         })
@@ -769,7 +772,7 @@ describe('ManageGuidanceForm', () => {
             expect(onSubmitNewMissingKnowledgeMock).toHaveBeenCalledWith({
                 resourceId: '1',
                 resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                resourceSetId: '1',
+                resourceSetId: '987',
                 resourceLocale: 'en',
             })
         })

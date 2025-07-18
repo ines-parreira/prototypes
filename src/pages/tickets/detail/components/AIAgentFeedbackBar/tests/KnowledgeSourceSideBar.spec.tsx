@@ -47,7 +47,11 @@ jest.mock('../ManageGuidanceForm', () => ({
     ManageGuidanceForm: ({ url, onSaveClick }: any) => (
         <div data-testid="mock-manage-guidance">
             Manage Guidance - URL: {url}
-            <button onClick={() => onSaveClick?.('2', 'GUIDANCE', true)}>
+            <button
+                onClick={() =>
+                    onSaveClick?.('2', 'GUIDANCE', 'help-center-1', true)
+                }
+            >
                 Save Guidance
             </button>
         </div>
@@ -61,7 +65,11 @@ jest.mock('../KnowledgeSourceArticleEditor', () => ({
             <div>Mode: {isCreateMode ? 'CREATE' : 'EDIT'}</div>
             <div>Article ID: {article?.id || 'none'}</div>
             <button onClick={onClose}>Close Editor</button>
-            <button onClick={() => onSaveClick?.('1', 'ARTICLE', isCreateMode)}>
+            <button
+                onClick={() =>
+                    onSaveClick?.('1', 'ARTICLE', 'help-center-1', isCreateMode)
+                }
+            >
                 Save Article
             </button>
         </div>
@@ -126,12 +134,14 @@ describe('KnowledgeSourceSideBar', () => {
         id: 1,
         knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
         url: 'http://test.com',
+        helpCenterId: 'help-center-1',
     }
 
     const guidanceResource = {
         id: 2,
         knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
         url: 'http://test.com',
+        helpCenterId: 'help-center-1',
     }
 
     beforeEach(() => {
@@ -320,6 +330,7 @@ describe('KnowledgeSourceSideBar', () => {
                 id: 999, // Non-existent article ID
                 knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 url: 'http://test.com',
+                helpCenterId: 'help-center-1',
             },
             mode: KnowledgeSourceSideBarMode.CREATE,
             closeModal: mockCloseModal,
@@ -383,6 +394,7 @@ describe('KnowledgeSourceSideBar', () => {
             expect(mockOnKnowledgeResourceEditClick).toHaveBeenCalledWith(
                 1,
                 AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                'help-center-1',
             )
             expect(mockOpenEdit).toHaveBeenCalledWith(helpCenterResource)
         })
@@ -402,8 +414,38 @@ describe('KnowledgeSourceSideBar', () => {
             expect(mockOnKnowledgeResourceEditClick).toHaveBeenCalledWith(
                 2,
                 AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                'help-center-1',
             )
             expect(mockOpenEdit).toHaveBeenCalledWith(guidanceResource)
+        })
+
+        it('calls onKnowledgeResourceEditClick with empty string when helpCenterId is undefined', () => {
+            const resourceWithoutHelpCenterId = {
+                id: 3,
+                knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                url: 'http://test.com',
+                helpCenterId: undefined,
+            }
+
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: resourceWithoutHelpCenterId,
+                mode: KnowledgeSourceSideBarMode.PREVIEW,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.click(screen.getByText('Edit'))
+
+            expect(mockOnKnowledgeResourceEditClick).toHaveBeenCalledWith(
+                3,
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                '',
+            )
+            expect(mockOpenEdit).toHaveBeenCalledWith(
+                resourceWithoutHelpCenterId,
+            )
         })
     })
 
@@ -423,6 +465,7 @@ describe('KnowledgeSourceSideBar', () => {
             expect(mockOnKnowledgeResourceSaved).toHaveBeenCalledWith(
                 '2',
                 'GUIDANCE',
+                'help-center-1',
                 true,
             )
         })
@@ -442,6 +485,7 @@ describe('KnowledgeSourceSideBar', () => {
             expect(mockOnKnowledgeResourceSaved).toHaveBeenCalledWith(
                 '1',
                 'ARTICLE',
+                'help-center-1',
                 true,
             )
         })

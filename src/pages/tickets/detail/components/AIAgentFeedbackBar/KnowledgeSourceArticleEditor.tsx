@@ -57,6 +57,7 @@ type KnowledgeSourceArticleEditorProps = {
     onSaveClick: (
         resourceId: string,
         resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
         isNew: boolean,
     ) => void
 }
@@ -170,6 +171,7 @@ const KnowledgeSourceArticleEditor = ({
             onSaveClick(
                 article.id.toString(),
                 AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                article.help_center_id.toString(),
                 true,
             )
 
@@ -191,6 +193,7 @@ const KnowledgeSourceArticleEditor = ({
             onSaveClick(
                 article.id.toString(),
                 AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                article.help_center_id.toString(),
                 false,
             )
         },

@@ -146,6 +146,7 @@ describe('CreateKnowledgeSection', () => {
         ).toHaveBeenCalledWith(AiAgentKnowledgeResourceTypeEnum.GUIDANCE)
         expect(mockOnKnowledgeResourceCreateClick).toHaveBeenCalledWith(
             AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+            '123',
         )
     })
 
@@ -179,6 +180,7 @@ describe('CreateKnowledgeSection', () => {
         ).toHaveBeenCalledWith(AiAgentKnowledgeResourceTypeEnum.ARTICLE)
         expect(mockOnKnowledgeResourceCreateClick).toHaveBeenCalledWith(
             AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+            '123',
         )
     })
 
@@ -195,5 +197,34 @@ describe('CreateKnowledgeSection', () => {
         expect(
             screen.queryByText('Create Help Center article'),
         ).not.toBeInTheDocument()
+    })
+
+    describe('when helpCenterId is set', () => {
+        it('should call onKnowledgeResourceCreateClick with stringified helpCenterId when helpCenterId is set', () => {
+            mockUseFlag.mockReturnValue(true)
+            const mockOnKnowledgeResourceCreateClick = jest.fn()
+            render(
+                <CreateKnowledgeSection
+                    shopName={shopName}
+                    helpCenterId={456}
+                    onKnowledgeResourceCreateClick={
+                        mockOnKnowledgeResourceCreateClick
+                    }
+                />,
+            )
+
+            const button = screen.getByRole('button', {
+                name: /Create knowledge/i,
+            })
+            fireEvent.click(button)
+
+            const guidanceLink = screen.getByText('Create Guidance')
+            fireEvent.click(guidanceLink)
+
+            expect(mockOnKnowledgeResourceCreateClick).toHaveBeenCalledWith(
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                '456',
+            )
+        })
     })
 })

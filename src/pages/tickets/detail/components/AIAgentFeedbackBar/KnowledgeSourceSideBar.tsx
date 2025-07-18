@@ -17,6 +17,7 @@ import {
     AiAgentKnowledgeResourceTypeEnum,
     SuggestedResourceValue,
 } from './types'
+import { getHelpcenterIdAsString } from './utils'
 
 import css from './KnowledgeSourceSideBar.less'
 
@@ -34,10 +35,12 @@ type KnowledgeSourceSideBarProps = {
     onKnowledgeResourceEditClick: (
         resourceId: string,
         resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
     ) => void
     onKnowledgeResourceSaved: (
         resourceId: string,
         resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
         isNew: boolean,
     ) => void
 }
@@ -135,6 +138,7 @@ const KnowledgeSourceSideBar = ({
         onKnowledgeResourceEditClick(
             selectedResource.id,
             selectedResource.knowledgeResourceType,
+            getHelpcenterIdAsString(selectedResource.helpCenterId),
         )
         openEdit(selectedResource)
     }, [onKnowledgeResourceEditClick, openEdit, selectedResource])

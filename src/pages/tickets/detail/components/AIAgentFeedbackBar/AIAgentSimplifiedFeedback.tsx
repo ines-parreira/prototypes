@@ -415,6 +415,9 @@ const AIAgentSimplifiedFeedback = () => {
                                 accountId={accountId}
                                 shopName={shopName}
                                 shopType={shopType}
+                                onKnowledgeResourceClick={
+                                    onKnowledgeResourceClick
+                                }
                             />
                         )}
 

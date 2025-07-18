@@ -180,7 +180,10 @@ jest.mock('core/flags', () => ({
 const mockUseFlag = useFlag as jest.Mock
 
 describe('MissingKnowledgeSelect', () => {
+    let onKnowledgeResourceClickMock: jest.Mock
+
     beforeEach(() => {
+        onKnowledgeResourceClickMock = jest.fn()
         useGetGuidancesAvailableActionsMocked.mockReturnValue({
             isLoading: false,
             guidanceActions: [],
@@ -218,6 +221,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -251,6 +255,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -278,6 +283,7 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={handleRemove}
                 shopName="test-shop"
                 shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -288,6 +294,138 @@ describe('MissingKnowledgeSelect', () => {
         fireEvent.click(closeButton)
 
         expect(handleRemove).toHaveBeenCalledWith('1')
+    })
+
+    it('calls onKnowledgeResourceClick when clicking on a knowledge tag', () => {
+        const handleRemove = jest.fn()
+
+        render(
+            <KnowledgeTag
+                choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                        helpCenterId: '2',
+                    },
+                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                    displayLabel: 'Macros::Macro Test',
+                    label: 'Macros::Macro Test',
+                    value: '1',
+                }}
+                handleRemove={handleRemove}
+                shopName="test-shop"
+                shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Macro Test'))
+
+        expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
+            '1',
+            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            '2',
+        )
+    })
+
+    it('calls onKnowledgeResourceClick with empty string when helpCenterId is undefined', () => {
+        const handleRemove = jest.fn()
+
+        render(
+            <KnowledgeTag
+                choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                        // helpCenterId is undefined
+                    },
+                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                    displayLabel: 'Macros::Macro Test',
+                    label: 'Macros::Macro Test',
+                    value: '1',
+                }}
+                handleRemove={handleRemove}
+                shopName="test-shop"
+                shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Macro Test'))
+
+        expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
+            '1',
+            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            '',
+        )
+    })
+
+    it('calls onKnowledgeResourceClick with empty string when helpCenterId is empty string', () => {
+        const handleRemove = jest.fn()
+
+        render(
+            <KnowledgeTag
+                choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                        helpCenterId: '',
+                    },
+                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                    displayLabel: 'Macros::Macro Test',
+                    label: 'Macros::Macro Test',
+                    value: '1',
+                }}
+                handleRemove={handleRemove}
+                shopName="test-shop"
+                shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Macro Test'))
+
+        expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
+            '1',
+            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            '',
+        )
+    })
+
+    it('calls onKnowledgeResourceClick with empty string when meta has no helpCenterId', () => {
+        const handleRemove = jest.fn()
+
+        render(
+            <KnowledgeTag
+                choice={{
+                    meta: {
+                        url: 'https://example.com',
+                        title: 'Knowledge Tag Test',
+                        content: 'This is a test',
+                        // helpCenterId is not provided, so it's undefined
+                    },
+                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                    displayLabel: 'Macros::Macro Test',
+                    label: 'Macros::Macro Test',
+                    value: '1',
+                }}
+                handleRemove={handleRemove}
+                shopName="test-shop"
+                shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+            />,
+        )
+
+        fireEvent.click(screen.getByText('Macro Test'))
+
+        expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
+            '1',
+            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            '',
+        )
     })
 
     it('disables selection when disabled prop is true', () => {
@@ -307,6 +445,7 @@ describe('MissingKnowledgeSelect', () => {
                 onSubmit={onSubmit}
                 onRemove={onRemove}
                 disabled={true}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -340,6 +479,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -362,6 +502,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -407,6 +548,7 @@ describe('MissingKnowledgeSelect', () => {
                         AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                     ),
                 ]}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -456,6 +598,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -516,6 +659,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={customEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -558,6 +702,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={customEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -606,6 +751,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={customEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -631,6 +777,7 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -655,6 +802,7 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -692,10 +840,17 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
         fireEvent.click(screen.getByText('test'))
+
+        expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
+            'test-test',
+            AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+            '1',
+        )
         expect(openPreviewMock).toHaveBeenCalledWith({
             content: 'This is a test',
             id: 'test-test',
@@ -714,6 +869,7 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -753,6 +909,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataWithDuplicates}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 
@@ -807,6 +964,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataWithDuplicates}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
             { container },
         )
@@ -872,6 +1030,7 @@ describe('MissingKnowledgeSelect', () => {
                 enrichedData={enrichedDataWithComplexDuplicates}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
+                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
             />,
         )
 

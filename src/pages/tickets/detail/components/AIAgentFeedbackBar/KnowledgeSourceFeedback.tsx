@@ -37,6 +37,7 @@ type KnowledgeSourceProps = {
     onKnowledgeResourceClick: (
         resourceId: string,
         resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
     ) => void
 }
 
@@ -99,6 +100,7 @@ const KnowledgeSourceFeedback = ({
         onKnowledgeResourceClick(
             resource.resource.id,
             resource.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+            resource.resource.resourceSetId,
         )
 
         if (!enableKnowledgeManagementFromTicketView || isLink || isDeleted) {
@@ -137,7 +139,6 @@ const KnowledgeSourceFeedback = ({
                             [css.deleted]: isDeleted,
                             [css.hasLink]: !isDeleted,
                         })}
-                        onClick={onClick}
                     >
                         {isMetadataLoading ? (
                             <div className={css.iconSkeleton}>

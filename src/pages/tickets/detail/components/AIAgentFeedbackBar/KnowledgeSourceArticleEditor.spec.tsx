@@ -479,6 +479,7 @@ describe('KnowledgeSourceArticleEditor', () => {
                 expect(mockOnSaveClick).toHaveBeenCalledWith(
                     '123',
                     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    mockHelpCenter.id.toString(),
                     true,
                 )
                 expect(mockOpenEdit).toHaveBeenCalledWith({
@@ -521,6 +522,7 @@ describe('KnowledgeSourceArticleEditor', () => {
                 expect(mockOnSaveClick).toHaveBeenCalledWith(
                     mockArticle.id.toString(),
                     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    mockArticle.help_center_id.toString(),
                     false,
                 )
             })
@@ -564,6 +566,7 @@ describe('KnowledgeSourceArticleEditor', () => {
                 expect(mockOnSaveClick).toHaveBeenCalledWith(
                     mockArticle.id.toString(),
                     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    mockArticle.help_center_id.toString(),
                     false,
                 )
             })
