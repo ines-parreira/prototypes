@@ -1,6 +1,13 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react'
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
 import classnames from 'classnames'
+import { useParams } from 'react-router'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -14,6 +21,7 @@ import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../../constants'
+import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
 import { PlaygroundCustomer } from '../../types'
 import { PlaygroundAction } from '../PlaygroundActions/types'
 import {
@@ -23,6 +31,7 @@ import {
 } from '../PlaygroundChat/PlaygroundChat.types'
 import {
     PlaygroundCustomerSelection,
+    SenderTypeValues,
     TicketData,
 } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import { PlaygroundEditor } from '../PlaygroundEditor/PlaygroundEditor'
@@ -87,9 +96,15 @@ export const PlaygroundInputSection = ({
     channelAvailability,
     onChannelAvailabilityChange,
 }: Props) => {
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
+    const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
+        SenderTypeValues.NEW_CUSTOMER,
+    )
 
     const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
         WIZARD_POST_COMPLETION_QUERY_KEY,
@@ -165,6 +180,20 @@ export const PlaygroundInputSection = ({
         [onChannelAvailabilityChange],
     )
 
+    const { onTestMessageSent } = usePlaygroundTracking({ shopName })
+
+    const handleSendMessage = () => {
+        onSendMessage()
+
+        onTestMessageSent({
+            channel,
+            playgroundSettings:
+                channel === 'email'
+                    ? senderSelectedOption
+                    : channelAvailability,
+        })
+    }
+
     return (
         <div className={css.container}>
             <div
@@ -193,6 +222,8 @@ export const PlaygroundInputSection = ({
                             onCustomerChange={handleCustomerChange}
                             onTicketChange={handleTicketChange}
                             isDisabled={!isInitialMessage}
+                            senderType={senderSelectedOption}
+                            onSenderTypeChange={setSenderSelectedOption}
                         />
                     )}
                 </div>
@@ -232,7 +263,7 @@ export const PlaygroundInputSection = ({
                 <Button
                     id="send-button"
                     isDisabled={isDisabled}
-                    onClick={onSendMessage}
+                    onClick={handleSendMessage}
                 >
                     Send
                 </Button>

@@ -38,6 +38,8 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
+import { useSupportActionTracking } from '../hooks/useSupportActionTracking'
+
 import css from './UseCaseTemplateModal.less'
 
 type Props = {
@@ -132,8 +134,10 @@ const UseCaseTemplateModal = ({ template, onClose }: Props) => {
 
     const { routes } = useAiAgentNavigation({ shopName })
 
-    const handleCreateAndEnable = useCallback(() => {
-        return createAction([
+    const { onActionCreated } = useSupportActionTracking({ shopName })
+
+    const handleCreateAndEnable = useCallback(async () => {
+        await createAction([
             {
                 internal_id: graph.internal_id,
                 store_name: shopName,
@@ -145,7 +149,11 @@ const UseCaseTemplateModal = ({ template, onClose }: Props) => {
                 steps,
             ) as StoreWorkflowsConfiguration,
         ])
-    }, [createAction, graph, shopName, shopType, steps])
+
+        onActionCreated({
+            createdHow: 'from-template',
+        })
+    }, [createAction, graph, shopName, shopType, steps, onActionCreated])
 
     const handleCustomize = useCallback(() => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(

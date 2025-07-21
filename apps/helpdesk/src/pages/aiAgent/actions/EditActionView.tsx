@@ -38,6 +38,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import ActionFormView from './components/ActionFormView'
 import useDeleteAction from './hooks/useDeleteAction'
+import { useSupportActionTracking } from './hooks/useSupportActionTracking'
 import useThreeplIntegrations from './hooks/useThreeplIntegrations'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
@@ -138,6 +139,8 @@ const EditActionView = ({ configuration }: Props) => {
         dispatch,
     })
 
+    const { onActionEdited } = useSupportActionTracking({ shopName })
+
     const handleSave = useCallback(async () => {
         const graph = handleValidate(handleTouch(visualBuilderGraphDirty))
 
@@ -179,6 +182,8 @@ const EditActionView = ({ configuration }: Props) => {
             },
             configurationDirty as StoreWorkflowsConfiguration,
         ])
+
+        onActionEdited()
     }, [
         visualBuilderGraphDirty,
         editAction,
@@ -190,6 +195,7 @@ const EditActionView = ({ configuration }: Props) => {
         shopType,
         appDispatch,
         availableIntegrations,
+        onActionEdited,
     ])
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)

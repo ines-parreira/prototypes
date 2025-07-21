@@ -14,6 +14,7 @@ import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_ch
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
+import { useShoppingAssistantTracking } from 'pages/aiAgent/hooks/useShoppingAssistantTracking'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -50,6 +51,9 @@ export const CustomerEngagementSettings = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
+
+    const { onShoppingAssistantCustomerEngagementUpdated } =
+        useShoppingAssistantTracking({ shopName })
 
     const gorgiasChatIntegrations = useAppSelector(
         getGorgiasChatIntegrationsByStoreName(shopName),
@@ -155,6 +159,21 @@ export const CustomerEngagementSettings = () => {
                             status: NotificationStatus.Success,
                         }),
                     )
+
+                    onShoppingAssistantCustomerEngagementUpdated({
+                        customerEngagementSetting: {
+                            triggerOnSearch: data.isSalesHelpOnSearchEnabled
+                                ? 'on'
+                                : 'off',
+                            suggestedProductQuestion:
+                                data.isConversationStartersEnabled
+                                    ? 'on'
+                                    : 'off',
+                            askAnythingInput: data.isAskAnythingInputEnabled
+                                ? 'on'
+                                : 'off',
+                        },
+                    })
                 } catch {
                     void dispatch(
                         notify({
@@ -175,6 +194,7 @@ export const CustomerEngagementSettings = () => {
             primaryLanguage,
             appId,
             reset,
+            onShoppingAssistantCustomerEngagementUpdated,
         ],
     )
 

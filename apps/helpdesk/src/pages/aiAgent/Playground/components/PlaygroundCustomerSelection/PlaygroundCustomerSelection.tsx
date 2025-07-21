@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { Ticket } from '@gorgias/helpdesk-client'
 
@@ -48,6 +48,8 @@ type Props = {
     onTicketChange: (ticketData: TicketData) => void
     customer: PlaygroundCustomer
     isDisabled?: boolean
+    senderType: string
+    onSenderTypeChange: (value: string) => void
 }
 
 export const PlaygroundCustomerSelection = ({
@@ -55,16 +57,14 @@ export const PlaygroundCustomerSelection = ({
     onTicketChange,
     customer,
     isDisabled,
+    senderType,
+    onSenderTypeChange,
 }: Props) => {
-    const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
-        SenderTypeValues.NEW_CUSTOMER,
-    )
-
     const handleSenderSelectChange = (value: Value) => {
         if (typeof value !== 'string') {
             return
         }
-        setSenderSelectedOption(value)
+        onSenderTypeChange(value)
         if (value === SenderTypeValues.NEW_CUSTOMER) {
             const playgroundCustomer: PlaygroundCustomer = {
                 email: CustomerHttpIntegrationDataMock.address,
@@ -85,9 +85,9 @@ export const PlaygroundCustomerSelection = ({
 
     useEffect(() => {
         if (customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id) {
-            setSenderSelectedOption(SenderTypeValues.NEW_CUSTOMER)
+            onSenderTypeChange(SenderTypeValues.NEW_CUSTOMER)
         }
-    }, [customer])
+    }, [customer, onSenderTypeChange])
 
     const customerEmail =
         customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id ? '' : customer.email
@@ -97,20 +97,20 @@ export const PlaygroundCustomerSelection = ({
             <SelectField
                 fullWidth
                 showSelectedOption
-                value={senderSelectedOption}
+                value={senderType}
                 onChange={handleSenderSelectChange}
                 options={senderSelectOptions}
                 className={css.senderSelect}
                 disabled={isDisabled}
             />
-            {senderSelectedOption === SenderTypeValues.EXISTING_TICKET && (
+            {senderType === SenderTypeValues.EXISTING_TICKET && (
                 <TicketSearchDropdownSelectView
                     className={css.ticketSearch}
                     onSelect={handleTicketSelect}
                     isDisabled={isDisabled}
                 />
             )}
-            {senderSelectedOption === SenderTypeValues.EXISTING_CUSTOMER && (
+            {senderType === SenderTypeValues.EXISTING_CUSTOMER && (
                 <CustomerSearchDropdownSelectView
                     className={css.customerSearch}
                     baseSearchTerm={customerEmail}

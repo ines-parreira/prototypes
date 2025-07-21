@@ -7,6 +7,7 @@ import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesSettingsData } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
+import { useShoppingAssistantTracking } from 'pages/aiAgent/hooks/useShoppingAssistantTracking'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
 import {
     DiscountStrategy,
@@ -126,6 +127,12 @@ export const SalesSettings = () => {
         }
     }
 
+    const { onShoppingAssistantStrategyUpdated } = useShoppingAssistantTracking(
+        {
+            shopName: storeConfiguration?.storeName || '',
+        },
+    )
+
     const onSave = async () => {
         try {
             if (storeConfiguration) {
@@ -144,6 +151,13 @@ export const SalesSettings = () => {
                         status: NotificationStatus.Success,
                     }),
                 )
+
+                onShoppingAssistantStrategyUpdated({
+                    strategy: {
+                        sellingStyle: salesPersuasionLevel,
+                        discountStrategy: salesDiscountStrategyLevel,
+                    },
+                })
             }
         } catch {
             void dispatch(

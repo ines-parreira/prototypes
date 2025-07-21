@@ -1,6 +1,10 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -15,6 +19,8 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
 import {
@@ -55,6 +61,7 @@ jest.mock(
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
 }))
+
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockedUsePlaygroundMessages = jest.mocked(usePlaygroundMessages)
 const mockedUsePlaygroundForm = jest.mocked(usePlaygroundForm)
@@ -94,12 +101,23 @@ const defaultUseAiAgentOnboardingNotification = {
     isAiAgentOnboardingNotificationEnabled: true,
 }
 
+const queryClient = mockQueryClient()
+const mockStore = configureMockStore([thunk])
+
 const renderComponent = () => {
-    return render(
-        <PlaygroundChat
-            storeData={getStoreConfigurationFixture()}
-            accountData={getAccountConfigurationWithHttpIntegrationFixture()}
-        />,
+    return renderWithRouter(
+        <Provider store={mockStore({})}>
+            <QueryClientProvider client={queryClient}>
+                <PlaygroundChat
+                    storeData={getStoreConfigurationFixture()}
+                    accountData={getAccountConfigurationWithHttpIntegrationFixture()}
+                />
+            </QueryClientProvider>
+        </Provider>,
+        {
+            path: `/:shopType/:shopName/ai-agent/knowledge`,
+            route: '/shopify/test-store/ai-agent/knowledge',
+        },
     )
 }
 

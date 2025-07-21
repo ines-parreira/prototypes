@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom'
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -25,6 +26,7 @@ import {
     EMPTY_STATE_BANNER_ACTIONS_DESCRIPTION,
 } from './constants'
 import { handleError } from './hooks/errorHandler'
+import { useSupportActionTracking } from './hooks/useSupportActionTracking'
 import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
 
 import css from './ActionsView.less'
@@ -40,6 +42,13 @@ const ActionsView = () => {
         shopType: string
         shopName: string
     }>()
+
+    const { onActionPageViewed } = useSupportActionTracking({ shopName })
+
+    useEffectOnce(() => {
+        onActionPageViewed()
+    })
+
     const {
         data: storeWfConfigurations = [],
         isInitialLoading: isStoreWfConfigurationsInitialLoading,

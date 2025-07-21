@@ -21,6 +21,7 @@ export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 export function AutomateOverview() {
     useEffectOnce(() => {
         logEvent(SegmentEvent.AutomateOverviewPageViewed)
+        logEvent(SegmentEvent.StatAutomateOverviewPageViewed)
     })
 
     return <AutomateOverviewContent />

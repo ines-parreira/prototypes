@@ -43,6 +43,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import ActionFormView from './components/ActionFormView'
+import { useSupportActionTracking } from './hooks/useSupportActionTracking'
 import useThreeplIntegrations from './hooks/useThreeplIntegrations'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
@@ -172,6 +173,8 @@ const CreateActionView = () => {
         dispatch,
     })
 
+    const { onActionCreated } = useSupportActionTracking({ shopName })
+
     const handleSave = useCallback(async () => {
         const graph = handleValidate(handleTouch(visualBuilderGraphDirty))
 
@@ -210,6 +213,12 @@ const CreateActionView = () => {
                 availableIntegrations,
             ) as StoreWorkflowsConfiguration,
         ])
+
+        onActionCreated({
+            createdHow: configurationFromTemplate.current
+                ? 'from-template'
+                : 'from-scratch',
+        })
     }, [
         visualBuilderGraphDirty,
         createAction,
@@ -221,6 +230,7 @@ const CreateActionView = () => {
         shopType,
         appDispatch,
         availableIntegrations,
+        onActionCreated,
     ])
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)

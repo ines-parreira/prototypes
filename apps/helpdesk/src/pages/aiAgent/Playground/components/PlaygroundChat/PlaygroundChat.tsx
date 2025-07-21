@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     AccountConfigurationWithHttpIntegration,
     AiAgentOnboardingState,
@@ -13,6 +14,7 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
+import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
 import {
     mapPlaygroundFormValuesToMessage,
     mapPlaygroundPromptToMessage,
@@ -75,6 +77,10 @@ export const PlaygroundChat = ({
         helpCenterId: storeData.helpCenterId,
         shopName: storeData.storeName,
         snippetHelpCenterId: storeData.snippetHelpCenterId,
+    })
+
+    const { onTestPageViewed } = usePlaygroundTracking({
+        shopName: storeData.storeName,
     })
 
     const handleNewConversation = useCallback(() => {
@@ -190,6 +196,10 @@ export const PlaygroundChat = ({
             handleNewConversation()
         }
     }, [storeData, handleNewConversation])
+
+    useEffectOnce(() => {
+        onTestPageViewed()
+    })
 
     return (
         <div className={css.container}>

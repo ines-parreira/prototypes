@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import AiSalesAgentOverviewDownloadButton from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
 import css from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview.less'
@@ -94,6 +95,12 @@ const AiSalesAgentSalesOverview = () => {
             }}
         />
     )
+
+    useEffect(() => {
+        if (!shouldDisplayPaywall) {
+            logEvent(SegmentEvent.StatShoppingAssistantPageViewed)
+        }
+    }, [shouldDisplayPaywall])
 
     if (shouldDisplayPaywall) {
         return (

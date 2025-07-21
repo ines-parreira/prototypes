@@ -1,8 +1,11 @@
 import { useParams } from 'react-router-dom'
 
+import useEffectOnce from 'hooks/useEffectOnce'
+
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { CustomerEngagementSettings } from './components/CustomerEngagementSettings/CustomerEngagementSettings'
 import { SALES } from './constants'
+import { useShoppingAssistantTracking } from './hooks/useShoppingAssistantTracking'
 
 import css from './AiAgentCustomerEngagement.less'
 
@@ -10,6 +13,13 @@ export const AiAgentCustomerEngagement = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
+
+    const { onShoppingAssistantCustomerEngagementViewed } =
+        useShoppingAssistantTracking({ shopName })
+
+    useEffectOnce(() => {
+        onShoppingAssistantCustomerEngagementViewed()
+    })
 
     return (
         <AiAgentLayout

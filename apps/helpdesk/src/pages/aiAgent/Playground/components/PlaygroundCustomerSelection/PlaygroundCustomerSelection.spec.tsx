@@ -15,7 +15,10 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../../constants'
-import { PlaygroundCustomerSelection } from './PlaygroundCustomerSelection'
+import {
+    PlaygroundCustomerSelection,
+    SenderTypeValues,
+} from './PlaygroundCustomerSelection'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
@@ -32,6 +35,8 @@ const mockGetTicket = jest.mocked(getTicket)
 
 const mockOnCustomerChange = jest.fn()
 const mockOnTicketChange = jest.fn()
+const mockSenderType = SenderTypeValues.NEW_CUSTOMER
+const mockOnSenderTypeChange = jest.fn()
 
 const renderComponent = (
     props?: Partial<ComponentProps<typeof PlaygroundCustomerSelection>>,
@@ -43,6 +48,8 @@ const renderComponent = (
                 onTicketChange={mockOnTicketChange}
                 customer={DEFAULT_PLAYGROUND_CUSTOMER}
                 isDisabled={false}
+                senderType={mockSenderType}
+                onSenderTypeChange={mockOnSenderTypeChange}
                 {...props}
             />
         </QueryClientProvider>,
@@ -54,6 +61,7 @@ describe('PlaygroundCustomerSelection', () => {
         jest.useFakeTimers()
         mockOnCustomerChange.mockClear()
         mockOnTicketChange.mockClear()
+        mockOnSenderTypeChange.mockClear()
         mockGetTicket.mockClear()
 
         mockUseSearchCustomer.mockReturnValue({
@@ -123,10 +131,9 @@ describe('PlaygroundCustomerSelection', () => {
     })
 
     test('render empty input when select existing customer', () => {
-        renderComponent()
-
-        const existingCustomerOption = screen.getByText('Existing customer')
-        fireEvent.click(existingCustomerOption)
+        renderComponent({
+            senderType: SenderTypeValues.EXISTING_CUSTOMER,
+        })
 
         expect(
             screen.getByPlaceholderText('Search customer email'),
@@ -162,13 +169,10 @@ describe('PlaygroundCustomerSelection', () => {
     })
 
     test('renders ticket search component when existing ticket is selected', () => {
-        renderComponent()
+        renderComponent({
+            senderType: SenderTypeValues.EXISTING_TICKET,
+        })
 
-        // Select existing ticket option
-        const existingTicketOption = screen.getByText('Existing ticket')
-        fireEvent.click(existingTicketOption)
-
-        // Verify that the real ticket search component is rendered
         expect(
             screen.getByPlaceholderText('Search by ticket id or email subject'),
         ).toBeInTheDocument()
@@ -198,11 +202,9 @@ describe('PlaygroundCustomerSelection', () => {
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchEmailTickets>)
 
-        renderComponent()
-
-        // Select existing ticket option
-        const existingTicketOption = screen.getByText('Existing ticket')
-        fireEvent.click(existingTicketOption)
+        renderComponent({
+            senderType: SenderTypeValues.EXISTING_TICKET,
+        })
 
         // Type in the search input
         const searchInput = screen.getByPlaceholderText(
