@@ -107,7 +107,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v5
         with:
-          directory: coverage/jest
+          directory: apps/helpdesk/coverage/jest
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests-jest-${{ matrix.job-index }}
           name: codecov-test-coverage-jest-${{ matrix.job-index }}
