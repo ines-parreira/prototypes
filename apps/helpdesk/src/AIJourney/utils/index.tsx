@@ -9,3 +9,12 @@ export function splitStringUsingRegex(inputString: string): string[] {
 
     return characters
 }
+
+export const isNegative = (value: string): boolean => {
+    return value.startsWith('-')
+}
+
+export const isZero = (value: string): boolean => {
+    const numeric = parseFloat(value.replace(/^[+-]/, '').replace('%', ''))
+    return numeric === 0
+}

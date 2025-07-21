@@ -14,12 +14,15 @@ import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'
 import { DiscountCard } from 'AIJourney/components/DiscountCard/DiscountCard'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import greenLightningIcon from 'assets/img/ai-journey/green-lightning.svg'
+import greyLightningIcon from 'assets/img/ai-journey/lightning.svg'
 import orangeLightningIcon from 'assets/img/ai-journey/orange-lightning.svg'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { MoreOptions } from './components/MoreOptions'
+import { EmptyState } from './components/EmptyState/EmptyState'
+import { Footer } from './components/Footer/Footer'
+import { MoreOptions } from './components/MoreOptions/MoreOptions'
 
 import css from './AnalyticsCard.less'
 
@@ -29,6 +32,7 @@ type AnalyticsCardProps = {
     integrationId?: number
     currentIntegration?: Integration
     abandonedCartJourney: JourneyApiDTO
+    totalSent?: string
 }
 
 export const AnalyticsCard = ({
@@ -37,6 +41,7 @@ export const AnalyticsCard = ({
     integrationId,
     currentIntegration,
     abandonedCartJourney,
+    totalSent,
 }: AnalyticsCardProps) => {
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
@@ -48,8 +53,11 @@ export const AnalyticsCard = ({
         setJourneyState(abandonedCartJourney.state)
     }, [abandonedCartJourney])
 
-    const statusIcon =
-        journeyState === 'active' ? greenLightningIcon : orangeLightningIcon
+    const statusIcon = {
+        active: greenLightningIcon,
+        paused: orangeLightningIcon,
+        draft: greyLightningIcon,
+    }
 
     const statusBadgeClass = classNames(css.statusBadge, {
         [css['statusBadge--active']]: journeyState === 'active',
@@ -82,22 +90,36 @@ export const AnalyticsCard = ({
         }
     }, [journeyState, dispatch, handleUpdate])
 
+    const isEmpty = !analyticsData?.length
+
     return (
         <div className={css.analyticsCard}>
-            <div className={css.status}>
-                <img src={statusIcon} alt="sphere-icon" />
-                <span>Abandoned Cart</span>
-                <div className={statusBadgeClass}>
-                    {journeyState?.toUpperCase()}
+            <div className={css.analyticsContent}>
+                <div className={css.status}>
+                    <img src={statusIcon[journeyState]} alt="sphere-icon" />
+                    <span>Abandoned Cart</span>
+                    <div className={statusBadgeClass}>
+                        {journeyState?.toUpperCase()}
+                    </div>
+                    <MoreOptions
+                        shopName={shopName}
+                        journeyState={journeyState}
+                        handleChangeStatus={handleUpdateJourneyState}
+                    />
                 </div>
-                <MoreOptions
-                    shopName={shopName}
-                    journeyState={journeyState}
-                    handleChangeStatus={handleUpdateJourneyState}
-                />
+                {isEmpty ? (
+                    <EmptyState />
+                ) : (
+                    <>
+                        <AnalyticsData data={analyticsData} />
+                        {!isDiscountEnabled && <DiscountCard />}
+                    </>
+                )}
             </div>
-            <AnalyticsData data={analyticsData} />
-            {!isDiscountEnabled && <DiscountCard />}
+            <Footer
+                maxDiscount={journeyConfigurations?.max_discount_percent}
+                totalSent={totalSent}
+            />
         </div>
     )
 }

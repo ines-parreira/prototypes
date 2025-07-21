@@ -1,0 +1,51 @@
+:local {
+    .footer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--neutral-grey-2);
+        padding: var(--layout-spacing-s);
+    }
+
+    .discountInfo {
+        display: flex;
+        gap: var(--layout-spacing-xs);
+        height: 32px;
+        width: fit-content;
+        padding: var(--layout-spacing-xs) var(--layout-spacing-xs);
+        align-items: center;
+        border-radius: var(--layout-spacing-l);
+        background: #fae5ff;
+        color: #c334dd;
+        font-feature-settings:
+            'ss01' on,
+            'cv10' on;
+
+        font-weight: 500;
+    }
+
+    .discountInfoIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--neutral-grey-0);
+        border-radius: var(--layout-spacing-l);
+        width: 18px;
+        height: 18px;
+    }
+
+    .totalSent {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--layout-spacing-xs);
+        color: var(--Neutral-Grey_6, #222);
+        text-align: right;
+        font-family: Inter;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 16px; /* 133.333% */
+    }
+}

@@ -27,6 +27,8 @@ const digestContent = (hasDiscount?: boolean) => (
     </>
 )
 
+const totalSent = '10'
+
 const digestMetrics = [
     { label: 'Total Revenue', value: '$123,273', variation: '+14%' },
     { label: 'Total Orders', value: '7,289', variation: '+90%' },
@@ -158,6 +160,7 @@ export const Performance = () => {
                             integrationId={integrationId}
                             currentIntegration={currentIntegration}
                             abandonedCartJourney={abandonedCartJourney}
+                            totalSent={totalSent}
                             key={abandonedCartJourney?.id}
                         />
                     ))}

@@ -3,17 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { DigestCard } from './DigestCard'
 
 describe('<DigestCard />', () => {
-    it('renders content and badge', () => {
-        render(
-            <DigestCard
-                content={<span>Digest content here</span>}
-                metrics={[]}
-            />,
-        )
-        expect(screen.getByText('Digest content here')).toBeInTheDocument()
-    })
-
-    it('renders metrics with correct values and variations', () => {
+    it('renders metrics and content with correct values and variations', () => {
         const metrics = [
             { label: 'Revenue', value: '$1000', variation: '+12%' },
             { label: 'Opt-outs', value: '5', variation: '-2%' },
@@ -32,6 +22,8 @@ describe('<DigestCard />', () => {
         expect(screen.getByText('Neutral')).toBeInTheDocument()
         expect(screen.getByText('0')).toBeInTheDocument()
         expect(screen.getByText('0%')).toBeInTheDocument()
+
+        expect(screen.getByText('Metrics test')).toBeInTheDocument()
     })
 
     it('shows arrow_upward for positive and arrow_downward for negative variations and no arrow for neutral', () => {

@@ -1,26 +1,18 @@
-import { useCallback } from 'react'
-
-import classNames from 'classnames'
 import { motion } from 'framer-motion'
 
 import { PerformanceBadge } from '../PerformanceBadge/PerformanceBadge'
+import { EmptyContent } from './components/EmptyContent/EmptyContent'
+import { Metrics, MetricsProps } from './components/Metrics/Metrics'
 
 import css from './DigestCard.less'
 
 type DigestCardProps = {
     content: React.ReactNode
-    metrics?: any[]
+    metrics?: MetricsProps[]
 }
 
 export const DigestCard = ({ content, metrics }: DigestCardProps) => {
-    const isNegative = useCallback((value: string): boolean => {
-        return value.startsWith('-')
-    }, [])
-
-    const isZero = useCallback((value: string): boolean => {
-        const numeric = parseFloat(value.replace(/^[+-]/, '').replace('%', ''))
-        return numeric === 0
-    }, [])
+    const isEmpty = !content || !metrics?.length
 
     return (
         <motion.div
@@ -31,37 +23,16 @@ export const DigestCard = ({ content, metrics }: DigestCardProps) => {
         >
             <div className={css.digestHeader}>
                 <PerformanceBadge />
-                <div className={css.digestContent}>{content}</div>
+                {!isEmpty && <div className={css.digestContent}>{content}</div>}
             </div>
             <div className={css.digestMetrics}>
-                {metrics?.map((metric, index) => (
-                    <div key={index} className={css.metric}>
-                        <span>{metric.label}</span>
-                        <div className={css.metricInformation}>
-                            <div className={css.metricValue}>
-                                <b>{metric.value}</b>
-                            </div>
-                            <div
-                                className={classNames(css.metricVariation, {
-                                    [css['metricVariation--negative']]:
-                                        isNegative(metric.variation),
-                                    [css['metricVariation--neutral']]: isZero(
-                                        metric.variation,
-                                    ),
-                                })}
-                            >
-                                <b>{metric.variation}</b>
-                                {!isZero(metric.variation) && (
-                                    <i className="material-icons-outlined">
-                                        {isNegative(metric.variation)
-                                            ? 'arrow_downward'
-                                            : 'arrow_upward'}
-                                    </i>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                {isEmpty ? (
+                    <EmptyContent />
+                ) : (
+                    metrics?.map((metric, index) => (
+                        <Metrics key={index} {...metric} />
+                    ))
+                )}
             </div>
         </motion.div>
     )

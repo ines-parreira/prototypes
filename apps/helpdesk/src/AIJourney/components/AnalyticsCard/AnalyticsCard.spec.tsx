@@ -35,6 +35,14 @@ const mockAbandonedCartJourney = {
     state: JourneyStatusEnum.Active,
 }
 
+const mockJourneyConfigurations = {
+    max_follow_up_messages: null,
+    sms_sender_number: '+18668918539',
+    sms_sender_integration_id: 131157,
+    offer_discount: true,
+    max_discount_percent: 22,
+}
+
 describe('<AnalyticsCard />', () => {
     beforeEach(() => {
         mockUseParams.mockReturnValue({ shopName: 'test-shop' })
@@ -47,6 +55,11 @@ describe('<AnalyticsCard />', () => {
                     <AnalyticsCard
                         analyticsData={data}
                         abandonedCartJourney={mockAbandonedCartJourney}
+                        journeyConfigurations={{
+                            ...mockJourneyConfigurations,
+                            offer_discount: false,
+                            max_discount_percent: 0,
+                        }}
                     />
                 </Provider>
             </QueryClientProvider>,
@@ -68,11 +81,35 @@ describe('<AnalyticsCard />', () => {
                             ...mockAbandonedCartJourney,
                             state: JourneyStatusEnum.Paused,
                         }}
+                        journeyConfigurations={{
+                            ...mockJourneyConfigurations,
+                            offer_discount: false,
+                            max_discount_percent: 0,
+                        }}
                     />
                 </Provider>
             </QueryClientProvider>,
         )
         expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
         expect(screen.getByTestId('discount-card')).toBeInTheDocument()
+    })
+
+    it('should not render discount card when discount is already enabled', () => {
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <AnalyticsCard
+                        analyticsData={data}
+                        abandonedCartJourney={{
+                            ...mockAbandonedCartJourney,
+                            state: JourneyStatusEnum.Paused,
+                        }}
+                        journeyConfigurations={mockJourneyConfigurations}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+        expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
+        expect(screen.queryByTestId('discount-card')).not.toBeInTheDocument()
     })
 })
