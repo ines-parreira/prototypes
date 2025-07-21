@@ -116,10 +116,12 @@ export const AnalyticsCard = ({
                     </>
                 )}
             </div>
-            <Footer
-                maxDiscount={journeyConfigurations?.max_discount_percent}
-                totalSent={totalSent}
-            />
+            {!isEmpty && (
+                <Footer
+                    maxDiscount={journeyConfigurations?.max_discount_percent}
+                    totalSent={totalSent}
+                />
+            )}
         </div>
     )
 }
