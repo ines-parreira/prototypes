@@ -132,7 +132,7 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
     return (
         <>
             <Container fluid className={settingsCss.pageContainer}>
-                <h2>General</h2>
+                <h2 className={settingsCss.headingSection}>General</h2>
                 <Col lg={6} xl={7} className="pl-0">
                     <div className="mt-4">
                         <EmailIntegrationAddressField
