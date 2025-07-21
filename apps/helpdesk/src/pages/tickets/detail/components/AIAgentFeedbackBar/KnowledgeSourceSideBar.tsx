@@ -10,6 +10,7 @@ import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionMa
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourcePreview from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview'
+import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 
 import KnowledgeSourceArticleEditor from './KnowledgeSourceArticleEditor'
 import { ManageGuidanceForm } from './ManageGuidanceForm'
@@ -59,6 +60,8 @@ const KnowledgeSourceSideBar = ({
     const helpCenter = useCurrentHelpCenter()
     const { setEditModal } = useEditionManager()
     const { isPassingRulesCheck } = useAbilityChecker()
+    const { getHasUnsavedChanges, openUnsavedChangesModal } =
+        useUnsavedChangesModal()
 
     const canUpdateArticle = isPassingRulesCheck(({ can }) =>
         can('update', 'ArticleEntity'),
@@ -148,7 +151,11 @@ const KnowledgeSourceSideBar = ({
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape' && !!mode) {
-                onClose()
+                if (getHasUnsavedChanges()) {
+                    openUnsavedChangesModal()
+                } else {
+                    onClose()
+                }
             }
         }
 
@@ -159,7 +166,7 @@ const KnowledgeSourceSideBar = ({
         return () => {
             document.removeEventListener('keydown', handleKeyDown)
         }
-    }, [mode, onClose])
+    }, [mode, onClose, getHasUnsavedChanges, openUnsavedChangesModal])
 
     return (
         <div ref={containerRef}>
@@ -171,48 +178,46 @@ const KnowledgeSourceSideBar = ({
                 withPopovers={true}
                 container={containerRef.current}
             >
-                <Drawer.Portal>
-                    <Drawer.Content className={css.sidebarContent}>
-                        <div className={css.root}>
-                            {isPreviewMode && (
-                                <KnowledgeSourcePreview
-                                    {...selectedResource}
-                                    lastUpdatedAt={resourceUpdatedAt}
-                                    onClose={closeModal}
-                                    onEdit={onEditClick}
-                                    shopName={shopName}
-                                    shopType={shopType}
-                                />
-                            )}
+                <Drawer.Content className={css.sidebarContent}>
+                    <div className={css.root}>
+                        {isPreviewMode && (
+                            <KnowledgeSourcePreview
+                                {...selectedResource}
+                                lastUpdatedAt={resourceUpdatedAt}
+                                onClose={closeModal}
+                                onEdit={onEditClick}
+                                shopName={shopName}
+                                shopType={shopType}
+                            />
+                        )}
 
-                            {(isEditMode || isCreateMode) && isGuidance && (
-                                <ManageGuidanceForm
-                                    shopName={shopName}
-                                    shopType={shopType}
-                                    url={selectedResource.url}
-                                    guidance={selectedGuidance}
-                                    helpCenter={helpCenter}
-                                    onSubmitNewMissingKnowledge={
-                                        onSubmitNewMissingKnowledge
-                                    }
-                                    onSaveClick={onKnowledgeResourceSaved}
-                                />
-                            )}
+                        {(isEditMode || isCreateMode) && isGuidance && (
+                            <ManageGuidanceForm
+                                shopName={shopName}
+                                shopType={shopType}
+                                url={selectedResource.url}
+                                guidance={selectedGuidance}
+                                helpCenter={helpCenter}
+                                onSubmitNewMissingKnowledge={
+                                    onSubmitNewMissingKnowledge
+                                }
+                                onSaveClick={onKnowledgeResourceSaved}
+                            />
+                        )}
 
-                            {shouldDisplayArticleEditor && (
-                                <KnowledgeSourceArticleEditor
-                                    article={selectedArticle}
-                                    isCreateMode={isCreateMode}
-                                    onClose={onClose}
-                                    onSubmitNewMissingKnowledge={
-                                        onSubmitNewMissingKnowledge
-                                    }
-                                    onSaveClick={onKnowledgeResourceSaved}
-                                />
-                            )}
-                        </div>
-                    </Drawer.Content>
-                </Drawer.Portal>
+                        {shouldDisplayArticleEditor && (
+                            <KnowledgeSourceArticleEditor
+                                article={selectedArticle}
+                                isCreateMode={isCreateMode}
+                                onClose={onClose}
+                                onSubmitNewMissingKnowledge={
+                                    onSubmitNewMissingKnowledge
+                                }
+                                onSaveClick={onKnowledgeResourceSaved}
+                            />
+                        )}
+                    </div>
+                </Drawer.Content>
             </Drawer.Root>
         </div>
     )

@@ -7,6 +7,7 @@ import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenter
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 
 import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
@@ -97,10 +98,18 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useAbilityChecker: jest.fn(),
 }))
 
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider',
+    () => ({
+        useUnsavedChangesModal: jest.fn(),
+    }),
+)
+
 const useKnowledgeSourceSideBarMock = useKnowledgeSourceSideBar as jest.Mock
 const useCurrentHelpCenterMock = useCurrentHelpCenter as jest.Mock
 const useEditionManagerMock = useEditionManager as jest.Mock
 const useAbilityCheckerMock = useAbilityChecker as jest.Mock
+const useUnsavedChangesModalMock = useUnsavedChangesModal as jest.Mock
 
 describe('KnowledgeSourceSideBar', () => {
     const testArticle = {
@@ -164,6 +173,14 @@ describe('KnowledgeSourceSideBar', () => {
 
         useAbilityCheckerMock.mockReturnValue({
             isPassingRulesCheck: mockIsPassingRulesCheck,
+        })
+
+        useUnsavedChangesModalMock.mockReturnValue({
+            isOpen: false,
+            openUnsavedChangesModal: jest.fn(),
+            closeUnsavedChangesModal: jest.fn(),
+            setHasUnsavedChangesRef: jest.fn(),
+            getHasUnsavedChanges: jest.fn(() => false),
         })
 
         useKnowledgeSourceSideBarMock.mockReturnValue({
@@ -488,6 +505,92 @@ describe('KnowledgeSourceSideBar', () => {
                 'help-center-1',
                 true,
             )
+        })
+    })
+
+    describe('when Escape key is pressed', () => {
+        it('should trigger unsaved changes modal when there are unsaved changes', () => {
+            const mockOpenUnsavedChangesModal = jest.fn()
+            const mockGetHasUnsavedChanges = jest.fn(() => true)
+
+            useUnsavedChangesModalMock.mockReturnValue({
+                isOpen: false,
+                openUnsavedChangesModal: mockOpenUnsavedChangesModal,
+                closeUnsavedChangesModal: jest.fn(),
+                setHasUnsavedChangesRef: jest.fn(),
+                getHasUnsavedChanges: mockGetHasUnsavedChanges,
+            })
+
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: guidanceResource,
+                mode: KnowledgeSourceSideBarMode.EDIT,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.keyDown(document, { key: 'Escape' })
+
+            expect(mockGetHasUnsavedChanges).toHaveBeenCalled()
+            expect(mockOpenUnsavedChangesModal).toHaveBeenCalled()
+            expect(mockCloseModal).not.toHaveBeenCalled()
+        })
+
+        it('should close modal directly when there are no unsaved changes', () => {
+            const mockOpenUnsavedChangesModal = jest.fn()
+            const mockGetHasUnsavedChanges = jest.fn(() => false)
+
+            useUnsavedChangesModalMock.mockReturnValue({
+                isOpen: false,
+                openUnsavedChangesModal: mockOpenUnsavedChangesModal,
+                closeUnsavedChangesModal: jest.fn(),
+                setHasUnsavedChangesRef: jest.fn(),
+                getHasUnsavedChanges: mockGetHasUnsavedChanges,
+            })
+
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: guidanceResource,
+                mode: KnowledgeSourceSideBarMode.EDIT,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.keyDown(document, { key: 'Escape' })
+
+            expect(mockGetHasUnsavedChanges).toHaveBeenCalled()
+            expect(mockOpenUnsavedChangesModal).not.toHaveBeenCalled()
+            expect(mockCloseModal).toHaveBeenCalled()
+        })
+
+        it('should not respond to Escape key when mode is not set', () => {
+            const mockOpenUnsavedChangesModal = jest.fn()
+            const mockGetHasUnsavedChanges = jest.fn()
+
+            useUnsavedChangesModalMock.mockReturnValue({
+                isOpen: false,
+                openUnsavedChangesModal: mockOpenUnsavedChangesModal,
+                closeUnsavedChangesModal: jest.fn(),
+                setHasUnsavedChangesRef: jest.fn(),
+                getHasUnsavedChanges: mockGetHasUnsavedChanges,
+            })
+
+            useKnowledgeSourceSideBarMock.mockReturnValue({
+                selectedResource: null,
+                mode: undefined,
+                closeModal: mockCloseModal,
+                openEdit: mockOpenEdit,
+            })
+
+            render(<KnowledgeSourceSideBar {...baseProps} />)
+
+            fireEvent.keyDown(document, { key: 'Escape' })
+
+            expect(mockGetHasUnsavedChanges).not.toHaveBeenCalled()
+            expect(mockOpenUnsavedChangesModal).not.toHaveBeenCalled()
+            expect(mockCloseModal).not.toHaveBeenCalled()
         })
     })
 })
