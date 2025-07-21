@@ -1,12 +1,17 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { PinSavedFilterButton } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton'
+import {
+    PinSavedFilterButton,
+    REMOVE_AS_DEFAULT_FILTER_TOOLTIP,
+    SET_AS_DEFAULT_FILTER_TOOLTIP,
+} from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton'
 
 describe('PinSavedFilterButton', () => {
     const defaultProps = {
         savedFilterId: 123,
         onPin: jest.fn(),
+        setDisableOuter: jest.fn(),
     }
 
     beforeEach(() => {
@@ -198,6 +203,50 @@ describe('PinSavedFilterButton', () => {
             rerender(<PinSavedFilterButton {...defaultProps} isPinned={true} />)
             button = screen.getByRole('button')
             expect(button).toHaveAttribute('aria-pressed', 'true')
+        })
+
+        it('should show correct tooltip text on hover', async () => {
+            const { rerender } = render(
+                <PinSavedFilterButton {...defaultProps} isPinned={false} />,
+            )
+
+            let button = screen.getByRole('button')
+            await userEvent.hover(button)
+
+            await waitFor(() => {
+                expect(screen.getByRole('tooltip')).toHaveTextContent(
+                    SET_AS_DEFAULT_FILTER_TOOLTIP,
+                )
+            })
+
+            rerender(
+                <PinSavedFilterButton
+                    {...defaultProps}
+                    isPinned={true}
+                    setDisableOuter={jest.fn()}
+                />,
+            )
+
+            button = screen.getByRole('button')
+            await userEvent.hover(button)
+
+            await waitFor(() => {
+                expect(screen.getByRole('tooltip')).toHaveTextContent(
+                    REMOVE_AS_DEFAULT_FILTER_TOOLTIP,
+                )
+            })
+        })
+
+        it('should call setDisableOuter when hovered', async () => {
+            render(<PinSavedFilterButton {...defaultProps} />)
+
+            const button = screen.getByRole('button')
+
+            await userEvent.hover(button)
+            expect(defaultProps.setDisableOuter).toHaveBeenCalledWith(true)
+
+            await userEvent.unhover(button)
+            expect(defaultProps.setDisableOuter).toHaveBeenCalledWith(false)
         })
     })
 })

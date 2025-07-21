@@ -1,4 +1,4 @@
-import { MouseEventHandler, useMemo, useRef } from 'react'
+import { MouseEventHandler, useMemo, useRef, useState } from 'react'
 
 import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -80,6 +80,8 @@ const ApplySavedFilters = ({
     const dispatch = useAppDispatch()
     const savedFilterAppliedId = useAppSelector(getSavedFilterAppliedId)
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
+
+    const [disableOuter, setDisableOuter] = useState(false)
 
     const buttonRef = useRef<HTMLDivElement>(null)
 
@@ -168,7 +170,7 @@ const ApplySavedFilters = ({
                                     <Tooltip
                                         target={targetId}
                                         placement="top"
-                                        disabled={!showTooltip}
+                                        disabled={!showTooltip || disableOuter}
                                     >
                                         {filter.name}
                                     </Tooltip>
@@ -184,6 +186,7 @@ const ApplySavedFilters = ({
                                             }
                                             onClick={stopPropagation}
                                             className={css.pin}
+                                            setDisableOuter={setDisableOuter}
                                         />
                                     )}
                                 </DropdownItem>
