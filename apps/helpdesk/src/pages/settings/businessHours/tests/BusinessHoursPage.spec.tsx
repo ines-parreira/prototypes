@@ -38,8 +38,8 @@ describe('BusinessHoursPage', () => {
     it('renders CustomBusinessHours when the feature flag is on', () => {
         renderWithStoreAndQueryClientAndRouter(<BusinessHoursPage />, {})
 
+        expect(screen.getByText('Default Business Hours')).toBeInTheDocument()
         expect(screen.getByText('Custom Business Hours')).toBeInTheDocument()
-        expect(screen.getByText('Add business hours')).toBeInTheDocument()
     })
 
     it('should render the edit custom business hours page', () => {

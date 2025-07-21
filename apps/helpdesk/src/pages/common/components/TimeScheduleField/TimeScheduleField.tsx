@@ -9,9 +9,10 @@ import css from './TimeScheduleField.less'
 
 type Props = {
     name: string
+    root?: HTMLElement
 }
 
-export default function TimeScheduleField({ name }: Props) {
+export default function TimeScheduleField({ name, root }: Props) {
     const { fields, append, remove } = useFieldArray({
         name,
     })
@@ -27,6 +28,7 @@ export default function TimeScheduleField({ name }: Props) {
                         onRemove={remove}
                         name={name}
                         isRemovable={fields.length > 1}
+                        root={root}
                     />
                 ))}
             </div>

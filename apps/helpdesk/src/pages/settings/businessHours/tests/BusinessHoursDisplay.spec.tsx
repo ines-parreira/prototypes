@@ -1,12 +1,32 @@
-import { screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import { mockListAccountSettingsHandler } from '@gorgias/helpdesk-mocks'
 import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 
 import BusinessHoursDisplay from '../BusinessHoursDisplay'
+
+const mockBusinessHoursData = {
+    id: 1,
+    type: 'business-hours',
+    data: {
+        timezone: 'US/Pacific',
+        business_hours: [
+            {
+                days: '1,2,3,4,5',
+                from_time: '09:00',
+                to_time: '17:00',
+            },
+        ],
+    },
+}
 
 const renderComponent = ({
     businessHours,
@@ -34,17 +54,48 @@ const renderComponent = ({
     }
 
     return renderWithStore(
-        <BusinessHoursDisplay businessHours={businessHours} />,
+        <QueryClientProvider client={queryClient}>
+            <BusinessHoursDisplay businessHours={businessHours} />
+        </QueryClientProvider>,
         storeState,
     )
 }
 
+const queryClient = mockQueryClient()
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    const listAccountSettingsMock = mockListAccountSettingsHandler(async () => {
+        return HttpResponse.json({
+            data: [mockBusinessHoursData],
+        })
+    })
+    server.use(listAccountSettingsMock.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.removeQueries()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('BusinessHoursDisplay', () => {
-    it('should render default business hours when no custom business hours provided', () => {
+    it('should render default business hours when no custom business hours provided', async () => {
         renderComponent()
 
-        expect(screen.getByText('Default')).toBeInTheDocument()
-        expect(screen.getByText('Mon-Fri, 9:00 AM-5:00 PM')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Default')).toBeInTheDocument()
+            expect(
+                screen.getByText('Mon-Fri, 9:00 AM-5:00 PM'),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should render custom business hours when provided', () => {

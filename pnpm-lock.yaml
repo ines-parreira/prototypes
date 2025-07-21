@@ -232,8 +232,8 @@ importers:
         specifier: catalog:rest-api-sdk
         version: 0.2.16
       '@gorgias/merchant-ui-kit':
-        specifier: ^0.35.3
-        version: 0.35.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        specifier: ^0.36.0
+        version: 0.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/realtime':
         specifier: ^0.18.6
         version: 0.18.6(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -2441,11 +2441,11 @@ packages:
   '@gorgias/convert-types@0.2.12':
     resolution: {integrity: sha512-KkYt4H92kEO+V1wjQTdp20htxBzoTskXJYJTLeS58bkatz/bpk/2/NgosMpFDkRoqIT+YWZaQCiphhAF+wwmVQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.2.12/eaceac5203d7c2046f67cb9e3532a992b154e49c}
 
-  '@gorgias/design-tokens@0.10.2':
-    resolution: {integrity: sha512-WfZ76lyPNHThtjOaW2OHI1CwprcQriO7+DGeOLhgg+xq6rKO28NrCtV4Rs5c4lv9Qh8h2Gji8RnIKuYDa1y8jw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.2/c38285ac14e6bcfc888beddf1b8057129a59afba}
-
   '@gorgias/design-tokens@0.10.5':
     resolution: {integrity: sha512-qx8g0V81tVGQYJNhpNwbo+XpdMU/QUUfb2EukKjzKeTE9elPYKuZj0LrWErax2MibAeSh5ngOl/5mPtbcHpAgg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.5/f9bd803a287ca6ae26e6c47b2234e67fbc0f8242}
+
+  '@gorgias/design-tokens@0.10.6':
+    resolution: {integrity: sha512-FuHWeHfIXEBZikMkROibNW+ExpXBSN/DCl5okENo+Z/0hwhjxpwyaXxXd3xVoj4tizRSZtFqDrHO4/azq9dJIQ==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.6/ba39830b7c97655df64fd35c4f6f64a49fe577db}
 
   '@gorgias/event-tracker-api@1.1.0':
     resolution: {integrity: sha512-a8GgwT7PtdbbayjpPKBUBl8gGCzGA1n64/X3qYzXSQQ3zboCNFaJ0L2nKhcuu7E6cbANCeFyf/kRqD+Wa5wrkQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.1.0/d9b9487ff2eba9161dfa48efa5a927397ded692d}
@@ -2529,8 +2529,8 @@ packages:
   '@gorgias/knowledge-service-validators@0.2.16':
     resolution: {integrity: sha512-oVJTKmdEB8GwcbjwCd5E1L9JIURk7wVjjmDYRDv0iidpqCqtPxIZxYQDoIyL86nMuU5b85LEGZ1+/q2v7Ff9tw==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.16/3cd91bdcc92032db62dd7e241a7d11b8911244e2}
 
-  '@gorgias/merchant-ui-kit@0.35.3':
-    resolution: {integrity: sha512-4te0ugeBtMGwdhygd2FWDHZ5gWxtzMGkvQ6bSRMDL73XH6/Cb0MqZFPKfLBvEpnlNOOvEDJ2zx7dMKFjQr9uGA==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.35.3/49ded6ec09f7413bfb490776a8f7850e3ac71b35}
+  '@gorgias/merchant-ui-kit@0.36.1':
+    resolution: {integrity: sha512-Irp+35B06cU8jQKZpguqEx45081L3M0fTXv1dVLTm9joX2QHndh/Ldwuj6zsAhbmOfvhDhsihYkiCqCOzRGFoQ==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.36.1/7b32369b38f1190df4abf4a331b66f9130aee1e9}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -12863,9 +12863,9 @@ snapshots:
 
   '@gorgias/convert-types@0.2.12': {}
 
-  '@gorgias/design-tokens@0.10.2': {}
-
   '@gorgias/design-tokens@0.10.5': {}
+
+  '@gorgias/design-tokens@0.10.6': {}
 
   '@gorgias/event-tracker-api@1.1.0':
     dependencies:
@@ -13053,10 +13053,10 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/merchant-ui-kit@0.35.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/merchant-ui-kit@0.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@gorgias/design-tokens': 0.10.2
+      '@gorgias/design-tokens': 0.10.6
       classnames: 2.5.1
       downshift: 9.0.9(react@18.2.0)
       react: 18.2.0

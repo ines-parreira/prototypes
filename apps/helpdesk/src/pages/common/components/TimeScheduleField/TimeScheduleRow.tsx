@@ -13,6 +13,7 @@ type Props = {
     name: string
     onRemove: (index?: number) => void
     isRemovable: boolean
+    root?: HTMLElement
 }
 
 export default function TimeScheduleRow({
@@ -20,6 +21,7 @@ export default function TimeScheduleRow({
     index,
     isRemovable,
     onRemove,
+    root,
 }: Props) {
     const namePrefix = `${name}.${index}`
 
@@ -42,6 +44,7 @@ export default function TimeScheduleRow({
                             )?.label ?? ''
                         )
                     }}
+                    root={root}
                 />
             </div>
 
