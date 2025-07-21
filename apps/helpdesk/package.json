@@ -33,10 +33,10 @@
         "build:copy-pubnub-worker-dev": "NODE_ENV=development node ./scripts/copy-pubnub-worker.js",
         "build:clean": "pnpm rimraf build/*",
         "build:app": "NODE_ENV=production rspack --config rspack.app.config.mjs",
-        "build:sharedWorker": "NODE_ENV=production rspack --config rspack.sharedWorker.config.mjs && pnpm build:copy-pubnub-worker-prod",
+        "build:sharedWorker": "NODE_ENV=production rspack --config rspack.workers.config.mjs && pnpm build:copy-pubnub-worker-prod",
         "serve": "run-s serve:app serve:sharedWorker",
-        "serve:app": "rspack serve --config rspack.app.config.mjs",
-        "serve:sharedWorker": "rspack -w --config rspack.sharedWorker.config.mjs",
+        "serve:app": "NODE_ENV=development rspack serve --config rspack.app.config.mjs",
+        "serve:sharedWorker": "NODE_ENV=development rspack -w --config rspack.workers.config.mjs",
         "helpcenter:fetch-openapi": "curl http://localhost:4001/api/help-center/api-json > ./src/rest_api/help_center_api/help-center.openapi.json && prettier --write --experimental-cli ./src/rest_api/help_center_api/help-center.openapi.json",
         "helpcenter:generate-types": "typegen ./src/rest_api/help_center_api/help-center.openapi.json > ./src/rest_api/help_center_api/client.generated.d.ts",
         "helpcenter:update-client": "pnpm helpcenter:fetch-openapi && pnpm helpcenter:generate-types",
@@ -55,7 +55,8 @@
         "ks-api:fetch-openapi": "curl http://localhost:9500/openapi.json > ./src/rest_api/knowledge_service_api/ks-api.openapi.json && prettier --write --experimental-cli ./src/rest_api/knowledge_service_api/ks-api.openapi.json",
         "ks-api:generate-types": "typegen ./src/rest_api/knowledge_service_api/ks-api.openapi.json > ./src/rest_api/knowledge_service_api/client.generated.d.ts",
         "dev:proxy": "DEV_ENV=proxy pnpm serve:app",
-        "dev:local": "pnpm serve:app"
+        "dev:local": "pnpm serve:app",
+        "dev:workers:proxy": "DEV_ENV=proxy pnpm serve:sharedWorker"
     },
     "dependencies": {
         "@algolia/cache-common": "4.13.1",
@@ -395,7 +396,8 @@
         "tsx": "^4.19.2",
         "typescript": "5.3.3",
         "url-loader": "1.1.2",
-        "validator": "13.7.0"
+        "validator": "13.7.0",
+        "webpack-merge": "^6.0.1"
     },
     "peerDependenciesMeta": {
         "react-native": {
