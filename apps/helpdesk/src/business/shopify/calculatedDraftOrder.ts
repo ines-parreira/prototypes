@@ -64,6 +64,9 @@ export function getCalculateDraftOrderPayload(
                   countryCode: shippingAddress.get('country_code'),
                   provinceCode: shippingAddress.get('province_code'),
                   zip: shippingAddress.get('zip'),
+                  ...(shippingAddress.get('phone')
+                      ? { phone: shippingAddress.get('phone') }
+                      : {}),
               }
             : null,
         shippingLine: !!shippingLine
