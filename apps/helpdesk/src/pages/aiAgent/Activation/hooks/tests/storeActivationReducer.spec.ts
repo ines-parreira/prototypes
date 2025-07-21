@@ -1019,7 +1019,7 @@ describe('storeActivationReducer', () => {
             expect(installationMissing).toBe(false)
         })
 
-        it('should disable chat when support scope is missing but chat is installed', () => {
+        it('should enable chat when support scope is missing but chat is installed', () => {
             const { enabled, installationMissing, integrationMissing } =
                 getChatActivation({
                     storeConfiguration: { ...mockStoreConfig, scopes: [] },
@@ -1030,7 +1030,7 @@ describe('storeActivationReducer', () => {
                     helpCentersFaq,
                 })
 
-            expect(enabled).toBe(false)
+            expect(enabled).toBe(true)
             expect(integrationMissing).toBe(false)
             expect(installationMissing).toBe(false)
         })
@@ -1114,6 +1114,113 @@ describe('storeActivationReducer', () => {
             })
 
             expect(availableMonitoredChat).toStrictEqual([1])
+        })
+    })
+
+    describe('UPDATE_PRICING action', () => {
+        it('should update sales enabled status when hasNewAutomatePlan changes to true', () => {
+            const initialState = storeConfigurationToState(EMPTY_STATE, {
+                type: 'UPDATE_STORE_CONFIGURATION',
+                storeConfigurations: [
+                    {
+                        ...mockStoreConfig,
+                        scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                    },
+                ],
+                selfServiceChatChannels: {
+                    'Test Store': [{ value: { id: 1 } } as any],
+                },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
+                emailIntegrations: [{ id: 2 } as any],
+                helpCentersFaq,
+                ldFlags: LD_FLAGS,
+                flags: {
+                    hasAiAgentNewActivationXp: true,
+                    aiSalesAgentEmailEnabled: true,
+                },
+                hasNewAutomatePlan: false,
+            })
+
+            expect(initialState['Test Store'].sales.enabled).toBe(true)
+            expect(initialState['Test Store'].sales.isDisabled).toBe(false)
+
+            const updatedState = reducer(initialState, {
+                type: 'UPDATE_PRICING',
+                flags: {
+                    hasAiAgentNewActivationXp: true,
+                    aiSalesAgentEmailEnabled: true,
+                },
+            })
+
+            expect(updatedState['Test Store'].sales.enabled).toBe(true)
+            expect(updatedState['Test Store'].sales.isDisabled).toBe(false)
+        })
+
+        it('should disable sales when store does not have sales scope and hasNewAutomatePlan is false', () => {
+            const initialState = storeConfigurationToState(EMPTY_STATE, {
+                type: 'UPDATE_STORE_CONFIGURATION',
+                storeConfigurations: [
+                    {
+                        ...mockStoreConfig,
+                        scopes: [AiAgentScope.Support],
+                    },
+                ],
+                selfServiceChatChannels: {
+                    'Test Store': [{ value: { id: 1 } } as any],
+                },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
+                emailIntegrations: [{ id: 2 } as any],
+                helpCentersFaq,
+                ldFlags: LD_FLAGS,
+                flags: {
+                    hasAiAgentNewActivationXp: true,
+                    aiSalesAgentEmailEnabled: true,
+                },
+                hasNewAutomatePlan: false,
+            })
+
+            expect(initialState['Test Store'].sales.enabled).toBe(false)
+            expect(initialState['Test Store'].sales.isDisabled).toBe(true)
+
+            const updatedState = reducer(initialState, {
+                type: 'UPDATE_PRICING',
+                flags: {
+                    hasAiAgentNewActivationXp: true,
+                    aiSalesAgentEmailEnabled: true,
+                },
+            })
+
+            expect(updatedState['Test Store'].sales.enabled).toBe(true)
+            expect(updatedState['Test Store'].sales.isDisabled).toBe(false)
+        })
+
+        it('should not update state when hasAiAgentNewActivationXp is false', () => {
+            const initialState = storeConfigurationToState(EMPTY_STATE, {
+                type: 'UPDATE_STORE_CONFIGURATION',
+                storeConfigurations: [mockStoreConfig],
+                selfServiceChatChannels: {
+                    'Test Store': [{ value: { id: 1 } } as any],
+                },
+                chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
+                emailIntegrations: [{ id: 2 } as any],
+                helpCentersFaq,
+                ldFlags: LD_FLAGS,
+                flags: {
+                    hasAiAgentNewActivationXp: false,
+                    aiSalesAgentEmailEnabled: false,
+                },
+                hasNewAutomatePlan: false,
+            })
+
+            const updatedState = reducer(initialState, {
+                type: 'UPDATE_PRICING',
+                flags: {
+                    hasAiAgentNewActivationXp: false,
+                    aiSalesAgentEmailEnabled: false,
+                },
+            })
+
+            expect(updatedState).toEqual(initialState)
         })
     })
 

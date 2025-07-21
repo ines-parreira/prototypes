@@ -381,8 +381,7 @@ export const getChatActivation = ({
     installationMissing: boolean
     integrationMissing: boolean
 } => {
-    const { scopes, chatChannelDeactivatedDatetime, helpCenterId } =
-        storeConfiguration
+    const { chatChannelDeactivatedDatetime, helpCenterId } = storeConfiguration
 
     const isMissingKnowledge = checkIsMissingKnowledge({
         helpCenterId,
@@ -408,7 +407,6 @@ export const getChatActivation = ({
     }
 
     const isEnabled =
-        scopes.includes(AiAgentScope.Support) &&
         !chatChannelDeactivatedDatetime &&
         !isChatIntegrationMissing &&
         !isMissingKnowledge &&
@@ -487,7 +485,6 @@ export const storeConfigurationToState = (
             )
 
             const isEmailEnabled =
-                scopes.includes(AiAgentScope.Support) &&
                 !emailChannelDeactivatedDatetime &&
                 !isMissingKnowledge &&
                 !isEmailIntegrationMissing

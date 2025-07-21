@@ -20,9 +20,6 @@ import { useActivationModalDisclosure } from './useActivationModalDisclosure'
 import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { useStoreActivations } from './useStoreActivations'
 
-/**
- * @deprecated this is the old activation hook, use {@link useUpgradePlan} instead
- */
 export const useActivation = (
     options: {
         autoDisplayEarlyAccessDisabled?: boolean
