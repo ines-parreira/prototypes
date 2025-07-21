@@ -9,7 +9,13 @@ import { getIconFromType } from 'state/integrations/helpers'
 import css from './Navbar.less'
 
 export const AiJourneyNavbar = () => {
-    const { integrations: shopifyIntegrations } = useAllIntegrations('shopify')
+    const { integrations: shopifyIntegrations } = useAllIntegrations(
+        'shopify',
+        {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+        },
+    )
 
     const sortedShopifyIntegrations = [...shopifyIntegrations].sort((a, b) =>
         a.name.localeCompare(b.name),

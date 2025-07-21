@@ -10,7 +10,9 @@ jest.mock('hooks/useAllIntegrations', () => ({
 const mockUseAllIntegrations = require('hooks/useAllIntegrations').default
 
 const TestComponent = () => {
-    const { integrations, isLoading } = useIntegrations()
+    const { currentIntegration, integrations, isLoading } =
+        useIntegrations('shopify-store')
+
     return (
         <div>
             <div data-testid="isLoading">
@@ -18,6 +20,9 @@ const TestComponent = () => {
             </div>
             <div data-testid="integrations">
                 {integrations.map((i) => i.name).join(',')}
+            </div>
+            <div data-testid="currentIntegration">
+                {currentIntegration?.name}
             </div>
         </div>
     )
@@ -42,6 +47,9 @@ describe('<IntegrationsProvider />', () => {
         expect(screen.getByTestId('isLoading')).toHaveTextContent('loaded')
         expect(screen.getByTestId('integrations')).toHaveTextContent(
             'shopify-store,other-store',
+        )
+        expect(screen.getByTestId('currentIntegration')).toHaveTextContent(
+            'shopify-store',
         )
     })
 

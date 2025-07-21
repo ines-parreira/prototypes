@@ -28,12 +28,9 @@ export const Activation = () => {
     const [selectedProduct, setSelectedProduct] = useState({} as Product)
     const [testSmsNumber, setTestSmsNumber] = useState('')
 
-    const { integrations } = useIntegrations()
-    const testSms = useTestSms()
+    const { currentIntegration } = useIntegrations(shopName)
 
-    const currentIntegration = useMemo(() => {
-        return integrations.find((i) => i.name === shopName)
-    }, [integrations, shopName])
+    const testSms = useTestSms()
 
     const integrationId = useMemo(() => {
         return currentIntegration?.id
@@ -76,7 +73,6 @@ export const Activation = () => {
         integrationId,
         currentIntegration,
         abandonedCartJourney,
-        activation: true,
     })
 
     const handleTestSms = async () => {

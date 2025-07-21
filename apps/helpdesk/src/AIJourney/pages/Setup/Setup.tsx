@@ -31,11 +31,7 @@ export const Setup = () => {
     const dispatch = useAppDispatch()
     const [isVisible, setIsVisible] = useState(true)
 
-    const { integrations } = useIntegrations()
-
-    const currentIntegration = useMemo(() => {
-        return integrations.find((i) => i.name === shopName)
-    }, [integrations, shopName])
+    const { currentIntegration } = useIntegrations(shopName)
 
     const integrationId = useMemo(() => {
         return currentIntegration?.id

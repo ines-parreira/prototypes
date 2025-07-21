@@ -27,7 +27,7 @@ export const useJourneys = (
         queryFn: () => fetchJourneys(integrationId!, accessToken!),
         enabled: !!accessToken && !!integrationId && options.enabled !== false,
         refetchOnWindowFocus: false,
-        refetchOnMount: false,
+        refetchOnMount: true,
         ...options,
     })
 }

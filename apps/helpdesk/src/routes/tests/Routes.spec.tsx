@@ -889,14 +889,19 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <Router history={history}>
-                    <Routes />
-                </Router>,
+                <QueryClientProvider client={queryClient}>
+                    <Router history={history}>
+                        <Routes />
+                    </Router>
+                </QueryClientProvider>,
             )
 
-            expect(
-                screen.getByText('AI Journey Performance'),
-            ).toBeInTheDocument()
+            screen.debug()
+            await waitFor(() => {
+                expect(
+                    screen.getByText('AI Journey Performance'),
+                ).toBeInTheDocument()
+            })
         })
     })
 })

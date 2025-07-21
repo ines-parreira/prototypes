@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { motion } from 'framer-motion'
+import { useParams } from 'react-router-dom'
 
 import {
     AnalyticsCard,
@@ -8,15 +9,21 @@ import {
     JourneyPlaceholder,
     Selector,
 } from 'AIJourney/components'
+import { useIntegrations } from 'AIJourney/providers'
+import { useJourneyConfiguration, useJourneys } from 'AIJourney/queries'
 
 import css from './Performance.less'
 
-const digestContent = (
+const digestContent = (hasDiscount?: boolean) => (
     <>
         In the <b>last 30 days</b>, revenue is <b>up 14%</b>, driven primarily
-        by your Abandoned Cart Journey converting at 12%. To{' '}
-        <b>unlock an extra $5k</b>, your biggest opportunity is to{' '}
-        <b>enable the Discount Code skill</b>.
+        by your Abandoned Cart Journey converting at 12%.{' '}
+        {!hasDiscount && (
+            <>
+                To <b>unlock an extra $5k</b>, your biggest opportunity is to
+                <b>enable the Discount Code skill</b>.
+            </>
+        )}
     </>
 )
 
@@ -55,23 +62,46 @@ const upcomingJourneys: upcomingJourney[] = [
 const userJourneys: userJourney[] = [
     {
         name: 'Abandoned Cart',
-        status: 'live',
+        status: 'Active',
     },
 ]
 
-const FILTERS = ['All', 'Live', 'Coming soon']
+const FILTERS = ['All', 'Active', 'Coming soon']
 
 export const Performance = () => {
+    const { shopName } = useParams<{ shopName: string }>()
     const [filter, setFilter] = useState('All')
+
+    const { currentIntegration } = useIntegrations(shopName)
+
+    const integrationId = useMemo(() => {
+        return currentIntegration?.id
+    }, [currentIntegration])
+
+    const { data: merchantAiJourneys } = useJourneys(currentIntegration?.id, {
+        enabled: !!currentIntegration?.id,
+    })
+
+    const abandonedCartJourney = merchantAiJourneys?.find(
+        (journey) => journey.type === 'cart_abandoned',
+    )
+    const { data: journeyParams } = useJourneyConfiguration(
+        abandonedCartJourney?.id,
+        {
+            enabled: !!currentIntegration?.id && !!abandonedCartJourney?.id,
+        },
+    )
+
+    const { offer_discount: isDiscountEnabled } = journeyParams || {}
 
     let filteredUserJourneys: userJourney[] = []
     switch (filter) {
         case 'All':
             filteredUserJourneys = userJourneys
             break
-        case 'Live':
+        case 'Active':
             filteredUserJourneys = userJourneys.filter(
-                (j) => j.status === 'live',
+                (j) => j.status === 'Active',
             )
             break
         default:
@@ -90,7 +120,10 @@ export const Performance = () => {
 
     return (
         <div className={css.container}>
-            <DigestCard content={digestContent} metrics={digestMetrics} />
+            <DigestCard
+                content={digestContent(isDiscountEnabled)}
+                metrics={digestMetrics}
+            />
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -117,13 +150,17 @@ export const Performance = () => {
                 transition={{ duration: 0.7, delay: 1.2 }}
                 className={css.dashboardsContainer}
             >
-                {filteredUserJourneys.map((journey, index) => (
-                    <AnalyticsCard
-                        analyticsData={analyticsData}
-                        status={journey.status}
-                        key={index}
-                    />
-                ))}
+                {abandonedCartJourney &&
+                    filteredUserJourneys.map(() => (
+                        <AnalyticsCard
+                            analyticsData={analyticsData}
+                            journeyConfigurations={journeyParams}
+                            integrationId={integrationId}
+                            currentIntegration={currentIntegration}
+                            abandonedCartJourney={abandonedCartJourney}
+                            key={abandonedCartJourney?.id}
+                        />
+                    ))}
                 {filteredUpcomingJourneys.map((journey, index) => (
                     <JourneyPlaceholder name={journey.name} key={index} />
                 ))}

@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react'
 
+import { UseInfiniteQueryOptions } from '@tanstack/react-query'
+
 import { IntegrationType, listIntegrations } from '@gorgias/helpdesk-client'
 import { Integration, queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useExhaustEndpoint } from './useExhaustEndpoint'
 
-export default function useAllIntegrations(type?: IntegrationType) {
+export default function useAllIntegrations(
+    type?: IntegrationType,
+    options?: UseInfiniteQueryOptions<any>,
+) {
     const [allIntegrations, setAllIntegrations] = useState<Integration[]>([])
 
     const { data, isLoading, refetch } = useExhaustEndpoint(
         queryKeys.integrations.listIntegrations(),
         (cursor) => listIntegrations({ cursor, limit: 100, type }),
+        options,
     )
 
     useEffect(() => {

@@ -17,7 +17,6 @@ type UseJourneyActionsParams = {
     isDiscountEnabled?: boolean
     discountValue?: string
     phoneNumberValue?: NewPhoneNumber
-    activation?: boolean
 }
 
 export const useJourneyUpdateHandler = ({
@@ -32,65 +31,68 @@ export const useJourneyUpdateHandler = ({
     const dispatch = useAppDispatch()
     const updateJourney = useUpdateJourney()
 
-    const handleUpdate = useCallback(async () => {
-        try {
-            if (
-                !integrationId ||
-                !currentIntegration?.name ||
-                !abandonedCartJourney?.id
-            ) {
-                throw new Error(
-                    `Missing integration information: ID: ${integrationId}, name: ${currentIntegration?.name}, journey ID: ${abandonedCartJourney?.id}`,
+    const handleUpdate = useCallback(
+        async (journeyState?: JourneyStatusEnum) => {
+            try {
+                if (
+                    !integrationId ||
+                    !currentIntegration?.name ||
+                    !abandonedCartJourney?.id
+                ) {
+                    throw new Error(
+                        `Missing integration information: ID: ${integrationId}, name: ${currentIntegration?.name}, journey ID: ${abandonedCartJourney?.id}`,
+                    )
+                }
+
+                const smsIntegrationId = phoneNumberValue?.integrations.find(
+                    (integration) => integration.type === 'sms',
+                )?.id
+
+                const journeyConfigs = {
+                    max_follow_up_messages: followUpValue,
+                    offer_discount: isDiscountEnabled,
+                    max_discount_percent: discountValue
+                        ? Number(discountValue)
+                        : undefined,
+                    sms_sender_integration_id: smsIntegrationId,
+                    sms_sender_number: phoneNumberValue?.phone_number,
+                }
+
+                const shouldUpdateConfigs = Object.values(journeyConfigs).some(
+                    (value) => value !== undefined && value !== null,
                 )
+
+                const requestBody = {
+                    journeyId: abandonedCartJourney.id,
+                    params: {
+                        state: journeyState ?? JourneyStatusEnum.Active,
+                    },
+                    ...(shouldUpdateConfigs && { journeyConfigs }),
+                }
+
+                return await updateJourney.mutateAsync(requestBody)
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        message: `Error updating journey: ${error}`,
+                        status: NotificationStatus.Error,
+                    }),
+                )
+                throw error
             }
-
-            const smsIntegrationId = phoneNumberValue?.integrations.find(
-                (integration) => integration.type === 'sms',
-            )?.id
-
-            const journeyConfigs = {
-                max_follow_up_messages: followUpValue,
-                offer_discount: isDiscountEnabled,
-                max_discount_percent: discountValue
-                    ? Number(discountValue)
-                    : undefined,
-                sms_sender_integration_id: smsIntegrationId,
-                sms_sender_number: phoneNumberValue?.phone_number,
-            }
-
-            const shouldUpdateConfigs = Object.values(journeyConfigs).some(
-                (value) => value !== undefined && value !== null,
-            )
-
-            const requestBody = {
-                journeyId: abandonedCartJourney.id,
-                params: {
-                    state: JourneyStatusEnum.Active,
-                },
-                ...(shouldUpdateConfigs && { journeyConfigs }),
-            }
-
-            await updateJourney.mutateAsync(requestBody)
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: `Error updating journey: ${error}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
-            throw error
-        }
-    }, [
-        integrationId,
-        currentIntegration,
-        abandonedCartJourney,
-        followUpValue,
-        isDiscountEnabled,
-        discountValue,
-        phoneNumberValue,
-        updateJourney,
-        dispatch,
-    ])
+        },
+        [
+            integrationId,
+            currentIntegration,
+            abandonedCartJourney,
+            followUpValue,
+            isDiscountEnabled,
+            discountValue,
+            phoneNumberValue,
+            updateJourney,
+            dispatch,
+        ],
+    )
 
     return {
         handleUpdate,

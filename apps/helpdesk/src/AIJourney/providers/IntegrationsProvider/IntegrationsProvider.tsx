@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 
 import { Integration } from '@gorgias/helpdesk-types'
 
@@ -18,7 +18,10 @@ export const IntegrationsProvider = ({
 }: {
     children: React.ReactNode
 }) => {
-    const { integrations, isLoading } = useAllIntegrations('shopify')
+    const { integrations, isLoading } = useAllIntegrations('shopify', {
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    })
     return (
         <IntegrationsContext.Provider value={{ integrations, isLoading }}>
             {children}
@@ -26,11 +29,22 @@ export const IntegrationsProvider = ({
     )
 }
 
-export const useIntegrations = () => {
+export const useIntegrations = (shopName?: string) => {
     const ctx = useContext(IntegrationsContext)
     if (!ctx)
         throw new Error(
             'useIntegrations must be used within IntegrationsProvider',
         )
-    return ctx
+    const { integrations, isLoading: isLoadingIntegrations } = ctx
+
+    const currentIntegration = useMemo(() => {
+        if (isLoadingIntegrations) return undefined
+        return integrations.find((i) => i.name === shopName)
+    }, [integrations, shopName, isLoadingIntegrations])
+
+    return {
+        currentIntegration,
+        integrations,
+        isLoading: isLoadingIntegrations,
+    }
 }

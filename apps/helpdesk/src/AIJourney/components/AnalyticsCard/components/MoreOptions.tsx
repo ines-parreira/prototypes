@@ -1,11 +1,21 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
+import { JourneyStatusEnum } from '@gorgias/convert-client'
+
 import css from './MoreOptions.less'
 
-export const MoreOptions = ({ shopName }: { shopName: string }) => {
+export const MoreOptions = ({
+    shopName,
+    journeyState,
+    handleChangeStatus,
+}: {
+    shopName: string
+    journeyState: JourneyStatusEnum
+    handleChangeStatus: () => void
+}) => {
     const [menuOpen, setMenuOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
 
@@ -38,6 +48,30 @@ export const MoreOptions = ({ shopName }: { shopName: string }) => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [menuOpen])
+
+    const handleChangeStatusOnClick = useCallback(async () => {
+        await handleChangeStatus()
+        setMenuOpen(false)
+    }, [handleChangeStatus])
+
+    const statusContent: Record<
+        JourneyStatusEnum,
+        { icon: string; label: string }
+    > = {
+        [JourneyStatusEnum.Active]: {
+            icon: 'pause',
+            label: 'Pause',
+        },
+        [JourneyStatusEnum.Paused]: {
+            icon: 'play_arrow',
+            label: 'Activate',
+        },
+        // fallback for draft state to activate if neceessary (it shouldn't happen)
+        [JourneyStatusEnum.Draft]: {
+            icon: 'play_arrow',
+            label: 'Activate',
+        },
+    }
 
     return (
         <div
@@ -73,13 +107,12 @@ export const MoreOptions = ({ shopName }: { shopName: string }) => {
                     ))}
                     <button
                         className={css.option}
-                        onClick={() => {
-                            setMenuOpen(false)
-                            alert('Should pause journey')
-                        }}
+                        onClick={handleChangeStatusOnClick}
                     >
-                        <i className="material-icons-outlined">pause</i>
-                        Pause
+                        <i className="material-icons-outlined">
+                            {statusContent[journeyState].icon}
+                        </i>
+                        {statusContent[journeyState].label}
                     </button>
                 </motion.div>
             )}

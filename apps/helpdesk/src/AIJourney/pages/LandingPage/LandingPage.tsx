@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
@@ -24,12 +24,8 @@ export const LandingPage = () => {
         }, 700)
     }
 
-    const { integrations, isLoading: isLoadingIntegrations } = useIntegrations()
-
-    const currentIntegration = useMemo(() => {
-        if (isLoadingIntegrations) return undefined
-        return integrations.find((i) => i.name === shopName)
-    }, [integrations, shopName, isLoadingIntegrations])
+    const { currentIntegration, isLoading: isLoadingIntegrations } =
+        useIntegrations(shopName)
 
     const {
         data: merchantAiJourneys,

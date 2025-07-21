@@ -5,11 +5,16 @@ import { MoreOptions } from './MoreOptions'
 
 describe('<MoreOptions />', () => {
     const shopName = 'test-shop'
+    const mockHandleChangeStatus = jest.fn()
 
-    function setup() {
+    function setup(journeyState: 'active' | 'draft' | 'paused' = 'paused') {
         render(
             <MemoryRouter>
-                <MoreOptions shopName={shopName} />
+                <MoreOptions
+                    journeyState={journeyState}
+                    shopName={shopName}
+                    handleChangeStatus={mockHandleChangeStatus}
+                />
             </MemoryRouter>,
         )
     }
@@ -29,7 +34,7 @@ describe('<MoreOptions />', () => {
     })
 
     it('renders all options when menu is open', () => {
-        setup()
+        setup('active')
         fireEvent.click(screen.getByText('more_horiz'))
         expect(screen.getByText('Edit')).toBeInTheDocument()
         expect(screen.getByText('Test campaign')).toBeInTheDocument()
@@ -46,12 +51,11 @@ describe('<MoreOptions />', () => {
         )
     })
 
-    it('calls alert when pause is clicked', () => {
-        setup()
-        window.alert = jest.fn()
+    it('calls handleChangeStatus when pause is clicked', () => {
+        setup('active')
         fireEvent.click(screen.getByText('more_horiz'))
         fireEvent.click(screen.getByText('Pause'))
-        expect(window.alert).toHaveBeenCalledWith('Should pause journey')
+        expect(mockHandleChangeStatus).toHaveBeenCalledTimes(1)
     })
 
     it('closes the menu when clicking outside', () => {
