@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`list whatsapp message template resources listWhatsAppMessageTemplates should resolve with a list of paginated WhatsAppMessageTemplates on success 1`] = `
+{
+  "data": [
+    [
+      {
+        "category": "marketing",
+        "components": {
+          "body": {
+            "type": "text",
+            "value": "Hey {{1}},\\nHere's your https://www.google.com one-time password:  *{{2}}*\\nCode expires in 30 minutes.",
+          },
+          "footer": {
+            "type": "text",
+            "value": "If you never requested this code, please ignore the message.",
+          },
+        },
+        "created_datetime": "2023-12-01T18:00:00.000000+00:00",
+        "deactivated_datetime": null,
+        "external_id": "1184662202111735",
+        "id": 1,
+        "is_supported": true,
+        "language": "en",
+        "name": "sample_purchase_feedback",
+        "quality_score": "UNKNOWN",
+        "rejected_reason": null,
+        "status": "approved",
+        "updated_datetime": "2023-12-01T18:00:00.000000+00:00",
+        "waba_id": "123128413183132",
+      },
+      {
+        "category": "utility",
+        "components": {
+          "body": {
+            "type": "text",
+            "value": "Here's the rejected template content {{1}}",
+          },
+          "footer": {
+            "type": "text",
+            "value": "If you never requested this code, please ignore the message.",
+          },
+        },
+        "created_datetime": "2023-12-01T18:00:00.000000+00:00",
+        "deactivated_datetime": "2023-12-01T18:00:00.000000+00:00",
+        "external_id": "22",
+        "id": 2,
+        "is_supported": true,
+        "language": "ca",
+        "name": "rejected_template_sample",
+        "quality_score": "UNKNOWN",
+        "rejected_reason": "INVALID_FORMAT",
+        "status": "rejected",
+        "updated_datetime": "2023-12-01T18:00:00.000000+00:00",
+        "waba_id": "12312841318123",
+      },
+    ],
+  ],
+}
+`;
+
+exports[`list whatsapp message template resources listWhatsAppMessageTemplates should resolve with a list of paginated WhatsAppMessageTemplates on success 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "paramsSerializer": {
+        "indexes": null,
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/integrations/whatsapp/message-templates",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;

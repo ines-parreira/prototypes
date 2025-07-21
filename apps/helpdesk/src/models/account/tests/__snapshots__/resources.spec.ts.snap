@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`account resources createAccountSetting should resolve on success 1`] = `
+{
+  "config": {
+    "allowAbsoluteUrls": true,
+    "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"type":"views-ordering"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "post",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
+    "url": "/api/account/settings/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": {
+      "view_sections": {
+        "1": {
+          "display_order": 1,
+        },
+      },
+      "views": {
+        "1": {
+          "display_order": 0,
+        },
+      },
+      "views_bottom": {},
+      "views_top": {},
+    },
+    "id": 2,
+    "type": "views-ordering",
+  },
+  "headers": {},
+  "request": {
+    "responseURL": "/api/account/settings/",
+  },
+  "status": 200,
+}
+`;
+
+exports[`account resources getAccountSettings should resolve on success 1`] = `
+[
+  {
+    "data": {
+      "view_sections": {
+        "1": {
+          "display_order": 1,
+        },
+      },
+      "views": {
+        "1": {
+          "display_order": 0,
+        },
+      },
+      "views_bottom": {},
+      "views_top": {},
+    },
+    "id": 2,
+    "type": "views-ordering",
+  },
+]
+`;
+
+exports[`account resources getAccountSettings should resolve on success for all types 1`] = `
+{
+  "view_sections": {
+    "1": {
+      "display_order": 1,
+    },
+  },
+  "views": {
+    "1": {
+      "display_order": 0,
+    },
+  },
+  "views_bottom": {},
+  "views_top": {},
+}
+`;
+
+exports[`account resources updateAccountSetting should resolve on success 1`] = `
+{
+  "config": {
+    "allowAbsoluteUrls": true,
+    "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "put",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
+    "url": "/api/account/settings/2/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": {
+      "view_sections": {
+        "1": {
+          "display_order": 1,
+        },
+      },
+      "views": {
+        "1": {
+          "display_order": 0,
+        },
+      },
+      "views_bottom": {},
+      "views_top": {},
+    },
+    "id": 2,
+    "type": "views-ordering",
+  },
+  "headers": {},
+  "request": {
+    "responseURL": "/api/account/settings/2/",
+  },
+  "status": 200,
+}
+`;
+
+exports[`account resources updateAccountSetting should resolve on success 2`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"data":{"views":{"1":{"display_order":0}},"views_top":{},"views_bottom":{},"view_sections":{"1":{"display_order":1}}},"id":2,"type":"views-ordering"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/account/settings/2/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "unlink": [],
+}
+`;

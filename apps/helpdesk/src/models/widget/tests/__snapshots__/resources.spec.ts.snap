@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`widgets resources fetchWidgets should resolve with a list of widgets on success 1`] = `
+{
+  "config": {
+    "allowAbsoluteUrls": true,
+    "data": undefined,
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "params": {
+      "order_by": "order:asc",
+    },
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
+    "url": "/api/widgets/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": [
+      {
+        "whatever": true,
+      },
+    ],
+  },
+  "headers": {},
+  "request": {
+    "responseURL": "/api/widgets/",
+  },
+  "status": 200,
+}
+`;

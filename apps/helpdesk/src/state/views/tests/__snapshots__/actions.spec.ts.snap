@@ -1,0 +1,870 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`actions createJob() should call the job API with the view JSON in it's params because the view is dirty 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"type":"jobTypeValue","scheduled_datetime":"2018-10-01T00:00:15.000Z","params":{"view":{"foo":"bar","type":"ticket-list","filters":{}},"exampleVar":"exampleValue"}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/jobs/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions createJob() should call the job API with the view id in it's params because the view is not dirty 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"type":"jobTypeValue","scheduled_datetime":"2018-10-01T00:00:15.000Z","params":{"view_id":1,"exampleVar":"exampleValue"}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/jobs/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions deleteView() should prevent deletion of last view of same type 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions deleteView() should prevent deletion of last view of same type 2`] = `[]`;
+
+exports[`actions deleteView() should update the active view with the same type when deletion succeeds 1`] = `
+{
+  "delete": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "delete",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions deleteView() should update the active view with the same type when deletion succeeds 2`] = `
+[
+  {
+    "type": "ADD_RECENT_VIEW",
+    "viewId": 2,
+  },
+  {
+    "type": "SET_VIEW_ACTIVE",
+    "view": Immutable.Map {
+      "id": 2,
+      "type": "ticket-list",
+    },
+  },
+]
+`;
+
+exports[`actions deleteViewSuccess() should update the active view with the same type if deleted view was active 1`] = `
+[
+  {
+    "type": "DELETE_VIEW_SUCCESS",
+    "viewId": 1,
+  },
+  {
+    "type": "ADD_RECENT_VIEW",
+    "viewId": 1,
+  },
+  {
+    "type": "SET_VIEW_ACTIVE",
+    "view": Immutable.Map {
+      "id": 1,
+      "type": "ticket-list",
+    },
+  },
+]
+`;
+
+exports[`actions fetchViewItems should fetch current page with cursor 1`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+        "x-gorgias-search-engine": "ES",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/items/?cursor=1234",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions fetchViewItems should fetch current page without cursor 1`] = `
+[
+  {
+    "discreet": false,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+  {
+    "fetched": {
+      "data": [
+        {
+          "id": 1,
+        },
+        {
+          "id": 2,
+        },
+      ],
+      "meta": {
+        "current_cursor": 123,
+        "next_items": "/api/views/1/items?direction=next",
+        "prev_items": "/api/views/1/items?direction=prev",
+      },
+    },
+    "type": "FETCH_LIST_VIEW_SUCCESS",
+    "viewType": "ticket-list",
+  },
+]
+`;
+
+exports[`actions fetchViewItems should fetch current page without cursor 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+        "x-gorgias-search-engine": "ES",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/items/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions fetchViewItems should fetch next page 1`] = `
+[
+  {
+    "discreet": false,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+  {
+    "fetched": {
+      "data": [
+        {
+          "id": 1,
+        },
+        {
+          "id": 2,
+        },
+      ],
+      "meta": {
+        "current_cursor": 123,
+        "next_items": "/api/views/1/items?direction=next",
+        "prev_items": "/api/views/1/items?direction=prev",
+      },
+    },
+    "type": "FETCH_LIST_VIEW_SUCCESS",
+    "viewType": "ticket-list",
+  },
+]
+`;
+
+exports[`actions fetchViewItems should fetch next page 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+        "x-gorgias-search-engine": "ES",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/items?direction=next&cursor=123&ignored_item=7",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions fetchViewItems should fetch prev page 1`] = `
+[
+  {
+    "discreet": false,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+  {
+    "fetched": {
+      "data": [
+        {
+          "id": 1,
+        },
+        {
+          "id": 2,
+        },
+      ],
+      "meta": {
+        "current_cursor": 123,
+        "next_items": "/api/views/1/items?direction=next",
+        "prev_items": "/api/views/1/items?direction=prev",
+      },
+    },
+    "type": "FETCH_LIST_VIEW_SUCCESS",
+    "viewType": "ticket-list",
+  },
+]
+`;
+
+exports[`actions fetchViewItems should fetch prev page 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+        "x-gorgias-search-engine": "ES",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/items?direction=prevcursor=123&ignored_item=7",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS because the filters of the view have changed since we started the request 1`] = `
+[
+  {
+    "discreet": false,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+]
+`;
+
+exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS because the filters of the view have changed since we started the request 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+        "x-gorgias-search-engine": "ES",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/items/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS because the view for which we fetched items is not the current view 1`] = `
+[
+  {
+    "discreet": false,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+]
+`;
+
+exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS because the view for which we fetched items is not the current view 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+        "x-gorgias-search-engine": "ES",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/items/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS because this fetch was caused by the polling, and the user is not currently on the first page 1`] = `
+[
+  {
+    "discreet": true,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+]
+`;
+
+exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS because this fetch was caused by the polling, and the user is not currently on the first page 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+        "x-gorgias-search-engine": "ES",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/1/items/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions fetchViewItems should not dispatch results when cancelling the fetch 1`] = `
+[
+  {
+    "discreet": null,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+]
+`;
+
+exports[`actions fetchViewItems should register the rank scenario request and response 1`] = `
+[MockFunction] {
+  "calls": [
+    [
+      {
+        "query": undefined,
+        "requestTime": 1487076708000,
+      },
+    ],
+  ],
+  "results": [
+    {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`actions fetchViewItems should register the rank scenario request and response 2`] = `
+[MockFunction] {
+  "calls": [
+    [
+      {
+        "numberOfResults": 2,
+        "responseTime": 1487076708000,
+        "searchEngine": undefined,
+      },
+    ],
+  ],
+  "results": [
+    {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`actions fieldEnumSearch() should dispatch results 1`] = `
+Immutable.List [
+  Immutable.Map {
+    "id": 1,
+    "name": "Name 1",
+    "email": "name1@foo.bar",
+  },
+  Immutable.Map {
+    "id": 2,
+    "name": "Name 2",
+    "email": "name2@foo.bar",
+  },
+  Immutable.Map {
+    "id": 3,
+    "name": "Name 3",
+    "email": "name3@foo.bar",
+  },
+]
+`;
+
+exports[`actions submitView() should create view when id is 0 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"filters":"eq(ticket.channel, \\"chat\\")","type":"ticket-list","name":"My Tickets","shared_with_users":[1],"visibility":"private"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`actions submitView() should create view when id is 0 2`] = `
+[
+  {
+    "type": "SUBMIT_VIEW_START",
+  },
+  {
+    "resp": {
+      "id": 1,
+      "slug": "my-tickets",
+    },
+    "type": "SUBMIT_NEW_VIEW_SUCCESS",
+  },
+]
+`;
+
+exports[`actions submitView() should update view 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"id":99,"type":"ticket-list","name":"My Tickets","filters":"eq(ticket.channel, \\"chat\\")"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/views/99/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "unlink": [],
+}
+`;
+
+exports[`actions submitView() should update view 2`] = `
+[
+  {
+    "type": "SUBMIT_VIEW_START",
+  },
+]
+`;
+
+exports[`actions updateRecentViews should update updated datetime of recent views 1`] = `
+{
+  "type": "UPDATE_RECENT_VIEWS",
+  "viewIds": [
+    1,
+  ],
+}
+`;
+
+exports[`actions updateRecentViews should update updated datetime of recent views 2`] = `
+[
+  {
+    "type": "UPDATE_RECENT_VIEWS",
+    "viewIds": [
+      1,
+    ],
+  },
+]
+`;

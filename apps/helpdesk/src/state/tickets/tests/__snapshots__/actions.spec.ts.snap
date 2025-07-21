@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tickets actions bulkUpdate() should call the jobs api with the given parameters 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"type":"applyMacro","params":{"ticket_ids":[1,2,3,4],"exampleKey":"exampleValue"}}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/jobs/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`tickets actions updateCursor() should update cursor 1`] = `
+[
+  {
+    "cursor": "new",
+    "type": "UPDATE_CURSOR",
+  },
+]
+`;

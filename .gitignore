@@ -33,7 +33,7 @@ node_modules
 *.iml
 
 # build files
-build/*
+**/build/*
 
 # docker-compose env_file
 .env
@@ -49,8 +49,8 @@ transaction.yaml
 v8-compile-cache-*
 
 # Storybook
-build-storybook.log
-storybook-static
+**/build-storybook.log
+**/storybook-static
 
 # Pre-commit
 .pre-commit-config.yaml

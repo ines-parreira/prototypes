@@ -1,6 +1,9 @@
+## Root
 .github
 scripts/**/*.json
-src/assets/js/**
-scripts/copy-pubnub-worker.js
-src/main/init/index.tsx
 pnpm-lock.yaml
+
+## Helpdesk
+apps/helpdesk/src/main/init/index.tsx
+apps/helpdesk/src/assets/js/**
+apps/helpdesk/scripts/copy-pubnub-worker.js

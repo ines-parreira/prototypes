@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`client resources createClient should return a proper new instance of axios 1`] = `
+{
+  "adapter": [
+    "xhr",
+    "http",
+    "fetch",
+  ],
+  "env": {
+    "Blob": [Function],
+    "FormData": [Function],
+  },
+  "headers": {
+    "X-CSRF-Token": "abcd",
+    "X-Gorgias-User-Client": "web",
+    "common": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": undefined,
+    },
+    "delete": {},
+    "get": {},
+    "head": {},
+    "patch": {},
+    "post": {},
+    "put": {},
+  },
+  "maxBodyLength": -1,
+  "maxContentLength": -1,
+  "timeout": 0,
+  "transformRequest": [
+    [Function],
+  ],
+  "transformResponse": [
+    [Function],
+  ],
+  "transitional": {
+    "clarifyTimeoutError": false,
+    "forcedJSONParsing": true,
+    "silentJSONParsing": true,
+  },
+  "validateStatus": [Function],
+  "xsrfCookieName": "XSRF-TOKEN",
+  "xsrfHeaderName": "X-XSRF-TOKEN",
+}
+`;
+
+exports[`client resources handleNewRelease interceptor should notify and reload on new release 1`] = `
+[
+  [
+    {
+      "allowHTML": true,
+      "buttons": [
+        {
+          "name": "Reload",
+          "onClick": [Function],
+          "primary": true,
+        },
+      ],
+      "dismissAfter": 0,
+      "dismissible": false,
+      "message": "An update is available for Gorgias. The app will reload automatically.",
+      "status": "warning",
+    },
+  ],
+]
+`;
+
+exports[`client resources resources axios instance should resolve with data 1`] = `
+{
+  "config": {
+    "allowAbsoluteUrls": true,
+    "data": undefined,
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
+    "url": "/api",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": {
+      "foo_bar": 1,
+    },
+  },
+  "headers": {
+    "x-gorgias-release": "1",
+  },
+  "request": {
+    "responseURL": "/api",
+  },
+  "status": 200,
+}
+`;
+
+exports[`client resources resources axios instance should send a request with data 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"foo_bar":"foo","foo":[{"foo_bar":"foo"}]}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+  "unlink": [],
+}
+`;

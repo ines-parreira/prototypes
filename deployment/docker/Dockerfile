@@ -6,12 +6,7 @@ RUN corepack enable
 
 WORKDIR /app
 
-COPY src/ ./src/
-COPY tsconfig.json ./
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY rspack.app.config.mjs rspack.sharedWorker.config.mjs ./
-COPY sa.config.ts ./
-COPY scripts/ ./scripts/
+COPY . .
 
 RUN --mount=type=secret,id=NPM_TOKEN,env=NPM_TOKEN \
     echo "@gorgias:registry=https://npm.pkg.github.com" >> .npmrc && \
@@ -23,7 +18,7 @@ RUN NO_CONTENT_HASH=1 pnpm build
 
 FROM nginx
 
-COPY --from=build /app/build /usr/share/nginx/html/
+COPY --from=build /app/apps/helpdesk/build /usr/share/nginx/html/
 
 RUN mkdir -p /usr/share/nginx/html/static/public
 RUN ln -s /usr/share/nginx/html/helpdesk.shared-worker.js /usr/share/nginx/html/static/public/helpdesk.shared-worker.js

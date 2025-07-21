@@ -135,7 +135,7 @@ const mergedConfig = mergeConfigs([
     oxlintBaseConfig,
 ])
 
-const outputPath = path.resolve(process.cwd(), '.oxlintrc.json')
+const outputPath = path.resolve(process.cwd(), 'apps/helpdesk/.oxlintrc.json')
 
 // Write the initial merged config
 fs.writeFileSync(outputPath, JSON.stringify(mergedConfig), 'utf8')

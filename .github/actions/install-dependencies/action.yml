@@ -1,9 +1,9 @@
-name: Install NPM dependencies
-description: Installs NPM dependencies
+name: Install dependencies
+description: Installs dependencies
 
 inputs:
   npm-token:
-    description: NPM read packaged token
+    description: Read token for packages
     required: true
   node-version:
     description: Version Spec of the version to use
@@ -17,7 +17,7 @@ runs:
       id: cache
       with:
         key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-        path: 'node_modules'
+        path: '**/node_modules'
     
     - name: Set cache key as environment variable
       shell: bash

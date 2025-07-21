@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user resources createUserSetting should resolve on success 1`] = `
+{
+  "config": {
+    "allowAbsoluteUrls": true,
+    "data": "{"data":{"available":true,"show_macros":true},"type":"preferences"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "post",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
+    "url": "/api/users/0/settings/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": {
+      "available": true,
+      "show_macros": true,
+    },
+    "id": 2,
+    "type": "preferences",
+  },
+  "headers": {},
+  "request": {
+    "responseURL": "/api/users/0/settings/",
+  },
+  "status": 200,
+}
+`;
+
+exports[`user resources updateUserSetting should resolve on success 1`] = `
+{
+  "config": {
+    "allowAbsoluteUrls": true,
+    "data": "{"data":{"available":true,"show_macros":true},"id":2,"type":"preferences"}",
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "put",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
+    "url": "/api/users/0/settings/2/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": {
+      "available": true,
+      "show_macros": true,
+    },
+    "id": 2,
+    "type": "preferences",
+  },
+  "headers": {},
+  "request": {
+    "responseURL": "/api/users/0/settings/2/",
+  },
+  "status": 200,
+}
+`;
+
+exports[`user resources updateUserSetting should resolve on success 2`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"data":{"available":true,"show_macros":true},"id":2,"type":"preferences"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/users/0/settings/2/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "unlink": [],
+}
+`;

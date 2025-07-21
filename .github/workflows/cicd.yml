@@ -15,10 +15,10 @@ jobs:
     name: Workspace vars
     runs-on: gh-actions-small-runner-set
     outputs:
-      assets-dir: src/assets
-      build-dir: build
+      assets-dir: apps/helpdesk/src/assets
+      build-dir: apps/helpdesk/build
       bucket-path: web-app
-      node-version: 22
+      node-version: '22'
     steps:
       - name: Workspace vars
         run: echo "empty step"
@@ -179,7 +179,7 @@ jobs:
         uses: actions/cache@v4
         with:
           key: ${{ needs.install-dependencies.outputs.cache-key }}
-          path: node_modules
+          path: '**/node_modules'
 
       - name: Install node
         uses: gorgias/reusable-actions/.github/actions/setup-node@main
@@ -187,7 +187,7 @@ jobs:
           node-version: ${{ needs.workspace-vars.outputs.node-version }}
 
       - name: Upload Chromatic
-        run: pnpm chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: pnpm platform:chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
   security-sast:
     name: "Security: Static Code Analysis"
@@ -200,6 +200,6 @@ jobs:
         semgrep-fail-on-confidence: HIGH
         exit-zero: false
         pr-mode: ${{ github.ref_name != 'main' }}
-        files-to-ignore: "src/assets/ /tests/ __snapshots__"
+        files-to-ignore: "apps/helpdesk/src/assets/ /tests/ __snapshots__"
         split-main-scan: true
         split-pr-scan: true

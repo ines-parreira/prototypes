@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tag resources createTag should resolve with a new Tag on success 1`] = `
+{
+  "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+  "decoration": null,
+  "deleted_datetime": null,
+  "description": "finance",
+  "id": 2,
+  "name": "billing",
+  "uri": "/api/tags/2/",
+  "usage": 10,
+}
+`;
+
+exports[`tag resources createTag should resolve with a new Tag on success 2`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"name":"billing"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/tags/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`tag resources deleteTag should resolve on success 1`] = `undefined`;
+
+exports[`tag resources fetchTag should resolve with a Tag on success 1`] = `
+{
+  "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+  "decoration": null,
+  "deleted_datetime": null,
+  "description": "finance",
+  "id": 2,
+  "name": "billing",
+  "uri": "/api/tags/2/",
+  "usage": 10,
+}
+`;
+
+exports[`tag resources fetchTags should concat second sorting attribute when sorting by usage 1`] = `
+{
+  "limit": 30,
+  "order_by": "usage:asc,name:asc",
+}
+`;
+
+exports[`tag resources fetchTags should concat second sorting attribute when sorting by usage 2`] = `
+{
+  "limit": 30,
+  "order_by": "usage:desc,name:desc",
+}
+`;
+
+exports[`tag resources fetchTags should resolve with a Tag list on success 1`] = `
+{
+  "config": {
+    "allowAbsoluteUrls": true,
+    "data": undefined,
+    "env": {
+      "Blob": [Function],
+      "FormData": [Function],
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "params": {
+      "limit": 30,
+      "search": "hello",
+    },
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true,
+    },
+    "url": "/api/tags/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": [
+      {
+        "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": "finance",
+        "id": 2,
+        "name": "billing",
+        "uri": "/api/tags/2/",
+        "usage": 10,
+      },
+      {
+        "created_datetime": "2021-01-21T13:10:46.435364+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": null,
+        "id": 1,
+        "name": "refund",
+        "uri": "/api/tags/1/",
+        "usage": 20,
+      },
+      {
+        "created_datetime": "2021-01-21T13:10:46.446673+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": null,
+        "id": 4,
+        "name": "refund accepted",
+        "uri": "/api/tags/4/",
+        "usage": 0,
+      },
+      {
+        "created_datetime": "2021-01-21T13:10:46.445859+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": null,
+        "id": 3,
+        "name": "rejected",
+        "uri": "/api/tags/3/",
+        "usage": 0,
+      },
+    ],
+    "meta": {
+      "next_cursor": null,
+      "prev_cursor": null,
+    },
+  },
+  "headers": {},
+  "request": {
+    "responseURL": "/api/tags/",
+  },
+  "status": 200,
+}
+`;
+
+exports[`tag resources updateTag should resolve with the updated tag on success 1`] = `
+{
+  "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+  "decoration": null,
+  "deleted_datetime": null,
+  "description": "finance",
+  "id": 2,
+  "name": "billing",
+  "uri": "/api/tags/2/",
+  "usage": 10,
+}
+`;
+
+exports[`tag resources updateTag should resolve with the updated tag on success 2`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "allowAbsoluteUrls": true,
+      "data": "{"id":2,"created_datetime":"2021-01-21T13:10:46.444928+00:00","decoration":null,"deleted_datetime":null,"description":"finance","name":"billing","usage":10,"uri":"/api/tags/2/"}",
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/tags/2/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "unlink": [],
+}
+`;

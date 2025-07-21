@@ -17,10 +17,10 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: gh-actions-small-runner-set
     outputs:
-      assets-dir: src/assets
-      build-dir: build
+      assets-dir: apps/helpdesk/src/assets
+      build-dir: apps/helpdesk/build
       bucket-path: web-app
-      node-version: 22
+      node-version: '22'
     steps:
       - name: Workspace vars
         run: echo "empty step"

@@ -1,7 +1,7 @@
 import { defineConfig } from '@gorgias/static-analysis'
 
 export default defineConfig({
-    sourceDir: 'src',
+    sourceDir: 'apps/helpdesk/src',
     adapter: 'deprecation',
     rules: {
         deprecation: {
