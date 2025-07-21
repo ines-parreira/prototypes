@@ -39,7 +39,7 @@ const EmailIntegrationButtons: React.FC<EmailIntegrationButtonsProps> = ({
         <div className={css.buttonsWrapper}>
             <div>
                 <Button
-                    intent="secondary"
+                    intent="primary"
                     isDisabled={isDisabled}
                     className={classNames({
                         'btn-loading': isSubmitting,
