@@ -9,6 +9,7 @@ import {
     HelpCenterArticleItem,
     LocalArticleTranslation,
 } from 'models/helpCenter/types'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { DEFAULT_ARTICLE_GROUP } from 'pages/settings/helpCenter/constants'
 import { useCreateArticleTranslationUsingTemplate } from 'pages/settings/helpCenter/hooks/useCreateArticleTranslationUsingTemplate'
 import { useCreateArticleUsingTemplate } from 'pages/settings/helpCenter/hooks/useCreateArticleUsingTemplate'
@@ -42,7 +43,7 @@ type HelpCenterArticlesFormOutput = {
 export const useHelpCenterArticlesForm = (
     helpCenter: HelpCenter,
     articles: Record<string, HelpCenterArticleItem[]>,
-    origin?: ArticleOrigin,
+    origin: ArticleOrigin,
 ): HelpCenterArticlesFormOutput => {
     const [newArticles, setArticles] = useState<
         Record<string, HelpCenterArticleItem[]>
@@ -55,6 +56,10 @@ export const useHelpCenterArticlesForm = (
         useState<HelpCenterArticleItem | null>(null)
 
     const { setEditModal } = useEditionManager()
+
+    const { onKnowledgeContentCreated } = useKnowledgeTracking({
+        shopName: helpCenter.shop_name || '',
+    })
 
     const dispatch = useAppDispatch()
 
@@ -203,6 +208,18 @@ export const useHelpCenterArticlesForm = (
                             response?.data.translation,
                         )
                         handleEditorClose()
+
+                        onKnowledgeContentCreated({
+                            type: 'help-center-article',
+                            createdFrom:
+                                origin === ArticleOrigin.HELP_CENTER_WIZARD
+                                    ? 'help-center-wizard'
+                                    : 'ai-library-tab', // ArticleOrigin.ALL_RECOMMENDATIONS_PAGE and ArticleOrigin.TOP_QUESTIONS_SECTION do not exist in the product anymore
+                            createdHow:
+                                article.type === ArticleTemplateType.AI
+                                    ? 'from-ai'
+                                    : 'from-template',
+                        })
                     }
                     break
                 }
@@ -257,12 +274,31 @@ export const useHelpCenterArticlesForm = (
         )
 
         const handleArticlesFromTemplate = selectedItemsWithoutId.map(
-            (item) => {
+            async (item) => {
                 const shouldPublish =
                     item.type === ArticleTemplateType.AI
                         ? true
                         : !!item.isTouched
-                return createArticle({ ...item, origin }, shouldPublish)
+                const createdArticle = await createArticle(
+                    { ...item, origin },
+                    shouldPublish,
+                )
+
+                if (createdArticle) {
+                    onKnowledgeContentCreated({
+                        type: 'help-center-article',
+                        createdFrom:
+                            origin === ArticleOrigin.HELP_CENTER_WIZARD
+                                ? 'help-center-wizard'
+                                : 'ai-library-tab', // ArticleOrigin.ALL_RECOMMENDATIONS_PAGE and ArticleOrigin.TOP_QUESTIONS_SECTION do not exist in the product anymore
+                        createdHow:
+                            item.type === ArticleTemplateType.AI
+                                ? 'from-ai'
+                                : 'from-template',
+                    })
+                }
+
+                return createdArticle
             },
         )
 

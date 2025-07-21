@@ -17,15 +17,18 @@ import {
 } from '../AiAgentScrapedDomainContent/constant'
 import { useGetStoreDomainIngestionLog } from './useGetStoreDomainIngestionLog'
 import { useIngestionLogMutation } from './useIngestionLogMutation'
+import { useKnowledgeTracking } from './useKnowledgeTracking'
 
 export const useSyncStoreDomain = ({
     helpCenterId,
     shopName,
     onStatusChange,
+    isSourcePage = false,
 }: {
     helpCenterId: number
     shopName: string
     onStatusChange: (status: string | null) => void
+    isSourcePage?: boolean
 }) => {
     const dispatch = useAppDispatch()
     const storeIntegration: ShopifyIntegration = useAppSelector(
@@ -48,6 +51,8 @@ export const useSyncStoreDomain = ({
         queryKey: ['store-domain-ingestion-logs', helpCenterId, storeUrl],
     })
 
+    const { onKnowledgeContentCreated } = useKnowledgeTracking({ shopName })
+
     const handleOnSync = useCallback(() => {
         setSyncTriggered(false)
 
@@ -56,6 +61,12 @@ export const useSyncStoreDomain = ({
         try {
             startIngestion({ url: storeUrl, type: IngestionType.Domain })
             onStatusChange(IngestionLogStatus.Pending)
+
+            onKnowledgeContentCreated({
+                type: 'store-website-sync',
+                createdFrom: isSourcePage ? 'source-page' : 'content-page',
+                createdHow: 'from-sync',
+            })
         } catch {
             void dispatch(
                 notify({
@@ -65,7 +76,14 @@ export const useSyncStoreDomain = ({
                 }),
             )
         }
-    }, [dispatch, startIngestion, storeUrl, onStatusChange])
+    }, [
+        dispatch,
+        startIngestion,
+        storeUrl,
+        onStatusChange,
+        onKnowledgeContentCreated,
+        isSourcePage,
+    ])
 
     const handleTriggerSync = useCallback(() => {
         if (storeDomainIngestionLog) {

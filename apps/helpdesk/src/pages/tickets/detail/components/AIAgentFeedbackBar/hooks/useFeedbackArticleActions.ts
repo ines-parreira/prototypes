@@ -8,6 +8,7 @@ import {
     CreateArticleDto,
     LocaleCode,
 } from 'models/helpCenter/types'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { useArticlesActions } from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
@@ -28,6 +29,9 @@ export const useFeedbackArticleActions = (
     const helpCenter = useCurrentHelpCenter()
     const articlesActions = useArticlesActions()
     const reviewArticle = useUpsertArticleTemplateReview()
+
+    const { onKnowledgeContentCreated, onKnowledgeContentEdited } =
+        useKnowledgeTracking({ shopName: helpCenter?.shop_name ?? '' })
 
     const createArticle = useCallback(
         async (
@@ -58,6 +62,14 @@ export const useFeedbackArticleActions = (
                     )
                 }
 
+                onKnowledgeContentCreated({
+                    type: 'help-center-article',
+                    createdFrom: 'ticket-view',
+                    createdHow: !!selectedTemplateKey
+                        ? 'from-template'
+                        : 'from-scratch',
+                })
+
                 void dispatch(
                     notify({
                         message: `Article created${
@@ -78,7 +90,13 @@ export const useFeedbackArticleActions = (
                 reportError(err as Error)
             }
         },
-        [articlesActions, selectedTemplateKey, onArticleCreate, dispatch],
+        [
+            articlesActions,
+            selectedTemplateKey,
+            onArticleCreate,
+            dispatch,
+            onKnowledgeContentCreated,
+        ],
     )
 
     const updateArticle = useCallback(
@@ -117,6 +135,11 @@ export const useFeedbackArticleActions = (
                     ])
                 }
 
+                onKnowledgeContentEdited({
+                    type: 'help-center-article',
+                    editedFrom: 'ticket-view',
+                })
+
                 void dispatch(
                     notify({
                         message: `Article saved${
@@ -144,6 +167,7 @@ export const useFeedbackArticleActions = (
             onArticleUpdate,
             reviewArticle,
             dispatch,
+            onKnowledgeContentEdited,
         ],
     )
 

@@ -19,6 +19,7 @@ import {
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { resetArticles } from 'state/entities/helpCenter/articles'
@@ -110,6 +111,9 @@ export const HelpCenterArticlesView: React.FC = () => {
     const { searchResults } = useSearchContext()
 
     const { isPassingRulesCheck } = useAbilityChecker()
+
+    const { onKnowledgeContentCreated, onKnowledgeContentEdited } =
+        useKnowledgeTracking({ shopName: helpCenter?.shop_name ?? '' })
 
     /**
      * States
@@ -536,6 +540,14 @@ export const HelpCenterArticlesView: React.FC = () => {
                 )
             }
 
+            onKnowledgeContentCreated({
+                type: 'help-center-article',
+                createdFrom: 'help-center-settings',
+                createdHow: !!selectedTemplateKey
+                    ? 'from-template'
+                    : 'from-scratch',
+            })
+
             void dispatch(
                 notify({
                     message: `Article created${
@@ -594,6 +606,11 @@ export const HelpCenterArticlesView: React.FC = () => {
                     { action: 'publish', template_key: article.template_key },
                 ])
             }
+
+            onKnowledgeContentEdited({
+                type: 'help-center-article',
+                editedFrom: 'help-center-settings',
+            })
 
             void dispatch(
                 notify({

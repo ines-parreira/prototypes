@@ -10,6 +10,7 @@ import { useFlag } from 'core/flags'
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
@@ -151,6 +152,8 @@ export const PublicSourcesItem = ({
         FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
     )
 
+    const { onKnowledgeSourcesFiltered } = useKnowledgeTracking({ shopName })
+
     const handleChange = (value: string) => {
         if (setIsPristine) setIsPristine(false)
         setIsCurrentUrlPristine(false)
@@ -190,6 +193,16 @@ export const PublicSourcesItem = ({
         if (value) {
             window.open(value, '_blank', 'noopener noreferrer')
         }
+    }
+
+    const handleOpenArticles = (publicUrl: any) => {
+        history.push(routes.urlArticles(publicUrl.id), {
+            selectedResource: publicUrl,
+        })
+
+        onKnowledgeSourcesFiltered({
+            type: 'single-page-url',
+        })
     }
 
     const isValidUrl = isUrlValid(value)
@@ -329,11 +342,7 @@ export const PublicSourcesItem = ({
                         fillStyle="ghost"
                         intent="secondary"
                         aria-label="Open articles"
-                        onClick={() => {
-                            history.push(routes.urlArticles(source.id), {
-                                selectedResource: source,
-                            })
-                        }}
+                        onClick={() => handleOpenArticles(source)}
                         className={css.arrowIcon}
                         icon="keyboard_arrow_right"
                         isDisabled={

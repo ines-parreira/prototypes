@@ -9,6 +9,7 @@ import {
     ArticleTemplateReviewAction,
     HelpCenter,
 } from 'models/helpCenter/types'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
@@ -46,6 +47,9 @@ const useAILibraryActions = (
         helpCenter.id,
         helpCenter.default_locale,
     )
+    const { onKnowledgeContentCreated } = useKnowledgeTracking({
+        shopName: helpCenter.shop_name || '',
+    })
     const queryClient = useQueryClient()
     const appDispatch = useAppDispatch()
 
@@ -108,6 +112,12 @@ const useAILibraryActions = (
                 categoryId: editorPayloadDetails.current?.categoryId || null,
                 publish: !editorPayloadDetails.current?.saveAsDraft,
                 origin: ArticleOrigin.AI_LIBRARY_TAB,
+            })
+
+            onKnowledgeContentCreated({
+                type: 'help-center-article',
+                createdFrom: 'ai-library-tab',
+                createdHow: 'from-ai',
             })
 
             editorPayloadDetails.current = null

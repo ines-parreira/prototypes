@@ -6,9 +6,11 @@ import {
     ArticleTemplateType,
     HelpCenterArticleItem,
 } from 'models/helpCenter/types'
+import { getArticleFixture } from 'pages/aiAgent/fixtures/article.fixture'
 import { AIArticlesGroupedFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import { ArticleTemplatesGroupedByCategoryFixture } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import { HelpCenterApiArticlesFixture } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCenterArticlesForm } from '../useHelpCenterArticlesForm'
@@ -16,9 +18,10 @@ import { useHelpCenterArticlesForm } from '../useHelpCenterArticlesForm'
 const mockedCreateArticleMutateAsync = jest.fn()
 const mockedCreateArticleTranslationMutateAsync = jest.fn()
 const mockedUpdateArticleTranslationMutateAsync = jest.fn()
+const mockedOnKnowledgeContentCreated = jest.fn()
 
 jest.mock('hooks/useAppSelector')
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('models/helpCenter/queries', () => ({
     useCreateArticle: () => ({
         mutateAsync: mockedCreateArticleMutateAsync,
@@ -30,10 +33,16 @@ jest.mock('models/helpCenter/queries', () => ({
         mutateAsync: mockedUpdateArticleTranslationMutateAsync,
     }),
 }))
+jest.mock('pages/aiAgent/hooks/useKnowledgeTracking', () => ({
+    useKnowledgeTracking: () => ({
+        onKnowledgeContentCreated: mockedOnKnowledgeContentCreated,
+    }),
+}))
 
 const helpCenter = HelpCenterApiArticlesFixture
 const articles = ArticleTemplatesGroupedByCategoryFixture
 const aiArticles = AIArticlesGroupedFixture
+const origin = ArticleOrigin.HELP_CENTER_WIZARD
 
 describe('useHelpCenterArticlesForm', () => {
     beforeEach(() => {
@@ -43,7 +52,7 @@ describe('useHelpCenterArticlesForm', () => {
     describe('ui state', () => {
         it('should initialize with default values', () => {
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             expect(result.current.articles).toEqual(articles)
@@ -52,7 +61,7 @@ describe('useHelpCenterArticlesForm', () => {
 
         it('should handle article selection', () => {
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             act(() => {
@@ -66,7 +75,7 @@ describe('useHelpCenterArticlesForm', () => {
 
         it('should handle article edit', () => {
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             act(() => {
@@ -81,7 +90,7 @@ describe('useHelpCenterArticlesForm', () => {
 
         it('should handle editor close', () => {
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             act(() => {
@@ -93,7 +102,7 @@ describe('useHelpCenterArticlesForm', () => {
 
         it('should handle editor ready', () => {
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             const content = '<p>><strong>Test</strong></p>'
@@ -114,7 +123,7 @@ describe('useHelpCenterArticlesForm', () => {
 
         it('should handle article hover', () => {
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             act(() => {
@@ -128,9 +137,13 @@ describe('useHelpCenterArticlesForm', () => {
     })
 
     describe('endpoints calls', () => {
-        it('should call create an article mock', async () => {
+        it('should call create an article mock and log knowledge content created tracking event', async () => {
+            mockedCreateArticleMutateAsync.mockResolvedValue({
+                data: getArticleFixture(1),
+            })
+
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             act(() => {
@@ -146,6 +159,11 @@ describe('useHelpCenterArticlesForm', () => {
 
             await waitFor(() => {
                 expect(mockedCreateArticleMutateAsync).toHaveBeenCalled()
+                expect(mockedOnKnowledgeContentCreated).toHaveBeenCalledWith({
+                    type: 'help-center-article',
+                    createdFrom: 'help-center-wizard',
+                    createdHow: 'from-template',
+                })
             })
         })
 
@@ -169,7 +187,11 @@ describe('useHelpCenterArticlesForm', () => {
                 ],
             }
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articlesWithTranslations),
+                useHelpCenterArticlesForm(
+                    helpCenter,
+                    articlesWithTranslations,
+                    origin,
+                ),
             )
 
             act(() => {
@@ -209,7 +231,11 @@ describe('useHelpCenterArticlesForm', () => {
                 ],
             }
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articlesWithTranslations),
+                useHelpCenterArticlesForm(
+                    helpCenter,
+                    articlesWithTranslations,
+                    origin,
+                ),
             )
 
             act(() => {
@@ -232,7 +258,7 @@ describe('useHelpCenterArticlesForm', () => {
 
         it('should not update articles if key not found', async () => {
             const { result } = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles),
+                useHelpCenterArticlesForm(helpCenter, articles, origin),
             )
 
             act(() => {
@@ -255,7 +281,7 @@ describe('useHelpCenterArticlesForm', () => {
         describe('handle navigation for article templates', () => {
             it('should SELECTED + NOT EDITED => DRAFT article', async () => {
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, articles),
+                    useHelpCenterArticlesForm(helpCenter, articles, origin),
                 )
 
                 act(() => {
@@ -293,7 +319,11 @@ describe('useHelpCenterArticlesForm', () => {
                     ],
                 }
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedArticles),
+                    useHelpCenterArticlesForm(
+                        helpCenter,
+                        mockedArticles,
+                        origin,
+                    ),
                 )
 
                 await act(async () => {
@@ -327,7 +357,11 @@ describe('useHelpCenterArticlesForm', () => {
                 }
 
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedArticles),
+                    useHelpCenterArticlesForm(
+                        helpCenter,
+                        mockedArticles,
+                        origin,
+                    ),
                 )
 
                 act(() => {
@@ -362,7 +396,7 @@ describe('useHelpCenterArticlesForm', () => {
 
             it('should UNSELECTED + NOT EDITED => NO article', async () => {
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, articles),
+                    useHelpCenterArticlesForm(helpCenter, articles, origin),
                 )
 
                 await act(async () => {
@@ -385,8 +419,11 @@ describe('useHelpCenterArticlesForm', () => {
 
         describe('handle navigation for AI templates', () => {
             it('should SELECTED + NOT EDITED => PUBLISHED article', async () => {
+                mockedCreateArticleMutateAsync.mockResolvedValue({
+                    data: getArticleFixture(1),
+                })
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, aiArticles),
+                    useHelpCenterArticlesForm(helpCenter, aiArticles, origin),
                 )
 
                 act(() => {
@@ -409,6 +446,13 @@ describe('useHelpCenterArticlesForm', () => {
                             }),
                         ],
                     )
+                    expect(
+                        mockedOnKnowledgeContentCreated,
+                    ).toHaveBeenCalledWith({
+                        type: 'help-center-article',
+                        createdFrom: 'help-center-wizard',
+                        createdHow: 'from-ai',
+                    })
                 })
             })
 
@@ -424,7 +468,11 @@ describe('useHelpCenterArticlesForm', () => {
                     ],
                 }
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedAiArticles),
+                    useHelpCenterArticlesForm(
+                        helpCenter,
+                        mockedAiArticles,
+                        origin,
+                    ),
                 )
 
                 await act(async () => {
@@ -458,7 +506,11 @@ describe('useHelpCenterArticlesForm', () => {
                 }
 
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedAiArticles),
+                    useHelpCenterArticlesForm(
+                        helpCenter,
+                        mockedAiArticles,
+                        origin,
+                    ),
                 )
 
                 act(() => {
@@ -492,7 +544,7 @@ describe('useHelpCenterArticlesForm', () => {
 
             it('should UNSELECTED + NOT EDITED => NO article', async () => {
                 const { result } = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, aiArticles),
+                    useHelpCenterArticlesForm(helpCenter, aiArticles, origin),
                 )
 
                 await act(async () => {

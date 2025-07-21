@@ -11,6 +11,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { PAGE_NAME } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
@@ -42,6 +43,7 @@ import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreCo
 import { INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
 import { useAiAgentHelpCenter } from './hooks/useAiAgentHelpCenter'
 import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
+import { useKnowledgeTracking } from './hooks/useKnowledgeTracking'
 import { useStoresDomainIngestionLogs } from './hooks/useStoresDomainIngestionLogs'
 import { getFormValuesFromStoreConfiguration } from './hooks/utils/configurationForm.utils'
 
@@ -70,6 +72,12 @@ export const AiAgentKnowledgeContainer = () => {
         shopName: string
         shopType: string
     }>()
+
+    const { onKnowledgeSourcesViewed } = useKnowledgeTracking({ shopName })
+
+    useEffectOnce(() => {
+        onKnowledgeSourcesViewed()
+    })
 
     const {
         isLoading: isStoreConfigLoading,

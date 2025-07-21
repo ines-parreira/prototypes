@@ -10,6 +10,7 @@ import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { ConfirmNavigationPrompt } from 'pages/common/components/ConfirmNavigationPrompt'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
@@ -62,6 +63,9 @@ export const ExternalFilesSection = ({
     const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
         FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
     )
+
+    const { onKnowledgeSourcesFiltered, onKnowledgeContentCreated } =
+        useKnowledgeTracking({ shopName })
 
     const { ingestFile, ingestedFiles, deleteIngestedFile, isIngesting } =
         useFileIngestion({
@@ -168,6 +172,12 @@ export const ExternalFilesSection = ({
                 size_bytes: uploadedFile.size,
                 google_storage_url: uploadedFile.google_storage_key,
             })
+
+            onKnowledgeContentCreated({
+                type: 'document',
+                createdFrom: 'source-page',
+                createdHow: 'from-upload',
+            })
         } catch {
             void dispatch(
                 notify({
@@ -194,6 +204,10 @@ export const ExternalFilesSection = ({
     const handleOpenArticles = (ingestedFile: any) => {
         history.push(routes.fileArticles(ingestedFile.id), {
             selectedResource: ingestedFile,
+        })
+
+        onKnowledgeSourcesFiltered({
+            type: 'document',
         })
     }
 

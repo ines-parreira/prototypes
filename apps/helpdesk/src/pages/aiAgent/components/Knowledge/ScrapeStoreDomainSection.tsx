@@ -17,6 +17,7 @@ import {
     isSyncLessThan24Hours,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
@@ -45,8 +46,14 @@ export const ScrapeStoreDomainSection = ({
     )
 
     const { routes } = useAiAgentNavigation({ shopName })
+    const { onKnowledgeSourcesFiltered } = useKnowledgeTracking({ shopName })
+
     const onManage = () => {
         history.push(routes.questionsContent)
+
+        onKnowledgeSourcesFiltered({
+            type: 'store-website',
+        })
     }
 
     const {
@@ -58,7 +65,12 @@ export const ScrapeStoreDomainSection = ({
         handleTriggerSync,
         handleOnSync,
         handleOnCancel,
-    } = useSyncStoreDomain({ helpCenterId, shopName, onStatusChange })
+    } = useSyncStoreDomain({
+        helpCenterId,
+        shopName,
+        onStatusChange,
+        isSourcePage: true,
+    })
 
     const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,

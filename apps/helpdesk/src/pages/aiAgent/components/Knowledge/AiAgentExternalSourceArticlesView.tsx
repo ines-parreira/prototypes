@@ -29,6 +29,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetIngestedFileArticles } from 'pages/aiAgent/hooks/useGetIngestedFileArticles'
 import { useGetIngestedUrlArticles } from 'pages/aiAgent/hooks/useGetIngestedUrlArticles'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import history from 'pages/history'
@@ -245,6 +246,8 @@ const AiAgentExternalSourceArticlesView = ({
         return articles.find((article) => article.id === articleId) || null
     }, [articles, articleId])
 
+    const { onKnowledgeContentCreated } = useKnowledgeTracking({ shopName })
+
     useEffect(() => {
         if (syncStatus === ARTICLE_INGESTION_LOGS_STATUS.SUCCESSFUL) {
             void refetch()
@@ -322,6 +325,12 @@ const AiAgentExternalSourceArticlesView = ({
                 await addPublicResource([fileUrl])
                 await queryClient.invalidateQueries({
                     queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
+                })
+
+                onKnowledgeContentCreated({
+                    type: 'single-page-URL',
+                    createdFrom: 'content-page',
+                    createdHow: 'from-sync',
                 })
             } finally {
                 setSyncTriggered(false)

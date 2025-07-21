@@ -14,6 +14,7 @@ import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from 'pages/aiAgent/constants'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import Button from 'pages/common/components/button/Button'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { notify } from 'state/notifications/actions'
@@ -68,6 +69,7 @@ export const PublicSourcesSection = ({
     const { resetAllBanner } = useIngestionDomainBannerDismissed({
         shopName,
     })
+    const { onKnowledgeContentCreated } = useKnowledgeTracking({ shopName })
     const queryClient = useQueryClient()
 
     useEffect(() => {
@@ -191,6 +193,12 @@ export const PublicSourcesSection = ({
             }
             await addPublicResource([url])
             resetAllBanner()
+
+            onKnowledgeContentCreated({
+                type: 'single-page-URL',
+                createdFrom: 'source-page',
+                createdHow: 'from-sync',
+            })
         } catch {
             setSources((prev) =>
                 prev.map((source) =>

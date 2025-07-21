@@ -13,6 +13,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
+import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
@@ -193,6 +194,9 @@ export const GuidanceForm = ({
         await handleSubmit({ redirectTo: routes.test })
     }
 
+    const { onKnowledgeContentCreated, onKnowledgeContentEdited } =
+        useKnowledgeTracking({ shopName })
+
     const logEvents = () => {
         const event =
             actionType === 'create'
@@ -204,6 +208,19 @@ export const GuidanceForm = ({
             name: formState.name,
             draft: formState.isVisible ? 'enabled' : 'disabled',
         })
+
+        if (actionType === 'create') {
+            onKnowledgeContentCreated({
+                type: 'guidance',
+                createdFrom: 'guidance-editor',
+                createdHow: `from-${sourceType}`,
+            })
+        } else {
+            onKnowledgeContentEdited({
+                type: 'guidance',
+                editedFrom: 'guidance-editor',
+            })
+        }
     }
 
     return (
