@@ -71,6 +71,8 @@ describe('<Activation />', () => {
     const mockStore = configureMockStore([thunk])()
 
     beforeEach(() => {
+        jest.clearAllMocks()
+
         const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
         const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
         const mockTestSmsMutateAsync = jest.fn().mockResolvedValue({})
@@ -172,11 +174,13 @@ describe('<Activation />', () => {
             </Provider>,
         )
 
-        await waitFor(async () => {
-            const input = screen.getByRole('textbox')
-            await act(async () => {
-                await userEvent.type(input, '1234567890')
-            })
+        await waitFor(() => {
+            expect(screen.getByRole('textbox')).toBeInTheDocument()
+        })
+
+        const input = screen.getByRole('textbox')
+        await act(async () => {
+            await userEvent.type(input, '1234567890')
         })
 
         const button = screen.getByTestId('ai-journey-button')
@@ -186,12 +190,15 @@ describe('<Activation />', () => {
             await userEvent.click(button)
         })
 
-        await waitFor(() => {
-            expect(mockHistoryPush).toHaveBeenCalledTimes(1)
-            expect(mockHistoryPush).toHaveBeenCalledWith(
-                '/app/ai-journey/shopify-store/performance',
-            )
-        })
+        await waitFor(
+            () => {
+                expect(mockHistoryPush).toHaveBeenCalledTimes(1)
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/shopify-store/performance',
+                )
+            },
+            { timeout: 1000 },
+        )
     })
 
     it('should redirect from conversation setup to landing page on return', async () => {
@@ -227,6 +234,10 @@ describe('<Activation />', () => {
                 </QueryClientProvider>
             </Provider>,
         )
+
+        await waitFor(() => {
+            expect(screen.getByText('Back')).toBeInTheDocument()
+        })
 
         const returnButton = screen.getByText('Back')
         expect(returnButton).toBeInTheDocument()
@@ -290,6 +301,10 @@ describe('<Activation />', () => {
                 </Provider>,
             )
 
+            await waitFor(() => {
+                expect(screen.getByRole('textbox')).toBeInTheDocument()
+            })
+
             const input = screen.getByRole('textbox')
             const button = screen.getByText('Send test SMS')
             await act(async () => {
@@ -322,6 +337,10 @@ describe('<Activation />', () => {
                     </QueryClientProvider>
                 </Provider>,
             )
+
+            await waitFor(() => {
+                expect(screen.getByRole('textbox')).toBeInTheDocument()
+            })
 
             const input = screen.getByRole('textbox')
             const button = screen.getByText('Send test SMS')
@@ -364,6 +383,10 @@ describe('<Activation />', () => {
                     </QueryClientProvider>
                 </Provider>,
             )
+
+            await waitFor(() => {
+                expect(screen.getByRole('textbox')).toBeInTheDocument()
+            })
 
             const input = screen.getByRole('textbox')
             const button = screen.getByText('Send test SMS')
