@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import _isEqual from 'lodash/isEqual'
 import _omit from 'lodash/omit'
 
-import { Button, IconButton } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -393,12 +393,19 @@ export const ManageGuidanceForm = ({
                     {url && (
                         <a href={url} target="_blank" rel="noopener noreferrer">
                             <IconButton
+                                id="open-guidance-in-new-tab"
                                 icon="open_in_new"
                                 fillStyle="ghost"
                                 intent="secondary"
                                 size="medium"
                                 aria-label="open resource management in new tab"
                             />
+                            <Tooltip
+                                target="open-guidance-in-new-tab"
+                                placement="bottom"
+                            >
+                                Open in new tab
+                            </Tooltip>
                         </a>
                     )}
                 </Drawer.HeaderActions>

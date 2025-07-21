@@ -1,4 +1,4 @@
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
@@ -62,23 +62,39 @@ const KnowledgeSourcePreview = ({
                     closeButtonId="close-button"
                 >
                     {onEdit && (
-                        <IconButton
-                            icon="edit"
-                            fillStyle="ghost"
-                            intent="secondary"
-                            size="medium"
-                            aria-label="edit knowledge source"
-                            onClick={onEdit}
-                        />
+                        <>
+                            <IconButton
+                                id="edit-knowledge-source"
+                                icon="edit"
+                                fillStyle="ghost"
+                                intent="secondary"
+                                size="medium"
+                                aria-label="edit knowledge source"
+                                onClick={onEdit}
+                            />
+                            <Tooltip
+                                target="edit-knowledge-source"
+                                placement="bottom"
+                            >
+                                Edit
+                            </Tooltip>
+                        </>
                     )}
                     <a href={url} target="_blank" rel="noopener noreferrer">
                         <IconButton
+                            id="open-knowledge-source-in-new-tab"
                             icon="open_in_new"
                             fillStyle="ghost"
                             intent="secondary"
                             size="medium"
                             aria-label="open resource management in new tab"
                         />
+                        <Tooltip
+                            target="open-knowledge-source-in-new-tab"
+                            placement="bottom"
+                        >
+                            Open in new tab
+                        </Tooltip>
                     </a>
                 </Drawer.HeaderActions>
             </Drawer.Header>

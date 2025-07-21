@@ -197,7 +197,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                             placement="bottom-end"
                             target="settings-button"
                         >
-                            Open settings
+                            View settings
                         </Tooltip>
                         <IconButton
                             onClick={() =>

@@ -100,11 +100,8 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 onClose={onArticleModalClose}
                 toggleModalBtn={
                     <>
-                        <Tooltip
-                            placement="bottom-end"
-                            target="back-edit-button"
-                        >
-                            Open editor
+                        <Tooltip placement="bottom" target="back-edit-button">
+                            View editor
                         </Tooltip>
                         <IconButton
                             onClick={() =>

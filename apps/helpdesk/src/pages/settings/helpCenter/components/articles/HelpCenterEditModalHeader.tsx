@@ -116,7 +116,7 @@ export const HelpCenterEditModalHeader = ({
 
     const getResizeModalButton = () => (
         <>
-            <Tooltip placement="bottom-end" target="fullscreen-button">
+            <Tooltip placement="bottom" target="fullscreen-button">
                 {isFullscreen ? 'Halfscreen mode' : 'Fullscreen mode'}
             </Tooltip>
             <div id="fullscreen-button">
@@ -302,11 +302,8 @@ export const HelpCenterEditModalHeader = ({
                     {onResize && getResizeModalButton()}
                     {showPreviewArticleButton && (
                         <>
-                            <Tooltip
-                                placement="bottom-end"
-                                target="preview-button"
-                            >
-                                View Article
+                            <Tooltip placement="bottom" target="preview-button">
+                                Open article
                             </Tooltip>
                             <IconButton
                                 onClick={() =>
@@ -327,10 +324,10 @@ export const HelpCenterEditModalHeader = ({
                     {showCopyURLButton && (
                         <>
                             <Tooltip
-                                placement="bottom-end"
+                                placement="bottom"
                                 target="copy-url-button"
                             >
-                                Copy URL
+                                Copy article URL
                             </Tooltip>
                             <IconButton
                                 id="copy-url-button"
@@ -340,16 +337,13 @@ export const HelpCenterEditModalHeader = ({
                                 size="medium"
                                 aria-label="copy url"
                             >
-                                share
+                                link
                             </IconButton>
                         </>
                     )}
                     {toggleModalBtn}
-                    <Tooltip
-                        placement="bottom-end"
-                        target="close-edit-mode-button"
-                    >
-                        Close edit mode
+                    <Tooltip placement="bottom" target="close-edit-mode-button">
+                        Close
                     </Tooltip>
                     <IconButton
                         onClick={onClose}

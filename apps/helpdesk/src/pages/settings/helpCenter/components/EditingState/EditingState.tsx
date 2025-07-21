@@ -1,6 +1,4 @@
-import classnames from 'classnames'
-
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { EditingStateEnum } from '../../constants'
 
@@ -13,36 +11,34 @@ export type EditingStateProps = {
 const EditingState = ({ state }: EditingStateProps) => {
     const options = {
         [EditingStateEnum.PUBLISHED]: {
-            icon: 'verified',
+            icon: 'check_circle',
+            badgeType: 'light-purple',
             tooltip: 'Article content reflects the published version.',
         },
         [EditingStateEnum.UNSAVED]: {
             icon: 'edit',
+            badgeType: 'light-grey',
             tooltip: 'Recent changes to this article have not been saved.',
         },
         [EditingStateEnum.SAVED]: {
             icon: 'save',
+            badgeType: 'light-success',
             tooltip: 'Recent saved changes to this article are unpublished.',
         },
     }
 
     return (
         <>
-            <span
+            <Badge
                 id="editingState"
-                className={classnames(
-                    css.editingState,
-                    css[state.toLowerCase()],
-                )}
+                type={options[state].badgeType as ColorType}
             >
-                <i className={classnames('material-icons', css.icon)}>
-                    {options[state].icon}
-                </i>
+                <i className={'material-icons'}>{options[state].icon}</i>
                 {state}
-            </span>
+            </Badge>
             <Tooltip
                 target="editingState"
-                placement="bottom-end"
+                placement="bottom"
                 innerProps={{
                     innerClassName: css.tooltip,
                 }}
