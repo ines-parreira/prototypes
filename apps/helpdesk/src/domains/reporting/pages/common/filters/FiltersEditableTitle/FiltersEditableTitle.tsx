@@ -2,6 +2,8 @@ import React, { useMemo } from 'react'
 
 import classNames from 'classnames'
 
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import { FilterWarningIcon } from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import css from 'domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle.less'
 import useAppSelector from 'hooks/useAppSelector'
@@ -17,9 +19,11 @@ type Props = {
     errorType?: 'not-applicable' | 'non-existent'
     onChange: (value: string) => void
     errorMessage?: string
+    isPinned?: boolean
 }
 
 const PLACEHOLDER = 'Name Filter'
+export const DEFAULT_BADGE_TEXT = 'Default'
 export const NOT_APPLICABLE_ERROR =
     'Some filters are not applicable to this report and are disabled.'
 export const NOT_EXISTENT_AGENT_ERROR =
@@ -60,6 +64,7 @@ export const FiltersEditableTitle = ({
     errorType,
     errorMessage,
     onChange,
+    isPinned,
 }: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -94,6 +99,11 @@ export const FiltersEditableTitle = ({
                         warningType={errorType}
                         tooltipPlacement="right"
                     />
+                )}
+                {isPinned && (
+                    <Badge type="light-grey" upperCase className={css.badge}>
+                        {DEFAULT_BADGE_TEXT}
+                    </Badge>
                 )}
             </span>
         </div>

@@ -4,6 +4,7 @@ import { act, fireEvent, render } from '@testing-library/react'
 
 import { FILTER_WARNING_ICON } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
+    DEFAULT_BADGE_TEXT,
     FiltersEditableTitle,
     getTooltipContent,
     NOT_APPLICABLE_ERROR,
@@ -111,6 +112,22 @@ describe('FiltersEditableTitle', () => {
         })
 
         expect(toggleIsEditModeMock).toHaveBeenCalledWith(true)
+    })
+
+    it('should render the component with the default badge', () => {
+        const { getByText } = render(
+            <FiltersEditableTitle
+                isEditMode={false}
+                title="Filter title"
+                toggleIsEditMode={toggleIsEditModeMock}
+                onChange={jest.fn()}
+                isPinned
+            />,
+        )
+
+        expect(getByText('Filter title')).toBeTruthy()
+
+        expect(getByText(DEFAULT_BADGE_TEXT)).toBeTruthy()
     })
 })
 

@@ -20,8 +20,10 @@ import {
     SavedFilterDraft,
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { DEFAULT_BADGE_TEXT } from 'domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 import { fromApiFormatted } from 'domains/reporting/pages/common/filters/helpers'
 import { SAVED_FILTER_ACTIONS_MENU_ICON } from 'domains/reporting/pages/common/filters/SavedFilterMenu'
+import { ApplySavedFilterProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import {
     CANCEL_BUTTON_LABEL,
     CANCEL_MODAL_BUTTON_LABEL,
@@ -1468,6 +1470,65 @@ describe('SavedFiltersPanel', () => {
             userEvent.click(screen.getByText(SAVE_BUTTON_LABEL))
 
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+            expect(
+                screen.queryByText(DEFAULT_BADGE_TEXT),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('isPinned', () => {
+        it('should contain the default badge text', () => {
+            const savedFilterName = 'Some Name draft'
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1'],
+                    },
+                ],
+            }
+
+            const state = {
+                stats: statsSlice.initialState,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                    },
+                }),
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            savedFilterDraft: savedFilter,
+                            appliedSavedFilterId: 123,
+                        },
+                    },
+                },
+                currentUser: defaultState.currentUser,
+            } as RootState
+
+            const pinnedFilter: ApplySavedFilterProps['pinnedFilter'] = {
+                id: 123,
+                pin: () => {},
+            }
+
+            renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel
+                            optionalFilters={[]}
+                            pinnedFilter={pinnedFilter}
+                        />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                state,
+            )
+
+            expect(screen.getByText(DEFAULT_BADGE_TEXT)).toBeInTheDocument()
         })
     })
 

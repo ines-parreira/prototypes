@@ -25,6 +25,7 @@ import {
     toApiFormatted,
 } from 'domains/reporting/pages/common/filters/helpers'
 import { SavedFilterMenu } from 'domains/reporting/pages/common/filters/SavedFilterMenu'
+import { ApplySavedFilterProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import css from 'domains/reporting/pages/common/filters/SavedFiltersPanel.less'
 import {
     areFiltersApplicable,
@@ -125,11 +126,13 @@ const isSavedFilter = (
 type Props = {
     persistentFilters?: StaticFilter[]
     optionalFilters: OptionalFilter[]
+    pinnedFilter?: ApplySavedFilterProps['pinnedFilter']
 }
 
 export const SavedFiltersPanel = ({
     optionalFilters,
     persistentFilters,
+    pinnedFilter,
 }: Props) => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
@@ -370,6 +373,7 @@ export const SavedFiltersPanel = ({
                                     savedFilterDraft,
                                 })}
                                 error={errorMessage}
+                                isPinned={pinnedFilter?.id === savedFilter?.id}
                             />
                             {(isEditMode || isEditingSavedFilterDraft) &&
                             savedFilter ? (

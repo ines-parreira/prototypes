@@ -55,6 +55,7 @@ export const FiltersPanelWrapper = ({
                 <SavedFiltersPanel
                     persistentFilters={persistentFilters}
                     optionalFilters={optionalFilters}
+                    pinnedFilter={pinnedFilter}
                 />
             )}
         </div>
