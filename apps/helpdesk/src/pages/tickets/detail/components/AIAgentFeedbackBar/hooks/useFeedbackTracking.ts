@@ -1,3 +1,5 @@
+import { useCallback, useMemo } from 'react'
+
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 
@@ -30,6 +32,8 @@ interface FeedbackTrackingCallbacks {
         resourceSetId: string,
         isNew: boolean,
     ) => void
+    onFeedbackTabOpened: (openedFrom: string) => void
+    onFeedbackGiven: (type: string) => void
 }
 
 export const useFeedbackTracking = ({
@@ -37,11 +41,13 @@ export const useFeedbackTracking = ({
     accountId,
     userId,
 }: UseFeedbackTrackingProps): FeedbackTrackingCallbacks => {
-    const eventContext = {
-        ticketId,
-        accountId,
-        userId,
-    }
+    const eventContext = useMemo(() => {
+        return {
+            ticketId,
+            accountId,
+            userId,
+        }
+    }, [ticketId, accountId, userId])
 
     const onKnowledgeResourceClick = (
         resourceId: string,
@@ -95,10 +101,32 @@ export const useFeedbackTracking = ({
         })
     }
 
+    const onFeedbackTabOpened = useCallback(
+        (openedFrom: string) => {
+            logEvent(SegmentEvent.AiAgentFeedbackTabOpened, {
+                ...eventContext,
+                openedFrom,
+            })
+        },
+        [eventContext],
+    )
+
+    const onFeedbackGiven = useCallback(
+        (type: string) => {
+            logEvent(SegmentEvent.AiAgentFeedbackGiven, {
+                ...eventContext,
+                type,
+            })
+        },
+        [eventContext],
+    )
+
     return {
         onKnowledgeResourceClick,
         onKnowledgeResourceEditClick,
         onKnowledgeResourceCreateClick,
         onKnowledgeResourceSaved,
+        onFeedbackTabOpened,
+        onFeedbackGiven,
     }
 }

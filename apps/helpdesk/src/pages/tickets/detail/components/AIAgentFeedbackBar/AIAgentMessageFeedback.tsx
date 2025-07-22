@@ -20,6 +20,7 @@ import {
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { getAgentMessageFeedbackStatus } from 'state/agents/selectors'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getTicketState } from 'state/ticket/selectors'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import InfoIconWithTooltip from '../../../common/components/InfoIconWithTooltip'
@@ -33,6 +34,7 @@ import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
 import FeedbackReportIssue from './FeedbackReportIssue'
 import { FeedbackResourceSection } from './FeedbackResourceSection'
 import FeedbackStatusBadge from './FeedbackStatusBadge'
+import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import { FeedbackStatus, ResourceSection } from './types'
 import { getActionUrl, getGuidanceUrl, getKnowledgeUrl } from './utils'
 
@@ -76,6 +78,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const accountId = useAppSelector(getCurrentAccountId)
+    const ticket = useAppSelector(getTicketState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+    const ticketId: number = ticket.get('id')
+    const userId: number = currentUser.get('id')
+
+    const { onFeedbackGiven } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
+    })
 
     const {
         aiAgentSendFeedback: submitFeedback,
@@ -203,6 +215,8 @@ const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
         if (selectedAIMessage) {
             if (textContent.length > 0) {
                 void submitFeedback(selectedAIMessage, payload)
+
+                onFeedbackGiven('internal-note')
             } else {
                 const payloadForDelete = buildSubmitMessageFeedback('')
                 void deleteFeedback(selectedAIMessage, payloadForDelete)

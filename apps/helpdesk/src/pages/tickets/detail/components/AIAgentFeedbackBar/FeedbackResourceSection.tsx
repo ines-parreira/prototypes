@@ -3,7 +3,9 @@ import { useCookies } from 'react-cookie'
 
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { getTicketState } from 'state/ticket/selectors'
 
 import { SegmentEvent } from '../../../../../common/segment'
 import { logEventWithSampling } from '../../../../../common/segment/segment'
@@ -15,6 +17,7 @@ import {
     Knowledge,
 } from '../../../../../models/aiAgentFeedback/types'
 import IconButton from '../../../../common/components/button/IconButton'
+import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import { ActionStatus, ResourceSection } from './types'
 
 import css from './AIAgentFeedbackBar.less'
@@ -53,12 +56,25 @@ export const FeedbackResourceSection: React.FC<
     const hasAgentPrivileges = useHasAgentPrivileges()
     const [cookies, setCookie] = useCookies([TOOLTIP_COOKIE_NAME])
 
+    const ticket = useAppSelector(getTicketState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+    const ticketId: number = ticket.get('id')
+    const userId: number = currentUser.get('id')
+
+    const { onFeedbackGiven } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
+    })
+
     const handleClick = (ev: React.MouseEvent, buttonType: Feedback) => {
         ev.preventDefault()
 
         if (resource.feedback === buttonType) {
             return
         }
+
+        onFeedbackGiven(buttonType || 'unknown')
 
         logEventWithSampling(SegmentEvent.AiAgentFeedbackSubmitFeedback, {
             accountId,

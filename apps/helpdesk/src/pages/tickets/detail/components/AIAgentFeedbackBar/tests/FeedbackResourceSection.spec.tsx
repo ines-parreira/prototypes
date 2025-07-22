@@ -1,9 +1,16 @@
 import { render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { useCookies } from 'react-cookie'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import { logEventWithSampling } from 'common/segment/segment'
+import { account } from 'fixtures/account'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
+import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
 
@@ -49,6 +56,14 @@ const mockResourceCancelled = {
     feedback: 'thumbs_up' as const,
 }
 
+const defaultStore: Partial<RootState> = {
+    currentAccount: fromJS(account),
+    currentUser: fromJS(user),
+    ticket: fromJS(ticket),
+}
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
 const resourceSection = 'someSection' as ResourceSection
 const renderFeedbackResourceComponent = (
     feedback: Feedback = 'thumbs_up',
@@ -56,16 +71,18 @@ const renderFeedbackResourceComponent = (
     resourceType: FeedbackOnResource['resourceType'] = 'guidance',
 ) =>
     render(
-        <FeedbackResourceSection
-            resource={{ ...resource, feedback }}
-            resourceType={resourceType}
-            handleSubmitFeedback={mockHandleSubmitFeedback}
-            href="https://example.com"
-            dataTestId="feedback-section"
-            resourceId={1}
-            resourceSection={resourceSection}
-            accountId={1}
-        />,
+        <Provider store={mockStore(defaultStore)}>
+            <FeedbackResourceSection
+                resource={{ ...resource, feedback }}
+                resourceType={resourceType}
+                handleSubmitFeedback={mockHandleSubmitFeedback}
+                href="https://example.com"
+                dataTestId="feedback-section"
+                resourceId={1}
+                resourceSection={resourceSection}
+                accountId={1}
+            />
+        </Provider>,
     )
 
 describe('FeedbackResourceSection', () => {

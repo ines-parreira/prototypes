@@ -1,12 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { Map } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
@@ -219,6 +221,14 @@ describe('AiAgentReasoning', () => {
             ) {
                 return TicketAIAgentFeedbackTab.CustomerInformation
             }
+            if (
+                selector.name === 'getCurrentAccountState' ||
+                selector.toString().includes('getCurrentAccountState')
+            ) {
+                return fromJS(account)
+            }
+            if (selector.toString().includes('state.currentUser'))
+                return fromJS(user)
             return undefined
         })
 
@@ -1095,6 +1105,14 @@ describe('AiAgentReasoning', () => {
                 ) {
                     return TicketAIAgentFeedbackTab.AIAgent
                 }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
                 return undefined
             })
 

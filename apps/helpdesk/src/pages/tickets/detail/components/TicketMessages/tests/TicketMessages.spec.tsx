@@ -5,16 +5,17 @@ import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { view } from 'fixtures/views'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
-import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 import { getLDClient } from 'utils/launchDarkly'
 import { assumeMock } from 'utils/testing'
@@ -29,13 +30,14 @@ import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import TicketMessages from '../TicketMessages'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
-jest.mock('state/currentAccount/selectors')
 jest.mock('state/ticket/selectors')
-jest.mock('common/segment/segment')
+jest.mock('common/segment/segment', () => ({
+    logEventWithSampling: jest.fn(),
+    logEvent: jest.fn(),
+}))
 jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
-const getCurrentAccountIdMock = assumeMock(getCurrentAccountId)
 const getShouldDisplayAuditLogEventsMock = assumeMock(
     getShouldDisplayAuditLogEvents,
 )
@@ -71,8 +73,18 @@ const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
     ReturnType<typeof getLDClient>['allFlags']
 >
 
-const mockStore = configureMockStore([thunk])
-const defaultState: Partial<RootState> = {}
+const defaultStore: Partial<RootState> = {
+    currentAccount: fromJS(account),
+    currentUser: fromJS(user),
+}
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const defaultState: Partial<RootState> = {
+    ...defaultStore,
+    views: fromJS({
+        active: view,
+    }),
+}
 
 describe('TicketMessages', () => {
     const defaultProps = {
@@ -107,22 +119,11 @@ describe('TicketMessages', () => {
             ticket_id: 1,
             id: messageFeedback.messageId,
         } as unknown as ReturnType<typeof getSelectedAIMessage>)
-        getCurrentAccountIdMock.mockReturnValue(1)
         getShouldDisplayAuditLogEventsMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
         mockFlags({
             [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: false,
         })
-    })
-
-    it('should get accountId from useAppSelector', () => {
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...defaultProps} />
-            </Provider>,
-        )
-
-        expect(getCurrentAccountIdMock).toHaveBeenCalled()
     })
 
     it('should identify and render AiAgentDraftMessage', () => {
@@ -211,6 +212,8 @@ describe('TicketMessages', () => {
                 {
                     accountId: 1,
                     banner: 'qa_failed',
+                    userType: 'admin',
+                    viewedFrom: 'new-&-open-tickets',
                 },
                 1,
             )
@@ -247,6 +250,8 @@ describe('TicketMessages', () => {
                 {
                     accountId: 1,
                     banner: 'trial',
+                    userType: 'admin',
+                    viewedFrom: 'new-&-open-tickets',
                 },
                 1,
             )
@@ -284,6 +289,8 @@ describe('TicketMessages', () => {
                 {
                     accountId: 1,
                     banner: BANNER_TYPE.THUMBS_UP_AND_DOWN,
+                    userType: 'admin',
+                    viewedFrom: 'new-&-open-tickets',
                 },
                 0.1,
             )
@@ -320,6 +327,8 @@ describe('TicketMessages', () => {
                 {
                     accountId: 1,
                     banner: BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE,
+                    userType: 'admin',
+                    viewedFrom: 'new-&-open-tickets',
                 },
                 0.1,
             )

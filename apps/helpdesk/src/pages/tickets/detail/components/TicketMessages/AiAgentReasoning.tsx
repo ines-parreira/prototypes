@@ -15,10 +15,12 @@ import {
 } from 'models/knowledgeService/queries'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 import { changeActiveTab, getActiveTab } from 'state/ui/ticketAIAgentFeedback'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
+import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { AiAgentReasoningContent } from './AiReasoningContent'
 
@@ -92,7 +94,12 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
     const [isRetriable] = useState(true)
 
     const ticket = useAppSelector(getTicketState)
+    const account = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+
     const ticketId: number = ticket.get('id')
+    const accountId: number = account.get('id')
+    const userId: number = currentUser.get('id')
 
     const activeTab = useAppSelector(getActiveTab)
     const dispatch = useAppDispatch()
@@ -101,6 +108,12 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
         FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
     )
     const { openPreview } = useKnowledgeSourceSideBar()
+
+    const { onFeedbackTabOpened } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
+    })
 
     const { data: messageAiReasoning, refetch: refetchMessageAiReasoning } =
         useGetMessageAiReasoning(
@@ -206,6 +219,7 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
     }, [refetchMessageAiReasoning])
 
     const handleGiveFeedback = () => {
+        onFeedbackTabOpened('give-feedback-buton-from-reasoning')
         dispatch(
             changeActiveTab({ activeTab: TicketAIAgentFeedbackTab.AIAgent }),
         )

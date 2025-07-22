@@ -1,11 +1,18 @@
 import { useCallback, useState } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import { useFlag } from 'core/flags'
+import { account } from 'fixtures/account'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getResourceMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
 import MissingKnowledgeSelect, { KnowledgeTag } from '../MissingKnowledgeSelect'
@@ -18,6 +25,7 @@ import {
 // Mock the segment event logging
 jest.mock('common/segment/segment', () => ({
     logEventWithSampling: jest.fn(),
+    logEvent: jest.fn(),
 }))
 
 jest.mock(
@@ -178,6 +186,13 @@ jest.mock('core/flags', () => ({
 }))
 
 const mockUseFlag = useFlag as jest.Mock
+const defaultStore: Partial<RootState> = {
+    currentAccount: fromJS(account),
+    currentUser: fromJS(user),
+    ticket: fromJS(ticket),
+}
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 describe('MissingKnowledgeSelect', () => {
     let onKnowledgeResourceClickMock: jest.Mock
@@ -210,19 +225,21 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         expect(screen.queryByText('Action Test')).not.toBeInTheDocument()
@@ -244,19 +261,21 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         // Test the non-array value handling in handleChange
@@ -268,23 +287,25 @@ describe('MissingKnowledgeSelect', () => {
         const handleRemove = jest.fn()
 
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                    },
-                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                    displayLabel: 'Macros::Macro Test',
-                    label: 'Macros::Macro Test',
-                    value: '1',
-                }}
-                handleRemove={handleRemove}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                        },
+                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                        displayLabel: 'Macros::Macro Test',
+                        label: 'Macros::Macro Test',
+                        value: '1',
+                    }}
+                    handleRemove={handleRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         expect(screen.getByText('Macro Test')).toBeInTheDocument()
@@ -300,24 +321,26 @@ describe('MissingKnowledgeSelect', () => {
         const handleRemove = jest.fn()
 
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                        helpCenterId: '2',
-                    },
-                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                    displayLabel: 'Macros::Macro Test',
-                    label: 'Macros::Macro Test',
-                    value: '1',
-                }}
-                handleRemove={handleRemove}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                            helpCenterId: '2',
+                        },
+                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                        displayLabel: 'Macros::Macro Test',
+                        label: 'Macros::Macro Test',
+                        value: '1',
+                    }}
+                    handleRemove={handleRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Macro Test'))
@@ -333,24 +356,26 @@ describe('MissingKnowledgeSelect', () => {
         const handleRemove = jest.fn()
 
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                        // helpCenterId is undefined
-                    },
-                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                    displayLabel: 'Macros::Macro Test',
-                    label: 'Macros::Macro Test',
-                    value: '1',
-                }}
-                handleRemove={handleRemove}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                            // helpCenterId is undefined
+                        },
+                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                        displayLabel: 'Macros::Macro Test',
+                        label: 'Macros::Macro Test',
+                        value: '1',
+                    }}
+                    handleRemove={handleRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Macro Test'))
@@ -366,24 +391,26 @@ describe('MissingKnowledgeSelect', () => {
         const handleRemove = jest.fn()
 
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                        helpCenterId: '',
-                    },
-                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                    displayLabel: 'Macros::Macro Test',
-                    label: 'Macros::Macro Test',
-                    value: '1',
-                }}
-                handleRemove={handleRemove}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                            helpCenterId: '',
+                        },
+                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                        displayLabel: 'Macros::Macro Test',
+                        label: 'Macros::Macro Test',
+                        value: '1',
+                    }}
+                    handleRemove={handleRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Macro Test'))
@@ -399,24 +426,26 @@ describe('MissingKnowledgeSelect', () => {
         const handleRemove = jest.fn()
 
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                        // helpCenterId is not provided, so it's undefined
-                    },
-                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                    displayLabel: 'Macros::Macro Test',
-                    label: 'Macros::Macro Test',
-                    value: '1',
-                }}
-                handleRemove={handleRemove}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                            // helpCenterId is not provided, so it's undefined
+                        },
+                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
+                        displayLabel: 'Macros::Macro Test',
+                        label: 'Macros::Macro Test',
+                        value: '1',
+                    }}
+                    handleRemove={handleRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Macro Test'))
@@ -433,20 +462,22 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                disabled={true}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    disabled={true}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         const selectButton = screen.getByText('Select First')
@@ -458,29 +489,31 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '1',
-                                resourceType:
-                                    AiAgentKnowledgeResourceTypeEnum.MACRO,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={
+                        [
+                            {
+                                parsedResource: {
+                                    resourceId: '1',
+                                    resourceType:
+                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                },
                             },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+                        ] as SuggestedResource[]
+                    }
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         expect(screen.getByText('Macro Test')).toBeInTheDocument()
@@ -491,19 +524,21 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Focus Input'))
@@ -514,42 +549,47 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                shopName="test-shop"
-                shopType="test-type"
-                knowledgeResources={[
-                    createResource(
-                        '3',
-                        AiAgentKnowledgeResourceTypeEnum.ACTION,
-                    ),
-                    createResource(
-                        '2',
-                        AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                    ),
-                    createResource(
-                        '4',
-                        AiAgentKnowledgeResourceTypeEnum.ARTICLE,
-                    ),
-                    createResource('1', AiAgentKnowledgeResourceTypeEnum.MACRO),
-                    createResource(
-                        '5',
-                        AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
-                    ),
-                    createResource(
-                        '6',
-                        AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
-                    ),
-                ]}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    knowledgeResources={[
+                        createResource(
+                            '3',
+                            AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        ),
+                        createResource(
+                            '2',
+                            AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        ),
+                        createResource(
+                            '4',
+                            AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                        ),
+                        createResource(
+                            '1',
+                            AiAgentKnowledgeResourceTypeEnum.MACRO,
+                        ),
+                        createResource(
+                            '5',
+                            AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                        ),
+                        createResource(
+                            '6',
+                            AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
+                        ),
+                    ]}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         // Select the first item - since all resources are filtered out, this shouldn't have any effect
@@ -570,36 +610,38 @@ describe('MissingKnowledgeSelect', () => {
 
         // Set up component with multiple pre-selected values
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '1',
-                                resourceType:
-                                    AiAgentKnowledgeResourceTypeEnum.MACRO,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={
+                        [
+                            {
+                                parsedResource: {
+                                    resourceId: '1',
+                                    resourceType:
+                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                },
                             },
-                        },
-                        {
-                            parsedResource: {
-                                resourceId: '3',
-                                resourceType:
-                                    AiAgentKnowledgeResourceTypeEnum.ACTION,
+                            {
+                                parsedResource: {
+                                    resourceId: '3',
+                                    resourceType:
+                                        AiAgentKnowledgeResourceTypeEnum.ACTION,
+                                },
                             },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+                        ] as SuggestedResource[]
+                    }
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         // Verify initial values are displayed - use regex to match partial text
@@ -638,29 +680,31 @@ describe('MissingKnowledgeSelect', () => {
         }
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '999', // ID that doesn't exist in choices
-                                resourceType:
-                                    AiAgentKnowledgeResourceTypeEnum.MACRO,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={
+                        [
+                            {
+                                parsedResource: {
+                                    resourceId: '999', // ID that doesn't exist in choices
+                                    resourceType:
+                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                },
                             },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={customEnrichedData}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+                        ] as SuggestedResource[]
+                    }
+                    enrichedData={customEnrichedData}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         // Now simulate selecting a new value
@@ -681,29 +725,31 @@ describe('MissingKnowledgeSelect', () => {
         }
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '999', // This ID doesn't match any choice
-                                resourceType:
-                                    AiAgentKnowledgeResourceTypeEnum.MACRO,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={
+                        [
+                            {
+                                parsedResource: {
+                                    resourceId: '999', // This ID doesn't match any choice
+                                    resourceType:
+                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                },
                             },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={customEnrichedData}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+                        ] as SuggestedResource[]
+                    }
+                    enrichedData={customEnrichedData}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         // Clear all selections and select a new one
@@ -730,29 +776,31 @@ describe('MissingKnowledgeSelect', () => {
         }
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '6000',
-                                resourceType:
-                                    AiAgentKnowledgeResourceTypeEnum.MACRO,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={
+                        [
+                            {
+                                parsedResource: {
+                                    resourceId: '6000',
+                                    resourceType:
+                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                },
                             },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={customEnrichedData}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+                        ] as SuggestedResource[]
+                    }
+                    enrichedData={customEnrichedData}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         expect(
@@ -762,23 +810,25 @@ describe('MissingKnowledgeSelect', () => {
 
     it('renders KnowledgeTag with a type that has no icon mapping', () => {
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                    },
-                    displayLabel: 'Test::No Icon Mapping',
-                    label: 'Test::No Icon Mapping',
-                    value: 'test2',
-                    type: 'UNKNOWN_TYPE' as AiAgentKnowledgeResourceTypeEnum,
-                }}
-                handleRemove={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                        },
+                        displayLabel: 'Test::No Icon Mapping',
+                        label: 'Test::No Icon Mapping',
+                        value: 'test2',
+                        type: 'UNKNOWN_TYPE' as AiAgentKnowledgeResourceTypeEnum,
+                    }}
+                    handleRemove={jest.fn()}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         expect(screen.getByText('No Icon Mapping')).toBeInTheDocument()
@@ -786,24 +836,26 @@ describe('MissingKnowledgeSelect', () => {
 
     it('renders KnowledgeTag with overflow handling logic', () => {
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                    },
-                    displayLabel:
-                        'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
-                    label: 'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
-                    value: 'test-long',
-                    type: 'MACRO' as AiAgentKnowledgeResourceTypeEnum,
-                }}
-                handleRemove={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                        },
+                        displayLabel:
+                            'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
+                        label: 'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
+                        value: 'test-long',
+                        type: 'MACRO' as AiAgentKnowledgeResourceTypeEnum,
+                    }}
+                    handleRemove={jest.fn()}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         expect(
@@ -824,24 +876,26 @@ describe('MissingKnowledgeSelect', () => {
             closeModal: jest.fn(),
         })
         render(
-            <KnowledgeTag
-                choice={{
-                    meta: {
-                        url: 'https://example.com',
-                        title: 'Knowledge Tag Test',
-                        content: 'This is a test',
-                        helpCenterId: '1',
-                    },
-                    displayLabel: 'Test::test',
-                    label: 'Test::test',
-                    value: 'test-test',
-                    type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                }}
-                handleRemove={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Knowledge Tag Test',
+                            content: 'This is a test',
+                            helpCenterId: '1',
+                        },
+                        displayLabel: 'Test::test',
+                        label: 'Test::test',
+                        value: 'test-test',
+                        type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    }}
+                    handleRemove={jest.fn()}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('test'))
@@ -865,12 +919,14 @@ describe('MissingKnowledgeSelect', () => {
 
     it('renders not render if choice is undefined', () => {
         render(
-            <KnowledgeTag
-                handleRemove={jest.fn()}
-                shopName="test-shop"
-                shopType="test-type"
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <KnowledgeTag
+                    handleRemove={jest.fn()}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         expect(
@@ -898,19 +954,21 @@ describe('MissingKnowledgeSelect', () => {
         }
 
         const { container } = render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={enrichedDataWithDuplicates}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={enrichedDataWithDuplicates}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         // Select multiple items including the duplicates
@@ -936,36 +994,38 @@ describe('MissingKnowledgeSelect', () => {
         onSubmit.mockClear()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '100',
-                                resourceType:
-                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={
+                        [
+                            {
+                                parsedResource: {
+                                    resourceId: '100',
+                                    resourceType:
+                                        'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                                },
                             },
-                        },
-                        {
-                            parsedResource: {
-                                resourceId: '200',
-                                resourceType:
-                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            {
+                                parsedResource: {
+                                    resourceId: '200',
+                                    resourceType:
+                                        'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                                },
                             },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={enrichedDataWithDuplicates}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+                        ] as SuggestedResource[]
+                    }
+                    enrichedData={enrichedDataWithDuplicates}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
             { container },
         )
 
@@ -995,43 +1055,45 @@ describe('MissingKnowledgeSelect', () => {
         }
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={
-                    [
-                        {
-                            parsedResource: {
-                                resourceId: '100',
-                                resourceType:
-                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={
+                        [
+                            {
+                                parsedResource: {
+                                    resourceId: '100',
+                                    resourceType:
+                                        'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                                },
                             },
-                        },
-                        {
-                            parsedResource: {
-                                resourceId: '200',
-                                resourceType:
-                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            {
+                                parsedResource: {
+                                    resourceId: '200',
+                                    resourceType:
+                                        'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                                },
                             },
-                        },
-                        {
-                            parsedResource: {
-                                resourceId: '300',
-                                resourceType:
-                                    'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                            {
+                                parsedResource: {
+                                    resourceId: '300',
+                                    resourceType:
+                                        'ACTION' as AiAgentKnowledgeResourceTypeEnum,
+                                },
                             },
-                        },
-                    ] as SuggestedResource[]
-                }
-                enrichedData={enrichedDataWithComplexDuplicates}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+                        ] as SuggestedResource[]
+                    }
+                    enrichedData={enrichedDataWithComplexDuplicates}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         const duplicateActionTags = screen.getAllByText(/Same Name/)
@@ -1043,19 +1105,21 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={{} as any}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={{} as any}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Select First'))
@@ -1081,19 +1145,21 @@ describe('MissingKnowledgeSelect', () => {
         } as any
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={complexEnrichedData}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={complexEnrichedData}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Select Multiple'))
@@ -1148,7 +1214,11 @@ describe('MissingKnowledgeSelect', () => {
             )
         }
 
-        render(<TestComponent />)
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <TestComponent />
+            </Provider>,
+        )
 
         fireEvent.click(screen.getByTestId('remove-existing'))
         expect(onRemove).toHaveBeenCalledWith([
@@ -1168,27 +1238,29 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[
-                    {
-                        parsedResource: {
-                            resourceId: '3',
-                            resourceType:
-                                AiAgentKnowledgeResourceTypeEnum.ACTION,
-                        },
-                    } as SuggestedResource,
-                ]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[
+                        {
+                            parsedResource: {
+                                resourceId: '3',
+                                resourceType:
+                                    AiAgentKnowledgeResourceTypeEnum.ACTION,
+                            },
+                        } as SuggestedResource,
+                    ]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         const closeButton = screen.getByText('close')
@@ -1207,19 +1279,21 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={null as any}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={null as any}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Select First'))
@@ -1231,34 +1305,36 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[
-                    {
-                        parsedResource: {
-                            resourceId: '2',
-                            resourceType:
-                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                        },
-                    } as SuggestedResource,
-                    {
-                        parsedResource: {
-                            resourceId: '3',
-                            resourceType:
-                                AiAgentKnowledgeResourceTypeEnum.ACTION,
-                        },
-                    } as SuggestedResource,
-                ]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[
+                        {
+                            parsedResource: {
+                                resourceId: '2',
+                                resourceType:
+                                    AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                            },
+                        } as SuggestedResource,
+                        {
+                            parsedResource: {
+                                resourceId: '3',
+                                resourceType:
+                                    AiAgentKnowledgeResourceTypeEnum.ACTION,
+                            },
+                        } as SuggestedResource,
+                    ]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByTestId('deselect-all'))
@@ -1299,7 +1375,11 @@ describe('MissingKnowledgeSelect', () => {
             )
         }
 
-        render(<TestComponent />)
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <TestComponent />
+            </Provider>,
+        )
 
         expect(screen.getByTestId('test-values')).toHaveTextContent(
             'invalid-label',
@@ -1311,19 +1391,21 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         render(
-            <MissingKnowledgeSelect
-                shopName="test-shop"
-                shopType="test-type"
-                helpCenterId={1}
-                guidanceHelpCenterId={2}
-                snippetHelpCenterId={3}
-                accountId={123}
-                initialValues={[]}
-                enrichedData={enrichedDataMock}
-                onSubmit={onSubmit}
-                onRemove={onRemove}
-                onKnowledgeResourceClick={onKnowledgeResourceClickMock}
-            />,
+            <Provider store={mockStore(defaultStore)}>
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[]}
+                    enrichedData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                    onKnowledgeResourceClick={onKnowledgeResourceClickMock}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Select First'))

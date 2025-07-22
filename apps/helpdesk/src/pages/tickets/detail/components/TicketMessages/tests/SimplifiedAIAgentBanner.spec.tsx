@@ -1,8 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { account } from 'fixtures/account'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
@@ -20,7 +24,6 @@ jest.mock('../AiAgentFailedWorkflowMessage', () => () => (
 
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/useAppSelector')
 jest.mock('../../../hooks/useAIAgentResourcesWithFeedback')
 
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
@@ -28,7 +31,6 @@ const useSubmitAIAgentTicketMessagesFeedbackMock = assumeMock(
     useSubmitAIAgentTicketMessagesFeedback,
 )
 const useAppDispatchMock = assumeMock(useAppDispatch)
-const useAppSelectorMock = assumeMock(useAppSelector)
 
 const mockMessage = {
     ticket_id: 1,
@@ -36,8 +38,15 @@ const mockMessage = {
     public: true,
 } as unknown as TicketMessage
 
+const defaultStore: Partial<RootState> = {
+    currentAccount: fromJS(account),
+    currentUser: fromJS(user),
+    ticket: fromJS(ticket),
+}
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
+    ...defaultStore,
     ui: {
         ticketAIAgentFeedback: {
             feedback: {
@@ -53,9 +62,6 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
     beforeEach(() => {
         const dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
-        useAppSelectorMock.mockImplementation(
-            () => TicketAIAgentFeedbackTab.AIAgent,
-        )
 
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
@@ -85,10 +91,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
             isError: false,
         } as any)
         const { container } = render(
-            <SimplifiedAIAgentBanner
-                message={mockMessage}
-                messages={[mockMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={mockMessage}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -119,10 +127,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         } as any)
 
         render(
-            <SimplifiedAIAgentBanner
-                message={{ ...mockMessage, public: true }}
-                messages={[mockMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={{ ...mockMessage, public: true }}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
         )
 
         expect(screen.getByText('summary')).toBeInTheDocument()
@@ -152,10 +162,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         } as any)
 
         render(
-            <SimplifiedAIAgentBanner
-                message={mockMessage}
-                messages={[mockMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={mockMessage}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
         )
 
         const message = screen.getByText('summary')
@@ -183,14 +195,16 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         } as any)
 
         const { queryByText } = render(
-            <SimplifiedAIAgentBanner
-                message={{
-                    ...mockMessage,
-                    public: false,
-                    body_html: 'body_html123',
-                }}
-                messages={[mockMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={{
+                        ...mockMessage,
+                        public: false,
+                        body_html: 'body_html123',
+                    }}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
         )
 
         const summary = queryByText('summary')
@@ -221,10 +235,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         } as any)
 
         const { container } = render(
-            <SimplifiedAIAgentBanner
-                message={mockMessage}
-                messages={[mockMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={mockMessage}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
         )
 
         expect(container.firstChild).toHaveClass('hasError')
@@ -258,10 +274,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         }
 
         render(
-            <SimplifiedAIAgentBanner
-                message={messageWithFailedWorkflow}
-                messages={[messageWithFailedWorkflow]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={messageWithFailedWorkflow}
+                    messages={[messageWithFailedWorkflow]}
+                />
+            </Provider>,
         )
 
         expect(
@@ -293,10 +311,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         }
 
         render(
-            <SimplifiedAIAgentBanner
-                message={legacyWorkflowMessage}
-                messages={[legacyWorkflowMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={legacyWorkflowMessage}
+                    messages={[legacyWorkflowMessage]}
+                />
+            </Provider>,
         )
 
         expect(
@@ -323,10 +343,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         } as any)
 
         render(
-            <SimplifiedAIAgentBanner
-                message={{ ...mockMessage, public: false }}
-                messages={[mockMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={{ ...mockMessage, public: false }}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
         )
 
         const feedbackButton = screen.getByRole('button')
@@ -355,10 +377,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         } as any)
 
         render(
-            <SimplifiedAIAgentBanner
-                message={{ ...mockMessage, public: false }}
-                messages={[mockMessage]}
-            />,
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={{ ...mockMessage, public: false }}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
         )
 
         const feedbackButton = screen.getByRole('button')

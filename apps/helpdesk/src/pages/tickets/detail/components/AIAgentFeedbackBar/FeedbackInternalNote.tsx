@@ -3,10 +3,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import TextArea from 'gorgias-design-system/Input/TextArea'
+import useAppSelector from 'hooks/useAppSelector'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getTicketState } from 'state/ticket/selectors'
+
+import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 
 type FeedbackInternalNoteProps = {
     onDebouncedChange: (value: string) => void
@@ -22,6 +27,21 @@ const FeedbackInternalNote = ({
     lastUpdated,
 }: FeedbackInternalNoteProps) => {
     const [value, setValue] = useState(initialValue || null)
+
+    const ticket = useAppSelector(getTicketState)
+    const account = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+
+    const ticketId: number = ticket.get('id')
+    const accountId: number = account.get('id')
+    const userId: number = currentUser.get('id')
+
+    const { onFeedbackGiven } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
+    })
+
     useEffect(() => {
         setValue(initialValue || '')
     }, [initialValue])
@@ -34,6 +54,7 @@ const FeedbackInternalNote = ({
                 onDebouncedChange
             ) {
                 onDebouncedChange(value)
+                onFeedbackGiven('internal-note')
             }
         },
         [value],

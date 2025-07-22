@@ -14,8 +14,11 @@ import { getFailedWorkflowData } from 'pages/tickets/detail/components/TicketMes
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 import css from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.less'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { changeActiveTab, getActiveTab } from 'state/ui/ticketAIAgentFeedback'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+
+import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 
 export type SimplifiedAIAgentBannerProps = {
     message: TicketMessage
@@ -28,6 +31,18 @@ const SimplifiedAIAgentBanner = ({
 }: SimplifiedAIAgentBannerProps) => {
     const { data } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
+    })
+
+    const account = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+
+    const accountId: number = account.get('id')
+    const userId: number = currentUser.get('id')
+
+    const { onFeedbackTabOpened } = useFeedbackTracking({
+        ticketId: message.ticket_id ?? 0,
+        accountId: accountId,
+        userId: userId,
     })
 
     const ticketFeedback = data?.data
@@ -89,6 +104,8 @@ const SimplifiedAIAgentBanner = ({
     const failedWorkflowData = getFailedWorkflowData(message)
 
     const handleClick = () => {
+        onFeedbackTabOpened('give-feedback-button-from-banner')
+
         dispatch(
             changeActiveTab({ activeTab: TicketAIAgentFeedbackTab.AIAgent }),
         )

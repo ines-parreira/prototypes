@@ -41,6 +41,8 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import { isTeamLead } from 'utils'
 
+import { useFeedbackTracking } from './components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
+
 import css from './TicketInfobarContainer.less'
 
 type OwnProps = {
@@ -85,6 +87,12 @@ export const TicketInfobarContainer = ({
         useFlag(FeatureFlagKey.SimplifyAiAgentFeedbackCollection) &&
         isAfterFeedbackCollectionPeriod
 
+    const { onFeedbackTabOpened } = useFeedbackTracking({
+        ticketId: ticket.id,
+        accountId,
+        userId: currentUser.get('id'),
+    })
+
     useEffect(() => {
         dispatch(actions.selectContext())
         void dispatch(actions.fetchWidgets())
@@ -128,6 +136,7 @@ export const TicketInfobarContainer = ({
     )
 
     const handleAIAgentTabClick = useCallback(() => {
+        onFeedbackTabOpened('tab-clicked')
         logEventWithSampling(SegmentEvent.AiAgentFeedbackTabClicked, {
             accountId,
         })
@@ -135,7 +144,7 @@ export const TicketInfobarContainer = ({
             type: SIDE_PANEL_VIEWED_EVENT_TYPE,
             accountId,
         })
-    }, [accountId])
+    }, [accountId, onFeedbackTabOpened])
 
     const handleAutoQATabClick = useCallback(() => {
         logEventWithSampling(SegmentEvent.AutoQATabClicked, {

@@ -16,10 +16,11 @@ import {
 import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
-import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
 import { buildFirstTicketMessage } from 'state/ticket/utils'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { getActiveView } from 'state/views/selectors'
 
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
@@ -64,7 +65,13 @@ export default function TicketMessages({
         useTicketIsAfterFeedbackCollectionPeriod()
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
-    const accountId = useAppSelector(getCurrentAccountId)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+    const activeView = useAppSelector(getActiveView)
+
+    const accountId: number = currentAccount.get('id')
+    const userType: string = currentUser.get('role').get('name')
+    const viewType: string = activeView.get('slug')
 
     const message = buildFirstTicketMessage(
         messages[0],
@@ -113,6 +120,8 @@ export default function TicketMessages({
                 {
                     accountId,
                     banner: bannerType,
+                    viewedFrom: viewType,
+                    userType,
                 },
                 sampleRate,
             )

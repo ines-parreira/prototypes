@@ -9,6 +9,7 @@ import { logEventWithSampling } from 'common/segment/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import useAppSelector from 'hooks/useAppSelector'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import {
@@ -26,7 +27,9 @@ import {
     getResourceMetadata,
     useEnrichFeedbackData,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { getTicketState } from 'state/ticket/selectors'
 
+import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getHelpcenterIdAsString, knowledgeResourceShouldBeLink } from './utils'
 
@@ -80,6 +83,17 @@ const MissingKnowledgeSelect = ({
     onKnowledgeResourceClick,
 }: MissingKnowledgeSelectProps) => {
     const [values, setValues] = useState<string[]>([])
+
+    const ticket = useAppSelector(getTicketState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+    const ticketId: number = ticket.get('id')
+    const userId: number = currentUser.get('id')
+
+    const { onFeedbackGiven } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
+    })
 
     const choices = useMemo(() => {
         if (!enrichedData) return []
@@ -374,6 +388,8 @@ const MissingKnowledgeSelect = ({
         (value: any) => {
             const newValues = Array.isArray(value) ? value : [...values, value]
 
+            onFeedbackGiven('missing_knowledge_options')
+
             const choicesToSubmit = newValues
                 .filter((v) => !values.includes(v))
                 .map((displayLabel) => findChoiceFromDisplayLabel(displayLabel))
@@ -419,7 +435,14 @@ const MissingKnowledgeSelect = ({
                 .filter((value) => !!value) as ChoiceOption[]
             onSubmit([...choicesToSubmit, ...choicesToRemove])
         },
-        [choices, initialValues, values, onSubmit, findChoiceFromDisplayLabel],
+        [
+            choices,
+            initialValues,
+            values,
+            onSubmit,
+            findChoiceFromDisplayLabel,
+            onFeedbackGiven,
+        ],
     )
 
     const handleRemove = useCallback(

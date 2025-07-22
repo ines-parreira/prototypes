@@ -125,6 +125,39 @@ describe('useFeedbackTracking', () => {
         })
     })
 
+    describe('when onFeedbackTabOpened is called', () => {
+        it('logs the correct event with openedFrom', () => {
+            const { result } = renderHook(() =>
+                useFeedbackTracking(defaultProps),
+            )
+
+            const openedFrom = 'give-feedback-buton-from-reasoning'
+            result.current.onFeedbackTabOpened(openedFrom)
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentFeedbackTabOpened,
+                {
+                    ...expectedEventContext,
+                    openedFrom,
+                },
+            )
+        })
+    })
+
+    describe('when onFeedbackGiven is called', () => {
+        it('logs the correct event with type', () => {
+            const { result } = renderHook(() =>
+                useFeedbackTracking(defaultProps),
+            )
+
+            const type = 'thumbs_up'
+            result.current.onFeedbackGiven(type)
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentFeedbackGiven,
+                { ...expectedEventContext, type },
+            )
+        })
+    })
+
     describe('when hook props change', () => {
         it('updates the event context', () => {
             const { result, rerender } = renderHook(
