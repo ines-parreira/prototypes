@@ -22,7 +22,8 @@ import css from './CustomBusinessHoursIntegrationsTable.less'
 
 export default function CustomBusinessHoursIntegrationsTable() {
     const [cursor, setCursor] = useState<string>()
-    const { data, isLoading } = useListIntegrationsForBusinessHours({ cursor })
+    const { data, isLoading, isError, refetch } =
+        useListIntegrationsForBusinessHours({ cursor })
     const integrations = data?.data.data
 
     const { watch, setValue } =
@@ -103,6 +104,8 @@ export default function CustomBusinessHoursIntegrationsTable() {
                             field={IntegrationRowsField}
                             onItemClick={noop}
                             integrations={integrations}
+                            isError={isError}
+                            refetch={refetch}
                         />
                     )}
                 </TableBody>

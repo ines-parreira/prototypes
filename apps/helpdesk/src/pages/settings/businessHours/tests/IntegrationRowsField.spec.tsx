@@ -4,13 +4,25 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { mockListIntegrationsForBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
 
+import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
+import StoreDisplayName from 'pages/common/components/StoreDisplayName'
 import { assumeMock } from 'utils/testing'
 
 import BusinessHoursDisplay from '../BusinessHoursDisplay'
+import CustomBusinessHoursIntegrationCell from '../CustomBusinessHoursIntegrationCell'
 import IntegrationRowsField from '../IntegrationRowsField'
 
 jest.mock('../BusinessHoursDisplay')
+jest.mock('../CustomBusinessHoursIntegrationCell')
+jest.mock('pages/common/components/StoreDisplayName')
+jest.mock('domains/reporting/pages/common/components/NoDataAvailable')
+
 const BusinessHoursDisplayMock = assumeMock(BusinessHoursDisplay)
+const CustomBusinessHoursIntegrationCellMock = assumeMock(
+    CustomBusinessHoursIntegrationCell,
+)
+const StoreDisplayNameMock = assumeMock(StoreDisplayName)
+const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
 const integrations = mockListIntegrationsForBusinessHoursResponse().data
 
@@ -20,6 +32,8 @@ const defaultProps = {
     value: [],
     integrations,
     name: 'assigned_integrations.assign_integrations',
+    isError: false,
+    refetch: jest.fn(),
 }
 
 const renderComponent = (
@@ -31,6 +45,17 @@ describe('IntegrationRowsField', () => {
         BusinessHoursDisplayMock.mockReturnValue(
             <div data-testid="business-hours">BusinessHoursDisplay</div>,
         )
+        CustomBusinessHoursIntegrationCellMock.mockReturnValue(
+            <div data-testid="integration-cell">
+                CustomBusinessHoursIntegrationCell
+            </div>,
+        )
+        StoreDisplayNameMock.mockReturnValue(
+            <div data-testid="store-display">StoreDisplayName</div>,
+        )
+        NoDataAvailableMock.mockReturnValue(
+            <div data-testid="no-data">NoDataAvailable</div>,
+        )
     })
 
     it('renders correct number of rows based on integrations', () => {
@@ -40,10 +65,11 @@ describe('IntegrationRowsField', () => {
         expect(checkboxes).toHaveLength(integrations.length)
     })
 
-    it('renders warning icon', () => {
+    it('renders warning icon when hasWarning is true', () => {
         renderComponent({ hasWarning: true })
 
-        expect(screen.getAllByText('warning')).toHaveLength(integrations.length)
+        const warningIcons = screen.getAllByText('warning')
+        expect(warningIcons).toHaveLength(integrations.length)
     })
 
     it('renders all cells in each row', () => {
@@ -55,11 +81,12 @@ describe('IntegrationRowsField', () => {
         expect(screen.getAllByTestId('business-hours')).toHaveLength(
             integrations.length,
         )
-        for (let i = 0; i < integrations.length; i++) {
-            expect(
-                screen.getByText(integrations[i].integration_name),
-            ).toBeInTheDocument()
-        }
+        expect(screen.getAllByTestId('integration-cell')).toHaveLength(
+            integrations.length,
+        )
+        expect(screen.getAllByTestId('store-display')).toHaveLength(
+            integrations.length,
+        )
     })
 
     it('renders checkbox as checked when index is in value array', () => {
@@ -118,5 +145,45 @@ describe('IntegrationRowsField', () => {
         for (let i = 0; i < integrations.length; i++) {
             expect(checkboxes[i]).not.toBeChecked()
         }
+    })
+
+    it('renders NoDataAvailable when integrations is empty', () => {
+        renderComponent({ integrations: [] })
+
+        expect(screen.getByTestId('no-data')).toBeInTheDocument()
+        expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+    })
+
+    it('renders NoDataAvailable when integrations is undefined', () => {
+        renderComponent({ integrations: undefined })
+
+        expect(screen.getByTestId('no-data')).toBeInTheDocument()
+        expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+    })
+
+    it('renders error message when isError is true and no integrations', () => {
+        renderComponent({
+            integrations: [],
+            isError: true,
+        })
+
+        expect(screen.getByTestId('no-data')).toBeInTheDocument()
+        expect(NoDataAvailableMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                description: expect.any(Object),
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('calls onItemClick when row is clicked', () => {
+        renderComponent()
+
+        const checkboxes = screen.getAllByRole('checkbox')
+        fireEvent.click(checkboxes[0])
+
+        expect(defaultProps.onItemClick).toHaveBeenCalledWith(
+            integrations[0].integration_id,
+        )
     })
 })

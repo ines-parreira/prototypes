@@ -1,6 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -58,8 +58,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    server.use(mockAccountSettingsHandler.handler)
-    server.use(mockHandler.handler)
+    server.use(mockAccountSettingsHandler.handler, mockHandler.handler)
 })
 
 afterEach(() => {
@@ -184,8 +183,8 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         })
     })
 
-    it('does not render the navigation, select all and integration rows field when isLoading is true', () => {
-        const { container } = renderComponent()
+    it('does not render the navigation when isLoading is true', () => {
+        renderComponent()
 
         expect(
             screen.queryByText('keyboard_arrow_left'),
@@ -193,17 +192,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         expect(
             screen.queryByText('keyboard_arrow_right'),
         ).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('IntegrationRowsField'),
-        ).not.toBeInTheDocument()
-
-        const skeletons = container.querySelectorAll(
-            '[class^="react-loading-skeleton"]',
-        )
-        expect(skeletons.length).toBeGreaterThan(0)
     })
 
-    it('renders skeleton rows when loading', () => {
+    it('renders skeleton row when loading', () => {
         const { container } = renderComponent()
 
         const skeletons = container.querySelectorAll(

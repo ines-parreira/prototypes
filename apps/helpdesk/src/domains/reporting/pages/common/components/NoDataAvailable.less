@@ -3,6 +3,7 @@
 :local {
     .noData {
         .body-regular();
+        margin: var(--layout-spacing-m);
         color: var(--neutral-grey-5);
         display: flex;
         align-items: center;
@@ -11,10 +12,13 @@
 
         p {
             margin: 0;
+            display: flex;
+            flex-direction: column;
         }
     }
 
-    .noDataTitle {
+    p.noDataTitle {
         font-weight: @body-semibold-font-weight;
+        margin-bottom: var(--layout-spacing-xxs);
     }
 }

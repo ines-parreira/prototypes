@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
@@ -6,7 +6,7 @@ import css from 'domains/reporting/pages/common/components/NoDataAvailable.less'
 
 type Props = {
     title?: string
-    description?: string
+    description?: ReactNode
     className?: string
     style?: CSSProperties
 }

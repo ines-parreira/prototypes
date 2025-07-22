@@ -2,10 +2,11 @@ import {
     IntegrationType,
     IntegrationWithBusinessHoursAndStore,
 } from '@gorgias/helpdesk-types'
-import { CheckBoxField } from '@gorgias/merchant-ui-kit'
+import { Button, CheckBoxField } from '@gorgias/merchant-ui-kit'
 
 import { Icon } from 'AlertBanners/components/Icon'
 import { AlertBannerTypes } from 'AlertBanners/types'
+import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import StoreDisplayName from 'pages/common/components/StoreDisplayName'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -22,6 +23,8 @@ type Props = {
     onItemClick: (id: number) => void
     value: number[]
     name: string
+    isError?: boolean
+    refetch?: () => void
 }
 
 export default function IntegrationRowsField({
@@ -31,6 +34,8 @@ export default function IntegrationRowsField({
     onChange,
     value,
     name,
+    isError,
+    refetch,
 }: Props) {
     const handleClick = (id: number) => {
         onChange(
@@ -41,46 +46,78 @@ export default function IntegrationRowsField({
 
     return (
         <>
-            {integrations?.map((integration) => (
-                <TableBodyRow
-                    key={integration.integration_id}
-                    onClick={() => handleClick(integration.integration_id)}
-                >
-                    <BodyCell>
-                        <CheckBoxField
-                            aria-label={`${name}.${integration.integration_id}`}
-                            value={value.includes(integration.integration_id)}
-                        />
-                    </BodyCell>
-                    {hasWarning && (
+            {!!integrations?.length ? (
+                integrations.map((integration) => (
+                    <TableBodyRow
+                        key={integration.integration_id}
+                        onClick={() => handleClick(integration.integration_id)}
+                    >
                         <BodyCell>
-                            <Icon type={AlertBannerTypes.Warning} />
+                            <CheckBoxField
+                                aria-label={`${name}.${integration.integration_id}`}
+                                value={value.includes(
+                                    integration.integration_id,
+                                )}
+                            />
                         </BodyCell>
-                    )}
-                    <BodyCell className={css.integrationNameColumn}>
-                        <CustomBusinessHoursIntegrationCell
-                            name={integration.integration_name}
-                            type={
-                                integration.integration_type as IntegrationType
+                        {hasWarning && (
+                            <BodyCell>
+                                <Icon type={AlertBannerTypes.Warning} />
+                            </BodyCell>
+                        )}
+                        <BodyCell className={css.integrationNameColumn}>
+                            <CustomBusinessHoursIntegrationCell
+                                name={integration.integration_name}
+                                type={
+                                    integration.integration_type as IntegrationType
+                                }
+                            />
+                        </BodyCell>
+                        <BodyCell className={css.storeNameColumn}>
+                            <StoreDisplayName
+                                name={integration.store?.store_name ?? ''}
+                                type={integration.store?.store_type ?? ''}
+                            />
+                        </BodyCell>
+                        <BodyCell className={css.businessHoursColumn}>
+                            <BusinessHoursDisplay
+                                businessHours={
+                                    integration.business_hours
+                                        ?.business_hours_config
+                                }
+                            />
+                        </BodyCell>
+                    </TableBodyRow>
+                ))
+            ) : (
+                <tr>
+                    <td colSpan={4}>
+                        <NoDataAvailable
+                            className={css.noDataAvailable}
+                            description={
+                                isError ? (
+                                    <>
+                                        <p>
+                                            Something went wrong when fetching
+                                            the data. Please try again.
+                                        </p>
+                                        <Button
+                                            intent="primary"
+                                            fillStyle="ghost"
+                                            onClick={refetch}
+                                            className={css.refreshButton}
+                                        >
+                                            Refresh
+                                        </Button>
+                                    </>
+                                ) : (
+                                    'You don’t have any integrations yet. Please add one to start assigning business hours.'
+                                )
                             }
                         />
-                    </BodyCell>
-                    <BodyCell className={css.storeNameColumn}>
-                        <StoreDisplayName
-                            name={integration.store?.store_name ?? ''}
-                            type={integration.store?.store_type ?? ''}
-                        />
-                    </BodyCell>
-                    <BodyCell className={css.businessHoursColumn}>
-                        <BusinessHoursDisplay
-                            businessHours={
-                                integration.business_hours
-                                    ?.business_hours_config
-                            }
-                        />
-                    </BodyCell>
-                </TableBodyRow>
-            ))}
+                    </td>
+                </tr>
+            )}
         </>
     )
 }
