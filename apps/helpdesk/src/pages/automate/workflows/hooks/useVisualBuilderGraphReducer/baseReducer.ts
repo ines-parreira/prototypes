@@ -23,6 +23,7 @@ import {
     OrderSelectionNodeType,
     RemoveItemNodeType,
     ReplaceItemNodeType,
+    ReusableLLMPromptCallNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
     UpdateShippingAddressNodeType,
@@ -483,7 +484,7 @@ export function baseReducer(
                     action.beforeNodeId,
                 ),
             )
-        case 'DELETE_NODE':
+        case 'DELETE_NODE': {
             return computeNodesPositions(
                 produce(graph, (draft) => {
                     const nodeIndex = draft.nodes.findIndex(
@@ -559,8 +560,14 @@ export function baseReducer(
                             }
                         })
                     }
+
+                    // Clean up unused inputs from trigger node after deleting reusable LLM prompt call nodes
+                    if (node.type === 'reusable_llm_prompt_call') {
+                        cleanupUnusedTriggerInputs(draft, action.steps)
+                    }
                 }),
             )
+        }
         case 'DELETE_BRANCH': {
             const triggerNode = graph.nodes[0]
             const nextGraph = deleteBranch(graph, action.nodeId, {
@@ -593,6 +600,9 @@ export function baseReducer(
                             }
                         })
                     }
+
+                    // Clean up unused inputs from trigger node after deleting branch
+                    cleanupUnusedTriggerInputs(draft, action.steps)
                 }),
             )
         }
@@ -1002,4 +1012,89 @@ function computeAppUsage(
 
         return acc
     }, {})
+}
+
+function cleanupUnusedTriggerInputs(
+    draft: VisualBuilderGraph,
+    steps: WorkflowConfiguration[],
+) {
+    const triggerNode = draft.nodes[0]
+
+    if (
+        triggerNode.type !== 'llm_prompt_trigger' &&
+        triggerNode.type !== 'reusable_llm_prompt_trigger'
+    ) {
+        return
+    }
+
+    // Get all remaining reusable LLM prompt call nodes
+    const remainingCallNodes = draft.nodes.filter(
+        (node): node is ReusableLLMPromptCallNodeType =>
+            node.type === 'reusable_llm_prompt_call',
+    )
+
+    // Collect all inputs still needed by remaining nodes
+    const neededInputs = new Set<string>()
+
+    remainingCallNodes.forEach((callNode) => {
+        const step = steps.find(
+            (step) =>
+                step.id === callNode.data.configuration_id &&
+                step.internal_id === callNode.data.configuration_internal_id,
+        )
+
+        if (!step || !step.triggers) return
+
+        const trigger = step.triggers.find(
+            (
+                t,
+            ): t is Extract<
+                NonNullable<WorkflowConfiguration['triggers']>[number],
+                { kind: 'reusable-llm-prompt' }
+            > => t.kind === 'reusable-llm-prompt',
+        )
+
+        if (!trigger) return
+
+        // Mark custom inputs as needed
+        trigger.settings.custom_inputs.forEach((input) => {
+            const triggerInput = triggerNode.data.inputs.find(
+                (triggerInput) => {
+                    return (
+                        'data_type' in triggerInput &&
+                        triggerInput.name === input.name &&
+                        triggerInput.instructions === input.instructions &&
+                        triggerInput.data_type === input.data_type
+                    )
+                },
+            )
+            if (triggerInput) {
+                neededInputs.add(triggerInput.id)
+            }
+        })
+
+        // Mark product inputs as needed
+        trigger.settings.object_inputs.forEach((input) => {
+            if (input.kind === 'product') {
+                const triggerInput = triggerNode.data.inputs.find(
+                    (triggerInput) => {
+                        return (
+                            'kind' in triggerInput &&
+                            triggerInput.name === input.name &&
+                            triggerInput.instructions === input.instructions &&
+                            triggerInput.kind === input.kind
+                        )
+                    },
+                )
+                if (triggerInput) {
+                    neededInputs.add(triggerInput.id)
+                }
+            }
+        })
+    })
+
+    // Remove inputs that are no longer needed
+    triggerNode.data.inputs = triggerNode.data.inputs.filter((input) =>
+        neededInputs.has(input.id),
+    )
 }

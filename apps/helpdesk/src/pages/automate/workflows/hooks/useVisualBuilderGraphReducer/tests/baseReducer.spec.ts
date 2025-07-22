@@ -1,5 +1,6 @@
 import _cloneDeep from 'lodash/cloneDeep'
 
+import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     AutomatedMessageNodeType,
     CancelOrderNodeType,
@@ -7,9 +8,12 @@ import {
     ChannelTriggerNodeType,
     EndNodeType,
     FileUploadNodeType,
+    LLMPromptTriggerNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RefundOrderNodeType,
+    ReusableLLMPromptCallNodeType,
+    ReusableLLMPromptTriggerNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
@@ -1205,5 +1209,513 @@ describe('baseReducer', () => {
         })
 
         expect(nextG.apps).toEqual(g.apps)
+    })
+})
+
+describe('DELETE_NODE input cleanup', () => {
+    // Factory functions for common node types
+    const createLLMPromptTriggerNode = (
+        inputs: LLMPromptTriggerNodeType['data']['inputs'] = [],
+    ): LLMPromptTriggerNodeType => ({
+        ...buildNodeCommonProperties(),
+        id: 'trigger_button',
+        type: 'llm_prompt_trigger',
+        data: {
+            instructions: 'Test instructions',
+            requires_confirmation: false,
+            inputs,
+            conditionsType: null,
+            conditions: [],
+            deactivated_datetime: null,
+        },
+    })
+
+    const createReusableLLMPromptTriggerNode = (
+        inputs: ReusableLLMPromptTriggerNodeType['data']['inputs'] = [],
+    ): ReusableLLMPromptTriggerNodeType => ({
+        ...buildNodeCommonProperties(),
+        id: 'trigger_button',
+        type: 'reusable_llm_prompt_trigger',
+        data: {
+            requires_confirmation: false,
+            inputs,
+            conditionsType: null,
+            conditions: [],
+        },
+    })
+
+    const createChannelTriggerNode = (): ChannelTriggerNodeType => ({
+        ...buildNodeCommonProperties(),
+        id: 'trigger_button',
+        type: 'channel_trigger',
+        data: {
+            label: 'Test Channel',
+            label_tkey: 'test_channel',
+        },
+    })
+
+    const createCallNode = (
+        configId = 'config1',
+        internalId = 'internal1',
+        nodeId = 'call_node_1',
+    ): ReusableLLMPromptCallNodeType => ({
+        ...buildNodeCommonProperties(),
+        id: nodeId,
+        type: 'reusable_llm_prompt_call',
+        data: {
+            configuration_id: configId,
+            configuration_internal_id: internalId,
+            objects: {},
+            custom_inputs: {},
+            values: {},
+        },
+    })
+
+    const createTextReplyNode = (): TextReplyNodeType => ({
+        ...buildNodeCommonProperties(),
+        id: 'text_reply_1',
+        type: 'text_reply',
+        data: {
+            content: {
+                text: 'Test reply',
+                html: '<p>Test reply</p>',
+            },
+        },
+    })
+
+    const createEndNode = (): EndNodeType => ({
+        ...buildNodeCommonProperties(),
+        id: 'end1',
+        type: 'end',
+        data: {
+            action: 'end-success',
+        },
+    })
+
+    const createGraph = (
+        nodes: VisualBuilderGraph['nodes'],
+        edges: VisualBuilderGraph['edges'] = [],
+    ) => ({
+        id: 'test-graph',
+        internal_id: 'test-internal',
+        is_draft: false,
+        name: 'Test Graph',
+        nodes,
+        edges,
+        available_languages: [],
+        nodeEditingId: null,
+        choiceEventIdEditing: null,
+        branchIdsEditing: [],
+        isTemplate: false,
+    })
+
+    const createStepConfig = (
+        id: string,
+        internalId: string,
+        customInputs: any[] = [],
+        objectInputs: any[] = [],
+        triggerKind:
+            | 'reusable-llm-prompt'
+            | 'llm-prompt' = 'reusable-llm-prompt',
+        triggers?: any,
+    ) => ({
+        id,
+        internal_id: internalId,
+        name: 'Test Step',
+        is_draft: false,
+        triggers: triggers || [
+            {
+                kind: triggerKind,
+                settings: {
+                    custom_inputs: customInputs,
+                    object_inputs: objectInputs,
+                    outputs: [],
+                },
+            },
+        ],
+        entrypoints: [],
+        steps: [],
+        transitions: [],
+        available_languages: [],
+        apps: [],
+        inputs: [],
+        values: {},
+        initial_step_id: null,
+    })
+
+    // Common input data
+    const testInputs = {
+        customInput: {
+            id: 'input1',
+            name: 'Test Input',
+            instructions: 'Test input instructions',
+            data_type: 'string' as 'string',
+        },
+        productInput: {
+            id: 'input2',
+            name: 'Product Input',
+            instructions: 'Product input instructions',
+            kind: 'product' as 'product',
+        },
+        productInput1: {
+            id: 'product_input_1',
+            name: 'Product Input 1',
+            instructions: 'Product input 1 instructions',
+            kind: 'product' as 'product',
+        },
+        productInput2: {
+            id: 'product_input_2',
+            name: 'Product Input 2',
+            instructions: 'Product input 2 instructions',
+            kind: 'product' as 'product',
+        },
+        sharedInput: {
+            id: 'shared_input',
+            name: 'Shared Input',
+            instructions: 'Shared input instructions',
+            data_type: 'string' as 'string',
+        },
+        unusedInput: {
+            id: 'unused_input',
+            name: 'Unused Input',
+            instructions: 'Unused input instructions',
+            data_type: 'number' as 'number',
+        },
+    }
+
+    // Common step input configs
+    const stepInputs = {
+        customInput: {
+            id: 'step_input1',
+            name: 'Test Input',
+            instructions: 'Test input instructions',
+            data_type: 'string' as 'string',
+        },
+        productInput: {
+            id: 'step_input2',
+            name: 'Product Input',
+            instructions: 'Product input instructions',
+            kind: 'product' as 'product',
+        },
+        productInput1: {
+            id: 'step_product_1',
+            name: 'Product Input 1',
+            instructions: 'Product input 1 instructions',
+            kind: 'product' as 'product',
+        },
+        productInput2: {
+            id: 'step_product_2',
+            name: 'Product Input 2',
+            instructions: 'Product input 2 instructions',
+            kind: 'product' as 'product',
+        },
+        sharedInput: {
+            id: 'step_input1',
+            name: 'Shared Input',
+            instructions: 'Shared input instructions',
+            data_type: 'string' as 'string',
+        },
+        customInput2: {
+            id: 'step_custom',
+            name: 'Custom Input',
+            instructions: 'Custom input instructions',
+            data_type: 'string' as 'string',
+        },
+    }
+
+    test('should clean up unused inputs from trigger node when reusable LLM prompt call node is deleted', () => {
+        const triggerNode = createLLMPromptTriggerNode([
+            testInputs.customInput,
+            testInputs.productInput,
+        ])
+        const callNode = createCallNode()
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode, endNode])
+
+        const steps = [
+            createStepConfig(
+                'config1',
+                'internal1',
+                [stepInputs.customInput],
+                [stepInputs.productInput],
+            ),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps,
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(0)
+        expect(result.nodes).toHaveLength(2)
+        expect(
+            result.nodes.find((node) => node.id === 'call_node_1'),
+        ).toBeUndefined()
+    })
+
+    test('should not remove inputs that are still used by other nodes', () => {
+        const triggerNode = createLLMPromptTriggerNode([testInputs.sharedInput])
+        const callNode1 = createCallNode()
+        const callNode2 = createCallNode('config1', 'internal1', 'call_node_2')
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode1, callNode2, endNode])
+
+        const steps = [
+            createStepConfig('config1', 'internal1', [stepInputs.sharedInput]),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps,
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(1)
+        expect(resultTriggerNode.data.inputs[0].id).toBe('shared_input')
+        expect(result.nodes).toHaveLength(3)
+        expect(
+            result.nodes.find((node) => node.id === 'call_node_1'),
+        ).toBeUndefined()
+        expect(
+            result.nodes.find((node) => node.id === 'call_node_2'),
+        ).toBeDefined()
+    })
+
+    test('should clean up inputs when DELETE_BRANCH is used', () => {
+        const triggerNode = createLLMPromptTriggerNode([testInputs.customInput])
+        const callNode = createCallNode()
+        const endNode = createEndNode()
+        const edges = [
+            {
+                id: 'edge1',
+                source: 'trigger_button',
+                target: 'call_node_1',
+                type: 'default',
+                data: {},
+            },
+            {
+                id: 'edge2',
+                source: 'call_node_1',
+                target: 'end1',
+                type: 'default',
+                data: {},
+            },
+        ]
+        const graph = createGraph([triggerNode, callNode, endNode], edges)
+
+        const steps = [
+            createStepConfig('config1', 'internal1', [stepInputs.customInput]),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_BRANCH',
+            nodeId: 'call_node_1',
+            steps,
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(0)
+    })
+
+    test('should not clean up inputs when deleting non-reusable LLM prompt call nodes', () => {
+        const triggerNode = createLLMPromptTriggerNode([testInputs.customInput])
+        const textReplyNode = createTextReplyNode()
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, textReplyNode, endNode])
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'text_reply_1',
+            steps: [],
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(1)
+        expect(resultTriggerNode.data.inputs[0].id).toBe('input1')
+    })
+
+    test('should handle cleanup when trigger node is not LLM prompt trigger', () => {
+        const channelTriggerNode = createChannelTriggerNode()
+        const callNode = createCallNode()
+        const endNode = createEndNode()
+        const graph = createGraph([channelTriggerNode, callNode, endNode])
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps: [],
+            apps: [],
+        })
+
+        expect(result.nodes).toHaveLength(2)
+        expect(
+            result.nodes.find((node) => node.id === 'call_node_1'),
+        ).toBeUndefined()
+    })
+
+    test('should handle cleanup with missing or invalid step configurations', () => {
+        const triggerNode = createLLMPromptTriggerNode([testInputs.customInput])
+        const callNode = createCallNode(
+            'nonexistent_config',
+            'nonexistent_internal',
+        )
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode, endNode])
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps: [],
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(0)
+    })
+
+    test('should handle mixed input types (custom and product) correctly', () => {
+        const triggerNode = createLLMPromptTriggerNode([
+            testInputs.customInput,
+            testInputs.productInput,
+            testInputs.unusedInput,
+        ])
+        const callNode = createCallNode()
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode, endNode])
+
+        const steps = [
+            createStepConfig(
+                'config1',
+                'internal1',
+                [stepInputs.customInput2],
+                [stepInputs.productInput],
+            ),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps,
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(0)
+    })
+
+    test('should handle step without reusable-llm-prompt trigger', () => {
+        const triggerNode = createLLMPromptTriggerNode([testInputs.customInput])
+        const callNode = createCallNode()
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode, endNode])
+
+        const steps = [
+            createStepConfig('config1', 'internal1', [], [], 'llm-prompt'),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps,
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(0)
+    })
+
+    test('should handle product inputs cleanup correctly', () => {
+        const triggerNode = createLLMPromptTriggerNode([
+            testInputs.productInput1,
+            testInputs.productInput2,
+        ])
+        const callNode1 = createCallNode()
+        const callNode2 = createCallNode('config2', 'internal2', 'call_node_2')
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode1, callNode2, endNode])
+
+        const steps = [
+            createStepConfig(
+                'config1',
+                'internal1',
+                [],
+                [stepInputs.productInput1],
+            ),
+            createStepConfig(
+                'config2',
+                'internal2',
+                [],
+                [stepInputs.productInput2],
+            ),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps,
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(1)
+        expect(resultTriggerNode.data.inputs[0].id).toBe('product_input_2')
+    })
+
+    test('should handle step configuration without triggers', () => {
+        const triggerNode = createLLMPromptTriggerNode([testInputs.customInput])
+        const callNode = createCallNode()
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode, endNode])
+
+        const steps = [
+            createStepConfig(
+                'config1',
+                'internal1',
+                [],
+                [],
+                'reusable-llm-prompt',
+                undefined,
+            ),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps,
+            apps: [],
+        })
+
+        const resultTriggerNode = result.nodes[0] as LLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(0)
+    })
+
+    test('should handle reusable LLM prompt trigger node type', () => {
+        const triggerNode = createReusableLLMPromptTriggerNode([
+            testInputs.customInput,
+        ])
+        const callNode = createCallNode()
+        const endNode = createEndNode()
+        const graph = createGraph([triggerNode, callNode, endNode])
+
+        const steps = [
+            createStepConfig('config1', 'internal1', [stepInputs.customInput]),
+        ]
+
+        const result = baseReducer(graph, {
+            type: 'DELETE_NODE',
+            nodeId: 'call_node_1',
+            steps,
+            apps: [],
+        })
+
+        const resultTriggerNode = result
+            .nodes[0] as ReusableLLMPromptTriggerNodeType
+        expect(resultTriggerNode.data.inputs).toHaveLength(0)
     })
 })
