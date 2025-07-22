@@ -20,7 +20,7 @@ const digestContent = (hasDiscount?: boolean) => (
         by your Abandoned Cart Journey converting at 12%.{' '}
         {!hasDiscount && (
             <>
-                To <b>unlock an extra $5k</b>, your biggest opportunity is to
+                To <b>unlock an extra $5k</b>, your biggest opportunity is to{' '}
                 <b>enable the Discount Code skill</b>.
             </>
         )}
