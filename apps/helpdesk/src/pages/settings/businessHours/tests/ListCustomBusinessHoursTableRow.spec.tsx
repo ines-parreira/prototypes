@@ -8,7 +8,7 @@ import { mockedBusinessHours } from '../constants'
 import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'
 
 describe('ListCustomBusinessHoursTableRow', () => {
-    it('should render ', () => {
+    it('should render business hours information correctly', () => {
         renderWithStoreAndQueryClientProvider(
             <Form onValidSubmit={jest.fn()}>
                 <ListCustomBusinessHoursTableRow
@@ -47,7 +47,7 @@ describe('ListCustomBusinessHoursTableRow', () => {
         expect(screen.getByText('2 integrations')).toBeInTheDocument()
     })
 
-    it('should render integration only when count is 1 and first_integration.store is not defined"', () => {
+    it('should render integration only when count is 1 and store is not defined', () => {
         renderWithStoreAndQueryClientProvider(
             <Form onValidSubmit={jest.fn()}>
                 <ListCustomBusinessHoursTableRow
@@ -65,5 +65,22 @@ describe('ListCustomBusinessHoursTableRow', () => {
         )
 
         expect(screen.getByText('Customer service')).toBeInTheDocument()
+        expect(screen.queryByText('US - Sales')).not.toBeInTheDocument()
+    })
+
+    it('should render dash when integration_count is 0', () => {
+        renderWithStoreAndQueryClientProvider(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={{
+                        ...mockedBusinessHours,
+                        integration_count: 0,
+                        first_integration: null,
+                    }}
+                />
+            </Form>,
+        )
+
+        expect(screen.getByText('-')).toBeInTheDocument()
     })
 })

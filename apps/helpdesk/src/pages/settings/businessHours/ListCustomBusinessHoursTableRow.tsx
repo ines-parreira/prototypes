@@ -61,11 +61,12 @@ export default function ListCustomBusinessHoursTableRow({
                             </div>
                         </div>
                     </div>
-                ) : (
+                ) : !!businessHours.integration_count ? (
                     <Badge type="blue" corner="square">
-                        {businessHours.integration_count} integration
-                        {!!businessHours.integration_count && 's'}
+                        {businessHours.integration_count} integrations
                     </Badge>
+                ) : (
+                    '-'
                 )}
             </BodyCell>
             <BodyCell className={css.timezoneColumn}>
