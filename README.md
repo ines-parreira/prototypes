@@ -84,7 +84,7 @@ This project uses environment variables for development configuration. Follow th
 1. **Copy the environment template:**
 
     ```bash
-    cp .env.example .env
+    cp apps/helpdesk/.env.example apps/helpdesk/.env
     ```
 
 2. **Edit `.env` with your personal settings:**
