@@ -1,7 +1,9 @@
-import { noop } from 'lodash'
+import { useState } from 'react'
 
+import { useListBusinessHours } from '@gorgias/helpdesk-queries'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -14,11 +16,20 @@ import ListCustomBusinessHoursTableRow from './ListCustomBusinessHoursTableRow'
 
 import css from './ListCustomBusinessHours.less'
 
-type Props = {
-    isLoading?: boolean
-}
+export default function ListCustomBusinessHours() {
+    const [cursor, setCursor] = useState<string>()
+    const { data, isLoading } = useListBusinessHours({ cursor })
 
-export default function ListCustomBusinessHours({ isLoading = false }: Props) {
+    const businessHours = data?.data.data
+
+    const updateCursor = (direction: 'next' | 'prev') => {
+        if (direction === 'next') {
+            setCursor(data!.data.meta.next_cursor!)
+        } else {
+            setCursor(data!.data.meta.prev_cursor!)
+        }
+    }
+
     return (
         <TableWrapper className={css.table}>
             <TableHead>
@@ -34,20 +45,28 @@ export default function ListCustomBusinessHours({ isLoading = false }: Props) {
             <TableBody>
                 {isLoading ? (
                     <RowSkeleton />
-                ) : (
-                    [1, 2, 3].map((_, index) => (
-                        /* TODO replace index with id when available */
-                        <ListCustomBusinessHoursTableRow key={index} />
+                ) : businessHours?.length ? (
+                    businessHours?.map((item) => (
+                        <ListCustomBusinessHoursTableRow
+                            key={item.id}
+                            businessHours={item}
+                        />
                     ))
+                ) : (
+                    <tr>
+                        <td colSpan={4}>
+                            <NoDataAvailable className={css.noDataAvailable} />
+                        </td>
+                    </tr>
                 )}
             </TableBody>
             {!isLoading && (
                 <Navigation
                     className={css.pagination}
-                    hasNextItems={true}
-                    hasPrevItems={false}
-                    fetchNextItems={noop}
-                    fetchPrevItems={noop}
+                    hasNextItems={!!data?.data.meta.next_cursor}
+                    hasPrevItems={!!data?.data.meta.prev_cursor}
+                    fetchNextItems={() => updateCursor('next')}
+                    fetchPrevItems={() => updateCursor('prev')}
                 />
             )}
         </TableWrapper>

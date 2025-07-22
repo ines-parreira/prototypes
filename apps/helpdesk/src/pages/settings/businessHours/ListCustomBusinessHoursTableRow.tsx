@@ -22,7 +22,7 @@ export default function ListCustomBusinessHoursTableRow({
         <TableBodyRow>
             <BodyCell className={css.nameScheduleColumn}>
                 <div className={css.nameScheduleContent}>
-                    <Label>{businessHours.name}</Label>
+                    <Label>{businessHours.name || <i>No name</i>}</Label>
                     <BusinessHoursScheduleDisplay
                         className={css.schedule}
                         businessHoursConfig={
@@ -63,7 +63,8 @@ export default function ListCustomBusinessHoursTableRow({
                     </div>
                 ) : (
                     <Badge type="blue" corner="square">
-                        {businessHours.integration_count} integrations
+                        {businessHours.integration_count} integration
+                        {!!businessHours.integration_count && 's'}
                     </Badge>
                 )}
             </BodyCell>
