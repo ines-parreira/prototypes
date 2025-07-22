@@ -114,7 +114,7 @@ export const useTrackingBundleInstallationWarningCheck = ({
     }, [activeBundleIds, enabled, integrationsToCheck])
 
     return {
-        isLoading: isStoreActivationsLoading,
+        isLoading: enabled && isStoreActivationsLoading,
         uninstalledChatIntegrationId: uninstalledChatIntegrationIds?.[0],
     }
 }
