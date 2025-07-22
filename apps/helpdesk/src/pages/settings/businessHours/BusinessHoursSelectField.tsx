@@ -22,6 +22,8 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
+import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'
+
 import css from './BusinessHoursSelectField.less'
 
 type BusinessHoursSelectProps = {
@@ -43,6 +45,8 @@ export default function BusinessHoursSelectField({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const defaultBusinessHours = useAppSelector(getBusinessHoursSettings)
     const defaultBusinessHoursConfig = defaultBusinessHours?.data as
@@ -184,10 +188,29 @@ export default function BusinessHoursSelectField({
                                     ))}
                                 </InfiniteScroll>
                             </DropdownBody>
+                            <Button
+                                intent="secondary"
+                                className={css.createNewButton}
+                                leadingIcon="add"
+                                onClick={() => {
+                                    setIsDropdownOpen(false)
+                                    setIsModalOpen(true)
+                                }}
+                            >
+                                Add Custom Business Hours
+                            </Button>
                         </Dropdown>
                     )}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
+            <AddCustomBusinessHoursModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onCreateSuccess={(id) => {
+                    refetch()
+                    onChange(id)
+                }}
+            />
         </fieldset>
     )
 }

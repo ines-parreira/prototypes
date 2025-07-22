@@ -22,11 +22,13 @@ import css from './AddCustomBusinessHoursModal.less'
 type Props = {
     isOpen: boolean
     onClose: () => void
+    onCreateSuccess?: (id: number) => void
 }
 
 export default function AddCustomBusinessHoursModal({
     isOpen,
     onClose,
+    onCreateSuccess,
 }: Props) {
     const notify = useNotify()
 
@@ -38,6 +40,7 @@ export default function AddCustomBusinessHoursModal({
                 )
 
                 onClose()
+                onCreateSuccess?.(response.data.id)
             },
             onError: () => {
                 notify.error(

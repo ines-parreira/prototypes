@@ -51,6 +51,7 @@ afterEach(() => {
 const defaultProps = {
     isOpen: true,
     onClose: jest.fn(),
+    onCreateSuccess: jest.fn(),
 }
 const renderComponent = (props = defaultProps) => {
     return renderWithStoreAndQueryClientAndRouter(
@@ -113,6 +114,9 @@ describe('AddCustomBusinessHoursModal', () => {
 
         await waitFor(() => {
             expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+            expect(defaultProps.onCreateSuccess).toHaveBeenCalledWith(
+                mockCreateBusinessHours.data.id,
+            )
             expect(mockNotify.success).toHaveBeenCalledWith(
                 `'${mockCreateBusinessHours.data.name}' business hours were successfully created.`,
             )
