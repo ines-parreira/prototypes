@@ -143,9 +143,7 @@ describe('DashboardPage', () => {
                         {MOVE_CHART_END_BUTTON}
                     </button>
                     {pinnedFilter && (
-                        <button
-                            onClick={() => pinnedFilter.pin(123, 'filter name')}
-                        >
+                        <button onClick={() => pinnedFilter.pin(123, 'filter')}>
                             {PIN_FILTER_BUTTON}
                         </button>
                     )}
@@ -412,9 +410,9 @@ describe('DashboardPage', () => {
 
     describe('Pinned Filter functionality', () => {
         let mockUpdateDashboardHandler: jest.Mock
-        const successMessage = 'filter name has been set as Dashboard default.'
-        const errorMessage =
-            'filter name  could not be set as default. Please try again.'
+        const filterName = 'filter'
+        const successMessage = `${filterName} has been set as ${dashboardName}'s default filter.`
+        const errorMessage = `${filterName} could not be set as default filter. Please try again.`
 
         beforeEach(() => {
             useFlagMock.mockReturnValue(true)
@@ -467,7 +465,7 @@ describe('DashboardPage', () => {
                     {pinnedFilter && (
                         <button
                             onClick={() =>
-                                pinnedFilter.pin(savedFilterId, 'filter name')
+                                pinnedFilter.pin(savedFilterId, filterName)
                             }
                         >
                             {PIN_FILTER_BUTTON}
@@ -489,7 +487,7 @@ describe('DashboardPage', () => {
                     ...testDashboard,
                     analytics_filter_id: null,
                 },
-                successMessage,
+                successMessage: `${filterName} has been removed as Dashboard's default filter.`,
                 errorMessage,
             })
         })
@@ -512,7 +510,7 @@ describe('DashboardPage', () => {
                     {pinnedFilter && (
                         <button
                             onClick={() =>
-                                pinnedFilter.pin(newFilterId, 'filter name')
+                                pinnedFilter.pin(newFilterId, filterName)
                             }
                         >
                             {PIN_FILTER_BUTTON}

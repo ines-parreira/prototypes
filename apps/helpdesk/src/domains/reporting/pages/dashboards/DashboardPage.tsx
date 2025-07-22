@@ -109,16 +109,17 @@ const DashboardPageContent = ({
             savedFilterId: number,
             filterName: string,
         ) => {
+            const filterId =
+                dashboard.analytics_filter_id === savedFilterId
+                    ? null
+                    : savedFilterId
             updateDashboardHandler({
                 dashboard: {
                     ...dashboard,
-                    analytics_filter_id:
-                        dashboard.analytics_filter_id === savedFilterId
-                            ? null
-                            : savedFilterId,
+                    analytics_filter_id: filterId,
                 },
-                successMessage: `${filterName} has been set as ${dashboard.name} default.`,
-                errorMessage: `${filterName}  could not be set as default. Please try again.`,
+                successMessage: `${filterName} has been ${filterId ? 'set' : 'removed'} as ${dashboard.name}'s default filter.`,
+                errorMessage: `${filterName} could not be set as default filter. Please try again.`,
             })
         }
 
