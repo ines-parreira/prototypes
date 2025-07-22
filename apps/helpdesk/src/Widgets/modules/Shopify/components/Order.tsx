@@ -20,15 +20,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import OrderStatus from 'pages/common/components/OrderStatus/OrderStatus'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
-import {
-    OrderMetafields,
-    OrderStatus,
-} from 'Widgets/modules/Shopify/modules/Order'
+import { OrderMetafields } from 'Widgets/modules/Shopify/modules/Order'
 import CancelOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
 import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
 import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
