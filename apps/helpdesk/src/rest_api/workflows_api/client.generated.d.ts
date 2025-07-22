@@ -20579,6 +20579,7 @@ declare namespace Paths {
             export type Page = number
             export type StartDate = string // date-time
             export type Status = ('success' | 'error' | 'partial_success')[]
+            export type UserJourneyId = number
         }
         export interface PathParameters {
             internal_id: Parameters.InternalId
@@ -20589,6 +20590,7 @@ declare namespace Paths {
             status?: Parameters.Status
             end_date: Parameters.EndDate /* date-time */
             start_date: Parameters.StartDate /* date-time */
+            user_journey_id?: Parameters.UserJourneyId
         }
         namespace Responses {
             export type $200 =

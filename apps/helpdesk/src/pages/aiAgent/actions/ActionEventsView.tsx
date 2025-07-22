@@ -48,6 +48,7 @@ export default function ActionExecutionsView() {
             from: moment().subtract(1, 'week').toDate(),
             to: moment().toDate(),
             status: undefined,
+            userJourneyId: undefined,
             orderBy: 'DESC',
             page: 1,
         },
@@ -88,6 +89,7 @@ export default function ActionExecutionsView() {
                 page: filterState.page,
                 to: filterState.to,
                 status: filterState.status,
+                userJourneyId: filterState.userJourneyId,
             },
             {
                 enabled: !!actionConfiguration?.internal_id,
@@ -118,7 +120,7 @@ export default function ActionExecutionsView() {
         )
 
     const handleFilterChange = useCallback(
-        (filter: Pick<Filter, 'from' | 'to' | 'status'>) => {
+        (filter: Pick<Filter, 'from' | 'to' | 'status' | 'userJourneyId'>) => {
             dispatchFilter(filter)
         },
         [dispatchFilter],

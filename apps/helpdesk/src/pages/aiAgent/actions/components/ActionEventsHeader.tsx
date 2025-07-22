@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
 import moment from 'moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import Filter from 'domains/reporting/pages/common/components/Filter'
 import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'
 import { DropdownOption } from 'domains/reporting/pages/types'
@@ -26,9 +24,23 @@ type Props = {
         to: Date
         success?: boolean
         status?: ('success' | 'error' | 'partial_success')[]
+        userJourneyId?: number
     }) => void
 }
-
+const statusFilters = [
+    {
+        label: 'Success',
+        value: 'success',
+    },
+    {
+        label: 'Error',
+        value: 'error',
+    },
+    {
+        label: 'Partial Success',
+        value: 'partial_success',
+    },
+]
 export default function ActionEventsHeader({
     onChange,
     initialEndDate,
@@ -36,8 +48,6 @@ export default function ActionEventsHeader({
 }: Props) {
     const dispatch = useAppDispatch()
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
-    const isActionEventLogsWIthPartialSuccess =
-        useFlags()[FeatureFlagKey.ActionEventLogsWIthPartialSuccess]
 
     const [statusValues, setStatusValues] = useState<DropdownOption[]>([])
     const [statusFilterOptions, setStatusFilterOptions] = useState<
@@ -46,6 +56,9 @@ export default function ActionEventsHeader({
     const [startDateFilter, setStartDate] = useState(initialStartDate)
     const [endDateFilter, setEndDateFilter] = useState(initialEndDate)
     const [isPeriodFilterSet, setIsPeriodFilterSet] = useState(false)
+    const [userJourneyId, setUserJourneyId] = useState<number | undefined>(
+        undefined,
+    )
     useEffectOnce(() => {
         dispatch(
             setStatsFilters({
@@ -56,6 +69,8 @@ export default function ActionEventsHeader({
             }),
         )
         setIsPeriodFilterSet(true)
+        setStatusValues(statusFilters)
+        setStatusFilterOptions(statusFilters)
     })
 
     useEffect(() => {
@@ -70,51 +85,15 @@ export default function ActionEventsHeader({
     ])
 
     useEffect(() => {
-        const statusFilters = [
-            {
-                label: 'Success',
-                value: 'success',
-            },
-            {
-                label: 'Error',
-                value: 'error',
-            },
-        ]
-
-        if (isActionEventLogsWIthPartialSuccess) {
-            statusFilters.push({
-                label: 'Partial Success',
-                value: 'partial_success',
-            })
-        }
-        setStatusValues(statusFilters)
-        setStatusFilterOptions(statusFilters)
-    }, [isActionEventLogsWIthPartialSuccess])
-
-    useEffect(() => {
-        if (isActionEventLogsWIthPartialSuccess) {
-            onChange({
-                from: startDateFilter,
-                to: endDateFilter,
-                status: statusFilterOptions.map(
-                    (dropDownValue) => dropDownValue.value,
-                ) as ('success' | 'error' | 'partial_success')[],
-            })
-        } else {
-            onChange({
-                from: startDateFilter,
-                to: endDateFilter,
-                success:
-                    statusFilterOptions.length === statusValues.length
-                        ? undefined
-                        : statusFilterOptions.some(
-                              (option) => option.value === 'success',
-                          ),
-            })
-        }
+        onChange({
+            from: startDateFilter,
+            to: endDateFilter,
+            status: statusFilterOptions.map(
+                (dropDownValue) => dropDownValue.value,
+            ) as ('success' | 'error' | 'partial_success')[],
+        })
     }, [
         endDateFilter,
-        isActionEventLogsWIthPartialSuccess,
         onChange,
         startDateFilter,
         statusValues,
@@ -132,6 +111,14 @@ export default function ActionEventsHeader({
         } else {
             setStatusFilterOptions([...statusFilterOptions, option])
         }
+    }
+
+    const handleUserJourneyIdChange = () => {
+        onChange({
+            from: startDateFilter,
+            to: endDateFilter,
+            userJourneyId: userJourneyId || undefined,
+        })
     }
 
     return (
@@ -167,6 +154,24 @@ export default function ActionEventsHeader({
                     showSearch={false}
                     logicalOperators={[]}
                 />
+                <div className={css.ticketIdFilter}>
+                    <label htmlFor="ticketId">Ticket ID</label>
+                    <input
+                        id="ticketId"
+                        type="number"
+                        placeholder="Enter ticket ID"
+                        value={userJourneyId || ''}
+                        onChange={(e) =>
+                            setUserJourneyId(Number(e.target.value))
+                        }
+                        onBlur={handleUserJourneyIdChange}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleUserJourneyIdChange()
+                            }
+                        }}
+                    />
+                </div>
             </div>
         </div>
     )

@@ -1,6 +1,5 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
-    ActionEventLogsWIthPartialSuccess = 'action-event-logs-w-ith-partial-success',
     ActionEventsLogs = 'action-events-logs',
     Actions3plObjects = 'actions-3pl-objects',
     ActionsInputsProduct = 'actions-inputs-product',

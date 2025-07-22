@@ -102,6 +102,7 @@ export const executionsDefinitionKeys = {
         to: string
         orderBy: string
         status?: string[]
+        userJourneyId?: number
     }) => [...executionsDefinitionKeys.all(), params] as const,
 }
 
@@ -602,6 +603,7 @@ export const useGetConfigurationExecutions = (
         page,
         to,
         status,
+        userJourneyId,
     }: {
         configurationInternalId: string
         from: Date
@@ -609,6 +611,7 @@ export const useGetConfigurationExecutions = (
         orderBy: 'ASC' | 'DESC'
         page: number
         status?: ('error' | 'success' | 'partial_success')[]
+        userJourneyId?: number
     },
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200>
@@ -622,6 +625,7 @@ export const useGetConfigurationExecutions = (
             to: to.toString(),
             orderBy,
             status,
+            userJourneyId,
         }),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
@@ -634,6 +638,7 @@ export const useGetConfigurationExecutions = (
                         order_by: orderBy,
                         page,
                         status,
+                        user_journey_id: userJourneyId,
                     },
                     {},
                     {
