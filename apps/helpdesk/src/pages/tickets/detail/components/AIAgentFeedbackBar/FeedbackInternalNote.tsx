@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import useFlag from 'core/flags/hooks/useFlag'
 import TextArea from 'gorgias-design-system/Input/TextArea'
 import useAppSelector from 'hooks/useAppSelector'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
@@ -41,6 +43,7 @@ const FeedbackInternalNote = ({
         accountId,
         userId,
     })
+    const showTicketLevelFeedback = useFlag(FeatureFlagKey.TicketLevelFeedback)
 
     useEffect(() => {
         setValue(initialValue || '')
@@ -73,7 +76,11 @@ const FeedbackInternalNote = ({
     return (
         <div className={css.internalNote}>
             <Label className={css.label}>
-                <span>Internal note</span>
+                <span>
+                    {showTicketLevelFeedback
+                        ? 'Additional feedback'
+                        : 'Internal note'}
+                </span>
                 <AutoSaveBadge
                     state={
                         isMutationLoading === undefined
@@ -86,8 +93,9 @@ const FeedbackInternalNote = ({
                 />
             </Label>
             <div className={css.info}>
-                Keep track of specific AI Agent issues. Gorgias uses these notes
-                to monitor conversation quality.
+                {showTicketLevelFeedback
+                    ? 'We use this to monitor conversation quality.'
+                    : 'Keep track of specific AI Agent issues. Gorgias uses these notes to monitor conversation quality.'}
             </div>
             <TextArea
                 id="ai-message-feedback-issues-note"

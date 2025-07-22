@@ -2,6 +2,7 @@ import { cloneDeep } from 'lodash'
 
 import {
     client,
+    FeedbackExecutionsItemFeedbackItem,
     FeedbackUpsertRequest,
     FindFeedbackParams,
     FindFeedbackResult,
@@ -68,32 +69,53 @@ export const optimisticallyUpdateFeedback =
             }
 
             switch (item.feedbackType) {
+                case AiAgentFeedbackTypeEnum.TICKET_RATING:
+                case AiAgentFeedbackTypeEnum.TICKET_BAD_INTERACTION_REASON:
                 case AiAgentFeedbackTypeEnum.TICKET_FREEFORM: {
+                    if (item.feedbackValue === null) {
+                        for (const execution of newData.data.executions) {
+                            const index = execution.feedback.findIndex(
+                                (f) => f.id === item.id,
+                            )
+                            if (index !== -1) {
+                                execution.feedback.splice(index, 1)
+                            }
+                        }
+                        return
+                    }
                     const newFeedback = {
                         ...baseNewFeedback,
                         targetType: 'TICKET',
                         feedbackType: item.feedbackType,
                         feedbackValue: item.feedbackValue,
-                    } as const
-                    const freeformExecution = newData.data.executions.find(
-                        (execution) =>
+                    } as FeedbackExecutionsItemFeedbackItem
+                    const ticketLevelFeedbackExecution =
+                        newData.data.executions.find((execution) =>
                             execution.feedback.find(
                                 (f) => f.feedbackType === item.feedbackType,
                             ),
-                    )
-                    let optimisticallyUpdatedFeedback = false
-                    if (freeformExecution) {
-                        const feedback = freeformExecution.feedback.find(
-                            (f) => f.feedbackType === item.feedbackType,
                         )
+                    let optimisticallyUpdatedFeedback = false
+                    if (ticketLevelFeedbackExecution) {
+                        optimisticallyUpdatedFeedback = true
+                        let feedback =
+                            ticketLevelFeedbackExecution.feedback.find(
+                                (f) => f.feedbackType === item.feedbackType,
+                            )
+                        if (
+                            item.feedbackType ===
+                            'TICKET_BAD_INTERACTION_REASON'
+                        ) {
+                            feedback = undefined
+                        }
                         if (feedback) {
                             feedback.feedbackValue = item.feedbackValue
-                            optimisticallyUpdatedFeedback = true
                         } else {
-                            freeformExecution.feedback.push(newFeedback)
+                            ticketLevelFeedbackExecution.feedback.push(
+                                newFeedback,
+                            )
                         }
                     }
-
                     if (!optimisticallyUpdatedFeedback) {
                         newData.data.executions[0]?.feedback.push(newFeedback)
                     }

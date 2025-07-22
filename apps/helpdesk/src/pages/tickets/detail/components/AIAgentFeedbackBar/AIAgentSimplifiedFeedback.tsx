@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Button, Separator } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
@@ -42,11 +44,14 @@ import { getTicketState } from 'state/ticket/selectors'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { getViewsState } from 'state/views/selectors'
 
+import { AIAgentTicketLevelFeedback } from './AIAgentTicketLevelFeedback/AIAgentTicketLevelFeedback'
+
 const AIAgentSimplifiedFeedback = () => {
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
     const viewsState = useAppSelector(getViewsState)
     const existingSections = useAppSelector(getSectionIdByName)
     const { selectedResource } = useKnowledgeSourceSideBar()
+    const showTicketLevelFeedback = useFlag(FeatureFlagKey.TicketLevelFeedback)
 
     const showNextTicketButton =
         viewsState.getIn(['active', 'section_id']) ===
@@ -364,33 +369,46 @@ const AIAgentSimplifiedFeedback = () => {
                 {feedback && feedback.executions.length === 0 ? (
                     "We're still processing the details of this conversation. You'll be able to review shortly."
                 ) : (
-                    <>
-                        <div className={css.heading}>
-                            <span>Review knowledge used</span>
-                            <AutoSaveBadge
-                                state={
-                                    !loadingMutations
-                                        ? AutoSaveState.INITIAL
-                                        : loadingMutations.length > 0
-                                          ? AutoSaveState.SAVING
-                                          : AutoSaveState.SAVED
-                                }
-                                updatedAt={lastUpdatedMutations}
-                            />
-                        </div>
+                    <div className={css.feedbackSection}>
+                        {showTicketLevelFeedback && (
+                            <>
+                                <AIAgentTicketLevelFeedback
+                                    upsertFeedback={upsertFeedback}
+                                    feedback={feedback}
+                                />
+                                <Separator className={css.separator} />
+                            </>
+                        )}
+                        <div className={css.sourcesContainer}>
+                            <div className={css.heading}>
+                                <span>Review sources used</span>
+                                <AutoSaveBadge
+                                    state={
+                                        !loadingMutations
+                                            ? AutoSaveState.INITIAL
+                                            : loadingMutations.length > 0
+                                              ? AutoSaveState.SAVING
+                                              : AutoSaveState.SAVED
+                                    }
+                                    updatedAt={lastUpdatedMutations}
+                                />
+                            </div>
 
-                        <div className={css.sources}>
-                            {isLoadingFeedback
-                                ? Array.from({ length: 3 }).map((_, index) => (
-                                      <KnowledgeSourceFeedbackSkeleton
-                                          key={index}
-                                      />
-                                  ))
-                                : (feedback?.executions.flatMap(
-                                        (execution) => execution.resources,
-                                    ).length ?? 0) > 0
-                                  ? knowledgeResources
-                                  : 'No knowledge used'}
+                            <div className={css.sources}>
+                                {isLoadingFeedback
+                                    ? Array.from({ length: 3 }).map(
+                                          (_, index) => (
+                                              <KnowledgeSourceFeedbackSkeleton
+                                                  key={index}
+                                              />
+                                          ),
+                                      )
+                                    : (feedback?.executions.flatMap(
+                                            (execution) => execution.resources,
+                                        ).length ?? 0) > 0
+                                      ? knowledgeResources
+                                      : 'No knowledge used'}
+                            </div>
                         </div>
 
                         {shopName && (
@@ -428,21 +446,26 @@ const AIAgentSimplifiedFeedback = () => {
                                 onKnowledgeResourceCreateClick
                             }
                         />
-
-                        <Separator className={css.separator} />
-                        <FeedbackInternalNote
-                            onDebouncedChange={handleFreeFormFeedbackChange}
-                            isMutationLoading={loadingFreeFormMutation}
-                            initialValue={
-                                enrichedData?.freeForm?.feedback
-                                    ?.feedbackValue ?? ''
-                            }
-                            lastUpdated={
-                                enrichedData?.freeForm?.feedback
-                                    ?.updatedDatetime
-                            }
-                        />
-                    </>
+                        {!showTicketLevelFeedback && (
+                            <>
+                                <Separator className={css.separator} />
+                                <FeedbackInternalNote
+                                    onDebouncedChange={
+                                        handleFreeFormFeedbackChange
+                                    }
+                                    isMutationLoading={loadingFreeFormMutation}
+                                    initialValue={
+                                        enrichedData?.freeForm?.feedback
+                                            ?.feedbackValue ?? ''
+                                    }
+                                    lastUpdated={
+                                        enrichedData?.freeForm?.feedback
+                                            ?.updatedDatetime
+                                    }
+                                />
+                            </>
+                        )}
+                    </div>
                 )}
             </div>
 

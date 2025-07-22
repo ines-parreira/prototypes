@@ -481,7 +481,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         expect(screen.getByText('No knowledge used')).toBeInTheDocument()
 
         // Should still render the heading
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+        expect(screen.getByText('Review sources used')).toBeInTheDocument()
     })
 
     it('should display loading indicator in initial state', () => {
@@ -756,7 +756,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         render(<AIAgentSimplifiedFeedback />)
 
         // Check that the heading and badges are rendered
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+        expect(screen.getByText('Review sources used')).toBeInTheDocument()
 
         // Check that thumbs up is visible
         expect(screen.getByText('thumb_up')).toBeInTheDocument()
@@ -1205,7 +1205,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // Verify that the AutoSaveBadge is rendered with current date
         // (implicit verification that lastUpdatedMutations was calculated without errors)
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+        expect(screen.getByText('Review sources used')).toBeInTheDocument()
     })
 
     it('should not handle icon click when already loading that resource', async () => {
@@ -1445,7 +1445,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         render(<AIAgentSimplifiedFeedback />)
 
         // The maxDate should be calculated correctly from the executions
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+        expect(screen.getByText('Review sources used')).toBeInTheDocument()
     })
 
     it('should handle feedback resources without updatedDatetime', () => {
@@ -1475,7 +1475,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         render(<AIAgentSimplifiedFeedback />)
 
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+        expect(screen.getByText('Review sources used')).toBeInTheDocument()
     })
 
     it('should handle icon click when executionId is missing', async () => {
@@ -1836,7 +1836,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         render(<AIAgentSimplifiedFeedback />)
 
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+        expect(screen.getByText('Review sources used')).toBeInTheDocument()
 
         expect(screen.queryByText('No knowledge used')).not.toBeInTheDocument()
     })
@@ -1869,7 +1869,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         render(<AIAgentSimplifiedFeedback />)
 
-        expect(screen.getByText('Review knowledge used')).toBeInTheDocument()
+        expect(screen.getByText('Review sources used')).toBeInTheDocument()
     })
 
     describe('useFeedbackTracking integration', () => {
@@ -1919,9 +1919,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
             expect(
                 screen.queryByText('No knowledge used'),
             ).not.toBeInTheDocument()
@@ -2101,9 +2099,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
             expect(screen.getByText('No knowledge used')).toBeInTheDocument()
         })
     })
@@ -2121,9 +2117,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
         })
 
         it('should handle undefined storeConfiguration shopName fallback', () => {
@@ -2145,9 +2139,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
         })
 
         it('should handle undefined loadingMutations in handleIconClick', async () => {
@@ -2312,9 +2304,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
             expect(
                 screen.queryByText('No knowledge used'),
             ).not.toBeInTheDocument()
@@ -2335,9 +2325,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
         })
 
         it('should handle undefined suggestedResources in MissingKnowledgeSelect', () => {
@@ -2363,9 +2351,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
         })
 
         it('should handle undefined storeConfiguration helpCenterId in CreateKnowledgeSection', () => {
@@ -2401,9 +2387,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            expect(
-                screen.getByText('Review knowledge used'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
         })
 
         it('should handle undefined executions in dependency array', async () => {
@@ -2507,6 +2491,42 @@ describe('AIAgentSimplifiedFeedback', () => {
             })
 
             expect(mutateAsyncMock).toHaveBeenCalled()
+        })
+
+        it('should handle undefined shopType in storeConfiguration to cover shopType fallback', () => {
+            jest.doMock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
+                useStoreConfiguration: () => ({
+                    storeConfiguration: {
+                        shopName: 'test-shop',
+                        helpCenterId: 123,
+                    },
+                }),
+            }))
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            id: 123,
+                            storeConfiguration: { shopName: 'test-shop' },
+                            resources: [],
+                        },
+                    ],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [],
+                    freeForm: {},
+                },
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(screen.getByText('Review sources used')).toBeInTheDocument()
         })
     })
 })
