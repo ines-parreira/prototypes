@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -82,9 +82,15 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should render when a country and a state are selected', async () => {
             const { container, getByText } = renderComponent()
 
-            await userEvent.click(getByText('United States'))
-            await userEvent.click(getByText('Local'))
-            await userEvent.click(getByText('Alabama'))
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
+            await act(async () => {
+                await userEvent.click(getByText('Local'))
+            })
+            await act(async () => {
+                await userEvent.click(getByText('Alabama'))
+            })
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -92,8 +98,12 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should render when type "Toll-free" is selected', async () => {
             const { container, getByText } = renderComponent()
 
-            await userEvent.click(getByText('Canada'))
-            await userEvent.click(getByText('Toll-free'))
+            await act(async () => {
+                await userEvent.click(getByText('Canada'))
+            })
+            await act(async () => {
+                await userEvent.click(getByText('Toll-free'))
+            })
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -101,16 +111,24 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should render address validation form for Australia', async () => {
             const { getByText, queryByText } = renderComponent()
 
-            await userEvent.click(getByText('United States'))
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
             expect(queryByText('Address verification')).toBe(null)
 
-            await userEvent.click(getByText('Canada'))
+            await act(async () => {
+                await userEvent.click(getByText('Canada'))
+            })
             expect(queryByText('Address verification')).toBe(null)
 
-            await userEvent.click(getByText('United Kingdom'))
+            await act(async () => {
+                await userEvent.click(getByText('United Kingdom'))
+            })
             expect(queryByText('Address verification')).toBe(null)
 
-            await userEvent.click(getByText('Australia'))
+            await act(async () => {
+                await userEvent.click(getByText('Australia'))
+            })
             await waitFor(() => {
                 expect(queryByText('Address verification')).not.toBe(null)
             })
@@ -119,14 +137,18 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should pass the address if a phone of a country with address verification is created', async () => {
             const { getByText, getByRole, findByText } = renderComponent()
 
-            await userEvent.type(
-                getByRole('textbox', {
-                    name: /phone number name required/i,
-                }),
-                'test title',
-            )
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', {
+                        name: /phone number name required/i,
+                    }),
+                    'test title',
+                )
+            })
 
-            await userEvent.click(getByText('Australia'))
+            await act(async () => {
+                await userEvent.click(getByText('Australia'))
+            })
 
             await findByText('Address verification')
 
@@ -134,39 +156,55 @@ describe('<PhoneNumberCreateForm/>', () => {
             await waitFor(() => {
                 expect(getByText('Adelaide (87)')).toBeInTheDocument()
             })
-            await userEvent.click(getByText('Adelaide (87)'))
+            await act(async () => {
+                await userEvent.click(getByText('Adelaide (87)'))
+            })
 
             // Wait for Business information section to be available
             await waitFor(() => {
                 expect(getByText('Business information')).toBeInTheDocument()
             })
-            await userEvent.click(getByText('Business information'))
+            await act(async () => {
+                await userEvent.click(getByText('Business information'))
+            })
 
             // Fill in all the address fields
-            await userEvent.type(
-                getByRole('textbox', { name: /business name required/i }),
-                'test business name',
-            )
-            await userEvent.type(
-                getByRole('textbox', { name: /address required/i }),
-                'test address',
-            )
-            await userEvent.type(
-                getByRole('textbox', { name: /city required/i }),
-                'test city',
-            )
-            await userEvent.type(
-                getByRole('textbox', {
-                    name: /state\/province\/region required/i,
-                }),
-                'test region',
-            )
-            await userEvent.type(
-                getByRole('textbox', { name: /postal code required/i }),
-                'test postal code',
-            )
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', { name: /business name required/i }),
+                    'test business name',
+                )
+            })
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', { name: /address required/i }),
+                    'test address',
+                )
+            })
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', { name: /city required/i }),
+                    'test city',
+                )
+            })
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', {
+                        name: /state\/province\/region required/i,
+                    }),
+                    'test region',
+                )
+            })
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', { name: /postal code required/i }),
+                    'test postal code',
+                )
+            })
 
-            await userEvent.click(getByText('Add phone number'))
+            await act(async () => {
+                await userEvent.click(getByText('Add phone number'))
+            })
 
             await waitFor(() => {
                 expect(createPhoneNumberSpy).toHaveBeenCalled()
@@ -188,39 +226,53 @@ describe('<PhoneNumberCreateForm/>', () => {
         it('should call createPhoneNumber with the correct payload after switching from country with address verification', async () => {
             const { getByText, getByRole } = renderComponent()
 
-            await userEvent.type(
-                getByRole('textbox', {
-                    name: /phone number name required/i,
-                }),
-                'test title',
-            )
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', {
+                        name: /phone number name required/i,
+                    }),
+                    'test title',
+                )
+            })
 
-            await userEvent.click(getByText('Australia'))
+            await act(async () => {
+                await userEvent.click(getByText('Australia'))
+            })
 
             await screen.findByText('Address verification')
 
             // Type business name for Australia
-            await userEvent.type(
-                getByRole('textbox', { name: /business name required/i }),
-                'test business name',
-            )
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', { name: /business name required/i }),
+                    'test business name',
+                )
+            })
 
             // Switch to United States
-            await userEvent.click(getByText('United States'))
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
 
             // Wait for US states to load
             await waitFor(() => {
                 expect(screen.getByText('Alabama')).toBeInTheDocument()
             })
-            await userEvent.click(getByText('Alabama'))
+            await act(async () => {
+                await userEvent.click(getByText('Alabama'))
+            })
 
             // Wait for area codes to load
             await waitFor(() => {
                 expect(screen.getByText('Mobile (251)')).toBeInTheDocument()
             })
-            await userEvent.click(getByText('Mobile (251)'))
+            await act(async () => {
+                await userEvent.click(getByText('Mobile (251)'))
+            })
 
-            await userEvent.click(getByText('Add phone number'))
+            await act(async () => {
+                await userEvent.click(getByText('Add phone number'))
+            })
 
             await waitFor(() => {
                 expect(createPhoneNumberSpy).toHaveBeenCalled()
@@ -249,22 +301,32 @@ describe('<PhoneNumberCreateForm/>', () => {
 
             const { getByText, getByRole, findByText } = renderComponent()
 
-            await userEvent.type(
-                getByRole('textbox', {
-                    name: /phone number name required/i,
-                }),
-                'test title',
-            )
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', {
+                        name: /phone number name required/i,
+                    }),
+                    'test title',
+                )
+            })
 
-            await userEvent.click(getByText('United States'))
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
             await findByText('Alabama')
-            await userEvent.click(getByText('Alabama'))
+            await act(async () => {
+                await userEvent.click(getByText('Alabama'))
+            })
 
             await waitFor(() => {
                 expect(getByText('Birmingham (205)')).toBeInTheDocument()
             })
-            await userEvent.click(getByText('Birmingham (205)'))
-            await userEvent.click(getByText('Add phone number'))
+            await act(async () => {
+                await userEvent.click(getByText('Birmingham (205)'))
+            })
+            await act(async () => {
+                await userEvent.click(getByText('Add phone number'))
+            })
 
             await waitFor(() => {
                 expect(createPhoneNumberSpy).toHaveBeenCalled()
