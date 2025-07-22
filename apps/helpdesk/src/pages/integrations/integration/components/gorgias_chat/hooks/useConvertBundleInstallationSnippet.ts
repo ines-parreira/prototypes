@@ -2,10 +2,10 @@ import { isProduction, isStaging } from 'utils/environment'
 
 const CONVERT_BUNDLE_PRODUCTION_URL =
     process.env.CONVERT_BUNDLE_PRODUCTION_URL ??
-    'https://bundle.dyn-rev.app/loader.js'
+    'https://bundle.5gtb.com/loader.js'
 const CONVERT_BUNDLE_STAGING_URL =
     process.env.CONVERT_BUNDLE_STAGING_URL ??
-    'https://bundle-staging.dyn-rev.app/loader.js'
+    'https://bundle-staging.5gtb.com/loader.js'
 const CONVERT_BUNDLE_DEVELOPMENT_URL =
     process.env.CONVERT_BUNDLE_DEVELOPMENT_URL ??
     'https://bundle-{your-name}.eu.ngrok.io/loader.js'
