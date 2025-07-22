@@ -212,11 +212,13 @@ export const useDashboardActions = () => {
             chartIds,
             onSuccess,
             successMessage,
+            errorMessage,
         }: {
             dashboard: DashboardSchema
             chartIds?: string[]
             onSuccess?: () => void
             successMessage?: string
+            errorMessage?: string
         }) => {
             const children = getGroupChartsIntoRows(
                 chartIds || getChildrenIds(dashboard.children),
@@ -254,7 +256,10 @@ export const useDashboardActions = () => {
                         }
                     },
                     onError: (error) =>
-                        handleMutationError(dispatch, getErrorMessage(error)),
+                        handleMutationError(
+                            dispatch,
+                            errorMessage || getErrorMessage(error),
+                        ),
                 },
             )
         },

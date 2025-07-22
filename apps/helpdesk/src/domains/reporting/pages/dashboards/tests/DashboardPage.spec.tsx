@@ -143,7 +143,9 @@ describe('DashboardPage', () => {
                         {MOVE_CHART_END_BUTTON}
                     </button>
                     {pinnedFilter && (
-                        <button onClick={() => pinnedFilter.pin(123)}>
+                        <button
+                            onClick={() => pinnedFilter.pin(123, 'filter name')}
+                        >
                             {PIN_FILTER_BUTTON}
                         </button>
                     )}
@@ -410,6 +412,9 @@ describe('DashboardPage', () => {
 
     describe('Pinned Filter functionality', () => {
         let mockUpdateDashboardHandler: jest.Mock
+        const successMessage = 'filter name has been set as Dashboard default.'
+        const errorMessage =
+            'filter name  could not be set as default. Please try again.'
 
         beforeEach(() => {
             useFlagMock.mockReturnValue(true)
@@ -440,6 +445,8 @@ describe('DashboardPage', () => {
                     ...testDashboard,
                     analytics_filter_id: 123,
                 },
+                successMessage,
+                errorMessage,
             })
         })
 
@@ -458,7 +465,11 @@ describe('DashboardPage', () => {
             DashboardMock.mockImplementation(({ pinnedFilter }) => (
                 <div>
                     {pinnedFilter && (
-                        <button onClick={() => pinnedFilter.pin(savedFilterId)}>
+                        <button
+                            onClick={() =>
+                                pinnedFilter.pin(savedFilterId, 'filter name')
+                            }
+                        >
                             {PIN_FILTER_BUTTON}
                         </button>
                     )}
@@ -478,6 +489,8 @@ describe('DashboardPage', () => {
                     ...testDashboard,
                     analytics_filter_id: null,
                 },
+                successMessage,
+                errorMessage,
             })
         })
 
@@ -497,7 +510,11 @@ describe('DashboardPage', () => {
             DashboardMock.mockImplementation(({ pinnedFilter }) => (
                 <div>
                     {pinnedFilter && (
-                        <button onClick={() => pinnedFilter.pin(newFilterId)}>
+                        <button
+                            onClick={() =>
+                                pinnedFilter.pin(newFilterId, 'filter name')
+                            }
+                        >
                             {PIN_FILTER_BUTTON}
                         </button>
                     )}
@@ -517,6 +534,8 @@ describe('DashboardPage', () => {
                     ...testDashboard,
                     analytics_filter_id: newFilterId,
                 },
+                successMessage,
+                errorMessage,
             })
         })
 

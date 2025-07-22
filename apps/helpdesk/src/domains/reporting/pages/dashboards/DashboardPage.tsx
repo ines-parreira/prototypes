@@ -105,7 +105,10 @@ const DashboardPageContent = ({
     const dashboardPinnedFilter = useMemo(() => {
         if (!isPinnedFilterEnabled) return undefined
 
-        const handleUpdatePinnedFilter = (savedFilterId: number) => {
+        const handleUpdatePinnedFilter = (
+            savedFilterId: number,
+            filterName: string,
+        ) => {
             updateDashboardHandler({
                 dashboard: {
                     ...dashboard,
@@ -114,6 +117,8 @@ const DashboardPageContent = ({
                             ? null
                             : savedFilterId,
                 },
+                successMessage: `${filterName} has been set as ${dashboard.name} default.`,
+                errorMessage: `${filterName}  could not be set as default. Please try again.`,
             })
         }
 

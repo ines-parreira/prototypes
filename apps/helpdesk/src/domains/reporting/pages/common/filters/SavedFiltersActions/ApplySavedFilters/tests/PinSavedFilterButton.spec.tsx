@@ -10,7 +10,7 @@ import {
 describe('PinSavedFilterButton', () => {
     const defaultProps = {
         savedFilterId: 123,
-        onPin: jest.fn(),
+        onClick: jest.fn(),
         setDisableOuter: jest.fn(),
     }
 
@@ -75,7 +75,7 @@ describe('PinSavedFilterButton', () => {
             const user = userEvent.setup()
             const onPin = jest.fn()
 
-            render(<PinSavedFilterButton {...defaultProps} onPin={onPin} />)
+            render(<PinSavedFilterButton {...defaultProps} onClick={onPin} />)
 
             const button = screen.getByRole('button')
             await user.click(button)
@@ -84,52 +84,11 @@ describe('PinSavedFilterButton', () => {
             expect(onPin).toHaveBeenCalledTimes(1)
         })
 
-        it('should call optional onClick when provided', async () => {
-            const user = userEvent.setup()
-            const onPin = jest.fn()
-            const onClick = jest.fn()
-
-            render(
-                <PinSavedFilterButton
-                    {...defaultProps}
-                    onPin={onPin}
-                    onClick={onClick}
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            await user.click(button)
-
-            expect(onPin).toHaveBeenCalledWith(123)
-            expect(onClick).toHaveBeenCalledTimes(1)
-        })
-
-        it('should call both onPin and onClick in correct order', async () => {
-            const user = userEvent.setup()
-            const callOrder: string[] = []
-
-            const onPin = jest.fn(() => callOrder.push('onPin'))
-            const onClick = jest.fn(() => callOrder.push('onClick'))
-
-            render(
-                <PinSavedFilterButton
-                    {...defaultProps}
-                    onPin={onPin}
-                    onClick={onClick}
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            await user.click(button)
-
-            expect(callOrder).toEqual(['onPin', 'onClick'])
-        })
-
         it('should work without onClick prop', async () => {
             const user = userEvent.setup()
             const onPin = jest.fn()
 
-            render(<PinSavedFilterButton {...defaultProps} onPin={onPin} />)
+            render(<PinSavedFilterButton {...defaultProps} onClick={onPin} />)
 
             const button = screen.getByRole('button')
             await user.click(button)
@@ -180,7 +139,7 @@ describe('PinSavedFilterButton', () => {
             const user = userEvent.setup()
             const onPin = jest.fn()
 
-            render(<PinSavedFilterButton {...defaultProps} onPin={onPin} />)
+            render(<PinSavedFilterButton {...defaultProps} onClick={onPin} />)
 
             const button = screen.getByRole('button')
             button.focus()

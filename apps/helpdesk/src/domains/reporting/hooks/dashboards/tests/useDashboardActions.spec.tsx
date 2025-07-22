@@ -317,6 +317,34 @@ describe('useDashboardActions', () => {
                 })
             })
         })
+
+        it('should show custom error message when saving fails', async () => {
+            const customError = 'this is a custom error message.'
+            const updateMock = mockUpdateAnalyticsCustomReportHandler(
+                async () => {
+                    const error = {
+                        error: {
+                            msg: 'server error',
+                        },
+                    } as unknown as AnalyticsCustomReport
+                    return HttpResponse.json(error, { status: 500 })
+                },
+            )
+            server.use(updateMock.handler)
+
+            const { result } = renderDashboardHook()
+            result.current.updateDashboardHandler({
+                ...updateHandlerData,
+                errorMessage: customError,
+            })
+
+            await waitFor(() => {
+                expect(notify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Error,
+                    message: customError,
+                })
+            })
+        })
     })
 
     describe('addChartToDashboardHandler', () => {

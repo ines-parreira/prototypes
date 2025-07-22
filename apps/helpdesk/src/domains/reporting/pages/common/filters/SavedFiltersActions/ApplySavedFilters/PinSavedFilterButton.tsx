@@ -1,4 +1,4 @@
-import { ComponentProps, MouseEventHandler } from 'react'
+import { ComponentProps } from 'react'
 
 import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -8,9 +8,8 @@ export interface PinSavedFilterButtonProps
         'icon' | 'iconClassName' | 'onClick'
     > {
     savedFilterId: number
-    onPin: (savedFilterId: number) => any
+    onClick: (savedFilterId: number) => any
     isPinned?: boolean
-    onClick?: MouseEventHandler<HTMLButtonElement>
     setDisableOuter: (disable: boolean) => void
 }
 
@@ -20,14 +19,12 @@ export const SET_AS_DEFAULT_FILTER_TOOLTIP = 'Set as default filter'
 export const PinSavedFilterButton = ({
     savedFilterId,
     isPinned,
-    onPin,
     onClick,
     setDisableOuter,
     ...props
 }: PinSavedFilterButtonProps) => {
-    const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
-        onPin(savedFilterId)
-        onClick?.(event)
+    const handleClick = () => {
+        onClick(savedFilterId)
     }
 
     const iconId = `save-filter-pin-${savedFilterId}`

@@ -1,4 +1,4 @@
-import { MouseEventHandler, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -30,7 +30,7 @@ type SavedFilterType = Pick<SavedFilter, 'id' | 'name'>
 
 type PinnedFilter = {
     id: number | null
-    pin: (filterId: number) => any
+    pin: (filterId: number, filterName: string) => any
 }
 
 export type ApplySavedFilterProps = {
@@ -67,9 +67,6 @@ const Truncate = ({ text, maxChars }: { text: string; maxChars: number }) => {
     if (text.length > maxChars) content = text.slice(0, maxChars) + '...'
     return <>{content}</>
 }
-
-const stopPropagation: MouseEventHandler<HTMLElement> = (event) =>
-    event.stopPropagation()
 
 const ApplySavedFilters = ({
     savedFilters,
@@ -180,11 +177,15 @@ const ApplySavedFilters = ({
                                     {canEdit && pinnedFilter && (
                                         <PinSavedFilterButton
                                             savedFilterId={filter.id}
-                                            onPin={pinnedFilter.pin}
+                                            onClick={(savedFilterId) =>
+                                                pinnedFilter.pin(
+                                                    savedFilterId,
+                                                    filter.name,
+                                                )
+                                            }
                                             isPinned={
                                                 pinnedFilter.id === filter.id
                                             }
-                                            onClick={stopPropagation}
                                             className={css.pin}
                                             setDisableOuter={setDisableOuter}
                                         />
