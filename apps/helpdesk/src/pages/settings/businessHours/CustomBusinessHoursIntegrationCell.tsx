@@ -1,13 +1,13 @@
+import { IntegrationType } from '@gorgias/helpdesk-types'
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import { IntegrationType } from 'models/integration/constants'
 import SourceIcon from 'pages/common/components/SourceIcon'
 
 import css from './CustomBusinessHoursIntegrationCell.less'
 
 type Props = {
     name: string
-    address: string
+    address?: string
     type: IntegrationType
 }
 

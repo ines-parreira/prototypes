@@ -1,8 +1,11 @@
+import { useState } from 'react'
+
 import { noop } from 'lodash'
 
+import { useListIntegrationsForBusinessHours } from '@gorgias/helpdesk-queries'
 import { CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { FormField } from 'core/forms'
+import { FormField, useFormContext } from 'core/forms'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import SectionHeader from 'pages/common/components/SectionHeader/SectionHeader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -13,16 +16,52 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import IntegrationRowsField from './IntegrationRowsField'
+import { EditCustomBusinessHoursFormValues } from './types'
 
 import css from './CustomBusinessHoursIntegrationsTable.less'
 
-type Props = {
-    isLoading?: boolean
-}
+export default function CustomBusinessHoursIntegrationsTable() {
+    const [cursor, setCursor] = useState<string>()
+    const { data, isLoading } = useListIntegrationsForBusinessHours({ cursor })
+    const integrations = data?.data.data
 
-export default function CustomBusinessHoursIntegrationsTable({
-    isLoading = false,
-}: Props) {
+    const { watch, setValue } =
+        useFormContext<EditCustomBusinessHoursFormValues>()
+
+    const assignIntegrations = watch(
+        'assigned_integrations.assign_integrations',
+    )
+    const isAllSelected = !!integrations?.every((integration) =>
+        assignIntegrations.includes(integration.integration_id),
+    )
+
+    const handleSelectAll = (value: boolean) => {
+        const newAssignIntegrationsSet = new Set(assignIntegrations)
+
+        integrations?.forEach((integration) => {
+            if (value) {
+                newAssignIntegrationsSet.add(integration.integration_id)
+            } else {
+                newAssignIntegrationsSet.delete(integration.integration_id)
+            }
+        })
+
+        setValue(
+            'assigned_integrations.assign_integrations',
+            Array.from(newAssignIntegrationsSet),
+        )
+    }
+
+    const updateCursor = (direction: 'next' | 'prev') => {
+        if (direction === 'next') {
+            !!data?.data.meta.next_cursor &&
+                setCursor(data.data.meta.next_cursor)
+        } else {
+            !!data?.data.meta.prev_cursor &&
+                setCursor(data.data.meta.prev_cursor)
+        }
+    }
+
     return (
         <div>
             <SectionHeader
@@ -33,12 +72,12 @@ export default function CustomBusinessHoursIntegrationsTable({
                 <TableHead>
                     <HeaderCell size="smallest">
                         <CheckBoxField
-                            value={false}
+                            value={isAllSelected}
                             aria-label="Select all integrations"
                             isDisabled={isLoading}
+                            onChange={handleSelectAll}
                         />
                     </HeaderCell>
-                    <HeaderCell size="smallest"></HeaderCell>
                     <HeaderCell
                         size="normal"
                         className={css.integrationNameColumn}
@@ -63,17 +102,17 @@ export default function CustomBusinessHoursIntegrationsTable({
                             name="assigned_integrations.assign_integrations"
                             field={IntegrationRowsField}
                             onItemClick={noop}
-                            numItems={5}
+                            integrations={integrations}
                         />
                     )}
                 </TableBody>
                 {!isLoading && (
                     <Navigation
                         className={css.pagination}
-                        hasNextItems={true}
-                        hasPrevItems={false}
-                        fetchNextItems={noop}
-                        fetchPrevItems={noop}
+                        hasNextItems={!!data?.data.meta.next_cursor}
+                        hasPrevItems={!!data?.data.meta.prev_cursor}
+                        fetchNextItems={() => updateCursor('next')}
+                        fetchPrevItems={() => updateCursor('prev')}
                     />
                 )}
             </TableWrapper>

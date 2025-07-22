@@ -2,6 +2,8 @@ import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
+import { mockListIntegrationsForBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
+
 import { assumeMock } from 'utils/testing'
 
 import BusinessHoursDisplay from '../BusinessHoursDisplay'
@@ -10,18 +12,19 @@ import IntegrationRowsField from '../IntegrationRowsField'
 jest.mock('../BusinessHoursDisplay')
 const BusinessHoursDisplayMock = assumeMock(BusinessHoursDisplay)
 
+const integrations = mockListIntegrationsForBusinessHoursResponse().data
+
 const defaultProps = {
     onChange: jest.fn(),
-    value: [],
     onItemClick: jest.fn(),
-    numItems: 3,
+    value: [],
+    integrations,
+    name: 'assigned_integrations.assign_integrations',
 }
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof IntegrationRowsField>>,
-) => {
-    return render(<IntegrationRowsField {...defaultProps} {...props} />)
-}
+    props?: Partial<ComponentProps<typeof IntegrationRowsField>>,
+) => render(<IntegrationRowsField {...defaultProps} {...props} />)
 
 describe('IntegrationRowsField', () => {
     beforeEach(() => {
@@ -30,29 +33,41 @@ describe('IntegrationRowsField', () => {
         )
     })
 
-    it('renders correct number of rows based on numItems', () => {
-        renderComponent({
-            numItems: 3,
-        })
+    it('renders correct number of rows based on integrations', () => {
+        renderComponent()
 
         const checkboxes = screen.getAllByRole('checkbox')
-        expect(checkboxes).toHaveLength(3)
+        expect(checkboxes).toHaveLength(integrations.length)
+    })
+
+    it('renders warning icon', () => {
+        renderComponent({ hasWarning: true })
+
+        expect(screen.getAllByText('warning')).toHaveLength(integrations.length)
     })
 
     it('renders all cells in each row', () => {
-        renderComponent({
-            numItems: 1,
-        })
+        renderComponent()
 
-        expect(screen.getByRole('checkbox')).toBeInTheDocument()
-        expect(screen.getByTestId('business-hours')).toBeInTheDocument()
-        expect(screen.getByText('Customer service')).toBeInTheDocument()
-        expect(screen.getByText('Store Name')).toBeInTheDocument()
+        expect(screen.getAllByRole('checkbox')).toHaveLength(
+            integrations.length,
+        )
+        expect(screen.getAllByTestId('business-hours')).toHaveLength(
+            integrations.length,
+        )
+        for (let i = 0; i < integrations.length; i++) {
+            expect(
+                screen.getByText(integrations[i].integration_name),
+            ).toBeInTheDocument()
+        }
     })
 
     it('renders checkbox as checked when index is in value array', () => {
         renderComponent({
-            value: [0, 2],
+            value: [
+                integrations[0].integration_id,
+                integrations[2].integration_id,
+            ],
         })
 
         const checkboxes = screen.getAllByRole('checkbox')
@@ -63,47 +78,45 @@ describe('IntegrationRowsField', () => {
 
     it('calls onChange with added item when clicking unchecked row', () => {
         renderComponent({
-            value: [1],
+            value: [integrations[1].integration_id],
         })
 
         const checkboxes = screen.getAllByRole('checkbox')
         fireEvent.click(checkboxes[0])
 
-        expect(defaultProps.onChange).toHaveBeenCalledWith([1, 0])
+        expect(defaultProps.onChange).toHaveBeenCalledWith([
+            integrations[1].integration_id,
+            integrations[0].integration_id,
+        ])
     })
 
     it('calls onChange with removed item when clicking checked row', () => {
         renderComponent({
-            value: [0, 1, 2],
+            value: [
+                integrations[0].integration_id,
+                integrations[1].integration_id,
+                integrations[2].integration_id,
+            ],
         })
 
         const checkboxes = screen.getAllByRole('checkbox')
         fireEvent.click(checkboxes[1])
 
-        expect(defaultProps.onChange).toHaveBeenCalledWith([0, 2])
-    })
-
-    it('calls onItemClick when provided and row is clicked', () => {
-        renderComponent({
-            value: [],
-            numItems: 1,
-        })
-
-        const checkbox = screen.getByRole('checkbox')
-        fireEvent.click(checkbox)
-
-        expect(defaultProps.onItemClick).toHaveBeenCalled()
+        expect(defaultProps.onChange).toHaveBeenCalledWith([
+            integrations[0].integration_id,
+            integrations[2].integration_id,
+        ])
     })
 
     it('handles empty value array correctly', () => {
         renderComponent({
             value: [],
-            numItems: 2,
         })
 
         const checkboxes = screen.getAllByRole('checkbox')
-        expect(checkboxes).toHaveLength(2)
-        expect(checkboxes[0]).not.toBeChecked()
-        expect(checkboxes[1]).not.toBeChecked()
+        expect(checkboxes).toHaveLength(integrations.length)
+        for (let i = 0; i < integrations.length; i++) {
+            expect(checkboxes[i]).not.toBeChecked()
+        }
     })
 })

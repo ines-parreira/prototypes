@@ -1,8 +1,11 @@
+import {
+    IntegrationType,
+    IntegrationWithBusinessHoursAndStore,
+} from '@gorgias/helpdesk-types'
 import { CheckBoxField } from '@gorgias/merchant-ui-kit'
 
 import { Icon } from 'AlertBanners/components/Icon'
 import { AlertBannerTypes } from 'AlertBanners/types'
-import { IntegrationType } from 'models/integration/constants'
 import StoreDisplayName from 'pages/common/components/StoreDisplayName'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -13,53 +16,68 @@ import CustomBusinessHoursIntegrationCell from './CustomBusinessHoursIntegration
 import css from './CustomBusinessHoursIntegrationsTable.less'
 
 type Props = {
+    hasWarning?: boolean
+    integrations?: IntegrationWithBusinessHoursAndStore[]
     onChange: (value: number[]) => void
+    onItemClick: (id: number) => void
     value: number[]
-    onItemClick: () => void
-    numItems: number
+    name: string
 }
 
 export default function IntegrationRowsField({
+    hasWarning,
+    integrations,
+    onItemClick,
     onChange,
     value,
-    onItemClick,
-    numItems,
+    name,
 }: Props) {
-    const handleClick = (itemIndex: number) => {
+    const handleClick = (id: number) => {
         onChange(
-            value.includes(itemIndex)
-                ? value.filter((v) => v !== itemIndex)
-                : [...value, itemIndex],
+            value.includes(id) ? value.filter((v) => v !== id) : [...value, id],
         )
-        onItemClick?.()
+        onItemClick(id)
     }
 
     return (
         <>
-            {Array.from({ length: numItems }).map((_, index) => (
-                // TODO replace index with integration id
-                <TableBodyRow key={index} onClick={() => handleClick(index)}>
+            {integrations?.map((integration) => (
+                <TableBodyRow
+                    key={integration.integration_id}
+                    onClick={() => handleClick(integration.integration_id)}
+                >
                     <BodyCell>
-                        <CheckBoxField value={value.includes(index)} />
+                        <CheckBoxField
+                            aria-label={`${name}.${integration.integration_id}`}
+                            value={value.includes(integration.integration_id)}
+                        />
                     </BodyCell>
-                    <BodyCell>
-                        <Icon type={AlertBannerTypes.Warning} />
-                    </BodyCell>
+                    {hasWarning && (
+                        <BodyCell>
+                            <Icon type={AlertBannerTypes.Warning} />
+                        </BodyCell>
+                    )}
                     <BodyCell className={css.integrationNameColumn}>
                         <CustomBusinessHoursIntegrationCell
-                            name="Customer service"
-                            address="+1 000-306-8834"
-                            type={IntegrationType.Phone}
+                            name={integration.integration_name}
+                            type={
+                                integration.integration_type as IntegrationType
+                            }
                         />
                     </BodyCell>
                     <BodyCell className={css.storeNameColumn}>
                         <StoreDisplayName
-                            name="Store Name"
-                            type={IntegrationType.Shopify}
+                            name={integration.store?.store_name ?? ''}
+                            type={integration.store?.store_type ?? ''}
                         />
                     </BodyCell>
                     <BodyCell className={css.businessHoursColumn}>
-                        <BusinessHoursDisplay />
+                        <BusinessHoursDisplay
+                            businessHours={
+                                integration.business_hours
+                                    ?.business_hours_config
+                            }
+                        />
                     </BodyCell>
                 </TableBodyRow>
             ))}
