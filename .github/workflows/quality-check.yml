@@ -32,7 +32,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint:helpdesk
 
   format:
     name: Format
@@ -53,7 +53,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
 
       - name: Format
-        run: pnpm format:check
+        run: pnpm format:check:helpdesk
 
   typecheck:
     name: Typecheck
@@ -74,7 +74,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
 
       - name: Typecheck
-        run: pnpm typecheck
+        run: pnpm typecheck:helpdesk
 
   tests:
     name: Tests
@@ -101,7 +101,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
 
       - name: Tests
-        run: pnpm test:ci:cover --shard "${{ matrix.job-index }}/10"
+        run: pnpm test:helpdesk:ci:cover --shard "${{ matrix.job-index }}/10"
 
       - name: Upload coverage to Codecov
         if: ${{ !cancelled() }}
@@ -117,7 +117,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/test-results-action@v1
         with:
-          files: junit.xml
+          files: apps/helpdesk/junit.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests-jest-${{ matrix.job-index }}
           name: codecov-test-results-jest-${{ matrix.job-index }}

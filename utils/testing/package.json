@@ -1,0 +1,43 @@
+{
+    "name": "@repo/testing-utils",
+    "version": "1.0.0",
+    "description": "Non domain specific testing utilities for the monorepo",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true",
+        "test": "jest"
+    },
+    "peerDependencies": {
+        "@testing-library/dom": "catalog:testing-library",
+        "@testing-library/react": "catalog:testing-library",
+        "@testing-library/user-event": "catalog:testing-library",
+        "react": "catalog:react",
+        "react-dom": "catalog:react"
+    },
+    "devDependencies": {
+        "@repo/jest-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "@swc/core": "catalog:jest",
+        "@swc/jest": "catalog:jest",
+        "@testing-library/dom": "catalog:testing-library",
+        "@testing-library/react": "catalog:testing-library",
+        "@testing-library/user-event": "catalog:testing-library",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "@types/jest": "catalog:jest",
+        "jest": "catalog:jest",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "swc_mut_cjs_exports": "catalog:jest",
+        "typescript": "catalog:typescript"
+    }
+}

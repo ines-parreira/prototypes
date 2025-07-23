@@ -67,3 +67,7 @@ yalc.lock
 
 # https://marketplace.visualstudio.com/items?itemName=howardzuo.vscode-favorites
 .vscfavoriterc
+
+
+.nx/cache
+.nx/workspace-data

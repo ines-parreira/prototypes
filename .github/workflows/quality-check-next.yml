@@ -1,0 +1,264 @@
+name: Quality check next
+
+on:
+  workflow_call:
+    inputs:
+      cache-key:
+        description: Cache key for the node_modules
+        type: string
+        required: true
+      node-version:
+        description: Node.js version
+        type: string
+        required: true
+      helpdesk-affected:
+        description: If the helpdesk package is affected
+        type: string
+        required: true
+      has-other-affected-packages:
+        description: If there are affected packages other than helpdesk
+        type: string
+        required: true
+      other-affected-packages:
+        description: Other affected packages
+        type: string
+        required: true
+      other-not-affected-packages:
+        description: Other not affected packages
+        type: string
+        required: true
+
+jobs:
+  lint-next:
+    name: Lint next
+    runs-on: gh-actions-default-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: '**/node_modules'
+
+      - name: Install node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Lint
+        run: 'npx nx affected --target=lint --base=origin/main --head=HEAD && pnpm lint:deprecated'
+
+  format-next:
+    name: Format next
+    runs-on: gh-actions-large-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: '**/node_modules'
+
+      - name: Install node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Format
+        run: 'npx nx affected --target=format:check --base=origin/main --head=HEAD'
+
+  typecheck-next:
+    name: Typecheck next
+    runs-on: gh-actions-small-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: '**/node_modules'
+
+      - name: Install node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Typecheck
+        run: pnpm typecheck:helpdesk
+
+  tests-next:
+    name: Tests next
+    runs-on: gh-actions-large-runner-set
+    strategy:
+      fail-fast: false
+      matrix:
+        job-index: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    env:
+      CODECOV_CLI_VERSION: "v10.2.1"
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: '**/node_modules'
+
+      - name: Install node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Run tests
+        if: inputs.helpdesk-affected == 'true'
+        run: echo "Running test ${{ matrix.job-index }}/10"
+      
+      - name: Install GH command-line tool
+        if: inputs.helpdesk-affected != 'true'
+        run: |
+          (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+            && sudo mkdir -p -m 755 /etc/apt/keyrings \
+            && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+            && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+            && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+            && sudo apt update \
+            && sudo apt install gh -y
+
+      - name: Set tests status checks to success if helpdesk not affected
+        if: inputs.helpdesk-affected != 'true'
+        run: |
+          gh api -X POST \
+            repos/${{ github.repository }}/statuses/${{ github.sha }} \
+            -f state=success \
+            -f context="Quality check next / Tests (${{ matrix.job-index }})" \
+            -f description="Helpdesk not affected, skipping tests"
+
+  affected-tests:
+    name: 'Affected packages tests'
+    runs-on: gh-actions-large-runner-set
+    if: inputs.has-other-affected-packages == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.other-affected-packages) }}
+    env:
+      CODECOV_CLI_VERSION: "v10.2.1"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: '**/node_modules'
+
+      - name: Install node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: 'Test ${{ matrix.project }}'
+        run: pnpm --filter=${{ matrix.project }} test --coverage
+
+      - name: Find test artifacts
+        id: artifacts
+        run: |
+          PROJECT_NAME="${{ matrix.project }}"
+          echo "Looking for artifacts for project: $PROJECT_NAME"
+          
+          # Get the actual project root directory from nx
+          PROJECT_ROOT=$(npx nx show project "$PROJECT_NAME" --json | jq -r '.root')
+          echo "Project root directory: $PROJECT_ROOT"
+          
+          if [ "$PROJECT_ROOT" = "null" ] || [ -z "$PROJECT_ROOT" ]; then
+            echo "Could not determine project root, falling back to search"
+            PROJECT_ROOT="."
+          fi
+          
+          COVERAGE_DIR=""
+          JUNIT_FILE=""
+          
+          # Look for coverage directory in project root
+          if [ -d "$PROJECT_ROOT/coverage/jest" ]; then
+            COVERAGE_DIR="$PROJECT_ROOT/coverage/jest"
+          elif [ -d "$PROJECT_ROOT/coverage" ]; then
+            COVERAGE_DIR="$PROJECT_ROOT/coverage"
+          fi
+          
+          # Look for junit.xml file in project root
+          if [ -f "$PROJECT_ROOT/junit.xml" ]; then
+            JUNIT_FILE="$PROJECT_ROOT/junit.xml"
+          elif [ -f "$PROJECT_ROOT/coverage/junit.xml" ]; then
+            JUNIT_FILE="$PROJECT_ROOT/coverage/junit.xml"
+          fi
+          
+          echo "coverage-directory=$COVERAGE_DIR" >> $GITHUB_OUTPUT
+          echo "junit-file=$JUNIT_FILE" >> $GITHUB_OUTPUT
+          echo "Found coverage directory: $COVERAGE_DIR"
+          echo "Found junit file: $JUNIT_FILE"
+          
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() && steps.artifacts.outputs.coverage-directory }}
+        uses: codecov/codecov-action@v5
+        with:
+          directory: ${{ steps.artifacts.outputs.coverage-directory }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: '${{ matrix.project }}-unit'
+          name: '${{ matrix.project }}-unit'
+          version: ${{ env.CODECOV_CLI_VERSION }}
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() && steps.artifacts.outputs.junit-file }}
+        uses: codecov/test-results-action@v1
+        with:
+          files: ${{ steps.artifacts.outputs.junit-file }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: '${{ matrix.project }}-results'
+          name: '${{ matrix.project }}-results'
+          version: ${{ env.CODECOV_CLI_VERSION }}
+
+  not-affected-tests:
+    name: 'Not affected packages status'
+    runs-on: gh-actions-small-runner-set
+    if: inputs.has-other-affected-packages == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.other-not-affected-packages) }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Install GH command-line tool
+        run: |
+          (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+            && sudo mkdir -p -m 755 /etc/apt/keyrings \
+            && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+            && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+            && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+            && sudo apt update \
+            && sudo apt install gh -y
+
+      - name: Set tests status checks to success for not affected projects
+        run: |
+          gh api -X POST \
+            repos/${{ github.repository }}/statuses/${{ github.sha }} \
+            -f state=success \
+            -f context="Quality check next / Affected tests (${{ matrix.project }})" \
+            -f description="Project not affected, skipping tests"

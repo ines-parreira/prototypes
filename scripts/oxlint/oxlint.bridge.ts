@@ -135,14 +135,26 @@ const mergedConfig = mergeConfigs([
     oxlintBaseConfig,
 ])
 
-const outputPath = path.resolve(process.cwd(), 'apps/helpdesk/.oxlintrc.json')
+const outDirs = [
+    'configs/jest',
+    'configs/typescript',
+    'apps/helpdesk',
+    'utils/hooks',
+    'utils/testing',
+]
 
-// Write the initial merged config
-fs.writeFileSync(outputPath, JSON.stringify(mergedConfig), 'utf8')
+const outPaths = outDirs.map((dir) =>
+    path.resolve(process.cwd(), `${dir}/.oxlintrc.json`),
+)
+
+for (const outputPath of outPaths) {
+    // Write the initial merged config
+    fs.writeFileSync(outputPath, JSON.stringify(mergedConfig), 'utf8')
+}
 
 // Format using prettier
 try {
-    execSync(`prettier --write --experimental-cli ${outputPath}`, {
+    execSync(`prettier --write --experimental-cli ${outPaths.join(' ')}`, {
         stdio: 'inherit',
     })
     // eslint-disable-next-line no-console

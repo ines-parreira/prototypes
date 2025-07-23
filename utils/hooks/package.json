@@ -1,0 +1,57 @@
+{
+    "name": "@repo/hooks-utils",
+    "version": "1.0.0",
+    "description": "Non domain specific utility hooks for the monorepo",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "jest",
+        "test:update": "jest -u",
+        "test:watch": "jest --watch",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "lodash": "catalog:lodash",
+        "react": "catalog:react",
+        "react-dom": "catalog:react"
+    },
+    "devDependencies": {
+        "@jest/expect": "catalog:jest",
+        "@repo/jest-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "@repo/testing-utils": "workspace:*",
+        "@swc/core": "catalog:jest",
+        "@swc/jest": "catalog:jest",
+        "@testing-library/dom": "catalog:testing-library",
+        "@testing-library/jest-dom": "catalog:testing-library",
+        "@testing-library/react": "catalog:testing-library",
+        "@testing-library/user-event": "catalog:testing-library",
+        "@types/testing-library__jest-dom": "catalog:jest",
+        "@types/jest": "catalog:jest",
+        "@types/jsdom": "catalog:jest",
+        "@types/lodash": "catalog:lodash",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "jest": "catalog:jest",
+        "jest-environment-jsdom": "catalog:jest",
+        "jest-fixed-jsdom": "catalog:jest",
+        "jest-immutable-matchers": "catalog:jest",
+        "jest-junit": "catalog:jest",
+        "jest-launchdarkly-mock": "catalog:jest",
+        "jest-matcher-utils": "catalog:jest",
+        "jest-mock": "catalog:jest",
+        "lodash": "catalog:lodash",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "swc_mut_cjs_exports": "catalog:jest",
+        "typescript": "catalog:typescript"
+    }
+}

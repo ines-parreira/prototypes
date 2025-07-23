@@ -3,6 +3,7 @@ name: CICD
 on: [push]
 
 permissions:
+  actions: read
   contents: read
 
 concurrency:
@@ -23,15 +24,21 @@ jobs:
       - name: Workspace vars
         run: echo "empty step"
 
-  install-dependencies:
-    name: Install dependencies
+  workspace-setup:
+    name: Workspace setup
     needs: workspace-vars
     runs-on: gh-actions-large-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
+      helpdesk-affected: ${{ env.HELPDESK_AFFECTED }}
+      has-other-affected-packages: ${{ env.HAS_OTHER_AFFECTED_PACKAGES }}
+      other-affected-packages: ${{ env.OTHER_AFFECTED_PACKAGES }}
+      other-not-affected-packages: ${{ env.OTHER_NOT_AFFECTED_PACKAGES }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
@@ -40,26 +47,95 @@ jobs:
           node-version: ${{ needs.workspace-vars.outputs.node-version }}
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
+      - name: Get affected packages
+        id: get-affected-packages
+        run: |
+          # Check if @repo/helpdesk is affected
+          HELPDESK_AFFECTED_JSON=$(npx nx show projects --affected --projects=@repo/helpdesk --json --base=origin/main --head=HEAD)
+          if echo "$HELPDESK_AFFECTED_JSON" | jq -e '. | length > 0' > /dev/null; then
+            echo "HELPDESK_AFFECTED=true" >> $GITHUB_ENV
+            echo "@repo/helpdesk is affected"
+          else
+            echo "HELPDESK_AFFECTED=false" >> $GITHUB_ENV
+            echo "@repo/helpdesk is not affected"
+          fi
+          
+          # Get other affected packages that have a test target, excluding helpdesk
+          OTHER_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=test --exclude=@repo/helpdesk --json --base=origin/main --head=HEAD)
+          
+          # Check if there are any other affected packages
+          if echo "$OTHER_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
+            # Convert the JSON array to a format suitable for GitHub Actions matrix
+            OTHER_AFFECTED_PACKAGES_MATRIX=$(echo "$OTHER_AFFECTED_PACKAGES_JSON" | jq -c 'map({project: .})')
+            echo "OTHER_AFFECTED_PACKAGES=$OTHER_AFFECTED_PACKAGES_MATRIX" >> $GITHUB_ENV
+            echo "HAS_OTHER_AFFECTED_PACKAGES=true" >> $GITHUB_ENV
+            echo "Found other affected packages: $OTHER_AFFECTED_PACKAGES_JSON"
+          else
+            echo "OTHER_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
+            echo "HAS_OTHER_AFFECTED_PACKAGES=false" >> $GITHUB_ENV
+            echo "No other affected packages with test target found"
+          fi
+
+          # Get all packages with test target (excluding helpdesk)
+          ALL_PACKAGES_JSON=$(npx nx show projects --with-target=test --exclude=@repo/helpdesk --json)
+          
+          # Filter out the affected packages to get only non-affected ones
+          if echo "$ALL_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
+            # Remove affected packages from the complete list
+            OTHER_NOT_AFFECTED_PACKAGES_JSON=$(echo "$ALL_PACKAGES_JSON" "$OTHER_AFFECTED_PACKAGES_JSON" | jq -s '.[0] - .[1]')
+            
+            # Check if there are any non-affected packages
+            if echo "$OTHER_NOT_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
+              # Convert the JSON array to a format suitable for GitHub Actions matrix
+              OTHER_NOT_AFFECTED_PACKAGES_MATRIX=$(echo "$OTHER_NOT_AFFECTED_PACKAGES_JSON" | jq -c 'map({project: .})')
+              echo "OTHER_NOT_AFFECTED_PACKAGES=$OTHER_NOT_AFFECTED_PACKAGES_MATRIX" >> $GITHUB_ENV
+              echo "Found other non-affected packages: $OTHER_NOT_AFFECTED_PACKAGES_JSON"
+            else
+              echo "OTHER_NOT_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
+              echo "No other non-affected packages with test target found"
+            fi
+          else
+            echo "OTHER_NOT_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
+            echo "No packages with test target found"
+          fi
+
+
+
   quality-check:
     name: Quality check
     needs:
       - workspace-vars
-      - install-dependencies
+      - workspace-setup
     uses: ./.github/workflows/quality-check.yml
     secrets: inherit
     with:
-      cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
+
+  quality-check-next:
+    name: Quality check next
+    needs:
+      - workspace-vars
+      - workspace-setup
+    uses: ./.github/workflows/quality-check-next.yml
+    secrets: inherit
+    with:
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
+      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      helpdesk-affected: ${{ needs.workspace-setup.outputs.helpdesk-affected }}
+      has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
+      other-affected-packages: ${{ needs.workspace-setup.outputs.other-affected-packages }}
+      other-not-affected-packages: ${{ needs.workspace-setup.outputs.other-not-affected-packages }}
 
   build-smoke-test:
     name: Build smoke test
     if: github.ref != 'refs/heads/staging' && github.ref != 'refs/heads/main'
     needs:
       - workspace-vars
-      - install-dependencies
+      - workspace-setup
     uses: ./.github/workflows/build.yml
     with:
-      cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       assets-url: https://gorgias-assets.gorgias.xyz/preview/${{ github.sha }}/${{ needs.workspace-vars.outputs.bucket-path }}
       release: smoke-test-${{ github.sha }}
@@ -71,10 +147,10 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     needs:
       - workspace-vars
-      - install-dependencies
+      - workspace-setup
     uses: ./.github/workflows/build.yml
     with:
-      cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       assets-url: https://gorgias-assets.gorgias.xyz/${{ needs.workspace-vars.outputs.bucket-path }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
@@ -86,12 +162,12 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     needs:
       - workspace-vars
-      - install-dependencies
+      - workspace-setup
       - build-staging
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
-      cache-key: ${{ needs.install-dependencies.outputs.cache-key}}
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key}}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       gcloud-project: gorgias-helpdesk-staging
       bucket: gs://gorgias-assets-staging
@@ -118,10 +194,10 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs:
       - workspace-vars
-      - install-dependencies
+      - workspace-setup
     uses: ./.github/workflows/build.yml
     with:
-      cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       assets-url: https://gorgias-assets.gorgias.io/${{ needs.workspace-vars.outputs.bucket-path }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
@@ -133,13 +209,13 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs:
       - workspace-vars
-      - install-dependencies
+      - workspace-setup
       - quality-check
       - build-production
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
-      cache-key: ${{ needs.install-dependencies.outputs.cache-key}}
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key}}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       bucket: gs://gorgias-assets-production
       gcloud-project: gorgias-helpdesk-production
@@ -166,7 +242,7 @@ jobs:
     name: Upload Chromatic
     needs:
       - workspace-vars
-      - install-dependencies
+      - workspace-setup
       - quality-check
     runs-on: gh-actions-small-runner-set
     steps:
@@ -178,7 +254,7 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v4
         with:
-          key: ${{ needs.install-dependencies.outputs.cache-key }}
+          key: ${{ needs.workspace-setup.outputs.cache-key }}
           path: '**/node_modules'
 
       - name: Install node
