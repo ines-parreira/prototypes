@@ -16,7 +16,7 @@ export function getCalculateDraftOrderPayload(
     const shippingLine: Map<any, any> = draftOrderPayload.get('shipping_line')
     const shippingAddress: Map<any, any> =
         draftOrderPayload.get('shipping_address')
-
+    const email = draftOrderPayload.getIn(['customer', 'email'])
     return fromJS({
         appliedDiscount: !!appliedDiscount
             ? {
@@ -30,6 +30,7 @@ export function getCalculateDraftOrderPayload(
             'customer',
             'admin_graphql_api_id',
         ]),
+        email,
         lineItems: lineItems.map((lineItem: Map<any, any>) => {
             const lineItemAppliedDiscount: Map<any, any> =
                 lineItem.get('applied_discount')
