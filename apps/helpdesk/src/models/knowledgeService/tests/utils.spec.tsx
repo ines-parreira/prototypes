@@ -268,7 +268,7 @@ describe('knowledgeService utils', () => {
                 ).toBe('BAD')
             })
 
-            it('should return undefined when feedbackValue is null (early return)', () => {
+            it('should remove existing feedback when feedbackValue is null', () => {
                 const prevData = createMockPrevData()
                 prevData.data.executions[0].feedback = [
                     {
@@ -296,7 +296,7 @@ describe('knowledgeService utils', () => {
                 )
                 const result = updater(prevData)
 
-                expect(result).toBeUndefined() // Function returns early without returning newData
+                expect(result?.data.executions[0].feedback).toHaveLength(0)
             })
         })
 
@@ -610,6 +610,39 @@ describe('knowledgeService utils', () => {
                 const result = updater(prevData)
 
                 // Function returns early without returning newData
+                expect(result).toBeUndefined()
+            })
+
+            it('should return undefined when execution exists but no resource with targetId found', () => {
+                const prevData = createMockPrevData()
+                prevData.data.executions[0].resources = [
+                    {
+                        id: 'different-resource-id',
+                        title: 'Different Resource',
+                        content: 'Different content',
+                    },
+                ]
+                const upsertRequest: any = {
+                    feedbackToUpsert: [
+                        {
+                            id: 4,
+                            executionId: 'exec1',
+                            objectType: 'TICKET',
+                            targetId: 'nonexistent-resource',
+                            targetType: 'RESOURCE',
+                            feedbackType:
+                                AiAgentFeedbackTypeEnum.KNOWLEDGE_RESOURCE_BINARY,
+                            feedbackValue: 'thumbs_up',
+                        },
+                    ],
+                }
+
+                const updater = optimisticallyUpdateFeedback(
+                    mockParams,
+                    upsertRequest,
+                )
+                const result = updater(prevData)
+
                 expect(result).toBeUndefined()
             })
         })

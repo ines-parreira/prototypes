@@ -11,7 +11,7 @@ export const badInteractionOptions: Record<
     [AiAgentBadInteractionReason.REPETITIVE_MESSAGES]: 'Repetitive messages',
     [AiAgentBadInteractionReason.SHOULD_NOT_HAND_OVER]: 'Should not hand over',
     [AiAgentBadInteractionReason.SHOULD_HAND_OVER_SOONER]:
-        'Should handed over sooner',
+        'Should hand over sooner',
     [AiAgentBadInteractionReason.REPLIED_TO_HANDOVER_TOPIC]:
         'Replied to handover topic',
     [AiAgentBadInteractionReason.SHOULD_NOT_HAVE_CLOSED_TICKET]:
@@ -25,7 +25,8 @@ export const badInteractionOptions: Record<
         'Irrelevant product recommendation',
     [AiAgentBadInteractionReason.DIDNT_PROCESS_ATTACHMENT_CORRECTLY]:
         "Didn't process attachment correctly",
-    [AiAgentBadInteractionReason.OTHER]: 'Other',
+    [AiAgentBadInteractionReason.OTHER]:
+        'Other (explain in additional feedback)',
 }
 export const badInteractionReverseOptions: Record<
     string,

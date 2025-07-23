@@ -176,6 +176,7 @@ export const AIAgentTicketLevelFeedback = ({
                 <AIAgentFeedbackReasonSection
                     handleFeedbackChange={handleFeedbackChange}
                     badInteractionReasons={badInteractionReasons}
+                    loadingMutations={loadingMutations}
                 />
             )}
 

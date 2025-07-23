@@ -1,11 +1,55 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
 
 import { AIAgentFeedbackReasonSection } from '../AIAgentTicketLevelFeedback/AIAgentFeedbackReasonSection'
 import { AiAgentBadInteractionReason } from '../types'
+
+jest.mock('hooks/useDebouncedCallback', () => {
+    return jest.fn((callback) => {
+        return callback
+    })
+})
+
+jest.mock('custom-fields/components/MultiLevelSelect', () => {
+    return function MockMultiLevelSelect({
+        onChange,
+        value,
+        CustomInput,
+    }: any) {
+        return (
+            <div data-testid="multi-level-select">
+                {CustomInput && <CustomInput onFocus={() => {}} />}
+                <select
+                    data-testid="select"
+                    multiple
+                    value={value}
+                    onChange={(e) => {
+                        const selectedValues = Array.from(
+                            e.target.selectedOptions,
+                            (option) => option.value,
+                        )
+                        onChange(selectedValues)
+                    }}
+                >
+                    <option value="Wrong knowledge used">
+                        Wrong knowledge used
+                    </option>
+                    <option value="Hallucination">Hallucination</option>
+                    <option value="Repetitive messages">
+                        Repetitive messages
+                    </option>
+                    <option value="Other (explain in additional feedback)">
+                        Other
+                    </option>
+                </select>
+            </div>
+        )
+    }
+})
 
 describe('AIAgentFeedbackReasonSection', () => {
     const defaultProps = {
@@ -20,7 +64,7 @@ describe('AIAgentFeedbackReasonSection', () => {
         render(<AIAgentFeedbackReasonSection {...defaultProps} />)
 
         expect(screen.getByText('What went wrong?')).toBeInTheDocument()
-        expect(screen.getByRole('combobox')).toBeInTheDocument()
+        expect(screen.getByTestId('multi-level-select')).toBeInTheDocument()
         expect(screen.getByText('Select all that apply')).toBeInTheDocument()
     })
 
@@ -95,51 +139,60 @@ describe('AIAgentFeedbackReasonSection', () => {
             />,
         )
 
-        expect(screen.getByText('Wrong knowledge used')).toBeInTheDocument()
+        expect(
+            screen.getAllByText('Wrong knowledge used')[0],
+        ).toBeInTheDocument()
     })
 
-    it('should render the dropdown component correctly', () => {
-        const handleFeedbackChange = jest.fn()
+    it('should handle single value selection and call handleFeedbackChange', async () => {
+        const user = userEvent.setup()
+        render(<AIAgentFeedbackReasonSection {...defaultProps} />)
 
-        render(
-            <AIAgentFeedbackReasonSection
-                {...defaultProps}
-                handleFeedbackChange={handleFeedbackChange}
-            />,
-        )
+        const select = screen.getByTestId('select')
 
-        const combobox = screen.getByRole('combobox')
-        expect(combobox).toBeInTheDocument()
-        expect(combobox).toHaveAttribute('tabindex', '0')
+        await act(async () => {
+            await user.selectOptions(select, ['Wrong knowledge used'])
+        })
+
+        expect(defaultProps.handleFeedbackChange).toHaveBeenCalledWith([
+            {
+                resourceType: 'TICKET_BAD_INTERACTION_REASON',
+                feedbackValue: 'WRONG_KNOWLEDGE',
+            },
+        ])
     })
 
-    it('should handle undefined badInteractionReasons', () => {
-        render(
-            <AIAgentFeedbackReasonSection
-                {...defaultProps}
-                badInteractionReasons={undefined}
-            />,
-        )
+    it('should handle multiple value selection', async () => {
+        const user = userEvent.setup()
+        render(<AIAgentFeedbackReasonSection {...defaultProps} />)
 
-        expect(screen.getByText('Select all that apply')).toBeInTheDocument()
+        const select = screen.getByTestId('select')
+
+        await act(async () => {
+            await user.selectOptions(select, [
+                'Wrong knowledge used',
+                'Hallucination',
+            ])
+        })
+
+        expect(defaultProps.handleFeedbackChange).toHaveBeenCalledWith([
+            {
+                resourceType: 'TICKET_BAD_INTERACTION_REASON',
+                feedbackValue: 'WRONG_KNOWLEDGE',
+            },
+            {
+                resourceType: 'TICKET_BAD_INTERACTION_REASON',
+                feedbackValue: 'HALLUCINATION',
+            },
+        ])
     })
 
-    it('should handle empty badInteractionReasons array', () => {
-        render(
-            <AIAgentFeedbackReasonSection
-                {...defaultProps}
-                badInteractionReasons={[]}
-            />,
-        )
-
-        expect(screen.getByText('Select all that apply')).toBeInTheDocument()
-    })
-
-    it('should handle badInteractionReasons with null feedbackValue', () => {
-        const badInteractionReasons: any[] = [
+    it('should handle removing existing selections', async () => {
+        const user = userEvent.setup()
+        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
             {
                 id: 1,
-                feedbackValue: null,
+                feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
                 objectType: 'TICKET',
                 objectId: '123',
                 targetType: 'TICKET',
@@ -159,11 +212,198 @@ describe('AIAgentFeedbackReasonSection', () => {
             />,
         )
 
-        expect(screen.getByRole('combobox')).toBeInTheDocument()
+        const select = screen.getByTestId('select')
+
+        await act(async () => {
+            await user.deselectOptions(select, ['Wrong knowledge used'])
+        })
+
+        expect(defaultProps.handleFeedbackChange).toHaveBeenCalledWith([
+            {
+                resourceType: 'TICKET_BAD_INTERACTION_REASON',
+                feedbackValue: null,
+                id: 1,
+            },
+        ])
     })
 
-    it('should update values when badInteractionReasons prop changes', () => {
-        const initialReasons: FeedbackExecutionsItemFeedbackItem[] = [
+    it('should handle adding new selection when existing selections are present', async () => {
+        const user = userEvent.setup()
+        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+            {
+                id: 1,
+                feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
+                objectType: 'TICKET',
+                objectId: '123',
+                targetType: 'TICKET',
+                targetId: '123',
+                feedbackType: 'TICKET_FREEFORM',
+                submittedBy: 1,
+                createdDatetime: '2023-10-01T00:00:00Z',
+                updatedDatetime: '2023-10-01T00:00:00Z',
+                executionId: 'test-execution',
+            },
+        ]
+
+        render(
+            <AIAgentFeedbackReasonSection
+                {...defaultProps}
+                badInteractionReasons={badInteractionReasons}
+            />,
+        )
+
+        const select = screen.getByTestId('select')
+
+        await act(async () => {
+            await user.selectOptions(select, ['Hallucination'])
+        })
+
+        expect(defaultProps.handleFeedbackChange).toHaveBeenCalledWith([
+            {
+                resourceType: 'TICKET_BAD_INTERACTION_REASON',
+                feedbackValue: 'HALLUCINATION',
+            },
+        ])
+    })
+
+    it('should store pending choices when loading mutations are present', async () => {
+        const user = userEvent.setup()
+        render(
+            <AIAgentFeedbackReasonSection
+                {...defaultProps}
+                loadingMutations={['mutation1']}
+            />,
+        )
+
+        const select = screen.getByTestId('select')
+
+        await act(async () => {
+            await user.selectOptions(select, ['Wrong knowledge used'])
+        })
+
+        expect(defaultProps.handleFeedbackChange).not.toHaveBeenCalled()
+    })
+
+    it('should process pending choices when loading mutations clear', async () => {
+        const { rerender } = render(
+            <AIAgentFeedbackReasonSection
+                {...defaultProps}
+                loadingMutations={['mutation1']}
+            />,
+        )
+
+        const select = screen.getByTestId('select')
+
+        await act(async () => {
+            const user = userEvent.setup()
+            await user.selectOptions(select, ['Wrong knowledge used'])
+        })
+
+        act(() => {
+            rerender(
+                <AIAgentFeedbackReasonSection
+                    {...defaultProps}
+                    loadingMutations={[]}
+                />,
+            )
+        })
+
+        await waitFor(() => {
+            expect(defaultProps.handleFeedbackChange).toHaveBeenCalled()
+        })
+    })
+
+    it('should not update values when loading mutations are present and there are no pending choices', () => {
+        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+            {
+                id: 1,
+                feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
+                objectType: 'TICKET',
+                objectId: '123',
+                targetType: 'TICKET',
+                targetId: '123',
+                feedbackType: 'TICKET_BAD_INTERACTION_REASON',
+                submittedBy: 1,
+                createdDatetime: '2023-10-01T00:00:00Z',
+                updatedDatetime: '2023-10-01T00:00:00Z',
+                executionId: 'test-execution',
+            },
+        ]
+
+        const { rerender } = render(
+            <AIAgentFeedbackReasonSection
+                {...defaultProps}
+                badInteractionReasons={badInteractionReasons}
+                loadingMutations={['mutation1']}
+            />,
+        )
+
+        const newBadInteractionReasons = [...badInteractionReasons]
+        newBadInteractionReasons[0].feedbackValue =
+            AiAgentBadInteractionReason.HALLUCINATION
+
+        act(() => {
+            rerender(
+                <AIAgentFeedbackReasonSection
+                    {...defaultProps}
+                    badInteractionReasons={newBadInteractionReasons}
+                    loadingMutations={['mutation1']}
+                />,
+            )
+        })
+
+        expect(defaultProps.handleFeedbackChange).not.toHaveBeenCalled()
+    })
+
+    it('should render tooltip when values are selected', () => {
+        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+            {
+                id: 1,
+                feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
+                objectType: 'TICKET',
+                objectId: '123',
+                targetType: 'TICKET',
+                targetId: '123',
+                feedbackType: 'TICKET_FREEFORM',
+                submittedBy: 1,
+                createdDatetime: '2023-10-01T00:00:00Z',
+                updatedDatetime: '2023-10-01T00:00:00Z',
+                executionId: 'test-execution',
+            },
+        ]
+
+        render(
+            <AIAgentFeedbackReasonSection
+                {...defaultProps}
+                badInteractionReasons={badInteractionReasons}
+            />,
+        )
+
+        expect(
+            document.getElementById('ai-agent-bad-interaction-reason-select'),
+        ).toBeInTheDocument()
+    })
+
+    it('should handle non-array value in handleBadInteractionReasonChange', async () => {
+        const user = userEvent.setup()
+        render(<AIAgentFeedbackReasonSection {...defaultProps} />)
+
+        const select = screen.getByTestId('select')
+
+        await act(async () => {
+            await user.selectOptions(select, 'Wrong knowledge used')
+        })
+
+        expect(defaultProps.handleFeedbackChange).toHaveBeenCalledWith([
+            {
+                resourceType: 'TICKET_BAD_INTERACTION_REASON',
+                feedbackValue: 'WRONG_KNOWLEDGE',
+            },
+        ])
+    })
+
+    it('should return early from useEffect when pendingChoicesRef is not null', () => {
+        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -182,35 +422,40 @@ describe('AIAgentFeedbackReasonSection', () => {
         const { rerender } = render(
             <AIAgentFeedbackReasonSection
                 {...defaultProps}
-                badInteractionReasons={initialReasons}
+                badInteractionReasons={badInteractionReasons}
+                loadingMutations={['mutation1']}
             />,
         )
 
-        expect(screen.getByText('Wrong knowledge used')).toBeInTheDocument()
+        const select = screen.getByTestId('select')
+        act(() => {
+            const event = new Event('change', { bubbles: true })
+            Object.defineProperty(event, 'target', {
+                value: {
+                    selectedOptions: [{ value: 'Hallucination' }],
+                },
+            })
+            select.dispatchEvent(event)
+        })
 
-        const updatedReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const newBadInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
             {
-                id: 2,
+                ...badInteractionReasons[0],
                 feedbackValue: AiAgentBadInteractionReason.HALLUCINATION,
-                objectType: 'TICKET',
-                objectId: '123',
-                targetType: 'TICKET',
-                targetId: '123',
                 feedbackType: 'TICKET_FREEFORM',
-                submittedBy: 1,
-                createdDatetime: '2023-10-01T00:00:00Z',
-                updatedDatetime: '2023-10-01T00:00:00Z',
-                executionId: 'test-execution',
             },
         ]
 
-        rerender(
-            <AIAgentFeedbackReasonSection
-                {...defaultProps}
-                badInteractionReasons={updatedReasons}
-            />,
-        )
+        act(() => {
+            rerender(
+                <AIAgentFeedbackReasonSection
+                    {...defaultProps}
+                    badInteractionReasons={newBadInteractionReasons}
+                    loadingMutations={[]}
+                />,
+            )
+        })
 
-        expect(screen.getByText('Hallucination')).toBeInTheDocument()
+        expect(screen.getByTestId('multi-level-select')).toBeInTheDocument()
     })
 })

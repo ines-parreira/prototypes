@@ -85,6 +85,7 @@ export type MultiLevelSelectProps<
     placement?: Placement
     dropdownMatchTriggerWidth?: boolean
     hideClearButton?: boolean
+    wrapperClassName?: string
 }
 
 export default function MultiLevelSelect<
@@ -110,6 +111,7 @@ export default function MultiLevelSelect<
     placement,
     dropdownMatchTriggerWidth = false,
     hideClearButton = false,
+    wrapperClassName,
 }: MultiLevelSelectProps<AllowMultiValues>) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -295,7 +297,10 @@ export default function MultiLevelSelect<
                 }}
                 target={containerRef}
                 ref={modalRef}
-                className={dropdownAutoWidth ? undefined : css.dropdown}
+                className={classNames(
+                    dropdownAutoWidth ? undefined : css.dropdown,
+                    wrapperClassName,
+                )}
                 placement={placement}
                 matchTriggerWidth={dropdownMatchTriggerWidth}
             >

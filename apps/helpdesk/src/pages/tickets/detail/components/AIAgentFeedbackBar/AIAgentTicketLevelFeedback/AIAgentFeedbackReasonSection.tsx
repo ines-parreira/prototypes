@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
+import useDebouncedCallback from 'hooks/useDebouncedCallback'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 
 import { AiAgentBadInteractionReason } from '../types'
@@ -25,12 +27,15 @@ export type AIAgentFeedbackReasonSectionProps = {
         }[],
     ) => void
     badInteractionReasons?: FeedbackExecutionsItemFeedbackItem[]
+    loadingMutations?: string[]
 }
 export const AIAgentFeedbackReasonSection = ({
     handleFeedbackChange,
     badInteractionReasons,
+    loadingMutations,
 }: AIAgentFeedbackReasonSectionProps) => {
     const [values, setValuesDefault] = useState<string[]>([])
+    const pendingChoicesRef = useRef<any[] | null>(null)
 
     const setValues = useCallback(
         (values: string[]) => {
@@ -39,16 +44,13 @@ export const AIAgentFeedbackReasonSection = ({
         [setValuesDefault],
     )
 
-    useEffect(() => {
-        const mappedValues =
-            badInteractionReasons?.map(
-                (reason) =>
-                    badInteractionOptions[
-                        reason?.feedbackValue as AiAgentBadInteractionReason
-                    ],
-            ) ?? []
-        setValues(mappedValues)
-    }, [badInteractionReasons, setValues])
+    const debouncedHandleFeedbackChange = useDebouncedCallback(
+        (finalChoices: any[]) => {
+            handleFeedbackChange(finalChoices)
+            pendingChoicesRef.current = null
+        },
+        700,
+    )
 
     const handleBadInteractionReasonChange = useCallback(
         (value: any) => {
@@ -56,11 +58,29 @@ export const AIAgentFeedbackReasonSection = ({
                 ? value
                 : [...values, value]
 
+            setValues(newValues)
+
             const choicesToSubmit = newValues
-                .filter((v) => !values.includes(v))
+                .filter(
+                    (v) =>
+                        !badInteractionReasons
+                            ?.map(
+                                (r) =>
+                                    badInteractionOptions[
+                                        r?.feedbackValue as AiAgentBadInteractionReason
+                                    ],
+                            )
+                            .includes(v),
+                )
                 .filter(Boolean)
 
-            const choicesToRemove = values
+            const choicesToRemove = badInteractionReasons
+                ?.map(
+                    (r) =>
+                        badInteractionOptions[
+                            r?.feedbackValue as AiAgentBadInteractionReason
+                        ],
+                )
                 .filter((initialValue) => {
                     return !newValues.includes(initialValue)
                 })
@@ -71,7 +91,7 @@ export const AIAgentFeedbackReasonSection = ({
                     resourceType: 'TICKET_BAD_INTERACTION_REASON' as const,
                     feedbackValue: badInteractionReverseOptions[choice],
                 })),
-                ...choicesToRemove.map((choice) => ({
+                ...(choicesToRemove?.map((choice) => ({
                     resourceType: 'TICKET_BAD_INTERACTION_REASON' as const,
                     feedbackValue: null,
                     id: badInteractionReasons?.find(
@@ -80,18 +100,83 @@ export const AIAgentFeedbackReasonSection = ({
                                 reason?.feedbackValue as AiAgentBadInteractionReason
                             ] === choice,
                     )?.id,
-                })),
+                })) ?? []),
             ]
 
-            setValues(newValues)
-
-            handleFeedbackChange(finalChoices)
+            if ((loadingMutations?.length ?? 0) > 0) {
+                pendingChoicesRef.current = finalChoices
+            } else {
+                debouncedHandleFeedbackChange(finalChoices)
+            }
         },
-        [handleFeedbackChange, values, badInteractionReasons, setValues],
+        [
+            values,
+            badInteractionReasons,
+            setValues,
+            debouncedHandleFeedbackChange,
+            loadingMutations,
+        ],
     )
+
+    const CustomInput = useCallback(
+        ({ onFocus }: CustomInputProps) => (
+            <div className={css.selectContainer}>
+                <SelectInputBox
+                    id="ai-agent-bad-interaction-reason-select"
+                    className={css.selectInputBox}
+                    placeholder={
+                        values?.length
+                            ? values.join(', ')
+                            : 'Select all that apply'
+                    }
+                    onClick={onFocus}
+                    onAffixClick={onFocus}
+                />
+                {values.length > 0 && (
+                    <Tooltip
+                        target="ai-agent-bad-interaction-reason-select"
+                        placement="top"
+                    >
+                        {values.join(', ')}
+                    </Tooltip>
+                )}
+            </div>
+        ),
+        [values],
+    )
+
+    useEffect(() => {
+        if ((loadingMutations?.length ?? 0) > 0) return
+
+        if (pendingChoicesRef.current !== null) {
+            return
+        }
+
+        const mappedValues =
+            badInteractionReasons?.map(
+                (reason) =>
+                    badInteractionOptions[
+                        reason?.feedbackValue as AiAgentBadInteractionReason
+                    ],
+            ) ?? []
+        setValues(mappedValues)
+    }, [badInteractionReasons, setValues, loadingMutations])
+
+    useEffect(() => {
+        if (
+            (loadingMutations?.length ?? 0) === 0 &&
+            pendingChoicesRef.current !== null
+        ) {
+            debouncedHandleFeedbackChange(pendingChoicesRef.current)
+            pendingChoicesRef.current = null
+        }
+    }, [loadingMutations, debouncedHandleFeedbackChange])
 
     return (
         <div className={css.selectContainer}>
+            <Label className={css.header}>
+                <span>What went wrong?</span>
+            </Label>
             <MultiLevelSelect
                 inputId="ai-agent-bad-interaction-reason-select"
                 onChange={handleBadInteractionReasonChange}
@@ -103,23 +188,8 @@ export const AIAgentFeedbackReasonSection = ({
                 dropdownMatchTriggerWidth={true}
                 hideClearButton
                 autoWidth={false}
-                CustomInput={({ onFocus }) => (
-                    <div className={css.selectContainer}>
-                        <Label className={css.header}>
-                            <span>What went wrong?</span>
-                        </Label>
-                        <SelectInputBox
-                            className={css.selectInputBox}
-                            placeholder={
-                                values?.length
-                                    ? values.join(', ')
-                                    : 'Select all that apply'
-                            }
-                            onClick={onFocus}
-                            onAffixClick={onFocus}
-                        />
-                    </div>
-                )}
+                CustomInput={CustomInput}
+                wrapperClassName={css.multiLevelSelectWrapper}
             />
         </div>
     )

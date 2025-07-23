@@ -81,7 +81,7 @@ export const optimisticallyUpdateFeedback =
                                 execution.feedback.splice(index, 1)
                             }
                         }
-                        return
+                        continue
                     }
                     const newFeedback = {
                         ...baseNewFeedback,
