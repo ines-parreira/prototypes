@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import cn from 'classnames'
+import { useHistory } from 'react-router-dom'
 
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { Button, IconButton } from '@gorgias/merchant-ui-kit'
@@ -34,6 +35,19 @@ export function TicketModal({
 }: Props) {
     const hasCTDrawerUX = useFlag(FeatureFlagKey.CustomerTimelineDrawerUX)
     const closeButtonRef = useRef<HTMLButtonElement>(null)
+    const history = useHistory()
+
+    const handleExpandTicketClick = useCallback(
+        (event: React.MouseEvent<HTMLAnchorElement>) => {
+            logEvent(SegmentEvent.CustomerTimelineModalViewTicketClicked)
+            if (!event.metaKey) {
+                event.preventDefault()
+                history.push(`/app/ticket/${ticketId}`)
+            }
+        },
+        [history, ticketId],
+    )
+
     useEffect(() => {
         if (closeButtonRef.current) {
             closeButtonRef.current.focus()
@@ -41,6 +55,12 @@ export function TicketModal({
     }, [])
 
     if (!ticketId) return null
+
+    const expandTicketIcon = (
+        <i className={`material-icons ${css.expandTicketIcon}`}>
+            open_in_full_right
+        </i>
+    )
 
     if (hasCTDrawerUX) {
         return (
@@ -97,14 +117,10 @@ export function TicketModal({
                                 intent="secondary"
                                 rel="noreferrer"
                                 target="_blank"
-                                trailingIcon="open_in_new"
-                                onClick={() => {
-                                    logEvent(
-                                        SegmentEvent.CustomerTimelineModalViewTicketClicked,
-                                    )
-                                }}
+                                trailingIcon={expandTicketIcon}
+                                onClick={handleExpandTicketClick}
                             >
-                                View Ticket
+                                Expand Ticket
                             </Button>
                         </ModalFooter>
                     </div>
@@ -145,14 +161,10 @@ export function TicketModal({
                     intent="secondary"
                     rel="noreferrer"
                     target="_blank"
-                    trailingIcon="open_in_new"
-                    onClick={() => {
-                        logEvent(
-                            SegmentEvent.CustomerTimelineModalViewTicketClicked,
-                        )
-                    }}
+                    trailingIcon={expandTicketIcon}
+                    onClick={handleExpandTicketClick}
                 >
-                    View Ticket
+                    Expand Ticket
                 </Button>
                 <div>
                     <Button

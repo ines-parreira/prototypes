@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
+import { useHistory } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -14,6 +15,11 @@ import { TicketModalProvider } from '../TicketModalProvider'
 jest.mock('common/segment', () => ({
     ...jest.requireActual('common/segment'),
     logEvent: jest.fn(),
+}))
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
 }))
 
 const mockIconButtonRender = jest.fn()
@@ -56,6 +62,7 @@ jest.mock('../TicketModalProvider', () => ({
 const TicketDetailMock = assumeMock(TicketDetail)
 const TicketModalProviderMock = assumeMock(TicketModalProvider)
 const useFlagMock = assumeMock(useFlag)
+const useHistoryMock = assumeMock(useHistory)
 
 describe('TicketModal', () => {
     const defaultProps = {
@@ -65,9 +72,13 @@ describe('TicketModal', () => {
         onPrevious: jest.fn(),
     }
 
+    const mockHistoryPush = jest.fn()
+
     beforeEach(() => {
         useFlagMock.mockReturnValue(false) // Default to modal view
+        useHistoryMock.mockReturnValue({ push: mockHistoryPush } as any)
         mockIconButtonRender.mockClear()
+        mockHistoryPush.mockClear()
     })
 
     it('should render nothing if no ticketId is passed', () => {
@@ -99,7 +110,7 @@ describe('TicketModal', () => {
 
     it('should render a tracked link to the full ticket', () => {
         render(<TicketModal {...defaultProps} />)
-        const el = screen.getByText('View Ticket')
+        const el = screen.getByText('Expand Ticket')
         expect(el).toBeInTheDocument()
         expect(el.closest('a')).toHaveAttribute('href', '/app/ticket/1')
 
@@ -192,17 +203,17 @@ describe('TicketModal', () => {
             expect(nextEl).toBeInTheDocument()
         })
 
-        it('should render "View Ticket" link and log event', () => {
+        it('should render "Expand Ticket" link and log event', () => {
             render(<TicketModal {...defaultProps} />)
 
-            const viewTicketEl = screen.getByText('View Ticket')
-            expect(viewTicketEl).toBeInTheDocument()
-            expect(viewTicketEl.closest('a')).toHaveAttribute(
+            const expandTicketEl = screen.getByText('Expand Ticket')
+            expect(expandTicketEl).toBeInTheDocument()
+            expect(expandTicketEl.closest('a')).toHaveAttribute(
                 'href',
                 '/app/ticket/1',
             )
 
-            fireEvent.click(viewTicketEl)
+            fireEvent.click(expandTicketEl)
 
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.CustomerTimelineModalViewTicketClicked,
@@ -233,12 +244,12 @@ describe('TicketModal', () => {
             expect(nextEl).toBeInTheDocument()
         })
 
-        it('should render "View Ticket" link', () => {
+        it('should render "Expand ticket" link', () => {
             render(<TicketModal {...defaultProps} />)
 
-            const viewTicketEl = screen.getByText('View Ticket')
-            expect(viewTicketEl).toBeInTheDocument()
-            expect(viewTicketEl.closest('a')).toHaveAttribute(
+            const expandTicketEl = screen.getByText('Expand Ticket')
+            expect(expandTicketEl).toBeInTheDocument()
+            expect(expandTicketEl.closest('a')).toHaveAttribute(
                 'href',
                 '/app/ticket/1',
             )
