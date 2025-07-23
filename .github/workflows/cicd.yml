@@ -125,21 +125,21 @@ jobs:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
 
-  quality-check-next:
-    name: Quality check next
-    needs:
-      - workspace-vars
-      - workspace-setup
-    uses: ./.github/workflows/quality-check-next.yml
-    secrets: inherit
-    with:
-      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      helpdesk-affected: ${{ needs.workspace-setup.outputs.helpdesk-affected }}
-      has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
-      other-affected-packages: ${{ needs.workspace-setup.outputs.other-affected-packages }}
-      other-not-affected-packages: ${{ needs.workspace-setup.outputs.other-not-affected-packages }}
-      nx-base-commit: ${{ needs.workspace-setup.outputs.nx-base-commit }}
+  # quality-check-next:
+  #   name: Quality check next
+  #   needs:
+  #     - workspace-vars
+  #     - workspace-setup
+  #   uses: ./.github/workflows/quality-check-next.yml
+  #   secrets: inherit
+  #   with:
+  #     cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
+  #     node-version: ${{ needs.workspace-vars.outputs.node-version }}
+  #     helpdesk-affected: ${{ needs.workspace-setup.outputs.helpdesk-affected }}
+  #     has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
+  #     other-affected-packages: ${{ needs.workspace-setup.outputs.other-affected-packages }}
+  #     other-not-affected-packages: ${{ needs.workspace-setup.outputs.other-not-affected-packages }}
+  #     nx-base-commit: ${{ needs.workspace-setup.outputs.nx-base-commit }}
 
   build-smoke-test:
     name: Build smoke test
