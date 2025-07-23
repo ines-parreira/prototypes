@@ -28,7 +28,6 @@ interface UseFeedbackActionsParams {
     sourceItems: NonNullable<
         ReturnType<typeof useEnrichFeedbackData>
     >['sourceItems']
-    macros: NonNullable<ReturnType<typeof useEnrichFeedbackData>>['macros']
     ingestedFiles: NonNullable<
         ReturnType<typeof useEnrichFeedbackData>
     >['ingestedFiles']
@@ -51,7 +50,6 @@ export const useFeedbackActions = ({
     guidanceArticles,
     articles,
     sourceItems,
-    macros,
     ingestedFiles,
     storeWebsiteQuestions,
     enrichedData,
@@ -126,18 +124,6 @@ export const useFeedbackActions = ({
                         resourceLocale: null,
                     }
                 }
-                case AiAgentKnowledgeResourceTypeEnum.MACRO: {
-                    const macro = macros?.find(
-                        (a) => a.id?.toString() === choice.value,
-                    )
-                    if (!macro) return null
-                    return {
-                        resourceType: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                        resourceId: macro.id?.toString(),
-                        resourceSetId: null,
-                        resourceLocale: null,
-                    }
-                }
                 case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
                     const file = ingestedFiles?.find(
                         (a) => a.id.toString() === choice.value,
@@ -163,7 +149,6 @@ export const useFeedbackActions = ({
             guidanceArticles,
             articles,
             sourceItems,
-            macros,
             ingestedFiles,
             storeWebsiteQuestions,
         ],

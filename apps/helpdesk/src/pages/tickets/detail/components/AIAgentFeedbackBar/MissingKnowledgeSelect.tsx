@@ -103,7 +103,6 @@ const MissingKnowledgeSelect = ({
             guidanceArticles: enrichedData.guidanceArticles || [],
             sourceItems: enrichedData.sourceItems || [],
             ingestedFiles: enrichedData.ingestedFiles || [],
-            macros: enrichedData.macros || [],
             actions: enrichedData.actions || [],
             helpCenters: enrichedData.helpCenters || [],
             storeWebsiteQuestions: enrichedData.storeWebsiteQuestions || [],
@@ -188,32 +187,6 @@ const MissingKnowledgeSelect = ({
                     hide:
                         article.helpCenterId !== helpCenterId ||
                         !article.translation.is_current,
-                })),
-            //MACROS
-            ...(enrichedData?.macros || [])
-                .filter((macro) => {
-                    return !knowledgeResources?.find(
-                        (resource) =>
-                            resource.resource.resourceId ===
-                                macro.id?.toString() &&
-                            resource.resource.resourceType ===
-                                AiAgentKnowledgeResourceTypeEnum.MACRO,
-                    )
-                })
-                .map((macro) => ({
-                    meta:
-                        macro.id &&
-                        getResourceMetadata(
-                            {
-                                id: macro.id.toString(),
-                                type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                            },
-                            shopName,
-                            resourcesData,
-                        ),
-                    label: `${SIMPLIFIED_RESOURCE_LABELS.macro}${macro.name}`,
-                    value: macro.id?.toString(),
-                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
                 })),
             ...(enrichedData?.storeWebsiteQuestions || [])
                 .filter((question) => {

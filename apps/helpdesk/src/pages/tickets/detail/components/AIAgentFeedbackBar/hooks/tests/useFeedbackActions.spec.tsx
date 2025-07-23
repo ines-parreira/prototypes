@@ -168,15 +168,6 @@ const createResourceData = (
                     },
                 ],
             }
-        case AiAgentKnowledgeResourceTypeEnum.MACRO:
-            return {
-                macros: [
-                    {
-                        id,
-                        name: 'Macro Title',
-                    },
-                ],
-            }
         case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET:
             return {
                 storeWebsiteQuestions: [
@@ -207,7 +198,6 @@ const createMockData = (
         guidanceArticles: [],
         articles: [],
         sourceItems: [],
-        macros: [],
         ingestedFiles: [],
         storeWebsiteQuestions: [],
         enrichedData: createMockEnrichedData({
@@ -236,7 +226,6 @@ const renderHookWithData = (
             guidanceArticles: mockData.guidanceArticles,
             articles: mockData.articles,
             sourceItems: mockData.sourceItems,
-            macros: mockData.macros,
             ingestedFiles: mockData.ingestedFiles,
             storeWebsiteQuestions: mockData.storeWebsiteQuestions,
             enrichedData: mockData.enrichedData,
@@ -259,7 +248,6 @@ describe('useFeedbackActions', () => {
             AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
             AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
             AiAgentKnowledgeResourceTypeEnum.ACTION,
-            AiAgentKnowledgeResourceTypeEnum.MACRO,
         ] as const)(
             'should correctly process %s choice type',
             async (choiceType) => {
@@ -426,7 +414,6 @@ describe('useFeedbackActions', () => {
             [AiAgentKnowledgeResourceTypeEnum.GUIDANCE, 'guidanceArticles'],
             [AiAgentKnowledgeResourceTypeEnum.ARTICLE, 'articles'],
             [AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET, 'sourceItems'],
-            [AiAgentKnowledgeResourceTypeEnum.MACRO, 'macros'],
             [
                 AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                 'ingestedFiles',
@@ -472,8 +459,7 @@ describe('useFeedbackActions', () => {
                             },
                         },
                     ],
-                    actions: [{ id: 'action-1', name: 'Valid Action' }],
-                    macros: [], // Empty to make macro invalid
+                    actions: [], // Empty to make action invalid
                 },
             )
 
@@ -483,11 +469,8 @@ describe('useFeedbackActions', () => {
                 createMockChoice(AiAgentKnowledgeResourceTypeEnum.ARTICLE, {
                     value: 'article-1',
                 }),
-                createMockChoice(AiAgentKnowledgeResourceTypeEnum.MACRO, {
-                    value: 'macro-nonexistent',
-                }),
                 createMockChoice(AiAgentKnowledgeResourceTypeEnum.ACTION, {
-                    value: 'action-1',
+                    value: 'action-nonexistent',
                 }),
             ]
 
@@ -508,10 +491,6 @@ describe('useFeedbackActions', () => {
                                     expect.stringContaining('ARTICLE'),
                             }),
                             expect.objectContaining({ feedbackValue: null }),
-                            expect.objectContaining({
-                                feedbackValue:
-                                    expect.stringContaining('ACTION'),
-                            }),
                         ],
                     },
                 }),
@@ -520,10 +499,10 @@ describe('useFeedbackActions', () => {
 
         it('should handle edge cases', async () => {
             const mockData = createMockData(
-                AiAgentKnowledgeResourceTypeEnum.MACRO,
+                AiAgentKnowledgeResourceTypeEnum.ACTION,
                 {
-                    macros: [
-                        { id: undefined, name: 'Macro with undefined ID' },
+                    actions: [
+                        { id: undefined, name: 'Action with undefined ID' },
                     ],
                     sourceItems: undefined,
                     ingestedFiles: undefined,
@@ -533,9 +512,9 @@ describe('useFeedbackActions', () => {
 
             const { result, mocks } = renderHookWithData(mockData)
             const choice = createMockChoice(
-                AiAgentKnowledgeResourceTypeEnum.MACRO,
+                AiAgentKnowledgeResourceTypeEnum.ACTION,
                 {
-                    value: 'macro-undefined',
+                    value: 'action-undefined',
                 },
             )
 
@@ -627,7 +606,6 @@ describe('useFeedbackActions', () => {
             guidanceArticles: [],
             articles: [],
             sourceItems: [],
-            macros: [],
             ingestedFiles: [],
             storeWebsiteQuestions: [],
             enrichedData: createMockEnrichedData(),
@@ -788,7 +766,6 @@ describe('useFeedbackActions', () => {
                 guidanceArticles: undefined,
                 articles: undefined,
                 sourceItems: undefined,
-                macros: undefined,
                 ingestedFiles: undefined,
                 storeWebsiteQuestions: undefined,
                 enrichedData: undefined,
@@ -804,7 +781,6 @@ describe('useFeedbackActions', () => {
                 createMockChoice(
                     AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                 ),
-                createMockChoice(AiAgentKnowledgeResourceTypeEnum.MACRO),
                 createMockChoice(
                     AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                 ),
@@ -842,10 +818,6 @@ describe('useFeedbackActions', () => {
                 {
                     type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                     arrayName: 'sourceItems',
-                },
-                {
-                    type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                    arrayName: 'macros',
                 },
                 {
                     type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,

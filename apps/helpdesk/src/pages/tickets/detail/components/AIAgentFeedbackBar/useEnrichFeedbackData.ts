@@ -1,6 +1,4 @@
-import { useEffect, useMemo } from 'react'
-
-import _flatten from 'lodash/flatten'
+import { useMemo } from 'react'
 
 import {
     FeedbackExecutionsItem,
@@ -16,7 +14,6 @@ import {
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
-import { useGetAICompatibleMacros } from 'models/macro/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
@@ -41,7 +38,6 @@ export const knowledgeResourceOrder = [
     AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
     AiAgentKnowledgeResourceTypeEnum.ACTION,
     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
-    AiAgentKnowledgeResourceTypeEnum.MACRO,
     AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
     AiAgentKnowledgeResourceTypeEnum.ORDER,
     AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
@@ -145,39 +141,6 @@ const useExtractDistinctHelpCenterFromResources = (
 }
 
 /**
- * Fetches macro resources based on extracted resource data
- */
-const useMacroResources = (queryEnabled: boolean) => {
-    const macrosQuery = useGetAICompatibleMacros({
-        enabled: queryEnabled,
-        staleTime: DEFAULT_STALE_TIME,
-        cacheTime: DEFAULT_CACHE_TIME,
-    })
-
-    const macros = useMemo(() => {
-        return _flatten(
-            macrosQuery.data?.pages.map((page) => page.data.data) ?? [],
-        )
-    }, [macrosQuery.data])
-
-    useEffect(() => {
-        if (macrosQuery.hasNextPage) {
-            void macrosQuery.fetchNextPage()
-        }
-    }, [
-        macrosQuery.hasNextPage,
-        macrosQuery.fetchNextPage,
-        macrosQuery.data?.pageParams,
-        macrosQuery,
-    ])
-
-    return {
-        macros,
-        isLoading: macrosQuery.isLoading,
-    }
-}
-
-/**
  * Fetches action resources based on extracted resource data
  */
 const useActionResources = (
@@ -236,7 +199,6 @@ export const getResourceMetadata = (
                 typeof useGetMultipleFileIngestionSnippets
             >['ingestedFiles']
         >
-        macros: NonNullable<ReturnType<typeof useMacroResources>['macros']>
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
         helpCenters: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenter>['helpCenters']
@@ -264,7 +226,6 @@ export const getResourceMetadata = (
         guidanceArticles,
         sourceItems,
         ingestedFiles,
-        macros,
         actions,
         helpCenters,
         storeWebsiteQuestions,
@@ -356,16 +317,7 @@ export const getResourceMetadata = (
                   }
                 : emptyMetadata
         }
-        case AiAgentKnowledgeResourceTypeEnum.MACRO: {
-            const macro = macros.find((macro) => macro.id === idAsNumber)
-            return macro
-                ? {
-                      title: macro.name ?? '',
-                      content: macro.intent ?? '',
-                      url: `/app/settings/macros/${id}`,
-                  }
-                : emptyMetadata
-        }
+
         case AiAgentKnowledgeResourceTypeEnum.ACTION: {
             const action = actions.find((action) => action.id === id)
             return action
@@ -449,7 +401,6 @@ const useProcessResources = (
                 typeof useGetMultipleFileIngestionSnippets
             >['ingestedFiles']
         >
-        macros: NonNullable<ReturnType<typeof useMacroResources>['macros']>
         actions: NonNullable<ReturnType<typeof useActionResources>['actions']>
         helpCenters: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenter>['helpCenters']
@@ -670,9 +621,6 @@ export const useGetResourceData = ({
             },
         })
 
-    const { macros, isLoading: isMacrosLoading } =
-        useMacroResources(queriesEnabled)
-
     const { actions, isLoading: isActionsLoading } = useActionResources(
         shopName,
         shopType,
@@ -681,7 +629,6 @@ export const useGetResourceData = ({
 
     const isLoading =
         isArticlesLoading ||
-        isMacrosLoading ||
         isGuidanceArticleListLoading ||
         isSourceItemsListLoading ||
         isActionsLoading ||
@@ -700,7 +647,6 @@ export const useGetResourceData = ({
             guidanceArticles,
             sourceItems,
             ingestedFiles,
-            macros,
             actions,
             helpCenters,
             storeWebsiteQuestions,
@@ -711,7 +657,6 @@ export const useGetResourceData = ({
         guidanceArticles,
         sourceItems,
         ingestedFiles,
-        macros,
         actions,
         helpCenters,
         storeWebsiteQuestions,
@@ -723,7 +668,6 @@ export const useGetKnowledgeResourceData = (props: {
     faqHelpCenterQueryData: { ids: number[]; recordIds: number[] }
     guidanceHelpCenterQueryData: { ids: number[]; recordIds: number[] }
     snippetHelpCenterQueryData: { ids: number[]; recordIds: number[] }
-    macroIds: number[]
     actionIds: number[]
     shopName: string
     shopType: string
@@ -733,7 +677,6 @@ export const useGetKnowledgeResourceData = (props: {
         faqHelpCenterQueryData,
         guidanceHelpCenterQueryData,
         snippetHelpCenterQueryData,
-        macroIds,
         actionIds,
         shopName,
         shopType,
@@ -827,10 +770,6 @@ export const useGetKnowledgeResourceData = (props: {
             },
         })
 
-    const { macros, isLoading: isMacrosLoading } = useMacroResources(
-        queriesEnabled && macroIds.length > 0,
-    )
-
     const { actions, isLoading: isActionsLoading } = useActionResources(
         shopName,
         shopType,
@@ -839,7 +778,6 @@ export const useGetKnowledgeResourceData = (props: {
 
     const isLoading =
         isArticlesLoading ||
-        isMacrosLoading ||
         isGuidanceArticleListLoading ||
         isSourceItemsListLoading ||
         isActionsLoading ||
@@ -857,7 +795,6 @@ export const useGetKnowledgeResourceData = (props: {
         guidanceArticles,
         sourceItems,
         ingestedFiles,
-        macros,
         actions,
         helpCenters,
         storeWebsiteQuestions,
@@ -884,7 +821,6 @@ export const useGetKnowledgeResourceMetadata = ({
             faqHelpCenterQueryData,
             guidanceHelpCenterQueryData,
             snippetHelpCenterQueryData,
-            macroIds,
             actionIds,
         } = {
             faqHelpCenterQueryData: {
@@ -899,7 +835,6 @@ export const useGetKnowledgeResourceMetadata = ({
                 ids: [] as number[],
                 recordIds: [] as number[],
             },
-            macroIds: [] as number[],
             actionIds: [] as number[],
         }
         for (const resource of knowledgeResources ?? []) {
@@ -948,9 +883,7 @@ export const useGetKnowledgeResourceMetadata = ({
                         Number(resource.resourceId),
                     )
                     break
-                case AiAgentKnowledgeResourceTypeEnum.MACRO:
-                    macroIds.push(Number(resource.resourceId))
-                    break
+
                 case AiAgentKnowledgeResourceTypeEnum.ACTION:
                     actionIds.push(Number(resource.resourceId))
                     break
@@ -960,7 +893,6 @@ export const useGetKnowledgeResourceMetadata = ({
             faqHelpCenterQueryData,
             guidanceHelpCenterQueryData,
             snippetHelpCenterQueryData,
-            macroIds,
             actionIds,
         }
     }, [data?.executions])

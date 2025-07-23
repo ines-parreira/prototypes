@@ -10,7 +10,6 @@ import {
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
-import { useGetAICompatibleMacros } from 'models/macro/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
@@ -32,10 +31,6 @@ jest.mock('models/helpCenter/queries', () => ({
     useGetMultipleHelpCenterArticleLists: jest.fn(),
     useGetMultipleFileIngestionSnippets: jest.fn(),
     useGetMultipleHelpCenter: jest.fn(),
-}))
-
-jest.mock('models/macro/queries', () => ({
-    useGetAICompatibleMacros: jest.fn(),
 }))
 
 jest.mock('models/workflows/queries', () => ({
@@ -63,7 +58,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
             `/mock/articles/detail/${ingestionId}/${articleId}`,
         externalSnippetView: (id: number) => `/mock/snippet/view/${id}`,
         fileSnippetView: (id: number) => `/mock/file/view/${id}`,
-        macroEdit: (id: number) => `/mock/macro/edit/${id}`,
         actionEdit: (id: string) => `/mock/action/edit/${id}`,
         editAction: (id: string) => `/mock/action/edit/${id}`,
         fileArticlesDetail: (ingestionId: number, id: number) =>
@@ -166,12 +160,6 @@ describe('useGetResourceData', () => {
             sourceItems: [],
             isSourceItemsListLoading: false,
         })
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: { pages: [{ data: { data: [] } }] },
-            isLoading: false,
-            hasNextPage: false,
-            fetchNextPage: jest.fn(),
-        })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: [],
             isLoading: false,
@@ -215,7 +203,6 @@ describe('useGetResourceData', () => {
                 google_storage_url: 'https://storage.example.com/test.pdf',
             },
         ]
-        const mockMacros = [{ id: 5, name: 'Macro 1', intent: 'Macro Intent' }]
         const mockActions = [{ id: '6', name: 'Action 1' }]
         const mockStoreWebsiteQuestions = [
             { id: 8, title: 'Store Website Question 1', helpCenterId: 300 },
@@ -242,12 +229,6 @@ describe('useGetResourceData', () => {
             sourceItems: mockSourceItems,
             isSourceItemsListLoading: false,
         })
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: { pages: [{ data: { data: mockMacros } }] },
-            isLoading: false,
-            hasNextPage: false,
-            fetchNextPage: jest.fn(),
-        })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: mockActions,
             isLoading: false,
@@ -267,7 +248,6 @@ describe('useGetResourceData', () => {
             guidanceArticles: mockGuidanceArticles,
             sourceItems: mockSourceItems,
             ingestedFiles: mockIngestedFiles,
-            macros: mockMacros,
             actions: mockActions,
             helpCenters: mockHelpCenters,
             storeWebsiteQuestions: mockStoreWebsiteQuestions,
@@ -378,12 +358,6 @@ describe('useEnrichFeedbackData', () => {
             sourceItems: [],
             isSourceItemsListLoading: false,
         })
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: { pages: [{ data: { data: [] } }] },
-            isLoading: false,
-            hasNextPage: false,
-            fetchNextPage: jest.fn(),
-        })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: [],
             isLoading: false,
@@ -492,23 +466,6 @@ describe('useEnrichFeedbackData', () => {
                             updatedDatetime: timestamp,
                         },
                         {
-                            id: 6,
-                            objectType: 'TICKET',
-                            objectId: '123',
-                            executionId: 'exec-123',
-                            targetType: 'TICKET',
-                            targetId: '123',
-                            feedbackType: 'SUGGESTED_RESOURCE',
-                            feedbackValue: JSON.stringify({
-                                resourceId: '5',
-                                resourceType: 'MACRO',
-                                resourceSetId: '',
-                            }),
-                            submittedBy: 1,
-                            createdDatetime: timestamp,
-                            updatedDatetime: timestamp,
-                        },
-                        {
                             id: 7,
                             objectType: 'TICKET',
                             objectId: '123',
@@ -579,15 +536,6 @@ describe('useEnrichFeedbackData', () => {
                             resourceType: 'FILE_EXTERNAL_SNIPPET',
                             resourceSetId: '300',
                             resourceTitle: 'File Snippet',
-                            resourceLocale: null,
-                            feedback: null,
-                        },
-                        {
-                            id: 'res-5',
-                            resourceId: '5',
-                            resourceType: 'MACRO',
-                            resourceSetId: '',
-                            resourceTitle: 'Macro',
                             resourceLocale: null,
                             feedback: null,
                         },
@@ -663,7 +611,6 @@ describe('useEnrichFeedbackData', () => {
                 google_storage_url: 'https://storage.example.com/test.pdf',
             },
         ]
-        const mockMacros = [{ id: 5, name: 'Macro 1', intent: 'Macro Intent' }]
         const mockActions = [{ id: '6', name: 'Action 1' }]
         const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
         const mockStoreWebsiteQuestions = [
@@ -701,12 +648,6 @@ describe('useEnrichFeedbackData', () => {
             ingestedFiles: mockIngestedFiles,
             isLoading: false,
         })
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: { pages: [{ data: { data: mockMacros } }] },
-            isLoading: false,
-            hasNextPage: false,
-            fetchNextPage: jest.fn(),
-        })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: mockActions,
             isLoading: false,
@@ -737,7 +678,6 @@ describe('useEnrichFeedbackData', () => {
             'GUIDANCE',
             'ACTION',
             'ARTICLE',
-            'MACRO',
             'STORE_WEBSITE_QUESTION_SNIPPET',
             'ORDER',
             'EXTERNAL_SNIPPET',
@@ -757,7 +697,6 @@ describe('useEnrichFeedbackData', () => {
             'ACTION',
             'ARTICLE',
             'ARTICLE',
-            'MACRO',
             'EXTERNAL_SNIPPET',
             'FILE_EXTERNAL_SNIPPET',
         ])
@@ -872,44 +811,6 @@ describe('useEnrichFeedbackData', () => {
             content: '',
             isDeleted: true,
         })
-    })
-
-    it('should handle macro pagination when hasNextPage is true', () => {
-        const storeConfiguration = createMockStoreConfiguration()
-
-        const mockFetchNextPage = jest.fn()
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: {
-                pages: [
-                    {
-                        data: { data: [] },
-                        meta: { next_cursor: 'next_cursor' },
-                    },
-                ],
-            },
-            isLoading: false,
-            hasNextPage: true,
-            fetchNextPage: mockFetchNextPage,
-        })
-
-        const feedbackData = {
-            accountId: 123,
-            objectType: 'TICKET',
-            objectId: '123',
-            executions: [],
-        } as FindFeedbackResult['data']
-
-        renderHook(
-            () =>
-                useEnrichFeedbackData({
-                    data: feedbackData,
-                    storeConfiguration,
-                }),
-            { wrapper },
-        )
-
-        // Verify that fetchNextPage was called due to hasNextPage being true
-        expect(mockFetchNextPage).toHaveBeenCalledWith()
     })
 
     it('should handle missing shopName when generating aiAgentRoutes', () => {
@@ -1773,10 +1674,6 @@ describe('useGetResourcesReasoningMetadata', () => {
             resourceTitle: 'test.pdf',
         },
         {
-            resourceId: '5',
-            resourceType: AiAgentKnowledgeResourceTypeEnum.MACRO,
-        },
-        {
             resourceId: '6',
             resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
         },
@@ -1820,12 +1717,6 @@ describe('useGetResourcesReasoningMetadata', () => {
         ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
             sourceItems: [],
             isSourceItemsListLoading: false,
-        })
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: { pages: [{ data: { data: [] } }] },
-            isLoading: false,
-            hasNextPage: false,
-            fetchNextPage: jest.fn(),
         })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: [],
@@ -1902,9 +1793,6 @@ describe('useGetResourcesReasoningMetadata', () => {
                 ingestionId: 300,
             },
         ]
-        const mockMacros = [
-            { id: 5, name: 'Macro Name', intent: 'Macro Intent' },
-        ]
         const mockActions = [{ id: '6', name: 'Action Name' }]
         const mockHelpCenters = [{ id: 100, subdomain: 'test' }]
 
@@ -1928,12 +1816,6 @@ describe('useGetResourcesReasoningMetadata', () => {
             ingestedFiles: mockIngestedFiles,
             isLoading: false,
         })
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: { pages: [{ data: { data: mockMacros } }] },
-            isLoading: false,
-            hasNextPage: false,
-            fetchNextPage: jest.fn(),
-        })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: mockActions,
             isLoading: false,
@@ -1953,51 +1835,40 @@ describe('useGetResourcesReasoningMetadata', () => {
         )
 
         expect(result.current?.isLoading).toBe(false)
-        expect(result.current?.data).toHaveLength(7)
-
-        expect(result.current?.data[0]).toEqual({
-            title: 'Article Title',
-            content: 'Article Content',
-            url: expect.any(String),
-            helpCenterId: 100,
-        })
-
-        expect(result.current?.data[1]).toEqual({
-            title: 'Guidance Title',
-            content: 'Guidance Content',
-            url: '/mock/guidance/edit/2',
-            helpCenterId: 200,
-        })
-
-        expect(result.current?.data[2]).toEqual({
-            title: 'https://example.com',
-            content: 'https://example.com',
-            url: '/mock/articles/detail/300/3',
-        })
-
-        expect(result.current?.data[3]).toEqual({
-            title: 'test.pdf',
-            content: 'test.pdf',
-            url: expect.any(String),
-        })
-
-        expect(result.current?.data[4]).toEqual({
-            title: 'Macro Name',
-            content: 'Macro Intent',
-            url: '/app/settings/macros/5',
-        })
-
-        expect(result.current?.data[5]).toEqual({
-            title: 'Action Name',
-            content: 'Action Name',
-            url: expect.any(String),
-        })
-
-        expect(result.current?.data[6]).toEqual({
-            title: 'Order #123',
-            content: 'Order #123',
-            url: 'https://admin.shopify.com/store/test-store/orders/7',
-        })
+        expect(result.current?.data).toEqual([
+            {
+                title: 'Article Title',
+                content: 'Article Content',
+                url: expect.any(String),
+                helpCenterId: 100,
+            },
+            {
+                title: 'Guidance Title',
+                content: 'Guidance Content',
+                url: '/mock/guidance/edit/2',
+                helpCenterId: 200,
+            },
+            {
+                title: 'https://example.com',
+                content: 'https://example.com',
+                url: '/mock/articles/detail/300/3',
+            },
+            {
+                title: 'test.pdf',
+                content: 'test.pdf',
+                url: expect.any(String),
+            },
+            {
+                title: 'Action Name',
+                content: 'Action Name',
+                url: expect.any(String),
+            },
+            {
+                title: 'Order #123',
+                content: 'Order #123',
+                url: 'https://admin.shopify.com/store/test-store/orders/7',
+            },
+        ])
     })
 
     it('should handle loading state correctly', () => {
@@ -2070,12 +1941,6 @@ describe('useGetKnowledgeResourceData', () => {
             sourceItems: [],
             isSourceItemsListLoading: false,
         })
-        ;(useGetAICompatibleMacros as jest.Mock).mockReturnValue({
-            data: { pages: [{ data: { data: [] } }] },
-            isLoading: false,
-            hasNextPage: false,
-            fetchNextPage: jest.fn(),
-        })
         ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
             data: [],
             isLoading: false,
@@ -2092,7 +1957,6 @@ describe('useGetKnowledgeResourceData', () => {
             faqHelpCenterQueryData: { ids: [100], recordIds: [1] },
             guidanceHelpCenterQueryData: { ids: [200], recordIds: [2] },
             snippetHelpCenterQueryData: { ids: [300], recordIds: [3] },
-            macroIds: [5],
             actionIds: [6],
             shopName: 'test-store',
             shopType: 'shopify',

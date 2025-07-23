@@ -107,10 +107,7 @@ const enrichedDataMock = {
             helpCenterId: 3,
         },
     ],
-    macros: [
-        { id: 1, name: 'Macro Test' },
-        { id: 12, name: 'Macro Test 2' },
-    ],
+
     storeWebsiteQuestions: [
         {
             id: 8,
@@ -155,14 +152,12 @@ jest.mock('../constants', () => {
         ...actual,
         SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP: {
             // Only include specific mappings to test both branches of the condition
-            MACRO: 'macro',
             ARTICLE: 'article',
             ACTION: 'action',
             GUIDANCE: 'guidance',
             // NOT_MAPPED_TYPE is intentionally missing to test line 318
         },
         SIMPLIFIED_RESOURCE_LABELS: {
-            macro: 'Macros::',
             article: 'Articles::',
             action: 'Actions::',
             custom: 'Custom::',
@@ -295,9 +290,9 @@ describe('MissingKnowledgeSelect', () => {
                             title: 'Knowledge Tag Test',
                             content: 'This is a test',
                         },
-                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                        displayLabel: 'Macros::Macro Test',
-                        label: 'Macros::Macro Test',
+                        type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        displayLabel: 'Actions::Action Test',
+                        label: 'Actions::Action Test',
                         value: '1',
                     }}
                     handleRemove={handleRemove}
@@ -308,7 +303,7 @@ describe('MissingKnowledgeSelect', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Macro Test')).toBeInTheDocument()
+        expect(screen.getByText('Action Test')).toBeInTheDocument()
 
         // Find the close button by its material icon
         const closeButton = screen.getByText('close')
@@ -330,9 +325,9 @@ describe('MissingKnowledgeSelect', () => {
                             content: 'This is a test',
                             helpCenterId: '2',
                         },
-                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                        displayLabel: 'Macros::Macro Test',
-                        label: 'Macros::Macro Test',
+                        type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        displayLabel: 'Actions::Action Test',
+                        label: 'Actions::Action Test',
                         value: '1',
                     }}
                     handleRemove={handleRemove}
@@ -343,11 +338,11 @@ describe('MissingKnowledgeSelect', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('Macro Test'))
+        fireEvent.click(screen.getByText('Action Test'))
 
         expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
             '1',
-            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            AiAgentKnowledgeResourceTypeEnum.ACTION,
             '2',
         )
     })
@@ -365,9 +360,9 @@ describe('MissingKnowledgeSelect', () => {
                             content: 'This is a test',
                             // helpCenterId is undefined
                         },
-                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                        displayLabel: 'Macros::Macro Test',
-                        label: 'Macros::Macro Test',
+                        type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        displayLabel: 'Actions::Action Test',
+                        label: 'Actions::Action Test',
                         value: '1',
                     }}
                     handleRemove={handleRemove}
@@ -378,11 +373,11 @@ describe('MissingKnowledgeSelect', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('Macro Test'))
+        fireEvent.click(screen.getByText('Action Test'))
 
         expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
             '1',
-            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            AiAgentKnowledgeResourceTypeEnum.ACTION,
             '',
         )
     })
@@ -400,9 +395,9 @@ describe('MissingKnowledgeSelect', () => {
                             content: 'This is a test',
                             helpCenterId: '',
                         },
-                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                        displayLabel: 'Macros::Macro Test',
-                        label: 'Macros::Macro Test',
+                        type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        displayLabel: 'Actions::Action Test',
+                        label: 'Actions::Action Test',
                         value: '1',
                     }}
                     handleRemove={handleRemove}
@@ -413,11 +408,11 @@ describe('MissingKnowledgeSelect', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('Macro Test'))
+        fireEvent.click(screen.getByText('Action Test'))
 
         expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
             '1',
-            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            AiAgentKnowledgeResourceTypeEnum.ACTION,
             '',
         )
     })
@@ -435,9 +430,9 @@ describe('MissingKnowledgeSelect', () => {
                             content: 'This is a test',
                             // helpCenterId is not provided, so it's undefined
                         },
-                        type: AiAgentKnowledgeResourceTypeEnum.MACRO,
-                        displayLabel: 'Macros::Macro Test',
-                        label: 'Macros::Macro Test',
+                        type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        displayLabel: 'Actions::Action Test',
+                        label: 'Actions::Action Test',
                         value: '1',
                     }}
                     handleRemove={handleRemove}
@@ -448,11 +443,11 @@ describe('MissingKnowledgeSelect', () => {
             </Provider>,
         )
 
-        fireEvent.click(screen.getByText('Macro Test'))
+        fireEvent.click(screen.getByText('Action Test'))
 
         expect(onKnowledgeResourceClickMock).toHaveBeenCalledWith(
             '1',
-            AiAgentKnowledgeResourceTypeEnum.MACRO,
+            AiAgentKnowledgeResourceTypeEnum.ACTION,
             '',
         )
     })
@@ -501,9 +496,9 @@ describe('MissingKnowledgeSelect', () => {
                         [
                             {
                                 parsedResource: {
-                                    resourceId: '1',
+                                    resourceId: '3',
                                     resourceType:
-                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                        AiAgentKnowledgeResourceTypeEnum.ACTION,
                                 },
                             },
                         ] as SuggestedResource[]
@@ -516,7 +511,7 @@ describe('MissingKnowledgeSelect', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Macro Test')).toBeInTheDocument()
+        expect(screen.getByText('Action Test')).toBeInTheDocument()
     })
 
     it('triggers onFocus when input is focused', () => {
@@ -575,8 +570,8 @@ describe('MissingKnowledgeSelect', () => {
                             AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                         ),
                         createResource(
-                            '1',
-                            AiAgentKnowledgeResourceTypeEnum.MACRO,
+                            '7',
+                            AiAgentKnowledgeResourceTypeEnum.ACTION,
                         ),
                         createResource(
                             '5',
@@ -622,13 +617,6 @@ describe('MissingKnowledgeSelect', () => {
                         [
                             {
                                 parsedResource: {
-                                    resourceId: '1',
-                                    resourceType:
-                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
-                                },
-                            },
-                            {
-                                parsedResource: {
                                     resourceId: '3',
                                     resourceType:
                                         AiAgentKnowledgeResourceTypeEnum.ACTION,
@@ -645,7 +633,6 @@ describe('MissingKnowledgeSelect', () => {
         )
 
         // Verify initial values are displayed - use regex to match partial text
-        expect(screen.getByText(/Macro Test/)).toBeInTheDocument()
         expect(screen.getByText(/Action Test/)).toBeInTheDocument()
 
         // Now deselect all values - this should mark all pre-selected items as deleted
@@ -654,11 +641,6 @@ describe('MissingKnowledgeSelect', () => {
         // Verify that items are marked as deleted
         expect(onSubmit).toHaveBeenCalledWith(
             expect.arrayContaining([
-                expect.objectContaining({
-                    value: '1',
-                    type: 'MACRO',
-                    isDeleted: true,
-                }),
                 expect.objectContaining({
                     value: '3',
                     type: 'ACTION',
@@ -673,10 +655,10 @@ describe('MissingKnowledgeSelect', () => {
         const onRemove = jest.fn()
 
         // This test specifically targets line 193 and 205-207
-        // Create a custom enrichedDataMock with no macros
+        // Create a custom enrichedDataMock with no actions
         const customEnrichedData = {
             ...enrichedDataMock,
-            macros: [], // Empty macros array
+            actions: [], // Empty actions array
         }
 
         render(
@@ -694,7 +676,7 @@ describe('MissingKnowledgeSelect', () => {
                                 parsedResource: {
                                     resourceId: '999', // ID that doesn't exist in choices
                                     resourceType:
-                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                        AiAgentKnowledgeResourceTypeEnum.ACTION,
                                 },
                             },
                         ] as SuggestedResource[]
@@ -721,7 +703,7 @@ describe('MissingKnowledgeSelect', () => {
         // Create enriched data with missing items
         const customEnrichedData = {
             ...enrichedDataMock,
-            // No macro with ID 999
+            // No action with ID 999
         }
 
         render(
@@ -739,7 +721,7 @@ describe('MissingKnowledgeSelect', () => {
                                 parsedResource: {
                                     resourceId: '999', // This ID doesn't match any choice
                                     resourceType:
-                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                        AiAgentKnowledgeResourceTypeEnum.ACTION,
                                 },
                             },
                         ] as SuggestedResource[]
@@ -764,15 +746,15 @@ describe('MissingKnowledgeSelect', () => {
         const onSubmit = jest.fn()
         const onRemove = jest.fn()
 
-        // Create a macro with a very long name to potentially trigger overflow
-        const longNameMacro = {
+        // Create an action with a very long name to potentially trigger overflow
+        const longNameAction = {
             id: 6000,
-            name: 'This is an extremely long macro name that should cause text overflow in most normal UI containers and trigger the overflow condition',
+            name: 'This is an extremely long action name that should cause text overflow in most normal UI containers and trigger the overflow condition',
         }
 
         const customEnrichedData = {
             ...enrichedDataMock,
-            macros: [...enrichedDataMock.macros, longNameMacro],
+            actions: [...enrichedDataMock.actions, longNameAction],
         }
 
         render(
@@ -790,7 +772,7 @@ describe('MissingKnowledgeSelect', () => {
                                 parsedResource: {
                                     resourceId: '6000',
                                     resourceType:
-                                        AiAgentKnowledgeResourceTypeEnum.MACRO,
+                                        AiAgentKnowledgeResourceTypeEnum.ACTION,
                                 },
                             },
                         ] as SuggestedResource[]
@@ -804,7 +786,7 @@ describe('MissingKnowledgeSelect', () => {
         )
 
         expect(
-            screen.getByText(/This is an extremely long macro name/),
+            screen.getByText(/This is an extremely long action name/),
         ).toBeInTheDocument()
     })
 
@@ -848,7 +830,7 @@ describe('MissingKnowledgeSelect', () => {
                             'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
                         label: 'Test::This is an extremely long text that would normally overflow in a constrained container and trigger the overflow condition in line 268',
                         value: 'test-long',
-                        type: 'MACRO' as AiAgentKnowledgeResourceTypeEnum,
+                        type: 'ACTION' as AiAgentKnowledgeResourceTypeEnum,
                     }}
                     handleRemove={jest.fn()}
                     shopName="test-shop"
