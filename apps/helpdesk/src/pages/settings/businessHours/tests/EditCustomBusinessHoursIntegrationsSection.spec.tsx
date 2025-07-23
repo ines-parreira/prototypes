@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Form } from 'core/forms'
+import { Form, FormField } from 'core/forms'
 import Modal from 'pages/common/components/modal/Modal'
 
 import EditCustomBusinessHoursIntegrationsSection from '../EditCustomBusinessHoursIntegrationsSection'
@@ -10,6 +10,10 @@ import { EditCustomBusinessHoursFormValues } from '../types'
 jest.mock('../AssignIntegrationsModal', () => (props: any) => (
     <Modal {...props}>
         <div>AssignIntegrationsModal</div>
+        <FormField
+            name="temporary_assigned_integrations"
+            label="Temporary assigned integrations"
+        />
         <button onClick={props.onClose}>Close</button>
     </Modal>
 ))
@@ -100,9 +104,15 @@ describe('EditCustomBusinessHoursIntegrationsSection', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('opens the modal when the select integrations button is clicked', async () => {
+    it('opens the modal and sets the temporary assigned integrations to the current assigned integrations', async () => {
         const user = userEvent.setup()
-        renderWithForm()
+        renderWithForm({
+            ...baseValues,
+            assigned_integrations: {
+                assign_integrations: [1, 2, 3],
+                unassign_integrations: [],
+            },
+        })
 
         await act(() =>
             user.click(
@@ -111,6 +121,12 @@ describe('EditCustomBusinessHoursIntegrationsSection', () => {
         )
 
         expect(screen.getByText('AssignIntegrationsModal')).toBeInTheDocument()
+
+        expect(
+            screen.getByRole('textbox', {
+                name: 'Temporary assigned integrations',
+            }),
+        ).toHaveValue('1,2,3')
     })
 
     it('closes the modal when the close button is clicked', async () => {

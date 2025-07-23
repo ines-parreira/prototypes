@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -172,35 +172,6 @@ describe('ListCustomBusinessHours', () => {
                 screen.queryByRole('button', { name: /keyboard_arrow_right/i }),
             ).not.toBeInTheDocument()
         })
-
-        it('should render NoDataAvailable when no business hours data is available', async () => {
-            const mockHandlerWithNoData = mockListBusinessHoursHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [],
-                        meta: {
-                            next_cursor: null,
-                            prev_cursor: null,
-                            total_resources: 0,
-                        },
-                    }),
-            )
-
-            server.use(mockHandlerWithNoData.handler)
-
-            renderComponent()
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText('No data available'),
-                ).toBeInTheDocument()
-            })
-
-            expect(
-                screen.queryByText('ListCustomBusinessHoursTableRow'),
-            ).not.toBeInTheDocument()
-        })
     })
 
     describe('pagination behavior', () => {
@@ -267,7 +238,7 @@ describe('ListCustomBusinessHours', () => {
         })
     })
 
-    it('should handle empty array business hours data', async () => {
+    it('should handle empty array business hours data and not render anything', async () => {
         const mockHandlerWithEmptyArray = mockListBusinessHoursHandler(
             async ({ data }) =>
                 HttpResponse.json({
@@ -286,7 +257,44 @@ describe('ListCustomBusinessHours', () => {
         renderComponent()
 
         await waitFor(() => {
-            expect(screen.getByText('No data available')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Name & Schedule'),
+            ).not.toBeInTheDocument()
         })
+
+        expect(screen.getByRole('form')).toBeEmptyDOMElement()
+    })
+
+    it('should handle error state', async () => {
+        const mockHandlerWithError = mockListBusinessHoursHandler(async () =>
+            HttpResponse.json({} as any, { status: 500 }),
+        )
+
+        server.use(mockHandlerWithError.handler)
+        const user = userEvent.setup()
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Something went wrong when fetching the data. Please try again.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        server.use(mockHandler.handler)
+        await act(() =>
+            user.click(screen.getByRole('button', { name: /refresh/i })),
+        )
+
+        expect(
+            screen.queryByText(
+                'Something went wrong when fetching the data. Please try again.',
+            ),
+        ).not.toBeInTheDocument()
+
+        expect(
+            screen.getAllByText('ListCustomBusinessHoursTableRow').length,
+        ).toBeGreaterThan(0)
     })
 })

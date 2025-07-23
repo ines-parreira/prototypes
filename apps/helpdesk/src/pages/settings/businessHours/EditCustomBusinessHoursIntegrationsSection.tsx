@@ -13,7 +13,8 @@ import css from './EditCustomBusinessHoursIntegrationsSection.less'
 
 export default function EditCustomBusinessHoursIntegrationsSection() {
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const { watch } = useFormContext<EditCustomBusinessHoursFormValues>()
+    const { watch, setValue } =
+        useFormContext<EditCustomBusinessHoursFormValues>()
 
     const currentlyAssignedIntegrations = watch(
         'assigned_integrations.assign_integrations',
@@ -49,7 +50,13 @@ export default function EditCustomBusinessHoursIntegrationsSection() {
                 <Button
                     intent="secondary"
                     fillStyle="ghost"
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                        setValue(
+                            'temporary_assigned_integrations',
+                            currentlyAssignedIntegrations,
+                        )
+                        setIsModalOpen(true)
+                    }}
                 >
                     Select integrations
                 </Button>

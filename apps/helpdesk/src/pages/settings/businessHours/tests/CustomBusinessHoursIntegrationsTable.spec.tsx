@@ -70,7 +70,7 @@ afterAll(() => {
     server.close()
 })
 
-const renderComponent = () =>
+const renderComponent = (name?: string) =>
     renderWithStore(
         <QueryClientProvider client={queryClient}>
             <Form
@@ -79,31 +79,18 @@ const renderComponent = () =>
                     assigned_integrations: {
                         assign_integrations: [integrations[0].integration_id],
                     },
+                    temporary_assigned_integrations: [
+                        integrations[0].integration_id,
+                    ],
                 }}
             >
-                <CustomBusinessHoursIntegrationsTable />
+                <CustomBusinessHoursIntegrationsTable name={name as any} />
             </Form>
         </QueryClientProvider>,
         {},
     )
 
 describe('CustomBusinessHoursIntegrationsTable', () => {
-    it('renders the section header with correct title', () => {
-        renderComponent()
-
-        expect(screen.getByText('Integrations')).toBeInTheDocument()
-    })
-
-    it('renders the section header with correct description', () => {
-        renderComponent()
-
-        expect(
-            screen.getByText(
-                'Assign one or multiple integrations for your custom business hours.',
-            ),
-        ).toBeInTheDocument()
-    })
-
     it('renders the table structure with correct headers', () => {
         renderComponent()
 
@@ -120,45 +107,52 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         ).toBeInTheDocument()
     })
 
-    it('selects all checkboxes correctly when clicking on the select all checkbox', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+    it.each([
+        [undefined, 'assigned_integrations.assign_integrations'],
+        ['temporary_assigned_integrations', 'temporary_assigned_integrations'],
+    ])(
+        'selects all checkboxes correctly when clicking on the select all checkbox',
+        async (name: any, expectedName) => {
+            const user = userEvent.setup()
+            renderComponent(name)
 
-        await waitFor(() =>
-            expect(
-                screen.getByText(integrations[0].integration_name),
-            ).toBeInTheDocument(),
-        )
+            await waitFor(() =>
+                expect(
+                    screen.getByText(integrations[0].integration_name),
+                ).toBeInTheDocument(),
+            )
 
-        const firstIntegrationCheckbox = screen.getByRole('checkbox', {
-            name: `assigned_integrations.assign_integrations.${integrations[0].integration_id}`,
-        })
-        expect(firstIntegrationCheckbox).toBeChecked()
+            const firstIntegrationCheckbox = screen.getByRole('checkbox', {
+                name: `${expectedName}.${integrations[0].integration_id}`,
+            })
+            expect(firstIntegrationCheckbox).toBeChecked()
 
-        const secondIntegrationCheckbox = screen.getByRole('checkbox', {
-            name: `assigned_integrations.assign_integrations.${integrations[1].integration_id}`,
-        })
-        expect(secondIntegrationCheckbox).not.toBeChecked()
+            const secondIntegrationCheckbox = screen.getByRole('checkbox', {
+                name: `${expectedName}.${integrations[1].integration_id}`,
+            })
+            expect(secondIntegrationCheckbox).not.toBeChecked()
 
-        const selectAllCheckbox = screen.getByRole('checkbox', {
-            name: 'Select all integrations',
-        })
-        expect(selectAllCheckbox).not.toBeChecked()
+            const selectAllCheckbox = screen.getByRole('checkbox', {
+                name: 'Select all integrations',
+            })
+            expect(selectAllCheckbox).not.toBeChecked()
 
-        /* select all */
-        await waitFor(() => user.click(selectAllCheckbox))
+            /* select all */
+            await waitFor(() => user.click(selectAllCheckbox))
 
-        expect(firstIntegrationCheckbox).toBeChecked()
-        expect(secondIntegrationCheckbox).toBeChecked()
-        expect(selectAllCheckbox).toBeChecked()
+            expect(firstIntegrationCheckbox).toBeChecked()
+            expect(secondIntegrationCheckbox).toBeChecked()
+            expect(selectAllCheckbox).toBeChecked()
 
-        /* unselect all */
-        await waitFor(() => user.click(selectAllCheckbox))
+            /* unselect all */
 
-        expect(firstIntegrationCheckbox).not.toBeChecked()
-        expect(secondIntegrationCheckbox).not.toBeChecked()
-        expect(selectAllCheckbox).not.toBeChecked()
-    })
+            await waitFor(() => user.click(selectAllCheckbox))
+
+            expect(firstIntegrationCheckbox).not.toBeChecked()
+            expect(secondIntegrationCheckbox).not.toBeChecked()
+            expect(selectAllCheckbox).not.toBeChecked()
+        },
+    )
 
     it('renders the navigation component when data is loaded', async () => {
         const mockHandler = mockListIntegrationsForBusinessHoursHandler(

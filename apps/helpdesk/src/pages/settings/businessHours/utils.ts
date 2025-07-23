@@ -1,14 +1,16 @@
 import { omit } from 'lodash'
 
 import {
-    BusinessHoursCreate,
     BusinessHoursDetails,
     BusinessHoursUpdate,
     Timezone,
 } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from './constants'
-import { EditCustomBusinessHoursFormValues } from './types'
+import {
+    BusinessHoursCreateFormValues,
+    EditCustomBusinessHoursFormValues,
+} from './types'
 
 export function convertToAmPm(time24: string): string {
     const [hours, minutes] = time24.split(':').map(Number)
@@ -24,7 +26,7 @@ export function convertToAmPm(time24: string): string {
 
 export const getCreateBusinessHoursFormDefaultValues = (
     timezone: string = 'UTC',
-): Partial<BusinessHoursCreate> => {
+): BusinessHoursCreateFormValues => {
     return {
         name: '',
         business_hours_config: {

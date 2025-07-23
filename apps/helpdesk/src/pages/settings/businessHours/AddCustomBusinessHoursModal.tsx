@@ -75,6 +75,10 @@ export default function AddCustomBusinessHoursModal({
                         <AddCustomBusinessHoursModalGeneralSection />
                     </FormSectionCard>
                     <FormSectionCard>
+                        <SectionHeader
+                            title="Integrations"
+                            description="Assign one or multiple integrations for your custom business hours."
+                        />
                         <CustomBusinessHoursIntegrationsTable />
                     </FormSectionCard>
                 </ModalBody>

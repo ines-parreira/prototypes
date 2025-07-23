@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { useListBusinessHours } from '@gorgias/helpdesk-queries'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -18,7 +18,9 @@ import css from './ListCustomBusinessHours.less'
 
 export default function ListCustomBusinessHours() {
     const [cursor, setCursor] = useState<string>()
-    const { data, isLoading } = useListBusinessHours({ cursor })
+    const { data, isLoading, isError, refetch } = useListBusinessHours({
+        cursor,
+    })
 
     const businessHours = data?.data.data
 
@@ -28,6 +30,10 @@ export default function ListCustomBusinessHours() {
         } else {
             setCursor(data!.data.meta.prev_cursor!)
         }
+    }
+
+    if (!isLoading && !isError && !businessHours?.length) {
+        return null
     }
 
     return (
@@ -45,19 +51,35 @@ export default function ListCustomBusinessHours() {
             <TableBody>
                 {isLoading ? (
                     <RowSkeleton />
-                ) : businessHours?.length ? (
+                ) : isError ? (
+                    <tr>
+                        <td colSpan={4}>
+                            <NoDataAvailable
+                                className={css.noDataAvailable}
+                                description={
+                                    <>
+                                        <p>
+                                            Something went wrong when fetching
+                                            the data. Please try again.
+                                        </p>
+                                        <Button
+                                            fillStyle="ghost"
+                                            onClick={() => refetch()}
+                                        >
+                                            Refresh
+                                        </Button>
+                                    </>
+                                }
+                            />
+                        </td>
+                    </tr>
+                ) : (
                     businessHours?.map((item) => (
                         <ListCustomBusinessHoursTableRow
                             key={item.id}
                             businessHours={item}
                         />
                     ))
-                ) : (
-                    <tr>
-                        <td colSpan={4}>
-                            <NoDataAvailable className={css.noDataAvailable} />
-                        </td>
-                    </tr>
                 )}
             </TableBody>
             {!isLoading && (

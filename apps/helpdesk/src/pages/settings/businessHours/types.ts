@@ -1,4 +1,13 @@
-import { BusinessHoursUpdate } from '@gorgias/helpdesk-types'
+import {
+    BusinessHoursCreate,
+    BusinessHoursUpdate,
+} from '@gorgias/helpdesk-types'
+
+export type BusinessHoursCreateFormValues = BusinessHoursCreate & {
+    assigned_integrations: {
+        assign_integrations: number[]
+    }
+}
 
 export type EditCustomBusinessHoursFormValues = BusinessHoursUpdate & {
     assigned_integrations: {

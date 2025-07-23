@@ -64,6 +64,13 @@ describe('AddCustomBusinessHoursModal', () => {
     it('renders the modal with correct title and sections', () => {
         renderComponent()
 
+        expect(screen.getByText('Integrations')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Assign one or multiple integrations for your custom business hours.',
+            ),
+        ).toBeInTheDocument()
+
         expect(
             screen.getByText('Add Custom Business Hours'),
         ).toBeInTheDocument()
