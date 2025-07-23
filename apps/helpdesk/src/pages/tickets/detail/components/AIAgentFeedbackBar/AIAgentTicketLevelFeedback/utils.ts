@@ -23,6 +23,8 @@ export const badInteractionOptions: Record<
     [AiAgentBadInteractionReason.DISCOUNT_ISSUE]: 'Discount issue',
     [AiAgentBadInteractionReason.IRRELEVANT_PRODUCT_RECCOMENDATION]:
         'Irrelevant product recommendation',
+    [AiAgentBadInteractionReason.SHOULD_NOT_TRY_TO_SELL]:
+        'Should not try to sell',
     [AiAgentBadInteractionReason.DIDNT_PROCESS_ATTACHMENT_CORRECTLY]:
         "Didn't process attachment correctly",
     [AiAgentBadInteractionReason.OTHER]:
