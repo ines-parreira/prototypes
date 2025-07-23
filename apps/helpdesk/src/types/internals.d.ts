@@ -12,6 +12,7 @@ declare global {
         SEGMENT_EVENTS_TO_TRACK?: { data: any; type: string }[]
         SYSTEM_MESSAGES: SystemMessage[]
         GORGIAS_RELEASE: string
+        SERVICE_WORKER_BUILD_URL: string
         SHARED_WORKER_BUILD_URL: string
         WS_URL: string
         CLIENT_ID: string

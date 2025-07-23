@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 // and any selectors imported later that have the same specificity
 // will take precedence.
 import 'assets/css/main.less'
+import './initServiceWorker'
 import './initNotifications'
 import './initQueryClient'
 import './initSocketManager'
