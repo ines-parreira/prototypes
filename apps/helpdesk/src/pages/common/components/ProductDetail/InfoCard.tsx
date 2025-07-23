@@ -5,7 +5,7 @@ import { Infocard } from './types'
 
 import css from './Detail.less'
 
-export default function InfoCard(props: Infocard & { type?: string }) {
+export default function InfoCard(props: Infocard) {
     const { isHidden, banner, CTA, pricing, resources = {}, support } = props
     const { documentationLink, privacyPolicyLink, others } = resources
 
@@ -13,21 +13,6 @@ export default function InfoCard(props: Infocard & { type?: string }) {
 
     return (
         <Card className={css.infoCard}>
-            {props.type === 'whatsapp' && (
-                <div className={css.whatsappBanner}>
-                    <p>
-                        <span className="material-icons-outlined mr-2">
-                            info
-                        </span>
-                        We are currently unable to onboard new WhatsApp
-                        integrations. Meta has imposed a temporary restriction
-                        on our business account, which is preventing us from
-                        connecting new WhatsApp numbers at this time. We are
-                        actively working with Meta to resolve the issue.
-                    </p>{' '}
-                    <p>Thank you for your patience and understanding</p>
-                </div>
-            )}
             {banner && <div className={css.rounderWrapper}>{banner}</div>}
             <CardBody>
                 <div className={css.actionWrapper}>{CTA}</div>
