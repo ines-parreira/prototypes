@@ -241,7 +241,6 @@ jobs:
   not-affected-tests:
     name: 'Not affected packages status'
     runs-on: gh-actions-small-runner-set
-    if: inputs.has-other-affected-packages == 'true'
     strategy:
       fail-fast: false
       matrix:

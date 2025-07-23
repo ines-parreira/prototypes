@@ -1,6 +1,6 @@
 import { dummy } from '../index'
 
-describe('dummy', () => {
+describe('dummy test', () => {
     it('should return dummy', () => {
         expect(dummy()).toBe('dummy')
     })
