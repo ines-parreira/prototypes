@@ -38,6 +38,7 @@ import ConditionsNode from './nodes/ConditionsNode'
 import EndNode from './nodes/EndNode'
 import FileUploadNode from './nodes/FileUploadNode'
 import HttpRequestNode from './nodes/HttpRequestNode'
+import LiquidTemplateNode from './nodes/LiquidTemplateNode'
 import MultipleChoicesNode from './nodes/MultipleChoicesNode'
 import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
@@ -58,6 +59,7 @@ const nodeTypes = {
     http_request: HttpRequestNode,
     shopper_authentication: ShopperAuthenticationNode,
     order_line_item_selection: OrderLineItemSelectionNode,
+    liquid_template: LiquidTemplateNode,
     end: EndNode,
 }
 

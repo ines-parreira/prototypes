@@ -42,20 +42,25 @@ templateEngine.registerFilter('json_escape', (value: unknown) => {
 
 // any text starting with {{ and ending with }} will be interpreted as a variable by the API template engine
 export const workflowVariableRegex = /{{[^{}]*}}/g
-export function extractVariablesFromText(text: string): {
+export const liquidTemplateVariableRegex = /\[\[[^\[\]]*\]\]/g
+export function extractVariablesFromText(
+    text: string,
+    isLiquidTemplate: boolean = false,
+): {
     value: string
     filter?: string
 }[] {
-    const match = text.match(/{{[^{}]*}}/g)
+    const match = isLiquidTemplate
+        ? text.match(/\[\[[^\[\]]*\]\]/g)
+        : text.match(/{{[^{}]*}}/g)
+
     if (match) {
         return match.map((variable) => {
             const [value, ...filters] = variable.slice(2, -2).split('|')
 
             return {
                 value: value.trim(),
-                filter: filters.length
-                    ? filters.join('|').trimLeft()
-                    : undefined,
+                filter: filters.length ? filters.join('|').trim() : undefined,
             }
         })
     }
@@ -142,10 +147,12 @@ export function parseWorkflowVariable(
 export function hasInvalidVariables(
     value: string,
     variables: WorkflowVariableList,
+    isLiquidTemplate: boolean = false,
 ): boolean {
-    const variablesInUse = extractVariablesFromText(value).map(
-        (variable) => variable.value,
-    )
+    const variablesInUse = extractVariablesFromText(
+        value,
+        isLiquidTemplate,
+    ).map((variable) => variable.value)
 
     return variablesInUse
         .map((variable) => parseWorkflowVariable(variable, variables))
@@ -1358,6 +1365,18 @@ export const buildWorkflowVariableFromNode = (
             type: 'boolean',
             icon,
         }
+    } else if (node.type === 'liquid_template') {
+        const {
+            data: { name, output },
+        } = node
+
+        return {
+            name: name || 'Liquid template',
+            value: `steps_state.${node.id}.output.value`,
+            nodeType: 'liquid_template',
+            type: output.data_type,
+            filter: output.data_type === 'date' ? 'format_datetime' : undefined,
+        }
     }
 }
 
@@ -1671,12 +1690,27 @@ export function extractVariablesFromNode(
                 ),
             ]
             break
+        case 'liquid_template':
+            variables = extractVariablesFromText(node.data.template, true).map(
+                (variable) => variable.value,
+            )
+            break
     }
 
     return variables
 }
 
-export function toLiquidSyntax(variable: { value: string; filter?: string }) {
+export function toLiquidSyntax(
+    variable: { value: string; filter?: string },
+    isLiquidTemplate: boolean = false,
+) {
+    if (isLiquidTemplate) {
+        if (variable.filter) {
+            return `[[${variable.value} | ${variable.filter}]]`
+        }
+        return `[[${variable.value}]]`
+    }
+
     if (variable.filter) {
         return `{{${variable.value} | ${variable.filter}}}`
     }

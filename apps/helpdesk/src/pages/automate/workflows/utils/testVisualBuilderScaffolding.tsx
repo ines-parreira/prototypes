@@ -38,6 +38,7 @@ import {
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
+    LiquidTemplateNodeType,
     LLMPromptTriggerNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
@@ -510,6 +511,24 @@ export const nodeHelpers = {
             objects: null,
             touched: {},
             errors: null,
+            ...data,
+        },
+    }),
+
+    liquidTemplate: (
+        name: string = '',
+        id?: string,
+        data?: Partial<LiquidTemplateNodeType['data']>,
+    ): LiquidTemplateNodeType => ({
+        ...buildNodeCommonProperties(),
+        id: id || ulid(),
+        type: 'liquid_template',
+        data: {
+            name,
+            template: '',
+            output: {
+                data_type: 'string',
+            },
             ...data,
         },
     }),

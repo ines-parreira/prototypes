@@ -36,6 +36,7 @@ type BaseWorkflowVariable<T extends WorkflowVariableType> = {
         | 'reusable_llm_prompt_call'
         | 'merchant_input'
         | 'order_shipmonk'
+        | 'liquid_template'
     type: T
     format?: WorkflowVariableFormat
     filter?: string

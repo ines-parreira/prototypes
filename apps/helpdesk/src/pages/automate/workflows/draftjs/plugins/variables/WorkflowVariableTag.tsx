@@ -26,6 +26,7 @@ export type WorkflowVariableTagProps = {
     size?: 'small' | 'normal'
     onClick?: (element: HTMLElement) => void
     children: ReactNode
+    isLiquidTemplate?: boolean
 }
 
 export default function WorkflowVariableTag({
@@ -33,6 +34,7 @@ export default function WorkflowVariableTag({
     size = 'normal',
     onClick,
     children,
+    isLiquidTemplate = false,
 }: WorkflowVariableTagProps) {
     const { workflowVariables } = useToolbarContext()
     const contentRef = useRef<HTMLSpanElement>(null)
@@ -53,10 +55,11 @@ export default function WorkflowVariableTag({
     const variable = useMemo(
         () =>
             parseWorkflowVariable(
-                extractVariablesFromText(value)?.[0]?.value ?? '',
+                extractVariablesFromText(value, isLiquidTemplate)?.[0]?.value ??
+                    '',
                 workflowVariables || [],
             ),
-        [value, workflowVariables],
+        [value, workflowVariables, isLiquidTemplate],
     )
 
     const handleClick = useCallback(

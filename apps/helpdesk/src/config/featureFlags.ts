@@ -110,6 +110,7 @@ export enum FeatureFlagKey {
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HistoricalImports = 'linear.project_historical-imports',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
+    LiquidTemplateStep = 'liquid-template-step',
     MacroArchives = 'macro-archives',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',

@@ -35,6 +35,7 @@ type Props = {
     noSelectedCategoryText?: string
     variablePickerTooltipMessage?: string | null
     allowFilters?: boolean
+    isLiquidTemplate?: boolean
 }
 
 const workflowVariablesDataTypes: WorkflowVariableType[] = [
@@ -56,6 +57,7 @@ const TextareaWithVariables = ({
     variablePickerTooltipMessage,
     noSelectedCategoryText = 'Insert variable from previous steps',
     allowFilters,
+    isLiquidTemplate,
 }: Props) => {
     const editorRef = useRef<Editor | null>()
 
@@ -80,9 +82,10 @@ const TextareaWithVariables = ({
         () => [
             createWorkflowVariablesPlugin({
                 onClick: allowFilters ? handleVariableTagClick : undefined,
+                isLiquidTemplate: isLiquidTemplate ?? false,
             }),
         ],
-        [handleVariableTagClick, allowFilters],
+        [handleVariableTagClick, allowFilters, isLiquidTemplate],
     )
 
     const handleChange = useCallback(
@@ -107,19 +110,22 @@ const TextareaWithVariables = ({
     const handleVariableSelect = (variable: WorkflowVariable) => {
         const newEditorState = insertText(
             editorState,
-            toLiquidSyntax({
-                value: variable.value,
-                filter:
-                    variable.type === 'date'
-                        ? 'date'
-                        : variable.type === 'array'
-                          ? 'json'
-                          : variable.type === 'string'
-                            ? 'json_escape'
-                            : variable.type === 'json'
+            toLiquidSyntax(
+                {
+                    value: variable.value,
+                    filter:
+                        variable.type === 'date'
+                            ? 'date'
+                            : variable.type === 'array'
                               ? 'json'
-                              : undefined,
-            }),
+                              : variable.type === 'string'
+                                ? 'json_escape'
+                                : variable.type === 'json'
+                                  ? 'json'
+                                  : undefined,
+                },
+                isLiquidTemplate,
+            ),
         )
         handleChange(
             EditorState.forceSelection(

@@ -334,6 +334,32 @@ export type HttpRequestNodeType = Node<
     'http_request'
 >
 
+export type LiquidTemplateNodeType = Node<
+    {
+        name: string
+        template: string
+        output: {
+            data_type: 'string' | 'number' | 'boolean' | 'date'
+        }
+        isGreyedOut?: boolean | null
+        errors?: {
+            name?: string
+            template?: string
+            output?: {
+                data_type?: string
+            }
+        } | null
+        touched?: {
+            name?: boolean
+            template?: boolean
+            output?: {
+                data_type?: boolean
+            }
+        } | null
+    },
+    'liquid_template'
+>
+
 export type ShopperAuthenticationNodeType = Node<
     {
         integrationId: number
@@ -651,6 +677,7 @@ export type VisualBuilderNode =
     | SkipChargeNodeType
     | ReusableLLMPromptCallNodeType
     | EditOrderNoteNodeType
+    | LiquidTemplateNodeType
 
 export type VisualBuilderEdge = Edge<{
     name?: string | null

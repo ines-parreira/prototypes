@@ -12,6 +12,7 @@ export const addEntityToVariable = (
     start: number,
     end: number,
     variables?: WorkflowVariableList,
+    isLiquidTemplate: boolean = false,
 ): ContentState => {
     const existingEntityKey = block.getEntityAt(start)
     if (existingEntityKey) {
@@ -24,7 +25,7 @@ export const addEntityToVariable = (
 
     const value = block.getText().substring(start, end)
     const variable = parseWorkflowVariable(
-        extractVariablesFromText(value)?.[0]?.value ?? '',
+        extractVariablesFromText(value, isLiquidTemplate)?.[0]?.value ?? '',
         variables || [],
     )
 

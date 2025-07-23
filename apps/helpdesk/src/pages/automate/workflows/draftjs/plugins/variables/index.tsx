@@ -1,7 +1,10 @@
 import { ContentBlock, ContentState, EditorState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
 
-import { workflowVariableRegex } from 'pages/automate/workflows/models/variables.model'
+import {
+    liquidTemplateVariableRegex,
+    workflowVariableRegex,
+} from 'pages/automate/workflows/models/variables.model'
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import {
     DecoratorComponentProps,
@@ -17,6 +20,7 @@ type Options = {
     size?: WorkflowVariableTagProps['size']
     getVariables?: () => WorkflowVariableList
     onClick?: (entityKey: string, element: HTMLElement) => void
+    isLiquidTemplate?: boolean
 }
 
 export default function createWorkflowVariablesPlugin(options: Options = {}) {
@@ -51,6 +55,7 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                             value={value}
                             size={options.size}
                             onClick={handleClick}
+                            isLiquidTemplate={options.isLiquidTemplate ?? false}
                         >
                             {children}
                         </WorkflowVariableTag>
@@ -64,21 +69,22 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
             const blocks = contentState.getBlockMap()
             let newContentState = contentState
 
+            const regex = options.isLiquidTemplate
+                ? liquidTemplateVariableRegex
+                : workflowVariableRegex
+
             blocks.forEach((block) => {
                 if (block) {
-                    findWithRegex(
-                        workflowVariableRegex,
-                        block,
-                        (start, end) => {
-                            newContentState = addEntityToVariable(
-                                block,
-                                newContentState,
-                                start,
-                                end,
-                                options.getVariables?.(),
-                            )
-                        },
-                    )
+                    findWithRegex(regex, block, (start, end) => {
+                        newContentState = addEntityToVariable(
+                            block,
+                            newContentState,
+                            start,
+                            end,
+                            options.getVariables?.(),
+                            options.isLiquidTemplate,
+                        )
+                    })
                 }
             })
 

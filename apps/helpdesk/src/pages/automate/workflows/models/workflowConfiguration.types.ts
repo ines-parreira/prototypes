@@ -118,6 +118,18 @@ export type WorkflowStepHttpRequest = {
     }
 }
 
+export type WorkflowStepLiquidTemplate = {
+    id: string
+    kind: 'liquid-template'
+    settings: {
+        name: string
+        template: string
+        output: {
+            data_type: 'string' | 'number' | 'boolean' | 'date'
+        }
+    }
+}
+
 export type WorkflowStepEnd = {
     id: string
     kind: 'end'
@@ -328,6 +340,7 @@ export type WorkflowStep =
     | WorkflowStepSkipCharge
     | WorkflowStepReusableLLMPromptCall
     | WorkflowStepEditOrderNote
+    | WorkflowStepLiquidTemplate
 
 export type WorkflowTransition = {
     id: string

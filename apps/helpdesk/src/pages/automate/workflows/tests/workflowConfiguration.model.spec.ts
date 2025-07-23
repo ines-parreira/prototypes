@@ -1585,4 +1585,375 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             },
         ])
     })
+
+    test('configuration containing liquid-template step', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Liquid Template Test',
+            is_draft: true,
+            initial_step_id: 'liquid_template1',
+            entrypoint: null,
+            available_languages: ['en-US'],
+            steps: [
+                {
+                    id: 'liquid_template1',
+                    kind: 'liquid-template',
+                    settings: {
+                        name: 'Format customer data',
+                        template:
+                            'Customer: [[objects.customer.name]] (ID: [[objects.customer.id]])',
+                        output: {
+                            data_type: 'string',
+                        },
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ],
+            transitions: [
+                {
+                    id: '01J87E4X5V8YDKSF81BX80CCS5',
+                    from_step_id: 'liquid_template1',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01J87E4X5VZ7NTSXPV74384JKN',
+                    from_step_id: 'liquid_template1',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [
+                            {
+                                kind: 'customer',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                        ],
+                        conditions: null,
+                        outputs: [
+                            {
+                                id: 'liquid_template1_output',
+                                description: 'Format customer data',
+                                path: 'steps_state.liquid_template1.output',
+                            },
+                        ],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions: 'This action formats customer data',
+                    },
+                },
+            ],
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c),
+                    true,
+                    [],
+                ),
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: 'This action formats customer data',
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'liquid_template1',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'liquid_template',
+                data: {
+                    name: 'Format customer data',
+                    template:
+                        'Customer: [[objects.customer.name]] (ID: [[objects.customer.id]])',
+                    output: {
+                        data_type: 'string',
+                    },
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-liquid_template1',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'liquid_template1',
+            },
+            {
+                id: 'liquid_template1-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'liquid_template1',
+                target: 'end_success',
+            },
+            {
+                id: 'liquid_template1-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'liquid_template1',
+                target: 'end_failure',
+            },
+        ])
+    })
+
+    test('configuration containing liquid-template step with different data types', () => {
+        const dataTypes = ['string', 'number', 'boolean', 'date'] as const
+
+        for (const dataType of dataTypes) {
+            const c: WorkflowConfiguration = {
+                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+                id: '01J7ZTERAST0PVVPF347XA37FR',
+                name: `Liquid Template ${dataType}`,
+                is_draft: true,
+                initial_step_id: 'liquid_template1',
+                entrypoint: null,
+                available_languages: [],
+                steps: [
+                    {
+                        id: 'liquid_template1',
+                        kind: 'liquid-template',
+                        settings: {
+                            name: `Process ${dataType}`,
+                            template: `Value: [[objects.data.value]]`,
+                            output: {
+                                data_type: dataType,
+                            },
+                        },
+                    },
+                ],
+                transitions: [],
+                triggers: [
+                    {
+                        kind: 'reusable-llm-prompt',
+                        settings: {
+                            custom_inputs: [],
+                            object_inputs: [],
+                            outputs: [
+                                {
+                                    id: 'output1',
+                                    name: `Process ${dataType}`,
+                                    description: `Process ${dataType}`,
+                                    path: 'steps_state.liquid_template1.output',
+                                    data_type: dataType,
+                                },
+                            ],
+                        },
+                    },
+                ],
+                entrypoints: [
+                    {
+                        kind: 'reusable-llm-prompt-call-step',
+                        trigger: 'reusable-llm-prompt',
+                        settings: {
+                            requires_confirmation: false,
+                            conditions: null,
+                        },
+                        deactivated_datetime: null,
+                    },
+                ],
+            }
+
+            const visualBuilderGraph =
+                transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+
+            expect(visualBuilderGraph.nodes).toEqual([
+                {
+                    id: 'trigger_button',
+                    position: {
+                        x: 0,
+                        y: 0,
+                    },
+                    type: 'reusable_llm_prompt_trigger',
+                    data: {
+                        requires_confirmation: false,
+                        inputs: [],
+                        conditionsType: null,
+                        conditions: [],
+                    },
+                },
+                {
+                    id: 'liquid_template1',
+                    position: {
+                        x: 0,
+                        y: 0,
+                    },
+                    type: 'liquid_template',
+                    data: {
+                        name: `Process ${dataType}`,
+                        template: `Value: [[objects.data.value]]`,
+                        output: {
+                            data_type: dataType,
+                        },
+                    },
+                },
+            ])
+        }
+    })
+
+    test('configuration containing liquid-template step with complex template', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Complex Liquid Template',
+            is_draft: true,
+            initial_step_id: 'liquid_template1',
+            entrypoint: null,
+            available_languages: [],
+            steps: [
+                {
+                    id: 'liquid_template1',
+                    kind: 'liquid-template',
+                    settings: {
+                        name: 'Format order summary',
+                        template: `Order Summary:
+Customer: [[objects.customer.name | upcase]]
+Email: [[objects.customer.email]]
+Order ID: [[objects.order.id]]
+Total: [[objects.order.total | format_currency: objects.order.currency.code]]
+Status: [[objects.order.status | default: "pending"]]`,
+                        output: {
+                            data_type: 'string',
+                        },
+                    },
+                },
+            ],
+            transitions: [],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [
+                            {
+                                kind: 'customer',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                            {
+                                kind: 'order',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                        ],
+                        conditions: null,
+                        outputs: [],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions: 'This formats an order summary',
+                    },
+                },
+            ],
+        }
+
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+
+        const liquidTemplateNode = visualBuilderGraph.nodes.find(
+            (node) => node.type === 'liquid_template',
+        )
+
+        expect(liquidTemplateNode).toEqual({
+            id: 'liquid_template1',
+            position: {
+                x: 0,
+                y: 0,
+            },
+            type: 'liquid_template',
+            data: {
+                name: 'Format order summary',
+                template: `Order Summary:
+Customer: [[objects.customer.name | upcase]]
+Email: [[objects.customer.email]]
+Order ID: [[objects.order.id]]
+Total: [[objects.order.total | format_currency: objects.order.currency.code]]
+Status: [[objects.order.status | default: "pending"]]`,
+                output: {
+                    data_type: 'string',
+                },
+            },
+        })
+    })
 })

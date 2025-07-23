@@ -16,6 +16,7 @@ import ConditionsNodeEditor from './editors/ConditionsNodeEditor/ConditionsNodeE
 import EndNodeEditor from './editors/EndNodeEditor'
 import FileUploadEditor from './editors/FileUploadEditor'
 import HttpRequestEditor from './editors/HttpRequestEditor'
+import LiquidTemplateEditor from './editors/LiquidTemplateEditor'
 import LLMPromptTriggerEditor from './editors/LLMPromptTriggerEditor'
 import MultipleChoicesEditor from './editors/MultipleChoicesEditor'
 import OrderLineItemSelectionEditor from './editors/OrderLineItemSelectionEditor'
@@ -142,6 +143,11 @@ const NodeEditorDrawer = ({ nodeInEdition, onClose }: Props) => {
                 )}
                 {memoizedNodeInEdition?.type === 'http_request' && (
                     <HttpRequestEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'liquid_template' && (
+                    <LiquidTemplateEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
                 )}
                 {memoizedNodeInEdition?.type === 'conditions' && (
                     <ConditionsNodeEditor

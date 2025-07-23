@@ -46,6 +46,7 @@ import {
     isConditionsNodeType,
     isHttpRequestNodeType,
     isMultipleChoicesNodeType,
+    LiquidTemplateNodeType,
     LLMPromptTriggerNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
@@ -76,6 +77,7 @@ import {
     WorkflowStepHandover,
     WorkflowStepHelpfulPrompt,
     WorkflowStepHttpRequest,
+    WorkflowStepLiquidTemplate,
     WorkflowStepMessage,
     WorkflowStepOrderLineItemSelection,
     WorkflowStepOrderSelection,
@@ -989,6 +991,53 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                         .data_type,
                             })),
                     )
+                }
+            } else if (node.type === 'liquid_template') {
+                const step: WorkflowStepLiquidTemplate = {
+                    id: node.id,
+                    kind: 'liquid-template',
+                    settings: {
+                        name: node.data.name,
+                        template: node.data.template,
+                        output: {
+                            data_type: node.data.output.data_type,
+                        },
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    setLLMPromptObjectInputs(
+                        g,
+                        node,
+                        trigger,
+                        availableIntegrations,
+                    )
+                }
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: ulid(),
+                        description: node.data.name,
+                        path: `steps_state.${node.id}.output`,
+                    })
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: ulid(),
+                        name: node.data.name,
+                        description: node.data.name,
+                        path: `steps_state.${node.id}.output`,
+                        data_type: node.data.output.data_type,
+                    })
                 }
             } else if (node.type === 'shopper_authentication') {
                 const step: WorkflowStepShopperAuthentication = {
@@ -3132,4 +3181,50 @@ export const getReusableLLMPromptCallNodeStatuses = ({
         hasCredentials,
         isClickable,
     }
+}
+
+export function getLiquidTemplateNodeTouched(): NonNullable<
+    LiquidTemplateNodeType['data']['touched']
+> {
+    return {
+        name: true,
+        template: true,
+        output: {
+            data_type: true,
+        },
+    }
+}
+
+export function getLiquidTemplateNodeErrors(
+    node: LiquidTemplateNodeType,
+    variables: WorkflowVariableList,
+): LiquidTemplateNodeType['data']['errors'] {
+    let errors: LiquidTemplateNodeType['data']['errors'] = null
+
+    if (node.data.touched?.name && !node.data.name.trim()) {
+        errors = mergeErrors(errors, 'name', 'Name is required')
+    }
+
+    if (node.data.touched?.template) {
+        if (!node.data.template.trim()) {
+            errors = mergeErrors(errors, 'template', 'Template is required')
+        } else if (hasInvalidVariables(node.data.template, variables, true)) {
+            errors = mergeErrors(errors, 'template', 'Invalid variables')
+        } else if (!isValidLiquidSyntax(node.data.template)) {
+            errors = mergeErrors(errors, 'template', 'Invalid variables syntax')
+        }
+    }
+
+    if (
+        node.data.touched?.output?.data_type &&
+        !node.data.output.data_type.trim()
+    ) {
+        errors = mergeErrors(
+            errors,
+            'output.data_type',
+            'Data type is required',
+        )
+    }
+
+    return errors
 }

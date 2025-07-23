@@ -17,6 +17,7 @@ import {
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
+    LiquidTemplateNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
@@ -234,6 +235,22 @@ export const buildHttpRequestNode = (): HttpRequestNodeType => {
             json: null,
             formUrlencoded: null,
             bodyContentType: null,
+        },
+    }
+}
+
+export const buildLiquidTemplateNode = (): LiquidTemplateNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'liquid_template',
+        data: {
+            name: '',
+            template: '',
+            output: {
+                data_type: 'string',
+            },
         },
     }
 }

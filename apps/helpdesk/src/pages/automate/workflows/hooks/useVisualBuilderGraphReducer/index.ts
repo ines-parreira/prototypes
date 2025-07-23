@@ -22,6 +22,11 @@ import {
     VisualBuilderHttpRequestAction,
 } from './httpRequestReducer'
 import {
+    isVisualBuilderLiquidTemplateAction,
+    liquidTemplateReducer,
+    VisualBuilderLiquidTemplateAction,
+} from './liquidTemplateReducer'
+import {
     isVisualBuilderLLMPromptTriggerAction,
     llmPromptTriggerReducer,
     VisualBuilderLLMPromptTriggerAction,
@@ -45,6 +50,7 @@ export type VisualBuilderGraphAction =
     | VisualBuilderLLMPromptTriggerAction
     | VisualBuilderReusableLLMPromptTriggerAction
     | VisualBuilderReusableLLMPromptCallAction
+    | VisualBuilderLiquidTemplateAction
 
 export function useVisualBuilderGraphReducer<
     T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
@@ -63,6 +69,9 @@ export function reducer<
     }
     if (isVisualBuilderHttpRequestAction(action)) {
         return httpRequestReducer(graph, action) as VisualBuilderGraph<T>
+    }
+    if (isVisualBuilderLiquidTemplateAction(action)) {
+        return liquidTemplateReducer(graph, action) as VisualBuilderGraph<T>
     }
     if (isVisualBuilderConditionAction(action)) {
         return conditionsReducer(graph, action) as VisualBuilderGraph<T>

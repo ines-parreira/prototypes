@@ -870,7 +870,7 @@ export function baseReducer(
     }
 }
 
-function insertNodeBefore(
+export function insertNodeBefore(
     graph: VisualBuilderGraph,
     nodeToInsert: VisualBuilderNode,
     beforeNodeId: string,

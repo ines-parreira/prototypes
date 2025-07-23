@@ -18,6 +18,7 @@ import {
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
+    LiquidTemplateNodeType,
     LLMPromptTriggerNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
@@ -477,6 +478,21 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                                   })),
                           }
                         : {}),
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'liquid-template') {
+            const n: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'liquid_template',
+                data: {
+                    name: step.settings.name,
+                    template: step.settings.template,
+                    output: {
+                        data_type: step.settings.output.data_type,
+                    },
                 },
             }
             nodeIdByStepId[step.id] = n.id

@@ -17,6 +17,8 @@ import {
     getGraphTouched,
     getHTTPRequestNodeErrors,
     getHTTPRequestNodeTouched,
+    getLiquidTemplateNodeErrors,
+    getLiquidTemplateNodeTouched,
     getLLMPromptTriggerNodeErrors,
     getLLMPromptTriggerNodeTouched,
     getMultipleChoicesNodeErrors,
@@ -54,6 +56,7 @@ import {
     ConditionsNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
+    LiquidTemplateNodeType,
     LLMPromptTriggerNodeType,
     MultipleChoicesNodeType,
     OrderLineItemSelectionNodeType,
@@ -1885,6 +1888,210 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             },
         ])
     })
+
+    it('should transform graph with a liquid template step', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'Liquid Template Test',
+                available_languages: ['en-US'],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'llm_prompt_trigger',
+                        data: {
+                            instructions: 'This action uses a liquid template',
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'liquid_template1',
+                        type: 'liquid_template',
+                        data: {
+                            name: 'Format customer data',
+                            template:
+                                'Customer: [[objects.customer.name]] (ID: [[objects.customer.id]])',
+                            output: {
+                                data_type: 'string',
+                            },
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end1',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'liquid_template1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'liquid_template1',
+                        target: 'end1',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            true,
+            [],
+        )
+
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'llm-conversation',
+                trigger: 'llm-prompt',
+                settings: {
+                    requires_confirmation: false,
+                    instructions: 'This action uses a liquid template',
+                },
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                    ],
+                    conditions: null,
+                    outputs: [
+                        {
+                            id: expect.any(String),
+                            description: 'Format customer data',
+                            path: 'steps_state.liquid_template1.output',
+                        },
+                    ],
+                },
+            },
+        ])
+        expect(configuration.steps).toEqual([
+            {
+                id: 'liquid_template1',
+                kind: 'liquid-template',
+                settings: {
+                    name: 'Format customer data',
+                    template:
+                        'Customer: [[objects.customer.name]] (ID: [[objects.customer.id]])',
+                    output: {
+                        data_type: 'string',
+                    },
+                },
+            },
+            {
+                id: 'end1',
+                kind: 'end',
+            },
+        ])
+    })
+
+    it('should transform graph with reusable LLM prompt liquid template step', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'Reusable Liquid Template',
+                available_languages: [],
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger',
+                        type: 'reusable_llm_prompt_trigger',
+                        data: {
+                            requires_confirmation: false,
+                            inputs: [],
+                            conditionsType: null,
+                            conditions: [],
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'liquid_template1',
+                        type: 'liquid_template',
+                        data: {
+                            name: 'Process order data',
+                            template:
+                                'Order: [[objects.order.name]] - Status: [[objects.order.external_status]]',
+                            output: {
+                                data_type: 'string',
+                            },
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        source: 'trigger',
+                        target: 'liquid_template1',
+                    },
+                ],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            true,
+            [],
+        )
+
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'reusable-llm-prompt-call-step',
+                trigger: 'reusable-llm-prompt',
+                settings: {
+                    requires_confirmation: false,
+                    conditions: null,
+                },
+                deactivated_datetime: null,
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'reusable-llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                        },
+                        {
+                            kind: 'order',
+                        },
+                    ],
+                    outputs: [
+                        {
+                            id: expect.any(String),
+                            name: 'Process order data',
+                            description: 'Process order data',
+                            path: 'steps_state.liquid_template1.output',
+                            data_type: 'string',
+                        },
+                    ],
+                },
+            },
+        ])
+    })
 })
 
 describe('touched', () => {
@@ -2203,6 +2410,16 @@ describe('touched', () => {
             phone: true,
             lastName: true,
             firstName: true,
+        })
+    })
+
+    it('should touch liquid template node', () => {
+        expect(getLiquidTemplateNodeTouched()).toEqual({
+            name: true,
+            template: true,
+            output: {
+                data_type: true,
+            },
         })
     })
 })
@@ -5620,6 +5837,192 @@ describe('errors', () => {
 
             expect(errors).toEqual({
                 firstName: 'Invalid variables syntax',
+            })
+        })
+    })
+
+    describe('getLiquidTemplateNodeErrors()', () => {
+        it('should return null if there are no errors', () => {
+            const node: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'liquid_template',
+                data: {
+                    touched: {
+                        name: true,
+                        template: true,
+                        output: {
+                            data_type: true,
+                        },
+                    },
+                    name: 'Test template',
+                    template: 'Hello World',
+                    output: {
+                        data_type: 'string',
+                    },
+                },
+            }
+
+            const errors = getLiquidTemplateNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should add an error if name is empty and touched', () => {
+            const node: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'liquid_template',
+                data: {
+                    touched: {
+                        name: true,
+                    },
+                    name: '',
+                    template: '',
+                    output: {
+                        data_type: 'string',
+                    },
+                },
+            }
+
+            const errors = getLiquidTemplateNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                name: 'Name is required',
+            })
+        })
+
+        it('should add an error if template is empty and touched', () => {
+            const node: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'liquid_template',
+                data: {
+                    touched: {
+                        template: true,
+                    },
+                    name: 'Test',
+                    template: '',
+                    output: {
+                        data_type: 'string',
+                    },
+                },
+            }
+
+            const errors = getLiquidTemplateNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                template: 'Template is required',
+            })
+        })
+
+        it('should add an error if template has invalid variables', () => {
+            const node: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'liquid_template',
+                data: {
+                    touched: {
+                        template: true,
+                    },
+                    name: 'Test',
+                    template: 'Hello [[invalid_variable]]',
+                    output: {
+                        data_type: 'string',
+                    },
+                },
+            }
+
+            const variables = [
+                {
+                    name: 'Valid variable',
+                    value: 'valid_variable',
+                    nodeType: 'text_reply' as const,
+                    type: 'string' as const,
+                },
+            ]
+
+            const errors = getLiquidTemplateNodeErrors(node, variables)
+
+            expect(errors).toEqual({
+                template: 'Invalid variables',
+            })
+        })
+
+        it('should add an error if template has invalid liquid syntax', () => {
+            const node: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'liquid_template',
+                data: {
+                    touched: {
+                        template: true,
+                    },
+                    name: 'Test',
+                    template: 'Hello {{ unclosed tag',
+                    output: {
+                        data_type: 'string',
+                    },
+                },
+            }
+
+            const errors = getLiquidTemplateNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                template: 'Invalid variables syntax',
+            })
+        })
+
+        it('should add an error if output data type is empty and touched', () => {
+            const node: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'liquid_template',
+                data: {
+                    touched: {
+                        output: {
+                            data_type: true,
+                        },
+                    },
+                    name: 'Test',
+                    template: 'Hello',
+                    output: {
+                        data_type: '' as any,
+                    },
+                },
+            }
+
+            const errors = getLiquidTemplateNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                output: {
+                    data_type: 'Data type is required',
+                },
+            })
+        })
+
+        it('should add multiple errors when multiple fields are invalid', () => {
+            const node: LiquidTemplateNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'liquid_template',
+                data: {
+                    touched: {
+                        name: true,
+                        template: true,
+                        output: {
+                            data_type: true,
+                        },
+                    },
+                    name: '',
+                    template: '',
+                    output: {
+                        data_type: '' as any,
+                    },
+                },
+            }
+
+            const errors = getLiquidTemplateNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                name: 'Name is required',
+                template: 'Template is required',
+                output: {
+                    data_type: 'Data type is required',
+                },
             })
         })
     })

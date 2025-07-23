@@ -469,6 +469,21 @@ declare namespace Components {
                           note: string
                       }
                   }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -845,7 +860,7 @@ declare namespace Components {
                             kind: 'llm-conversation'
                             trigger: 'llm-prompt'
                             settings: {
-                                requires_confirmation?: boolean | null
+                                requires_confirmation: boolean
                                 instructions: string
                             }
                         }
@@ -963,6 +978,7 @@ declare namespace Components {
                       | {
                             app_id: string
                             api_key?: string | null
+                            app_settings?: null | null | null
                             type: 'app'
                             refresh_token?: string | null
                         }
@@ -1053,6 +1069,10 @@ declare namespace Components {
                     [name: string]: any
                     trigger?: 'channel' | 'llm-prompt'
                 }
+                sanitized_state?: {
+                    [name: string]: any
+                    trigger?: 'channel' | 'llm-prompt'
+                } | null
                 channel_actions: (
                     | {
                           kind: 'messages'
@@ -1813,6 +1833,21 @@ declare namespace Components {
                           note: string
                       }
                   }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -2186,7 +2221,7 @@ declare namespace Components {
                       kind: 'llm-conversation'
                       trigger: 'llm-prompt'
                       settings: {
-                          requires_confirmation?: boolean | null
+                          requires_confirmation: boolean
                           instructions: string
                       }
                   }
@@ -2303,6 +2338,7 @@ declare namespace Components {
                       | {
                             app_id: string
                             api_key?: string | null
+                            app_settings?: null | null | null
                             type: 'app'
                             refresh_token?: string | null
                         }
@@ -2508,6 +2544,21 @@ declare namespace Components {
                       settings?: {
                           success: boolean
                       } | null
+                  }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
                   }
             )[]
             inputs?:
@@ -2998,6 +3049,7 @@ declare namespace Components {
                 | {
                       app_id: string
                       api_key?: string | null
+                      app_settings?: null | null | null
                       type: 'app'
                       refresh_token?: string | null
                   }
@@ -3016,6 +3068,10 @@ declare namespace Components {
                 [name: string]: any
                 trigger?: 'channel' | 'llm-prompt'
             }
+            sanitized_state?: {
+                [name: string]: any
+                trigger?: 'channel' | 'llm-prompt'
+            } | null
             channel_actions: (
                 | {
                       kind: 'messages'
@@ -4311,6 +4367,19 @@ declare namespace Components {
                                             at: string // date-time
                                         }
                                       | {
+                                            kind: 'liquid-template'
+                                            success: boolean
+                                            output: {
+                                                data_type:
+                                                    | 'string'
+                                                    | 'number'
+                                                    | 'boolean'
+                                                    | 'date'
+                                                value?: any
+                                            }
+                                            at: string // date-time
+                                        }
+                                      | {
                                             kind: 'cancel-order'
                                             success: boolean
                                             error?: null | null
@@ -5101,6 +5170,19 @@ declare namespace Components {
                                             at: string // date-time
                                         }
                                       | {
+                                            kind: 'liquid-template'
+                                            success: boolean
+                                            output: {
+                                                data_type:
+                                                    | 'string'
+                                                    | 'number'
+                                                    | 'boolean'
+                                                    | 'date'
+                                                value?: any
+                                            }
+                                            at: string // date-time
+                                        }
+                                      | {
                                             kind: 'cancel-order'
                                             success: boolean
                                             error?: null | null
@@ -5217,7 +5299,9 @@ declare namespace Components {
             response_status_code: number
             response_headers?: string | null
             response_body?: string | null
-            step_id: string
+            configuration_internal_id?: string | null
+            step_id?: string | null
+            execution_id?: string | null
         }[]
         export type ListAppResponseDto = (
             | {
@@ -5255,6 +5339,64 @@ declare namespace Components {
                   }
               }
         )[]
+        export type ListLlmConversationEntrypointsResponseDto = {
+            requires_confirmation: boolean
+            instructions: string
+            configuration_id: string
+            configuration_name: string
+            configuration_template_slug: string | null
+            trigger: {
+                custom_inputs: {
+                    [name: string]: {
+                        name: string
+                        instructions: string
+                        data_type: 'string' | 'number' | 'date' | 'boolean'
+                    }
+                }
+                object_inputs: {
+                    customer_id?: {
+                        instructions: string
+                        data_type: 'number'
+                    }
+                    customer_email?: {
+                        instructions: string
+                        data_type: 'string'
+                    }
+                    customer_phone_number?: {
+                        instructions: string
+                        data_type: 'string'
+                    }
+                    order_external_id?: {
+                        instructions: string
+                        data_type: 'string'
+                    }
+                    order_name?: {
+                        instructions: string
+                        data_type: 'string'
+                    }
+                    order_number?: {
+                        instructions: string
+                        data_type: 'string'
+                    }
+                    products?: {
+                        [name: string]: {
+                            name: string
+                            instructions: string
+                            inputs: {
+                                product_id: {
+                                    instructions: string
+                                    data_type: 'string'
+                                }
+                                product_variant_id: {
+                                    instructions: string
+                                    data_type: 'string'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }[]
         export type ListStoreAppResponseDto = {
             store_type: 'shopify' | 'bigcommerce' | 'magento2'
             store_name: string
@@ -5693,6 +5835,21 @@ declare namespace Components {
                           note: string
                       }
                   }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -6066,7 +6223,7 @@ declare namespace Components {
                       kind: 'llm-conversation'
                       trigger: 'llm-prompt'
                       settings: {
-                          requires_confirmation?: boolean | null
+                          requires_confirmation: boolean
                           instructions: string
                       }
                   }
@@ -6183,6 +6340,7 @@ declare namespace Components {
                       | {
                             app_id: string
                             api_key?: string | null
+                            app_settings?: null | null | null
                             type: 'app'
                             refresh_token?: string | null
                         }
@@ -6459,6 +6617,21 @@ declare namespace Components {
                       settings?: {
                           success: boolean
                       } | null
+                  }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
                   }
             )[]
             inputs?:
@@ -6949,6 +7122,7 @@ declare namespace Components {
                 | {
                       app_id: string
                       api_key?: string | null
+                      app_settings?: null | null | null
                       type: 'app'
                       refresh_token?: string | null
                   }
@@ -7359,6 +7533,21 @@ declare namespace Components {
                           order_external_id: string
                           integration_id: string
                           note: string
+                      }
+                  }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
                       }
                   }
             )[]
@@ -9383,6 +9572,19 @@ declare namespace Components {
                                                   at: string // date-time
                                               }
                                             | {
+                                                  kind: 'liquid-template'
+                                                  success: boolean
+                                                  output: {
+                                                      data_type:
+                                                          | 'string'
+                                                          | 'number'
+                                                          | 'boolean'
+                                                          | 'date'
+                                                      value?: any
+                                                  }
+                                                  at: string // date-time
+                                              }
+                                            | {
                                                   kind: 'cancel-order'
                                                   success: boolean
                                                   error?: null | null
@@ -10284,6 +10486,19 @@ declare namespace Components {
                                                   at: string // date-time
                                               }
                                             | {
+                                                  kind: 'liquid-template'
+                                                  success: boolean
+                                                  output: {
+                                                      data_type:
+                                                          | 'string'
+                                                          | 'number'
+                                                          | 'boolean'
+                                                          | 'date'
+                                                      value?: any
+                                                  }
+                                                  at: string // date-time
+                                              }
+                                            | {
                                                   kind: 'cancel-order'
                                                   success: boolean
                                                   error?: null | null
@@ -10414,7 +10629,8 @@ declare namespace Components {
                       | 'pt-BR'
                   channel_integration_id?: number | null
                   shop_name: string
-                  shop_type?: string
+                  shop_type?: 'shopify' | 'bigcommerce' | 'magento2'
+                  shop_integration_id?: number | null
                   user_journey_id: string
                   time_zone?: string | null
               }
@@ -12120,6 +12336,19 @@ declare namespace Components {
                                                   at: string // date-time
                                               }
                                             | {
+                                                  kind: 'liquid-template'
+                                                  success: boolean
+                                                  output: {
+                                                      data_type:
+                                                          | 'string'
+                                                          | 'number'
+                                                          | 'boolean'
+                                                          | 'date'
+                                                      value?: any
+                                                  }
+                                                  at: string // date-time
+                                              }
+                                            | {
                                                   kind: 'cancel-order'
                                                   success: boolean
                                                   error?: null | null
@@ -13018,6 +13247,19 @@ declare namespace Components {
                                                                 | any
                                                         } | null)
                                                       | any
+                                                  at: string // date-time
+                                              }
+                                            | {
+                                                  kind: 'liquid-template'
+                                                  success: boolean
+                                                  output: {
+                                                      data_type:
+                                                          | 'string'
+                                                          | 'number'
+                                                          | 'boolean'
+                                                          | 'date'
+                                                      value?: any
+                                                  }
                                                   at: string // date-time
                                               }
                                             | {
@@ -14124,6 +14366,19 @@ declare namespace Components {
                                             at: string // date-time
                                         }
                                       | {
+                                            kind: 'liquid-template'
+                                            success: boolean
+                                            output: {
+                                                data_type:
+                                                    | 'string'
+                                                    | 'number'
+                                                    | 'boolean'
+                                                    | 'date'
+                                                value?: any
+                                            }
+                                            at: string // date-time
+                                        }
+                                      | {
                                             kind: 'cancel-order'
                                             success: boolean
                                             error?: null | null
@@ -14914,6 +15169,19 @@ declare namespace Components {
                                             at: string // date-time
                                         }
                                       | {
+                                            kind: 'liquid-template'
+                                            success: boolean
+                                            output: {
+                                                data_type:
+                                                    | 'string'
+                                                    | 'number'
+                                                    | 'boolean'
+                                                    | 'date'
+                                                value?: any
+                                            }
+                                            at: string // date-time
+                                        }
+                                      | {
                                             kind: 'cancel-order'
                                             success: boolean
                                             error?: null | null
@@ -15526,6 +15794,21 @@ declare namespace Components {
                           note: string
                       }
                   }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -15896,7 +16179,7 @@ declare namespace Components {
                       kind: 'llm-conversation'
                       trigger: 'llm-prompt'
                       settings: {
-                          requires_confirmation?: boolean | null
+                          requires_confirmation: boolean
                           instructions: string
                       }
                   }
@@ -16013,6 +16296,7 @@ declare namespace Components {
                       | {
                             app_id: string
                             api_key?: string | null
+                            app_settings?: null | null | null
                             type: 'app'
                             refresh_token?: string | null
                         }
@@ -16450,6 +16734,21 @@ declare namespace Components {
                           note: string
                       }
                   }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -16823,7 +17122,7 @@ declare namespace Components {
                       kind: 'llm-conversation'
                       trigger: 'llm-prompt'
                       settings: {
-                          requires_confirmation?: boolean | null
+                          requires_confirmation: boolean
                           instructions: string
                       }
                   }
@@ -16940,6 +17239,7 @@ declare namespace Components {
                       | {
                             app_id: string
                             api_key?: string | null
+                            app_settings?: null | null | null
                             type: 'app'
                             refresh_token?: string | null
                         }
@@ -17375,6 +17675,21 @@ declare namespace Components {
                           note: string
                       }
                   }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -17748,7 +18063,7 @@ declare namespace Components {
                             kind: 'llm-conversation'
                             trigger: 'llm-prompt'
                             settings: {
-                                requires_confirmation?: boolean | null
+                                requires_confirmation: boolean
                                 instructions: string
                             }
                         }
@@ -17866,6 +18181,7 @@ declare namespace Components {
                       | {
                             app_id: string
                             api_key?: string | null
+                            app_settings?: null | null | null
                             type: 'app'
                             refresh_token?: string | null
                         }
@@ -18303,6 +18619,21 @@ declare namespace Components {
                           note: string
                       }
                   }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
+                  }
             )[]
             inputs?:
                 | (
@@ -18679,7 +19010,7 @@ declare namespace Components {
                             kind: 'llm-conversation'
                             trigger: 'llm-prompt'
                             settings: {
-                                requires_confirmation?: boolean | null
+                                requires_confirmation: boolean
                                 instructions: string
                             }
                         }
@@ -18797,6 +19128,7 @@ declare namespace Components {
                       | {
                             app_id: string
                             api_key?: string | null
+                            app_settings?: null | null | null
                             type: 'app'
                             refresh_token?: string | null
                         }
@@ -19001,6 +19333,21 @@ declare namespace Components {
                       settings?: {
                           success: boolean
                       } | null
+                  }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
                   }
             )[]
             inputs?:
@@ -19488,6 +19835,7 @@ declare namespace Components {
                 | {
                       app_id: string
                       api_key?: string | null
+                      app_settings?: null | null | null
                       type: 'app'
                       refresh_token?: string | null
                   }
@@ -19692,6 +20040,21 @@ declare namespace Components {
                       settings?: {
                           success: boolean
                       } | null
+                  }
+                | {
+                      id: string
+                      kind: 'liquid-template'
+                      settings: {
+                          name: string
+                          template: string
+                          output: {
+                              data_type:
+                                  | 'string'
+                                  | 'number'
+                                  | 'boolean'
+                                  | 'date'
+                          }
+                      }
                   }
             )[]
             inputs?:
@@ -20182,6 +20545,7 @@ declare namespace Components {
                 | {
                       app_id: string
                       api_key?: string | null
+                      app_settings?: null | null | null
                       type: 'app'
                       refresh_token?: string | null
                   }
@@ -20795,6 +21159,20 @@ declare namespace Paths {
             export type $200 = Components.Schemas.ListWfEntrypointsResponseDto
         }
     }
+    namespace WfEntrypointControllerListLLMConversationEntrypoints {
+        namespace Parameters {
+            export type AccountId = number
+            export type Ids = [string, ...string[]]
+        }
+        export interface QueryParameters {
+            ids: Parameters.Ids
+            account_id: Parameters.AccountId
+        }
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ListLlmConversationEntrypointsResponseDto
+        }
+    }
     namespace WfExecutionControllerGet {
         namespace Parameters {
             export type Id = string
@@ -20957,6 +21335,14 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.WfEntrypointControllerList.Responses.$200>
+    /**
+     * WfEntrypointController_listLLMConversationEntrypoints
+     */
+    'WfEntrypointController_listLLMConversationEntrypoints'(
+        parameters?: Parameters<Paths.WfEntrypointControllerListLLMConversationEntrypoints.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.WfEntrypointControllerListLLMConversationEntrypoints.Responses.$200>
     /**
      * WfExecutionController_start
      */
@@ -21291,6 +21677,16 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.WfEntrypointControllerList.Responses.$200>
+    }
+    ['/entrypoints/llm-conversation']: {
+        /**
+         * WfEntrypointController_listLLMConversationEntrypoints
+         */
+        'get'(
+            parameters?: Parameters<Paths.WfEntrypointControllerListLLMConversationEntrypoints.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.WfEntrypointControllerListLLMConversationEntrypoints.Responses.$200>
     }
     ['/executions/start']: {
         /**

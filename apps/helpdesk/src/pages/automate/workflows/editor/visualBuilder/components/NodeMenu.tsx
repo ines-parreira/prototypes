@@ -14,6 +14,8 @@ import React, {
 import _isNil from 'lodash/isNil'
 import { DropdownItem } from 'reactstrap'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
@@ -390,6 +392,33 @@ const HttpRequestMenuItem = ({
             onClick={() => {
                 dispatch({
                     type: 'INSERT_HTTP_REQUEST_NODE',
+                    beforeNodeId: nodeId,
+                })
+            }}
+            floatingRef={floatingRef}
+        />
+    )
+}
+
+const LiquidTemplateMenuItem = ({
+    nodeId,
+    floatingRef,
+    description,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+    description?: string
+}) => {
+    const { dispatch } = useVisualBuilderContext()
+
+    return (
+        <MenuItem
+            label={labelByVisualBuilderNodeType.liquid_template}
+            description={description}
+            icon={<VisualBuilderActionIcon nodeType="liquid_template" />}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_LIQUID_TEMPLATE_NODE',
                     beforeNodeId: nodeId,
                 })
             }}
@@ -1076,10 +1105,25 @@ const AppMenuCategoryItems = ({
     )
 }
 
+type LiquidTemplateStepFlag = {
+    actions: boolean
+    actionsPlatform: boolean
+    flows: boolean
+}
+
 function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
     const { visualBuilderGraph } = useVisualBuilderContext()
 
     const triggerNode = visualBuilderGraph.nodes[0]
+
+    const liquidTemplateStepFlag = useFlag<LiquidTemplateStepFlag>(
+        FeatureFlagKey.LiquidTemplateStep,
+        {
+            actions: false,
+            actionsPlatform: false,
+            flows: false,
+        },
+    )
 
     const [menuItems, setMenuItems] = useState<ReactNode>(null)
 
@@ -1121,6 +1165,13 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                             floatingRef={floatingRef}
                             description="Perform 3rd party actions"
                         />
+                        {liquidTemplateStepFlag?.flows && (
+                            <LiquidTemplateMenuItem
+                                nodeId={nodeId}
+                                floatingRef={floatingRef}
+                                description="Use Liquid templates to transform data"
+                            />
+                        )}
                         <ChannelTriggerConditionsMenuItem
                             nodeId={nodeId}
                             floatingRef={floatingRef}
@@ -1195,6 +1246,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
         triggerNode.type,
         visualBuilderGraph.advanced_datetime,
         visualBuilderGraph.category,
+        liquidTemplateStepFlag?.flows,
     ])
 
     useEffect(() => {
