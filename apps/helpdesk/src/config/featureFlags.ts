@@ -81,6 +81,7 @@ export enum FeatureFlagKey {
     ConvertPerformanceView = 'convert-performance-view',
     CustomerTimelineDrawerUX = 'linear.task_SUPXP-3671.customer-timeline-drawer-ux',
     DefaultEmailAddress = 'default-email-address',
+    DesktopNotifications = 'linear.project_desktop-notifications.enabled',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     DTPCursorPolling = 'linear.project_ability-to-dictate-priority-of-tickets.frontend',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
