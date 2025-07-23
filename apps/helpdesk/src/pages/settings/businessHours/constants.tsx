@@ -1,6 +1,3 @@
-import { BusinessHoursList } from '@gorgias/helpdesk-types'
-
-import { IntegrationType } from 'models/integration/constants'
 import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import { AccountSettingBusinessHours } from 'state/currentAccount/types'
 
@@ -59,37 +56,4 @@ export const DEFAULT_BUSINESS_HOURS_SCHEDULE = {
     days: DAYS_OPTIONS[0].value,
     from_time: '00:00',
     to_time: '23:59',
-}
-
-export const mockedBusinessHours: BusinessHoursList = {
-    id: 1,
-    name: 'US - Product support',
-    business_hours_config: {
-        business_hours: [
-            {
-                days: '1,2,3,4,5',
-                from_time: '10:00',
-                to_time: '18:00',
-            },
-            {
-                days: '6,7',
-                from_time: '11:00',
-                to_time: '19:00',
-            },
-        ],
-        timezone: 'US/Central',
-    },
-    created_datetime: '2021-01-01T00:00:00Z',
-    integration_count: 1,
-    updated_datetime: '2021-01-01T00:00:00Z',
-    first_integration: {
-        integration_id: 1,
-        integration_name: 'Customer service',
-        integration_type: IntegrationType.Phone,
-        store: {
-            store_id: 1,
-            store_name: 'US - Sales',
-            store_type: IntegrationType.Shopify,
-        },
-    },
 }

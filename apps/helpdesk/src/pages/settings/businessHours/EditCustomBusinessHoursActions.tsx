@@ -8,6 +8,7 @@ import FormActions from 'core/forms/components/FormActions'
 import FormActionsGroup from 'core/forms/components/FormActionsGroup'
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import ConfirmButtonWithModal from 'pages/common/components/button/ConfirmButtonWithModal'
+import history from 'pages/history'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
 
@@ -21,7 +22,9 @@ export default function EditCustomBusinessHoursActions({
     isLoading,
 }: Props) {
     const { mutate: deleteBusinessHours, isLoading: isDeleting } =
-        useDeleteCustomBusinessHours(businessHours)
+        useDeleteCustomBusinessHours(businessHours, () => {
+            history.push(BUSINESS_HOURS_BASE_URL)
+        })
 
     return (
         <FormActions>

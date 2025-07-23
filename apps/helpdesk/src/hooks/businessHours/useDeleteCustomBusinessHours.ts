@@ -1,25 +1,31 @@
 import {
     BusinessHoursDetails,
+    queryKeys,
     useDeleteBusinessHours,
 } from '@gorgias/helpdesk-queries'
 
+import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
-import history from 'pages/history'
-import { BUSINESS_HOURS_BASE_URL } from 'pages/settings/businessHours/constants'
 
 export default function useDeleteCustomBusinessHours(
     businessHours: BusinessHoursDetails,
+    onSuccess?: () => void,
 ) {
     const notify = useNotify()
 
     return useDeleteBusinessHours({
         mutation: {
+            onSettled: () => {
+                appQueryClient.invalidateQueries({
+                    queryKey: queryKeys.businessHours.listBusinessHours(),
+                })
+            },
             onSuccess: () => {
                 notify.success(
                     `'${businessHours.name}' business hours were successfully deleted.`,
                 )
 
-                history.push(BUSINESS_HOURS_BASE_URL)
+                onSuccess?.()
             },
             onError: () => {
                 notify.error(

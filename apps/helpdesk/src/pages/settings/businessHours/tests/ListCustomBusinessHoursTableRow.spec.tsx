@@ -1,33 +1,72 @@
 import { screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
+
+import { mockListBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
 
 import { Form } from 'core/forms'
+import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import { IntegrationType } from 'models/integration/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import { mockedBusinessHours } from '../constants'
 import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'
 
+jest.mock('hooks/businessHours/useDeleteCustomBusinessHours')
+jest.mock('state/notifications/actions')
+
+const useDeleteCustomBusinessHoursMock = jest.mocked(
+    useDeleteCustomBusinessHours,
+)
+const mockDelete = jest.fn()
+useDeleteCustomBusinessHoursMock.mockReturnValue({
+    mutate: mockDelete,
+    isLoading: false,
+} as any)
+
 describe('ListCustomBusinessHoursTableRow', () => {
-    it('should render business hours information correctly', () => {
+    const data = mockListBusinessHoursResponse().data
+    const businessHours = mockListBusinessHoursResponse({
+        data: [
+            {
+                ...data[0],
+                integration_count: 1,
+                first_integration: {
+                    ...data[0].first_integration,
+                    store: {
+                        store_id: 111,
+                        store_type: 'store',
+                        store_name: 'US - Sales',
+                    },
+                    integration_id: 1,
+                    integration_name: 'name',
+                    integration_type: 'type',
+                },
+            },
+        ],
+    }).data[0]
+
+    beforeEach(() => {
+        mockDelete.mockClear()
+    })
+
+    it('should render ', () => {
         renderWithStoreAndQueryClientProvider(
             <Form onValidSubmit={jest.fn()}>
                 <ListCustomBusinessHoursTableRow
-                    businessHours={mockedBusinessHours}
+                    businessHours={businessHours}
                 />
             </Form>,
             {},
         )
 
-        expect(screen.getByText('US - Product support')).toBeInTheDocument()
-        expect(screen.getByText('US - Sales')).toBeInTheDocument()
-        expect(screen.getByText('US / Central')).toBeInTheDocument()
+        expect(screen.getByText(businessHours.name)).toBeInTheDocument()
+        expect(
+            screen.getByText(businessHours.business_hours_config.timezone),
+        ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Mon-Fri, 10:00 AM-6:00 PM | Weekend, 11:00 AM-7:00 PM',
+                businessHours.first_integration?.store!.store_name!,
             ),
         ).toBeInTheDocument()
-        expect(screen.getByText('Customer service')).toBeInTheDocument()
-
         expect(screen.getByText('edit')).toBeInTheDocument()
         expect(screen.getByText('delete')).toBeInTheDocument()
     })
@@ -37,7 +76,7 @@ describe('ListCustomBusinessHoursTableRow', () => {
             <Form onValidSubmit={jest.fn()}>
                 <ListCustomBusinessHoursTableRow
                     businessHours={{
-                        ...mockedBusinessHours,
+                        ...businessHours,
                         integration_count: 2,
                     }}
                 />
@@ -52,7 +91,7 @@ describe('ListCustomBusinessHoursTableRow', () => {
             <Form onValidSubmit={jest.fn()}>
                 <ListCustomBusinessHoursTableRow
                     businessHours={{
-                        ...mockedBusinessHours,
+                        ...businessHours,
                         first_integration: {
                             integration_id: 1,
                             integration_name: 'Customer service',
@@ -73,7 +112,7 @@ describe('ListCustomBusinessHoursTableRow', () => {
             <Form onValidSubmit={jest.fn()}>
                 <ListCustomBusinessHoursTableRow
                     businessHours={{
-                        ...mockedBusinessHours,
+                        ...businessHours,
                         integration_count: 0,
                         first_integration: null,
                     }}
@@ -82,5 +121,56 @@ describe('ListCustomBusinessHoursTableRow', () => {
         )
 
         expect(screen.getByText('-')).toBeInTheDocument()
+    })
+
+    it('should delete business hours when delete button is clicked and confirmed', async () => {
+        const user = userEvent.setup()
+
+        renderWithStoreAndQueryClientProvider(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={businessHours}
+                />
+            </Form>,
+        )
+
+        await user.click(screen.getByText('delete'))
+
+        expect(
+            screen.getByText(
+                `You are about to delete '${businessHours.name}' business hours.`,
+            ),
+        ).toBeInTheDocument()
+
+        await user.click(screen.getByText('Confirm'))
+
+        expect(mockDelete).toHaveBeenCalledWith({
+            id: businessHours.id,
+        })
+    })
+
+    it('should handle deletion error', async () => {
+        const user = userEvent.setup()
+
+        useDeleteCustomBusinessHoursMock.mockReturnValue({
+            mutate: mockDelete,
+            isLoading: false,
+            error: new Error('Deletion failed'),
+        } as any)
+
+        renderWithStoreAndQueryClientProvider(
+            <Form onValidSubmit={jest.fn()}>
+                <ListCustomBusinessHoursTableRow
+                    businessHours={businessHours}
+                />
+            </Form>,
+        )
+
+        await user.click(screen.getByText('delete'))
+        await user.click(screen.getByText('Confirm'))
+
+        expect(mockDelete).toHaveBeenCalledWith({
+            id: businessHours.id,
+        })
     })
 })

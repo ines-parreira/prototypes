@@ -7,8 +7,6 @@ import {
     mockDeleteBusinessHoursHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import history from 'pages/history'
-import { BUSINESS_HOURS_BASE_URL } from 'pages/settings/businessHours/constants'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import useDeleteCustomBusinessHours from '../useDeleteCustomBusinessHours'
@@ -45,8 +43,9 @@ const businessHours = mockBusinessHoursDetails()
 
 describe('useDeleteCustomBusinessHours', () => {
     it('should handle success correctly', async () => {
+        const onSuccess = jest.fn()
         const { result } = renderHookWithQueryClientProvider(() =>
-            useDeleteCustomBusinessHours(businessHours),
+            useDeleteCustomBusinessHours(businessHours, onSuccess),
         )
         await act(async () => {
             result.current.mutate({ id: businessHours.id })
@@ -55,7 +54,7 @@ describe('useDeleteCustomBusinessHours', () => {
         expect(mockNotify.success).toHaveBeenCalledWith(
             `'${businessHours.name}' business hours were successfully deleted.`,
         )
-        expect(history.push).toHaveBeenCalledWith(BUSINESS_HOURS_BASE_URL)
+        expect(onSuccess).toHaveBeenCalled()
     })
 
     it('should handle error correctly', async () => {

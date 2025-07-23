@@ -1,23 +1,33 @@
+import { Link } from 'react-router-dom'
+
 import { BusinessHoursList } from '@gorgias/helpdesk-types'
 import { Badge, IconButton, Label } from '@gorgias/merchant-ui-kit'
 
+import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import StoreDisplayName from 'pages/common/components/StoreDisplayName'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import BusinessHoursScheduleDisplay from './BusinessHoursScheduleDisplay'
-import { mockedBusinessHours } from './constants'
 
 import css from './ListCustomBusinessHours.less'
 
 type Props = {
-    businessHours?: BusinessHoursList
+    businessHours: BusinessHoursList
 }
 
 export default function ListCustomBusinessHoursTableRow({
-    businessHours = mockedBusinessHours,
+    businessHours,
 }: Props) {
+    const { mutate: deleteBusinessHours } =
+        useDeleteCustomBusinessHours(businessHours)
+
+    const handleDeletion = () => {
+        deleteBusinessHours({ id: businessHours.id })
+    }
+
     return (
         <TableBodyRow>
             <BodyCell className={css.nameScheduleColumn}>
@@ -77,16 +87,34 @@ export default function ListCustomBusinessHoursTableRow({
             </BodyCell>
             <BodyCell className={css.actionsColumn}>
                 <div className={css.actionsColumnContent}>
-                    <IconButton
-                        icon="edit"
-                        intent="secondary"
-                        fillStyle="ghost"
-                    />
-                    <IconButton
-                        icon="delete"
-                        intent="destructive"
-                        fillStyle="ghost"
-                    />
+                    <Link
+                        to={`/app/settings/business-hours/${businessHours.id}`}
+                    >
+                        <IconButton
+                            icon="edit"
+                            intent="secondary"
+                            fillStyle="ghost"
+                        />
+                    </Link>
+                    <ConfirmationPopover
+                        buttonProps={{
+                            intent: 'destructive',
+                        }}
+                        content={`You are about to delete '${businessHours.name}' business hours.`}
+                        id={`delete-${businessHours.id}`}
+                        onConfirm={handleDeletion}
+                        placement="right"
+                    >
+                        {({ uid, onDisplayConfirmation }) => (
+                            <IconButton
+                                icon="delete"
+                                intent="destructive"
+                                fillStyle="ghost"
+                                id={uid}
+                                onClick={onDisplayConfirmation}
+                            />
+                        )}
+                    </ConfirmationPopover>
                 </div>
             </BodyCell>
         </TableBodyRow>

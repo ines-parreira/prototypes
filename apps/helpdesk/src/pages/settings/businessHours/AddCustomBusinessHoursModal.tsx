@@ -1,9 +1,11 @@
 import {
     BusinessHoursCreate,
+    queryKeys,
     useCreateBusinessHours,
 } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { appQueryClient } from 'api/queryClient'
 import { FormSubmitButton } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
@@ -34,6 +36,11 @@ export default function AddCustomBusinessHoursModal({
 
     const { mutate: createBusinessHours, isLoading } = useCreateBusinessHours({
         mutation: {
+            onSettled: () => {
+                appQueryClient.invalidateQueries({
+                    queryKey: queryKeys.businessHours.listBusinessHours(),
+                })
+            },
             onSuccess: (response) => {
                 notify.success(
                     `'${response.data.name}' business hours were successfully created.`,
