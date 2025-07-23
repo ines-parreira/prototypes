@@ -34,6 +34,7 @@ jobs:
       has-other-affected-packages: ${{ env.HAS_OTHER_AFFECTED_PACKAGES }}
       other-affected-packages: ${{ env.OTHER_AFFECTED_PACKAGES }}
       other-not-affected-packages: ${{ env.OTHER_NOT_AFFECTED_PACKAGES }}
+      nx-base-commit: ${{ env.NX_BASE_COMMIT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -50,8 +51,20 @@ jobs:
       - name: Get affected packages
         id: get-affected-packages
         run: |
+          # Determine the base commit for affected detection
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            # On main branch, compare against the previous commit
+            NX_BASE_COMMIT="HEAD~1"
+            echo "On main branch, using base commit: $NX_BASE_COMMIT"
+          else
+            # On feature branches, compare against origin/main
+            NX_BASE_COMMIT="origin/main"
+            echo "On feature branch, using base commit: $NX_BASE_COMMIT"
+          fi
+          echo "NX_BASE_COMMIT=$NX_BASE_COMMIT" >> $GITHUB_ENV
+          
           # Check if @repo/helpdesk is affected
-          HELPDESK_AFFECTED_JSON=$(npx nx show projects --affected --projects=@repo/helpdesk --json --base=origin/main --head=HEAD)
+          HELPDESK_AFFECTED_JSON=$(npx nx show projects --affected --projects=@repo/helpdesk --json --base=$NX_BASE_COMMIT --head=HEAD)
           if echo "$HELPDESK_AFFECTED_JSON" | jq -e '. | length > 0' > /dev/null; then
             echo "HELPDESK_AFFECTED=true" >> $GITHUB_ENV
             echo "@repo/helpdesk is affected"
@@ -61,7 +74,7 @@ jobs:
           fi
           
           # Get other affected packages that have a test target, excluding helpdesk
-          OTHER_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=test --exclude=@repo/helpdesk --json --base=origin/main --head=HEAD)
+          OTHER_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=test --exclude=@repo/helpdesk --json --base=$NX_BASE_COMMIT --head=HEAD)
           
           # Check if there are any other affected packages
           if echo "$OTHER_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
@@ -126,6 +139,7 @@ jobs:
       has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
       other-affected-packages: ${{ needs.workspace-setup.outputs.other-affected-packages }}
       other-not-affected-packages: ${{ needs.workspace-setup.outputs.other-not-affected-packages }}
+      nx-base-commit: ${{ needs.workspace-setup.outputs.nx-base-commit }}
 
   build-smoke-test:
     name: Build smoke test
