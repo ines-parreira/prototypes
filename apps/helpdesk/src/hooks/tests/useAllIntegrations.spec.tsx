@@ -98,8 +98,7 @@ describe('useAllIntegrations', () => {
         expect(result.current.integrations).toStrictEqual([])
     })
 
-    // TODO(React18): Fix this flaky test
-    it.skip('should fetch and return integrations successfully', async () => {
+    it('should fetch and return integrations successfully', async () => {
         const mockData = createMockResponse(
             [mockIntegration1, mockIntegration2],
             null,
@@ -112,10 +111,8 @@ describe('useAllIntegrations', () => {
         })
 
         await waitFor(() => {
-            expect(result.current.isLoading).toBe(false)
+            expect(result.current.integrations).toEqual(mockData.data.data)
         })
-
-        expect(result.current.integrations).toEqual(mockData.data.data)
         expect(mockListIntegrations).toHaveBeenCalledWith({
             cursor: undefined,
             limit: 100,
