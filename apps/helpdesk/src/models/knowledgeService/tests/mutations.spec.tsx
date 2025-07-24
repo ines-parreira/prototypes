@@ -9,13 +9,19 @@ import {
     FindFeedbackParams,
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-client'
-import { mockUpsertFeedbackHandler } from '@gorgias/knowledge-service-mocks'
+import {
+    mockUpsertFeedbackHandler,
+    mockUpsertRulesProductRecommendationHandler,
+} from '@gorgias/knowledge-service-mocks'
 import { queryKeys } from '@gorgias/knowledge-service-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderHook } from 'utils/testing/renderHook'
 
-import { useUpsertFeedback } from '../mutations'
+import {
+    useUpsertFeedback,
+    useUpsertRulesProductRecommendation,
+} from '../mutations'
 import { generateUniqueId, optimisticallyUpdateFeedback } from '../utils'
 
 const server = setupServer()
@@ -987,5 +993,125 @@ describe('optimisticallyUpdateFeedback - edge cases', () => {
         // The data should remain unchanged as the default case just breaks
         expect(updatedData).toEqual({ data: existingData })
         expect(updatedData?.data?.executions[0].feedback.length).toBe(0)
+    })
+})
+
+describe('useUpsertRulesProductRecommendation', () => {
+    const queryClient = mockQueryClient()
+    const onSettledMock = jest.fn()
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        server.resetHandlers()
+
+        // Set up MSW handler for upsert feedback
+        const { handler } = mockUpsertRulesProductRecommendationHandler()
+        server.use(handler)
+
+        jest.spyOn(queryClient, 'cancelQueries')
+        jest.spyOn(queryClient, 'setQueryData')
+        jest.spyOn(queryClient, 'invalidateQueries')
+        jest.spyOn(queryClient, 'isMutating').mockReturnValue(1)
+    })
+
+    const wrapper = ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should call the correct API endpoint', async () => {
+        const { result } = renderHook(
+            () =>
+                useUpsertRulesProductRecommendation(123, {
+                    onSettled: onSettledMock,
+                }),
+            { wrapper },
+        )
+
+        result.current.mutate({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'excluded',
+                rules: [
+                    {
+                        type: 'product',
+                        items: [{ target: '123' }, { target: '456' }],
+                    },
+                ],
+            },
+        })
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+    })
+
+    it('should cancel queries when mutation starts', async () => {
+        const { result } = renderHook(
+            () =>
+                useUpsertRulesProductRecommendation(123, {
+                    onSettled: onSettledMock,
+                }),
+            { wrapper },
+        )
+
+        result.current.mutate({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'excluded',
+                rules: [
+                    {
+                        type: 'product',
+                        items: [{ target: '123' }, { target: '456' }],
+                    },
+                ],
+            },
+        })
+
+        await waitFor(() => {
+            expect(queryClient.cancelQueries).toHaveBeenCalledWith({
+                queryKey:
+                    queryKeys.productRecommendation.getRulesProductRecommendation(
+                        123,
+                    ),
+            })
+        })
+    })
+
+    it('should invalidate queries on settled', async () => {
+        const { result } = renderHook(
+            () =>
+                useUpsertRulesProductRecommendation(123, {
+                    onSettled: onSettledMock,
+                }),
+            { wrapper },
+        )
+
+        result.current.mutate({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'excluded',
+                rules: [
+                    {
+                        type: 'product',
+                        items: [{ target: '123' }, { target: '456' }],
+                    },
+                ],
+            },
+        })
+
+        await waitFor(() => {
+            expect(onSettledMock).toHaveBeenCalled()
+            expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
+                queryKey:
+                    queryKeys.productRecommendation.getRulesProductRecommendation(
+                        123,
+                    ),
+            })
+        })
     })
 })

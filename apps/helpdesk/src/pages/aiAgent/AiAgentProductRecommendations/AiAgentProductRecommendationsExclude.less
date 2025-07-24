@@ -8,24 +8,75 @@
     }
 
     .card {
-        display: flex;
-        flex-direction: column;
         border: 1px solid #ececec;
         border-radius: 12px;
         background-color: var(--neutral-grey-0);
         transition: ease-in-out 0.2s;
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+    }
+
+    .top {
+        display: flex;
+        gap: var(--layout-spacing-m);
         padding: var(--layout-spacing-m);
-        gap: var(--layout-spacing-xs);
+
+        .left {
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+            gap: var(--layout-spacing-xs);
+
+            .title {
+                .heading-subsection-semibold();
+                color: var(--neutral-grey-6);
+            }
+
+            .text {
+                .body-regular();
+                color: var(--neutral-grey-5);
+            }
+        }
     }
 
-    .title {
-        .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+    .product {
+        display: flex;
+        gap: var(--layout-spacing-s);
+        align-items: center;
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
+        border-top: 1px solid var(--neutral-grey-3);
+
+        .productImage {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 3px;
+        }
+
+        .productImagePlaceholder {
+            width: 32px;
+            height: 32px;
+            background-color: var(--neutral-grey-4);
+            border-radius: 3px;
+        }
+
+        .productTitle {
+            flex-grow: 1;
+            .body-semibold();
+            color: var(--neutral-grey-6);
+        }
+
+        .iconContainer {
+            height: 24px;
+            width: 24px;
+        }
+
+        .iconButton {
+            color: var(--neutral-grey-5) !important;
+        }
     }
 
-    .text {
-        .body-regular();
-        color: var(--neutral-grey-5);
+    .skeletonContainer {
+        padding: 0 var(--layout-spacing-m) var(--layout-spacing-m)
+            var(--layout-spacing-m);
     }
 }

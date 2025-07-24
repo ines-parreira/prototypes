@@ -13,6 +13,7 @@ import {
     mockFindAiReasoningAiReasoningHandler,
     mockFindFeedbackHandler,
     mockGetEarliestExecutionFeedbackHandler,
+    mockGetRulesProductRecommendationHandler,
 } from '@gorgias/knowledge-service-mocks'
 
 import { getGorgiasKsApiClient } from 'rest_api/knowledge_service_api/client'
@@ -28,6 +29,7 @@ import {
     useGetEarliestExecution,
     useGetFeedback,
     useGetMessageAiReasoning,
+    useGetRulesProductRecommendation,
 } from '../queries'
 
 jest.mock('rest_api/knowledge_service_api/client', () => ({
@@ -274,6 +276,71 @@ describe('knowledgeService queries', () => {
             renderHook(
                 () =>
                     useGetMessageAiReasoning(params, {
+                        staleTime: customStaleTime,
+                        retry: customRetry,
+                    }),
+                { wrapper },
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    staleTime: customStaleTime,
+                    retry: customRetry,
+                }),
+            )
+        })
+    })
+
+    describe('useGetRulesProductRecommendation', () => {
+        beforeEach(() => {
+            const { handler } = mockGetRulesProductRecommendationHandler()
+            server.use(handler)
+        })
+
+        it('should call API with correct parameters', async () => {
+            const { result } = renderHook(
+                () => useGetRulesProductRecommendation(123),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            // Just check that we got some data, the underlying hook handles the API call
+            expect(result.current.data).toBeDefined()
+        })
+
+        it('should use correct stale and cache times', async () => {
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(() => useGetRulesProductRecommendation(123), { wrapper })
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    staleTime: STALE_TIME_MS,
+                    cacheTime: CACHE_TIME_MS,
+                }),
+            )
+        })
+
+        it('should allow overriding query options', async () => {
+            const customStaleTime = 5000
+            const customRetry = false
+
+            const useQuerySpy = jest.spyOn(
+                require('@tanstack/react-query'),
+                'useQuery',
+            )
+
+            renderHook(
+                () =>
+                    useGetRulesProductRecommendation(123, {
                         staleTime: customStaleTime,
                         retry: customRetry,
                     }),

@@ -5,11 +5,13 @@ import {
     FindFeedbackParams,
     FindFeedbackResult,
     GetEarliestExecutionFeedbackResult,
+    GetRulesProductRecommendationResult,
 } from '@gorgias/knowledge-service-client'
 import {
     useFindAiReasoningAiReasoning,
     useFindFeedback,
     useGetEarliestExecutionFeedback,
+    useGetRulesProductRecommendation as useGetRulesProductRecommendationQuery,
 } from '@gorgias/knowledge-service-queries'
 
 import { getGorgiasKsApiClient } from 'rest_api/knowledge_service_api/client'
@@ -123,4 +125,30 @@ export const useGetMessageAiReasoning = (
         },
     })
     return { data: data?.data, ...rest }
+}
+
+export const useGetRulesProductRecommendation = (
+    integrationId: number,
+    overrides?: UseQueryOptions<
+        GetRulesProductRecommendationResult,
+        any,
+        GetRulesProductRecommendationResult,
+        QueryKey
+    >,
+) => {
+    const { data, ...rest } = useGetRulesProductRecommendationQuery(
+        integrationId,
+        {
+            query: {
+                staleTime: STALE_TIME_MS,
+                cacheTime: CACHE_TIME_MS,
+                ...overrides,
+            },
+        },
+    )
+
+    return {
+        data: data?.data,
+        ...rest,
+    }
 }
