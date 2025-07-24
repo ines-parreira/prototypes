@@ -26,4 +26,10 @@ describe('initServiceWorker', () => {
             '/web-app/build/helpdesk.service-worker.a.js',
         )
     })
+
+    it('should do nothing if the service worker api is not available', () => {
+        // @ts-expect-error readonly, but doesn't exist in jsdom
+        delete navigator.serviceWorker
+        require('../initServiceWorker')
+    })
 })
