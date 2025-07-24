@@ -28,6 +28,7 @@ describe('standalone utils', () => {
 
             expect(result).toEqual({
                 accessToken: '',
+                leadId: '',
             })
 
             // Verify that the keys match the required fields from INTEGRATIONS_MAPPING

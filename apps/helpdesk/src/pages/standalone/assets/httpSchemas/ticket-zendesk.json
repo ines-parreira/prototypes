@@ -3,15 +3,13 @@
     "body": {
         "ticket": {
             "comment": {
-                "body": "{{ticket.messages[-1]}}"
+                "body": "{{ticket.messages[-1]['body_text']}}"
             },
             "priority": "high",
-            "subject": "A handover happened"
+            "subject": "Handover: {{ticket.subject}}"
         }
     },
     "headers": {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
         "Authorization": "Basic {{basicToken}}"
     }
 }

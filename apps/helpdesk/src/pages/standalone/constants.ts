@@ -34,6 +34,11 @@ export const INTEGRATIONS_MAPPING: HelpdeskIntegration = {
                 slug: 'accessToken',
                 secret: true,
             },
+            leadId: {
+                label: 'Lead User ID',
+                slug: 'leadId',
+                secret: false,
+            },
         },
         label: 'Intercom',
     },

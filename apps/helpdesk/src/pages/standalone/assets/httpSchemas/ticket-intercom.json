@@ -1,11 +1,15 @@
 {
     "url": "https://api.intercom.io/messages",
     "body": {
-        "message_type": "in_app",
-        "body": "{{ticket.messages[-1]}}"
+        "from": {
+            "type": "lead",
+            "id": "{{leadId}}"
+        },
+        "body": "{{ticket.messages[-1]['body_html']}}",
+        "subject": "Handover: {{ticket.subject}}",
+        "referer": "https://twitter.com/bob"
     },
     "headers": {
-        "Content-Type": "application/json",
         "X-Intercom-Version": "2.0",
         "Authorization": "Bearer {{accessToken}}",
         "Intercom-Version": "2.13"
