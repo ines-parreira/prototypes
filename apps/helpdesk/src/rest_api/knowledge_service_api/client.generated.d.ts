@@ -97,6 +97,8 @@ declare namespace Components {
                     | 'EXTERNAL_SNIPPET'
                     | 'FILE_EXTERNAL_SNIPPET'
                     | 'STORE_WEBSITE_QUESTION_SNIPPET'
+                    | 'PRODUCT_KNOWLEDGE'
+                    | 'PRODUCT_RECOMMENDATION'
                 /**
                  * Resource set ID
                  */
@@ -180,6 +182,8 @@ declare namespace Components {
                         | 'EXTERNAL_SNIPPET'
                         | 'FILE_EXTERNAL_SNIPPET'
                         | 'STORE_WEBSITE_QUESTION_SNIPPET'
+                        | 'PRODUCT_KNOWLEDGE'
+                        | 'PRODUCT_RECOMMENDATION'
                     /**
                      * Resource set ID
                      */

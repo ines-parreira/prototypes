@@ -106,6 +106,7 @@ const MissingKnowledgeSelect = ({
             actions: enrichedData.actions || [],
             helpCenters: enrichedData.helpCenters || [],
             storeWebsiteQuestions: enrichedData.storeWebsiteQuestions || [],
+            products: enrichedData.products || [],
         }
         return [
             // Order is important here, as it determines the order of the options in the select dropdown

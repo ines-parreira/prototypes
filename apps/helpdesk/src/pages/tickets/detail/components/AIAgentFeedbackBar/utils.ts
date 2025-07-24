@@ -124,6 +124,9 @@ export const mapToKnowledgeSourceType = (
             return 'website'
         case AiAgentKnowledgeResourceTypeEnum.ORDER:
             return 'order'
+        case AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE:
+        case AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION:
+            return 'product'
         default:
             return 'article'
     }

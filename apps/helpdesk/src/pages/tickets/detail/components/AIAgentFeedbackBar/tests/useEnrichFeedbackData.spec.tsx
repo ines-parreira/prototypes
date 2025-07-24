@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ldClientMock } from 'jest-launchdarkly-mock'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
@@ -10,11 +10,13 @@ import {
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
+import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
@@ -22,6 +24,7 @@ import {
     getResourceMetadata,
     useEnrichFeedbackData,
     useGetKnowledgeResourceData,
+    useGetKnowledgeResourceMetadata,
     useGetResourceData,
     useGetResourcesReasoningMetadata,
 } from '../useEnrichFeedbackData'
@@ -49,6 +52,14 @@ jest.mock('pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions', () => ({
     useMultipleStoreWebsiteQuestions: jest.fn(),
 }))
 
+jest.mock('models/integration/queries', () => ({
+    useGetProductsByIdsFromIntegration: jest.fn(),
+}))
+
+jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
+    useShopifyIntegrationAndScope: jest.fn(),
+}))
+
 // Mock the getAiAgentNavigationRoutes function to prevent feature flag issues
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     getAiAgentNavigationRoutes: jest.fn(() => ({
@@ -66,6 +77,8 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         orderView: (id: number) => `/mock/order/view/${id}`,
         storeWebsiteQuestionView: (id: number) =>
             `/mock/store-website/view/${id}`,
+        productsContentDetail: (id: number) =>
+            `/app/ai-agent/shopify/test-store/knowledge/sources/products-content/${id}`,
     })),
 }))
 
@@ -135,7 +148,7 @@ describe('useGetResourceData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        ldClientMock.allFlags.mockReturnValue({
+        mockFlags({
             'ai-shopping-assistant-enabled': false,
         })
 
@@ -168,6 +181,9 @@ describe('useGetResourceData', () => {
             storeWebsiteQuestions: [],
             isLoading: false,
         })
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: 1,
+        })
     })
 
     it('should fetch resources correctly', () => {
@@ -179,6 +195,8 @@ describe('useGetResourceData', () => {
             ticketId: 123,
             shopName: 'test-store',
             shopType: 'shopify',
+            shopIntegrationId: 1,
+            productIds: [400],
         }
 
         const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
@@ -208,6 +226,7 @@ describe('useGetResourceData', () => {
             { id: 8, title: 'Store Website Question 1', helpCenterId: 300 },
             { id: 9, title: 'Store Website Question 2', helpCenterId: 300 },
         ]
+        const mockProducts = [{ id: 400 }]
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: mockArticles,
@@ -237,6 +256,10 @@ describe('useGetResourceData', () => {
             storeWebsiteQuestions: mockStoreWebsiteQuestions,
             isLoading: false,
         })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: mockProducts,
+            isLoading: false,
+        })
 
         const { result } = renderHook(() => useGetResourceData(params), {
             wrapper,
@@ -251,6 +274,7 @@ describe('useGetResourceData', () => {
             actions: mockActions,
             helpCenters: mockHelpCenters,
             storeWebsiteQuestions: mockStoreWebsiteQuestions,
+            products: mockProducts,
         })
 
         // Verify the hooks were called with correct parameters
@@ -274,6 +298,12 @@ describe('useGetResourceData', () => {
             helpCenterIds: [300],
             queryOptionsOverrides: expect.objectContaining({ enabled: true }),
         })
+
+        expect(useGetProductsByIdsFromIntegration).toHaveBeenCalledWith(
+            1,
+            [400],
+            true,
+        )
 
         expect(useGetStoreWorkflowsConfigurations).toHaveBeenCalledWith(
             {
@@ -300,6 +330,8 @@ describe('useGetResourceData', () => {
             ticketId: 123,
             shopName: 'test-store',
             shopType: 'shopify',
+            shopIntegrationId: 1,
+            productIds: [400],
         }
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
@@ -310,12 +342,72 @@ describe('useGetResourceData', () => {
             helpCenters: [],
             isLoading: true,
         })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: true,
+        })
 
         const { result } = renderHook(() => useGetResourceData(params), {
             wrapper,
         })
 
         expect(result.current).toBe(null)
+    })
+
+    it('should return empty products when using fallback shopIntegrationId', () => {
+        const params = {
+            queriesEnabled: true,
+            faqHelpCenterIds: [],
+            guidanceHelpCenterIds: [],
+            snippetHelpCenterIds: [],
+            shopName: 'test-store',
+            shopType: 'shopify',
+            shopIntegrationId: -1, // Fallback value when integrationId is null
+            productIds: [100, 200],
+        }
+
+        // Mock empty response for invalid integration ID
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() => useGetResourceData(params), {
+            wrapper,
+        })
+
+        expect(result.current?.products).toEqual([])
+        expect(result.current?.isLoading).toBe(false)
+        expect(result.current).not.toBe(null)
+    })
+
+    it('should return products successfully when using valid shopIntegrationId', () => {
+        const params = {
+            queriesEnabled: true,
+            faqHelpCenterIds: [],
+            guidanceHelpCenterIds: [],
+            snippetHelpCenterIds: [],
+            shopName: 'test-store',
+            shopType: 'shopify',
+            shopIntegrationId: 98765,
+            productIds: [300],
+        }
+
+        // Mock successful product response for valid integration ID
+        const mockProducts = [{ id: 300, title: 'Super Product' }]
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: mockProducts,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() => useGetResourceData(params), {
+            wrapper,
+        })
+
+        // When using valid integration ID, should return actual products
+        expect(result.current?.products).toEqual(mockProducts)
+        expect(result.current?.isLoading).toBe(false)
+        expect(result.current).not.toBe(null)
     })
 })
 
@@ -336,7 +428,9 @@ describe('useEnrichFeedbackData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        ldClientMock.allFlags.mockReturnValue({})
+        mockFlags({
+            'linear.project_surface-products-used-by-ai-agent-on-ai-feedback-tab': false,
+        })
         // Setup default mock returns
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -366,9 +460,16 @@ describe('useEnrichFeedbackData', () => {
             storeWebsiteQuestions: [],
             isLoading: false,
         })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: 1,
+        })
     })
 
-    it('should return enriched data from feedback executions', () => {
+    describe('when returning enriched data from feedback execution', () => {
         const storeConfiguration = createMockStoreConfiguration()
 
         // Current timestamp to use for date fields
@@ -590,121 +691,206 @@ describe('useEnrichFeedbackData', () => {
             ],
         } as FindFeedbackResult['data']
 
-        const mockArticles = [
-            {
-                id: 1,
-                translation: { title: 'Article 1', content: 'Content 1' },
-            },
-        ]
-        const mockGuidanceArticles = [
-            { id: 2, title: 'Guidance Title', content: 'Guidance Content' },
-        ]
-        const mockSourceItems = [
-            { id: 3, title: 'External Snippet', ingestionId: 300 },
-        ]
-        const mockIngestedFiles = [
-            {
-                id: 4,
-                title: 'test.pdf',
-                status: 'SUCCESSFUL',
-                filename: 'test.pdf',
-                google_storage_url: 'https://storage.example.com/test.pdf',
-            },
-        ]
-        const mockActions = [{ id: '6', name: 'Action 1' }]
-        const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
-        const mockStoreWebsiteQuestions = [
-            {
-                id: 8,
-                article_id: 8,
-                title: 'Store Website Question 1',
-                helpCenterId: 300,
-            },
-            {
-                id: 9,
-                article_id: 9,
-                title: 'Store Website Question 2',
-                helpCenterId: 300,
-            },
-        ]
+        beforeEach(() => {
+            const mockArticles = [
+                {
+                    id: 1,
+                    translation: { title: 'Article 1', content: 'Content 1' },
+                },
+            ]
+            const mockGuidanceArticles = [
+                { id: 2, title: 'Guidance Title', content: 'Guidance Content' },
+            ]
+            const mockSourceItems = [
+                { id: 3, title: 'External Snippet', ingestionId: 300 },
+            ]
+            const mockIngestedFiles = [
+                {
+                    id: 4,
+                    title: 'test.pdf',
+                    status: 'SUCCESSFUL',
+                    filename: 'test.pdf',
+                    google_storage_url: 'https://storage.example.com/test.pdf',
+                },
+            ]
+            const mockActions = [{ id: '6', name: 'Action 1' }]
+            const mockHelpCenters = [{ id: 1, subdomain: 'test' }]
+            const mockStoreWebsiteQuestions = [
+                {
+                    id: 8,
+                    article_id: 8,
+                    title: 'Store Website Question 1',
+                    helpCenterId: 300,
+                },
+                {
+                    id: 9,
+                    article_id: 9,
+                    title: 'Store Website Question 2',
+                    helpCenterId: 300,
+                },
+            ]
+            const mockProducts = [
+                {
+                    id: 10,
+                },
+                {
+                    id: 11,
+                },
+            ]
 
-        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
-            articles: mockArticles,
-            isLoading: false,
-        })
-        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
-            helpCenters: mockHelpCenters,
-            isLoading: false,
-        })
-        ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({
-            guidanceArticles: mockGuidanceArticles,
-            isGuidanceArticleListLoading: false,
-        })
-        ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
-            sourceItems: mockSourceItems,
-            isSourceItemsListLoading: false,
-        })
-        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
-            ingestedFiles: mockIngestedFiles,
-            isLoading: false,
-        })
-        ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
-            data: mockActions,
-            isLoading: false,
-        })
-        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
-            storeWebsiteQuestions: mockStoreWebsiteQuestions,
-            isLoading: false,
-        })
-
-        const { result } = renderHook(
-            () =>
-                useEnrichFeedbackData({
-                    data: feedbackData,
-                    storeConfiguration,
-                }),
-            { wrapper },
-        )
-
-        expect(result.current?.isLoading).toBe(false)
-
-        // Check that knowledgeResources has all resource types
-        const knowledgeResourceTypes =
-            result.current?.enrichedData.knowledgeResources.map(
-                (kr) => kr.resource.resourceType,
+            ;(
+                useGetMultipleHelpCenterArticleLists as jest.Mock
+            ).mockReturnValue({
+                articles: mockArticles,
+                isLoading: false,
+            })
+            ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+                helpCenters: mockHelpCenters,
+                isLoading: false,
+            })
+            ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({
+                guidanceArticles: mockGuidanceArticles,
+                isGuidanceArticleListLoading: false,
+            })
+            ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
+                sourceItems: mockSourceItems,
+                isSourceItemsListLoading: false,
+            })
+            ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue(
+                {
+                    ingestedFiles: mockIngestedFiles,
+                    isLoading: false,
+                },
             )
+            ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
+                data: mockActions,
+                isLoading: false,
+            })
+            ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+                storeWebsiteQuestions: mockStoreWebsiteQuestions,
+                isLoading: false,
+            })
+            ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+                data: mockProducts,
+                isLoading: false,
+            })
+        })
 
-        expect(knowledgeResourceTypes).toEqual([
-            'GUIDANCE',
-            'ACTION',
-            'ARTICLE',
-            'STORE_WEBSITE_QUESTION_SNIPPET',
-            'ORDER',
-            'EXTERNAL_SNIPPET',
-            'EXTERNAL_SNIPPET',
-            'EXTERNAL_SNIPPET',
-            'FILE_EXTERNAL_SNIPPET',
-        ])
+        describe('with product resurfacing disabled', () => {
+            it('should return enriched data from feedback executions without products', () => {
+                const { result } = renderHook(
+                    () =>
+                        useEnrichFeedbackData({
+                            data: feedbackData,
+                            storeConfiguration,
+                        }),
+                    { wrapper },
+                )
 
-        // Check that suggestedResources has all resource types
-        const suggestedResourceTypes =
-            result.current?.enrichedData.suggestedResources.map(
-                (sr) => sr.parsedResource.resourceType,
-            )
+                expect(result.current?.isLoading).toBe(false)
 
-        expect(suggestedResourceTypes).toEqual([
-            'GUIDANCE',
-            'ACTION',
-            'ARTICLE',
-            'ARTICLE',
-            'EXTERNAL_SNIPPET',
-            'FILE_EXTERNAL_SNIPPET',
-        ])
-        // Check for the freeForm feedback
-        expect(result.current?.enrichedData.freeForm).not.toBeNull()
-        expect(
-            result.current?.enrichedData.freeForm?.feedback.feedbackType,
-        ).toBe('TICKET_FREEFORM')
+                // Check that knowledgeResources has all resource types
+                const knowledgeResourceTypes =
+                    result.current?.enrichedData.knowledgeResources.map(
+                        (kr) => kr.resource.resourceType,
+                    )
+
+                expect(knowledgeResourceTypes).toEqual([
+                    'GUIDANCE',
+                    'ACTION',
+                    'ARTICLE',
+                    'STORE_WEBSITE_QUESTION_SNIPPET',
+                    'ORDER',
+                    'EXTERNAL_SNIPPET',
+                    'EXTERNAL_SNIPPET',
+                    'EXTERNAL_SNIPPET',
+                    'FILE_EXTERNAL_SNIPPET',
+                ])
+
+                // Check that suggestedResources has all resource types
+                const suggestedResourceTypes =
+                    result.current?.enrichedData.suggestedResources.map(
+                        (sr) => sr.parsedResource.resourceType,
+                    )
+
+                expect(suggestedResourceTypes).toEqual([
+                    'GUIDANCE',
+                    'ACTION',
+                    'ARTICLE',
+                    'ARTICLE',
+                    'EXTERNAL_SNIPPET',
+                    'FILE_EXTERNAL_SNIPPET',
+                ])
+                // Check for the freeForm feedback
+                expect(result.current?.enrichedData.freeForm).not.toBeNull()
+                expect(
+                    result.current?.enrichedData.freeForm?.feedback
+                        .feedbackType,
+                ).toBe('TICKET_FREEFORM')
+            })
+        })
+
+        describe('with product resurfacing enabled', () => {
+            beforeEach(() => {
+                mockFlags({
+                    'linear.project_surface-products-used-by-ai-agent-on-ai-feedback-tab': true,
+                })
+            })
+
+            it('should return enriched data from feedback executions with mock products', () => {
+                const { result } = renderHook(
+                    () =>
+                        useEnrichFeedbackData({
+                            data: feedbackData,
+                            storeConfiguration,
+                        }),
+                    { wrapper },
+                )
+
+                expect(result.current?.isLoading).toBe(false)
+
+                // Check that knowledgeResources has all resource types
+                const knowledgeResourceTypes =
+                    result.current?.enrichedData.knowledgeResources.map(
+                        (kr) => kr.resource.resourceType,
+                    )
+
+                expect(knowledgeResourceTypes).toEqual([
+                    'GUIDANCE',
+                    'ACTION',
+                    'ARTICLE',
+                    'STORE_WEBSITE_QUESTION_SNIPPET',
+                    'ORDER',
+                    'PRODUCT_KNOWLEDGE',
+                    'PRODUCT_RECOMMENDATION',
+                    'EXTERNAL_SNIPPET',
+                    'EXTERNAL_SNIPPET',
+                    'EXTERNAL_SNIPPET',
+                    'FILE_EXTERNAL_SNIPPET',
+                ])
+
+                // Check that suggestedResources has all resource types
+                const suggestedResourceTypes =
+                    result.current?.enrichedData.suggestedResources.map(
+                        (sr) => sr.parsedResource.resourceType,
+                    )
+
+                expect(suggestedResourceTypes).toEqual([
+                    'GUIDANCE',
+                    'ACTION',
+                    'ARTICLE',
+                    'ARTICLE',
+                    'EXTERNAL_SNIPPET',
+                    'FILE_EXTERNAL_SNIPPET',
+                ])
+                // Check for the freeForm feedback
+                expect(result.current?.enrichedData.freeForm).not.toBeNull()
+                expect(
+                    result.current?.enrichedData.freeForm?.feedback
+                        .feedbackType,
+                ).toBe('TICKET_FREEFORM')
+            })
+        })
     })
 
     it('should handle errors in feedback data parsing', () => {
@@ -898,6 +1084,161 @@ describe('useEnrichFeedbackData', () => {
             suggestedResources: [],
             freeForm: null,
         })
+    })
+
+    it('should handle null integrationId gracefully and return empty enriched data', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        // Mock integrationId as null to test graceful handling
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: null,
+        })
+
+        // Mock empty products response since integrationId is null
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '400',
+                            resourceType: 'PRODUCT_KNOWLEDGE',
+                            resourceSetId: '',
+                            resourceTitle: 'Product Title',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as FindFeedbackResult['data']
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.enrichedData).toEqual({
+            knowledgeResources: [],
+            suggestedResources: [],
+            freeForm: null,
+        })
+        expect(result.current?.isLoading).toBe(false)
+    })
+
+    it('should successfully process non-product resources when integrationId is available', () => {
+        const storeConfiguration = createMockStoreConfiguration()
+
+        // Mock integrationId with a valid value
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: 12345,
+        })
+
+        // Mock successful article fetch response
+        const mockArticle = {
+            id: 1,
+            translation: { title: 'Test Article', content: 'Article content' },
+            helpCenterId: 100,
+        }
+        ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
+            articles: [mockArticle],
+            isLoading: false,
+        })
+
+        // Mock help center response
+        ;(useGetMultipleHelpCenter as jest.Mock).mockReturnValue({
+            helpCenters: [{ id: 100, subdomain: 'test' }],
+            isLoading: false,
+        })
+
+        // Mock all other hooks to return empty data
+        ;(useMultipleGuidanceArticles as jest.Mock).mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+        ;(useMultiplePublicResources as jest.Mock).mockReturnValue({
+            sourceItems: [],
+            isSourceItemsListLoading: false,
+        })
+        ;(useGetMultipleFileIngestionSnippets as jest.Mock).mockReturnValue({
+            ingestedFiles: [],
+            isLoading: false,
+        })
+        ;(useGetStoreWorkflowsConfigurations as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+        ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
+            storeWebsiteQuestions: [],
+            isLoading: false,
+        })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Test Article',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: mockStoreConfiguration,
+                },
+            ],
+        } as FindFeedbackResult['data']
+
+        const { result } = renderHook(
+            () =>
+                useEnrichFeedbackData({
+                    data: feedbackData,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        // When integrationId is valid, hook should process resources normally
+        expect(result.current?.enrichedData.knowledgeResources).toHaveLength(1)
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].resource
+                .resourceType,
+        ).toBe('ARTICLE')
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].resource
+                .resourceId,
+        ).toBe('1')
+        expect(
+            result.current?.enrichedData.knowledgeResources[0].metadata.title,
+        ).toBe('Test Article')
+        expect(result.current?.isLoading).toBe(false)
     })
 
     it('should handle undefined data parameter', () => {
@@ -1682,6 +2023,17 @@ describe('useGetResourcesReasoningMetadata', () => {
             resourceType: AiAgentKnowledgeResourceTypeEnum.ORDER,
             resourceTitle: '#123',
         },
+        {
+            resourceId: '8',
+            resourceType: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+            resourceTitle: 'Test shoes',
+        },
+        {
+            resourceId: '9',
+            resourceType:
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
+            resourceTitle: 'Test backpack',
+        },
     ]
 
     const wrapper = ({ children }: any) => (
@@ -1693,7 +2045,7 @@ describe('useGetResourcesReasoningMetadata', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        ldClientMock.allFlags.mockReturnValue({
+        mockFlags({
             'ai-shopping-assistant-enabled': false,
         })
 
@@ -1726,6 +2078,13 @@ describe('useGetResourcesReasoningMetadata', () => {
             storeWebsiteQuestions: [],
             isLoading: false,
         })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: 1,
+        })
     })
 
     it('should correctly process resources and call useGetResourceData with correct parameters', () => {
@@ -1754,6 +2113,12 @@ describe('useGetResourcesReasoningMetadata', () => {
             helpCenterIds: [300, 300], // two resources tied to the same help center are requested
             queryOptionsOverrides: expect.objectContaining({ enabled: true }),
         })
+
+        expect(useGetProductsByIdsFromIntegration).toHaveBeenCalledWith(
+            1,
+            [8, 9],
+            true,
+        )
     })
 
     it('should return enriched resource metadata for all resource types', () => {
@@ -1795,6 +2160,7 @@ describe('useGetResourcesReasoningMetadata', () => {
         ]
         const mockActions = [{ id: '6', name: 'Action Name' }]
         const mockHelpCenters = [{ id: 100, subdomain: 'test' }]
+        const mockProducts = [{ id: 8 }, { id: 9 }]
 
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: mockArticles,
@@ -1822,6 +2188,10 @@ describe('useGetResourcesReasoningMetadata', () => {
         })
         ;(useMultipleStoreWebsiteQuestions as jest.Mock).mockReturnValue({
             storeWebsiteQuestions: [],
+            isLoading: false,
+        })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: mockProducts,
             isLoading: false,
         })
 
@@ -1868,6 +2238,16 @@ describe('useGetResourcesReasoningMetadata', () => {
                 content: 'Order #123',
                 url: 'https://admin.shopify.com/store/test-store/orders/7',
             },
+            {
+                title: 'Test shoes',
+                content: 'Test shoes',
+                url: '/app/ai-agent/shopify/test-store/knowledge/sources/products-content/8',
+            },
+            {
+                title: 'Test backpack',
+                content: 'Test backpack',
+                url: '/app/ai-agent/shopify/test-store/knowledge/sources/products-content/9',
+            },
         ])
     })
 
@@ -1906,6 +2286,89 @@ describe('useGetResourcesReasoningMetadata', () => {
             { version_status: 'latest_draft', per_page: 1000 },
             expect.objectContaining({ enabled: false }),
         )
+    })
+
+    it('should return empty metadata for product resources when integrationId is null', () => {
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: null,
+        })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+
+        const productResources: KnowledgeReasoningResource[] = [
+            {
+                resourceId: '100',
+                resourceType:
+                    AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+            },
+            {
+                resourceId: '200',
+                resourceType:
+                    AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
+            },
+        ]
+
+        const { result } = renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources: productResources,
+                    storeConfiguration: mockStoreConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.data).toHaveLength(2)
+        expect(result.current?.data[0]).toEqual({
+            title: '',
+            content: '',
+            isDeleted: true,
+        })
+        expect(result.current?.data[1]).toEqual({
+            title: '',
+            content: '',
+            isDeleted: true,
+        })
+        expect(result.current?.isLoading).toBe(false)
+    })
+
+    it('should return enriched product metadata when integrationId is valid', () => {
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: 54321,
+        })
+
+        const mockProduct = { id: 300, title: 'Amazing Product' }
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [mockProduct],
+            isLoading: false,
+        })
+
+        const productResources: KnowledgeReasoningResource[] = [
+            {
+                resourceId: '300',
+                resourceType:
+                    AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+                resourceTitle: 'Amazing Product',
+            },
+        ]
+
+        const { result } = renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources: productResources,
+                    storeConfiguration: mockStoreConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.data).toHaveLength(1)
+        expect(result.current?.data[0]).toEqual({
+            title: 'Amazing Product',
+            content: 'Amazing Product',
+            url: '/app/ai-agent/shopify/test-store/knowledge/sources/products-content/300',
+        })
+        expect(result.current?.isLoading).toBe(false)
     })
 })
 
@@ -1949,6 +2412,10 @@ describe('useGetKnowledgeResourceData', () => {
             storeWebsiteQuestions: [],
             isLoading: false,
         })
+        ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
     })
 
     it('should return null when loading', () => {
@@ -1958,8 +2425,10 @@ describe('useGetKnowledgeResourceData', () => {
             guidanceHelpCenterQueryData: { ids: [200], recordIds: [2] },
             snippetHelpCenterQueryData: { ids: [300], recordIds: [3] },
             actionIds: [6],
+            productIds: [7],
             shopName: 'test-store',
             shopType: 'shopify',
+            shopIntegrationId: 1,
         }
 
         // Make at least one dependency loading
@@ -1975,11 +2444,45 @@ describe('useGetKnowledgeResourceData', () => {
 
         expect(result.current).toBe(null)
     })
+
+    it('should handle integrationId extraction in useGetKnowledgeResourceMetadata', () => {
+        ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
+            integrationId: 12345,
+        })
+
+        const mockStoreConfiguration = createMockStoreConfiguration({
+            storeName: 'test-store',
+            shopType: 'shopify',
+        })
+
+        const feedbackData = {
+            accountId: 123,
+            objectType: 'TICKET',
+            objectId: '123',
+            executions: [],
+        } as FindFeedbackResult['data']
+
+        const { result } = renderHook(
+            () =>
+                useGetKnowledgeResourceMetadata({
+                    data: feedbackData,
+                    storeConfiguration: mockStoreConfiguration,
+                    queriesEnabled: true,
+                    hasSurfacedProductsInFeedback: false,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current?.isLoading).toBe(false)
+        expect(result.current?.knowledgeResources).toBeDefined()
+        expect(Array.isArray(result.current?.knowledgeResources)).toBe(true)
+        expect(result.current?.knowledgeResources).toHaveLength(0)
+    })
 })
 
 describe('getResourceMetadata', () => {
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({
+        mockFlags({
             'ai-shopping-assistant-enabled': false,
         })
     })

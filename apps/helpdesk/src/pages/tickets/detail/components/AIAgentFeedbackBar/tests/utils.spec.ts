@@ -119,6 +119,21 @@ describe('mapToKnowledgeSourceType', () => {
                 AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
             ),
         ).toBe('website')
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+            ),
+        ).toBe('product')
+        expect(
+            mapToKnowledgeSourceType(
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
+            ),
+        ).toBe('product')
+        expect(
+            mapToKnowledgeSourceType(
+                'unknown' as AiAgentKnowledgeResourceTypeEnum,
+            ),
+        ).toBe('article')
     })
 })
 

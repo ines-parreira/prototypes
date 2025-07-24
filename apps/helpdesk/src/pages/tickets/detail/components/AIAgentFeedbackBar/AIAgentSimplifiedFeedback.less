@@ -83,7 +83,7 @@
                 color: var(--neutral-grey-6);
                 cursor: default;
 
-                &.deleted {
+                .deleted {
                     background-color: var(--neutral-grey-0);
                     cursor: not-allowed;
                     span {
@@ -119,6 +119,12 @@
 
         &:focus-visible {
             outline: none;
+        }
+
+        .deleted {
+            span {
+                color: var(--neutral-grey-4) !important;
+            }
         }
     }
 

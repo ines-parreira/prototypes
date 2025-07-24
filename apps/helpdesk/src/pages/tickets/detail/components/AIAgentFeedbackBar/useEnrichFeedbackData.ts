@@ -1,11 +1,14 @@
 import { useMemo } from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
 import {
     FeedbackExecutionsItem,
     FindAiReasoningAiReasoningResult,
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
@@ -14,11 +17,13 @@ import {
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
+import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {
     AiAgentFeedbackTypeEnum,
     AiAgentKnowledgeResourceTypeEnum,
@@ -40,9 +45,32 @@ export const knowledgeResourceOrder = [
     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
     AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
     AiAgentKnowledgeResourceTypeEnum.ORDER,
+    AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+    AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
     AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
     AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
 ]
+
+const mockProductRecommendation = {
+    id: 'id-1',
+    resourceId: '15029551137137',
+    feedback: null,
+    resourceType: AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
+    resourceLocale: null,
+    resourceSetId: '15029551137137',
+    resourceTitle: 'ADIDAS | CLASSIC BACKPACK | LEGEND INK MULTICOLOUR',
+}
+
+// TODO: REMOVE IN PRODUCTION - Mock products for testing purposes only
+const mockProductKnowledge = {
+    id: 'id-2',
+    resourceId: '15029551104369',
+    feedback: null,
+    resourceType: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+    resourceLocale: null,
+    resourceSetId: '15029551104369',
+    resourceTitle: 'ADIDAS | CLASSIC BACKPACK',
+}
 
 /**
  * Extracts distinct help center IDs from resources
@@ -141,6 +169,32 @@ const useExtractDistinctHelpCenterFromResources = (
 }
 
 /**
+ * Extracts distinct products IDs from resources
+ */
+const useExtractDistinctProductIdsFromResources = (
+    executions?: FindFeedbackResult['data']['executions'],
+) => {
+    return useMemo(() => {
+        const output: number[] = []
+
+        for (const execution of executions ?? []) {
+            for (const resource of execution.resources ?? []) {
+                switch (resource.resourceType) {
+                    case AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE:
+                    case AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION:
+                        output.push(Number(resource.resourceId))
+                        break
+                    default:
+                        break
+                }
+            }
+        }
+
+        return output
+    }, [executions])
+}
+
+/**
  * Fetches action resources based on extracted resource data
  */
 const useActionResources = (
@@ -208,6 +262,9 @@ export const getResourceMetadata = (
                 typeof useMultipleStoreWebsiteQuestions
             >['storeWebsiteQuestions']
         >
+        products: NonNullable<
+            ReturnType<typeof useGetProductsByIdsFromIntegration>['data']
+        >
     } | null,
 ) => {
     const flags = getLDClient().allFlags()
@@ -229,6 +286,7 @@ export const getResourceMetadata = (
         actions,
         helpCenters,
         storeWebsiteQuestions,
+        products,
     } = resourceData
 
     switch (type) {
@@ -335,6 +393,19 @@ export const getResourceMetadata = (
                 url: shopifyAdminBaseUrl(shopName) + `/orders/${id}`,
             }
         }
+        case AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE:
+        case AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION: {
+            const product = products.find(
+                (product) => product.id === idAsNumber,
+            )
+            return product
+                ? {
+                      title: title ?? '',
+                      content: title ?? '',
+                      url: aiAgentRoutes?.productsContentDetail(idAsNumber),
+                  }
+                : emptyMetadata
+        }
         default: {
             return emptyMetadata
         }
@@ -386,6 +457,7 @@ const getResourceType = (
 const useProcessResources = (
     executions: FeedbackExecutionsItem[] = [],
     shopName: string,
+    hasSurfacedProductsInFeedback: boolean,
     resourceData: {
         articles: NonNullable<
             ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
@@ -409,6 +481,9 @@ const useProcessResources = (
             ReturnType<
                 typeof useMultipleStoreWebsiteQuestions
             >['storeWebsiteQuestions']
+        >
+        products: NonNullable<
+            ReturnType<typeof useGetProductsByIdsFromIntegration>['data']
         >
     } | null,
 ) => {
@@ -438,6 +513,14 @@ const useProcessResources = (
                         ingestedFiles: resourceData?.ingestedFiles ?? [],
                     },
                 )
+
+                if (
+                    !hasSurfacedProductsInFeedback &&
+                    (type === 'PRODUCT_KNOWLEDGE' ||
+                        type === 'PRODUCT_RECOMMENDATION')
+                ) {
+                    return
+                }
 
                 resource.resourceType = type as typeof resource.resourceType
                 let metadata = getResourceMetadata(
@@ -489,6 +572,7 @@ const useProcessResources = (
                                 shopName,
                                 resourceData,
                             )
+
                             if (!metadata) {
                                 return
                             }
@@ -536,7 +620,7 @@ const useProcessResources = (
         })
 
         return output
-    }, [executions, shopName, resourceData])
+    }, [executions, shopName, hasSurfacedProductsInFeedback, resourceData])
 }
 
 export const useGetResourceData = ({
@@ -544,15 +628,19 @@ export const useGetResourceData = ({
     faqHelpCenterIds,
     guidanceHelpCenterIds,
     snippetHelpCenterIds,
+    productIds,
     shopName,
     shopType,
+    shopIntegrationId,
 }: {
     queriesEnabled: boolean
     faqHelpCenterIds: number[]
     guidanceHelpCenterIds: number[]
     snippetHelpCenterIds: number[]
+    productIds: number[]
     shopName: string
     shopType: string
+    shopIntegrationId: number
 }) => {
     const { articles, isLoading: isArticlesLoading } =
         useGetMultipleHelpCenterArticleLists(
@@ -627,6 +715,12 @@ export const useGetResourceData = ({
         queriesEnabled && !!shopName && !!shopType,
     )
 
+    const { data: products, isLoading: isProductsLoading } =
+        useGetProductsByIdsFromIntegration(
+            shopIntegrationId,
+            productIds,
+            queriesEnabled,
+        )
     const isLoading =
         isArticlesLoading ||
         isGuidanceArticleListLoading ||
@@ -634,7 +728,8 @@ export const useGetResourceData = ({
         isActionsLoading ||
         isIngesting ||
         isHelpCentersLoading ||
-        isStoreWebsiteQuestionsLoading
+        isStoreWebsiteQuestionsLoading ||
+        isProductsLoading
 
     return useMemo(() => {
         if (isLoading) {
@@ -650,6 +745,7 @@ export const useGetResourceData = ({
             actions,
             helpCenters,
             storeWebsiteQuestions,
+            products: products || [],
         }
     }, [
         isLoading,
@@ -660,6 +756,7 @@ export const useGetResourceData = ({
         actions,
         helpCenters,
         storeWebsiteQuestions,
+        products,
     ])
 }
 
@@ -669,8 +766,10 @@ export const useGetKnowledgeResourceData = (props: {
     guidanceHelpCenterQueryData: { ids: number[]; recordIds: number[] }
     snippetHelpCenterQueryData: { ids: number[]; recordIds: number[] }
     actionIds: number[]
+    productIds: number[]
     shopName: string
     shopType: string
+    shopIntegrationId: number
 }) => {
     const {
         queriesEnabled,
@@ -678,8 +777,10 @@ export const useGetKnowledgeResourceData = (props: {
         guidanceHelpCenterQueryData,
         snippetHelpCenterQueryData,
         actionIds,
+        productIds,
         shopName,
         shopType,
+        shopIntegrationId,
     } = props
     const { articles, isLoading: isArticlesLoading } =
         useGetMultipleHelpCenterArticleLists(
@@ -776,6 +877,13 @@ export const useGetKnowledgeResourceData = (props: {
         queriesEnabled && !!shopName && !!shopType && actionIds.length > 0,
     )
 
+    const { data: products, isLoading: isProductsLoading } =
+        useGetProductsByIdsFromIntegration(
+            shopIntegrationId,
+            productIds,
+            queriesEnabled && productIds.length > 0 && !!shopIntegrationId,
+        )
+
     const isLoading =
         isArticlesLoading ||
         isGuidanceArticleListLoading ||
@@ -783,7 +891,8 @@ export const useGetKnowledgeResourceData = (props: {
         isActionsLoading ||
         isIngesting ||
         isHelpCentersLoading ||
-        isStoreWebsiteQuestionsLoading
+        isStoreWebsiteQuestionsLoading ||
+        isProductsLoading
 
     if (isLoading) {
         return null
@@ -798,6 +907,7 @@ export const useGetKnowledgeResourceData = (props: {
         actions,
         helpCenters,
         storeWebsiteQuestions,
+        products: products || [],
     }
 }
 
@@ -805,13 +915,17 @@ export const useGetKnowledgeResourceMetadata = ({
     data,
     storeConfiguration,
     queriesEnabled,
+    hasSurfacedProductsInFeedback,
 }: {
     data?: FindFeedbackResult['data']
     storeConfiguration?: StoreConfiguration
     queriesEnabled: boolean
+    hasSurfacedProductsInFeedback: boolean
 }) => {
     const shopName = storeConfiguration?.storeName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
+
+    const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
     const knowledgeReourceQueryData = useMemo(() => {
         const knowledgeResources = data?.executions?.flatMap(
@@ -822,6 +936,7 @@ export const useGetKnowledgeResourceMetadata = ({
             guidanceHelpCenterQueryData,
             snippetHelpCenterQueryData,
             actionIds,
+            productIds,
         } = {
             faqHelpCenterQueryData: {
                 ids: [] as number[],
@@ -836,6 +951,7 @@ export const useGetKnowledgeResourceMetadata = ({
                 recordIds: [] as number[],
             },
             actionIds: [] as number[],
+            productIds: [] as number[],
         }
         for (const resource of knowledgeResources ?? []) {
             switch (resource.resourceType) {
@@ -894,6 +1010,7 @@ export const useGetKnowledgeResourceMetadata = ({
             guidanceHelpCenterQueryData,
             snippetHelpCenterQueryData,
             actionIds,
+            productIds,
         }
     }, [data?.executions])
 
@@ -902,11 +1019,13 @@ export const useGetKnowledgeResourceMetadata = ({
         ...knowledgeReourceQueryData,
         shopName,
         shopType,
+        shopIntegrationId: integrationId ?? -1,
     })
 
     const { knowledgeResources } = useProcessResources(
         data?.executions?.filter((execution) => execution.resources.length > 0),
         shopName,
+        hasSurfacedProductsInFeedback,
         resourceData,
     )
 
@@ -931,36 +1050,52 @@ export const useEnrichFeedbackData = ({
 }) => {
     const shopName = storeConfiguration?.storeName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
-    const queriesEnabled = !!shopName && !!shopType && !!data
+
+    const { integrationId } = useShopifyIntegrationAndScope(shopName)
+
+    const queriesEnabled = !!shopName && !!shopType && !!data && !!integrationId
+
+    const hasSurfacedProductsInFeedback =
+        !!useFlags()[FeatureFlagKey.FeedbackSurfaceProductsUsedByAiAgent]
+
+    const executions = hasSurfacedProductsInFeedback
+        ? data?.executions?.map((execution) => {
+              return {
+                  ...execution,
+                  resources: [
+                      ...execution.resources,
+                      // TESTING ONLY: Add mock products to execution resources
+                      mockProductRecommendation,
+                      mockProductKnowledge,
+                  ],
+              }
+          })
+        : data?.executions
 
     // Extract helpCenter IDs from the feedback data
     const relatedHelpCenterData = useExtractDistinctHelpCenterFromResources(
-        data?.executions,
+        executions as FeedbackExecutionsItem[],
         storeConfiguration,
     )
 
-    const {
-        knowledgeResources,
-        isLoading: isKnowledgeResourceMetadataLoading,
-    } = useGetKnowledgeResourceMetadata({
-        data,
-        storeConfiguration,
-        queriesEnabled,
-    })
+    const productIds = useExtractDistinctProductIdsFromResources(executions)
 
     const resourceData = useGetResourceData({
         queriesEnabled,
         faqHelpCenterIds: relatedHelpCenterData.faqHelpCenterIds,
         guidanceHelpCenterIds: relatedHelpCenterData.guidanceHelpCenterIds,
         snippetHelpCenterIds: relatedHelpCenterData.snippetHelpCenterIds,
+        productIds,
         shopName: shopName,
         shopType: shopType,
+        shopIntegrationId: integrationId ?? -1,
     })
 
     // Process the fetched data into the final structure
     const enrichedData = useProcessResources(
-        data?.executions,
+        executions as FeedbackExecutionsItem[],
         shopName,
+        hasSurfacedProductsInFeedback,
         resourceData,
     )
 
@@ -969,12 +1104,8 @@ export const useEnrichFeedbackData = ({
     }
 
     return {
-        isLoading: resourceData?.isLoading,
-        isKnowledgeResourceMetadataLoading,
-        enrichedData: {
-            ...enrichedData,
-            knowledgeResources,
-        },
+        isLoading: resourceData?.isLoading ?? true, // fix for loading
+        enrichedData,
         ...resourceData,
     }
 }
@@ -992,6 +1123,8 @@ export const useGetResourcesReasoningMetadata = ({
 }) => {
     const shopName = storeConfiguration?.shopName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
+
+    const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
     const relatedHelpCenterData = resources.reduce(
         (acc, resource) => {
@@ -1026,11 +1159,30 @@ export const useGetResourcesReasoningMetadata = ({
         },
     )
 
+    const productIds = resources.reduce((acc, { resourceId, resourceType }) => {
+        if (!resourceId) {
+            return acc
+        }
+
+        if (
+            resourceType ===
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE ||
+            resourceType ===
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION
+        ) {
+            acc.push(Number(resourceId))
+        }
+
+        return acc
+    }, [] as number[])
+
     const resourceData = useGetResourceData({
         queriesEnabled,
         ...relatedHelpCenterData,
+        productIds,
         shopName,
         shopType,
+        shopIntegrationId: integrationId ?? -1,
     })
 
     if (!resourceData) {

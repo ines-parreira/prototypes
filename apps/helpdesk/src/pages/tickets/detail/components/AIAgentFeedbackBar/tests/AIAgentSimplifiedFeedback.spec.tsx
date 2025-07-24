@@ -1909,12 +1909,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                         },
                     ],
                 },
-                isLoading: true,
+                isLoading: false,
             })
 
             useEnrichFeedbackDataMock.mockReturnValue({
                 ...initialFeedbackData,
-                isLoading: false,
+                isLoading: true,
             })
 
             render(<AIAgentSimplifiedFeedback />)

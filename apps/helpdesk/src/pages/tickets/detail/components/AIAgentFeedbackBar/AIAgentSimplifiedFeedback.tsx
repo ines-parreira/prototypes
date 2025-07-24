@@ -390,7 +390,6 @@ const AIAgentSimplifiedFeedback = () => {
                                     updatedAt={lastUpdatedMutations}
                                 />
                             </div>
-
                             <div className={css.sources}>
                                 {isLoadingFeedback
                                     ? Array.from({ length: 3 }).map(
