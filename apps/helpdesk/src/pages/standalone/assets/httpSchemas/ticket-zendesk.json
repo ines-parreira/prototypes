@@ -6,7 +6,8 @@
                 "body": "{{ticket.messages[-1]['body_text']}}"
             },
             "priority": "high",
-            "subject": "Handover: {{ticket.subject}}"
+            "subject": "Handover: {{ticket.subject}}",
+            "email_ccs": [{ "user_email": "{{ticket.customer.email}}" }]
         }
     },
     "headers": {
