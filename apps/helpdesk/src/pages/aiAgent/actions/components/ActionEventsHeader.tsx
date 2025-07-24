@@ -159,7 +159,7 @@ export default function ActionEventsHeader({
                     <input
                         id="ticketId"
                         type="number"
-                        placeholder="Enter ticket ID"
+                        placeholder="Enter Ticket ID"
                         value={userJourneyId || ''}
                         onChange={(e) =>
                             setUserJourneyId(Number(e.target.value))

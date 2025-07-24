@@ -1,6 +1,5 @@
 import classnames from 'classnames'
 import moment from 'moment'
-import { useHistory } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -18,10 +17,9 @@ type Props = {
 }
 
 export default function ActionsRow({ execution, onClick, isSelected }: Props) {
-    const history = useHistory()
-
-    const handleTicketClick = () => {
-        history.push(`/app/ticket/${execution.state.user_journey_id}`)
+    const handleTicketClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation()
+        window.open(`/app/ticket/${execution.state.user_journey_id}`, '_blank')
     }
 
     return (

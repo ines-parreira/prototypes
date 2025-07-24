@@ -107,7 +107,7 @@ describe('<ActionEventsHeader />', () => {
 
             expect(screen.getByLabelText('Ticket ID')).toBeInTheDocument()
             expect(
-                screen.getByPlaceholderText('Enter ticket ID'),
+                screen.getByPlaceholderText('Enter Ticket ID'),
             ).toBeInTheDocument()
         })
 
@@ -124,7 +124,7 @@ describe('<ActionEventsHeader />', () => {
                 </Provider>,
             )
 
-            const input = screen.getByPlaceholderText('Enter ticket ID')
+            const input = screen.getByPlaceholderText('Enter Ticket ID')
 
             fireEvent.change(input, { target: { value: '123' } })
             fireEvent.keyDown(input, { key: 'Enter' })
@@ -151,7 +151,7 @@ describe('<ActionEventsHeader />', () => {
                 </Provider>,
             )
 
-            const input = screen.getByPlaceholderText('Enter ticket ID')
+            const input = screen.getByPlaceholderText('Enter Ticket ID')
 
             fireEvent.change(input, { target: { value: '456' } })
             fireEvent.blur(input)
@@ -178,7 +178,7 @@ describe('<ActionEventsHeader />', () => {
                 </Provider>,
             )
 
-            const input = screen.getByPlaceholderText('Enter ticket ID')
+            const input = screen.getByPlaceholderText('Enter Ticket ID')
 
             fireEvent.change(input, { target: { value: '' } })
             fireEvent.keyDown(input, { key: 'Enter' })
@@ -205,7 +205,7 @@ describe('<ActionEventsHeader />', () => {
                 </Provider>,
             )
 
-            const input = screen.getByPlaceholderText('Enter ticket ID')
+            const input = screen.getByPlaceholderText('Enter Ticket ID')
 
             fireEvent.change(input, { target: { value: '789' } })
             fireEvent.blur(input)
