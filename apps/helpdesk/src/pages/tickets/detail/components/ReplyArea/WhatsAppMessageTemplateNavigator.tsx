@@ -51,7 +51,7 @@ export default function WhatsAppMessageTemplateNavigator() {
     const templates = data?.data ?? []
 
     useEffect(() => {
-        if (data?.data.length) {
+        if (data?.data?.length) {
             setCurrentTemplate(data?.data[0])
         }
     }, [data?.data])
