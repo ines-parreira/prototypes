@@ -1,0 +1,116 @@
+---
+description: General testing best practices
+globs: **.spec.**
+alwaysApply: false
+---
+
+# Use accessible selectors in tests and avoid data-testid html attribute
+
+The preferred way to target elements in tests is to use other queries from React Testing Library:
+
+## Priority Order:
+
+1. **getByRole** - Best for accessibility and user behavior simulation
+2. **getByText** - For text content
+3. **getByLabelText** - For form inputs with labels
+4. **queryByText** - For conditional text content
+5. **getByPlaceholderText** - For inputs without labels
+6. **getByTestId** - Only as last resort
+
+## Examples:
+
+```tsx
+// ❌ Avoid - focuses on implementation details
+const element = screen.getByTestId('submit-button')
+
+// ✅ Prefer - focuses on user behavior
+const button = screen.getByRole('button', { name: /submit/i })
+const submitButton = screen.getByText('Submit')
+const form = screen.getByRole('form')
+```
+
+```tsx
+// ❌ Avoid - implementation-focused
+<div data-testid="user-avatar">
+  <img src={avatarUrl} alt="User avatar" />
+</div>
+
+// ✅ Prefer - accessibility-focused
+<div>
+  <img src={avatarUrl} alt="User avatar" />
+</div>
+// Test with: screen.getByAltText('User avatar')
+```
+
+## Implementation Guidelines
+
+### For Component Testing:
+
+- Use semantic HTML elements with proper roles
+- Add meaningful `alt` attributes to images
+- Use proper `aria-*` attributes for accessibility
+- Ensure form inputs have associated labels
+
+### For Mock Components:
+
+- Prefer testing through props and rendered content
+- Consider refactoring mocks to be more testable
+
+# Use userEvent instead of fireEvent for user interactions
+
+`userEvent` simulates full user interactions, while `fireEvent` only dispatches single DOM events. This makes `userEvent` more realistic and reliable for testing user behavior.
+
+## Key Differences:
+
+- **fireEvent**: Dispatches single DOM events (low-level)
+- **userEvent**: Simulates complete user interactions with multiple events and checks
+- **userEvent**: Includes visibility and interactability checks
+- **userEvent**: Manipulates DOM exactly like real browser interactions
+
+## Setup Pattern:
+
+```tsx
+import userEvent from '@testing-library/user-event'
+
+// ✅ Recommended: Setup in each test
+test('user can click button', async () => {
+    const user = userEvent.setup()
+    render(<MyComponent />)
+
+    await user.click(screen.getByRole('button', { name: /submit/i }))
+    // ...assertions...
+})
+
+// ✅ Alternative: Setup function
+function setup(jsx) {
+    return {
+        user: userEvent.setup(),
+        ...render(jsx),
+    }
+}
+
+test('with setup function', async () => {
+    const { user } = setup(<MyComponent />)
+    await user.type(screen.getByRole('textbox'), 'Hello world')
+})
+```
+
+## Examples:
+
+```tsx
+// ❌ Avoid - fireEvent doesn't simulate real user behavior
+fireEvent.click(button)
+fireEvent.change(input, { target: { value: 'text' } })
+
+// ✅ Prefer - userEvent simulates realistic interactions
+await user.click(button)
+await user.type(input, 'text')
+await user.clear(input)
+await user.selectOptions(select, 'option1')
+```
+
+## When to Use fireEvent:
+
+- Only as last resort for interactions not yet implemented in `userEvent`
+- For testing specific edge cases requiring low-level event dispatch
+- When testing event handlers directly rather than user interactions

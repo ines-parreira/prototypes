@@ -1,5 +1,6 @@
 ---
 description: Integration testing best practices
+globs: **.spec.**
 alwaysApply: false
 ---
 
@@ -21,7 +22,12 @@ alwaysApply: false
 ```typescript
 import { setupServer } from 'msw/node'
 
+import { mockGetTicketHandler } from '@gorgias/helpdesk-mocks'
+
 const server = setupServer()
+const mockGetTicket = mockGetTicketHandler()
+
+const localHandlers = [mockGetTicket.handler]
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -78,9 +84,10 @@ const renderComponent = () => {
 
 ```typescript
 // Use userEvent for interactions
+const user = userEvent.setup()
 act(() => {
-    userEvent.click(getByLabelText(/Some Label/))
-    userEvent.type(getByRole('textbox'), 'new value')
+    user.click(getByLabelText(/Some Label/))
+    user.type(getByRole('textbox'), 'new value')
 })
 
 // Wait for async operations
@@ -131,13 +138,15 @@ it('should handle specific scenario', async () => {
 ### Request assertion (when needed)
 
 ```typescript
+const user = userEvent.setup()
+
 const waitForUpdateCurrentUserRequest =
     mockUpdateCurrentUser.waitForRequest(server)
 
 // Trigger action
 act(() => {
-    userEvent.click(getByLabelText(/Some Label/))
-    userEvent.type(getByRole('textbox'), 'new value')
+    user.click(getByLabelText(/Some Label/))
+    user.type(getByRole('textbox'), 'new value')
 })
 
 await waitForUpdateCurrentUserRequest(async (request) => {
