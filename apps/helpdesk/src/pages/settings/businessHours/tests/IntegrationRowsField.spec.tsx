@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { mockListIntegrationsForBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
+import { mockIntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-mocks'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import StoreDisplayName from 'pages/common/components/StoreDisplayName'
@@ -24,7 +24,12 @@ const CustomBusinessHoursIntegrationCellMock = assumeMock(
 const StoreDisplayNameMock = assumeMock(StoreDisplayName)
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
-const integrations = mockListIntegrationsForBusinessHoursResponse().data
+const integrations = [
+    mockIntegrationWithBusinessHoursAndStore(),
+    mockIntegrationWithBusinessHoursAndStore(),
+    mockIntegrationWithBusinessHoursAndStore(),
+    mockIntegrationWithBusinessHoursAndStore(),
+]
 
 const defaultProps = {
     onChange: jest.fn(),
