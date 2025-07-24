@@ -366,5 +366,40 @@ describe('useAiAgentNavigation', () => {
 
             expect(salesItems).toBeUndefined()
         })
+
+        it('should not include sales navigation item when ShoppingAssistantEnforceDeactivation is enabled', () => {
+            useFlagsMock.mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.ShoppingAssistantEnforceDeactivation]: true,
+            })
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'my-shop' }),
+            )
+
+            const salesItem = result.current.navigationItems.find(
+                (item) => item.title === SALES,
+            )
+
+            expect(salesItem).toBeUndefined()
+        })
+
+        it('should include sales navigation item when ShoppingAssistantEnforceDeactivation is disabled', () => {
+            useFlagsMock.mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.ShoppingAssistantEnforceDeactivation]: false,
+            })
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'my-shop' }),
+            )
+
+            const salesItem = result.current.navigationItems.find(
+                (item) => item.title === SALES,
+            )
+
+            expect(salesItem).toBeDefined()
+            expect(salesItem?.title).toBe(SALES)
+        })
     })
 })

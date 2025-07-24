@@ -58,7 +58,10 @@ import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNav
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
 import AiAgentExternalDocumentsArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer'
 import AiAgentUrlSourcesArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
-import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {
+    aiAgentRoutes,
+    useAiAgentNavigation,
+} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
@@ -308,24 +311,32 @@ export function TicketRoutes({
 }
 
 function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
-    const { shopType } = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
+        shopName: string
     }>()
 
+    const flags = useFlags()
+
     const isAiAgentAIGeneratedGuidancesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentAIGeneratedGuidances]
+        flags[FeatureFlagKey.AiAgentAIGeneratedGuidances]
 
     const isAiAgentOnboardingWizardEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+        flags[FeatureFlagKey.AiAgentOnboardingWizard]
 
     const isAiAgentKnowledgeTabEnabled =
-        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
+        flags[FeatureFlagKey.AiAgentKnowledgeTab]
 
     const isAiAgentScrapeStoreDomainEnabled =
-        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
+        flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     const isAiShoppingAssistantProductRecommendationsEnabled =
-        !!useFlags()[FeatureFlagKey.AiShoppingAssistantProductRecommendations]
+        !!flags[FeatureFlagKey.AiShoppingAssistantProductRecommendations]
+
+    const isShoppingAssitantDeactivationEnforced =
+        flags[FeatureFlagKey.ShoppingAssistantEnforceDeactivation]
+
+    const { routes } = useAiAgentNavigation({ shopName })
 
     if (shopType !== 'shopify') {
         return <Redirect to="/app/ai-agent" />
@@ -653,6 +664,14 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             />
                         </Switch>
                     </AiAgentErrorBoundary>
+
+                    {/* Enforce redirection outside of `/sales` when Shopping Assistant feature flag is set to enforce deactivation */}
+                    {isShoppingAssitantDeactivationEnforced && (
+                        <Route path={`${path}/sales`}>
+                            <Redirect to={routes.main} />
+                        </Route>
+                    )}
+
                     <AiAgentErrorBoundary
                         section="ai-agent-sales"
                         team={SentryTeam.MARKETING}

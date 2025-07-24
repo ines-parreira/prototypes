@@ -147,6 +147,9 @@ const useNavigationItems = (
     const isAiShoppingAssistantProductRecommendationsEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantProductRecommendations]
 
+    const isShoppingAssitantDeactivationEnforced =
+        flags[FeatureFlagKey.ShoppingAssistantEnforceDeactivation]
+
     return useMemo<NavigationItem[]>(
         () =>
             [
@@ -203,7 +206,7 @@ const useNavigationItems = (
                     title: SUPPORT_ACTIONS,
                     dataCanduId: 'ai-agent-navbar-support-actions',
                 },
-                {
+                !isShoppingAssitantDeactivationEnforced && {
                     route: routes.sales,
                     title: SALES,
                     dataCanduId: 'ai-agent-navbar-sales',
@@ -246,6 +249,7 @@ const useNavigationItems = (
             isGorgiasUser,
             isAiShoppingAssistantEnabled,
             isAiShoppingAssistantProductRecommendationsEnabled,
+            isShoppingAssitantDeactivationEnforced,
             routes,
         ],
     )
