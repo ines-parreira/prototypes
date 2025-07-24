@@ -23,8 +23,8 @@ on:
         description: Other affected packages
         type: string
         required: true
-      other-not-affected-packages:
-        description: Other not affected packages
+      other-unaffected-packages:
+        description: Other unaffected packages
         type: string
         required: true
       nx-base-commit:
@@ -111,7 +111,6 @@ jobs:
         job-index: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     env:
       CODECOV_CLI_VERSION: "v10.2.1"
-      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -132,26 +131,21 @@ jobs:
       - name: Run tests
         if: inputs.helpdesk-affected == 'true'
         run: echo "Running test ${{ matrix.job-index }}/10"
-      
-      - name: Install GH command-line tool
-        if: inputs.helpdesk-affected != 'true'
-        run: |
-          (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-            && sudo mkdir -p -m 755 /etc/apt/keyrings \
-            && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-            && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-            && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-            && sudo apt update \
-            && sudo apt install gh -y
+    
 
       - name: Set tests status checks to success if helpdesk not affected
         if: inputs.helpdesk-affected != 'true'
-        run: |
-          gh api -X POST \
-            repos/${{ github.repository }}/statuses/${{ github.sha }} \
-            -f state=success \
-            -f context="Quality check next / Tests (${{ matrix.job-index }})" \
-            -f description="Helpdesk not affected, skipping tests"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              context: 'Quality check next / Tests (${{ matrix.job-index }})',
+              description: 'Helpdesk not affected, skipping test ${{ matrix.job-index }}/10'
+            })
 
   affected-tests:
     name: 'Affected packages tests'
@@ -238,30 +232,23 @@ jobs:
           name: '${{ matrix.project }}-results'
           version: ${{ env.CODECOV_CLI_VERSION }}
 
-  not-affected-tests:
-    name: 'Not affected packages status'
+  unaffected-tests:
+    name: 'Unaffected packages status'
     runs-on: gh-actions-small-runner-set
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(inputs.other-not-affected-packages) }}
-    env:
-      GH_TOKEN: ${{ github.token }}
+        include: ${{ fromJSON(inputs.other-unaffected-packages) }}
     steps:
-      - name: Install GH command-line tool
-        run: |
-          (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-            && sudo mkdir -p -m 755 /etc/apt/keyrings \
-            && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-            && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-            && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-            && sudo apt update \
-            && sudo apt install gh -y
-
-      - name: Set tests status checks to success for not affected projects
-        run: |
-          gh api -X POST \
-            repos/${{ github.repository }}/statuses/${{ github.sha }} \
-            -f state=success \
-            -f context="Quality check next / Affected tests (${{ matrix.project }})" \
-            -f description="Project not affected, skipping tests"
+      - name: Set tests status checks to success for unaffected packages
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              context: 'Quality check next / Affected tests (${{ matrix.project }})',
+              description: 'Package ${{ matrix.project }} unaffected, skipping tests'
+            })

@@ -2,9 +2,13 @@ name: CICD
 
 on: [push]
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 permissions:
   actions: read
   contents: read
+  statuses: write
 
 concurrency:
   # Only one side branch run at a time. Every commit runs in parallel on main and staging branch
@@ -33,7 +37,7 @@ jobs:
       helpdesk-affected: ${{ env.HELPDESK_AFFECTED }}
       has-other-affected-packages: ${{ env.HAS_OTHER_AFFECTED_PACKAGES }}
       other-affected-packages: ${{ env.OTHER_AFFECTED_PACKAGES }}
-      other-not-affected-packages: ${{ env.OTHER_NOT_AFFECTED_PACKAGES }}
+      other-unaffected-packages: ${{ env.OTHER_UNAFFECTED_PACKAGES }}
       nx-base-commit: ${{ env.NX_BASE_COMMIT }}
     steps:
       - name: Checkout code
@@ -92,23 +96,23 @@ jobs:
           # Get all packages with test target (excluding helpdesk)
           ALL_PACKAGES_JSON=$(npx nx show projects --with-target=test --exclude=@repo/helpdesk --json)
           
-          # Filter out the affected packages to get only non-affected ones
+          # Filter out the affected packages to get only unaffected ones
           if echo "$ALL_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
             # Remove affected packages from the complete list
-            OTHER_NOT_AFFECTED_PACKAGES_JSON=$(echo "$ALL_PACKAGES_JSON" "$OTHER_AFFECTED_PACKAGES_JSON" | jq -s '.[0] - .[1]')
+            OTHER_UNAFFECTED_PACKAGES_JSON=$(echo "$ALL_PACKAGES_JSON" "$OTHER_AFFECTED_PACKAGES_JSON" | jq -s '.[0] - .[1]')
             
-            # Check if there are any non-affected packages
-            if echo "$OTHER_NOT_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
+            # Check if there are any unaffected packages
+            if echo "$OTHER_UNAFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
               # Convert the JSON array to a format suitable for GitHub Actions matrix
-              OTHER_NOT_AFFECTED_PACKAGES_MATRIX=$(echo "$OTHER_NOT_AFFECTED_PACKAGES_JSON" | jq -c 'map({project: .})')
-              echo "OTHER_NOT_AFFECTED_PACKAGES=$OTHER_NOT_AFFECTED_PACKAGES_MATRIX" >> $GITHUB_ENV
-              echo "Found other non-affected packages: $OTHER_NOT_AFFECTED_PACKAGES_JSON"
+              OTHER_UNAFFECTED_PACKAGES_MATRIX=$(echo "$OTHER_UNAFFECTED_PACKAGES_JSON" | jq -c 'map({project: .})')
+              echo "OTHER_UNAFFECTED_PACKAGES=$OTHER_UNAFFECTED_PACKAGES_MATRIX" >> $GITHUB_ENV
+              echo "Found other unaffected packages: $OTHER_UNAFFECTED_PACKAGES_JSON"
             else
-              echo "OTHER_NOT_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
-              echo "No other non-affected packages with test target found"
+              echo "OTHER_UNAFFECTED_PACKAGES=[]" >> $GITHUB_ENV
+              echo "No other unaffected packages with test target found"
             fi
           else
-            echo "OTHER_NOT_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
+            echo "OTHER_UNAFFECTED_PACKAGES=[]" >> $GITHUB_ENV
             echo "No packages with test target found"
           fi
 
@@ -125,21 +129,21 @@ jobs:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
 
-  # quality-check-next:
-  #   name: Quality check next
-  #   needs:
-  #     - workspace-vars
-  #     - workspace-setup
-  #   uses: ./.github/workflows/quality-check-next.yml
-  #   secrets: inherit
-  #   with:
-  #     cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-  #     node-version: ${{ needs.workspace-vars.outputs.node-version }}
-  #     helpdesk-affected: ${{ needs.workspace-setup.outputs.helpdesk-affected }}
-  #     has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
-  #     other-affected-packages: ${{ needs.workspace-setup.outputs.other-affected-packages }}
-  #     other-not-affected-packages: ${{ needs.workspace-setup.outputs.other-not-affected-packages }}
-  #     nx-base-commit: ${{ needs.workspace-setup.outputs.nx-base-commit }}
+  quality-check-next:
+    name: Quality check next
+    needs:
+      - workspace-vars
+      - workspace-setup
+    uses: ./.github/workflows/quality-check-next.yml
+    secrets: inherit
+    with:
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
+      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      helpdesk-affected: ${{ needs.workspace-setup.outputs.helpdesk-affected }}
+      has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
+      other-affected-packages: ${{ needs.workspace-setup.outputs.other-affected-packages }}
+      other-unaffected-packages: ${{ needs.workspace-setup.outputs.other-unaffected-packages }}
+      nx-base-commit: ${{ needs.workspace-setup.outputs.nx-base-commit }}
 
   build-smoke-test:
     name: Build smoke test
