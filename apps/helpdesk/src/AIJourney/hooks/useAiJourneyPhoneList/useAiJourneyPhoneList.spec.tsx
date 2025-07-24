@@ -54,7 +54,7 @@ describe('useAiJourneyPhoneList', () => {
 
     describe('marketingCapabilityPhoneNumbers filtering', () => {
         it('should filter phone numbers with marketing capabilities', () => {
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
+            const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
                 wrapper: createWrapper(),
             })
 
@@ -82,7 +82,7 @@ describe('useAiJourneyPhoneList', () => {
                 '2': mockPhoneNumbers['2'],
             })
 
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
+            const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
                 wrapper: createWrapper(),
             })
 
@@ -99,11 +99,11 @@ describe('useAiJourneyPhoneList', () => {
                 '1': mockPhoneNumbers['1'],
                 '2': {
                     ...mockPhoneNumbers['2'],
-                    integrations: [{ id: 'voice-2', type: 'voice' }],
+                    integrations: [{ id: 7, type: 'voice' }],
                 },
             })
 
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
+            const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
                 wrapper: createWrapper(),
             })
 
@@ -124,7 +124,7 @@ describe('useAiJourneyPhoneList', () => {
                 },
             })
 
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
+            const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
                 wrapper: createWrapper(),
             })
 
@@ -141,7 +141,7 @@ describe('useAiJourneyPhoneList', () => {
         it('should handle empty phone numbers', () => {
             mockUseAppSelector.mockReturnValue({})
 
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
+            const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
                 wrapper: createWrapper(),
             })
 
@@ -157,7 +157,7 @@ describe('useAiJourneyPhoneList', () => {
                 error: null,
             })
 
-            const { result } = renderHook(() => useAiJourneyPhoneList(), {
+            const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
                 wrapper: createWrapper(),
             })
 
@@ -173,13 +173,13 @@ describe('useAiJourneyPhoneList', () => {
             '1': {
                 ...mockPhoneNumbers['1'],
                 integrations: [
-                    { id: 'sms-1', type: 'sms' },
-                    { id: 'voice-1', type: 'voice' },
+                    { id: 1, type: 'sms' },
+                    { id: 6, type: 'voice' },
                 ],
             },
         })
 
-        const { result } = renderHook(() => useAiJourneyPhoneList(), {
+        const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
             wrapper: createWrapper(),
         })
 
@@ -195,7 +195,7 @@ describe('useAiJourneyPhoneList', () => {
             },
         })
 
-        const { result } = renderHook(() => useAiJourneyPhoneList(), {
+        const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
             wrapper: createWrapper(),
         })
 
@@ -216,10 +216,10 @@ describe('useAiJourneyPhoneList', () => {
             error: null,
         })
 
-        const { result } = renderHook(() => useAiJourneyPhoneList(), {
+        const { result } = renderHook(() => useAiJourneyPhoneList([1, 2]), {
             wrapper: createWrapper(),
         })
 
-        expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(1)
+        expect(result.current.marketingCapabilityPhoneNumbers).toHaveLength(0)
     })
 })

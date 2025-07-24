@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
 import { Button } from 'AIJourney/components'
 import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useIntegrations } from 'AIJourney/providers'
@@ -12,7 +14,10 @@ import {
     useJourneys,
 } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -31,28 +36,39 @@ export const Setup = () => {
     const dispatch = useAppDispatch()
     const [isVisible, setIsVisible] = useState(true)
 
-    const { currentIntegration } = useIntegrations(shopName)
+    const { currentIntegration, isLoading: isLoadingIntegrations } =
+        useIntegrations(shopName)
 
     const integrationId = useMemo(() => {
         return currentIntegration?.id
     }, [currentIntegration])
 
-    const { data: merchantAiJourneys } = useJourneys(integrationId, {
-        enabled: !!integrationId,
-    })
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    const { storeConfiguration, isLoading: isLoadingStoreConfiguration } =
+        useStoreConfiguration({
+            shopName,
+            accountDomain,
+        })
+
+    const { data: merchantAiJourneys, isLoading: isLoadingJourneys } =
+        useJourneys(integrationId, {
+            enabled: !!integrationId,
+        })
 
     const abandonedCartJourney = merchantAiJourneys?.find(
         (journey) => journey.type === 'cart_abandoned',
     )
 
-    const { data: journeyParams } = useJourneyConfiguration(
-        abandonedCartJourney?.id,
-        {
+    const { data: journeyParams, isLoading: isLoadingJourneyConfiguration } =
+        useJourneyConfiguration(abandonedCartJourney?.id, {
             enabled: !!integrationId && !!abandonedCartJourney?.id,
-        },
-    )
+        })
 
-    const { marketingCapabilityPhoneNumbers } = useAiJourneyPhoneList()
+    const { marketingCapabilityPhoneNumbers } = useAiJourneyPhoneList(
+        storeConfiguration?.monitoredSmsIntegrations ?? [],
+    )
 
     const currentPhoneNumber = marketingCapabilityPhoneNumbers.find(
         (phoneNumber) =>
@@ -178,6 +194,16 @@ export const Setup = () => {
         : true
 
     const shouldDisableButton = !isDiscountFieldValid || !phoneNumberValue
+
+    const isLoading =
+        isLoadingIntegrations ||
+        isLoadingStoreConfiguration ||
+        isLoadingJourneys ||
+        isLoadingJourneyConfiguration
+
+    if (isLoading) {
+        return <LoadingSpinner />
+    }
 
     return (
         <motion.div

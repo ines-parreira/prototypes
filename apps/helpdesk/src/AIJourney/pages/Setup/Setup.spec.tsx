@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -10,8 +11,10 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
+import { account } from 'fixtures/account'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { renderWithRouter } from 'utils/testing'
 
 import { Setup } from './Setup'
@@ -69,6 +72,13 @@ jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
+
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
+    useStoreConfiguration: jest.fn(),
+}))
+
+const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
+
 ;(useAllIntegrations as jest.Mock).mockReturnValue({
     integrations: [
         {
@@ -104,21 +114,34 @@ describe('<Setup />', () => {
             isLoading: false,
         }))
 
-        mockUseAppSelector.mockReturnValue({
-            '1': mockPhoneNumbers['1'],
-            '2': {
-                ...mockPhoneNumbers['2'],
-                name: 'Regular Phone 2',
-            },
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector.name === 'getCurrentAccountState') {
+                return fromJS(account)
+            }
+            // Default to phone numbers for getNewPhoneNumbers selector
+            return {
+                '1': mockPhoneNumbers['1'],
+                '2': {
+                    ...mockPhoneNumbers['2'],
+                    name: 'Regular Phone 2',
+                },
+            }
         })
 
         mockUseSmsIntegrations.mockReturnValue({
             data: [
-                { sms_integration_id: 'sms-1', store_integration_id: 1 },
-                { sms_integration_id: 'sms-2', store_integration_id: 2 },
+                { sms_integration_id: 1, store_integration_id: 1 },
+                { sms_integration_id: 2, store_integration_id: 2 },
             ],
             isLoading: false,
             error: null,
+        })
+
+        mockUseStoreConfiguration.mockReturnValue({
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+            isLoading: false,
         })
 
         mockUseJourneyConfiguration.mockImplementation(() => ({
@@ -127,7 +150,7 @@ describe('<Setup />', () => {
                 offer_discount: true,
                 max_discount_percent: 20,
                 sms_sender_number: '415-111-111',
-                sms_sender_integration_id: 'sms-1',
+                sms_sender_integration_id: 1,
             },
             isError: false,
             isLoading: false,
@@ -145,7 +168,9 @@ describe('<Setup />', () => {
             isLoading: false,
         }))
     })
-    const mockStore = configureMockStore([thunk])()
+    const mockStore = configureMockStore([thunk])({
+        currentAccount: fromJS(account),
+    })
 
     it('should redirect from conversation setup to landing page on return', async () => {
         mockUseJourneys.mockImplementation(() => ({
@@ -165,7 +190,7 @@ describe('<Setup />', () => {
                 offer_discount: true,
                 max_discount_percent: 20,
                 sms_sender_number: '(415)-111-111',
-                sms_sender_integration_id: 'sms-1',
+                sms_sender_integration_id: 1,
             },
             isError: false,
             isLoading: false,
@@ -235,7 +260,7 @@ describe('<Setup />', () => {
                     offer_discount: true,
                     max_discount_percent: 20,
                     sms_sender_number: '415-111-111',
-                    sms_sender_integration_id: 'sms-1',
+                    sms_sender_integration_id: 1,
                 },
                 isError: false,
                 isLoading: false,
@@ -583,10 +608,26 @@ describe('<Setup />', () => {
                 handleUpdate: mockHandleUpdate,
             }))
 
+            mockUseSmsIntegrations.mockReturnValue({
+                data: [
+                    { sms_integration_id: 1, store_integration_id: 1 },
+                    { sms_integration_id: 2, store_integration_id: 2 },
+                ],
+                isLoading: false,
+                error: null,
+            })
+
             mockUseIntegrations.mockImplementation(() => ({
                 integrations: [{ id: 1, name: 'shopify-store' }],
                 isLoading: false,
             }))
+
+            mockUseStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                isLoading: false,
+            })
 
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
@@ -594,7 +635,7 @@ describe('<Setup />', () => {
                     offer_discount: true,
                     max_discount_percent: 20,
                     sms_sender_number: '415-111-111',
-                    sms_sender_integration_id: 'sms-1',
+                    sms_sender_integration_id: 1,
                 },
                 isError: false,
                 isLoading: false,
@@ -652,10 +693,10 @@ describe('<Setup />', () => {
                     </QueryClientProvider>
                 </Provider>,
             )
-
+            const user = userEvent.setup()
             const button = screen.getByTestId('ai-journey-button')
             await act(async () => {
-                await userEvent.click(button)
+                await user.click(button)
             })
 
             await waitFor(() => {
@@ -671,7 +712,7 @@ describe('<Setup />', () => {
                     max_follow_up_messages: 3,
                     offer_discount: true,
                     max_discount_percent: 20,
-                    sms_sender_integration_id: 'sms-1',
+                    sms_sender_integration_id: 1,
                 },
             })
 
@@ -765,7 +806,7 @@ describe('<Setup />', () => {
                     max_follow_up_messages: 3,
                     offer_discount: true,
                     max_discount_percent: 20,
-                    sms_sender_integration_id: 'sms-1',
+                    sms_sender_integration_id: 1,
                 },
             })
         })

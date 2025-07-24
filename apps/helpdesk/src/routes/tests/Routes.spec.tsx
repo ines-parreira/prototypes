@@ -829,11 +829,9 @@ describe('<Routes/>', () => {
             )
 
             expect(
-                screen.getByText("Your Agent's phone number"),
+                screen.getByText('SMS Abandoned Cart flow'),
             ).toBeInTheDocument()
-            expect(
-                screen.getByText('Select the number of follow-ups'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Set up')).toBeInTheDocument()
         })
 
         it('should render activation page when feature flag is enabled', () => {
