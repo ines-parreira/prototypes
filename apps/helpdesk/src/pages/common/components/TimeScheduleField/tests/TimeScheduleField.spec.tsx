@@ -63,24 +63,47 @@ describe('TimeScheduleField', () => {
         expect(screen.getAllByText('close')).toHaveLength(2)
     })
 
-    it('should not render remove button when there is only one row', () => {
+    it('should show empty state message when no fields exist', () => {
         render(
-            <Form
-                onValidSubmit={jest.fn()}
-                defaultValues={{
-                    items: [
-                        {
-                            days: '1',
-                            from_time: '09:00',
-                            to_time: '17:00',
-                        },
-                    ],
-                }}
-            >
-                <TimeScheduleField name="items" />
+            <Form onValidSubmit={jest.fn()}>
+                <TimeScheduleField name="business_hours_config.business_hours" />
             </Form>,
         )
 
-        expect(screen.queryByText('close')).not.toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'You are currently outside business hours. Add one or multiple time ranges to create your custom schedule.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should show remove buttons when isRemovable is true', () => {
+        render(
+            <Form onValidSubmit={jest.fn()} defaultValues={defaultFormValues}>
+                <TimeScheduleField
+                    name="business_hours_config.business_hours"
+                    isRemovable={true}
+                />
+            </Form>,
+        )
+
+        expect(screen.getAllByText('close')).toHaveLength(2)
+    })
+
+    it('should not show remove button for single row when isRemovable is false', async () => {
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <TimeScheduleField
+                    name="business_hours_config.business_hours"
+                    isRemovable={false}
+                />
+            </Form>,
+        )
+
+        fireEvent.click(screen.getByText('Add time range'))
+
+        await waitFor(() => {
+            expect(screen.queryByText('close')).not.toBeInTheDocument()
+        })
     })
 })

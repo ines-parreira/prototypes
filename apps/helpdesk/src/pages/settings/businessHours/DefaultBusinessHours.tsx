@@ -19,7 +19,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import BusinessHoursDisplay from './BusinessHoursDisplay'
-import { Content } from './Content'
+import { DefaultBusinessHoursDrawer } from './DefaultBusinessHoursDrawer'
 
 import settingsCss from '../settings.less'
 import css from './DefaultBusinessHours.less'
@@ -93,8 +93,8 @@ const DefaultBusinessHours = () => {
                 <div className={css.description}>
                     These hours serve as the default schedule used across
                     Gorgias for all integrations where no custom hours are
-                    defined. If not specified, availability defaults to 24/7
-                    (always on).
+                    defined. If no custom hours are specified, the system
+                    defaults to treating all time as outside business hours.
                 </div>
                 <div className={css.businessHours}>
                     <BusinessHoursDisplay />
@@ -120,7 +120,7 @@ const DefaultBusinessHours = () => {
             >
                 <Drawer.Portal>
                     <Drawer.Overlay className={css.overlay} />
-                    <Content
+                    <DefaultBusinessHoursDrawer
                         businessHoursSettingsData={businessHoursSettingsData}
                         updateAccountSetting={updateAccountSetting}
                         setIsDrawerOpen={setIsDrawerOpen}

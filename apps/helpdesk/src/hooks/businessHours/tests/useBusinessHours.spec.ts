@@ -29,7 +29,7 @@ describe('useBusinessHours', () => {
             useAppSelectorMock.mockReturnValue(TimeFormatType.TwentyFourHour)
         })
 
-        it('should return "24/7" when business hours timeframes are empty', () => {
+        it('should return "Outside business hours" when business hours timeframes are empty', () => {
             const { result } = renderHook(() => useBusinessHours())
 
             const emptyConfig: BusinessHoursConfig = {
@@ -40,7 +40,7 @@ describe('useBusinessHours', () => {
             const label =
                 result.current.getBusinessHoursConfigLabel(emptyConfig)
 
-            expect(label).toBe('24/7')
+            expect(label).toBe('Outside business hours')
         })
 
         it('should format single business hours timeframe with 24-hour format', () => {

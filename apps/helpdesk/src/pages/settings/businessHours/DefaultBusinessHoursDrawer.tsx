@@ -28,7 +28,7 @@ type Props = {
     isLoading: boolean
 }
 
-export const Content = ({
+export const DefaultBusinessHoursDrawer = ({
     businessHoursSettingsData,
     updateAccountSetting,
     setIsDrawerOpen,
@@ -86,13 +86,10 @@ export const Content = ({
                         </div>
                         <div className={css.schedule}>
                             <Label isRequired>Schedule</Label>
-                            <span className={css.caption}>
-                                Add one or multiple time ranges to create your
-                                custom schedule.
-                            </span>
                             <TimeScheduleField
                                 name="data.business_hours"
                                 root={ref.current ?? undefined}
+                                isRemovable
                             />
                         </div>
                         <FormUnsavedChangesPrompt onSave={onSubmit} />

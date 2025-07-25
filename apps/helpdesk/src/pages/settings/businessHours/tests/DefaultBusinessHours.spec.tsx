@@ -110,7 +110,7 @@ describe('<DefaultBusinessHours />', () => {
 
         expect(
             screen.getByText(
-                'These hours serve as the default schedule used across Gorgias for all integrations where no custom hours are defined. If not specified, availability defaults to 24/7 (always on).',
+                'These hours serve as the default schedule used across Gorgias for all integrations where no custom hours are defined. If no custom hours are specified, the system defaults to treating all time as outside business hours.',
             ),
         ).toBeInTheDocument()
 
@@ -153,7 +153,7 @@ describe('<DefaultBusinessHours />', () => {
 
         expect(
             screen.getByText(
-                'These hours serve as the default schedule used across Gorgias for all integrations where no custom hours are defined. If not specified, availability defaults to 24/7 (always on).',
+                'These hours serve as the default schedule used across Gorgias for all integrations where no custom hours are defined. If no custom hours are specified, the system defaults to treating all time as outside business hours.',
             ),
         ).toBeInTheDocument()
     })

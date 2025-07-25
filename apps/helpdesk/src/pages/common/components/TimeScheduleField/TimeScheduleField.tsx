@@ -8,30 +8,48 @@ import TimeScheduleRow from './TimeScheduleRow'
 import css from './TimeScheduleField.less'
 
 type Props = {
+    isRemovable?: boolean
     name: string
     root?: HTMLElement
 }
 
-export default function TimeScheduleField({ name, root }: Props) {
+export default function TimeScheduleField({
+    isRemovable = false,
+    name,
+    root,
+}: Props) {
     const { fields, append, remove } = useFieldArray({
         name,
     })
 
     return (
         <div className={css.container}>
-            <div className={css.inputs}>
-                {fields.map((field, index) => (
-                    <TimeScheduleRow
-                        key={field.id}
-                        {...field}
-                        index={index}
-                        onRemove={remove}
-                        name={name}
-                        isRemovable={fields.length > 1}
-                        root={root}
-                    />
-                ))}
-            </div>
+            {fields.length ? (
+                <>
+                    <span className={css.caption}>
+                        Add one or multiple time ranges to create your custom
+                        schedule.
+                    </span>
+                    <div className={css.inputs}>
+                        {fields.map((field, index) => (
+                            <TimeScheduleRow
+                                key={field.id}
+                                {...field}
+                                index={index}
+                                onRemove={remove}
+                                name={name}
+                                isRemovable={isRemovable || fields.length > 1}
+                                root={root}
+                            />
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <span className={css.caption}>
+                    You are currently outside business hours. Add one or
+                    multiple time ranges to create your custom schedule.
+                </span>
+            )}
 
             <Button
                 onClick={() => append(DEFAULT_BUSINESS_HOURS_SCHEDULE)}

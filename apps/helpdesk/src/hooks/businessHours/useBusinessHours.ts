@@ -46,7 +46,7 @@ export const useBusinessHours = () => {
             show_timezone: boolean = false,
         ) => {
             if (businessHoursConfig.business_hours.length === 0) {
-                return '24/7'
+                return 'Outside business hours'
             }
 
             const timeframe = businessHoursConfig.business_hours
