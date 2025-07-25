@@ -8,6 +8,33 @@ type HttpRequestLogsViewProps = {
 }
 
 const HttpRequestLogsView = ({ logs }: HttpRequestLogsViewProps) => {
+    const renderHeaders = (headers: Record<string, string>, key: string) => {
+        return (
+            <li key={key}>
+                <p>Headers</p>
+                <ol>
+                    {Object.keys(headers).length > 0 &&
+                        Object.entries(headers).map(([key, value]) => (
+                            <li key={key}>
+                                <p>{key}: </p>
+                                {typeof value === 'object'
+                                    ? JSON.stringify(value)
+                                    : value}
+                            </li>
+                        ))}
+                </ol>
+            </li>
+        )
+    }
+
+    const renderBody = (body: string, key: string) => {
+        return (
+            <div className={css.body} key={key}>
+                <p>Body</p>
+                <pre className={css.codeBlock}>{body}</pre>
+            </div>
+        )
+    }
     return (
         <>
             {logs.map((log) => {
@@ -30,28 +57,9 @@ const HttpRequestLogsView = ({ logs }: HttpRequestLogsViewProps) => {
                                     <p>URL: </p>
                                     {log.request_url}
                                 </li>
-                                {Object.keys(requestHeader).length > 0 && (
-                                    <li>
-                                        <p>Headers</p>
-                                        <ol>
-                                            {Object.entries(requestHeader).map(
-                                                ([key, value]) => (
-                                                    <li key={key}>
-                                                        <p>{key}: </p>
-                                                        {value}
-                                                    </li>
-                                                ),
-                                            )}
-                                        </ol>
-                                    </li>
-                                )}
+                                {renderHeaders(requestHeader, 'request')}
                             </ol>
-                            <div className={css.body}>
-                                <p>Body</p>
-                                <pre className={css.codeBlock}>
-                                    {log.request_body || ''}
-                                </pre>
-                            </div>
+                            {renderBody(log.request_body || '', 'requestBody')}
                         </div>
                         <Separator className={css.separator} />
                         <div className={css.executionLogs}>
@@ -61,28 +69,12 @@ const HttpRequestLogsView = ({ logs }: HttpRequestLogsViewProps) => {
                                     <p>Status Code: </p>
                                     {log.response_status_code}
                                 </li>
-                                {Object.keys(responseHeader).length > 0 && (
-                                    <li>
-                                        <p>Headers</p>
-                                        <ol>
-                                            {Object.entries(responseHeader).map(
-                                                ([key, value]) => (
-                                                    <li key={key}>
-                                                        <p>{key}: </p>
-                                                        {value}
-                                                    </li>
-                                                ),
-                                            )}
-                                        </ol>
-                                    </li>
-                                )}
+                                {renderHeaders(responseHeader, 'response')}
                             </ol>
-                            <div className={css.body}>
-                                <p>Body</p>
-                                <pre className={css.codeBlock}>
-                                    {log.response_body || ''}
-                                </pre>
-                            </div>
+                            {renderBody(
+                                log.response_body || '',
+                                'responseBody',
+                            )}
                         </div>
                     </div>
                 )
