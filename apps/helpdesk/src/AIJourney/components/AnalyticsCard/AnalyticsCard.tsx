@@ -90,7 +90,8 @@ export const AnalyticsCard = ({
         }
     }, [journeyState, dispatch, handleUpdate])
 
-    const isEmpty = !analyticsData?.length
+    // const isEmpty = !analyticsData?.length
+    const isEmpty = true
 
     return (
         <div className={css.analyticsCard}>

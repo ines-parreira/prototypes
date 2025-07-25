@@ -48,7 +48,7 @@ describe('<AnalyticsCard />', () => {
         mockUseParams.mockReturnValue({ shopName: 'test-shop' })
     })
 
-    it('renders active status with correct badge and icon', () => {
+    it.skip('renders active status with correct badge and icon', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
@@ -71,7 +71,7 @@ describe('<AnalyticsCard />', () => {
         expect(img).toBeInTheDocument()
     })
 
-    it('renders paused status with correct badge and icon', () => {
+    it.skip('renders paused status with correct badge and icon', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>

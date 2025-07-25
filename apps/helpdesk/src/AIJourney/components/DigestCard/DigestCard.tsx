@@ -12,7 +12,8 @@ type DigestCardProps = {
 }
 
 export const DigestCard = ({ content, metrics }: DigestCardProps) => {
-    const isEmpty = !content || !metrics?.length
+    // const isEmpty = !content || !metrics?.length
+    const isEmpty = true
 
     return (
         <motion.div
