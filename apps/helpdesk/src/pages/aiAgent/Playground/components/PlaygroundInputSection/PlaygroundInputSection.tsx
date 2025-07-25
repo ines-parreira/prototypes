@@ -105,6 +105,7 @@ export const PlaygroundInputSection = ({
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
         SenderTypeValues.NEW_CUSTOMER,
     )
+    const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false)
 
     const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
         WIZARD_POST_COMPLETION_QUERY_KEY,
@@ -184,6 +185,7 @@ export const PlaygroundInputSection = ({
 
     const handleSendMessage = () => {
         onSendMessage()
+        setHasMessageBeenSent(true)
 
         onTestMessageSent({
             channel,
@@ -267,8 +269,17 @@ export const PlaygroundInputSection = ({
                 >
                     Send
                 </Button>
-                <Button intent="secondary" onClick={onNewConversation}>
-                    New Conversation
+                <Button
+                    intent="secondary"
+                    onClick={() => {
+                        onNewConversation()
+                        setHasMessageBeenSent(false)
+                    }}
+                    isDisabled={
+                        !formValues.message.trim() && !hasMessageBeenSent
+                    }
+                >
+                    Reset
                 </Button>
             </div>
         </div>
