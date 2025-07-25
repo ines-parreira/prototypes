@@ -58,8 +58,9 @@ export const AiAgentProductRecommendationsExclude = () => {
         isFetching: isFetchingProducts,
     } = useGetProductsByIdsFromIntegration(
         integrationId || 0,
-        excludedProductIds,
-        !!integrationId && excludedProductIds.length > 0,
+        // Empty array will return all products, so use dummy value instead
+        excludedProductIds.length > 0 ? excludedProductIds : [0],
+        !!integrationId,
     )
 
     const {

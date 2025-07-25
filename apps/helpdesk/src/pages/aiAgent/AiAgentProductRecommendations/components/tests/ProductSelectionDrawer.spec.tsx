@@ -15,6 +15,15 @@ const mockUseShopifyIntegrationAndScope =
 const mockUsePaginatedProductIntegration =
     usePaginatedProductIntegration as jest.Mock
 
+const mockChatContainer = document.createElement('div')
+mockChatContainer.id = 'gorgias-chat-container'
+jest.spyOn(document, 'getElementById').mockImplementation((id) => {
+    if (id === 'gorgias-chat-container') {
+        return mockChatContainer
+    }
+    return null
+})
+
 const mockOnSubmit = jest.fn().mockResolvedValue(undefined)
 const mockOnClose = jest.fn()
 const mockSetSearchTerm = jest.fn()
@@ -215,5 +224,25 @@ describe('ProductSelectionDrawer', () => {
         })
 
         expect(screen.queryByText('No products found')).toBeInTheDocument()
+    })
+
+    it('should hide chat container when drawer is open', () => {
+        renderComponent({ isOpen: true })
+
+        expect(mockChatContainer.style.display).toBe('none')
+    })
+
+    it('should show chat container when drawer is closed', () => {
+        renderComponent({ isOpen: false })
+
+        expect(mockChatContainer.style.display).toBe('')
+    })
+
+    it('should restore chat container visibility when component unmounts', () => {
+        const { unmount } = renderComponent({ isOpen: true })
+
+        expect(mockChatContainer.style.display).toBe('none')
+        unmount()
+        expect(mockChatContainer.style.display).toBe('')
     })
 })

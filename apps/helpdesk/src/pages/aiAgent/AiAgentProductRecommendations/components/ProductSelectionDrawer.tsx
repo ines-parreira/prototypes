@@ -47,6 +47,25 @@ export const ProductSelectionDrawer = ({
         setIsEnabled(true)
     }, [isOpen, selectedProductIds])
 
+    useEffect(() => {
+        const chatContainer = document.getElementById('gorgias-chat-container')
+
+        if (chatContainer) {
+            if (isOpen) {
+                chatContainer.style.display = 'none'
+            } else {
+                chatContainer.style.display = ''
+            }
+        }
+
+        // Cleanup function to ensure chat container is visible when component unmounts
+        return () => {
+            if (chatContainer) {
+                chatContainer.style.display = ''
+            }
+        }
+    }, [isOpen])
+
     useDebouncedEffect(
         () => {
             setSearchTerm(localSearchTerm)
@@ -132,9 +151,6 @@ export const ProductSelectionDrawer = ({
                                             value={localSelectedProductIds.includes(
                                                 product.id,
                                             )}
-                                            onChange={() =>
-                                                handleProductClick(product.id)
-                                            }
                                         />
                                     </div>
                                     <div>
