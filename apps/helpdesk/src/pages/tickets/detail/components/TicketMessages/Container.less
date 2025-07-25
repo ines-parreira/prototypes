@@ -241,3 +241,15 @@
         width: auto;
     }
 }
+
+.dark .ticket-thread-revamp :local {
+    .component.ticketHandledByAIAgent {
+        &:hover {
+            background: #312c33;
+
+            :global(.message-content) {
+                background: #312c33;
+            }
+        }
+    }
+}
