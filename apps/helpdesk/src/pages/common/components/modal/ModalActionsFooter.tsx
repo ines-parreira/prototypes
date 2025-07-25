@@ -1,4 +1,4 @@
-import React, { Children, ReactNode } from 'react'
+import { Children, ReactNode } from 'react'
 
 import classnames from 'classnames'
 import _isString from 'lodash/isString'
@@ -11,9 +11,15 @@ type Props = {
     children: ReactNode
     extra?: ReactNode
     className?: string
+    innerClassName?: string
 }
 
-const ModalActionsFooter = ({ children, className, extra }: Props) => {
+const ModalActionsFooter = ({
+    children,
+    className,
+    extra,
+    innerClassName,
+}: Props) => {
     return (
         <ModalFooter
             className={classnames(
@@ -27,7 +33,7 @@ const ModalActionsFooter = ({ children, className, extra }: Props) => {
                     {extra}
                 </div>
             )}
-            <div className={css.actions}>
+            <div className={classnames(css.actions, innerClassName)}>
                 {Children.toArray(children).map((child, index) => (
                     <div key={index} className={css.childWrapper}>
                         {child}

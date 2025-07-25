@@ -97,9 +97,7 @@ const DefaultBusinessHours = () => {
                     (always on).
                 </div>
                 <div className={css.businessHours}>
-                    <BusinessHoursDisplay
-                        className={css.businessHoursDisplay}
-                    />
+                    <BusinessHoursDisplay />
                     <div className={css.cell}>{value?.timezone}</div>
                     <IconButton
                         className={css.edit}

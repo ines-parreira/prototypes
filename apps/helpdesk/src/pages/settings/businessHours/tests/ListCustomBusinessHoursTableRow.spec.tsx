@@ -136,13 +136,12 @@ describe('ListCustomBusinessHoursTableRow', () => {
 
         await user.click(screen.getByText('delete'))
 
+        expect(screen.getByText('Delete business hours?')).toBeInTheDocument()
         expect(
-            screen.getByText(
-                `You are about to delete '${businessHours.name}' business hours.`,
-            ),
+            screen.getByText(/Are you sure you want to delete/),
         ).toBeInTheDocument()
 
-        await user.click(screen.getByText('Confirm'))
+        await user.click(screen.getByText('Delete'))
 
         expect(mockDelete).toHaveBeenCalledWith({
             id: businessHours.id,
@@ -167,7 +166,7 @@ describe('ListCustomBusinessHoursTableRow', () => {
         )
 
         await user.click(screen.getByText('delete'))
-        await user.click(screen.getByText('Confirm'))
+        await user.click(screen.getByText('Delete'))
 
         expect(mockDelete).toHaveBeenCalledWith({
             id: businessHours.id,

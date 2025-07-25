@@ -1,16 +1,18 @@
+import { useState } from 'react'
+
 import { Link } from 'react-router-dom'
 
 import { BusinessHoursList } from '@gorgias/helpdesk-types'
 import { Badge, IconButton, Label } from '@gorgias/merchant-ui-kit'
 
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import StoreDisplayName from 'pages/common/components/StoreDisplayName'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import BusinessHoursScheduleDisplay from './BusinessHoursScheduleDisplay'
+import { DeleteModal } from './DeleteModal'
 
 import css from './ListCustomBusinessHours.less'
 
@@ -21,7 +23,8 @@ type Props = {
 export default function ListCustomBusinessHoursTableRow({
     businessHours,
 }: Props) {
-    const { mutate: deleteBusinessHours } =
+    const [isModalOpen, setModalOpen] = useState(false)
+    const { mutate: deleteBusinessHours, isLoading: isDeleting } =
         useDeleteCustomBusinessHours(businessHours)
 
     const handleDeletion = () => {
@@ -96,27 +99,21 @@ export default function ListCustomBusinessHoursTableRow({
                             fillStyle="ghost"
                         />
                     </Link>
-                    <ConfirmationPopover
-                        buttonProps={{
-                            intent: 'destructive',
-                        }}
-                        content={`You are about to delete '${businessHours.name}' business hours.`}
-                        id={`delete-${businessHours.id}`}
-                        onConfirm={handleDeletion}
-                        placement="right"
-                    >
-                        {({ uid, onDisplayConfirmation }) => (
-                            <IconButton
-                                icon="delete"
-                                intent="destructive"
-                                fillStyle="ghost"
-                                id={uid}
-                                onClick={onDisplayConfirmation}
-                            />
-                        )}
-                    </ConfirmationPopover>
+                    <IconButton
+                        icon="delete"
+                        intent="destructive"
+                        fillStyle="ghost"
+                        onClick={() => setModalOpen(true)}
+                    />
                 </div>
             </BodyCell>
+            <DeleteModal
+                name={businessHours.name}
+                isModalOpen={isModalOpen}
+                setModalOpen={setModalOpen}
+                onDelete={handleDeletion}
+                isDeleting={isDeleting}
+            />
         </TableBodyRow>
     )
 }
