@@ -22,9 +22,9 @@
     },
     "devDependencies": {
         "@jest/expect": "catalog:jest",
-        "@repo/jest-config": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/configs-utils": "workspace:*",
         "@repo/testing-utils": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
         "@swc/core": "catalog:jest",
         "@swc/jest": "catalog:jest",
         "@testing-library/dom": "catalog:testing-library",

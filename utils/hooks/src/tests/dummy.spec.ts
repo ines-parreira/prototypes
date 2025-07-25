@@ -1,4 +1,4 @@
-import { dummy } from '../index'
+import { dummy } from '../dummy'
 
 describe('dummy test', () => {
     it('should return dummy', () => {

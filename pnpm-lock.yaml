@@ -760,6 +760,9 @@ importers:
       '@redux-devtools/extension':
         specifier: 3.1.0
         version: 3.1.0(redux@4.0.5)
+      '@repo/configs-utils':
+        specifier: workspace:*
+        version: link:../../utils/configs
       '@rsbuild/core':
         specifier: 1.3.21
         version: 1.3.21
@@ -1226,11 +1229,23 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
 
-  configs/jest:
+  configs/typescript:
+    devDependencies:
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: catalog:prettier
+        version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
+      oxlint:
+        specifier: catalog:oxlint
+        version: 0.16.3
+      prettier:
+        specifier: catalog:prettier
+        version: 3.6.2
+
+  utils/configs:
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
-        version: link:../typescript
+        version: link:../../configs/typescript
       '@trivago/prettier-plugin-sort-imports':
         specifier: catalog:prettier
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
@@ -1247,26 +1262,14 @@ importers:
         specifier: catalog:typescript
         version: 5.3.3
 
-  configs/typescript:
-    devDependencies:
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: catalog:prettier
-        version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
-      oxlint:
-        specifier: catalog:oxlint
-        version: 0.16.3
-      prettier:
-        specifier: catalog:prettier
-        version: 3.6.2
-
   utils/hooks:
     devDependencies:
       '@jest/expect':
         specifier: catalog:jest
         version: 29.7.0
-      '@repo/jest-config':
+      '@repo/configs-utils':
         specifier: workspace:*
-        version: link:../../configs/jest
+        version: link:../configs
       '@repo/testing-utils':
         specifier: workspace:*
         version: link:../testing
@@ -1360,9 +1363,9 @@ importers:
 
   utils/testing:
     devDependencies:
-      '@repo/jest-config':
+      '@repo/configs-utils':
         specifier: workspace:*
-        version: link:../../configs/jest
+        version: link:../configs
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../configs/typescript
@@ -10361,10 +10364,6 @@ packages:
 
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
-
-  resolve.exports@2.0.2:
-    resolution: {integrity: sha512-X2UW6Nw3n/aMgDVy+0rSqgHlv39WZAlZrXCdnbyEiKm17DSqHX4MmQMaST3FbeWR5FTuRcUwYAziZajji0Y7mg==}
-    engines: {node: '>=10'}
 
   resolve.exports@2.0.3:
     resolution: {integrity: sha512-OcXjMsGdhL4XnbShKpAcSqPMzQoYkYyhbEaeSko47MjRP9NfEQMhZkXL1DoFlt9LWQn4YttrdnV6X2OiyzBi+A==}
@@ -20139,7 +20138,7 @@ snapshots:
       jest-util: 29.7.0
       jest-validate: 29.7.0
       resolve: 1.22.10
-      resolve.exports: 2.0.2
+      resolve.exports: 2.0.3
       slash: 3.0.0
 
   jest-runner@29.7.0:
@@ -22915,8 +22914,6 @@ snapshots:
   resolve-pathname@3.0.0: {}
 
   resolve-pkg-maps@1.0.0: {}
-
-  resolve.exports@2.0.2: {}
 
   resolve.exports@2.0.3: {}
 

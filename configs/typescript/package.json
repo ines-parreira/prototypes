@@ -1,7 +1,7 @@
 {
     "name": "@repo/typescript-config",
     "version": "1.0.0",
-    "description": "Common TypeScript configurations for the monorepo",
+    "description": "Common TypeScript configurations for the monorepo. Need to be a standalone package.",
     "private": true,
     "publishConfig": {
         "access": "public"

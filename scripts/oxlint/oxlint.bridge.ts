@@ -136,11 +136,11 @@ const mergedConfig = mergeConfigs([
 ])
 
 const outDirs = [
-    'configs/jest',
-    'configs/typescript',
     'apps/helpdesk',
+    'configs/typescript',
     'utils/hooks',
     'utils/testing',
+    'utils/configs',
 ]
 
 const outPaths = outDirs.map((dir) =>

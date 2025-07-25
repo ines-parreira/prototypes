@@ -1,3 +1,1 @@
-export function dummy() {
-    return 'dummy'
-}
+export const placeholder = {}

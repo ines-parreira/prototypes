@@ -6,41 +6,46 @@ It's built using ReactJS + Redux + many other smaller tools.
 ## Table of Contents
 
 - [Gorgias JavaScript Application](#gorgias-javascript-application)
-    - [Table of Contents](#table-of-contents)
-    - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-        - [PNPM Catalogs](#pnpm-catalogs)
-    - [Development](#development)
-        - [Storybook](#storybook)
-            - [Story Guidelines](#story-guidelines)
-            - [Storybook Folder Structure](#storybook-folder-structure)
-        - [Design tokens](#design-tokens)
-        - [Environment Configuration](#environment-configuration)
-            - [Initial Setup](#initial-setup)
-            - [Available Environment Variables](#available-environment-variables)
-        - [Running the Development Server](#running-the-development-server)
-    - [Testing](#testing)
-        - [General testing](#general-testing)
-    - [Linting](#linting)
-        - [Running Linting](#running-linting)
-        - [Adding Linting rules](#adding-linting-rules)
-    - [Debugging tools](#debugging-tools)
-        - [ReactScan](#reactscan)
-        - [WhyDidYouRender](#whydidyourender)
-            - [How it's imported](#how-its-imported)
-            - [How to use it](#how-to-use-it)
-    - [Formatting](#formatting)
-    - [Platform](#platform)
-        - [Deprecated entries](#deprecated-entries)
-            - [Generate new snapshot](#generate-new-snapshot)
-            - [Deprecated entries lint check](#deprecated-entries-lint-check)
-            - [Add new deprecated entries](#add-new-deprecated-entries)
-        - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
-    - [Contributing](#contributing)
-    - [Update gorgias-chat client](#update-gorgias-chat-client)
-    - [FAQ / Troubleshooting](#faq--troubleshooting)
-        - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
+  - [Table of Contents](#table-of-contents)
+  - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+    - [PNPM Catalogs](#pnpm-catalogs)
+  - [Development](#development)
+    - [Environment Configuration](#environment-configuration)
+      - [Initial Setup](#initial-setup)
+    - [Running the Development Server](#running-the-development-server)
+    - [Storybook](#storybook)
+      - [Story Guidelines](#story-guidelines)
+      - [Storybook Folder Structure](#storybook-folder-structure)
+    - [Design tokens](#design-tokens)
+  - [Testing](#testing)
+    - [General testing](#general-testing)
+  - [CI/CD Workflow](#cicd-workflow)
+    - [Overview](#overview)
+    - [Workflow Structure](#workflow-structure)
+    - [Quality Checks](#quality-checks)
+    - [Code Coverage](#code-coverage)
+    - [Deployment Pipeline](#deployment-pipeline)
+  - [Linting](#linting)
+    - [Running Linting](#running-linting)
+    - [Adding Linting rules](#adding-linting-rules)
+  - [Debugging tools](#debugging-tools)
+    - [ReactScan](#reactscan)
+    - [WhyDidYouRender](#whydidyourender)
+      - [How it's imported](#how-its-imported)
+      - [How to use it](#how-to-use-it)
+  - [Formatting](#formatting)
+  - [Platform](#platform)
+    - [Deprecated entries](#deprecated-entries)
+      - [Generate new snapshot](#generate-new-snapshot)
+      - [Deprecated entries lint check](#deprecated-entries-lint-check)
+      - [Add new deprecated entries](#add-new-deprecated-entries)
+    - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
+  - [Contributing](#contributing)
+  - [Update gorgias-chat client](#update-gorgias-chat-client)
+  - [FAQ / Troubleshooting](#faq--troubleshooting)
+    - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
 
@@ -151,6 +156,75 @@ pnpm test
 pnpm typecheck  # Only type-check
 pnpm jest   # Only unit tests
 ```
+
+## CI/CD Workflow
+
+### Overview
+
+The project uses GitHub Actions for continuous integration and deployment. The main workflow is defined in `.github/workflows/cicd.yml` and orchestrates quality checks, builds, and deployments across different environments.
+
+### Workflow Structure
+
+The CI/CD pipeline consists of several key jobs:
+
+1. **Workspace Setup**: Analyzes affected packages using NX to optimize the build process
+2. **Quality Check**: Runs linting, formatting, type checking, and tests
+3. **Build**: Creates optimized production builds for different environments
+4. **Deploy**: Deploys to staging (on `staging` branch) or production (on `main` branch)
+
+### Quality Checks
+
+The quality check workflow (`.github/workflows/quality-check.yml`) runs:
+
+- **Linting**: Uses NX to run lint checks on affected packages
+- **Formatting**: Ensures code formatting consistency
+- **Type Checking**: Validates TypeScript types across the codebase
+- **Testing**: Runs tests in parallel across 10 shards for the main helpdesk app
+- **Package Tests**: Runs tests for affected packages in the monorepo
+
+Tests are intelligently skipped for unaffected packages to optimize CI time.
+
+### Code Coverage
+
+Code coverage is managed through Codecov with the following features:
+
+- **Coverage Targets**:
+    - Project coverage: Auto-calculated with 0.5% threshold
+    - Patch coverage: 80% target for new code
+- **Flag Management**: Coverage is tracked per test shard and package
+- **Carryforward**: Coverage from previous commits is carried forward when tests are skipped
+- **Reporting**: Coverage reports are uploaded for both the main app and individual packages
+
+Configuration is defined in `codecov.yaml`
+
+### Deployment Pipeline
+
+The deployment process varies by branch:
+
+- **Feature Branches**: Build smoke tests only (no deployment)
+- **Staging Branch**:
+    - Builds with staging assets URL
+    - Deploys to staging clusters
+    - Creates Sentry releases for error tracking
+- **Main Branch**:
+    - Builds production artifacts
+    - Deploys to multiple production clusters across regions
+    - Creates production Sentry releases
+    - Builds Docker images for containerized deployments
+
+The build process (`.github/workflows/build.yml`) handles:
+
+- Asset URL configuration per environment
+- Build artifact creation and caching
+- Release versioning
+
+The deploy process (`.github/workflows/deploy.yml`) manages:
+
+- Google Cloud authentication
+- Asset publishing to GCS buckets
+- Kubernetes ConfigMap updates
+- Multi-cluster deployments
+- Sentry source map uploads
 
 ## Linting
 

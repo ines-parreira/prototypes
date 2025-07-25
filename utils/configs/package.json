@@ -1,10 +1,13 @@
 {
-    "name": "@repo/jest-config",
+    "name": "@repo/configs-utils",
     "version": "1.0.0",
-    "description": "Common Jest configuration for the monorepo",
+    "description": "Common configuration files for the monorepo",
     "private": true,
+    "publishConfig": {
+        "access": "public"
+    },
     "exports": {
-        ".": "./src/jest.config.ts"
+        "./jest": "./src/jest.config.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",

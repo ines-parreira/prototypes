@@ -128,17 +128,6 @@ jobs:
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
-
-  quality-check-next:
-    name: Quality check next
-    needs:
-      - workspace-vars
-      - workspace-setup
-    uses: ./.github/workflows/quality-check-next.yml
-    secrets: inherit
-    with:
-      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
       helpdesk-affected: ${{ needs.workspace-setup.outputs.helpdesk-affected }}
       has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
       other-affected-packages: ${{ needs.workspace-setup.outputs.other-affected-packages }}

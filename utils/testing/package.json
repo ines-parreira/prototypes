@@ -21,7 +21,7 @@
         "react-dom": "catalog:react"
     },
     "devDependencies": {
-        "@repo/jest-config": "workspace:*",
+        "@repo/configs-utils": "workspace:*",
         "@repo/typescript-config": "workspace:*",
         "@swc/core": "catalog:jest",
         "@swc/jest": "catalog:jest",
