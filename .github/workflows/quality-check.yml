@@ -263,6 +263,7 @@ jobs:
   unaffected-tests:
     name: 'Unaffected packages status'
     runs-on: gh-actions-small-runner-set
+    if: inputs.other-unaffected-packages != '[]'
     strategy:
       fail-fast: false
       matrix:
