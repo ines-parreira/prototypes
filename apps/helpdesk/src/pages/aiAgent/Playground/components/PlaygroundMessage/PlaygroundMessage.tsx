@@ -7,7 +7,6 @@ import { Badge, LoadingSpinner, Skeleton } from '@gorgias/merchant-ui-kit'
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import error from 'assets/img/icons/error.svg'
 import {
-    AgentSkill,
     MessageType,
     PlaygroundMessage as PlaygroundMessageType,
     ProcessingStatus,
@@ -102,11 +101,6 @@ const PlaygroundMessage = ({
                     sender={message.sender}
                     withAnimation={withAnimation}
                     type={messageType}
-                    agentSkill={
-                        message.type === MessageType.MESSAGE
-                            ? message.agentSkill
-                            : undefined
-                    }
                     isAiAgentSender={isAiAgentSender}
                 >
                     {typeof message.content === 'string' ? (
@@ -153,18 +147,12 @@ export const PlaygroundGenericErrorMessage = ({
     </div>
 )
 
-const agentSkillText = {
-    [AgentSkill.SALES]: 'Shopping Assistant',
-    [AgentSkill.SUPPORT]: 'Support Agent',
-}
-
 type MessageContainerProps = {
     children: ReactNode
     channel: PlaygroundChannels
     sender: string
     withAnimation: boolean
     type: MessageType
-    agentSkill?: AgentSkill
     isAiAgentSender: boolean
     role?: string
 }
@@ -174,7 +162,6 @@ const MessageContainer = ({
     sender,
     withAnimation,
     type,
-    agentSkill,
     isAiAgentSender,
     channel,
     role,
@@ -235,15 +222,6 @@ const MessageContainer = ({
                     >
                         {sender}
                     </span>
-                    {agentSkill && (
-                        <Badge
-                            className={css.messageBadge}
-                            type={'magenta'}
-                            corner="square"
-                        >
-                            {agentSkillText[agentSkill]}
-                        </Badge>
-                    )}
                     <i
                         className={classnames(
                             'material-icons',

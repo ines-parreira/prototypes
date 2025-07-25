@@ -122,23 +122,6 @@ describe('PlaygroundMessage', () => {
     })
 
     it.each([
-        { skill: AgentSkill.SALES, text: 'Shopping Assistant' },
-        { skill: AgentSkill.SUPPORT, text: 'Support Agent' },
-    ])(
-        "should render agent's skill badge if it is $skill",
-        ({ skill, text }) => {
-            renderComponent({
-                message: {
-                    ...playgroundMessageFixture,
-                    sender: AI_AGENT,
-                    agentSkill: skill,
-                },
-            })
-            expect(screen.getByText(text)).toBeInTheDocument()
-        },
-    )
-
-    it.each([
         {
             type: MessageType.ERROR,
             messageFixture: playgroundErrorMessageFixture,

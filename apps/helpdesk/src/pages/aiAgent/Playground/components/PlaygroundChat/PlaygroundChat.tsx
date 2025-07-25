@@ -9,7 +9,6 @@ import {
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
@@ -203,18 +202,6 @@ export const PlaygroundChat = ({
 
     return (
         <div className={css.container}>
-            {isInitialMessage && (
-                <Alert
-                    className={css.alertContainer}
-                    type={AlertType.Success}
-                    icon
-                    role="alert"
-                >
-                    No messages will be sent, no data will change and no actions
-                    will be performed while testing.
-                </Alert>
-            )}
-
             <div className={css.outputContainer}>
                 <div className={css.outputInner} ref={messageContainerRef}>
                     {messages.map((message, index) => (

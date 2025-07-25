@@ -480,27 +480,6 @@ describe('PlaygroundChat', () => {
             expect(screen.getByText('Hello')).toBeInTheDocument()
         })
 
-        it('should notify user no real data will be impacted while testing', () => {
-            mockedUsePlaygroundMessages.mockReturnValue({
-                messages: [
-                    {
-                        sender: 'AI Agent',
-                        type: MessageType.MESSAGE,
-                        createdDatetime: '2021-10-01T00:00:00Z',
-                        content: 'test',
-                    },
-                ],
-                onMessageSend: jest.fn(),
-                onNewConversation: jest.fn(),
-                isMessageSending: false,
-                isWaitingResponse: false,
-            })
-            renderComponent()
-            expect(screen.getByRole('alert')).toHaveTextContent(
-                'No messages will be sent, no data will change and no actions will be performed while testing.',
-            )
-        })
-
         it('should dismiss notification when messages are sent', () => {
             mockedUsePlaygroundMessages.mockReturnValue({
                 messages: [
