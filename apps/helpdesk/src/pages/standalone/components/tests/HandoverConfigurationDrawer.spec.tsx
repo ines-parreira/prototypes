@@ -74,6 +74,20 @@ describe('<HandoverConfigurationDrawer />', () => {
         customFieldIds: null,
     }
 
+    const mockStoreConfigurationParams = {
+        setFormValues: mockSetFormValues,
+        handleOnSave: mockHandleOnSave,
+        formValues: mockStoreConfig,
+        isEmailChannelEnabled: true,
+        isChatChannelEnabled: true,
+        isSmsChannelEnabled: true,
+        resetForm: jest.fn(),
+        isFormDirty: false,
+        updateValue: jest.fn(),
+        isFieldDirty: jest.fn(),
+        isPendingCreateOrUpdate: false,
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -87,19 +101,7 @@ describe('<HandoverConfigurationDrawer />', () => {
         jest.spyOn(
             useStoreConfigurationFormModule,
             'useStoreConfigurationForm',
-        ).mockReturnValue({
-            setFormValues: mockSetFormValues,
-            handleOnSave: mockHandleOnSave,
-            formValues: mockStoreConfig,
-            isEmailChannelEnabled: true,
-            isChatChannelEnabled: true,
-            isSmsChannelEnabled: true,
-            resetForm: jest.fn(),
-            isFormDirty: false,
-            updateValue: jest.fn(),
-            isFieldDirty: jest.fn(),
-            isPendingCreateOrUpdate: false,
-        })
+        ).mockReturnValue(mockStoreConfigurationParams)
 
         // Mock useHandoverSchema with a simple mock that can be returned
         const mockSchema = z.object({}).superRefine(() => {}) as any
@@ -320,5 +322,77 @@ describe('<HandoverConfigurationDrawer />', () => {
 
         // expect it to render without crashing
         render(<HandoverConfigurationDrawer {...defaultProps} />)
+    })
+
+    it('does not show email dropdown when there is a base email integration and uses base email ID on submission', async () => {
+        jest.spyOn(
+            useStoreConfigurationFormModule,
+            'useStoreConfigurationForm',
+        ).mockReturnValue({
+            ...mockStoreConfigurationParams,
+            formValues: {
+                ...mockStoreConfig,
+                handoverMethod: 'email',
+                handoverEmailIntegrationId: null,
+            },
+        })
+
+        const forwardingDomain = 'emails-test.gorgi.us'
+        ;(window as any).GORGIAS_STATE = {
+            integrations: {
+                authentication: {
+                    email: {
+                        forwarding_email_address: `forwarding@${forwardingDomain}`,
+                    },
+                },
+            },
+        }
+
+        const baseEmailIntegrationId = 999
+        const mockEmailIntegrationsWithBase = [
+            {
+                id: baseEmailIntegrationId,
+                meta: {
+                    address: `random-string@${forwardingDomain}`,
+                    verified: true,
+                },
+                type: EMAIL_INTEGRATION_TYPES[0],
+            },
+            {
+                id: 2,
+                meta: { address: 'another@example.com' },
+                type: EMAIL_INTEGRATION_TYPES[0],
+            },
+        ]
+
+        mockUseAppSelector.mockReturnValue(mockEmailIntegrationsWithBase)
+
+        render(<HandoverConfigurationDrawer {...defaultProps} />)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    'Email from which handover emails will be sent',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        const saveButton = screen.getByText('Save Method')
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(mockHandleOnSave).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shopName: 'Test Shop',
+                    stepName: AiAgentOnboardingWizardStep.Personalize,
+                    payload: expect.objectContaining({
+                        handoverMethod: 'email',
+                        handoverEmailIntegrationId: baseEmailIntegrationId,
+                    }),
+                }),
+            )
+        })
+
+        delete (window as any).GORGIAS_STATE
     })
 })

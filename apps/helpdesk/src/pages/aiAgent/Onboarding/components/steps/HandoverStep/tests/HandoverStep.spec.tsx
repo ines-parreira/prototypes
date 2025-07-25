@@ -51,6 +51,7 @@ jest.mocked(useGetStoresConfigurationForAccount).mockImplementation(
 // Mocking the email integration
 const mockEmailIntegration = {
     id: 123,
+    type: 'email' as const,
     meta: {
         address: 'test@example.com',
     },
@@ -121,24 +122,25 @@ const renderComponent = (isStoreSelected = true) => {
 }
 
 describe('HandoverStep', () => {
+    const defaultOnboardingData = {
+        id: '1',
+        salesPersuasionLevel: PersuasionLevel.Moderate,
+        salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+        salesDiscountMax: 0.8,
+        scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+        shopName: shopifyIntegration.meta.shop_name,
+        currentStepName: WizardStepEnum.HANDOVER,
+        handoverMethod: 'email',
+        handoverEmail: 'test@example.com',
+        handoverEmailIntegrationId: 123,
+        handoverHttpIntegrationId: 456,
+    }
     beforeEach(() => {
         jest.clearAllMocks()
 
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
-            data: {
-                id: '1',
-                salesPersuasionLevel: PersuasionLevel.Moderate,
-                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-                salesDiscountMax: 0.8,
-                scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
-                shopName: shopifyIntegration.meta.shop_name,
-                currentStepName: WizardStepEnum.HANDOVER,
-                handoverMethod: 'email',
-                handoverEmail: 'test@example.com',
-                handoverEmailIntegrationId: 123,
-                handoverHttpIntegrationId: 456,
-            },
+            data: { ...defaultOnboardingData },
         })
 
         updateOnboardingMock.mockReturnValue({
@@ -394,5 +396,117 @@ describe('HandoverStep', () => {
         waitFor(() => {
             expect(screen.getByText('Intercom')).toBeInTheDocument()
         })
+    })
+
+    it('does not show email dropdown when there is a base email integration and uses base email ID on submission', async () => {
+        const baseEmailIntegrationId = 999
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                ...defaultOnboardingData,
+                handoverEmailIntegrationId: baseEmailIntegrationId,
+            },
+        })
+
+        const forwardingDomain = 'emails-test.gorgi.us'
+        ;(window as any).GORGIAS_STATE = {
+            integrations: {
+                authentication: {
+                    email: {
+                        forwarding_email_address: `forwarding@${forwardingDomain}`,
+                    },
+                },
+            },
+        }
+
+        const baseEmailIntegration = {
+            id: baseEmailIntegrationId,
+            type: 'email' as const,
+            meta: {
+                address: `random-string@${forwardingDomain}`,
+                verified: true,
+            },
+        }
+
+        const stateWithBaseEmail = {
+            ...defaultState,
+            integrations: (
+                fromJS(integrationsState) as Map<any, any>
+            ).mergeDeep({
+                integrations: [
+                    shopifyIntegration,
+                    ...chatIntegrationFixtures,
+                    baseEmailIntegration,
+                ],
+            }),
+        } as RootState
+
+        const renderComponentWithBaseEmail = () => {
+            const store = mockStore(stateWithBaseEmail)
+            store.dispatch = mockDispatch
+
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <HandoverStep
+                            currentStep={5}
+                            totalSteps={6}
+                            goToStep={mockGoToStep}
+                            isStoreSelected={true}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    history,
+                    path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+                    route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/handover`,
+                },
+            )
+        }
+
+        renderComponentWithBaseEmail()
+        jest.runAllTimers()
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    'Email from which handover emails will be sent',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        await waitFor(() => {
+            const emailInput = screen.getByLabelText(
+                /Email that will receive handover conversations/,
+            )
+            expect(emailInput).toBeInTheDocument()
+        })
+
+        const emailInput = screen.getByLabelText(
+            /Email that will receive handover conversations/,
+        )
+
+        fireEvent.change(emailInput, {
+            target: { value: 'recipient@example.com' },
+        })
+
+        await act(async () => {
+            fireEvent.click(screen.getByText('Next'))
+        })
+
+        expect(mockUpdateOnboardingMutate).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    handoverMethod: 'email',
+                    handoverEmail: 'recipient@example.com',
+                    handoverEmailIntegrationId: baseEmailIntegrationId,
+                    handoverHttpIntegrationId: expect.anything(),
+                }),
+            }),
+            expect.anything(),
+        )
+
+        delete (window as any).GORGIAS_STATE
     })
 })

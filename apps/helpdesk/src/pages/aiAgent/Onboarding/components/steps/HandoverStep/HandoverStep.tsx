@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
+import { EmailIntegration } from '@gorgias/helpdesk-types'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
@@ -120,11 +121,20 @@ export const HandoverStep: FC<StepProps> = ({
             })
     }, [emailIntegrations])
 
+    const validBaseEmailIntegration = useMemo(() => {
+        return emailIntegrations.find(
+            (integration) =>
+                isBaseEmailIntegration(integration) &&
+                (integration as EmailIntegration).meta.verified,
+        )
+    }, [emailIntegrations])
+
     const formMethods = useForm<HandoverFormValues>({
         values: {
             handoverMethod: data?.handoverMethod ?? 'email',
             email: (emailIntegrationId || data?.handoverEmail) ?? '',
             emailIntegration: data?.handoverEmailIntegrationId ?? undefined,
+            baseEmailIntegration: validBaseEmailIntegration?.id ?? undefined,
             webhookIntegration: data?.handoverHttpIntegrationId ?? undefined,
             webhookThirdParty: HelpdeskIntegrationOptions.ZENDESK,
             webhookRequiredFields: getWebhookRequiredFields(
@@ -158,7 +168,9 @@ export const HandoverStep: FC<StepProps> = ({
         const updatedValues = {
             handoverMethod: handoverMethod,
             handoverEmail: email || null,
-            handoverEmailIntegrationId: emailIntegration ?? null,
+            handoverEmailIntegrationId: !!validBaseEmailIntegration
+                ? validBaseEmailIntegration.id
+                : (emailIntegration ?? null),
             handoverHttpIntegrationId: integrationId,
         }
 
@@ -248,6 +260,7 @@ export const HandoverStep: FC<StepProps> = ({
                                 onEmailIntegrationCtaClick={
                                     redirectToIntegration
                                 }
+                                hideIntegrations={!!validBaseEmailIntegration}
                             />
                         )}
                     </HandoverCard>

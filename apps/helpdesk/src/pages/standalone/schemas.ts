@@ -9,6 +9,7 @@ export type HandoverFormValues = {
     handoverMethod: string
     email?: string
     emailIntegration?: number
+    baseEmailIntegration?: number
     webhookIntegration?: number
     webhookThirdParty?: string
     webhookRequiredFields?: Record<string, string>
@@ -19,6 +20,7 @@ export const handoverSchema = z
         handoverMethod: z.string(),
         email: z.string().optional(),
         emailIntegration: z.number().optional(),
+        baseEmailIntegration: z.number().optional(),
         webhookIntegration: z.number().optional(),
         webhookThirdParty: z.string().optional(),
         webhookRequiredFields: z.record(z.string()).optional(),
@@ -41,7 +43,7 @@ export const handoverSchema = z
                         path: ['email'],
                     })
                 }
-                if (!data.emailIntegration) {
+                if (!data.emailIntegration && !data.baseEmailIntegration) {
                     ctx.addIssue({
                         code: ZodIssueCode.custom,
                         message:

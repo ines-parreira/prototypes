@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
+import { EmailIntegration } from '@gorgias/helpdesk-types'
 import { Badge, Button } from '@gorgias/merchant-ui-kit'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
@@ -42,12 +43,21 @@ export const HandoverConfigurationDrawer: React.FC<
     const { setFormValues, handleOnSave, formValues } =
         useStoreConfigurationForm(shopName, shopType, faqHelpcenters)
 
+    const validBaseEmailIntegration = useMemo(() => {
+        return emailIntegrations.find(
+            (integration) =>
+                isBaseEmailIntegration(integration) &&
+                (integration as EmailIntegration).meta.verified,
+        )
+    }, [emailIntegrations])
+
     const formMethods = useForm<HandoverFormValues>({
         values: {
             handoverMethod: formValues.handoverMethod || HandoverMethods.EMAIL,
             email: formValues.handoverEmail ?? '',
             emailIntegration:
                 formValues.handoverEmailIntegrationId ?? undefined,
+            baseEmailIntegration: validBaseEmailIntegration?.id ?? undefined,
             webhookIntegration:
                 formValues.handoverHttpIntegrationId ?? undefined,
             webhookThirdParty: HelpdeskIntegrationOptions.ZENDESK,
@@ -81,7 +91,9 @@ export const HandoverConfigurationDrawer: React.FC<
         const updatedValues = {
             handoverMethod: handoverMethod,
             handoverEmail: email || null,
-            handoverEmailIntegrationId: emailIntegration ?? null,
+            handoverEmailIntegrationId: !!validBaseEmailIntegration
+                ? validBaseEmailIntegration.id
+                : (emailIntegration ?? null),
             handoverHttpIntegrationId: integrationId,
         }
 
@@ -184,6 +196,7 @@ export const HandoverConfigurationDrawer: React.FC<
                             emailIntegration={emailIntegration}
                             email={email ?? ''}
                             errors={errors}
+                            hideIntegrations={!!validBaseEmailIntegration}
                         />
                     )}
                     <RadioButton

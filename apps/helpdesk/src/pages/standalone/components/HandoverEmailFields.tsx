@@ -20,6 +20,7 @@ export const HandoverEmailFields: FC<{
     selectableEmailIntegrations: EmailItem[]
     email: string
     errors: FieldErrors<HandoverFormValues>
+    hideIntegrations?: boolean
     onEmailIntegrationCtaClick?: (
         integrationUrl: string,
         integrationType: IntegrationType,
@@ -31,6 +32,7 @@ export const HandoverEmailFields: FC<{
     email,
     errors,
     onEmailIntegrationCtaClick,
+    hideIntegrations,
 }) => {
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
     const emailFieldRef = useRef<HTMLInputElement | null>(null)
@@ -49,28 +51,30 @@ export const HandoverEmailFields: FC<{
 
     return (
         <div className={css.container}>
-            <div ref={emailDropdownRef} className={css.emailList}>
-                <Label isRequired={true} id="outbound-email-integration">
-                    Email from which handover emails will be sent
-                </Label>
-                <div>
-                    <HandoverEmailDropdown
-                        labelId="outbound-email-integration"
-                        onSelectionChange={(integration) => {
-                            setValue('emailIntegration', integration)
-                        }}
-                        selectedId={emailIntegration}
-                        emailItems={selectableEmailIntegrations}
-                        hasError={!!errors.emailIntegration}
-                        error={errors.emailIntegration?.message}
-                    />
-                    <a className={css.link} onClick={onClick}>
-                        <small>
-                            {"Don't see the email you want? Click here"}
-                        </small>
-                    </a>
+            {!hideIntegrations && (
+                <div ref={emailDropdownRef} className={css.emailList}>
+                    <Label isRequired={true} id="outbound-email-integration">
+                        Email from which handover emails will be sent
+                    </Label>
+                    <div>
+                        <HandoverEmailDropdown
+                            labelId="outbound-email-integration"
+                            onSelectionChange={(integration) => {
+                                setValue('emailIntegration', integration)
+                            }}
+                            selectedId={emailIntegration}
+                            emailItems={selectableEmailIntegrations}
+                            hasError={!!errors.emailIntegration}
+                            error={errors.emailIntegration?.message}
+                        />
+                        <a className={css.link} onClick={onClick}>
+                            <small>
+                                {"Don't see the email you want? Click here"}
+                            </small>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            )}
 
             <InputField
                 type="email"
