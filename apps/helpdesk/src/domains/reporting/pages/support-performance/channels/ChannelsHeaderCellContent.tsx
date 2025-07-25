@@ -6,7 +6,6 @@ import {
     LeadColumn,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 
 type ChannelsHeaderCellContentProps = {
@@ -31,11 +30,7 @@ export const ChannelsHeaderCellContent = ({
     return (
         <HeaderCellProperty
             isOrderedBy={isOrderedBy}
-            direction={
-                isOrderedBy && direction === OrderDirection.Asc
-                    ? OrderDirection.Desc
-                    : OrderDirection.Asc
-            }
+            direction={isOrderedBy ? direction : undefined}
             onClick={sortCallback}
             title={ChannelsTableLabels[column]}
             wrapContent

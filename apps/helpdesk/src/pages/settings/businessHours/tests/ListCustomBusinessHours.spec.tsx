@@ -297,4 +297,69 @@ describe('ListCustomBusinessHours', () => {
             screen.getAllByText('ListCustomBusinessHoursTableRow').length,
         ).toBeGreaterThan(0)
     })
+
+    describe('sorting functionality', () => {
+        it('should handle sorting by Name column', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Name & Schedule')).toBeInTheDocument()
+            })
+
+            const nameHeader = screen.getByText('Name & Schedule')
+            await user.click(nameHeader)
+
+            expect(nameHeader.closest('th')).toHaveAttribute(
+                'data-ordered-by',
+                'true',
+            )
+        })
+
+        it('should handle sorting by Timezone column', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Timezone')).toBeInTheDocument()
+            })
+
+            const timezoneHeader = screen.getByText('Timezone')
+            await user.click(timezoneHeader)
+
+            expect(timezoneHeader.closest('th')).toHaveAttribute(
+                'data-ordered-by',
+                'true',
+            )
+        })
+
+        it('should toggle sort direction when clicking the same column twice', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Name & Schedule')).toBeInTheDocument()
+            })
+
+            const nameHeader = screen.getByText('Name & Schedule')
+
+            await user.click(nameHeader)
+            expect(nameHeader.closest('th')).toHaveAttribute(
+                'data-direction',
+                'asc',
+            )
+
+            await user.click(nameHeader)
+            expect(nameHeader.closest('th')).toHaveAttribute(
+                'data-direction',
+                'desc',
+            )
+
+            await user.click(nameHeader)
+            expect(nameHeader.closest('th')).toHaveAttribute(
+                'data-ordered-by',
+                'false',
+            )
+        })
+    })
 })

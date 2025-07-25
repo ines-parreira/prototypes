@@ -128,17 +128,17 @@ describe('CampaignTableStats', () => {
 
         fireEvent.click(engagementTh)
 
-        expect(arrowIcon.textContent).toBe('arrow_upward')
-        expect(arrowIcon).not.toHaveStyle({ display: 'none' })
-
-        fireEvent.click(engagementTh)
-
         expect(arrowIcon.textContent).toBe('arrow_downward')
         expect(arrowIcon).not.toHaveStyle({ display: 'none' })
 
         fireEvent.click(engagementTh)
 
         expect(arrowIcon.textContent).toBe('arrow_upward')
+        expect(arrowIcon).not.toHaveStyle({ display: 'none' })
+
+        fireEvent.click(engagementTh)
+
+        expect(arrowIcon.textContent).toBe('arrow_downward')
         expect(arrowIcon).not.toHaveStyle({ display: 'none' })
     })
 

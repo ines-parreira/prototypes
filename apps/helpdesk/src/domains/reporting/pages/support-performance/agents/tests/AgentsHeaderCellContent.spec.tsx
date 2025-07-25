@@ -80,7 +80,7 @@ describe('<AgentsHeaderCellContent>', () => {
                 useSortingQuery={useSortingQueryMock}
             />,
         )
-        const sortingIcon = screen.getByText('arrow_upward')
+        const sortingIcon = screen.getByText('arrow_downward')
 
         expect(sortingIcon).toBeInTheDocument()
     })
@@ -100,7 +100,7 @@ describe('<AgentsHeaderCellContent>', () => {
                 useSortingQuery={useSortingQueryMock}
             />,
         )
-        const sortingIcon = screen.queryByText('arrow_upward')
+        const sortingIcon = screen.queryByText('arrow_downward')
 
         expect(sortingIcon).not.toBeInTheDocument()
     })

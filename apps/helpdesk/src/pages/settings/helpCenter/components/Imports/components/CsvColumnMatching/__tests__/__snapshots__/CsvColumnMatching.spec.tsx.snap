@@ -279,7 +279,7 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               <i
                 class="material-icons md-1 directionIcon"
               >
-                arrow_upward
+                arrow_downward
               </i>
             </div>
           </div>
@@ -301,7 +301,7 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               <i
                 class="material-icons md-1 directionIcon"
               >
-                arrow_upward
+                arrow_downward
               </i>
             </div>
           </div>
@@ -323,7 +323,7 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               <i
                 class="material-icons md-1 directionIcon"
               >
-                arrow_upward
+                arrow_downward
               </i>
             </div>
           </div>
@@ -345,7 +345,7 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
               <i
                 class="material-icons md-1 directionIcon"
               >
-                arrow_upward
+                arrow_downward
               </i>
             </div>
           </div>

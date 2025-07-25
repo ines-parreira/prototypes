@@ -1,10 +1,8 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('<HeaderCellProperty/>', () => {
     const minProps = {
@@ -32,15 +30,18 @@ describe('<HeaderCellProperty/>', () => {
             />,
         )
 
-        expect(screen.getByText('arrow_downward')).toBeInTheDocument()
+        expect(screen.getByText('arrow_upward')).toBeInTheDocument()
     })
 
-    it('should call onClick when clicked', () => {
+    it('should call onClick when clicked', async () => {
+        const user = userEvent.setup()
         const onClick = jest.fn()
 
         render(<HeaderCellProperty {...minProps} onClick={onClick} />)
-        userEvent.click(screen.getByRole('columnheader'))
+        user.click(screen.getByRole('columnheader'))
 
-        expect(onClick).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(onClick).toHaveBeenCalled()
+        })
     })
 })

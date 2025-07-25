@@ -40,7 +40,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <i
                         class="material-icons md-1 directionIcon"
                       >
-                        arrow_upward
+                        arrow_downward
                       </i>
                     </div>
                   </div>
@@ -62,7 +62,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <i
                         class="material-icons md-1 directionIcon"
                       >
-                        arrow_upward
+                        arrow_downward
                       </i>
                     </div>
                   </div>
@@ -84,7 +84,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <i
                         class="material-icons md-1 directionIcon"
                       >
-                        arrow_upward
+                        arrow_downward
                       </i>
                     </div>
                   </div>
@@ -106,7 +106,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <i
                         class="material-icons md-1 directionIcon"
                       >
-                        arrow_upward
+                        arrow_downward
                       </i>
                     </div>
                   </div>

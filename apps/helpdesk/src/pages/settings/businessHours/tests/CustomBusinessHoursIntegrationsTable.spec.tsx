@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -287,5 +287,36 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
         const tableWrapper = container.querySelector('[class*="table"]')
         expect(tableWrapper).toBeInTheDocument()
+    })
+
+    it('handles sorting header click and cycles through sorting states', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(integrations[0].integration_name),
+            ).toBeInTheDocument()
+        })
+
+        const integrationHeader = screen.getByText('Integration')
+
+        expect(integrationHeader).toBeInTheDocument()
+
+        await act(async () => {
+            await user.click(integrationHeader)
+        })
+
+        expect(screen.getByText('arrow_upward')).toBeVisible()
+
+        await act(async () => {
+            await user.click(integrationHeader)
+        })
+
+        expect(screen.getByText('arrow_downward')).toBeVisible()
+
+        await act(async () => {
+            await user.click(integrationHeader)
+        })
     })
 })

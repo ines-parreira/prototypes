@@ -2,6 +2,8 @@ import { HTMLProps, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
+import { PaginationOrderDirection } from '@gorgias/helpdesk-types'
+
 import { OrderDirection } from 'models/api/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
@@ -13,7 +15,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
     titleClassName?: string
-    direction?: Maybe<OrderDirection>
+    direction?: OrderDirection | PaginationOrderDirection
     isOrderedBy?: boolean
     isSticky?: boolean
     onClick?: () => void
@@ -48,6 +50,8 @@ export default function HeaderCellProperty({
     return (
         <HeaderCell
             {...otherProps}
+            data-ordered-by={isOrderedBy}
+            data-direction={direction}
             className={classnames(className, { [css.withShadow]: isSticky })}
             onClick={onClick}
         >
@@ -88,8 +92,8 @@ export default function HeaderCellProperty({
                         )}
                     >
                         {direction === OrderDirection.Asc
-                            ? 'arrow_downward'
-                            : 'arrow_upward'}
+                            ? 'arrow_upward'
+                            : 'arrow_downward'}
                     </i>
                 </div>
             </div>

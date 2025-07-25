@@ -1,14 +1,19 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { noop } from 'lodash'
 
-import { useListIntegrationsForBusinessHours } from '@gorgias/helpdesk-queries'
+import {
+    ListIntegrationsForBusinessHoursOrderBy,
+    useListIntegrationsForBusinessHours,
+} from '@gorgias/helpdesk-queries'
 import { CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
+import { OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -32,8 +37,16 @@ export default function CustomBusinessHoursIntegrationsTable({
     name = 'assigned_integrations.assign_integrations',
 }: Props) {
     const [cursor, setCursor] = useState<string>()
+    const [order_by, setOrderBy] =
+        useState<ListIntegrationsForBusinessHoursOrderBy>()
+    const direction = useMemo(() => order_by?.split(':')?.[1], [order_by])
+    const sortBy = useMemo(() => order_by?.split(':')?.[0], [order_by])
+
     const { data, isLoading, isError, refetch } =
-        useListIntegrationsForBusinessHours({ cursor })
+        useListIntegrationsForBusinessHours({
+            order_by,
+            ...(order_by ? {} : { cursor }),
+        })
     const integrations = data?.data.data
 
     const { watch, setValue } = useFormContext<
@@ -69,6 +82,16 @@ export default function CustomBusinessHoursIntegrationsTable({
         }
     }
 
+    const handleSortChange = () => {
+        if (!order_by) {
+            setOrderBy('name:asc')
+        } else if (order_by === 'name:asc') {
+            setOrderBy('name:desc')
+        } else {
+            setOrderBy(undefined)
+        }
+    }
+
     return (
         <div>
             <TableWrapper className={css.table}>
@@ -81,12 +104,13 @@ export default function CustomBusinessHoursIntegrationsTable({
                             onChange={handleSelectAll}
                         />
                     </HeaderCell>
-                    <HeaderCell
-                        size="normal"
+                    <HeaderCellProperty
                         className={css.integrationNameColumn}
-                    >
-                        Integration
-                    </HeaderCell>
+                        direction={direction as OrderDirection}
+                        isOrderedBy={sortBy === 'name'}
+                        onClick={handleSortChange}
+                        title="Integration"
+                    />
                     <HeaderCell size="normal" className={css.storeNameColumn}>
                         Store
                     </HeaderCell>
@@ -131,7 +155,6 @@ const RowSkeleton = () => {
             <BodyCell>
                 <CheckBoxField isDisabled value={false} />
             </BodyCell>
-            <BodyCell />
             <BodyCell className={css.integrationNameColumn}>
                 <Skeleton width={208} />
             </BodyCell>

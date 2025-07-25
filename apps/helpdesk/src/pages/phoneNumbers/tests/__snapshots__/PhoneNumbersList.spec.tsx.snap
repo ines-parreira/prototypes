@@ -12,6 +12,8 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
     >
       <th
         class="wrapper isClickable normal"
+        data-direction="desc"
+        data-ordered-by="false"
       >
         <div
           class="content"
@@ -27,13 +29,15 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             <i
               class="material-icons md-1 directionIcon"
             >
-              arrow_upward
+              arrow_downward
             </i>
           </div>
         </div>
       </th>
       <th
         class="wrapper isClickable normal"
+        data-direction="desc"
+        data-ordered-by="false"
       >
         <div
           class="content"
@@ -49,7 +53,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             <i
               class="material-icons md-1 directionIcon"
             >
-              arrow_upward
+              arrow_downward
             </i>
           </div>
         </div>
