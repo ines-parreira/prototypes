@@ -10,13 +10,13 @@ import css from '../settings.less'
 const HeaderImportEmail = () => {
     return (
         <>
-            <PageHeader title="Import data">
+            <PageHeader title="Email import">
                 <Button>Import</Button>
             </PageHeader>
             <div className={css.pageContainer}>
                 <div className={classnames('body-regular', css.contentWrapper)}>
                     <div className={classnames(css.mb32)}>
-                        <p>Import external customer data to Gorgias.</p>
+                        <p>Import historical email data to Gorgias.</p>
 
                         <IconLink
                             icon="menu_book"

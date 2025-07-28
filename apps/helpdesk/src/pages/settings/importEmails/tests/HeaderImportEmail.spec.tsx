@@ -5,7 +5,7 @@ import HeaderImportEmail from '../HeaderImportEmail'
 describe('HeaderImportEmail', () => {
     it('renders the page header with correct title', () => {
         render(<HeaderImportEmail />)
-        expect(screen.getByText(/import data/i)).toBeInTheDocument()
+        expect(screen.getByText(/email import/i)).toBeInTheDocument()
     })
 
     it('renders the Import button', () => {
@@ -16,7 +16,7 @@ describe('HeaderImportEmail', () => {
     it('renders the informational text about importing data', () => {
         render(<HeaderImportEmail />)
         expect(
-            screen.getByText(/import external customer data to gorgias\./i),
+            screen.getByText(/import historical email data to gorgias\./i),
         ).toBeInTheDocument()
     })
 
