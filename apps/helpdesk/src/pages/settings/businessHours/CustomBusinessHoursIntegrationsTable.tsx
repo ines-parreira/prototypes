@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 
+import cn from 'classnames'
 import { noop } from 'lodash'
 
 import {
     ListIntegrationsForBusinessHoursOrderBy,
     useListIntegrationsForBusinessHours,
 } from '@gorgias/helpdesk-queries'
-import { CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Badge, CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
 import useDebouncedValue from 'hooks/useDebouncedValue'
@@ -121,21 +122,39 @@ export default function CustomBusinessHoursIntegrationsTable({
         }
     }
 
+    const clearSelectedIntegrations = () => {
+        setValue(name, [])
+    }
+
     return (
         <div>
-            <div className={css.filters}>
-                <div className={css.searchBar}>
-                    <SearchBar
-                        placeholder="Search integrations"
-                        onChange={setNameSearch}
+            <div className={css.top}>
+                {!!assignIntegrations.length && (
+                    <Badge type="blue" corner="square">
+                        {assignIntegrations.length} integration
+                        {assignIntegrations.length > 1 ? 's' : ''} selected
+                        <i
+                            className={cn(css.closeIcon, 'material-icons')}
+                            onClick={clearSelectedIntegrations}
+                        >
+                            close
+                        </i>
+                    </Badge>
+                )}
+                <div className={css.filters}>
+                    <div className={css.searchBar}>
+                        <SearchBar
+                            placeholder="Search integrations"
+                            onChange={setNameSearch}
+                        />
+                    </div>
+                    <StoreFilter onChange={setStoreId} />
+                    <ChannelFilter
+                        channels={BUSINESS_HOURS_CHANNEL_INTEGRATION_TYPES}
+                        onChange={setChannels}
+                        withSearch
                     />
                 </div>
-                <StoreFilter onChange={setStoreId} />
-                <ChannelFilter
-                    channels={BUSINESS_HOURS_CHANNEL_INTEGRATION_TYPES}
-                    onChange={setChannels}
-                    withSearch
-                />
             </div>
             <TableWrapper className={css.table}>
                 <TableHead>
@@ -147,6 +166,7 @@ export default function CustomBusinessHoursIntegrationsTable({
                             onChange={handleSelectAll}
                         />
                     </HeaderCell>
+                    <HeaderCell className={css.warningIconColumn} />
                     <HeaderCellProperty
                         className={css.integrationNameColumn}
                         direction={direction as OrderDirection}
@@ -166,7 +186,9 @@ export default function CustomBusinessHoursIntegrationsTable({
                 </TableHead>
                 <TableBody>
                     {isLoading ? (
-                        <RowSkeleton />
+                        new Array(5)
+                            .fill(null)
+                            .map((_, key) => <RowSkeleton key={key} />)
                     ) : (
                         <FormField
                             name={name}
@@ -192,21 +214,20 @@ export default function CustomBusinessHoursIntegrationsTable({
     )
 }
 
-const RowSkeleton = () => {
-    return (
-        <TableBodyRow>
-            <BodyCell>
-                <CheckBoxField isDisabled value={false} />
-            </BodyCell>
-            <BodyCell className={css.integrationNameColumn}>
-                <Skeleton width={208} />
-            </BodyCell>
-            <BodyCell className={css.storeNameColumn}>
-                <Skeleton width={208} />
-            </BodyCell>
-            <BodyCell className={css.businessHoursColumn}>
-                <Skeleton width={288} />
-            </BodyCell>
-        </TableBodyRow>
-    )
-}
+const RowSkeleton = () => (
+    <TableBodyRow>
+        <BodyCell>
+            <CheckBoxField isDisabled value={false} />
+        </BodyCell>
+        <BodyCell />
+        <BodyCell className={css.integrationNameColumn}>
+            <Skeleton width={208} />
+        </BodyCell>
+        <BodyCell className={css.storeNameColumn}>
+            <Skeleton width={208} />
+        </BodyCell>
+        <BodyCell className={css.businessHoursColumn}>
+            <Skeleton width={288} />
+        </BodyCell>
+    </TableBodyRow>
+)

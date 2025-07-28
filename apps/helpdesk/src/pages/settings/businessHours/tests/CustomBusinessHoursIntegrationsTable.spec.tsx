@@ -232,6 +232,10 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
     it('renders skeleton row when loading', () => {
         const { container } = renderComponent()
 
+        expect(
+            screen.queryByText('ListCustomBusinessHoursTableRow'),
+        ).not.toBeInTheDocument()
+
         const skeletons = container.querySelectorAll(
             '[class^="react-loading-skeleton"]',
         )
@@ -454,6 +458,47 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
         await waitFor(() => {
             expect(receivedStoreIdParam).toBe('42')
+        })
+    })
+
+    it('displays badge with correct count when integrations are selected', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('1 integration selected'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('displays badge with plural form when multiple integrations are selected', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(integrations[0].integration_name),
+            ).toBeInTheDocument()
+        })
+
+        const integrationHeader = screen.getByText('Integration')
+
+        expect(integrationHeader).toBeInTheDocument()
+
+        await act(async () => {
+            await user.click(integrationHeader)
+        })
+
+        expect(screen.getByText('arrow_upward')).toBeVisible()
+
+        await act(async () => {
+            await user.click(integrationHeader)
+        })
+
+        expect(screen.getByText('arrow_downward')).toBeVisible()
+
+        await act(async () => {
+            await user.click(integrationHeader)
         })
     })
 })

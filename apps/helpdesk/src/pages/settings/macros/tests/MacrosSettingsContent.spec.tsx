@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
@@ -76,6 +76,7 @@ const mockUseRouteMatch = useRouteMatch as jest.Mock
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useListMacros: jest.fn(),
     queryKeys: {
         macros: {

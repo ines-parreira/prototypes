@@ -2,9 +2,8 @@ import { HTMLProps, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import { PaginationOrderDirection } from '@gorgias/helpdesk-types'
+import { OrderDirection } from '@gorgias/helpdesk-queries'
 
-import { OrderDirection } from 'models/api/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 import IconTooltip, {
@@ -15,7 +14,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
     titleClassName?: string
-    direction?: OrderDirection | PaginationOrderDirection
+    direction?: OrderDirection
     isOrderedBy?: boolean
     isSticky?: boolean
     onClick?: () => void

@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import {
-    BusinessHoursListParamsOrderBy,
-    PaginationOrderDirection,
+    ListBusinessHoursOrderBy,
+    OrderDirection,
     useListBusinessHours,
 } from '@gorgias/helpdesk-queries'
 import { Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import Navigation from 'pages/common/components/Navigation/Navigation'
+import Search from 'pages/common/components/Search'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -22,15 +23,28 @@ import ListCustomBusinessHoursTableRow from './ListCustomBusinessHoursTableRow'
 import css from './ListCustomBusinessHours.less'
 
 export default function ListCustomBusinessHours() {
-    const [cursor, setCursor] = useState<string>()
-    const [order_by, setOrderBy] = useState<BusinessHoursListParamsOrderBy>()
-    const [order_direction, setOrderDirection] =
-        useState<PaginationOrderDirection>()
+    const [cursor, setCursor] = useState<string | undefined>(undefined)
+    const [order_by, setOrderBy] = useState<ListBusinessHoursOrderBy>()
+    const direction = useMemo(() => order_by?.split(':')?.[1], [order_by])
+    const sortBy = useMemo(
+        () => order_by?.split(':')?.[0] as 'name' | 'timezone',
+        [order_by],
+    )
+
+    const [search, setSearch] = useState<string | undefined>(undefined)
+    const { data: allBusinessHours } = useListBusinessHours()
+    const customBusinessHoursCount = allBusinessHours?.data.meta.total_resources
+
     const { data, isLoading, isError, refetch } = useListBusinessHours({
         order_by,
-        order_direction,
-        ...(order_by && order_direction ? {} : { cursor }),
+        ...(order_by ? {} : { cursor }),
+        ...(search ? { name: search } : {}),
     })
+
+    const handleSearch = (query: string) => {
+        setSearch(query)
+        setCursor(undefined)
+    }
 
     const businessHours = data?.data.data
 
@@ -42,100 +56,100 @@ export default function ListCustomBusinessHours() {
         }
     }
 
-    if (!isLoading && !isError && !businessHours?.length) {
+    if (!customBusinessHoursCount && !isLoading && !isError) {
         return null
     }
 
-    const handleSortChange = (value: BusinessHoursListParamsOrderBy) => {
-        if (order_by === value) {
-            if (order_direction === 'asc') {
-                setOrderDirection('desc')
+    const handleSortChange = (value: 'name' | 'timezone') => {
+        if (sortBy === value) {
+            if (direction === 'asc') {
+                setOrderBy(`${value}:desc`)
             } else {
-                setOrderDirection(undefined)
                 setOrderBy(undefined)
             }
         } else {
-            setOrderBy(value)
-            setOrderDirection('asc')
+            setOrderBy(`${value}:asc`)
         }
     }
 
     return (
-        <TableWrapper className={css.table}>
-            <TableHead>
-                <HeaderCellProperty
-                    className={css.nameScheduleColumn}
-                    direction={order_direction}
-                    isOrderedBy={
-                        order_by === BusinessHoursListParamsOrderBy.Name
-                    }
-                    onClick={() =>
-                        handleSortChange(BusinessHoursListParamsOrderBy.Name)
-                    }
-                    title="Name & Schedule"
-                />
-                <HeaderCell className={css.integrationColumn}>
-                    Integration
-                </HeaderCell>
-                <HeaderCellProperty
-                    className={css.timezoneColumn}
-                    direction={order_direction}
-                    isOrderedBy={
-                        order_by === BusinessHoursListParamsOrderBy.Timezone
-                    }
-                    onClick={() =>
-                        handleSortChange(
-                            BusinessHoursListParamsOrderBy.Timezone,
-                        )
-                    }
-                    title="Timezone"
-                />
-                <HeaderCell className={css.actionsColumn} />
-            </TableHead>
-            <TableBody>
-                {isLoading ? (
-                    <RowSkeleton />
-                ) : isError ? (
-                    <tr>
-                        <td colSpan={4}>
-                            <NoDataAvailable
-                                className={css.noDataAvailable}
-                                description={
-                                    <>
-                                        <p>
-                                            Something went wrong when fetching
-                                            the data. Please try again.
-                                        </p>
-                                        <Button
-                                            fillStyle="ghost"
-                                            onClick={() => refetch()}
-                                        >
-                                            Refresh
-                                        </Button>
-                                    </>
-                                }
+        <>
+            <Search
+                className={css.search}
+                placeholder="Search name"
+                onChange={handleSearch}
+                searchDebounceTime={300}
+                value={search}
+            />
+            <TableWrapper className={css.table}>
+                <TableHead>
+                    <HeaderCellProperty
+                        className={css.nameScheduleColumn}
+                        direction={direction as OrderDirection}
+                        isOrderedBy={sortBy === 'name'}
+                        onClick={() => handleSortChange('name')}
+                        title="Name & Schedule"
+                    />
+                    <HeaderCell className={css.integrationColumn}>
+                        Integration
+                    </HeaderCell>
+                    <HeaderCellProperty
+                        className={css.timezoneColumn}
+                        direction={direction as OrderDirection}
+                        isOrderedBy={sortBy === 'timezone'}
+                        onClick={() => handleSortChange('timezone')}
+                        title="Timezone"
+                    />
+                    <HeaderCell className={css.actionsColumn} />
+                </TableHead>
+                <TableBody>
+                    {isLoading ? (
+                        new Array(5)
+                            .fill(null)
+                            .map((_, key) => <RowSkeleton key={key} />)
+                    ) : isError ? (
+                        <tr>
+                            <td colSpan={4}>
+                                <NoDataAvailable
+                                    className={css.noDataAvailable}
+                                    description={
+                                        <>
+                                            <p>
+                                                Something went wrong when
+                                                fetching the data. Please try
+                                                again.
+                                            </p>
+                                            <Button
+                                                fillStyle="ghost"
+                                                onClick={() => refetch()}
+                                            >
+                                                Refresh
+                                            </Button>
+                                        </>
+                                    }
+                                />
+                            </td>
+                        </tr>
+                    ) : (
+                        businessHours?.map((item) => (
+                            <ListCustomBusinessHoursTableRow
+                                key={item.id}
+                                businessHours={item}
                             />
-                        </td>
-                    </tr>
-                ) : (
-                    businessHours?.map((item) => (
-                        <ListCustomBusinessHoursTableRow
-                            key={item.id}
-                            businessHours={item}
-                        />
-                    ))
+                        ))
+                    )}
+                </TableBody>
+                {!isLoading && (
+                    <Navigation
+                        className={css.pagination}
+                        hasNextItems={!!data?.data.meta.next_cursor}
+                        hasPrevItems={!!data?.data.meta.prev_cursor}
+                        fetchNextItems={() => updateCursor('next')}
+                        fetchPrevItems={() => updateCursor('prev')}
+                    />
                 )}
-            </TableBody>
-            {!isLoading && (
-                <Navigation
-                    className={css.pagination}
-                    hasNextItems={!!data?.data.meta.next_cursor}
-                    hasPrevItems={!!data?.data.meta.prev_cursor}
-                    fetchNextItems={() => updateCursor('next')}
-                    fetchPrevItems={() => updateCursor('prev')}
-                />
-            )}
-        </TableWrapper>
+            </TableWrapper>
+        </>
     )
 }
 
@@ -144,9 +158,6 @@ const RowSkeleton = () => {
         <TableBodyRow>
             <BodyCell className={css.nameScheduleColumn}>
                 <Skeleton width={300} />
-            </BodyCell>
-            <BodyCell className={css.integrationColumn}>
-                <Skeleton width={150} />
             </BodyCell>
             <BodyCell className={css.timezoneColumn}>
                 <Skeleton width={100} />

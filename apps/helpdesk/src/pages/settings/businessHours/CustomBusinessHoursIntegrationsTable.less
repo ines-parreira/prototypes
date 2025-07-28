@@ -3,7 +3,7 @@
 :local {
     .table {
         table-layout: fixed;
-        margin-top: var(--layout-spacing-xs);
+        margin-top: var(--layout-spacing-s);
 
         th {
             .caption-allcaps();
@@ -13,6 +13,10 @@
     .businessHoursColumn {
         width: 40%;
         overflow: hidden;
+    }
+
+    .warningIconColumn {
+        width: 10%;
     }
 
     .integrationNameColumn,
@@ -31,6 +35,12 @@
     .refreshButton {
         margin: auto;
         margin-top: var(--layout-spacing-xxs);
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .filters {

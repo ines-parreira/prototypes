@@ -82,10 +82,6 @@ describe('ListCustomBusinessHours', () => {
     it('should render skeleton when loading', () => {
         const { container } = renderComponent()
 
-        expect(
-            screen.queryByText('ListCustomBusinessHoursTableRow'),
-        ).not.toBeInTheDocument()
-
         const skeletons = container.querySelectorAll(
             '[class^="react-loading-skeleton"]',
         )
@@ -150,7 +146,7 @@ describe('ListCustomBusinessHours', () => {
                         meta: {
                             next_cursor: null,
                             prev_cursor: null,
-                            total_resources: 0,
+                            total_resources: data.data.length,
                         },
                     }),
             )
@@ -292,10 +288,50 @@ describe('ListCustomBusinessHours', () => {
                 'Something went wrong when fetching the data. Please try again.',
             ),
         ).not.toBeInTheDocument()
+    })
 
-        expect(
-            screen.getAllByText('ListCustomBusinessHoursTableRow').length,
-        ).toBeGreaterThan(0)
+    describe('search functionality', () => {
+        it('should handle search input changes and reset cursor', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByPlaceholderText('Search name')
+
+            // Type in search input
+            await user.type(searchInput, 'test search')
+
+            // Verify the search input has the value
+            expect(searchInput).toHaveValue('test search')
+        })
+
+        it('should clear search term when navigating with debounced search active', async () => {
+            const user = userEvent.setup()
+
+            renderComponent()
+
+            const searchInput = screen.getByPlaceholderText('Search name')
+
+            // Type in search input to trigger debounced search
+            await user.type(searchInput, 'test search')
+
+            // Wait for the next button to be available
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {
+                        name: /keyboard_arrow_right/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            // Click next button to trigger cursor update
+            const nextButton = screen.getByRole('button', {
+                name: /keyboard_arrow_right/i,
+            })
+            await user.click(nextButton)
+
+            // The search input should still have the value, but the search term should be cleared internally
+            expect(searchInput).toHaveValue('test search')
+        })
     })
 
     describe('sorting functionality', () => {

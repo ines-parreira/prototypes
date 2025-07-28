@@ -71,11 +71,11 @@ export default function IntegrationRowsField({
                                 )}
                             />
                         </BodyCell>
-                        {hasWarning && (
-                            <BodyCell>
+                        <BodyCell>
+                            {hasWarning && (
                                 <Icon type={AlertBannerTypes.Warning} />
-                            </BodyCell>
-                        )}
+                            )}
+                        </BodyCell>
                         <BodyCell className={css.integrationNameColumn}>
                             <CustomBusinessHoursIntegrationCell
                                 name={integration.integration_name}

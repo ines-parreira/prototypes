@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import { NavLink, useRouteMatch } from 'react-router-dom'

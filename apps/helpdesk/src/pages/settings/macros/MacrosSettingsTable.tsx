@@ -1,4 +1,4 @@
-import React, { ComponentProps, useCallback, useMemo } from 'react'
+import { ComponentProps, useCallback, useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router-dom'
 
