@@ -316,8 +316,8 @@ importers:
         specifier: catalog:rest-api-sdk
         version: 0.2.20
       '@gorgias/merchant-ui-kit':
-        specifier: ^0.36.0
-        version: 0.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        specifier: ^0.39.0
+        version: 0.39.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/realtime':
         specifier: ^0.18.7
         version: 0.18.7(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -2776,8 +2776,8 @@ packages:
   '@gorgias/knowledge-service-validators@0.2.20':
     resolution: {integrity: sha512-lT83ska26pjoz00Xgayql1YrTm1jlXmbiduWRJYh9TtQFDev0o7BqR/Uu9H0FkEsdOhKtHiO6n5W+6fa7I69XQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.20/4baa5dcd5c62524970d42463483b9454fbbfa6c1}
 
-  '@gorgias/merchant-ui-kit@0.36.1':
-    resolution: {integrity: sha512-Irp+35B06cU8jQKZpguqEx45081L3M0fTXv1dVLTm9joX2QHndh/Ldwuj6zsAhbmOfvhDhsihYkiCqCOzRGFoQ==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.36.1/7b32369b38f1190df4abf4a331b66f9130aee1e9}
+  '@gorgias/merchant-ui-kit@0.39.0':
+    resolution: {integrity: sha512-OJ/kv2tiK+DUO5xxvSPrprij5OArgF7o47QVLRMcfRu6xeBJ+oLGpGIdE22koywtrTGkpJQKLTjiima+9GBpGA==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.39.0/1963ec61ef15dbebeafccc5b89cbc837ca429b31}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -13416,12 +13416,13 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/merchant-ui-kit@0.36.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/merchant-ui-kit@0.39.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens': 0.10.6
       classnames: 2.5.1
       downshift: 9.0.9(react@18.2.0)
+      lodash-es: 4.17.21
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-loading-skeleton: 3.5.0(react@18.2.0)

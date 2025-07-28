@@ -11,10 +11,15 @@ type Props = {
 
 export default function ThemeProvider({ children }: Props) {
     const ctx = useThemeContext()
+    const iconSpriteUrl =
+        document.getElementById('icons')?.getAttribute('data') ?? undefined
 
     return (
         <ThemeContext.Provider value={ctx}>
-            <UIKitThemeProvider name={ctx.theme.resolvedName}>
+            <UIKitThemeProvider
+                name={ctx.theme.resolvedName}
+                iconSpriteUrl={iconSpriteUrl}
+            >
                 {children}
             </UIKitThemeProvider>
         </ThemeContext.Provider>

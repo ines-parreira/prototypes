@@ -1,9 +1,12 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
-import { ThemeContext as UIKitThemeContext } from '@gorgias/merchant-ui-kit'
+import {
+    Theme,
+    ThemeContext as UIKitThemeContext,
+} from '@gorgias/merchant-ui-kit'
 
 import AppThemeContext from '../ThemeContext'
 import ThemeProvider from '../ThemeProvider'
@@ -36,6 +39,36 @@ describe('ThemeProvider', () => {
                 resolvedName: THEME_NAME.Light,
                 tokens: expect.any(Object),
             },
+        })
+    })
+
+    it('should pass iconSpriteUrl to UIKitThemeProvider if the sprite is available', async () => {
+        let UIKitTheme: Theme | null = null
+
+        const TestComponent = () => {
+            UIKitTheme = useContext(UIKitThemeContext)
+            return <p>Test component</p>
+        }
+
+        const object = document.createElement('object')
+        object.id = 'icons'
+        object.ariaLabel = 'icons'
+        object.data = '/test/assets/icons.svg'
+        document.body.appendChild(object)
+
+        render(
+            <ThemeProvider>
+                <TestComponent />
+            </ThemeProvider>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Test component')).toBeInTheDocument()
+            expect(UIKitTheme).toEqual(
+                expect.objectContaining({
+                    iconSpriteUrl: '/test/assets/icons.svg',
+                }),
+            )
         })
     })
 })

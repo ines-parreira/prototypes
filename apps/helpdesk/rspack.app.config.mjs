@@ -52,6 +52,17 @@ const devServer = {
             directory: path.join(__dirname, 'src', 'assets'),
             publicPath: '/assets',
         },
+        {
+            directory: path.join(
+                __dirname,
+                'node_modules',
+                '@gorgias',
+                'merchant-ui-kit',
+                'dist',
+                'assets',
+            ),
+            publicPath: '/',
+        },
     ],
     client: {
         logging: 'info',
@@ -157,6 +168,15 @@ const config = {
                 exclude: /node_modules/,
                 allowAsyncCycles: true,
                 failOnError: true,
+            }),
+        isProd &&
+            new rspack.CopyRspackPlugin({
+                patterns: [
+                    {
+                        from: 'node_modules/@gorgias/merchant-ui-kit/dist/assets/icons.svg',
+                        to: 'icons.[contenthash].svg',
+                    },
+                ],
             }),
         isDev && new ReactRefreshPlugin(),
         isDev && new rspack.HotModuleReplacementPlugin(),
