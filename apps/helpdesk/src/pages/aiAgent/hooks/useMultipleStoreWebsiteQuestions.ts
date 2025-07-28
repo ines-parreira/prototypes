@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useQueries } from '@tanstack/react-query'
 
@@ -18,12 +18,16 @@ type IngestedResourceWithHelpCenterId = IngestedResourceWithArticleId & {
     helpCenterId: number
 }
 
+const PER_PAGE = 100
+
 export const useMultipleStoreWebsiteQuestions = ({
     snippetHelpCenterIds,
+    recordIds,
     shopName,
     queryOptionsOverrides,
 }: {
     snippetHelpCenterIds: number[]
+    recordIds?: number[]
     shopName: string
     queryOptionsOverrides?: any
 }) => {
@@ -39,7 +43,21 @@ export const useMultipleStoreWebsiteQuestions = ({
         enabled: queryOptionsOverrides?.enabled ?? true,
     })
 
-    const queries = useQueries({
+    const getQueryEnabledStatus = useCallback(
+        (helpCenterId: number, ingestionLogId?: number) =>
+            !!helpCenterId &&
+            !!helpCenterClient &&
+            !!ingestionLogId &&
+            !isIngestionLogsLoading &&
+            (queryOptionsOverrides?.enabled ?? true),
+        [
+            helpCenterClient,
+            isIngestionLogsLoading,
+            queryOptionsOverrides?.enabled,
+        ],
+    )
+
+    const firstPageQueries = useQueries({
         queries: snippetHelpCenterIds.map((helpCenterId) => {
             const storeDomainLogs = storesDomainIngestionLogs?.[shopName] || []
             const latestIngestionLog = getTheLatestIngestionLog(storeDomainLogs)
@@ -50,6 +68,9 @@ export const useMultipleStoreWebsiteQuestions = ({
                     'store-website-questions',
                     helpCenterId,
                     ingestionLogId,
+                    recordIds,
+                    'page',
+                    1,
                 ],
                 queryFn: async (): Promise<IngestedResourceResponse | null> => {
                     if (!ingestionLogId || !helpCenterId) return null
@@ -62,61 +83,223 @@ export const useMultipleStoreWebsiteQuestions = ({
                         },
                         {
                             page: 1,
-                            per_page: 1000,
+                            per_page: PER_PAGE,
                         },
                     )
+
                     return result
+                        ? {
+                              ...result,
+                              data: result?.data?.filter((resource) =>
+                                  recordIds
+                                      ? recordIds.includes(resource.article_id)
+                                      : true,
+                              ),
+                          }
+                        : null
                 },
                 ...queryOptionsOverrides,
-                enabled:
-                    !!helpCenterId &&
-                    !!helpCenterClient &&
-                    !isIngestionLogsLoading &&
-                    (queryOptionsOverrides?.enabled ?? true),
+                enabled: getQueryEnabledStatus(helpCenterId, ingestionLogId),
                 refetchOnWindowFocus: false,
             }
         }),
     })
 
-    const isLoading = useMemo(
-        () =>
-            queryOptionsOverrides?.enabled === false
-                ? false
-                : isIngestionLogsLoading ||
-                  queries.some((query) => query.isLoading),
-        [queries, isIngestionLogsLoading, queryOptionsOverrides?.enabled],
+    const additionalPageQueries = useQueries({
+        queries: snippetHelpCenterIds.flatMap((helpCenterId, index) => {
+            const storeDomainLogs = storesDomainIngestionLogs?.[shopName] || []
+            const latestIngestionLog = getTheLatestIngestionLog(storeDomainLogs)
+            const ingestionLogId = latestIngestionLog?.id
+
+            const firstPageQuery = firstPageQueries[index]
+            const totalPages =
+                (firstPageQuery.data as IngestedResourceResponse)?.meta
+                    ?.nb_pages || 1
+            const isFirstPageLoaded = firstPageQuery.isSuccess
+
+            if (!isFirstPageLoaded || totalPages <= 1) {
+                return []
+            }
+
+            return Array.from({ length: totalPages - 1 }, (_, i) => {
+                const page = i + 2
+                return {
+                    queryKey: [
+                        'store-website-questions',
+                        helpCenterId,
+                        ingestionLogId,
+                        recordIds,
+                        'page',
+                        page,
+                    ],
+                    queryFn:
+                        async (): Promise<IngestedResourceResponse | null> => {
+                            if (!ingestionLogId || !helpCenterId) return null
+
+                            const result = await listIngestedResources(
+                                helpCenterClient,
+                                {
+                                    help_center_id: helpCenterId,
+                                    article_ingestion_log_id: ingestionLogId,
+                                },
+                                {
+                                    page,
+                                    per_page: PER_PAGE,
+                                },
+                            )
+
+                            return result
+                                ? {
+                                      ...result,
+                                      data: result?.data?.filter((resource) =>
+                                          recordIds
+                                              ? recordIds.includes(
+                                                    resource.article_id,
+                                                )
+                                              : true,
+                                      ),
+                                  }
+                                : null
+                        },
+                    ...queryOptionsOverrides,
+                    enabled: getQueryEnabledStatus(
+                        helpCenterId,
+                        ingestionLogId,
+                    ),
+                    refetchOnWindowFocus: false,
+                }
+            })
+        }),
+    })
+
+    const allQueries = useMemo(
+        () => [...firstPageQueries, ...additionalPageQueries],
+        [firstPageQueries, additionalPageQueries],
     )
+
+    const isLoading = useMemo(() => {
+        if (!queryOptionsOverrides?.enabled) return false
+
+        if (isIngestionLogsLoading) return true
+
+        const firstPageLoading = firstPageQueries.some((query, index) => {
+            const helpCenterId = snippetHelpCenterIds[index]
+            const storeDomainLogs = storesDomainIngestionLogs?.[shopName] || []
+            const latestIngestionLog = getTheLatestIngestionLog(storeDomainLogs)
+            const ingestionLogId = latestIngestionLog?.id
+
+            return (
+                getQueryEnabledStatus(helpCenterId, ingestionLogId) &&
+                query.isLoading
+            )
+        })
+
+        const additionalPageLoading = additionalPageQueries.some((query) => {
+            return query.isLoading
+        })
+
+        return firstPageLoading || additionalPageLoading
+    }, [
+        firstPageQueries,
+        additionalPageQueries,
+        snippetHelpCenterIds,
+        storesDomainIngestionLogs,
+        shopName,
+        isIngestionLogsLoading,
+        queryOptionsOverrides?.enabled,
+        getQueryEnabledStatus,
+    ])
 
     const storeWebsiteQuestions = useMemo(() => {
         if (isLoading) return []
 
-        return queries.flatMap((query, index) => {
-            const result = query.data as IngestedResourceResponse | null
-            if (!result?.data) return []
+        const allResources: IngestedResourceWithHelpCenterId[] = []
 
-            const transformedResources: IngestedResourceWithHelpCenterId[] =
-                result.data.map(
-                    (
-                        resource: Components.Schemas.IngestedResourceListDataDto,
-                    ) => ({
-                        ...resource,
-                        helpCenterId: snippetHelpCenterIds[index],
-                        web_pages: (resource.web_pages as any[]).map(
-                            (page: any) => ({
-                                url: page.url,
-                                title: page.title,
-                                pageType: page.pageType,
-                            }),
-                        ),
-                    }),
+        firstPageQueries.forEach((query, index) => {
+            const helpCenterId = snippetHelpCenterIds[index]
+            const result = query.data as IngestedResourceResponse | null
+
+            if (result?.data) {
+                const filteredResources = result.data.filter((resource) =>
+                    recordIds ? recordIds.includes(resource.article_id) : true,
                 )
 
-            return transformedResources
+                const transformedResources: IngestedResourceWithHelpCenterId[] =
+                    filteredResources.map(
+                        (
+                            resource: Components.Schemas.IngestedResourceListDataDto,
+                        ) => ({
+                            ...resource,
+                            helpCenterId,
+                            web_pages: (resource.web_pages as any[]).map(
+                                (page: any) => ({
+                                    url: page.url,
+                                    title: page.title,
+                                    pageType: page.pageType,
+                                }),
+                            ),
+                        }),
+                    )
+
+                allResources.push(...transformedResources)
+            }
         })
-    }, [queries, isLoading, snippetHelpCenterIds])
+
+        let queryIndex = 0
+        snippetHelpCenterIds.forEach((helpCenterId, index) => {
+            const firstPageQuery = firstPageQueries[index]
+            const totalPages =
+                (firstPageQuery.data as IngestedResourceResponse)?.meta
+                    ?.nb_pages || 1
+            const isFirstPageLoaded = firstPageQuery.isSuccess
+
+            if (!isFirstPageLoaded || totalPages <= 1) return
+
+            for (let page = 2; page <= totalPages; page++) {
+                const query = additionalPageQueries[queryIndex]
+                const result = query?.data as IngestedResourceResponse | null
+
+                if (result?.data) {
+                    const filteredResources = result.data.filter((resource) =>
+                        recordIds
+                            ? recordIds.includes(resource.article_id)
+                            : true,
+                    )
+
+                    const transformedResources: IngestedResourceWithHelpCenterId[] =
+                        filteredResources.map(
+                            (
+                                resource: Components.Schemas.IngestedResourceListDataDto,
+                            ) => ({
+                                ...resource,
+                                helpCenterId,
+                                web_pages: (resource.web_pages as any[]).map(
+                                    (page: any) => ({
+                                        url: page.url,
+                                        title: page.title,
+                                        pageType: page.pageType,
+                                    }),
+                                ),
+                            }),
+                        )
+
+                    allResources.push(...transformedResources)
+                }
+                queryIndex++
+            }
+        })
+
+        return allResources
+    }, [
+        firstPageQueries,
+        additionalPageQueries,
+        snippetHelpCenterIds,
+        isLoading,
+        recordIds,
+    ])
 
     useEffect(() => {
-        const errors = queries
+        const errors = allQueries
             .filter((query) => query.error)
             .map((query) => query.error)
 
@@ -131,7 +314,7 @@ export const useMultipleStoreWebsiteQuestions = ({
                 })
             })
         }
-    }, [queries])
+    }, [allQueries])
 
     return { storeWebsiteQuestions, isLoading }
 }

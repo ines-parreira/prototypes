@@ -59,7 +59,6 @@ const KnowledgeSourcePopover = ({
     const { href, popoverTitle, body } = useMemo(() => {
         const showBody = [
             AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-            AiAgentKnowledgeResourceTypeEnum.MACRO,
             AiAgentKnowledgeResourceTypeEnum.ARTICLE,
         ].includes(knowledgeResourceType)
 

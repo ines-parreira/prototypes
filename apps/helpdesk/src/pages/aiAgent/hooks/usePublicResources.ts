@@ -72,9 +72,11 @@ export const useMultiplePublicResources = ({
     helpCenterIds,
     overrides,
     queryOptionsOverrides,
+    recordIds,
 }: {
     helpCenterIds: number[]
     overrides?: Partial<Parameters<typeof useGetArticleIngestionLogs>[0]>
+    recordIds?: number[]
     queryOptionsOverrides?: UseQueryOptions<
         Array<
             BaseArticle & {
@@ -94,7 +96,12 @@ export const useMultiplePublicResources = ({
     // Create a query for each help center ID
     const queries = useQueries({
         queries: helpCenterIds.map((helpCenterId) => ({
-            queryKey: ['article-ingestion-logs', helpCenterId, overrides],
+            queryKey: [
+                'article-ingestion-logs',
+                helpCenterId,
+                overrides,
+                recordIds,
+            ],
             queryFn: async () => {
                 const ingestionResult = await getArticleIngestionLogs(
                     helpCenterClient,
@@ -116,14 +123,18 @@ export const useMultiplePublicResources = ({
                                     },
                                 )
 
-                            return (articleResult as BaseArticle[])?.map(
-                                (article) => ({
+                            return (articleResult as BaseArticle[])
+                                ?.filter((article) =>
+                                    recordIds
+                                        ? recordIds.includes(article.id)
+                                        : true,
+                                )
+                                ?.map((article) => ({
                                     ingestionId: ingestion.id,
                                     ingestionStatus: ingestion.status,
                                     ...article,
                                     helpCenterId,
-                                }),
-                            )
+                                }))
                         }) ?? [],
                     )
                 ).reduce((acc, curr) => {
@@ -143,8 +154,10 @@ export const useMultiplePublicResources = ({
 
     // Track loading state
     const isSourceItemsListLoading = useMemo(
-        () => queries.some((query) => query.isLoading),
-        [queries],
+        () =>
+            queryOptionsOverrides?.enabled &&
+            queries.some((query) => query.isLoading),
+        [queries, queryOptionsOverrides?.enabled],
     )
 
     // Combine and process results

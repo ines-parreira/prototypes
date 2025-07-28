@@ -563,6 +563,416 @@ describe('queries', () => {
             expect(getHelpCenterArticles).not.toHaveBeenCalled()
             expect(result.current.articles).toEqual([])
         })
+
+        it('should handle multi-page results correctly', async () => {
+            const page1Articles = [
+                {
+                    ...mockArticles[0],
+                    id: 1,
+                    translation: {
+                        ...mockArticles[0].translation,
+                        title: 'Page 1 Article 1',
+                    },
+                },
+                {
+                    ...mockArticles[0],
+                    id: 2,
+                    translation: {
+                        ...mockArticles[0].translation,
+                        title: 'Page 1 Article 2',
+                    },
+                },
+            ]
+            const page2Articles = [
+                {
+                    ...mockArticles[0],
+                    id: 3,
+                    translation: {
+                        ...mockArticles[0].translation,
+                        title: 'Page 2 Article 1',
+                    },
+                },
+                {
+                    ...mockArticles[0],
+                    id: 4,
+                    translation: {
+                        ...mockArticles[0].translation,
+                        title: 'Page 2 Article 2',
+                    },
+                },
+            ]
+            const page3Articles = [
+                {
+                    ...mockArticles[0],
+                    id: 5,
+                    translation: {
+                        ...mockArticles[0].translation,
+                        title: 'Page 3 Article 1',
+                    },
+                },
+            ]
+
+            getHelpCenterArticles
+                .mockResolvedValueOnce({
+                    data: page1Articles,
+                    meta: {
+                        page: 1,
+                        per_page: 2,
+                        current_page: '1',
+                        item_count: 5,
+                        nb_pages: 3,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: page2Articles,
+                    meta: {
+                        page: 2,
+                        per_page: 2,
+                        current_page: '2',
+                        item_count: 5,
+                        nb_pages: 3,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: page3Articles,
+                    meta: {
+                        page: 3,
+                        per_page: 2,
+                        current_page: '3',
+                        item_count: 5,
+                        nb_pages: 3,
+                    },
+                    object: 'list',
+                })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        [helpCenterIds[0]],
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toHaveLength(5)
+            expect(
+                result.current.articles.map((a) => a.translation.title),
+            ).toEqual([
+                'Page 1 Article 1',
+                'Page 1 Article 2',
+                'Page 2 Article 1',
+                'Page 2 Article 2',
+                'Page 3 Article 1',
+            ])
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(3)
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                1,
+                expect.anything(),
+                { help_center_id: helpCenterIds[0] },
+                { ...queryParams, page: 1 },
+            )
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                2,
+                expect.anything(),
+                { help_center_id: helpCenterIds[0] },
+                { ...queryParams, page: 2 },
+            )
+            expect(getHelpCenterArticles).toHaveBeenNthCalledWith(
+                3,
+                expect.anything(),
+                { help_center_id: helpCenterIds[0] },
+                { ...queryParams, page: 3 },
+            )
+        })
+
+        it('should handle multiple help centers with multi-page results', async () => {
+            const hc1Page1 = [
+                {
+                    ...mockArticles[0],
+                    id: 1,
+                    translation: {
+                        ...mockArticles[0].translation,
+                        title: 'HC1 P1 A1',
+                    },
+                },
+            ]
+            const hc1Page2 = [
+                {
+                    ...mockArticles[0],
+                    id: 2,
+                    translation: {
+                        ...mockArticles[0].translation,
+                        title: 'HC1 P2 A1',
+                    },
+                },
+            ]
+            const hc2Page1 = [
+                {
+                    ...mockArticles[1],
+                    id: 3,
+                    translation: {
+                        ...mockArticles[1].translation,
+                        title: 'HC2 P1 A1',
+                    },
+                },
+            ]
+            const hc2Page2 = [
+                {
+                    ...mockArticles[1],
+                    id: 4,
+                    translation: {
+                        ...mockArticles[1].translation,
+                        title: 'HC2 P2 A1',
+                    },
+                },
+            ]
+
+            getHelpCenterArticles
+                .mockResolvedValueOnce({
+                    data: hc1Page1,
+                    meta: {
+                        page: 1,
+                        per_page: 1,
+                        current_page: '1',
+                        item_count: 2,
+                        nb_pages: 2,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: hc2Page1,
+                    meta: {
+                        page: 1,
+                        per_page: 1,
+                        current_page: '1',
+                        item_count: 2,
+                        nb_pages: 2,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: hc1Page2,
+                    meta: {
+                        page: 2,
+                        per_page: 1,
+                        current_page: '2',
+                        item_count: 2,
+                        nb_pages: 2,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: hc2Page2,
+                    meta: {
+                        page: 2,
+                        per_page: 1,
+                        current_page: '2',
+                        item_count: 2,
+                        nb_pages: 2,
+                    },
+                    object: 'list',
+                })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        [helpCenterIds[0], helpCenterIds[1]],
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toHaveLength(4)
+            expect(
+                result.current.articles.map((a) => ({
+                    title: a.translation.title,
+                    hcId: a.helpCenterId,
+                })),
+            ).toEqual([
+                { title: 'HC1 P1 A1', hcId: helpCenterIds[0] },
+                { title: 'HC2 P1 A1', hcId: helpCenterIds[1] },
+                { title: 'HC1 P2 A1', hcId: helpCenterIds[0] },
+                { title: 'HC2 P2 A1', hcId: helpCenterIds[1] },
+            ])
+
+            expect(getHelpCenterArticles).toHaveBeenCalledTimes(4)
+        })
+
+        it('should handle null additional page query data', async () => {
+            getHelpCenterArticles
+                .mockResolvedValueOnce({
+                    data: [
+                        {
+                            ...mockArticles[0],
+                            translation: {
+                                ...mockArticles[0].translation,
+                                title: 'Page 1 Article',
+                            },
+                        },
+                    ],
+                    meta: {
+                        page: 1,
+                        per_page: 1,
+                        current_page: '1',
+                        item_count: 2,
+                        nb_pages: 2,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce(null)
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        [helpCenterIds[0]],
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toHaveLength(1)
+            expect(result.current.articles[0].translation.title).toBe(
+                'Page 1 Article',
+            )
+        })
+
+        it('should handle empty additional page data', async () => {
+            getHelpCenterArticles
+                .mockResolvedValueOnce({
+                    data: [
+                        {
+                            ...mockArticles[0],
+                            translation: {
+                                ...mockArticles[0].translation,
+                                title: 'Page 1 Article',
+                            },
+                        },
+                    ],
+                    meta: {
+                        page: 1,
+                        per_page: 1,
+                        current_page: '1',
+                        item_count: 1,
+                        nb_pages: 2,
+                    },
+                    object: 'list',
+                })
+                .mockResolvedValueOnce({
+                    data: [],
+                    meta: {
+                        page: 2,
+                        per_page: 1,
+                        current_page: '2',
+                        item_count: 1,
+                        nb_pages: 2,
+                    },
+                    object: 'list',
+                })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        [helpCenterIds[0]],
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toHaveLength(1)
+            expect(result.current.articles[0].translation.title).toBe(
+                'Page 1 Article',
+            )
+        })
+
+        it('should handle first page failure gracefully', async () => {
+            getHelpCenterArticles.mockRejectedValue(new Error('API Error'))
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        [helpCenterIds[0]],
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toEqual([])
+        })
+
+        it('should handle mixed successful and failed help center queries', async () => {
+            getHelpCenterArticles
+                .mockResolvedValueOnce({
+                    data: [
+                        {
+                            ...mockArticles[0],
+                            translation: {
+                                ...mockArticles[0].translation,
+                                title: 'Success Article',
+                            },
+                        },
+                    ],
+                    meta: {
+                        page: 1,
+                        per_page: 1,
+                        current_page: '1',
+                        item_count: 1,
+                        nb_pages: 1,
+                    },
+                    object: 'list',
+                })
+                .mockRejectedValueOnce(new Error('HC2 Failed'))
+                .mockResolvedValueOnce({
+                    data: [
+                        {
+                            ...mockArticles[2],
+                            translation: {
+                                ...mockArticles[2].translation,
+                                title: 'Another Success',
+                            },
+                        },
+                    ],
+                    meta: {
+                        page: 1,
+                        per_page: 1,
+                        current_page: '1',
+                        item_count: 1,
+                        nb_pages: 1,
+                    },
+                    object: 'list',
+                })
+
+            const { result } = renderHook(
+                () =>
+                    useGetMultipleHelpCenterArticleLists(
+                        helpCenterIds,
+                        queryParams,
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.articles).toHaveLength(2)
+            expect(result.current.articles[0].translation.title).toBe(
+                'Success Article',
+            )
+            expect(result.current.articles[1].translation.title).toBe(
+                'Another Success',
+            )
+        })
     })
 
     describe('useGetHelpCenterCategoryTree', () => {
@@ -1348,7 +1758,6 @@ describe('queries', () => {
 
     describe('useGetMultipleFileIngestion', () => {
         const helpCenterIds = [1, 2, 3]
-        const fileIds = [101, 102, 103]
         const mockFileData = [
             {
                 id: 101,
@@ -1432,10 +1841,7 @@ describe('queries', () => {
                 .mockResolvedValueOnce([mockArticleData[2]])
 
             const { result } = renderHook(
-                () =>
-                    useGetMultipleFileIngestionSnippets(helpCenterIds, {
-                        ids: fileIds,
-                    }),
+                () => useGetMultipleFileIngestionSnippets(helpCenterIds),
                 { wrapper },
             )
 
@@ -1469,7 +1875,6 @@ describe('queries', () => {
                 expect.anything(),
                 {
                     help_center_id: helpCenterIds[0],
-                    ids: fileIds,
                 },
             )
             expect(getFileIngestion).toHaveBeenNthCalledWith(
@@ -1477,7 +1882,6 @@ describe('queries', () => {
                 expect.anything(),
                 {
                     help_center_id: helpCenterIds[1],
-                    ids: fileIds,
                 },
             )
             expect(getFileIngestion).toHaveBeenNthCalledWith(
@@ -1485,7 +1889,6 @@ describe('queries', () => {
                 expect.anything(),
                 {
                     help_center_id: helpCenterIds[2],
-                    ids: fileIds,
                 },
             )
         })
@@ -1564,26 +1967,59 @@ describe('queries', () => {
             })
         })
 
-        it('should pass optional file ids when provided', async () => {
+        it('should filter articles by recordIds when provided', async () => {
+            const mockFileWithMultipleArticles = {
+                id: 105,
+                filename: 'file-with-articles.pdf',
+                help_center_id: 5,
+                google_storage_url:
+                    'https://storage.googleapis.com/file-with-articles.pdf',
+                status: 'SUCCESSFUL' as 'SUCCESSFUL' | 'FAILED' | 'PENDING',
+                uploaded_datetime: '2023-01-01T00:00:00Z',
+                snippets_article_ids: [],
+            }
+
+            const mockMultipleArticles = [
+                { id: 10, title: 'Article 10' },
+                { id: 15, title: 'Article 15' },
+                { id: 20, title: 'Article 20' },
+            ]
+
             getFileIngestion.mockResolvedValue({
-                data: [],
+                data: [mockFileWithMultipleArticles],
                 status: 200,
                 statusText: 'OK',
                 headers: {},
                 config: {} as any,
             })
 
-            renderHook(
-                () =>
-                    useGetMultipleFileIngestionSnippets([5], {
-                        ids: [10, 20],
-                    }),
+            getFileIngestionArticleTitlesAndStatus.mockResolvedValue(
+                mockMultipleArticles,
+            )
+
+            const { result } = renderHook(
+                () => useGetMultipleFileIngestionSnippets([5], [10, 20]), // Should filter to only articles 10 and 20
                 { wrapper },
             )
 
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
             expect(getFileIngestion).toHaveBeenCalledWith(expect.anything(), {
                 help_center_id: 5,
-                ids: [10, 20],
+            })
+
+            expect(result.current.ingestedFiles).toHaveLength(2)
+            expect(result.current.ingestedFiles[0]).toEqual({
+                ...mockMultipleArticles[0],
+                ingestionId: mockFileWithMultipleArticles.id,
+                ingestionStatus: mockFileWithMultipleArticles.status,
+                helpCenterId: 5,
+            })
+            expect(result.current.ingestedFiles[1]).toEqual({
+                ...mockMultipleArticles[2], // Article 20 (index 2)
+                ingestionId: mockFileWithMultipleArticles.id,
+                ingestionStatus: mockFileWithMultipleArticles.status,
+                helpCenterId: 5,
             })
         })
     })

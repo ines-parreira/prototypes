@@ -91,7 +91,6 @@ export const SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP: Record<
 > = {
     [AiAgentKnowledgeResourceTypeEnum.ACTION]: 'action',
     [AiAgentKnowledgeResourceTypeEnum.ARTICLE]: 'article',
-    [AiAgentKnowledgeResourceTypeEnum.MACRO]: 'macro',
     [AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET]: 'link',
     [AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET]:
         'external_snippet',

@@ -2,7 +2,7 @@ import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Badge, BadgeIcon, Label } from '@gorgias/merchant-ui-kit'
+import { Badge, BadgeIcon, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
@@ -23,23 +23,23 @@ import {
     KnowledgeResource,
     SuggestedResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import {
-    getResourceMetadata,
-    useEnrichFeedbackData,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { getTicketState } from 'state/ticket/selectors'
+import { getLDClient } from 'utils/launchDarkly'
 
 import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
+import { getResourceMetadata } from './useEnrichKnowledgeFeedbackData/utils'
 import { getHelpcenterIdAsString, knowledgeResourceShouldBeLink } from './utils'
 
 type MissingKnowledgeSelectProps = {
     helpCenterId?: number | null
     guidanceHelpCenterId?: number
     snippetHelpCenterId?: number
-    enrichedData: ReturnType<typeof useEnrichFeedbackData> | null
+    resourcesData: ReturnType<typeof useGetAllRelatedResourceData> | null
     initialValues: SuggestedResource[]
     accountId: number
+    loadingMutations?: Array<string>
     onSubmit: (choices: Array<ChoiceOption>) => void
     onRemove: (choice: Array<ChoiceOption>) => void
     disabled?: boolean
@@ -71,23 +71,26 @@ const MissingKnowledgeSelect = ({
     helpCenterId,
     guidanceHelpCenterId,
     snippetHelpCenterId,
+    loadingMutations,
     onSubmit,
     onRemove,
     initialValues,
     knowledgeResources,
     accountId,
-    enrichedData,
+    resourcesData,
     disabled,
     shopName,
     shopType,
     onKnowledgeResourceClick,
 }: MissingKnowledgeSelectProps) => {
     const [values, setValues] = useState<string[]>([])
+    const [isLoading, setIsLoading] = useState<boolean | undefined>(undefined)
 
     const ticket = useAppSelector(getTicketState)
     const currentUser = useAppSelector((state) => state.currentUser)
     const ticketId: number = ticket.get('id')
     const userId: number = currentUser.get('id')
+    const flags = useMemo(() => getLDClient().allFlags(), [])
 
     const { onFeedbackGiven } = useFeedbackTracking({
         ticketId,
@@ -96,22 +99,12 @@ const MissingKnowledgeSelect = ({
     })
 
     const choices = useMemo(() => {
-        if (!enrichedData) return []
+        if (!resourcesData) return []
 
-        const resourcesData = {
-            articles: enrichedData.articles || [],
-            guidanceArticles: enrichedData.guidanceArticles || [],
-            sourceItems: enrichedData.sourceItems || [],
-            ingestedFiles: enrichedData.ingestedFiles || [],
-            actions: enrichedData.actions || [],
-            helpCenters: enrichedData.helpCenters || [],
-            storeWebsiteQuestions: enrichedData.storeWebsiteQuestions || [],
-            products: enrichedData.products || [],
-        }
         return [
             // Order is important here, as it determines the order of the options in the select dropdown
             // GUIDANCES
-            ...(enrichedData?.guidanceArticles || [])
+            ...(resourcesData?.guidanceArticles || [])
                 .filter((guidance) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -128,6 +121,7 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                         },
                         shopName,
+                        flags,
                         resourcesData,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.guidance}${guidance.title}`,
@@ -138,7 +132,7 @@ const MissingKnowledgeSelect = ({
                         guidance.visibility === 'UNLISTED',
                 })),
             // ACTIONS
-            ...(enrichedData?.actions || [])
+            ...(resourcesData?.actions || [])
                 .filter((action) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -155,6 +149,7 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.ACTION,
                         },
                         shopName,
+                        flags,
                         resourcesData,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
@@ -163,7 +158,7 @@ const MissingKnowledgeSelect = ({
                     hide: action?.entrypoints?.[0]?.deactivated_datetime,
                 })),
             // HELP CENTER ARTICLES
-            ...(enrichedData?.articles || [])
+            ...(resourcesData?.articles || [])
                 .filter((article) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -180,6 +175,7 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                         },
                         shopName,
+                        flags,
                         resourcesData,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.article}${article.translation.title}`,
@@ -189,7 +185,7 @@ const MissingKnowledgeSelect = ({
                         article.helpCenterId !== helpCenterId ||
                         !article.translation.is_current,
                 })),
-            ...(enrichedData?.storeWebsiteQuestions || [])
+            ...(resourcesData?.storeWebsiteQuestions || [])
                 .filter((question) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -206,6 +202,7 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                         },
                         shopName,
+                        flags,
                         resourcesData,
                     ),
                     resource: question,
@@ -215,7 +212,7 @@ const MissingKnowledgeSelect = ({
                     hide: question.helpCenterId !== snippetHelpCenterId,
                 })),
             // EXTERNAL WEBSITE LINKS
-            ...(enrichedData?.sourceItems || [])
+            ...(resourcesData?.sourceItems || [])
                 .filter((snippet) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -233,6 +230,7 @@ const MissingKnowledgeSelect = ({
                             title: snippet.title,
                         },
                         shopName,
+                        flags,
                         resourcesData,
                     )
 
@@ -247,7 +245,7 @@ const MissingKnowledgeSelect = ({
                     }
                 }),
             //EXTERNAL FILES
-            ...(enrichedData?.ingestedFiles || [])
+            ...(resourcesData?.ingestedFiles || [])
                 .filter((file) => {
                     return !knowledgeResources?.find(
                         (resource) =>
@@ -265,6 +263,7 @@ const MissingKnowledgeSelect = ({
                             title: snippet.title,
                         },
                         shopName,
+                        flags,
                         resourcesData,
                     )
 
@@ -280,12 +279,13 @@ const MissingKnowledgeSelect = ({
                 }),
         ] as ChoiceOption[]
     }, [
-        enrichedData,
+        resourcesData,
         helpCenterId,
         guidanceHelpCenterId,
         snippetHelpCenterId,
         knowledgeResources,
         shopName,
+        flags,
     ])
 
     const makeLabelsUnique = useCallback((choices: ChoiceOption[]) => {
@@ -327,6 +327,10 @@ const MissingKnowledgeSelect = ({
     )
 
     useEffect(() => {
+        if (loadingMutations?.length) {
+            return
+        }
+
         const matchingChoices = choices.filter((choice) => {
             return initialValues.find(
                 (initialValue) =>
@@ -346,21 +350,26 @@ const MissingKnowledgeSelect = ({
             .filter((label): label is string => label !== null)
 
         setValues(displayLabels)
-    }, [enrichedData, initialValues, choices, makeLabelsUnique])
+    }, [initialValues, loadingMutations, choices, makeLabelsUnique])
 
     const onToggle = useCallback(() => {
+        if (isLoading === undefined) {
+            setIsLoading(true)
+        }
         logEventWithSampling(
             SegmentEvent.AiAgentFeedbackOtherReasonSelectClicked,
             {
                 accountId,
             },
         )
-    }, [accountId])
+    }, [accountId, isLoading])
 
     const handleChange = useCallback(
         // TODO(React18): Remove any type
         (value: any) => {
             const newValues = Array.isArray(value) ? value : [...values, value]
+
+            setValues(newValues)
 
             onFeedbackGiven('missing_knowledge_options')
 
@@ -437,6 +446,12 @@ const MissingKnowledgeSelect = ({
         return makeLabelsUnique(visibleChoices)
     }, [choices, makeLabelsUnique])
 
+    useEffect(() => {
+        if (resourcesData?.isLoading === false && isLoading === true) {
+            setIsLoading(false)
+        }
+    }, [resourcesData?.isLoading, isLoading])
+
     return (
         <div className={css.missingKnowledgeSelect}>
             <MultiLevelSelect
@@ -451,6 +466,7 @@ const MissingKnowledgeSelect = ({
                 hideClearButton
                 autoWidth={false}
                 onFocus={onToggle}
+                isLoading={isLoading}
                 isDisabled={disabled}
                 CustomInput={({ onFocus }) => (
                     <div
@@ -471,19 +487,28 @@ const MissingKnowledgeSelect = ({
                     </div>
                 )}
             />
-            {values.length > 0 && (
+            {initialValues.length > 0 && (
                 <div className={css.tags}>
-                    {values.map((option) => {
-                        const choice = findChoiceFromDisplayLabel(option)
-                        if (!choice) return null
+                    {initialValues.map((value) => {
+                        let choice = findChoiceFromDisplayLabel(
+                            value.metadata.title,
+                        )
+                        if (!choice) {
+                            choice = {
+                                meta: value.metadata,
+                                label: value.metadata.title,
+                                value: value.parsedResource.resourceId,
+                                type: value.parsedResource.resourceType,
+                            }
+                        }
 
                         const choiceWithDisplayLabel = {
                             ...choice,
-                            displayLabel: option,
+                            displayLabel: value.metadata.title,
                         }
                         return (
                             <KnowledgeTag
-                                key={option}
+                                key={`${value.parsedResource.resourceType}-${value.parsedResource.resourceId}-${value.parsedResource.resourceSetId}`}
                                 choice={choiceWithDisplayLabel}
                                 handleRemove={handleRemove}
                                 shopName={shopName}
@@ -549,6 +574,7 @@ export const KnowledgeTag = ({
         : true
 
     const onClick = () => {
+        if (!label) return
         onKnowledgeResourceClick(
             choice.value,
             choice.type,
@@ -592,12 +618,24 @@ export const KnowledgeTag = ({
                                 }
                             />
                         )}
-                        <span className={css.tagText}>{label}</span>
+                        {!!label ? (
+                            <span className={css.tagText}>{label}</span>
+                        ) : (
+                            <Skeleton height={16} width={100} />
+                        )}
                     </a>
                     <BadgeIcon
                         className={css.tagIcon}
-                        icon={<i className="material-icons">close</i>}
-                        onClick={() => handleRemove(choice.value)}
+                        icon={
+                            choice.value ? (
+                                <i className="material-icons">close</i>
+                            ) : null
+                        }
+                        onClick={() => {
+                            if (choice.value && label) {
+                                handleRemove(choice.value)
+                            }
+                        }}
                     />
                 </Badge>
             )}

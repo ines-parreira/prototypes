@@ -5,6 +5,7 @@ import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTick
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -13,6 +14,7 @@ import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackB
 import AIAgentSimplifiedFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback'
 import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
+import { getTicketState } from 'state/ticket/selectors'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
 
@@ -25,6 +27,8 @@ export default function TicketFeedback() {
     const hasAIAgent = useHasAIAgent()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const messageFeedback = useAiAgentMessageFeedback()
+    const ticket = useAppSelector(getTicketState)
+    const ticketId = ticket.get('id')
     const isAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
     const isSimplifiedFeedbackCollectionEnabled =
@@ -50,7 +54,7 @@ export default function TicketFeedback() {
         return (
             <HelpCenterApiClientProvider>
                 <KnowledgeSourceSideBarProvider>
-                    <AIAgentSimplifiedFeedback />
+                    <AIAgentSimplifiedFeedback key={ticketId} />
                 </KnowledgeSourceSideBarProvider>
             </HelpCenterApiClientProvider>
         )

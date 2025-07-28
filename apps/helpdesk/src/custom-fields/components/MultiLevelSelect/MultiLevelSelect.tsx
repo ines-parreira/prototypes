@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import _xor from 'lodash/xor'
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { UserRole } from 'config/types/user'
 import StealthInput from 'custom-fields/components/StealthInput'
@@ -86,6 +86,7 @@ export type MultiLevelSelectProps<
     dropdownMatchTriggerWidth?: boolean
     hideClearButton?: boolean
     wrapperClassName?: string
+    isLoading?: boolean
 }
 
 export default function MultiLevelSelect<
@@ -112,6 +113,7 @@ export default function MultiLevelSelect<
     dropdownMatchTriggerWidth = false,
     hideClearButton = false,
     wrapperClassName,
+    isLoading = false,
 }: MultiLevelSelectProps<AllowMultiValues>) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -331,7 +333,23 @@ export default function MultiLevelSelect<
                     />
                 )}
                 <DropdownBody>
-                    {isSearching ? (
+                    {isLoading ? (
+                        <>
+                            {Array.from({ length: 4 }).map((_, index) => (
+                                <DropdownItem
+                                    key={`skeleton-${index}`}
+                                    tag="div"
+                                    onClick={() => {}}
+                                    option={{
+                                        label: '',
+                                        value: '',
+                                    }}
+                                >
+                                    <Skeleton height={20} width={100} />
+                                </DropdownItem>
+                            ))}
+                        </>
+                    ) : isSearching ? (
                         <>
                             {searchResults.length ? (
                                 searchResults.map((searchResult) => (

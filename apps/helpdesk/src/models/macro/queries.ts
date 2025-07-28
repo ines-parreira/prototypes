@@ -11,7 +11,7 @@ import { fetchMacros } from './resources'
 
 export const macroKeys = {
     all: () => ['macros'] as const,
-    lists: () => [...macroKeys.all(), 'list'] as const,
+    lists: (ids?: number[]) => [...macroKeys.all(), 'list', ids] as const,
 }
 
 /**
@@ -26,15 +26,26 @@ export const useGetAICompatibleMacros = <
         unknown,
         TData
     >,
+    ids?: number[],
 ) => {
     return useInfiniteQuery({
-        queryKey: macroKeys.lists(),
-        queryFn: async ({ pageParam }) =>
-            fetchMacros({
+        queryKey: macroKeys.lists(ids),
+        queryFn: async ({ pageParam }) => {
+            const result = await fetchMacros({
                 cursor: pageParam,
                 limit: 100,
                 search: '[ai compatible]',
-            }),
+            })
+            return {
+                ...result,
+                data: {
+                    ...result.data,
+                    data: result.data.data.filter((macro) =>
+                        ids?.includes(macro.id ?? 0),
+                    ),
+                },
+            }
+        },
         getNextPageParam: (lastPage) => {
             return lastPage.data.meta.next_cursor
         },

@@ -99,9 +99,6 @@ describe('mapToKnowledgeSourceType', () => {
             mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.GUIDANCE),
         ).toBe('guidance')
         expect(
-            mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.MACRO),
-        ).toBe('macro')
-        expect(
             mapToKnowledgeSourceType(
                 AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
             ),

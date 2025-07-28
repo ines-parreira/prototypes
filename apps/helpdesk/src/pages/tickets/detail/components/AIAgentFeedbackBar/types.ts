@@ -42,6 +42,7 @@ export type ResourceMetadata = {
     content: string
     url?: string
     isDeleted?: boolean
+    isLoading?: boolean
 }
 
 export type FeedbackDto = FindFeedbackResult['data']

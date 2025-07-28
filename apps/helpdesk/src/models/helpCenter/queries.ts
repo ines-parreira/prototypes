@@ -119,11 +119,13 @@ export const helpCenterKeys = {
     fileIngestions: (
         helpCenterId: number,
         queryParams?: Paths.GetFileIngestion.QueryParameters,
+        recordIds?: number[],
     ) =>
         [
             ...helpCenterKeys.detail(helpCenterId),
             'file-ingestions',
             queryParams,
+            recordIds,
         ].filter(Boolean),
     ingestedResources: (
         helpCenterId: number,
@@ -237,54 +239,136 @@ export const fetchAllPagesForHelpCenter = async ({
     }
 }
 
-/**
- * Hook to fetch articles from multiple help centers in parallel
- */
 export const useGetMultipleHelpCenterArticleLists = (
     helpCenterIds: Paths.ListArticles.Parameters.HelpCenterId[],
     queryParams: Paths.ListArticles.QueryParameters,
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof fetchAllPagesForHelpCenter>>
+        Awaited<ReturnType<typeof getHelpCenterArticles>>
     >,
 ) => {
     const { client } = useHelpCenterApi()
 
-    const getQueryEnabledStatus = (queryIndex: number) =>
-        !!client && !!helpCenterIds[queryIndex] && (overrides?.enabled ?? true)
+    const getQueryEnabledStatus = useCallback(
+        (helpCenterId: number) =>
+            !!client && !!helpCenterId && (overrides?.enabled ?? true),
+        [client, overrides?.enabled],
+    )
 
-    const queries = useQueries({
-        queries: helpCenterIds.map((helpCenterId, i) => ({
-            queryKey: helpCenterKeys.articles(helpCenterId, queryParams),
+    const firstPageQueries = useQueries({
+        queries: helpCenterIds.map((helpCenterId) => ({
+            queryKey: helpCenterKeys.articles(helpCenterId, {
+                ...queryParams,
+                page: 1,
+            }),
             queryFn: async () =>
-                fetchAllPagesForHelpCenter({
+                getHelpCenterArticles(
                     client,
-                    helpCenterId,
-                    queryParams,
-                }),
+                    { help_center_id: helpCenterId },
+                    { ...queryParams, page: 1 },
+                ),
             ...overrides,
-            enabled: getQueryEnabledStatus(i),
+            enabled: getQueryEnabledStatus(helpCenterId),
         })),
     })
 
-    // Compute loading state
-    const isLoading = queries.some(
-        (query, i) => getQueryEnabledStatus(i) && query.isLoading,
-    )
+    const additionalPageQueries = useQueries({
+        queries: helpCenterIds.flatMap((helpCenterId, index) => {
+            const firstPageQuery = firstPageQueries[index]
+            const totalPages = firstPageQuery.data?.meta?.nb_pages || 1
+            const isFirstPageLoaded = firstPageQuery.isSuccess
 
-    // Combine articles from all help centers and add helpCenterId to each article
-    const articles = useMemo(() => {
-        return queries.flatMap((query, index) => {
+            if (!isFirstPageLoaded || totalPages <= 1) {
+                return []
+            }
+
+            return Array.from({ length: totalPages - 1 }, (_, i) => {
+                const page = i + 2
+                return {
+                    queryKey: helpCenterKeys.articles(helpCenterId, {
+                        ...queryParams,
+                        page,
+                    }),
+                    queryFn: async () =>
+                        getHelpCenterArticles(
+                            client,
+                            { help_center_id: helpCenterId },
+                            { ...queryParams, page },
+                        ),
+                    ...overrides,
+                    enabled: getQueryEnabledStatus(helpCenterId),
+                }
+            })
+        }),
+    })
+
+    const allQueries = [...firstPageQueries, ...additionalPageQueries]
+
+    const isLoading = useMemo(() => {
+        const firstPageLoading = firstPageQueries.some((query, index) => {
             const helpCenterId = helpCenterIds[index]
-
-            return (query.data?.data || []).map((article) => ({
-                ...article,
-                helpCenterId, // Add helpCenterId to each article
-            }))
+            return getQueryEnabledStatus(helpCenterId) && query.isLoading
         })
-    }, [queries, helpCenterIds])
+
+        const additionalPageLoading = additionalPageQueries.some((query) => {
+            return query.isLoading
+        })
+
+        return firstPageLoading || additionalPageLoading
+    }, [
+        firstPageQueries,
+        additionalPageQueries,
+        helpCenterIds,
+        getQueryEnabledStatus,
+    ])
+
+    const articles = useMemo(() => {
+        const allArticles: Array<
+            NonNullable<
+                Awaited<ReturnType<typeof getHelpCenterArticles>>
+            >['data'][number] & {
+                helpCenterId: number
+            }
+        > = []
+
+        firstPageQueries.forEach((query, index) => {
+            const helpCenterId = helpCenterIds[index]
+            if (query.data?.data) {
+                query.data.data.forEach((article) => {
+                    allArticles.push({
+                        ...article,
+                        helpCenterId,
+                    })
+                })
+            }
+        })
+
+        let queryIndex = 0
+        helpCenterIds.forEach((helpCenterId, index) => {
+            const firstPageQuery = firstPageQueries[index]
+            const totalPages = firstPageQuery.data?.meta?.nb_pages || 1
+            const isFirstPageLoaded = firstPageQuery.isSuccess
+
+            if (!isFirstPageLoaded || totalPages <= 1) return
+
+            for (let page = 2; page <= totalPages; page++) {
+                const query = additionalPageQueries[queryIndex]
+                if (query?.data?.data) {
+                    query.data.data.forEach((article) => {
+                        allArticles.push({
+                            ...article,
+                            helpCenterId,
+                        })
+                    })
+                }
+                queryIndex++
+            }
+        })
+
+        return allArticles
+    }, [firstPageQueries, additionalPageQueries, helpCenterIds])
 
     return {
-        queries,
+        queries: allQueries,
         articles,
         isLoading,
     }
@@ -847,7 +931,7 @@ export const useGetFileIngestion = (
  */
 export const useGetMultipleFileIngestionSnippets = (
     helpCenterIds: number[],
-    fileParams?: { ids?: number[] },
+    recordIds?: number[],
     overrides?: UseQueryOptions<
         Array<
             BaseArticle & {
@@ -872,14 +956,14 @@ export const useGetMultipleFileIngestionSnippets = (
         queries: helpCenterIds.map((helpCenterId, i) => ({
             queryKey: helpCenterKeys.fileIngestions(
                 helpCenterId,
-                fileParams?.ids ? { ids: fileParams.ids } : undefined,
+                undefined,
+                recordIds,
             ),
             queryFn: async () => {
                 const ingestionResult = await getFileIngestion(
                     helpCenterClient,
                     {
                         help_center_id: helpCenterId,
-                        ...(fileParams?.ids ? { ids: fileParams.ids } : {}),
                     },
                 )
 
@@ -895,14 +979,18 @@ export const useGetMultipleFileIngestionSnippets = (
                                     },
                                 )
 
-                            return (articleResult as BaseArticle[])?.map(
-                                (article) => ({
+                            return (articleResult as BaseArticle[])
+                                ?.filter((article) =>
+                                    recordIds
+                                        ? recordIds.includes(article.id)
+                                        : true,
+                                )
+                                ?.map((article) => ({
                                     ingestionId: ingestion.id,
                                     ingestionStatus: ingestion.status,
                                     ...article,
                                     helpCenterId,
-                                }),
-                            )
+                                }))
                         }) ?? [],
                     )
                 ).reduce((acc, curr) => {

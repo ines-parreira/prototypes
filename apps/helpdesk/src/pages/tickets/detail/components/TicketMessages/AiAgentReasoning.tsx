@@ -14,7 +14,6 @@ import {
     useGetMessageAiReasoning,
 } from 'models/knowledgeService/queries'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 import { changeActiveTab, getActiveTab } from 'state/ui/ticketAIAgentFeedback'
@@ -22,6 +21,7 @@ import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constan
 
 import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningContent } from './AiReasoningContent'
 
 import css from './AiAgentReasoning.less'
@@ -67,7 +67,6 @@ export const parseReasoningResources = (
                         resourceTitle: metadata?.resourceTitle,
                     }
                 case AiAgentKnowledgeResourceTypeEnum.ACTION:
-                case AiAgentKnowledgeResourceTypeEnum.MACRO:
                 case AiAgentKnowledgeResourceTypeEnum.ORDER:
                     metadata = resources.find(
                         (resource) =>

@@ -8,37 +8,42 @@ import { StoreConfiguration } from 'models/aiAgent/types'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { ChoiceOption } from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
-import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 
 import {
     AiAgentKnowledgeResourceTypeEnum,
     SuggestedResourceValue,
 } from '../types'
+import { useEnrichFeedbackData } from '../useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
+import { useGetAllRelatedResourceData } from '../useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 
 interface UseFeedbackActionsParams {
     upsertFeedback: ReturnType<typeof useUpsertFeedback>['mutateAsync']
     feedback: ReturnType<typeof useGetFeedback>['data']
     ticketId: number
     storeConfiguration?: StoreConfiguration
-    actions: NonNullable<ReturnType<typeof useEnrichFeedbackData>>['actions']
+    actions: NonNullable<
+        ReturnType<typeof useGetAllRelatedResourceData>
+    >['actions']
     guidanceArticles: NonNullable<
-        ReturnType<typeof useEnrichFeedbackData>
+        ReturnType<typeof useGetAllRelatedResourceData>
     >['guidanceArticles']
-    articles: NonNullable<ReturnType<typeof useEnrichFeedbackData>>['articles']
+    articles: NonNullable<
+        ReturnType<typeof useGetAllRelatedResourceData>
+    >['articles']
     sourceItems: NonNullable<
-        ReturnType<typeof useEnrichFeedbackData>
+        ReturnType<typeof useGetAllRelatedResourceData>
     >['sourceItems']
     ingestedFiles: NonNullable<
-        ReturnType<typeof useEnrichFeedbackData>
+        ReturnType<typeof useGetAllRelatedResourceData>
     >['ingestedFiles']
     storeWebsiteQuestions: NonNullable<
-        ReturnType<typeof useEnrichFeedbackData>
+        ReturnType<typeof useGetAllRelatedResourceData>
     >['storeWebsiteQuestions']
-    enrichedData?: NonNullable<
-        ReturnType<typeof useEnrichFeedbackData>
-    >['enrichedData']
     setLoadingMutations: React.Dispatch<
         React.SetStateAction<string[] | undefined>
+    >
+    enrichedData?: Partial<
+        NonNullable<ReturnType<typeof useEnrichFeedbackData>>['enrichedData']
     >
 }
 
@@ -188,7 +193,7 @@ export const useFeedbackActions = ({
                 choices
                     .map((choice) => {
                         const suggestedResource =
-                            enrichedData?.suggestedResources.find(
+                            enrichedData?.suggestedResources?.find(
                                 (resource) => {
                                     switch (choice.type) {
                                         case 'ARTICLE':

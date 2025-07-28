@@ -387,7 +387,7 @@ describe('queries', () => {
 
     describe('useGetStoreWorkflowsConfigurations()', () => {
         it('should handle enabled parameter correctly when it is true', async () => {
-            const mockResponse = { data: [] }
+            const mockResponse: any[] = []
 
             mockedServer
                 .onPost(/auth/)
@@ -412,7 +412,7 @@ describe('queries', () => {
         })
 
         it('should handle enabled parameter correctly when it is false', async () => {
-            const mockResponse = { data: [] }
+            const mockResponse: any[] = []
 
             mockedServer
                 .onPost(/auth/)
@@ -437,7 +437,7 @@ describe('queries', () => {
         })
 
         it('should not include enabled parameter when it is undefined', async () => {
-            const mockResponse = { data: [] }
+            const mockResponse: any[] = []
 
             mockedServer
                 .onPost(/auth/)

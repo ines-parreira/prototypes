@@ -120,6 +120,7 @@ describe('useMultiplePublicResources', () => {
             () =>
                 useMultiplePublicResources({
                     helpCenterIds: [HELP_CENTER_ID_1, HELP_CENTER_ID_2],
+                    queryOptionsOverrides: { enabled: true },
                 }),
             {
                 wrapper: ({ children }) => (
@@ -145,6 +146,7 @@ describe('useMultiplePublicResources', () => {
             () =>
                 useMultiplePublicResources({
                     helpCenterIds: [HELP_CENTER_ID_1, HELP_CENTER_ID_2],
+                    queryOptionsOverrides: { enabled: true },
                 }),
             {
                 wrapper: ({ children }) => (
@@ -202,6 +204,7 @@ describe('useMultiplePublicResources', () => {
             () =>
                 useMultiplePublicResources({
                     helpCenterIds: [invalidHelpCenterId],
+                    queryOptionsOverrides: { enabled: true },
                 }),
             {
                 wrapper: ({ children }) => (
@@ -259,6 +262,7 @@ describe('useMultiplePublicResources', () => {
                 useMultiplePublicResources({
                     helpCenterIds: [HELP_CENTER_ID_1],
                     overrides,
+                    queryOptionsOverrides: { enabled: true },
                 }),
             {
                 wrapper: ({ children }) => (

@@ -114,8 +114,6 @@ export const mapToKnowledgeSourceType = (
             return 'action'
         case AiAgentKnowledgeResourceTypeEnum.GUIDANCE:
             return 'guidance'
-        case AiAgentKnowledgeResourceTypeEnum.MACRO:
-            return 'macro'
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
             return 'external_snippet'
         case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:

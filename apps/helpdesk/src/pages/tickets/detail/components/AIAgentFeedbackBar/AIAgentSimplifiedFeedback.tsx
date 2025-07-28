@@ -32,10 +32,6 @@ import {
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { UnsavedChangesModalProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
-import {
-    knowledgeResourceOrder,
-    useEnrichFeedbackData,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
 import { getHelpCenterIdByResourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -45,6 +41,9 @@ import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constan
 import { getViewsState } from 'state/views/selectors'
 
 import { AIAgentTicketLevelFeedback } from './AIAgentTicketLevelFeedback/AIAgentTicketLevelFeedback'
+import { useEnrichFeedbackData } from './useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
+import { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
+import { knowledgeResourceOrder } from './useEnrichKnowledgeFeedbackData/utils'
 
 const AIAgentSimplifiedFeedback = () => {
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
@@ -130,27 +129,34 @@ const AIAgentSimplifiedFeedback = () => {
     })
 
     const {
-        isLoading: isLoadingEnrichedData,
-        enrichedData,
         actions,
         articles,
         guidanceArticles,
         sourceItems,
         ingestedFiles,
-        helpCenters,
         storeWebsiteQuestions,
+        products,
+        isLoading,
+    } = useGetAllRelatedResourceData({
+        data: feedback,
+        storeConfiguration,
+        queriesEnabled: true,
+    })
+
+    const {
+        isLoading: isLoadingEnrichedData,
+        enrichedData,
+        helpCenters,
+        resourceArticles,
+        resourceGuidanceArticles,
     } = useMemo(() => {
         if (!enrichedFeedbackMetadata)
             return {
                 isLoading: true,
                 enrichedData: undefined,
-                actions: [],
-                articles: [],
-                guidanceArticles: [],
-                sourceItems: [],
-                ingestedFiles: [],
                 helpCenters: [],
-                storeWebsiteQuestions: [],
+                resourceArticles: [],
+                resourceGuidanceArticles: [],
             }
         return enrichedFeedbackMetadata
     }, [enrichedFeedbackMetadata])
@@ -294,24 +300,27 @@ const AIAgentSimplifiedFeedback = () => {
     }, [helpCenters, selectedResource, storeConfiguration])
 
     const knowledgeResources = useMemo(() => {
-        if (isLoadingEnrichedData !== false) {
-            const resources = feedback?.executions
-                .flatMap((execution) =>
-                    execution.resources.map((resource) => ({
-                        executionId: execution.executionId,
-                        ...resource,
-                    })),
-                )
-                .sort((a, b) => {
-                    const aIndex = knowledgeResourceOrder.indexOf(
-                        a.resourceType as AiAgentKnowledgeResourceTypeEnum,
-                    )
-                    const bIndex = knowledgeResourceOrder.indexOf(
-                        b.resourceType as AiAgentKnowledgeResourceTypeEnum,
-                    )
+        const resources = feedback?.executions.flatMap((execution) =>
+            execution.resources.map((resource) => ({
+                executionId: execution.executionId,
+                ...resource,
+            })),
+        )
 
-                    return aIndex - bIndex
-                })
+        if (
+            (resources?.length ?? 0) !==
+            (enrichedData?.knowledgeResources?.length ?? 0)
+        ) {
+            resources?.sort((a, b) => {
+                const aIndex = knowledgeResourceOrder.indexOf(
+                    a.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                )
+                const bIndex = knowledgeResourceOrder.indexOf(
+                    b.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                )
+
+                return aIndex - bIndex
+            })
             return resources?.map((resource) => (
                 <KnowledgeSourceFeedback
                     key={resource.id}
@@ -348,10 +357,10 @@ const AIAgentSimplifiedFeedback = () => {
                 shopName={shopName}
                 shopType={shopType}
                 onKnowledgeResourceClick={onKnowledgeResourceClick}
+                isMetadataLoading={resource.metadata.isLoading}
             />
         ))
     }, [
-        isLoadingEnrichedData,
         feedback,
         enrichedData,
         shopName,
@@ -419,13 +428,24 @@ const AIAgentSimplifiedFeedback = () => {
                                 knowledgeResources={
                                     enrichedData?.knowledgeResources
                                 }
-                                enrichedData={enrichedFeedbackMetadata}
+                                resourcesData={{
+                                    isLoading,
+                                    actions,
+                                    articles,
+                                    guidanceArticles,
+                                    sourceItems,
+                                    ingestedFiles,
+                                    storeWebsiteQuestions,
+                                    helpCenters,
+                                    products,
+                                }}
                                 disabled={isLoadingEnrichedData}
                                 onSubmit={onSubmitMissingKnowledge}
                                 onRemove={onSubmitMissingKnowledge}
                                 initialValues={
                                     enrichedData?.suggestedResources ?? []
                                 }
+                                loadingMutations={loadingMutations}
                                 accountId={accountId}
                                 shopName={shopName}
                                 shopType={shopType}
@@ -487,8 +507,10 @@ const AIAgentSimplifiedFeedback = () => {
                         <UnsavedChangesModalProvider>
                             <EditionManagerContextProvider>
                                 <KnowledgeSourceSideBar
-                                    articles={articles ?? []}
-                                    guidanceArticles={guidanceArticles ?? []}
+                                    articles={resourceArticles ?? []}
+                                    guidanceArticles={
+                                        resourceGuidanceArticles ?? []
+                                    }
                                     shopName={shopName}
                                     shopType={shopType}
                                     onSubmitNewMissingKnowledge={

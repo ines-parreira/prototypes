@@ -14,7 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
-import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData'
+import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
@@ -105,7 +105,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichFeedbackData',
+    'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata',
     () => ({
         useGetResourcesReasoningMetadata: jest.fn(),
     }),
@@ -266,7 +266,7 @@ describe('AiAgentReasoning', () => {
                     },
                     {
                         responseType: 'TASK',
-                        value: 'Sales <<<ARTICLE::16::13608>>> Support <<<GUIDANCE::26665::1045245>>> <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> <<<MACRO::67890>>> <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> <<<ORDER::98765>>>',
+                        value: 'Sales <<<ARTICLE::16::13608>>> Support <<<GUIDANCE::26665::1045245>>> <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> <<<ORDER::98765>>>',
                     },
                 ],
                 resources: [
@@ -293,13 +293,7 @@ describe('AiAgentReasoning', () => {
                         resourceLocale: 'en',
                         taskIds: [],
                     },
-                    {
-                        resourceType: 'MACRO',
-                        resourceId: '67890',
-                        resourceTitle: 'Test Macro',
-                        resourceLocale: 'en',
-                        taskIds: [],
-                    },
+
                     {
                         resourceType: 'FILE_EXTERNAL_SNIPPET',
                         resourceId: '12345',
@@ -353,12 +347,7 @@ describe('AiAgentReasoning', () => {
                     url: 'https://example.com/action',
                     isDeleted: false,
                 },
-                {
-                    title: 'Support Macro',
-                    content: 'Macro content',
-                    url: 'https://example.com/macro',
-                    isDeleted: false,
-                },
+
                 {
                     title: 'File Snippet',
                     content: 'File snippet content',
@@ -1150,14 +1139,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
             },
-            {
-                resourceType: 'MACRO' as const,
-                resourceId: '67890',
-                resourceSetId: '',
-                resourceTitle: 'Test Macro',
-                resourceLocale: 'en',
-                taskIds: [],
-            },
+
             {
                 resourceType: 'FILE_EXTERNAL_SNIPPET' as const,
                 resourceId: '12345',
@@ -1204,12 +1186,6 @@ describe('AiAgentReasoning', () => {
             resourceTitle: 'Test Action',
         }
 
-        const expectedMacroResource = {
-            resourceType: 'MACRO',
-            resourceId: '67890',
-            resourceTitle: 'Test Macro',
-        }
-
         const expectedFileExternalSnippetResource = {
             resourceType: 'FILE_EXTERNAL_SNIPPET',
             resourceId: '12345',
@@ -1246,11 +1222,7 @@ describe('AiAgentReasoning', () => {
                 'Action <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> here',
                 [expectedActionResource],
             ],
-            [
-                'MACRO',
-                'Macro <<<MACRO::67890>>> content',
-                [expectedMacroResource],
-            ],
+
             [
                 'FILE_EXTERNAL_SNIPPET',
                 'File <<<FILE_EXTERNAL_SNIPPET::78::12345>>> snippet',
@@ -1273,20 +1245,19 @@ describe('AiAgentReasoning', () => {
         it('should parse all resource types in a single string', () => {
             const content = `
                 Test <<<ARTICLE::16::13608>>> <<<GUIDANCE::26665::1045245>>> 
-                <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> <<<MACRO::67890>>> 
+                <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> 
                 <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> 
                 <<<ORDER::98765>>>
             `
             const result = parseReasoningResources(content, mockResources)
 
-            expect(result).toHaveLength(7)
+            expect(result).toHaveLength(6)
             expect(result[0]).toEqual(expectedArticleResource)
             expect(result[1]).toEqual(expectedGuidanceResource)
             expect(result[2]).toEqual(expectedActionResource)
-            expect(result[3]).toEqual(expectedMacroResource)
-            expect(result[4]).toEqual(expectedFileExternalSnippetResource)
-            expect(result[5]).toEqual(expectedExternalSnippetResource)
-            expect(result[6]).toEqual(expectedOrderResource)
+            expect(result[3]).toEqual(expectedFileExternalSnippetResource)
+            expect(result[4]).toEqual(expectedExternalSnippetResource)
+            expect(result[5]).toEqual(expectedOrderResource)
         })
 
         it('should return empty array when no resources found', () => {

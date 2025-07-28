@@ -37,10 +37,11 @@ const TRACKSTAR_QUERY_KEY = 'trackstar-query-key'
 
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
-    list: (params: { storeName: string; storeType: string }) => [
-        ...storeWorkflowsConfigurationDefinitionKeys.all(),
-        params,
-    ],
+    list: (params: {
+        storeName: string
+        storeType: string
+        ids?: string[]
+    }) => [...storeWorkflowsConfigurationDefinitionKeys.all(), params],
 }
 
 export const workflowsConfigurationDefinitionKeys = {
@@ -370,11 +371,13 @@ export const useGetStoreWorkflowsConfigurations = (
     overrides: UseQueryOptions<
         Awaited<Paths.StoreWfConfigurationControllerList.Responses.$200>
     > = {},
+    ids?: string[],
 ) => {
     return useQuery({
         queryKey: storeWorkflowsConfigurationDefinitionKeys.list({
             storeName,
             storeType,
+            ids,
         }),
         queryFn: async () => {
             if (storeType !== 'shopify') {
@@ -397,7 +400,9 @@ export const useGetStoreWorkflowsConfigurations = (
                     },
                 },
             )
-            return response.data
+            return response.data.filter((action) =>
+                ids ? ids.includes(action.id) : true,
+            )
         },
         refetchOnMount: 'always',
         keepPreviousData: true,

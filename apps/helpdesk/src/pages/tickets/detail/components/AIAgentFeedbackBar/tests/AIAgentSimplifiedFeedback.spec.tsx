@@ -22,7 +22,8 @@ import useGoToNextTicket from '../../TicketNavigation/hooks/useGoToNextTicket'
 import AIAgentSimplifiedFeedback from '../AIAgentSimplifiedFeedback'
 import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
-import { useEnrichFeedbackData } from '../useEnrichFeedbackData'
+import { useEnrichFeedbackData } from '../useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
+import { useGetAllRelatedResourceData } from '../useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
@@ -42,8 +43,11 @@ jest.mock('hooks/useGetDateAndTimeFormat')
 const useGetDateAndTimeFormatMock = useGetDateAndTimeFormat as jest.Mock
 jest.mock('models/knowledgeService/queries')
 const useGetFeedbackMock = useGetFeedback as jest.Mock
-jest.mock('../useEnrichFeedbackData')
+jest.mock('../useEnrichKnowledgeFeedbackData/useEnrichFeedbackData')
 const useEnrichFeedbackDataMock = useEnrichFeedbackData as jest.Mock
+jest.mock('../useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData')
+const useGetAllRelatedResourceDataMock =
+    useGetAllRelatedResourceData as jest.Mock
 jest.mock('../../TicketNavigation/hooks/useGoToNextTicket')
 const useGoToNextTicketMock = useGoToNextTicket as jest.Mock
 jest.mock('models/knowledgeService/mutations')
@@ -99,15 +103,12 @@ const initialFeedbackData = {
     isLoading: true,
     enrichedData: {
         knowledgeResources: [],
-        freeForm: {},
+        suggestedResources: [],
+        freeForm: null,
     },
-    actions: [],
-    macros: [],
-    articles: [],
-    guidanceArticles: [],
-    sourceItems: [],
-    ingestedFiles: [],
-    storeWebsiteQuestions: [],
+    helpCenters: [],
+    resourceArticles: [],
+    resourceGuidanceArticles: [],
 }
 
 describe('AIAgentSimplifiedFeedback', () => {
@@ -158,6 +159,17 @@ describe('AIAgentSimplifiedFeedback', () => {
         })
 
         useEnrichFeedbackDataMock.mockReturnValue(initialFeedbackData)
+
+        useGetAllRelatedResourceDataMock.mockReturnValue({
+            actions: [],
+            articles: [],
+            guidanceArticles: [],
+            sourceItems: [],
+            ingestedFiles: [],
+            storeWebsiteQuestions: [],
+            products: [],
+            isLoading: false,
+        })
 
         useUpsertFeedbackMock.mockReturnValue({
             mutateAsync: jest.fn(),
@@ -213,6 +225,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     {
                         executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resources: [],
+                        feedback: [],
                     },
                 ],
             },
@@ -254,7 +267,12 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { id: 123, storeConfiguration: 'test', resources: [] },
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
                 ],
             },
         })
@@ -282,6 +300,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     {
                         executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -291,24 +310,22 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [
                     {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resource: {
                             id: '123',
-                            title: 'Test Article',
-                            resourceType: 'GUIDANCE',
+                            resourceId: '123',
+                            resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                            resourceTitle: 'Test Article',
+                            feedback: null,
                         },
-                        id: '123',
-                        resourceId: '123',
-                        resourceType: 'ARTICLE',
-                        resourceSetId: 'set1',
-                        resourceLocale: null,
-                        resourceTitle: 'Test Article',
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
+                        },
                         feedback: {
                             id: 1,
                             objectType: 'TICKET',
@@ -363,6 +380,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     {
                         executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -372,24 +390,22 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [
                     {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resource: {
                             id: '123',
-                            title: 'Test Guidance',
+                            resourceId: '123',
                             resourceType: 'GUIDANCE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Guidance',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                            resourceTitle: 'Test Guidance',
+                            feedback: null,
                         },
-                        id: '123',
-                        resourceId: '123',
-                        resourceType: 'GUIDANCE',
-                        resourceSetId: 'set1',
-                        resourceLocale: null,
-                        resourceTitle: 'Test Guidance',
+                        metadata: {
+                            title: 'Test Guidance',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
+                        },
                         feedback: {
                             id: 1,
                             objectType: 'TICKET',
@@ -461,7 +477,12 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { id: 123, storeConfiguration: 'test', resources: [] },
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
                 ],
             },
         })
@@ -492,6 +513,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -529,6 +551,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     {
                         executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -539,17 +562,29 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [
                     {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resource: {
                             id: '123',
-                            title: 'Test Article',
+                            resourceId: '123',
+                            resourceTitle: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         feedback: {
                             feedbackValue: 'UP',
                         },
                     },
                 ],
-                freeForm: {},
+                freeForm: null,
+                suggestedResources: [],
             },
             isLoading: false,
         })
@@ -575,7 +610,12 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { id: 123, storeConfiguration: 'test', resources: [] },
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
                 ],
             },
         })
@@ -627,6 +667,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -652,11 +693,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -705,6 +747,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -721,11 +764,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -780,6 +824,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -796,11 +841,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -863,7 +909,12 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { id: 123, storeConfiguration: 'test', resources: [] },
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
                 ],
             },
         })
@@ -920,7 +971,16 @@ describe('AIAgentSimplifiedFeedback', () => {
         const existingFeedback = 'Existing feedback text'
 
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
+                ],
+            },
         })
 
         useEnrichFeedbackDataMock.mockReturnValue({
@@ -963,7 +1023,12 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { id: 123, storeConfiguration: 'test', resources: [] },
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
                 ],
             },
         })
@@ -1029,7 +1094,17 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // Set up the component with executions
         useGetFeedbackMock.mockReturnValue({
-            data: { executions: [{ id: 123, storeConfiguration: 'test' }] },
+            data: {
+                executions: [
+                    {
+                        executionId: 123,
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
+                    },
+                ],
+            },
         })
 
         // Set up the enriched data with a knowledge resource
@@ -1042,9 +1117,33 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: '123',
                             title: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
                         },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
+                        },
+                        id: '123',
+                        resourceId: '123',
+                        resourceType: 'ARTICLE',
+                        resourceSetId: 'set1',
+                        resourceLocale: null,
+                        resourceTitle: 'Test Article',
                         feedback: {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 123,
+                            targetType: 'KNOWLEDGE_RESOURCE',
+                            targetId: '123',
                             feedbackValue: 'DOWN',
+                            submittedBy: 1,
+                            createdDatetime: '2023-10-01T00:00:00Z',
+                            updatedDatetime: '2023-10-01T00:00:00Z',
+                            feedbackType: 'KNOWLEDGE_RESOURCE_BINARY',
                         },
                         executionId: 123,
                     },
@@ -1087,7 +1186,12 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { id: 123, storeConfiguration: 'test', resources: [] },
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
                 ],
             },
         })
@@ -1186,17 +1290,29 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [
                     {
+                        executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resource: {
                             id: '123',
-                            title: 'Test Article',
+                            resourceId: '123',
+                            resourceTitle: 'Test Article',
                             resourceType: 'ARTICLE',
+                            resourceSetId: 'set1',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         feedback: {
                             feedbackValue: 'UP',
                         },
                     },
                 ],
-                freeForm: {},
+                freeForm: null,
+                suggestedResources: [],
             },
             isLoading: false,
         })
@@ -1221,6 +1337,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -1237,11 +1354,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -1295,6 +1413,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -1311,11 +1430,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -1495,6 +1615,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                                 resourceType: 'ARTICLE',
                             },
                         ],
+                        feedback: [],
                     },
                 ],
             },
@@ -1511,11 +1632,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -1565,6 +1687,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                     {
                         // executionId missing from main execution
                         resources: [],
+                        feedback: [],
                     },
                 ],
             },
@@ -1625,11 +1748,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -1690,11 +1814,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -1748,11 +1873,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                             resourceType: 'ARTICLE',
                             resourceSetId: 'set1',
                             resourceLocale: null,
-                            metadata: {
-                                title: 'Test Article',
-                                url: 'https://example.com',
-                                isDeleted: false,
-                            },
+                        },
+                        metadata: {
+                            title: 'Test Article',
+                            url: 'https://example.com',
+                            isDeleted: false,
+                            isLoading: false,
                         },
                         id: '123',
                         resourceId: '123',
@@ -1827,6 +1953,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                        feedback: [],
                     },
                 ],
             },
@@ -1851,7 +1978,12 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetFeedbackMock.mockReturnValue({
             data: {
                 executions: [
-                    { id: 123, storeConfiguration: 'test', resources: [] },
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
                 ],
             },
         })
@@ -1877,7 +2009,12 @@ describe('AIAgentSimplifiedFeedback', () => {
             useGetFeedbackMock.mockReturnValue({
                 data: {
                     executions: [
-                        { id: 123, storeConfiguration: 'test', resources: [] },
+                        {
+                            id: 123,
+                            storeConfiguration: 'test',
+                            resources: [],
+                            feedback: [],
+                        },
                     ],
                 },
             })
@@ -1906,6 +2043,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 123,
                             storeConfiguration: 'test',
                             resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                            feedback: [],
                         },
                     ],
                 },
@@ -1938,6 +2076,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 123,
                             storeConfiguration: 'test',
                             resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                            feedback: [],
                         },
                     ],
                 },
@@ -1954,11 +2093,12 @@ describe('AIAgentSimplifiedFeedback', () => {
                                 resourceType: 'ARTICLE',
                                 resourceSetId: 'set1',
                                 resourceLocale: null,
-                                metadata: {
-                                    title: 'Test Article',
-                                    url: 'https://example.com',
-                                    isDeleted: false,
-                                },
+                            },
+                            metadata: {
+                                title: 'Test Article',
+                                url: 'https://example.com',
+                                isDeleted: false,
+                                isLoading: false,
                             },
                             id: '123',
                             resourceId: '123',
@@ -2017,7 +2157,12 @@ describe('AIAgentSimplifiedFeedback', () => {
             useGetFeedbackMock.mockReturnValue({
                 data: {
                     executions: [
-                        { id: 123, storeConfiguration: 'test', resources: [] },
+                        {
+                            id: 123,
+                            storeConfiguration: 'test',
+                            resources: [],
+                            feedback: [],
+                        },
                     ],
                 },
             })
@@ -2055,7 +2200,12 @@ describe('AIAgentSimplifiedFeedback', () => {
             useGetFeedbackMock.mockReturnValue({
                 data: {
                     executions: [
-                        { id: 123, storeConfiguration: 'test', resources: [] },
+                        {
+                            id: 123,
+                            storeConfiguration: 'test',
+                            resources: [],
+                            feedback: [],
+                        },
                     ],
                 },
             })
@@ -2084,6 +2234,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 123,
                             storeConfiguration: '',
                             resources: [],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2127,6 +2278,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         {
                             // storeConfiguration is undefined
                             resources: [],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2154,6 +2306,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         {
                             executionId: 'test-execution',
                             resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2168,6 +2321,10 @@ describe('AIAgentSimplifiedFeedback', () => {
                                 id: '123',
                                 title: 'Test Article',
                                 resourceType: 'ARTICLE',
+                            },
+                            metadata: {
+                                title: 'Test Article',
+                                isLoading: false,
                             },
                             feedback: {
                                 // id is undefined to test resource.feedback?.id fallback
@@ -2211,6 +2368,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         {
                             executionId: 'test-execution',
                             resources: [],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2292,6 +2450,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         {
                             executionId: 'test-execution',
                             resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2336,6 +2495,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 123,
                             storeConfiguration: { shopName: 'test-shop' },
                             resources: [],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2372,6 +2532,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 123,
                             storeConfiguration: { shopName: 'test-shop' },
                             resources: [],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2402,6 +2563,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         {
                             executionId: 'test-execution',
                             resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2416,6 +2578,10 @@ describe('AIAgentSimplifiedFeedback', () => {
                                 id: '123',
                                 title: 'Test Article',
                                 resourceType: 'ARTICLE',
+                            },
+                            metadata: {
+                                title: 'Test Article',
+                                isLoading: false,
                             },
                             feedback: {
                                 feedbackValue: 'DOWN',
@@ -2456,6 +2622,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                         {
                             executionId: 'test-execution',
                             resources: [{ id: '123', resourceType: 'ARTICLE' }],
+                            feedback: [],
                         },
                     ],
                 },
@@ -2470,6 +2637,10 @@ describe('AIAgentSimplifiedFeedback', () => {
                                 id: '123',
                                 title: 'Test Article',
                                 resourceType: 'ARTICLE',
+                            },
+                            metadata: {
+                                title: 'Test Article',
+                                isLoading: false,
                             },
                             feedback: {
                                 feedbackValue: 'DOWN',
@@ -2510,6 +2681,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                             id: 123,
                             storeConfiguration: { shopName: 'test-shop' },
                             resources: [],
+                            feedback: [],
                         },
                     ],
                 },

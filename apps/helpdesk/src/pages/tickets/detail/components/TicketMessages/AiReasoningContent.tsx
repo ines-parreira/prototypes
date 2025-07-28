@@ -8,7 +8,7 @@ import { sanitizeHtmlDefault } from 'utils/html'
 
 import KnowledgeSourceRenderer from '../AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import { AiAgentKnowledgeResourceTypeEnum } from '../AIAgentFeedbackBar/types'
-import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichFeedbackData'
+import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from '../AIAgentFeedbackBar/utils'
 
 import knowledgeSourceIconCss from '../AIAgentFeedbackBar/KnowledgeSourceIcon.less'
