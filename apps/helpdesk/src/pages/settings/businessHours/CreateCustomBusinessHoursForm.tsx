@@ -6,7 +6,11 @@ import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChanges
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import { BusinessHoursCreateFormValues } from './types'
-import { getCreateBusinessHoursFormDefaultValues } from './utils'
+import { useCustomBusinessHoursForm } from './useCustomBusinessHoursForm'
+import {
+    getCreateBusinessHoursFormDefaultValues,
+    getCreateCustomBusinessHoursPayloadFromValues,
+} from './utils'
 
 type Props = {
     children: React.ReactNode
@@ -19,9 +23,14 @@ export default function CreateCustomBusinessHoursForm({
 }: Props) {
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
     const defaultTimezone = businessHoursSettings?.data?.timezone
+    const { clientSideValidation } = useCustomBusinessHoursForm()
 
     const validator = (values: BusinessHoursCreateFormValues) => {
-        return toFormErrors(validateBusinessHoursCreate(values))
+        const customValidationErrors = clientSideValidation(values)
+
+        const payload = getCreateCustomBusinessHoursPayloadFromValues(values)
+        const errors = toFormErrors(validateBusinessHoursCreate(payload))
+        return { ...errors, ...customValidationErrors }
     }
 
     return (

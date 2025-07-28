@@ -19,6 +19,7 @@ import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields
 import EditCustomBusinessHoursActions from './EditCustomBusinessHoursActions'
 import EditCustomBusinessHoursIntegrationsSection from './EditCustomBusinessHoursIntegrationsSection'
 import { EditCustomBusinessHoursFormValues } from './types'
+import { useCustomBusinessHoursForm } from './useCustomBusinessHoursForm'
 import {
     getEditCustomBusinessHoursDefaultValues,
     getUpdateBusinessHoursPayloadFromValues,
@@ -32,6 +33,7 @@ type Props = {
 
 export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
     const notify = useNotify()
+    const { clientSideValidation } = useCustomBusinessHoursForm()
 
     const { mutate: updateBusinessHours, isLoading } = useUpdateBusinessHours({
         mutation: {
@@ -57,17 +59,20 @@ export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
         })
     }
 
+    const validator = (values: EditCustomBusinessHoursFormValues) => {
+        const customValidationErrors = clientSideValidation(values)
+        const payload = getUpdateBusinessHoursPayloadFromValues(values)
+        const errors = toFormErrors(validateBusinessHoursUpdate(payload))
+        return { ...errors, ...customValidationErrors }
+    }
+
     return (
         <Form<EditCustomBusinessHoursFormValues>
-            mode="all"
             defaultValues={getEditCustomBusinessHoursDefaultValues(
                 businessHours,
             )}
             onValidSubmit={handleFormSubmit}
-            validator={(values) => {
-                const payload = getUpdateBusinessHoursPayloadFromValues(values)
-                return toFormErrors(validateBusinessHoursUpdate(payload))
-            }}
+            validator={validator}
         >
             <div className={css.formContent}>
                 <SettingsCard>

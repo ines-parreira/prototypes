@@ -1,10 +1,14 @@
-import { mockBusinessHoursUpdate } from '@gorgias/helpdesk-mocks'
+import {
+    mockBusinessHoursCreate,
+    mockBusinessHoursUpdate,
+} from '@gorgias/helpdesk-mocks'
 import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from '../constants'
 import {
     convertToAmPm,
     getCreateBusinessHoursFormDefaultValues,
+    getCreateCustomBusinessHoursPayloadFromValues,
     getEditCustomBusinessHoursDefaultValues,
     getIntegrationsChangeSummary,
     getUpdateBusinessHoursPayloadFromValues,
@@ -134,6 +138,7 @@ describe('utils', () => {
                 },
                 previous_assigned_integrations: [3, 4, 5, 6],
                 temporary_assigned_integrations: [1],
+                overrideConfirmation: true,
             })
 
             expect(result).toEqual({
@@ -141,6 +146,26 @@ describe('utils', () => {
                 assigned_integrations: {
                     assign_integrations: [1, 2],
                     unassign_integrations: [4, 5, 6],
+                },
+            })
+        })
+    })
+
+    describe('getCreateCustomBusinessHoursPayloadFromValues', () => {
+        it('removes overrideConfirmation from the payload', () => {
+            const mockedBusinessHoursCreate = mockBusinessHoursCreate()
+            const result = getCreateCustomBusinessHoursPayloadFromValues({
+                ...mockedBusinessHoursCreate,
+                assigned_integrations: {
+                    assign_integrations: [1, 2, 3],
+                },
+                overrideConfirmation: true,
+            })
+
+            expect(result).toEqual({
+                ...mockedBusinessHoursCreate,
+                assigned_integrations: {
+                    assign_integrations: [1, 2, 3],
                 },
             })
         })

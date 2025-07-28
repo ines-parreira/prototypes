@@ -1,6 +1,7 @@
 import { omit } from 'lodash'
 
 import {
+    BusinessHoursCreate,
     BusinessHoursDetails,
     BusinessHoursUpdate,
     Timezone,
@@ -9,6 +10,7 @@ import {
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from './constants'
 import {
     BusinessHoursCreateFormValues,
+    CustomBusinessHoursFormValues,
     EditCustomBusinessHoursFormValues,
 } from './types'
 
@@ -86,6 +88,7 @@ export const getUpdateBusinessHoursPayloadFromValues = (
     const newValues = omit(values, [
         'temporary_assigned_integrations',
         'previous_assigned_integrations',
+        'overrideConfirmation',
     ])
 
     return {
@@ -95,4 +98,12 @@ export const getUpdateBusinessHoursPayloadFromValues = (
             unassign_integrations: changes.removedIntegrations,
         },
     }
+}
+
+export const getCreateCustomBusinessHoursPayloadFromValues = (
+    values: CustomBusinessHoursFormValues,
+): BusinessHoursCreate => {
+    const newValues = omit(values, ['overrideConfirmation'])
+
+    return newValues
 }

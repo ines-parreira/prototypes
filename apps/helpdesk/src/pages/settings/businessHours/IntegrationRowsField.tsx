@@ -2,7 +2,7 @@ import {
     IntegrationType,
     IntegrationWithBusinessHoursAndStore,
 } from '@gorgias/helpdesk-types'
-import { Button, CheckBoxField } from '@gorgias/merchant-ui-kit'
+import { Button, CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { Icon } from 'AlertBanners/components/Icon'
 import { AlertBannerTypes } from 'AlertBanners/types'
@@ -12,15 +12,14 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import BusinessHoursDisplay from './BusinessHoursDisplay'
+import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
 import CustomBusinessHoursIntegrationCell from './CustomBusinessHoursIntegrationCell'
 
 import css from './CustomBusinessHoursIntegrationsTable.less'
 
 type Props = {
-    hasWarning?: boolean
     integrations?: IntegrationWithBusinessHoursAndStore[]
     onChange: (value: number[]) => void
-    onItemClick: (id: number) => void
     value: number[]
     name: string
     isError?: boolean
@@ -39,20 +38,27 @@ const isValidIntegrationType = (type: string): type is IntegrationTypeKey =>
     type in integrationsToAdresses
 
 export default function IntegrationRowsField({
-    hasWarning,
     integrations,
-    onItemClick,
     onChange,
     value,
     name,
     isError,
     refetch,
 }: Props) {
-    const handleClick = (id: number) => {
+    const { businessHoursId, toggleIntegrationsToOverride } =
+        useCustomBusinessHoursContext()
+
+    const handleClick = (integration: IntegrationWithBusinessHoursAndStore) => {
+        const id = integration.integration_id
+        const wasPreviouslySelected = value.includes(id)
+
         onChange(
-            value.includes(id) ? value.filter((v) => v !== id) : [...value, id],
+            wasPreviouslySelected
+                ? value.filter((v) => v !== id)
+                : [...value, id],
         )
-        onItemClick(id)
+
+        toggleIntegrationsToOverride([integration], !wasPreviouslySelected)
     }
 
     return (
@@ -61,7 +67,7 @@ export default function IntegrationRowsField({
                 integrations.map((integration) => (
                     <TableBodyRow
                         key={integration.integration_id}
-                        onClick={() => handleClick(integration.integration_id)}
+                        onClick={() => handleClick(integration)}
                     >
                         <BodyCell>
                             <CheckBoxField
@@ -72,9 +78,22 @@ export default function IntegrationRowsField({
                             />
                         </BodyCell>
                         <BodyCell>
-                            {hasWarning && (
-                                <Icon type={AlertBannerTypes.Warning} />
-                            )}
+                            {!!integration.business_hours?.id &&
+                                integration.business_hours?.id !==
+                                    businessHoursId && (
+                                    <>
+                                        <Icon
+                                            id={`override-icon-${integration.integration_id}`}
+                                            type={AlertBannerTypes.Warning}
+                                        />
+                                        <Tooltip
+                                            target={`override-icon-${integration.integration_id}`}
+                                        >
+                                            This integration is already assigned
+                                            to other business hours.
+                                        </Tooltip>
+                                    </>
+                                )}
                         </BodyCell>
                         <BodyCell className={css.integrationNameColumn}>
                             <CustomBusinessHoursIntegrationCell

@@ -20,6 +20,10 @@ import { ShopifyIntegration } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 
+import {
+    CustomBusinessHoursContext,
+    CustomBusinessHoursContextState,
+} from '../CustomBusinessHoursContext'
 import CustomBusinessHoursIntegrationsTable from '../CustomBusinessHoursIntegrationsTable'
 
 const queryClient = mockQueryClient()
@@ -73,22 +77,37 @@ afterAll(() => {
     server.close()
 })
 
-const renderComponent = (name?: string) =>
+const renderComponent = (
+    name?: string,
+    cbhProviderValue: Partial<CustomBusinessHoursContextState> = {},
+) =>
     renderWithStore(
         <QueryClientProvider client={queryClient}>
-            <Form
-                onValidSubmit={jest.fn()}
-                defaultValues={{
-                    assigned_integrations: {
-                        assign_integrations: [integrations[0].integration_id],
-                    },
-                    temporary_assigned_integrations: [
-                        integrations[0].integration_id,
-                    ],
-                }}
+            <CustomBusinessHoursContext.Provider
+                value={
+                    {
+                        integrationsToOverride: [],
+                        toggleIntegrationsToOverride: jest.fn(),
+                        ...cbhProviderValue,
+                    } as CustomBusinessHoursContextState
+                }
             >
-                <CustomBusinessHoursIntegrationsTable name={name as any} />
-            </Form>
+                <Form
+                    onValidSubmit={jest.fn()}
+                    defaultValues={{
+                        assigned_integrations: {
+                            assign_integrations: [
+                                integrations[0].integration_id,
+                            ],
+                        },
+                        temporary_assigned_integrations: [
+                            integrations[0].integration_id,
+                        ],
+                    }}
+                >
+                    <CustomBusinessHoursIntegrationsTable name={name as any} />
+                </Form>
+            </CustomBusinessHoursContext.Provider>
         </QueryClientProvider>,
         {
             integrations: fromJS({
@@ -264,7 +283,10 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
     it('handles select all checkbox interaction', async () => {
         const user = userEvent.setup()
-        renderComponent()
+        const toggleIntegrationsToOverride = jest.fn()
+        renderComponent(undefined, {
+            toggleIntegrationsToOverride,
+        })
 
         await waitFor(() => {
             const selectAllCheckbox = screen.getByRole('checkbox', {
@@ -279,7 +301,25 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
         await user.click(selectAllCheckbox)
 
-        expect(selectAllCheckbox).toBeChecked()
+        await waitFor(() => {
+            expect(selectAllCheckbox).toBeChecked()
+        })
+
+        expect(toggleIntegrationsToOverride).toHaveBeenCalledWith(
+            integrations,
+            true,
+        )
+
+        await user.click(selectAllCheckbox)
+
+        await waitFor(() => {
+            expect(selectAllCheckbox).not.toBeChecked()
+        })
+
+        expect(toggleIntegrationsToOverride).toHaveBeenCalledWith(
+            integrations,
+            false,
+        )
     })
 
     it('handles navigation next button click', async () => {
@@ -500,5 +540,22 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         await act(async () => {
             await user.click(integrationHeader)
         })
+    })
+
+    it('renders the override confirmation checkbox when there are integrations to override', () => {
+        renderComponent(undefined, {
+            integrationsToOverride: [1, 2, 3],
+        })
+
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'I confirm overwriting the existing schedules',
+            }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /3 of the selected integrations are already assigned to other custom business hour schedules/,
+            ),
+        ).toBeInTheDocument()
     })
 })

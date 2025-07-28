@@ -1,7 +1,10 @@
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { useGetBusinessHoursDetails } from '@gorgias/helpdesk-queries'
+import {
+    BusinessHoursDetails,
+    useGetBusinessHoursDetails,
+} from '@gorgias/helpdesk-queries'
 import { Banner, Button } from '@gorgias/merchant-ui-kit'
 
 import Loader from 'pages/common/components/Loader/Loader'
@@ -10,6 +13,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import SettingsContent from '../SettingsContent'
 import SettingsPageContainer from '../SettingsPageContainer'
 import { BUSINESS_HOURS_BASE_URL } from './constants'
+import CustomBusinessHoursProvider from './CustomBusinessHoursProvider'
 import EditCustomBusinessHoursForm from './EditCustomBusinessHoursForm'
 
 export default function EditCustomBusinessHoursPage() {
@@ -54,13 +58,21 @@ export default function EditCustomBusinessHoursPage() {
     }
 
     return (
-        <Wrapper>
-            <EditCustomBusinessHoursForm businessHours={businessHours} />
+        <Wrapper businessHours={businessHours}>
+            <CustomBusinessHoursProvider businessHoursId={businessHours.id}>
+                <EditCustomBusinessHoursForm businessHours={businessHours} />
+            </CustomBusinessHoursProvider>
         </Wrapper>
     )
 }
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => {
+const Wrapper = ({
+    children,
+    businessHours,
+}: {
+    children: React.ReactNode
+    businessHours?: BusinessHoursDetails
+}) => {
     return (
         <div className="full-width">
             <PageHeader
@@ -72,7 +84,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            Edit custom business hours
+                            {`Edit ${businessHours?.name || 'custom business hours'}`}
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }

@@ -1,6 +1,11 @@
 @import (reference) '~css/typography';
 
 :local {
+    .wrapper {
+        max-height: 428px;
+        overflow-y: scroll;
+    }
+
     .table {
         table-layout: fixed;
         margin-top: var(--layout-spacing-s);
@@ -15,13 +20,13 @@
         overflow: hidden;
     }
 
-    .warningIconColumn {
-        width: 10%;
-    }
-
     .integrationNameColumn,
     .storeNameColumn {
         width: 25%;
+    }
+
+    .overrideColumn {
+        width: 30px;
     }
 
     .pagination {

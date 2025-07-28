@@ -1,13 +1,18 @@
 import { useMemo, useState } from 'react'
 
 import cn from 'classnames'
-import { noop } from 'lodash'
 
 import {
     ListIntegrationsForBusinessHoursOrderBy,
     useListIntegrationsForBusinessHours,
 } from '@gorgias/helpdesk-queries'
-import { Badge, CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
+import {
+    Badge,
+    Banner,
+    Box,
+    CheckBoxField,
+    Skeleton,
+} from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
 import useDebouncedValue from 'hooks/useDebouncedValue'
@@ -24,6 +29,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
 import IntegrationRowsField from './IntegrationRowsField'
 import StoreFilter from './StoreFilter'
 import {
@@ -74,6 +80,11 @@ export default function CustomBusinessHoursIntegrationsTable({
             store_id: storeId ? storeId : undefined,
         })
     const integrations = data?.data.data
+    const {
+        integrationsToOverride,
+        toggleIntegrationsToOverride,
+        resetIntegrationsToOverride,
+    } = useCustomBusinessHoursContext()
 
     const { watch, setValue } = useFormContext<
         BusinessHoursCreateFormValues | EditCustomBusinessHoursFormValues
@@ -91,13 +102,19 @@ export default function CustomBusinessHoursIntegrationsTable({
     const handleSelectAll = (value: boolean) => {
         const newAssignIntegrationsSet = new Set(assignIntegrations)
 
-        integrations?.forEach((integration) => {
+        if (!integrations) {
+            return
+        }
+
+        integrations.forEach((integration) => {
             if (value) {
                 newAssignIntegrationsSet.add(integration.integration_id)
             } else {
                 newAssignIntegrationsSet.delete(integration.integration_id)
             }
         })
+
+        toggleIntegrationsToOverride(integrations, value)
 
         setValue(name, Array.from(newAssignIntegrationsSet))
     }
@@ -124,23 +141,26 @@ export default function CustomBusinessHoursIntegrationsTable({
 
     const clearSelectedIntegrations = () => {
         setValue(name, [])
+        resetIntegrationsToOverride()
     }
 
     return (
-        <div>
-            <div className={css.top}>
-                {!!assignIntegrations.length && (
-                    <Badge type="blue" corner="square">
-                        {assignIntegrations.length} integration
-                        {assignIntegrations.length > 1 ? 's' : ''} selected
-                        <i
-                            className={cn(css.closeIcon, 'material-icons')}
-                            onClick={clearSelectedIntegrations}
-                        >
-                            close
-                        </i>
-                    </Badge>
-                )}
+        <Box gap="var(--layout-spacing-m)" flexDirection="column">
+            <Box justifyContent="space-between">
+                <div>
+                    {!!assignIntegrations.length && (
+                        <Badge type="blue" corner="square">
+                            {assignIntegrations.length} integration
+                            {assignIntegrations.length > 1 ? 's' : ''} selected
+                            <i
+                                className={cn(css.closeIcon, 'material-icons')}
+                                onClick={clearSelectedIntegrations}
+                            >
+                                close
+                            </i>
+                        </Badge>
+                    )}
+                </div>
                 <div className={css.filters}>
                     <div className={css.searchBar}>
                         <SearchBar
@@ -155,62 +175,86 @@ export default function CustomBusinessHoursIntegrationsTable({
                         withSearch
                     />
                 </div>
-            </div>
-            <TableWrapper className={css.table}>
-                <TableHead>
-                    <HeaderCell size="smallest">
-                        <CheckBoxField
-                            value={isAllSelected}
-                            aria-label="Select all integrations"
-                            isDisabled={isLoading || integrations?.length === 0}
-                            onChange={handleSelectAll}
+            </Box>
+            <div className={css.wrapper}>
+                <TableWrapper className={css.table}>
+                    <TableHead>
+                        <HeaderCell size="smallest">
+                            <CheckBoxField
+                                value={isAllSelected}
+                                aria-label="Select all integrations"
+                                isDisabled={
+                                    isLoading || integrations?.length === 0
+                                }
+                                onChange={handleSelectAll}
+                            />
+                        </HeaderCell>
+                        <HeaderCell className={css.overrideColumn} />
+                        <HeaderCellProperty
+                            className={css.integrationNameColumn}
+                            direction={direction as OrderDirection}
+                            isOrderedBy={sortBy === 'name'}
+                            onClick={handleSortChange}
+                            title="Integration"
                         />
-                    </HeaderCell>
-                    <HeaderCell className={css.warningIconColumn} />
-                    <HeaderCellProperty
-                        className={css.integrationNameColumn}
-                        direction={direction as OrderDirection}
-                        isOrderedBy={sortBy === 'name'}
-                        onClick={handleSortChange}
-                        title="Integration"
-                    />
-                    <HeaderCell size="normal" className={css.storeNameColumn}>
-                        Store
-                    </HeaderCell>
-                    <HeaderCell
-                        size="normal"
-                        className={css.businessHoursColumn}
-                    >
-                        Business hours
-                    </HeaderCell>
-                </TableHead>
-                <TableBody>
-                    {isLoading ? (
-                        new Array(5)
-                            .fill(null)
-                            .map((_, key) => <RowSkeleton key={key} />)
-                    ) : (
-                        <FormField
-                            name={name}
-                            field={IntegrationRowsField}
-                            onItemClick={noop}
-                            integrations={integrations}
-                            isError={isError}
-                            refetch={refetch}
+                        <HeaderCell
+                            size="normal"
+                            className={css.storeNameColumn}
+                        >
+                            Store
+                        </HeaderCell>
+                        <HeaderCell
+                            size="normal"
+                            className={css.businessHoursColumn}
+                        >
+                            Business hours
+                        </HeaderCell>
+                    </TableHead>
+                    <TableBody>
+                        {isLoading ? (
+                            new Array(5)
+                                .fill(null)
+                                .map((_, key) => <RowSkeleton key={key} />)
+                        ) : (
+                            <FormField
+                                name={name}
+                                field={IntegrationRowsField}
+                                integrations={integrations}
+                                isError={isError}
+                                refetch={refetch}
+                            />
+                        )}
+                    </TableBody>
+                    {!isLoading && (
+                        <Navigation
+                            className={css.pagination}
+                            hasNextItems={!!data?.data.meta.next_cursor}
+                            hasPrevItems={!!data?.data.meta.prev_cursor}
+                            fetchNextItems={() => updateCursor('next')}
+                            fetchPrevItems={() => updateCursor('prev')}
                         />
                     )}
-                </TableBody>
-                {!isLoading && (
-                    <Navigation
-                        className={css.pagination}
-                        hasNextItems={!!data?.data.meta.next_cursor}
-                        hasPrevItems={!!data?.data.meta.prev_cursor}
-                        fetchNextItems={() => updateCursor('next')}
-                        fetchPrevItems={() => updateCursor('prev')}
-                    />
-                )}
-            </TableWrapper>
-        </div>
+                </TableWrapper>
+            </div>
+            {integrationsToOverride.length > 0 && (
+                <Banner type="warning">
+                    <Box flexDirection="column" gap="var(--layout-spacing-xs)">
+                        <div>
+                            {integrationsToOverride.length} of the selected
+                            integrations are already assigned to other custom
+                            business hour schedules. Assigning them to this
+                            custom business hour schedule will overwrite their
+                            existing schedules.
+                        </div>
+                        <FormField
+                            name="overrideConfirmation"
+                            field={CheckBoxField}
+                            label="I confirm overwriting the existing schedules"
+                        />
+                    </Box>
+                </Banner>
+            )}
+        </Box>
     )
 }
 

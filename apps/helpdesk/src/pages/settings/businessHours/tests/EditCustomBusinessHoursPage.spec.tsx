@@ -13,7 +13,10 @@ jest.mock('../EditCustomBusinessHoursForm', () => () => (
     <div>EditCustomBusinessHoursForm</div>
 ))
 
-const mockedGetBusinessHoursDetails = mockGetBusinessHoursDetailsHandler()
+const mockedGetBusinessHoursDetails = mockGetBusinessHoursDetailsHandler(
+    async ({ request: __req, data }) =>
+        HttpResponse.json({ ...data, id: 123, name: 'CBH' }, { status: 200 }),
+)
 
 const server = setupServer()
 
@@ -100,9 +103,7 @@ describe('EditCustomBusinessHoursPage', () => {
         await waitFor(() => {
             expect(screen.getByText('Business hours')).toBeInTheDocument()
 
-            expect(
-                screen.getByText('Edit custom business hours'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Edit CBH')).toBeInTheDocument()
 
             expect(
                 screen.getByText('EditCustomBusinessHoursForm'),

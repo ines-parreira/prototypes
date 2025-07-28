@@ -1,14 +1,19 @@
 import { ComponentProps } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import { mockIntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-mocks'
+import {
+    mockBusinessHours,
+    mockIntegrationWithBusinessHoursAndStore,
+} from '@gorgias/helpdesk-mocks'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import StoreDisplayName from 'pages/common/components/StoreDisplayName'
 import { assumeMock } from 'utils/testing'
 
 import BusinessHoursDisplay from '../BusinessHoursDisplay'
+import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
 import CustomBusinessHoursIntegrationCell from '../CustomBusinessHoursIntegrationCell'
 import IntegrationRowsField from '../IntegrationRowsField'
 
@@ -25,15 +30,20 @@ const StoreDisplayNameMock = assumeMock(StoreDisplayName)
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
 const integrations = [
-    mockIntegrationWithBusinessHoursAndStore(),
-    mockIntegrationWithBusinessHoursAndStore(),
-    mockIntegrationWithBusinessHoursAndStore(),
-    mockIntegrationWithBusinessHoursAndStore(),
+    mockIntegrationWithBusinessHoursAndStore({
+        business_hours: {
+            ...mockBusinessHours(),
+            id: 1,
+        },
+    }),
+    mockIntegrationWithBusinessHoursAndStore({ business_hours: null }),
+    mockIntegrationWithBusinessHoursAndStore({ business_hours: null }),
+    mockIntegrationWithBusinessHoursAndStore({ business_hours: null }),
 ]
 
 const defaultProps = {
     onChange: jest.fn(),
-    onItemClick: jest.fn(),
+    onToggleOverride: jest.fn(),
     value: [],
     integrations,
     name: 'assigned_integrations.assign_integrations',
@@ -41,9 +51,23 @@ const defaultProps = {
     refetch: jest.fn(),
 }
 
+const toggleIntegrationsToOverride = jest.fn()
+
 const renderComponent = (
     props?: Partial<ComponentProps<typeof IntegrationRowsField>>,
-) => render(<IntegrationRowsField {...defaultProps} {...props} />)
+) =>
+    render(
+        <CustomBusinessHoursContext.Provider
+            value={{
+                businessHoursId: 2,
+                integrationsToOverride: [],
+                toggleIntegrationsToOverride,
+                resetIntegrationsToOverride: jest.fn(),
+            }}
+        >
+            <IntegrationRowsField {...defaultProps} {...props} />
+        </CustomBusinessHoursContext.Provider>,
+    )
 
 describe('IntegrationRowsField', () => {
     beforeEach(() => {
@@ -70,11 +94,11 @@ describe('IntegrationRowsField', () => {
         expect(checkboxes).toHaveLength(integrations.length)
     })
 
-    it('renders warning icon when hasWarning is true', () => {
-        renderComponent({ hasWarning: true })
+    it('renders warning icon when integration is already assigned to other business hours', () => {
+        renderComponent()
 
         const warningIcons = screen.getAllByText('warning')
-        expect(warningIcons).toHaveLength(integrations.length)
+        expect(warningIcons).toHaveLength(1)
     })
 
     it('renders all cells in each row', () => {
@@ -108,21 +132,30 @@ describe('IntegrationRowsField', () => {
         expect(checkboxes[2]).toBeChecked()
     })
 
-    it('calls onChange with added item when clicking unchecked row', () => {
+    it('calls onChange and toggleIntegrationsToOverride with added item when clicking unchecked row', async () => {
+        const user = userEvent.setup()
         renderComponent({
             value: [integrations[1].integration_id],
         })
 
         const checkboxes = screen.getAllByRole('checkbox')
-        fireEvent.click(checkboxes[0])
+        await user.click(checkboxes[0])
 
-        expect(defaultProps.onChange).toHaveBeenCalledWith([
-            integrations[1].integration_id,
-            integrations[0].integration_id,
-        ])
+        await waitFor(() => {
+            expect(defaultProps.onChange).toHaveBeenCalledWith([
+                integrations[1].integration_id,
+                integrations[0].integration_id,
+            ])
+
+            expect(toggleIntegrationsToOverride).toHaveBeenCalledWith(
+                [integrations[0]],
+                true,
+            )
+        })
     })
 
-    it('calls onChange with removed item when clicking checked row', () => {
+    it('calls onChange and toggleIntegrationsToOverride with removed item when clicking checked row', async () => {
+        const user = userEvent.setup()
         renderComponent({
             value: [
                 integrations[0].integration_id,
@@ -132,12 +165,19 @@ describe('IntegrationRowsField', () => {
         })
 
         const checkboxes = screen.getAllByRole('checkbox')
-        fireEvent.click(checkboxes[1])
+        await user.click(checkboxes[1])
 
-        expect(defaultProps.onChange).toHaveBeenCalledWith([
-            integrations[0].integration_id,
-            integrations[2].integration_id,
-        ])
+        await waitFor(() => {
+            expect(defaultProps.onChange).toHaveBeenCalledWith([
+                integrations[0].integration_id,
+                integrations[2].integration_id,
+            ])
+
+            expect(toggleIntegrationsToOverride).toHaveBeenCalledWith(
+                [integrations[1]],
+                false,
+            )
+        })
     })
 
     it('handles empty value array correctly', () => {
@@ -178,17 +218,6 @@ describe('IntegrationRowsField', () => {
                 description: expect.any(Object),
             }),
             expect.anything(),
-        )
-    })
-
-    it('calls onItemClick when row is clicked', () => {
-        renderComponent()
-
-        const checkboxes = screen.getAllByRole('checkbox')
-        fireEvent.click(checkboxes[0])
-
-        expect(defaultProps.onItemClick).toHaveBeenCalledWith(
-            integrations[0].integration_id,
         )
     })
 

@@ -1,12 +1,13 @@
 import { useFormContext } from 'react-hook-form'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
+import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
 import CustomBusinessHoursIntegrationsTable from './CustomBusinessHoursIntegrationsTable'
 import { EditCustomBusinessHoursFormValues } from './types'
 
@@ -18,25 +19,36 @@ type Props = {
 }
 
 export default function AssignIntegrationsModal({ isOpen, onClose }: Props) {
-    const { setValue, resetField } =
+    const { setValue, resetField, watch } =
         useFormContext<EditCustomBusinessHoursFormValues>()
-    const { watch } = useFormContext<EditCustomBusinessHoursFormValues>()
+    const { integrationsToOverride, resetIntegrationsToOverride } =
+        useCustomBusinessHoursContext()
 
     const temporaryAssignedIntegrations = watch(
         'temporary_assigned_integrations',
     )
+    const overrideConfirmation = watch('overrideConfirmation')
+
+    const handleClose = () => {
+        resetField('temporary_assigned_integrations')
+        resetField('overrideConfirmation')
+        resetIntegrationsToOverride()
+        onClose()
+    }
 
     const handleUpdateSelection = () => {
         setValue(
             'assigned_integrations.assign_integrations',
             temporaryAssignedIntegrations,
         )
-        resetField('temporary_assigned_integrations')
-        onClose()
+        handleClose()
     }
 
+    const isUpdateSelectionDisabled =
+        !overrideConfirmation && integrationsToOverride.length > 0
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose} size="huge">
+        <Modal isOpen={isOpen} onClose={handleClose} size="huge">
             <ModalHeader title="Select integrations" />
             <ModalBody className={css.modalBody}>
                 <p>
@@ -47,12 +59,22 @@ export default function AssignIntegrationsModal({ isOpen, onClose }: Props) {
                 <CustomBusinessHoursIntegrationsTable name="temporary_assigned_integrations" />
             </ModalBody>
             <ModalActionsFooter>
-                <Button onClick={onClose} intent="secondary">
+                <Button onClick={handleClose} intent="secondary">
                     Cancel
                 </Button>
-                <Button onClick={handleUpdateSelection}>
+                <Button
+                    onClick={handleUpdateSelection}
+                    id="update-integrations-selection"
+                    isDisabled={isUpdateSelectionDisabled}
+                >
                     Update selection
                 </Button>
+                {isUpdateSelectionDisabled && (
+                    <Tooltip target="update-integrations-selection">
+                        You have to confirm overwriting the existing schedules
+                        to be able to update the selection.
+                    </Tooltip>
+                )}
             </ModalActionsFooter>
         </Modal>
     )

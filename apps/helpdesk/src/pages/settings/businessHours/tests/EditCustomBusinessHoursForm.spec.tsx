@@ -12,6 +12,7 @@ import history from 'pages/history'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { BUSINESS_HOURS_BASE_URL } from '../constants'
+import CustomBusinessHoursProvider from '../CustomBusinessHoursProvider'
 import EditCustomBusinessHoursForm from '../EditCustomBusinessHoursForm'
 
 const mockNotify = {
@@ -61,12 +62,18 @@ const businessHours = mockBusinessHoursDetails({
     },
 })
 
+const renderComponent = () => {
+    return renderWithStoreAndQueryClientAndRouter(
+        <CustomBusinessHoursProvider businessHoursId={businessHours.id}>
+            <EditCustomBusinessHoursForm businessHours={businessHours} />
+        </CustomBusinessHoursProvider>,
+        {},
+    )
+}
+
 describe('EditCustomBusinessHoursForm', () => {
     it('renders the form with all sections and action buttons', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursForm businessHours={businessHours} />,
-            {},
-        )
+        renderComponent()
 
         expect(screen.getByText('General')).toBeInTheDocument()
         expect(screen.getByText('Schedule')).toBeInTheDocument()
@@ -81,10 +88,7 @@ describe('EditCustomBusinessHoursForm', () => {
     })
 
     it('renders the form with all fields', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursForm businessHours={businessHours} />,
-            {},
-        )
+        renderComponent()
 
         expect(screen.getByText('Name')).toBeInTheDocument()
         expect(screen.getByText('Timezone')).toBeInTheDocument()
@@ -94,10 +98,7 @@ describe('EditCustomBusinessHoursForm', () => {
     })
 
     it('should pre-populate the form with the business hours details', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursForm businessHours={businessHours} />,
-            {},
-        )
+        renderComponent()
 
         expect(screen.getByLabelText(/Name/)).toHaveValue(businessHours.name)
         expect(screen.getByText('America/New_York')).toBeInTheDocument()
@@ -111,10 +112,7 @@ describe('EditCustomBusinessHoursForm', () => {
 
     it('should handle form submission successfully', async () => {
         const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursForm businessHours={businessHours} />,
-            {},
-        )
+        renderComponent()
 
         await act(async () =>
             user.type(screen.getByLabelText(/Name/), 'New Name'),
@@ -142,10 +140,7 @@ describe('EditCustomBusinessHoursForm', () => {
         )
         server.use(mockUpdateBusinessHoursError.handler)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <EditCustomBusinessHoursForm businessHours={businessHours} />,
-            {},
-        )
+        renderComponent()
 
         await act(async () =>
             user.type(screen.getByLabelText(/Name/), 'New Name'),
