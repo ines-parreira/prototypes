@@ -137,6 +137,7 @@ export enum FeatureFlagKey {
     ReportingTicketFieldsPivotTable = 'reporting-ticket-fields-pivot-table',
     ReportingSavedFiltersInDashboards = 'linear.project_reporting-saved-filters-in-dashboards',
     ReportingVoiceOfCustomer = 'reporting-voice-of-customer',
+    ReportingMultiStoreFilter = 'reporting-multi-store-filter',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

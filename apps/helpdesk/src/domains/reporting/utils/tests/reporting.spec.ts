@@ -308,6 +308,29 @@ describe('reporting utils', () => {
                 ]),
             )
         })
+
+        it('should convert StatsFilters to an array of ReportingFilter with stores with logical operator', () => {
+            expect(
+                statsFiltersToReportingFilters(TicketStatsFiltersMembers, {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00.000+02:00',
+                        end_datetime: '2021-06-04T23:59:59.000+02:00',
+                    },
+                    stores: withLogicalOperator(
+                        [1],
+                        LogicalOperatorEnum.ONE_OF,
+                    ),
+                }),
+            ).toEqual(
+                expect.arrayContaining([
+                    {
+                        member: TicketMessagesMember.Store,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['1'],
+                    },
+                ]),
+            )
+        })
     })
 
     describe('periodToReportingGranularity', () => {

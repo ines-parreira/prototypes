@@ -23,6 +23,7 @@ export const isFilterFilled = (
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
         case FilterKey.StoreIntegrations:
+        case FilterKey.Stores:
         case FilterKey.LocaleCodes:
         case FilterKey.Score:
         case FilterKey.SlaPolicies:

@@ -71,6 +71,7 @@ export const fromPartialLegacyStatsFilters = (
                     break
                 case FilterKey.Integrations:
                 case FilterKey.StoreIntegrations:
+                case FilterKey.Stores:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
                 case FilterKey.VoiceQueues:
@@ -126,6 +127,7 @@ export const fromLegacyStatsFilters = (
                     break
                 case FilterKey.Integrations:
                 case FilterKey.StoreIntegrations:
+                case FilterKey.Stores:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
                 case FilterKey.VoiceQueues:
@@ -186,6 +188,7 @@ export const fromFiltersWithLogicalOperators = (
                         }
                         break
                     case FilterKey.StoreIntegrations:
+                    case FilterKey.Stores:
                     case FilterKey.Integrations:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
@@ -240,6 +243,7 @@ export const excludeFromFiltersWithLogicalOperators = (
                         break
                     case FilterKey.Integrations:
                     case FilterKey.StoreIntegrations:
+                    case FilterKey.Stores:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
                     case FilterKey.VoiceQueues:
@@ -352,7 +356,8 @@ export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
                       savedFilter.member === FilterKey.HelpCenters ||
                       savedFilter.member === FilterKey.Integrations ||
                       savedFilter.member === FilterKey.Agents ||
-                      savedFilter.member === FilterKey.VoiceQueues
+                      savedFilter.member === FilterKey.VoiceQueues ||
+                      savedFilter.member === FilterKey.Stores
                   ) {
                       statsFilters[savedFilter.member] = {
                           operator: savedFilter.operator,

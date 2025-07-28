@@ -58,6 +58,10 @@ import {
     LanguageProficiencyFilterWithSavedState,
     LanguageProficiencyFilterWithState,
 } from 'domains/reporting/pages/common/filters/LanguageProficiencyFilter'
+import {
+    MultiStoreFilterWithSavedState,
+    MultiStoreFilterWithState,
+} from 'domains/reporting/pages/common/filters/MultiStoreFilter'
 import { PeriodFilterWithState } from 'domains/reporting/pages/common/filters/PeriodFilter'
 import {
     ResolutionCompletenessFilterWithSavedState,
@@ -111,6 +115,7 @@ export const FilterComponentMap: Record<
     [FilterKey.Score]: ScoreFiltersWithState,
     [FilterKey.SlaPolicies]: SLAPolicyFilterWithState,
     [FilterKey.StoreIntegrations]: StoreFilterFromContext,
+    [FilterKey.Stores]: MultiStoreFilterWithState,
     [FilterKey.Tags]: TagsFilterWithState,
     [FilterKey.VoiceQueues]: VoiceQueuesFilterWithState,
 }
@@ -142,6 +147,7 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.Period]: () => null,
     [FilterKey.SlaPolicies]: () => null,
     [FilterKey.StoreIntegrations]: () => null,
+    [FilterKey.Stores]: MultiStoreFilterWithSavedState,
     [FilterKey.VoiceQueues]: VoiceQueuesFilterWithSavedState,
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: () => null,
     [FilterComponentKey.CustomField]: () => null,

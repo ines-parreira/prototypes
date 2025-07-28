@@ -28,6 +28,7 @@ export enum TicketMessagesMember {
     PeriodStart = 'TicketMessagesEnriched.periodStart',
     FirstMessageChannel = 'TicketMessagesEnriched.firstMessageChannel',
     Integration = 'TicketMessagesEnriched.integration',
+    Store = 'TicketMessagesEnriched.store',
     FirstHelpdeskMessageDatetime = 'TicketMessagesEnriched.firstHelpdeskMessageDatetime',
     SentDatetime = 'TicketMessagesEnriched.sentDatetime',
     FirstHelpdeskMessageUserId = 'TicketMessagesEnriched.firstHelpdeskMessageUserId',

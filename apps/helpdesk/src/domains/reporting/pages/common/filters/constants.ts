@@ -43,6 +43,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.InternalCompliance]: 'Internal compliance',
     [FilterKey.BrandVoice]: 'Brand voice',
     [FilterKey.StoreIntegrations]: 'Store',
+    [FilterKey.Stores]: 'Store',
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Ticket Metric',
     [FilterComponentKey.CustomField]: 'Ticket Field',
     [FilterComponentKey.PhoneIntegrations]: 'Integration',
@@ -135,5 +136,6 @@ export const SAVEABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
     FilterKey.Score,
     FilterKey.IsDuringBusinessHours,
     FilterKey.VoiceQueues,
+    FilterKey.Stores,
     ...AUTO_QA_FILTER_KEYS,
 ]

@@ -41,6 +41,7 @@ export const getValidator = (
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
         case FilterKey.StoreIntegrations:
+        case FilterKey.Stores:
         case FilterKey.InternalCompliance:
         case FilterKey.LanguageProficiency:
         case FilterKey.LocaleCodes:

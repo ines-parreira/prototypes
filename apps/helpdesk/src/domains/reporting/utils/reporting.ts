@@ -77,6 +77,7 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
+    stores: TicketMessagesMember.Store,
     ...AutoQAFiltersMembers,
 }
 
@@ -192,6 +193,7 @@ export const statsFiltersToReportingFilters = (
     const {
         period,
         integrations,
+        stores,
         channels,
         agents,
         tags,
@@ -211,6 +213,7 @@ export const statsFiltersToReportingFilters = (
         voiceQueues,
         isDuringBusinessHours,
     } = statsFilters
+
     let filters: ReportingFilter[] = [
         {
             member: members.periodStart,
@@ -226,6 +229,12 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(integrations) && members.integrations) {
         filters = addOptionalFilter(filters, integrations, {
             member: members.integrations,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(stores) && members.stores) {
+        filters = addOptionalFilter(filters, stores, {
+            member: members.stores,
             operator: ReportingFilterOperator.Equals,
         })
     }
@@ -337,6 +346,7 @@ export const statsFiltersToReportingFilters = (
             operator: ReportingFilterOperator.Equals,
         })
     }
+
     return filters
 }
 
