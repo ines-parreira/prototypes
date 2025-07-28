@@ -19,6 +19,7 @@ import ConditionsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/
 import CreateDiscountCodeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CreateDiscountCodeNode'
 import EndNode from 'pages/automate/workflows/editor/visualBuilder/nodes/EndNode'
 import HttpRequestNode from 'pages/automate/workflows/editor/visualBuilder/nodes/HttpRequestNode'
+import LiquidTemplateNode from 'pages/automate/workflows/editor/visualBuilder/nodes/LiquidTemplateNode'
 import LLMPromptTriggerNode from 'pages/automate/workflows/editor/visualBuilder/nodes/LLMPromptTriggerNode'
 import RefundOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundOrderNode'
 import RefundShippingCostsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundShippingCostsNode'
@@ -52,6 +53,7 @@ const nodeTypes = {
     skip_charge: SkipChargeNode,
     reusable_llm_prompt_call: ReusableLLMPromptCallNode,
     edit_order_note: EditOrderNoteNode,
+    liquid_template: LiquidTemplateNode,
     end: EndNode,
 }
 

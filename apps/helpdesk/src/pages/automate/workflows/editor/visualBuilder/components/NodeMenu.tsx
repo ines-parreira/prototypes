@@ -1185,6 +1185,13 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                             nodeId={nodeId}
                             floatingRef={floatingRef}
                         />
+                        {liquidTemplateStepFlag?.actionsPlatform && (
+                            <LiquidTemplateMenuItem
+                                nodeId={nodeId}
+                                floatingRef={floatingRef}
+                                description="Use Liquid templates to transform data"
+                            />
+                        )}
 
                         <ConditionsMenuItem
                             nodeId={nodeId}
@@ -1247,6 +1254,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
         visualBuilderGraph.advanced_datetime,
         visualBuilderGraph.category,
         liquidTemplateStepFlag?.flows,
+        liquidTemplateStepFlag?.actionsPlatform,
     ])
 
     useEffect(() => {
