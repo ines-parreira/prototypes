@@ -1211,7 +1211,8 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
             case 'llm_prompt_trigger':
                 return (
                     <DropdownBody>
-                        {!!visualBuilderGraph.advanced_datetime && (
+                        {(!!visualBuilderGraph.advanced_datetime ||
+                            liquidTemplateStepFlag?.actions) && (
                             <>
                                 <DropdownItem header className="text-uppercase">
                                     Custom
@@ -1220,6 +1221,13 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                                     nodeId={nodeId}
                                     floatingRef={floatingRef}
                                 />
+                                {liquidTemplateStepFlag?.actions && (
+                                    <LiquidTemplateMenuItem
+                                        nodeId={nodeId}
+                                        floatingRef={floatingRef}
+                                        description="Use Liquid templates to transform data"
+                                    />
+                                )}
                                 <ConditionsMenuItem
                                     nodeId={nodeId}
                                     floatingRef={floatingRef}
@@ -1255,6 +1263,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
         visualBuilderGraph.category,
         liquidTemplateStepFlag?.flows,
         liquidTemplateStepFlag?.actionsPlatform,
+        liquidTemplateStepFlag?.actions,
     ])
 
     useEffect(() => {
