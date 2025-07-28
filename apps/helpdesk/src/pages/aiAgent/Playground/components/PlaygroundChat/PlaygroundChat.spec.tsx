@@ -18,6 +18,7 @@ import {
     PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
+import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -49,6 +50,14 @@ jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
 }))
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
+
+jest.mock('models/workflows/queries', () => ({
+    useGetStoreWorkflowsConfigurations: jest.fn(),
+}))
+
+const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
+    useGetStoreWorkflowsConfigurations,
+)
 
 jest.mock('../../../hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
@@ -140,6 +149,16 @@ describe('PlaygroundChat', () => {
             defaultUseAiAgentOnboardingNotification,
         )
         mockUseSearchParam.mockReturnValue([null, jest.fn()])
+        mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
+            data: [],
+            isInitialLoading: false,
+            isLoading: false,
+            isError: false,
+            error: null,
+            isRefetching: false,
+            isRefetchError: false,
+            refetch: jest.fn(),
+        } as unknown as ReturnType<typeof useGetStoreWorkflowsConfigurations>)
     })
 
     it('should render', () => {
@@ -698,6 +717,153 @@ describe('PlaygroundChat', () => {
             unmount()
 
             expect(onNewConversation).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('Actions Banner', () => {
+        it('should show warning banner when actions are enabled in test mode', () => {
+            mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
+                data: [
+                    {
+                        should_run_in_test_mode: true,
+                        id: 'test-action-1',
+                        name: 'Test Action',
+                    },
+                ],
+                isInitialLoading: false,
+                isLoading: false,
+                isError: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                refetch: jest.fn(),
+            } as unknown as ReturnType<
+                typeof useGetStoreWorkflowsConfigurations
+            >)
+
+            renderComponent()
+
+            const warningBanner = screen.getByText(
+                'Actions are enabled. Executing an Action will run live and may update your store data.',
+            )
+            expect(warningBanner).toBeInTheDocument()
+        })
+
+        it('should show success banner when actions are disabled in test mode', () => {
+            mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
+                data: [
+                    {
+                        should_run_in_test_mode: false,
+                        id: 'test-action-1',
+                        name: 'Test Action',
+                    },
+                ],
+                isInitialLoading: false,
+                isLoading: false,
+                isError: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                refetch: jest.fn(),
+            } as unknown as ReturnType<
+                typeof useGetStoreWorkflowsConfigurations
+            >)
+
+            renderComponent()
+
+            const successBanner = screen.getByText(
+                "Actions are disabled. In test mode, Actions won't run. We'll simulate success so you can safely test behavior.",
+            )
+            expect(successBanner).toBeInTheDocument()
+        })
+
+        it('should show success banner when there are no actions configured', () => {
+            mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
+                data: [],
+                isInitialLoading: false,
+                isLoading: false,
+                isError: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                refetch: jest.fn(),
+            } as unknown as ReturnType<
+                typeof useGetStoreWorkflowsConfigurations
+            >)
+
+            renderComponent()
+
+            const successBanner = screen.getByText(
+                "Actions are disabled. In test mode, Actions won't run. We'll simulate success so you can safely test behavior.",
+            )
+            expect(successBanner).toBeInTheDocument()
+        })
+
+        it('should not show any banner while loading workflow configurations', () => {
+            mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
+                data: [],
+                isInitialLoading: true,
+                isLoading: true,
+                isError: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                refetch: jest.fn(),
+            } as unknown as ReturnType<
+                typeof useGetStoreWorkflowsConfigurations
+            >)
+
+            renderComponent()
+
+            // Check that neither banner text is present
+            expect(
+                screen.queryByText(
+                    'Actions are enabled. Executing an Action will run live and may update your store data.',
+                ),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    "Actions are disabled. In test mode, Actions won't run. We'll simulate success so you can safely test behavior.",
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show warning banner when at least one action has should_run_in_test_mode set to true', () => {
+            mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
+                data: [
+                    {
+                        should_run_in_test_mode: false,
+                        id: 'test-action-1',
+                        name: 'Test Action 1',
+                    },
+                    {
+                        should_run_in_test_mode: true,
+                        id: 'test-action-2',
+                        name: 'Test Action 2',
+                    },
+                    {
+                        should_run_in_test_mode: false,
+                        id: 'test-action-3',
+                        name: 'Test Action 3',
+                    },
+                ],
+                isInitialLoading: false,
+                isLoading: false,
+                isError: false,
+                error: null,
+                isRefetching: false,
+                isRefetchError: false,
+                refetch: jest.fn(),
+            } as unknown as ReturnType<
+                typeof useGetStoreWorkflowsConfigurations
+            >)
+
+            renderComponent()
+
+            const warningBanner = screen.getByText(
+                'Actions are enabled. Executing an Action will run live and may update your store data.',
+            )
+            expect(warningBanner).toBeInTheDocument()
         })
     })
 })

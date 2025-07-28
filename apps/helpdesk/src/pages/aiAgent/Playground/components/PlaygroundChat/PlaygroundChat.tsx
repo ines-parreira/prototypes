@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -9,6 +9,8 @@ import {
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
+import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
@@ -81,6 +83,21 @@ export const PlaygroundChat = ({
     const { onTestPageViewed } = usePlaygroundTracking({
         shopName: storeData.storeName,
     })
+
+    const {
+        data: storeWfConfigurations = [],
+        isInitialLoading: isStoreWfConfigurationsInitialLoading,
+    } = useGetStoreWorkflowsConfigurations({
+        storeName: storeData.storeName,
+        storeType: storeData.shopType,
+        triggers: ['llm-prompt'],
+    })
+
+    const hasActionsInTestMode = useMemo(() => {
+        return storeWfConfigurations.some(
+            (config) => config.should_run_in_test_mode === true,
+        )
+    }, [storeWfConfigurations])
 
     const handleNewConversation = useCallback(() => {
         onNewConversation()
@@ -202,6 +219,22 @@ export const PlaygroundChat = ({
 
     return (
         <div className={css.container}>
+            {!isStoreWfConfigurationsInitialLoading && (
+                <>
+                    {hasActionsInTestMode ? (
+                        <Alert type={AlertType.Warning} icon className="mb-3">
+                            Actions are enabled. Executing an Action will run
+                            live and may update your store data.
+                        </Alert>
+                    ) : (
+                        <Alert type={AlertType.Success} icon className="mb-3">
+                            Actions are disabled. In test mode, Actions
+                            won&apos;t run. We&apos;ll simulate success so you
+                            can safely test behavior.
+                        </Alert>
+                    )}
+                </>
+            )}
             <div className={css.outputContainer}>
                 <div className={css.outputInner} ref={messageContainerRef}>
                     {messages.map((message, index) => (
