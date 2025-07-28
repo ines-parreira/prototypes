@@ -27,6 +27,17 @@ type Props = {
     refetch?: () => void
 }
 
+const integrationsToAdresses = {
+    facebook: 'Facebook',
+    gorgias_chat: 'Gorgias Chat',
+    twitter: 'Twitter',
+}
+
+type IntegrationTypeKey = keyof typeof integrationsToAdresses
+
+const isValidIntegrationType = (type: string): type is IntegrationTypeKey =>
+    type in integrationsToAdresses
+
 export default function IntegrationRowsField({
     hasWarning,
     integrations,
@@ -68,6 +79,16 @@ export default function IntegrationRowsField({
                         <BodyCell className={css.integrationNameColumn}>
                             <CustomBusinessHoursIntegrationCell
                                 name={integration.integration_name}
+                                address={
+                                    integration.integration_address ??
+                                    (isValidIntegrationType(
+                                        integration.integration_type,
+                                    )
+                                        ? integrationsToAdresses[
+                                              integration.integration_type as IntegrationTypeKey
+                                          ]
+                                        : null)
+                                }
                                 type={
                                     integration.integration_type as IntegrationType
                                 }

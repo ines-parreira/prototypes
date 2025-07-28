@@ -76,13 +76,11 @@ function VoiceIntegrationSettingsFormGeneralSection({
                 </div>
             </div>
             {isCBHEnabled && (
-                <div>
-                    <FormField
-                        field={BusinessHoursSelectField}
-                        name="business_hours_id"
-                        isRequired
-                    />
-                </div>
+                <FormField
+                    field={BusinessHoursSelectField}
+                    name="business_hours_id"
+                    isRequired
+                />
             )}
         </>
     )

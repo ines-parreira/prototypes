@@ -191,4 +191,57 @@ describe('IntegrationRowsField', () => {
             integrations[0].integration_id,
         )
     })
+
+    it('passes integration address to CustomBusinessHoursIntegrationCell when available', () => {
+        const integrationWithAddress = {
+            ...integrations[0],
+            integration_address: 'custom@example.com',
+        }
+        renderComponent({
+            integrations: [integrationWithAddress],
+        })
+
+        expect(CustomBusinessHoursIntegrationCellMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                address: 'custom@example.com',
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('passes mapped address to CustomBusinessHoursIntegrationCell when integration address is null', () => {
+        const facebookIntegration = {
+            ...integrations[0],
+            integration_type: 'facebook',
+            integration_address: null,
+        }
+        renderComponent({
+            integrations: [facebookIntegration],
+        })
+
+        expect(CustomBusinessHoursIntegrationCellMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                address: 'Facebook',
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('passes null address to CustomBusinessHoursIntegrationCell when integration address is null and type has no mapping', () => {
+        const unknownIntegration = {
+            ...integrations[0],
+            integration_type: 'unknown_type',
+            integration_address: null,
+        }
+        renderComponent({
+            integrations: [unknownIntegration],
+        })
+
+        expect(CustomBusinessHoursIntegrationCellMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                address: null,
+            }),
+            expect.anything(),
+        )
+    })
 })

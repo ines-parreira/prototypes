@@ -4,12 +4,12 @@ import {
     BusinessHours,
     BusinessHoursConfig,
     useGetBusinessHoursDetails,
+    useListAccountSettings,
 } from '@gorgias/helpdesk-queries'
 import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'
-import useAppSelector from 'hooks/useAppSelector'
 import useId from 'hooks/useId'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -20,7 +20,6 @@ import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScrol
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'
 
@@ -48,10 +47,11 @@ export default function BusinessHoursSelectField({
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const defaultBusinessHours = useAppSelector(getBusinessHoursSettings)
-    const defaultBusinessHoursConfig = defaultBusinessHours?.data as
-        | BusinessHoursConfig
-        | undefined
+    const { data: defaultBusinessHours } = useListAccountSettings({
+        type: 'business-hours',
+    })
+    const defaultBusinessHoursConfig = defaultBusinessHours?.data.data?.[0]
+        .data as BusinessHoursConfig | undefined
 
     const { getBusinessHoursConfigLabel } = useBusinessHours()
 
@@ -110,7 +110,7 @@ export default function BusinessHoursSelectField({
                     There was an error while trying to fetch the business hours.
                     Please try again later.
                 </p>
-                <Button intent={'secondary'} onClick={() => refetch()}>
+                <Button intent="secondary" onClick={() => refetch()}>
                     Retry
                 </Button>
             </div>
@@ -119,7 +119,7 @@ export default function BusinessHoursSelectField({
 
     return (
         <fieldset name={fieldsetName} className={css.container}>
-            <div className={css.labelWithTooltip}>
+            <div className={css.label}>
                 <Label isRequired>Business Hours</Label>
             </div>
             <SelectInputBox
@@ -127,7 +127,7 @@ export default function BusinessHoursSelectField({
                 onToggle={setIsDropdownOpen}
                 floating={floatingRef}
                 ref={targetRef}
-                placeholder={'Select custom business hours'}
+                placeholder="Select custom business hours"
                 isDisabled={isLoading}
             >
                 <SelectInputBoxContext.Consumer>

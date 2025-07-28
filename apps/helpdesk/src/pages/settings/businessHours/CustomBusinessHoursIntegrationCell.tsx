@@ -7,7 +7,7 @@ import css from './CustomBusinessHoursIntegrationCell.less'
 
 type Props = {
     name: string
-    address?: string
+    address: string | null
     type: IntegrationType
 }
 

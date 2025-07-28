@@ -24,6 +24,7 @@ useDeleteCustomBusinessHoursMock.mockReturnValue({
 
 describe('ListCustomBusinessHoursTableRow', () => {
     const data = mockListBusinessHoursResponse().data
+
     const businessHours = mockListBusinessHoursResponse({
         data: [
             {
@@ -31,6 +32,7 @@ describe('ListCustomBusinessHoursTableRow', () => {
                 integration_count: 1,
                 first_integration: {
                     ...data[0].first_integration,
+                    integration_address: null,
                     store: {
                         store_id: 111,
                         store_type: 'store',
@@ -93,6 +95,7 @@ describe('ListCustomBusinessHoursTableRow', () => {
                     businessHours={{
                         ...businessHours,
                         first_integration: {
+                            integration_address: null,
                             integration_id: 1,
                             integration_name: 'Customer service',
                             integration_type: IntegrationType.Phone,

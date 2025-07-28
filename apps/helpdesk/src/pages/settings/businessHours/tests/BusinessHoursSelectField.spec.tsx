@@ -1,20 +1,22 @@
-import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useGetBusinessHoursDetails } from '@gorgias/helpdesk-queries'
-import { BusinessHoursConfig, BusinessHoursList } from '@gorgias/helpdesk-types'
+import {
+    mockGetBusinessHoursDetailsHandler,
+    mockGetBusinessHoursDetailsResponse,
+    mockListAccountSettingsHandler,
+} from '@gorgias/helpdesk-mocks'
+import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'
-import useAppSelector from 'hooks/useAppSelector'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import BusinessHoursSelectField from '../BusinessHoursSelectField'
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetBusinessHoursDetails: jest.fn(),
-}))
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -56,98 +58,73 @@ jest.mock('../AddCustomBusinessHoursModal', () => {
     }
 })
 
+const server = setupServer()
+const queryClient = mockQueryClient()
+
+const businessHours1 = mockGetBusinessHoursDetailsResponse({
+    name: 'US Business Hours',
+})
+const businessHours2 = mockGetBusinessHoursDetailsResponse({
+    name: 'EU Business Hours',
+})
+const businessHours3 = mockGetBusinessHoursDetailsResponse({
+    name: '24/7 Support',
+})
+
+const defaultBusinessHours = {
+    id: 1,
+    type: 'business_hours',
+    data: {
+        business_hours: [
+            {
+                days: '1,2,3,4,5',
+                from_time: '09:00',
+                to_time: '17:00',
+            },
+        ],
+        timezone: 'Europe/Rome',
+    },
+}
+
+const mockGetBusinessHoursDetails = mockGetBusinessHoursDetailsHandler()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    const listAccountSettingsMock = mockListAccountSettingsHandler(async () =>
+        HttpResponse.json({
+            data: [defaultBusinessHours],
+        }),
+    )
+    server.use(
+        listAccountSettingsMock.handler,
+        mockGetBusinessHoursDetails.handler,
+    )
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const useBusinessHoursSearchMock = assumeMock(useBusinessHoursSearch)
 const useBusinessHoursMock = assumeMock(useBusinessHours)
-const useAppSelectorMock = assumeMock(useAppSelector)
-const useGetBusinessHoursDetailsMock = assumeMock(useGetBusinessHoursDetails)
 
 const handleChange = jest.fn()
 const renderComponent = (value?: number | null) =>
-    render(<BusinessHoursSelectField value={value} onChange={handleChange} />)
+    render(
+        <QueryClientProvider client={queryClient}>
+            <BusinessHoursSelectField value={value} onChange={handleChange} />
+        </QueryClientProvider>,
+    )
 
 describe('<BusinessHoursSelectField />', () => {
-    const defaultBusinessHours = {
-        type: 'business_hours',
-        data: {
-            business_hours: [
-                {
-                    days: '1,2,3,4,5',
-                    from_time: '09:00',
-                    to_time: '17:00',
-                },
-            ],
-            timezone: 'Europe/Rome',
-        },
-    }
-
-    const mockBusinessHours: BusinessHoursList[] = [
-        {
-            id: 1,
-            name: 'US Business Hours',
-            business_hours_config: {
-                business_hours: [
-                    {
-                        days: '1,2,3,4,5',
-                        from_time: '09:00',
-                        to_time: '17:00',
-                    },
-                ],
-                timezone: 'America/New_York',
-            },
-            created_datetime: '2021-01-01T00:00:00Z',
-            updated_datetime: '2021-01-01T00:00:00Z',
-            integration_count: 2,
-            first_integration: {
-                integration_id: 1,
-                integration_name: 'Phone Support',
-                integration_type: 'phone',
-                store: {
-                    store_id: 1,
-                    store_name: 'Main Store',
-                    store_type: 'shopify',
-                },
-            },
-        },
-        {
-            id: 2,
-            name: 'EU Business Hours',
-            business_hours_config: {
-                business_hours: [
-                    {
-                        days: '1,2,3,4,5',
-                        from_time: '08:00',
-                        to_time: '16:00',
-                    },
-                ],
-                timezone: 'Europe/London',
-            },
-            created_datetime: '2021-01-01T00:00:00Z',
-            updated_datetime: '2021-01-01T00:00:00Z',
-            integration_count: 1,
-            first_integration: {
-                integration_id: 2,
-                integration_name: 'Email Support',
-                integration_type: 'email',
-                store: {
-                    store_id: 2,
-                    store_name: 'EU Store',
-                    store_type: 'shopify',
-                },
-            },
-        },
-        {
-            id: 3,
-            name: '24/7 Support',
-            business_hours_config: {
-                business_hours: [],
-                timezone: 'UTC',
-            },
-            created_datetime: '2021-01-01T00:00:00Z',
-            updated_datetime: '2021-01-01T00:00:00Z',
-            integration_count: 0,
-            first_integration: null,
-        },
-    ]
+    const mockBusinessHours = [businessHours1, businessHours2, businessHours3]
 
     const mockGetBusinessHoursConfigLabel = jest.fn()
 
@@ -168,10 +145,6 @@ describe('<BusinessHoursSelectField />', () => {
         useBusinessHoursMock.mockReturnValue({
             getBusinessHoursConfigLabel: mockGetBusinessHoursConfigLabel,
         })
-        useAppSelectorMock.mockReturnValue(defaultBusinessHours)
-        useGetBusinessHoursDetailsMock.mockReturnValue({
-            data: null,
-        } as any)
         mockGetBusinessHoursConfigLabel.mockImplementation(
             (config: BusinessHoursConfig, showTimezone: boolean) => {
                 if (config.business_hours.length === 0) {
@@ -195,27 +168,29 @@ describe('<BusinessHoursSelectField />', () => {
             label: 'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
         },
         {
-            value: 1,
-            label: 'US Business Hours (Mon-Fri, 09:00-17:00, America/New_York)',
+            value: businessHours1.id,
+            label: `${businessHours1.name} (Mon-Fri, 09:00-17:00, ${businessHours1.business_hours_config.timezone})`,
         },
     ])(
         'should display the default business hours as first option',
-        ({ value, label }) => {
+        async ({ value, label }) => {
             renderComponent(value)
 
-            expect(screen.getByText('Business Hours')).toBeInTheDocument()
-            expect(screen.getByText(label)).toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByText('Business Hours')).toBeInTheDocument()
+                expect(screen.getByText(label)).toBeInTheDocument()
+            })
         },
     )
 
-    it('should fetch business hours details when the selected business hours is not in the list', () => {
+    it('should fetch business hours details when the selected business hours is not in the list', async () => {
         const mockHandleBusinessHoursSearch = Object.assign(jest.fn(), {
             cancel: jest.fn(),
             flush: jest.fn(),
         })
 
         useBusinessHoursSearchMock.mockReturnValue({
-            businessHours: [mockBusinessHours[1]], // Only EU Business Hours
+            businessHours: [businessHours1],
             onLoad: jest.fn(),
             shouldLoadMore: false,
             isLoading: false,
@@ -224,23 +199,18 @@ describe('<BusinessHoursSelectField />', () => {
             handleBusinessHoursSearch: mockHandleBusinessHoursSearch,
         } as any)
 
-        useGetBusinessHoursDetailsMock.mockReturnValue({
-            data: { data: mockBusinessHours[0] }, // Return US Business Hours
-        } as any)
+        const mockGetBusinessHoursDetailsWithData =
+            mockGetBusinessHoursDetailsHandler(async () =>
+                HttpResponse.json(businessHours2),
+            )
+        server.use(mockGetBusinessHoursDetailsWithData.handler)
 
-        renderComponent(1)
+        renderComponent(businessHours2.id)
 
-        expect(
-            screen.getByText(
-                'US Business Hours (Mon-Fri, 09:00-17:00, America/New_York)',
-            ),
-        ).toBeInTheDocument()
-
-        expect(useGetBusinessHoursDetailsMock).toHaveBeenCalledWith(1, {
-            query: {
-                enabled: true,
-                staleTime: 60_000,
-            },
+        await waitFor(() => {
+            expect(
+                screen.getByText(new RegExp(businessHours2.name)),
+            ).toBeInTheDocument()
         })
     })
 
@@ -248,27 +218,24 @@ describe('<BusinessHoursSelectField />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const selectInput = screen.getByText(
-            'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
-        )
-        await act(() => user.click(selectInput))
+        await waitFor(async () => {
+            const selectInput = screen.getByText(
+                'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
+            )
+            await act(() => user.click(selectInput))
 
-        expect(screen.getByText('Default business hours')).toBeInTheDocument()
-        expect(screen.getByText('US Business Hours')).toBeInTheDocument()
-        expect(screen.getByText('EU Business Hours')).toBeInTheDocument()
-        expect(screen.getByText('24/7 Support')).toBeInTheDocument()
+            expect(screen.getByText(businessHours1.name)).toBeInTheDocument()
+            expect(screen.getByText(businessHours2.name)).toBeInTheDocument()
+            expect(screen.getByText(businessHours3.name)).toBeInTheDocument()
+        })
     })
 
     it('should call onChange when default business hours is selected', async () => {
         const user = userEvent.setup()
-        renderComponent(1)
+        renderComponent(businessHours1.id)
 
         await act(() =>
-            user.click(
-                screen.getByText(
-                    'US Business Hours (Mon-Fri, 09:00-17:00, America/New_York)',
-                ),
-            ),
+            user.click(screen.getByText(new RegExp(businessHours1.name))),
         )
 
         const defaultOption = screen.getByText('Default business hours')
@@ -281,18 +248,17 @@ describe('<BusinessHoursSelectField />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        await act(() =>
-            user.click(
-                screen.getByText(
-                    'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
-                ),
-            ),
-        )
+        await waitFor(async () => {
+            const selectInput = screen.getByText(
+                'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
+            )
+            await act(() => user.click(selectInput))
 
-        const usBusinessHours = screen.getByText('US Business Hours')
-        await act(() => user.click(usBusinessHours))
+            const usBusinessHours = screen.getByText(businessHours1.name)
+            await act(() => user.click(usBusinessHours))
 
-        expect(handleChange).toHaveBeenCalledWith(1)
+            expect(handleChange).toHaveBeenCalledWith(businessHours1.id)
+        })
     })
 
     it('should display error state when there is an error', async () => {
@@ -355,44 +321,52 @@ describe('<BusinessHoursSelectField />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        await act(() =>
-            user.click(
-                screen.getByText(
-                    'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
-                ),
-            ),
-        )
+        await waitFor(async () => {
+            const selectInput = screen.getByText(
+                'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
+            )
+            await act(() => user.click(selectInput))
+        })
 
         // Infinite scroll should be present and ready to load more
         expect(mockOnLoad).toBeDefined()
     })
 
     it('should handle well missing default business hours data', async () => {
-        useAppSelectorMock.mockReturnValue(undefined)
-
+        const listAccountSettingsMock = mockListAccountSettingsHandler(
+            async () => HttpResponse.json(),
+        )
+        server.use(
+            listAccountSettingsMock.handler,
+            mockGetBusinessHoursDetails.handler,
+        )
         const user = userEvent.setup()
         renderComponent()
 
-        const selectInput = screen.getByText('Default business hours')
-        await act(() => user.click(selectInput))
+        await waitFor(async () => {
+            const selectInput = screen.getByText('Default business hours')
+            await act(() => user.click(selectInput))
+        })
 
         expect(screen.getAllByText('Default business hours')).toHaveLength(1) // i.e. it should not appear in the opened dropdown list
-        expect(screen.getByText('US Business Hours')).toBeInTheDocument()
-        expect(screen.getByText('EU Business Hours')).toBeInTheDocument()
-        expect(screen.getByText('24/7 Support')).toBeInTheDocument()
+        expect(screen.getByText(businessHours1.name)).toBeInTheDocument()
+        expect(screen.getByText(businessHours2.name)).toBeInTheDocument()
+        expect(screen.getByText(businessHours3.name)).toBeInTheDocument()
     })
 
     it('should open modal and close dropdown when "Add Custom Business Hours" button is clicked', async () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const selectInput = screen.getByText(
-            'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
-        )
-        await act(() => user.click(selectInput))
+        await waitFor(async () => {
+            const selectInput = screen.getByText(
+                'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
+            )
+            await act(() => user.click(selectInput))
+        })
 
         // check that the dropdown is open
-        expect(screen.getByText('US Business Hours')).toBeInTheDocument()
+        expect(screen.getByText(businessHours1.name)).toBeInTheDocument()
 
         const addButton = screen.getByText('Add Custom Business Hours')
         expect(addButton).toBeInTheDocument()
@@ -402,7 +376,7 @@ describe('<BusinessHoursSelectField />', () => {
             screen.getByTestId('add-custom-business-hours-modal'),
         ).toBeInTheDocument()
         // check that the dropdown is closed
-        expect(screen.queryByText('US Business Hours')).not.toBeInTheDocument()
+        expect(screen.queryByText(businessHours1.name)).not.toBeInTheDocument()
     })
 
     it('should handle modal closing', async () => {
@@ -414,10 +388,12 @@ describe('<BusinessHoursSelectField />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const selectInput = screen.getByText(
-            'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
-        )
-        await act(() => user.click(selectInput))
+        await waitFor(async () => {
+            const selectInput = screen.getByText(
+                'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
+            )
+            await act(() => user.click(selectInput))
+        })
 
         const addButton = screen.getByText('Add Custom Business Hours')
         await act(() => user.click(addButton))
@@ -441,10 +417,12 @@ describe('<BusinessHoursSelectField />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const selectInput = screen.getByText(
-            'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
-        )
-        await act(() => user.click(selectInput))
+        await waitFor(async () => {
+            const selectInput = screen.getByText(
+                'Default business hours (Mon-Fri, 09:00-17:00, Europe/Rome)',
+            )
+            await act(() => user.click(selectInput))
+        })
 
         const addButton = screen.getByText('Add Custom Business Hours')
         await act(() => user.click(addButton))
