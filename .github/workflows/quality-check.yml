@@ -281,3 +281,31 @@ jobs:
               context: 'Quality check / Packages tests (${{ matrix.project }})',
               description: 'Package ${{ matrix.project }} unaffected, skipping tests'
             })
+  no-application-code-changes:
+    name: 'No application code changes'
+    runs-on: gh-actions-small-runner-set
+    if: inputs.helpdesk-affected == 'false' && inputs.has-other-affected-packages == 'false'
+    steps:
+      - name: Set overall status check to success when neither helpdesk nor other packages affected
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Set codecov/patch status check to success
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              context: 'codecov/patch',
+              description: 'No application code changes, skipping code coverage check.'
+            });
+            
+            // Set codecov/project status check to success
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              context: 'codecov/project',
+              description: 'No application code changes, skipping code coverage check.'
+            });
