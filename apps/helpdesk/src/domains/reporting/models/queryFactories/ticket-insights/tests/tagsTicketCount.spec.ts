@@ -571,13 +571,14 @@ describe('tagsTicketCount query factories', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['2::Other::No Reply'],
-                },
-                {
-                    member: TicketMember.CustomField,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['1::Close::Without message'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        '2::Other::No Reply',
+                        '2::Other::No Reply::Other',
+                        '2::Other::Spam::Other',
+                        '2::Other::Spam',
+                        '1::Close::Without message',
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,

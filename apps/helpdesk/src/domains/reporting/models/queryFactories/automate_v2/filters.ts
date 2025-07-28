@@ -5,7 +5,7 @@ import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMember } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
-    AI_INTENT_TO_EXCLUDE,
+    AI_INTENTS_TO_EXCLUDE,
     AI_OUTCOME_TO_EXCLUDE,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
 import {
@@ -83,9 +83,14 @@ export const aiAgentTicketsDefaultFilters = ({
     const allOutcomeValuesToExclude = ignoreOutcomeFieldId
         ? []
         : [`${outcomeFieldId}::${AI_OUTCOME_TO_EXCLUDE}`]
+
     if (outcomeValuesToExclude && outcomeValuesToExclude.length > 0) {
         allOutcomeValuesToExclude.push(...outcomeValuesToExclude)
     }
+
+    const allIntentValuesToExclude = [
+        ...AI_INTENTS_TO_EXCLUDE.map((value) => `${intentFieldId}::${value}`),
+    ]
 
     return [
         {
@@ -98,18 +103,9 @@ export const aiAgentTicketsDefaultFilters = ({
         },
         {
             member: TicketMember.CustomFieldToExclude,
-            operator: ReportingFilterOperator.NotStartsWith,
-            values: [`${intentFieldId}::${AI_INTENT_TO_EXCLUDE}`],
+            operator: ReportingFilterOperator.NotEquals,
+            values: [...allIntentValuesToExclude, ...allOutcomeValuesToExclude],
         },
-        ...(allOutcomeValuesToExclude && allOutcomeValuesToExclude.length > 0
-            ? [
-                  {
-                      member: TicketMember.CustomField,
-                      operator: ReportingFilterOperator.NotStartsWith,
-                      values: allOutcomeValuesToExclude,
-                  },
-              ]
-            : []),
         ...(integrationIds && integrationIds.length > 0
             ? [
                   {
@@ -156,7 +152,7 @@ export const aiAgentTicketsFromTicketCustomFieldsDefaultFilters = ({
         },
         {
             member: TicketMember.CustomFieldToExclude,
-            operator: ReportingFilterOperator.NotStartsWith,
+            operator: ReportingFilterOperator.NotEquals,
             values: [`${outcomeFieldId}::${AI_OUTCOME_TO_EXCLUDE}`],
         },
         {
@@ -167,8 +163,8 @@ export const aiAgentTicketsFromTicketCustomFieldsDefaultFilters = ({
         ...(outcomeValuesToExclude && outcomeValuesToExclude.length > 0
             ? [
                   {
-                      member: TicketMember.CustomField,
-                      operator: ReportingFilterOperator.NotStartsWith,
+                      member: TicketMember.CustomFieldToExclude,
+                      operator: ReportingFilterOperator.NotEquals,
                       values: addFieldIdToCustomFieldValues(
                           outcomeFieldId || -1,
                           outcomeValuesToExclude,
@@ -178,8 +174,8 @@ export const aiAgentTicketsFromTicketCustomFieldsDefaultFilters = ({
             : []),
         {
             member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-            operator: ReportingFilterOperator.NotStartsWith,
-            values: [AI_INTENT_TO_EXCLUDE],
+            operator: ReportingFilterOperator.NotEquals,
+            values: AI_INTENTS_TO_EXCLUDE,
         },
         ...(integrationIds && integrationIds.length > 0
             ? [

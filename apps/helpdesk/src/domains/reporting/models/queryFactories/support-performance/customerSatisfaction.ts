@@ -106,8 +106,8 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
               ]),
         ...aiAgentTicketsDefaultFilters({
             filters,
-            intentFieldId,
             outcomeFieldId,
+            intentFieldId,
             integrationIds,
         }),
     ],

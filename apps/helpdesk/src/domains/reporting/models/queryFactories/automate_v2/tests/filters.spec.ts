@@ -127,6 +127,8 @@ describe('mapTicketChannelsToAutomateChannels', () => {
 })
 
 describe('aiAgentTicketsDefaultFilters', () => {
+    const intentFieldId = 1
+    const outcomeFieldId = 2
     const filters: StatsFilters = {
         period: {
             start_datetime: '2021-01-01T00:00:00.000',
@@ -137,9 +139,9 @@ describe('aiAgentTicketsDefaultFilters', () => {
     it('should return default filters with outcome and intent field ids and outcome values to exclude', () => {
         const result = aiAgentTicketsDefaultFilters({
             filters,
-            outcomeFieldId: 1,
-            intentFieldId: 2,
-            outcomeValuesToExclude: ['1::handover'],
+            outcomeFieldId: outcomeFieldId,
+            intentFieldId: intentFieldId,
+            outcomeValuesToExclude: [`${outcomeFieldId}::handover`],
         })
         expect(result).toEqual([
             {
@@ -149,13 +151,15 @@ describe('aiAgentTicketsDefaultFilters', () => {
             },
             {
                 member: TicketMember.CustomFieldToExclude,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['2::Other::No Reply'],
-            },
-            {
-                member: TicketMember.CustomField,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['1::Close::Without message', '1::handover'],
+                operator: ReportingFilterOperator.NotEquals,
+                values: [
+                    `${intentFieldId}::Other::No Reply`,
+                    `${intentFieldId}::Other::No Reply::Other`,
+                    `${intentFieldId}::Other::Spam::Other`,
+                    `${intentFieldId}::Other::Spam`,
+                    `${outcomeFieldId}::Close::Without message`,
+                    `${outcomeFieldId}::handover`,
+                ],
             },
             {
                 member: TicketMessagesMember.IntegrationChannelPair,
@@ -168,8 +172,8 @@ describe('aiAgentTicketsDefaultFilters', () => {
     it('should return default filters without outcome values to exclude', () => {
         const result = aiAgentTicketsDefaultFilters({
             filters,
-            outcomeFieldId: 1,
-            intentFieldId: 2,
+            outcomeFieldId: outcomeFieldId,
+            intentFieldId: intentFieldId,
         })
         expect(result).toEqual([
             {
@@ -179,13 +183,14 @@ describe('aiAgentTicketsDefaultFilters', () => {
             },
             {
                 member: TicketMember.CustomFieldToExclude,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['2::Other::No Reply'],
-            },
-            {
-                member: TicketMember.CustomField,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['1::Close::Without message'],
+                operator: ReportingFilterOperator.NotEquals,
+                values: [
+                    `${intentFieldId}::Other::No Reply`,
+                    `${intentFieldId}::Other::No Reply::Other`,
+                    `${intentFieldId}::Other::Spam::Other`,
+                    `${intentFieldId}::Other::Spam`,
+                    `${outcomeFieldId}::Close::Without message`,
+                ],
             },
             {
                 member: TicketMessagesMember.IntegrationChannelPair,
@@ -198,8 +203,8 @@ describe('aiAgentTicketsDefaultFilters', () => {
     it('should return default filters with integration ids', () => {
         const result = aiAgentTicketsDefaultFilters({
             filters,
-            outcomeFieldId: 1,
-            intentFieldId: 2,
+            outcomeFieldId: outcomeFieldId,
+            intentFieldId: intentFieldId,
             integrationIds: ['chat::1', 'email::2'],
         })
         expect(result).toEqual([
@@ -210,13 +215,14 @@ describe('aiAgentTicketsDefaultFilters', () => {
             },
             {
                 member: TicketMember.CustomFieldToExclude,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['2::Other::No Reply'],
-            },
-            {
-                member: TicketMember.CustomField,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['1::Close::Without message'],
+                operator: ReportingFilterOperator.NotEquals,
+                values: [
+                    `${intentFieldId}::Other::No Reply`,
+                    `${intentFieldId}::Other::No Reply::Other`,
+                    `${intentFieldId}::Other::Spam::Other`,
+                    `${intentFieldId}::Other::Spam`,
+                    `${outcomeFieldId}::Close::Without message`,
+                ],
             },
             {
                 member: TicketMessagesMember.IntegrationChannelPair,
@@ -228,6 +234,7 @@ describe('aiAgentTicketsDefaultFilters', () => {
 })
 
 describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
+    const outcomeFieldId = 1
     const filters = {
         period: {
             start_datetime: '2023-01-01T00:00:00.000',
@@ -238,7 +245,7 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
     it('should return filters with outcome and integration IDs', () => {
         const result = aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
             filters,
-            outcomeFieldId: 1,
+            outcomeFieldId: outcomeFieldId,
             integrationIds: ['chat::1', 'email::2'],
             outcomeValuesToExclude: ['handover'],
             outcomeValueToInclude: 'success',
@@ -252,23 +259,28 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
             },
             {
                 member: TicketMember.CustomFieldToExclude,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['1::Close::Without message'],
+                operator: ReportingFilterOperator.NotEquals,
+                values: [`${outcomeFieldId}::Close::Without message`],
             },
             {
                 member: TicketMember.CustomField,
                 operator: ReportingFilterOperator.StartsWith,
-                values: ['1::success'],
+                values: [`${outcomeFieldId}::success`],
             },
             {
-                member: TicketMember.CustomField,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['1::handover'],
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotEquals,
+                values: [`${outcomeFieldId}::handover`],
             },
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['Other::No Reply'],
+                operator: ReportingFilterOperator.NotEquals,
+                values: [
+                    'Other::No Reply',
+                    'Other::No Reply::Other',
+                    'Other::Spam::Other',
+                    'Other::Spam',
+                ],
             },
             {
                 member: TicketMessagesMember.IntegrationChannelPair,
@@ -281,7 +293,7 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
     it('should return default filters when optional parameters are not provided', () => {
         const result = aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
             filters,
-            outcomeFieldId: 1,
+            outcomeFieldId: outcomeFieldId,
         })
 
         expect(result).toEqual([
@@ -292,7 +304,7 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
             },
             {
                 member: TicketMember.CustomFieldToExclude,
-                operator: ReportingFilterOperator.NotStartsWith,
+                operator: ReportingFilterOperator.NotEquals,
                 values: ['1::Close::Without message'],
             },
             {
@@ -302,8 +314,13 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
             },
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['Other::No Reply'],
+                operator: ReportingFilterOperator.NotEquals,
+                values: [
+                    'Other::No Reply',
+                    'Other::No Reply::Other',
+                    'Other::Spam::Other',
+                    'Other::Spam',
+                ],
             },
             {
                 member: TicketMessagesMember.IntegrationChannelPair,
@@ -328,7 +345,7 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
             },
             {
                 member: TicketMember.CustomFieldToExclude,
-                operator: ReportingFilterOperator.NotStartsWith,
+                operator: ReportingFilterOperator.NotEquals,
                 values: ['1::Close::Without message'],
             },
             {
@@ -338,8 +355,13 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
             },
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                operator: ReportingFilterOperator.NotStartsWith,
-                values: ['Other::No Reply'],
+                operator: ReportingFilterOperator.NotEquals,
+                values: [
+                    'Other::No Reply',
+                    'Other::No Reply::Other',
+                    'Other::Spam::Other',
+                    'Other::Spam',
+                ],
             },
             {
                 member: TicketMessagesMember.IntegrationChannelPair,
@@ -362,8 +384,8 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
         })
 
         expect(result).toContainEqual({
-            member: TicketMember.CustomField,
-            operator: ReportingFilterOperator.NotStartsWith,
+            member: TicketMember.CustomFieldToExclude,
+            operator: ReportingFilterOperator.NotEquals,
             values: ['1::handover', '1::failure'],
         })
     })
@@ -380,8 +402,8 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
         })
 
         expect(result).toContainEqual({
-            member: TicketMember.CustomField,
-            operator: ReportingFilterOperator.NotStartsWith,
+            member: TicketMember.CustomFieldToExclude,
+            operator: ReportingFilterOperator.NotEquals,
             values: ['-1::handover', '-1::failure'],
         })
     })

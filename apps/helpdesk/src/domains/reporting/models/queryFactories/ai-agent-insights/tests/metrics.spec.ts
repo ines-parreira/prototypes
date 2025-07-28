@@ -94,13 +94,14 @@ describe('AI Agent metrics', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: [`${intentFieldId}::Other::No Reply`],
-                },
-                {
-                    member: TicketMember.CustomField,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['2::Close::Without message'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        `${intentFieldId}::Other::No Reply`,
+                        `${intentFieldId}::Other::No Reply::Other`,
+                        `${intentFieldId}::Other::Spam::Other`,
+                        `${intentFieldId}::Other::Spam`,
+                        `${outcomeFieldId}::Close::Without message`,
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,
@@ -169,13 +170,14 @@ describe('AI Agent metrics', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: [`${intentFieldId}::Other::No Reply`],
-                },
-                {
-                    member: TicketMember.CustomField,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['2::Close::Without message'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        `${intentFieldId}::Other::No Reply`,
+                        `${intentFieldId}::Other::No Reply::Other`,
+                        `${intentFieldId}::Other::Spam::Other`,
+                        `${intentFieldId}::Other::Spam`,
+                        `${outcomeFieldId}::Close::Without message`,
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,
@@ -253,7 +255,7 @@ describe('AI Agent metrics', () => {
         const result = aiAgentTicketsWithIntentQueryFactory(
             filters,
             timezone,
-            1,
+            intentFieldId,
             ['1', '2'],
             OrderDirection.Asc,
             'intent1',
@@ -269,7 +271,7 @@ describe('AI Agent metrics', () => {
                 {
                     member: 'TicketEnriched.customField',
                     operator: 'startsWith',
-                    values: ['1::intent1'],
+                    values: [`${intentFieldId}::intent1`],
                 },
                 {
                     member: 'TicketEnriched.ticketId',
@@ -296,8 +298,8 @@ describe('AI Agent metrics', () => {
         const result = aiAgentTouchedTicketTotalCountQueryFactory({
             filters,
             timezone,
-            outcomeFieldId: 1,
-            intentFieldId: 2,
+            intentFieldId: intentFieldId,
+            outcomeFieldId: outcomeFieldId,
             customFieldFilter: 'handover',
             sorting: OrderDirection.Asc,
         })
@@ -335,7 +337,7 @@ describe('AI Agent metrics', () => {
                 {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.StartsWith,
-                    values: ['1::handover'],
+                    values: [`${outcomeFieldId}::handover`],
                 },
                 {
                     member: TicketMember.CreatedDatetime,
@@ -347,13 +349,14 @@ describe('AI Agent metrics', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['2::Other::No Reply'],
-                },
-                {
-                    member: TicketMember.CustomField,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['1::Close::Without message'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        `${intentFieldId}::Other::No Reply`,
+                        `${intentFieldId}::Other::No Reply::Other`,
+                        `${intentFieldId}::Other::Spam::Other`,
+                        `${intentFieldId}::Other::Spam`,
+                        `${outcomeFieldId}::Close::Without message`,
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,
@@ -369,8 +372,8 @@ describe('AI Agent metrics', () => {
         const result = allTicketsForAiAgentTotalCountQueryFactory({
             filters,
             timezone,
-            intentFieldId: 2,
-            outcomeFieldId: 1,
+            intentFieldId: intentFieldId,
+            outcomeFieldId: outcomeFieldId,
             sorting: OrderDirection.Asc,
         })
 
@@ -415,13 +418,14 @@ describe('AI Agent metrics', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['2::Other::No Reply'],
-                },
-                {
-                    member: TicketMember.CustomField,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['1::Close::Without message'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        `${intentFieldId}::Other::No Reply`,
+                        `${intentFieldId}::Other::No Reply::Other`,
+                        `${intentFieldId}::Other::Spam::Other`,
+                        `${intentFieldId}::Other::Spam`,
+                        `${outcomeFieldId}::Close::Without message`,
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,
@@ -535,8 +539,6 @@ describe('AI Agent metrics', () => {
             },
         }
         const timezone = 'UTC'
-        const outcomeFieldId = 1
-        const intentFieldId = 2
         const sorting = OrderDirection.Asc
         const integrationIds = ['integration1', 'integration2']
 
@@ -568,7 +570,7 @@ describe('AI Agent metrics', () => {
                 {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.StartsWith,
-                    values: ['1::'],
+                    values: [`${outcomeFieldId}::`],
                 },
                 {
                     member: TicketMember.CreatedDatetime,
@@ -580,8 +582,13 @@ describe('AI Agent metrics', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['2::Other::No Reply'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        `${intentFieldId}::Other::No Reply`,
+                        `${intentFieldId}::Other::No Reply::Other`,
+                        `${intentFieldId}::Other::Spam::Other`,
+                        `${intentFieldId}::Other::Spam`,
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,

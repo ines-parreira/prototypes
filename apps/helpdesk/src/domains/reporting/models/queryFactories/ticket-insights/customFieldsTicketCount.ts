@@ -438,8 +438,8 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                     : []),
                 ...aiAgentTicketsDefaultFilters({
                     filters,
-                    intentFieldId,
                     outcomeFieldId,
+                    intentFieldId,
                     integrationIds,
                 }),
                 TicketDrillDownFilter,

@@ -727,13 +727,14 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     },
                     {
                         member: TicketMember.CustomFieldToExclude,
-                        operator: ReportingFilterOperator.NotStartsWith,
-                        values: ['123::Other::No Reply'],
-                    },
-                    {
-                        member: TicketMember.CustomField,
-                        operator: ReportingFilterOperator.NotStartsWith,
-                        values: ['456::Close::Without message'],
+                        operator: ReportingFilterOperator.NotEquals,
+                        values: [
+                            '123::Other::No Reply',
+                            '123::Other::No Reply::Other',
+                            '123::Other::Spam::Other',
+                            '123::Other::Spam',
+                            '456::Close::Without message',
+                        ],
                     },
                     {
                         member: TicketMessagesMember.IntegrationChannelPair,
@@ -842,13 +843,14 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['123::Other::No Reply'],
-                },
-                {
-                    member: TicketMember.CustomField,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['456::Close::Without message'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        '123::Other::No Reply',
+                        '123::Other::No Reply::Other',
+                        '123::Other::Spam::Other',
+                        '123::Other::Spam',
+                        '456::Close::Without message',
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,
@@ -916,13 +918,14 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['123::Other::No Reply'],
-                },
-                {
-                    member: TicketMember.CustomField,
-                    operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['456::Close::Without message'],
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: [
+                        '123::Other::No Reply',
+                        '123::Other::No Reply::Other',
+                        '123::Other::Spam::Other',
+                        '123::Other::Spam',
+                        '456::Close::Without message',
+                    ],
                 },
                 {
                     member: TicketMessagesMember.IntegrationChannelPair,

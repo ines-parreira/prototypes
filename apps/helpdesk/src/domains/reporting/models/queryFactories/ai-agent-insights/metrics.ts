@@ -95,8 +95,8 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
             },
             ...aiAgentTicketsDefaultFilters({
                 filters,
-                intentFieldId: intentFieldId,
                 outcomeFieldId: outcomeFieldId,
+                intentFieldId: intentFieldId,
                 integrationIds,
             }),
         ],
@@ -237,8 +237,8 @@ export const aiAgentTouchedTicketTotalCountQueryFactory = ({
             },
             ...aiAgentTicketsDefaultFilters({
                 filters,
-                intentFieldId,
                 outcomeFieldId,
+                intentFieldId,
                 integrationIds,
             }),
         ],
@@ -283,8 +283,8 @@ export const allTicketsForAiAgentTotalCountQueryFactory = ({
             },
             ...aiAgentTicketsDefaultFilters({
                 filters,
-                intentFieldId,
                 outcomeFieldId,
+                intentFieldId,
                 integrationIds,
             }),
         ],
@@ -354,8 +354,8 @@ export const aiAgentTouchedTicketQueryFactory = ({
             },
             ...aiAgentTicketsDefaultFilters({
                 filters,
-                intentFieldId,
                 outcomeFieldId,
+                intentFieldId,
                 outcomeValuesToExclude,
                 integrationIds,
             }),
@@ -411,8 +411,8 @@ export const AiAgentAutomatedInteractionsTicketsQueryFactory = ({
             },
             ...aiAgentTicketsDefaultFilters({
                 filters,
-                intentFieldId,
                 outcomeFieldId,
+                intentFieldId,
                 integrationIds,
                 ignoreOutcomeFieldId: true,
             }),
