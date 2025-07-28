@@ -1,7 +1,8 @@
 import { screen } from '@testing-library/react'
 
+import { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledge-service-client'
+
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
-import { Paths } from 'rest_api/knowledge_service_api/client.generated'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import GuidanceReferenceContext from '../GuidanceReferenceContext'
@@ -13,13 +14,22 @@ const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
 )
 
-describe('<StoreTrackstarProvider />', () => {
-    it('should use trackstar integration id from store app', () => {
+describe('<GuidanceReferenceProvider />', () => {
+    it('should provide guidance references and canBeDeleted function', () => {
         mockUseFindAllGuidancesKnowledgeResources.mockReturnValue({
             data: {
-                'action-1': true,
+                data: [
+                    {
+                        id: 1,
+                        title: 'Guidance 1',
+                        sourceId: '1',
+                        metadata: {
+                            actions: [{ id: 'action-1', title: 'Action 1' }],
+                        },
+                    },
+                ],
             },
-            isInitialLoading: false,
+            isLoading: false,
         } as unknown as ReturnType<
             typeof useFindAllGuidancesKnowledgeResources
         >)
@@ -41,24 +51,28 @@ describe('<StoreTrackstarProvider />', () => {
                 actionsIds: ['action-1'],
                 includeDisabled: true,
             },
-            expect.any(Object),
+            {
+                enabled: true,
+            },
         )
     })
 
     it('should transform data to map', () => {
-        const data = [
-            {
-                id: 1,
-                title: 'Guidance 1',
-                sourceId: '1',
-                metadata: {
-                    actions: [
-                        { id: 'action-1', title: 'Action 1' },
-                        { id: 'action-2', title: 'Action 2' },
-                    ],
+        const data = {
+            data: [
+                {
+                    id: 1,
+                    title: 'Guidance 1',
+                    sourceId: '1',
+                    metadata: {
+                        actions: [
+                            { id: 'action-1', title: 'Action 1' },
+                            { id: 'action-2', title: 'Action 2' },
+                        ],
+                    },
                 },
-            },
-        ] as unknown as Paths.FindAllGuidancesKnowledgeResources.Responses.$200
+            ],
+        } as unknown as FindAllGuidancesKnowledgeResourcesResult
         expect(select(data)).toEqual({
             'action-1': [{ id: 1, title: 'Guidance 1', sourceId: '1' }],
             'action-2': [{ id: 1, title: 'Guidance 1', sourceId: '1' }],

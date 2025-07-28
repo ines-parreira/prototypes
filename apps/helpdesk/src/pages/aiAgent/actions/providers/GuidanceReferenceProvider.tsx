@@ -1,7 +1,8 @@
 import { ReactNode, useCallback } from 'react'
 
+import { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledge-service-client'
+
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
-import { Paths } from 'rest_api/knowledge_service_api/client.generated'
 
 import GuidanceReferenceContext, {
     GuidanceReferenceContextType,
@@ -12,10 +13,8 @@ type Props<T extends { id: string }> = {
     children: ReactNode
 }
 
-export const select = (
-    data: Paths.FindAllGuidancesKnowledgeResources.Responses.$200,
-) => {
-    return data.reduce(
+export const select = (data?: FindAllGuidancesKnowledgeResourcesResult) => {
+    return data?.data?.reduce(
         (acc, { id, title, sourceId, metadata }) => {
             if (metadata?.actions) {
                 metadata.actions.forEach((action) => {
@@ -36,16 +35,18 @@ const GuidanceReferenceProvider = <T extends { id: string }>({
     children,
 }: Props<T>) => {
     const checkEnabled = actions.length > 0
-    const { data, isLoading } = useFindAllGuidancesKnowledgeResources(
-        {
-            actionsIds: actions.map((action) => action.id),
-            includeDisabled: true,
-        },
-        {
-            select,
-            enabled: checkEnabled,
-        },
-    )
+    const { data: queryData, isLoading } =
+        useFindAllGuidancesKnowledgeResources(
+            {
+                actionsIds: actions.map((action) => action.id),
+                includeDisabled: true,
+            },
+            {
+                enabled: checkEnabled,
+            },
+        )
+
+    const data = select(queryData)
 
     const canBeDeleted = useCallback(
         (actionId: string) => {
