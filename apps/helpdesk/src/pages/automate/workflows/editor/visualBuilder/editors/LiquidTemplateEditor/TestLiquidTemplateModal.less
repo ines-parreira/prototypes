@@ -1,46 +1,56 @@
-.successMessage {
-    color: #0f766e;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-m);
+    }
 
-.successOutput {
-    background-color: #f4f4f5;
-    padding: 10px;
-    border-radius: 4px;
-    white-space: pre-wrap;
-    word-break: break-word;
-}
+    .successMessage {
+        color: var(--accessory-green-3);
+        margin-bottom: var(--layout-spacing-s);
+        font-weight: 600;
+    }
 
-.errorTitle {
-    color: #dc2626;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
+    .successOutput {
+        background-color: var(--neutral-grey-1);
+        padding: var(--layout-spacing-s);
+        border-radius: var(--layout-radius-s);
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family: monospace;
+    }
 
-.errorContainer {
-    background-color: #fef2f2;
-    border: 1px solid #fecaca;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-}
+    .errorTitle {
+        color: var(--accessory-red-3);
+        margin-bottom: var(--layout-spacing-s);
+        font-weight: 600;
+    }
 
-.errorContent {
-    white-space: pre-wrap;
-    word-break: break-word;
-    color: #dc2626;
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.4;
-}
+    .errorContainer {
+        background-color: var(--accessory-red-1);
+        border: 1px solid var(--accessory-red-3);
+        padding: var(--layout-spacing-m);
+        border-radius: var(--layout-radius-m);
+        margin-bottom: var(--layout-spacing-s);
+    }
 
-.errorHelpText {
-    font-size: 12px;
-    color: #6b7280;
-    margin: 0;
-}
+    .errorContent {
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: var(--accessory-red-3);
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+        font-family: monospace;
+    }
 
-.noVariablesMessage {
-    color: #6b7280;
+    .errorHelpText {
+        font-size: 12px;
+        color: var(--neutral-grey-5);
+        margin: 0;
+    }
+
+    .noVariablesMessage {
+        color: var(--neutral-grey-5);
+    }
 }
