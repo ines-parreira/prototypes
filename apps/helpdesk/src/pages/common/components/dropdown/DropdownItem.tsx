@@ -34,6 +34,7 @@ export type Props<T extends boolean | number | string | null> = {
         label: string
         value: T
     }
+    alwaysVisible?: boolean
 }
 
 export const DropdownItem = <T extends boolean | number | string | null>(
@@ -47,6 +48,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         isDisabled,
         tag = 'li',
         option,
+        alwaysVisible = false,
         onKeyDown,
         ...rest
     }: Props<T> &
@@ -175,7 +177,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         [children, option, getHighlightedLabel],
     )
 
-    return isContainingQuery ? (
+    return alwaysVisible || isContainingQuery ? (
         <Tag
             className={classnames(css.item, className, {
                 [css.disabled]: isDisabled,

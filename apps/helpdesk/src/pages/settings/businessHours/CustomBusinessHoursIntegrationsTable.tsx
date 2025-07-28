@@ -9,8 +9,12 @@ import {
 import { CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
+import useDebouncedValue from 'hooks/useDebouncedValue'
 import { OrderDirection } from 'models/api/types'
+import { IntegrationType } from 'models/integration/types'
+import ChannelFilter from 'pages/common/components/ChannelFilter/ChannelFilter'
 import Navigation from 'pages/common/components/Navigation/Navigation'
+import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -20,6 +24,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import IntegrationRowsField from './IntegrationRowsField'
+import StoreFilter from './StoreFilter'
 import {
     BusinessHoursCreateFormValues,
     EditCustomBusinessHoursFormValues,
@@ -33,6 +38,17 @@ type Props = {
         | 'assigned_integrations.assign_integrations'
 }
 
+const BUSINESS_HOURS_CHANNEL_INTEGRATION_TYPES = [
+    IntegrationType.Email,
+    IntegrationType.Aircall,
+    IntegrationType.Facebook,
+    IntegrationType.Phone,
+    IntegrationType.Sms,
+    IntegrationType.WhatsApp,
+    IntegrationType.GorgiasChat,
+    IntegrationType.Twitter,
+]
+
 export default function CustomBusinessHoursIntegrationsTable({
     name = 'assigned_integrations.assign_integrations',
 }: Props) {
@@ -42,10 +58,19 @@ export default function CustomBusinessHoursIntegrationsTable({
     const direction = useMemo(() => order_by?.split(':')?.[1], [order_by])
     const sortBy = useMemo(() => order_by?.split(':')?.[0], [order_by])
 
+    const [nameSearch, setNameSearch] = useState<string>()
+    const [channels, setChannels] = useState<string[] | null>(null)
+    const [storeId, setStoreId] = useState<number | null>(null)
+
+    const debouncedNameSearch = useDebouncedValue(nameSearch, 300)
+
     const { data, isLoading, isError, refetch } =
         useListIntegrationsForBusinessHours({
             order_by,
             ...(order_by ? {} : { cursor }),
+            name_search: debouncedNameSearch ? debouncedNameSearch : undefined,
+            channels: channels ? channels : undefined,
+            store_id: storeId ? storeId : undefined,
         })
     const integrations = data?.data.data
 
@@ -54,9 +79,13 @@ export default function CustomBusinessHoursIntegrationsTable({
     >()
 
     const assignIntegrations = watch(name)
-    const isAllSelected = !!integrations?.every((integration) =>
-        assignIntegrations.includes(integration.integration_id),
-    )
+    const isAllSelected =
+        (integrations &&
+            integrations.length > 0 &&
+            !!integrations.every((integration) =>
+                assignIntegrations.includes(integration.integration_id),
+            )) ||
+        false
 
     const handleSelectAll = (value: boolean) => {
         const newAssignIntegrationsSet = new Set(assignIntegrations)
@@ -94,13 +123,27 @@ export default function CustomBusinessHoursIntegrationsTable({
 
     return (
         <div>
+            <div className={css.filters}>
+                <div className={css.searchBar}>
+                    <SearchBar
+                        placeholder="Search integrations"
+                        onChange={setNameSearch}
+                    />
+                </div>
+                <StoreFilter onChange={setStoreId} />
+                <ChannelFilter
+                    channels={BUSINESS_HOURS_CHANNEL_INTEGRATION_TYPES}
+                    onChange={setChannels}
+                    withSearch
+                />
+            </div>
             <TableWrapper className={css.table}>
                 <TableHead>
                     <HeaderCell size="smallest">
                         <CheckBoxField
                             value={isAllSelected}
                             aria-label="Select all integrations"
-                            isDisabled={isLoading}
+                            isDisabled={isLoading || integrations?.length === 0}
                             onChange={handleSelectAll}
                         />
                     </HeaderCell>

@@ -53,6 +53,17 @@ describe('<DropdownItem />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render if the item value is not contained in the context query but is always visible', () => {
+        const { getByText } = render(
+            MockedComponent(
+                { ...minProps, alwaysVisible: true },
+                { ...mockContext, query: 'bar' },
+            ),
+        )
+
+        expect(getByText(/Foo/)).toBeInTheDocument()
+    })
+
     it('should render with result of getHighlightedLabel', () => {
         const { getByText } = render(
             MockedComponent(minProps, {

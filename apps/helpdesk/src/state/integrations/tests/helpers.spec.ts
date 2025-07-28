@@ -382,4 +382,22 @@ describe('integrations helpers', () => {
             )
         })
     })
+
+    describe('getIntegrationDisplayName', () => {
+        it('should return the title from config', () => {
+            expect(
+                helpers.getIntegrationDisplayName(IntegrationType.Email),
+            ).toBe('Email')
+            expect(
+                helpers.getIntegrationDisplayName(IntegrationType.Facebook),
+            ).toBe('Facebook, Messenger & Instagram')
+        })
+
+        it('should return the integration type when no config exists', () => {
+            const unknownType = 'unknown-integration' as IntegrationType
+            expect(helpers.getIntegrationDisplayName(unknownType)).toBe(
+                'unknown-integration',
+            )
+        })
+    })
 })

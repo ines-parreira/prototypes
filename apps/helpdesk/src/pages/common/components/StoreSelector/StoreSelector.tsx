@@ -1,6 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import classNames from 'classnames'
+
+import { Button, Separator } from '@gorgias/merchant-ui-kit'
 
 import { StoreIntegration } from '../../../../models/integration/types'
 import Dropdown from '../dropdown/Dropdown'
@@ -11,18 +13,30 @@ import { IntegrationIcon } from '../IntegrationIcon/IntegrationIcon'
 
 import css from './StoreSelector.less'
 
-type Props = {
+type BaseProps = {
     integrations: StoreIntegration[]
-    selected?: StoreIntegration
-    onChange: (value: number) => void
+    selected?: StoreIntegration | null
     withSearch?: boolean
 }
+
+type PropsWithAllOption = BaseProps & {
+    withAllOption: true
+    onChange: (value: number | null) => void
+}
+
+type PropsWithoutAllOption = BaseProps & {
+    withAllOption?: false
+    onChange: (value: number) => void
+}
+
+type Props = PropsWithAllOption | PropsWithoutAllOption
 
 export default function StoreSelector({
     integrations,
     selected,
     onChange,
     withSearch = false,
+    withAllOption = false,
 }: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const targetRef = useRef<HTMLButtonElement | null>(null)
@@ -31,7 +45,7 @@ export default function StoreSelector({
         setIsOpen((o) => !o)
     }, [])
 
-    if (!selected) return null
+    if (selected === undefined) return null
 
     return (
         <>
@@ -40,9 +54,13 @@ export default function StoreSelector({
                 ref={targetRef}
                 onClick={handleClickButton}
             >
-                <span className={css.spacer}>
-                    <IntegrationIcon kind={selected.type} />
-                    {selected.name || ''}
+                <span className={classNames(css.spacer, css.button)}>
+                    {selected && <IntegrationIcon kind={selected.type} />}
+                    <span className={css.buttonTextContent}>
+                        {selected === null
+                            ? 'All Stores'
+                            : selected?.name || ''}
+                    </span>
                     <i className="material-icons">arrow_drop_down</i>
                 </span>
             </Button>
@@ -54,6 +72,32 @@ export default function StoreSelector({
             >
                 {withSearch && <DropdownSearch autoFocus />}
                 <DropdownBody>
+                    {withAllOption && (
+                        <>
+                            <DropdownItem
+                                key="all"
+                                option={{
+                                    label: 'All Stores',
+                                    value: null,
+                                }}
+                                onClick={() =>
+                                    (
+                                        onChange as (
+                                            value: number | null,
+                                        ) => void
+                                    )(null)
+                                }
+                                shouldCloseOnSelect
+                                alwaysVisible
+                            >
+                                <span className={css.spacer}>
+                                    <div className={css.fakeIcon} />
+                                    All Stores
+                                </span>
+                            </DropdownItem>
+                            <Separator />
+                        </>
+                    )}
                     {integrations.map((integration) => (
                         <DropdownItem
                             key={integration.id}
@@ -61,7 +105,7 @@ export default function StoreSelector({
                                 label: integration.name,
                                 value: integration.id,
                             }}
-                            onClick={onChange}
+                            onClick={() => onChange(integration.id)}
                             shouldCloseOnSelect
                         >
                             <span className={css.spacer}>

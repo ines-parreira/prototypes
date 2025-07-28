@@ -26,6 +26,11 @@ export const getIntegrationsByTypes = (
         types.includes(inte.get('type', '')),
     ) as List<any>
 
+export const getIntegrationDisplayName = (type: IntegrationType): string => {
+    const config = getIntegrationConfig(type)
+    return config?.title || type
+}
+
 export const getIntegrationConfig = (
     type: IntegrationType,
 ): IntegrationConfig | undefined => {

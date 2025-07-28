@@ -111,7 +111,7 @@ export default function IntegrationRowsField({
                                         </Button>
                                     </>
                                 ) : (
-                                    'You don’t have any integrations yet. Please add one to start assigning business hours.'
+                                    "We couldn't find any integration. Please adjust filters or add one to start assigning business hours."
                                 )
                             }
                         />

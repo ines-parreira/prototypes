@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -14,6 +15,8 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { Form } from 'core/forms'
+import { IntegrationType } from 'models/integration/constants'
+import { ShopifyIntegration } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 
@@ -87,7 +90,17 @@ const renderComponent = (name?: string) =>
                 <CustomBusinessHoursIntegrationsTable name={name as any} />
             </Form>
         </QueryClientProvider>,
-        {},
+        {
+            integrations: fromJS({
+                integrations: [
+                    {
+                        id: 42,
+                        type: IntegrationType.Shopify,
+                        name: 'Test Shopify Store',
+                    } as ShopifyIntegration,
+                ],
+            }),
+        } as any,
     )
 
 describe('CustomBusinessHoursIntegrationsTable', () => {
@@ -97,6 +110,11 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         expect(screen.getByText('Integration')).toBeInTheDocument()
         expect(screen.getByText('Store')).toBeInTheDocument()
         expect(screen.getByText('Business hours')).toBeInTheDocument()
+
+        // filters
+        expect(screen.getByText('search')).toBeInTheDocument()
+        expect(screen.getByText('All Stores')).toBeInTheDocument()
+        expect(screen.getByText('All Channels')).toBeInTheDocument()
     })
 
     it('renders the select all checkbox in the header', () => {
@@ -153,6 +171,29 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             expect(selectAllCheckbox).not.toBeChecked()
         },
     )
+
+    it('make select all checkbox unchecked and disabled if there are no integrations', async () => {
+        const mockHandler = mockListIntegrationsForBusinessHoursHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: [],
+                }),
+        )
+        server.use(mockHandler.handler)
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.getByText('No data available')).toBeInTheDocument(),
+        )
+
+        const selectAllCheckbox = screen.getByRole('checkbox', {
+            name: 'Select all integrations',
+        })
+        expect(selectAllCheckbox).not.toBeChecked()
+        expect(selectAllCheckbox).toBeDisabled()
+    })
 
     it('renders the navigation component when data is loaded', async () => {
         const mockHandler = mockListIntegrationsForBusinessHoursHandler(
@@ -317,6 +358,102 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
         await act(async () => {
             await user.click(integrationHeader)
+        })
+    })
+
+    it('should search for integrations by name when typing in the search input', async () => {
+        const user = userEvent.setup()
+        const searchTerm = 'Shopify'
+
+        let receivedSearchParam: string | undefined
+        const queryHandler = mockListIntegrationsForBusinessHoursHandler(
+            async ({ request }) => {
+                const url = new URL(request.url)
+                receivedSearchParam =
+                    url.searchParams.get('name_search') ?? undefined
+                return HttpResponse.json(mockListResponse)
+            },
+        )
+
+        server.use(queryHandler.handler, mockAccountSettingsHandler.handler)
+
+        renderComponent()
+
+        const searchInput = await screen.findByPlaceholderText(
+            'Search integrations',
+        )
+
+        await act(() => {
+            user.clear(searchInput)
+            user.type(searchInput, searchTerm)
+        })
+
+        await waitFor(() => {
+            expect(receivedSearchParam).toBe(searchTerm)
+        })
+    })
+
+    it('should search for integrations by channel when selecting a channel from the dropdown', async () => {
+        const user = userEvent.setup()
+
+        let receivedChannelsParam: string | undefined
+        const queryHandler = mockListIntegrationsForBusinessHoursHandler(
+            async ({ request }) => {
+                const url = new URL(request.url)
+                receivedChannelsParam =
+                    url.searchParams.get('channels') ?? undefined
+                return HttpResponse.json(mockListResponse)
+            },
+        )
+
+        server.use(queryHandler.handler, mockAccountSettingsHandler.handler)
+
+        renderComponent()
+
+        const allChannelsDropdown = await screen.findByRole('button', {
+            name: /all channels/i,
+        })
+        await act(() => user.click(allChannelsDropdown))
+
+        const voiceOption = await screen.findByText('Voice')
+        await act(() => {
+            user.click(voiceOption)
+        })
+
+        await waitFor(() => {
+            expect(receivedChannelsParam).toBe('phone')
+        })
+    })
+
+    it('should search for integrations by store when selecting a store from the dropdown', async () => {
+        const user = userEvent.setup()
+
+        let receivedStoreIdParam: string | undefined
+        const queryHandler = mockListIntegrationsForBusinessHoursHandler(
+            async ({ request }) => {
+                const url = new URL(request.url)
+                receivedStoreIdParam =
+                    url.searchParams.get('store_id') ?? undefined
+                return HttpResponse.json(mockListResponse)
+            },
+        )
+
+        server.use(queryHandler.handler, mockAccountSettingsHandler.handler)
+
+        renderComponent()
+
+        const allStoresButton = await screen.findByRole('button', {
+            name: /all stores/i,
+        })
+        await act(() => user.click(allStoresButton))
+
+        const storeOption = await screen.findByText('Test Shopify Store')
+        await act(() => {
+            user.click(storeOption)
+        })
+
+        await waitFor(() => {
+            expect(receivedStoreIdParam).toBe('42')
         })
     })
 })
