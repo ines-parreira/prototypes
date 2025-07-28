@@ -663,6 +663,7 @@ declare namespace Components {
             created_datetime?: string | null // date-time
             updated_datetime?: string | null // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers?:
                 | (
                       | {
@@ -2027,6 +2028,7 @@ declare namespace Components {
             created_datetime?: string | null // date-time
             updated_datetime?: string | null // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -2739,6 +2741,7 @@ declare namespace Components {
             created_datetime: string // date-time
             updated_datetime: string // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -3405,6 +3408,7 @@ declare namespace Components {
                 instructions: string
                 configuration_name: string
                 configuration_template_slug: string | null
+                should_run_in_test_mode?: boolean | null
                 trigger: {
                     custom_inputs: {
                         [name: string]: {
@@ -5303,6 +5307,38 @@ declare namespace Components {
             step_id?: string | null
             execution_id?: string | null
         }[]
+        export interface LiquidTemplateStepValidationRequestDto {
+            step: {
+                id: string
+                kind: 'liquid-template'
+                settings: {
+                    name: string
+                    template: string
+                    output: {
+                        data_type: 'string' | 'number' | 'boolean' | 'date'
+                    }
+                }
+            }
+            execution_context?: {
+                [name: string]: any
+            }
+        }
+        export type LiquidTemplateStepValidationResponseDto =
+            | {
+                  valid: true
+                  execution_result: {
+                      success: boolean
+                      output?: {
+                          data_type: 'string' | 'number' | 'boolean' | 'date'
+                          value?: any
+                      }
+                      error?: string
+                  }
+              }
+            | {
+                  valid: false
+                  validation_errors: string[]
+              }
         export type ListAppResponseDto = (
             | {
                   id: string
@@ -5345,6 +5381,7 @@ declare namespace Components {
             configuration_id: string
             configuration_name: string
             configuration_template_slug: string | null
+            should_run_in_test_mode?: boolean | null
             trigger: {
                 custom_inputs: {
                     [name: string]: {
@@ -6029,6 +6066,7 @@ declare namespace Components {
             created_datetime?: string | null // date-time
             updated_datetime?: string | null // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -6353,6 +6391,7 @@ declare namespace Components {
             configuration_id: string
             configuration_name: string
             configuration_template_slug: string | null
+            should_run_in_test_mode?: boolean | null
             trigger: {
                 custom_inputs: {
                     [name: string]: {
@@ -6812,6 +6851,7 @@ declare namespace Components {
             created_datetime: string // date-time
             updated_datetime: string // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -7729,6 +7769,7 @@ declare namespace Components {
             created_datetime?: string | null // date-time
             updated_datetime?: string | null // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
         }[]
         export interface ListWfEntrypointsResponseDto {
             [name: string]: {
@@ -8210,6 +8251,7 @@ declare namespace Components {
                       instructions: string
                       configuration_name: string
                       configuration_template_slug: string | null
+                      should_run_in_test_mode?: boolean | null
                       trigger: {
                           custom_inputs: {
                               [name: string]: {
@@ -10974,6 +11016,7 @@ declare namespace Components {
                       instructions: string
                       configuration_name: string
                       configuration_template_slug: string | null
+                      should_run_in_test_mode?: boolean | null
                       trigger: {
                           custom_inputs: {
                               [name: string]: {
@@ -13404,6 +13447,7 @@ declare namespace Components {
                 instructions: string
                 configuration_name: string
                 configuration_template_slug: string | null
+                should_run_in_test_mode?: boolean | null
                 trigger: {
                     custom_inputs: {
                         [name: string]: {
@@ -15985,6 +16029,7 @@ declare namespace Components {
             )[]
             advanced_datetime?: string | null // date-time
             category?: string | null
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -16928,6 +16973,7 @@ declare namespace Components {
             created_datetime?: string | null // date-time
             updated_datetime?: string | null // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -17866,6 +17912,7 @@ declare namespace Components {
             )[]
             advanced_datetime?: string | null // date-time
             category?: string | null
+            should_run_in_test_mode?: boolean | null
             triggers?:
                 | (
                       | {
@@ -18813,6 +18860,7 @@ declare namespace Components {
             created_datetime?: string | null // date-time
             updated_datetime?: string | null // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers?:
                 | (
                       | {
@@ -19525,6 +19573,7 @@ declare namespace Components {
             )[]
             advanced_datetime?: string | null // date-time
             category?: string | null
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -20235,6 +20284,7 @@ declare namespace Components {
             created_datetime: string // date-time
             updated_datetime: string // date-time
             deleted_datetime?: string | null // date-time
+            should_run_in_test_mode?: boolean | null
             triggers: (
                 | {
                       kind: 'llm-prompt'
@@ -20720,6 +20770,14 @@ declare namespace Paths {
                     }
                 }
             }
+        }
+    }
+    namespace LiquidTemplateStepValidationControllerValidateStep {
+        export type RequestBody =
+            Components.Schemas.LiquidTemplateStepValidationRequestDto
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.LiquidTemplateStepValidationResponseDto
         }
     }
     namespace StoreAppControllerDelete {
@@ -21531,6 +21589,14 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.TrackstarControllerWebhook.Responses.$201>
     /**
+     * LiquidTemplateStepValidationController_validateStep
+     */
+    'LiquidTemplateStepValidationController_validateStep'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.LiquidTemplateStepValidationControllerValidateStep.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.LiquidTemplateStepValidationControllerValidateStep.Responses.$200>
+    /**
      * HealthController_check
      */
     'HealthController_check'(
@@ -21912,6 +21978,16 @@ export interface PathsDictionary {
             data?: Paths.TrackstarControllerWebhook.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.TrackstarControllerWebhook.Responses.$201>
+    }
+    ['/liquid-template-step/validate']: {
+        /**
+         * LiquidTemplateStepValidationController_validateStep
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.LiquidTemplateStepValidationControllerValidateStep.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.LiquidTemplateStepValidationControllerValidateStep.Responses.$200>
     }
     ['/health']: {
         /**

@@ -1,9 +1,17 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+
+import _uniq from 'lodash/uniq'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {
+    extractVariablesFromNode,
+    parseWorkflowVariable,
+} from 'pages/automate/workflows/models/variables.model'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Button from 'pages/common/components/button/Button'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -11,6 +19,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
+import TestLiquidTemplateModal from './TestLiquidTemplateModal'
 
 import css from '../NodeEditor.less'
 
@@ -20,11 +29,24 @@ export default function LiquidTemplateEditor({
     nodeInEdition: LiquidTemplateNodeType
 }) {
     const { dispatch, getVariableListForNode } = useVisualBuilderContext()
+    const [isTestModalOpen, setIsTestModalOpen] = useState(false)
 
     const workflowVariables = useMemo(
         () => getVariableListForNode(nodeInEdition.id),
         [getVariableListForNode, nodeInEdition.id],
     )
+
+    const variables = useMemo(() => {
+        const variables = _uniq(
+            extractVariablesFromNode({
+                type: 'liquid_template',
+                data: nodeInEdition.data,
+            }),
+        )
+        return variables.map((variable) =>
+            parseWorkflowVariable(variable, workflowVariables),
+        )
+    }, [workflowVariables, nodeInEdition.data])
 
     return (
         <>
@@ -103,6 +125,15 @@ export default function LiquidTemplateEditor({
                             isLiquidTemplate
                         />
                     </div>
+                    <Button
+                        className={css.testRequestButton}
+                        onClick={() => {
+                            setIsTestModalOpen(true)
+                        }}
+                        intent="secondary"
+                    >
+                        Test template
+                    </Button>
                     <div className={css.formField}>
                         <div>
                             <Label>Output variables</Label>
@@ -135,6 +166,15 @@ export default function LiquidTemplateEditor({
                     </div>
                 </div>
             </Drawer.Content>
+            <TestLiquidTemplateModal
+                isOpen={isTestModalOpen}
+                onClose={() => setIsTestModalOpen(false)}
+                nodeInEdition={nodeInEdition}
+                variables={variables.filter(
+                    (variable): variable is WorkflowVariable =>
+                        variable !== null,
+                )}
+            />
         </>
     )
 }
