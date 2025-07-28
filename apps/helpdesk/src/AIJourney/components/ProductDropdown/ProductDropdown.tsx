@@ -27,9 +27,9 @@ export const ProductDropdown = ({
 
     useEffect(() => {
         if (options.length > 0 && !selectedOption) {
-            setSelectedOption(options[0])
+            onChange?.(options[0])
         }
-    }, [options, selectedOption])
+    }, [options, selectedOption, onChange])
 
     const productDropdownOptionsClass = classNames(css.productDropdownOptions, {
         [css['productDropdownOptions--open']]: isOpen,

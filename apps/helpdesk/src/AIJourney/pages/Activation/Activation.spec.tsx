@@ -384,8 +384,14 @@ describe('<Activation />', () => {
                 </Provider>,
             )
 
-            await waitFor(() => {
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
+            // Wait for the product to be pre-selected and visible
+            await waitFor(async () => {
+                expect(screen.queryAllByText('Strong phone')).toHaveLength(1)
+            })
+
+            // Select product
+            await act(async () => {
+                await userEvent.click(screen.getByText('Strong phone'))
             })
 
             const input = screen.getByRole('textbox')
@@ -397,19 +403,18 @@ describe('<Activation />', () => {
                 await userEvent.click(button)
             })
 
-            // await waitFor(() => {
-            //     expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
-            // })
+            expect(mockDispatch).toHaveBeenCalledTimes(1)
+            expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
 
-            // expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
-            //     phoneNumber: '+11234567890',
-            //     journeyId: 'journey-123',
-            //     product: {
-            //         product_id: expect.any(String),
-            //         variant_id: expect.any(String),
-            //         price: expect.any(Number),
-            //     },
-            // })
+            expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
+                phoneNumber: '+11234567890',
+                journeyId: 'journey-123',
+                product: {
+                    product_id: expect.any(String),
+                    variant_id: expect.any(String),
+                    price: expect.any(Number),
+                },
+            })
         })
     })
 })

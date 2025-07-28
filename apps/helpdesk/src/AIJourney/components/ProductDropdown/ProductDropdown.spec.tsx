@@ -102,4 +102,41 @@ describe('<ProductDropdown />', () => {
             ],
         })
     })
+
+    it('preselect option if no selectedOption is set', () => {
+        const onChange = jest.fn()
+
+        const { rerender } = render(
+            <Provider store={mockStore}>
+                <ProductDropdown options={[]} onChange={onChange} />
+            </Provider>,
+        )
+
+        expect(onChange).not.toHaveBeenCalled()
+
+        rerender(
+            <Provider store={mockStore}>
+                <ProductDropdown options={options} />
+            </Provider>,
+        )
+
+        expect(onChange).not.toHaveBeenCalled()
+
+        rerender(
+            <Provider store={mockStore}>
+                <ProductDropdown options={options} onChange={onChange} />
+            </Provider>,
+        )
+
+        expect(onChange).toHaveBeenCalledWith({
+            id: '3219312',
+            title: 'New Balance 2002R',
+            image: 'image',
+            variants: [
+                {
+                    title: 'variant title 1',
+                },
+            ],
+        })
+    })
 })

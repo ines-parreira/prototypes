@@ -86,6 +86,7 @@ export const Activation = () => {
                 )
                 return
             }
+
             await testSms.mutateAsync({
                 // TODO use generic phone number formatting
                 phoneNumber: `+1${testSmsNumber.replace(/\D/g, '')}`,
@@ -96,10 +97,18 @@ export const Activation = () => {
                     price: Number(selectedProduct.variants[0]?.price),
                 },
             })
-        } catch (error) {
+
             void dispatch(
                 notify({
-                    message: `Error sending test SMS: ${error}`,
+                    message: `SMS sent successfully`,
+                    status: NotificationStatus.Success,
+                }),
+            )
+        } catch (error) {
+            console.error(`Error sending test SMS: ${error}`)
+            void dispatch(
+                notify({
+                    message: `Could not send test SMS`,
                     status: NotificationStatus.Error,
                 }),
             )
