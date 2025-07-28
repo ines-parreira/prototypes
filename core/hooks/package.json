@@ -1,5 +1,5 @@
 {
-    "name": "@repo/hooks-utils",
+    "name": "@repo/hooks",
     "version": "1.0.0",
     "description": "Non domain specific utility hooks for the monorepo",
     "private": true,
@@ -22,9 +22,9 @@
     },
     "devDependencies": {
         "@jest/expect": "catalog:jest",
-        "@repo/configs-utils": "workspace:*",
-        "@repo/testing-utils": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/tsconfigs": "workspace:*",
+        "@repo/jest-config": "workspace:*",
+        "@repo/testing": "workspace:*",
         "@swc/core": "catalog:jest",
         "@swc/jest": "catalog:jest",
         "@testing-library/dom": "catalog:testing-library",

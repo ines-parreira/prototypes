@@ -6,7 +6,7 @@ codecov:
 
 flag_management:
   default_rules:
-    carryforward: false
+    carryforward: true
 
 comment:
   layout: 'diff, flags, files'

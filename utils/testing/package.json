@@ -1,5 +1,5 @@
 {
-    "name": "@repo/testing-utils",
+    "name": "@repo/testing",
     "version": "1.0.0",
     "description": "Non domain specific testing utilities for the monorepo",
     "private": true,
@@ -21,8 +21,8 @@
         "react-dom": "catalog:react"
     },
     "devDependencies": {
-        "@repo/configs-utils": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/tsconfigs": "workspace:*",
+        "@repo/jest-config": "workspace:*",
         "@swc/core": "catalog:jest",
         "@swc/jest": "catalog:jest",
         "@testing-library/dom": "catalog:testing-library",

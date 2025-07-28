@@ -1,17 +1,21 @@
 {
-    "name": "@repo/tsconfigs",
+    "name": "@repo/jest-config",
     "version": "1.0.0",
-    "description": "Common TypeScript configurations for the monorepo. Need to be a standalone package.",
+    "description": "Common Jest configuration for the monorepo.",
     "private": true,
-    "publishConfig": {
-        "access": "public"
+    "exports": {
+        ".": "./src/jest.config.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet"
     },
+    "peerDependencies": {
+        "jest": "catalog:jest"
+    },
     "devDependencies": {
+        "jest": "catalog:jest",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier"

@@ -1,5 +1,6 @@
 packages:
   - 'apps/**'
+  - 'core/**'
   - 'configs/**'
   - 'utils/**'
 
