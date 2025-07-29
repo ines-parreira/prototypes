@@ -13,6 +13,7 @@ type FormSectionProps = {
     icon?: ReactNode | string
     headingSize?: 'small' | 'medium' | 'large'
     iconClassName?: string
+    className?: string
 }
 
 export default function FormSection({
@@ -22,9 +23,10 @@ export default function FormSection({
     headingSize,
     icon,
     iconClassName,
+    className,
 }: FormSectionProps) {
     return (
-        <div className={settingsCss.mb48}>
+        <div className={classNames(settingsCss.mb48, className)}>
             {(!!title || !!description) && (
                 <>
                     <div className={css.headingWithIcon}>

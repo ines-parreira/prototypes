@@ -101,6 +101,7 @@ export default function EmailIntegrationDeliverabilitySettings({
             title="Outbound Email Delivery Settings"
             description={caption}
             headingSize="small"
+            className="mb-0"
         >
             <RadioFieldSet
                 options={[
