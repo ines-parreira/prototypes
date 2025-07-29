@@ -106,6 +106,18 @@ jest.mock('pages/history')
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock
 
+jest.mock('api/queryClient', () => {
+    return {
+        appQueryClient: {
+            invalidateQueries: jest.fn(() => Promise.resolve()),
+            getQueryData: jest.fn(() => undefined),
+            setQueryData: jest.fn(),
+            removeQueries: jest.fn(),
+            clear: jest.fn(),
+        },
+    }
+})
+
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
     let mockServer: MockAdapter
@@ -880,20 +892,300 @@ describe('ticket actions', () => {
         })
     })
 
-    it('updateTicketMessage()', () => {
-        mockServer
-            .onPut('/api/tickets/1/messages/10/?action=retry')
-            .reply(200, { id: 10 })
-        return store
-            .dispatch(
-                actions.updateTicketMessage(
-                    '1',
-                    10,
-                    { id: 10 } as TicketMessage,
-                    'retry',
-                ),
-            )
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+    describe('updateTicketMessage()', () => {
+        it('should update message successfully', () => {
+            mockServer
+                .onPut('/api/tickets/1/messages/10/')
+                .reply(200, { id: 10 })
+            return store
+                .dispatch(
+                    actions.updateTicketMessage('1', 10, {
+                        id: 10,
+                    } as TicketMessage),
+                )
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('should handle error when updating message', () => {
+            mockServer
+                .onPut('/api/tickets/1/messages/10/')
+                .reply(400, { message: 'Bad request' })
+            return store
+                .dispatch(
+                    actions.updateTicketMessage('1', 10, {
+                        id: 10,
+                    } as TicketMessage),
+                )
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        describe('retry action', () => {
+            let invalidateQueriesSpy: jest.SpyInstance
+
+            beforeEach(() => {
+                invalidateQueriesSpy = jest.spyOn(
+                    require('api/queryClient').appQueryClient,
+                    'invalidateQueries',
+                )
+            })
+
+            afterEach(() => {
+                invalidateQueriesSpy.mockRestore()
+            })
+
+            it('should retry message and invalidate queries', () => {
+                mockServer
+                    .onPut('/api/tickets/1/messages/10/?action=retry')
+                    .reply(200, { id: 10 })
+                return store
+                    .dispatch(
+                        actions.updateTicketMessage(
+                            '1',
+                            10,
+                            { id: 10 } as TicketMessage,
+                            'retry',
+                        ),
+                    )
+                    .then(() => {
+                        expect(store.getActions()).toMatchSnapshot()
+                        expect(invalidateQueriesSpy).toHaveBeenCalledTimes(3)
+                    })
+            })
+
+            it('should invalidate specific ticket queries', () => {
+                mockServer
+                    .onPut('/api/tickets/123/messages/10/?action=retry')
+                    .reply(200, { id: 10 })
+
+                return store
+                    .dispatch(
+                        actions.updateTicketMessage(
+                            '123',
+                            10,
+                            { id: 10 } as TicketMessage,
+                            'retry',
+                        ),
+                    )
+                    .then(() => {
+                        // Verify specific query invalidations
+                        expect(invalidateQueriesSpy).toHaveBeenNthCalledWith(
+                            1,
+                            {
+                                queryKey: expect.arrayContaining([
+                                    'tickets',
+                                    'getTicket',
+                                    123,
+                                ]),
+                            },
+                        )
+                        expect(invalidateQueriesSpy).toHaveBeenNthCalledWith(
+                            2,
+                            {
+                                queryKey: ['tickets', 'listTickets'],
+                            },
+                        )
+                        expect(invalidateQueriesSpy).toHaveBeenNthCalledWith(
+                            3,
+                            {
+                                queryKey: ['tickets', 'ticket_ids'],
+                                predicate: expect.any(Function),
+                            },
+                        )
+                    })
+            })
+
+            it('should use predicate function to match ticket IDs in query invalidation', () => {
+                mockServer
+                    .onPut('/api/tickets/456/messages/10/?action=retry')
+                    .reply(200, { id: 10 })
+
+                return store
+                    .dispatch(
+                        actions.updateTicketMessage(
+                            '456',
+                            10,
+                            { id: 10 } as TicketMessage,
+                            'retry',
+                        ),
+                    )
+                    .then(() => {
+                        // Get the predicate function that was passed to invalidateQueries
+                        const predicateCall =
+                            invalidateQueriesSpy.mock.calls.find(
+                                (call) => call[0].predicate,
+                            )
+                        expect(predicateCall).toBeDefined()
+
+                        const predicate = predicateCall[0].predicate
+
+                        // Test the predicate with various query key structures
+                        // Should return true when ticket ID is found in array
+                        expect(
+                            predicate({
+                                queryKey: [
+                                    'tickets',
+                                    'ticket_ids',
+                                    [456, 789, 123],
+                                ],
+                            }),
+                        ).toBe(true)
+
+                        // Should return false when ticket ID is not found
+                        expect(
+                            predicate({
+                                queryKey: ['tickets', 'ticket_ids', [789, 123]],
+                            }),
+                        ).toBe(false)
+
+                        // Should return false when third element is not an array
+                        expect(
+                            predicate({
+                                queryKey: [
+                                    'tickets',
+                                    'ticket_ids',
+                                    'not-an-array',
+                                ],
+                            }),
+                        ).toBe(false)
+
+                        expect(
+                            predicate({
+                                queryKey: ['tickets', 'ticket_ids', null],
+                            }),
+                        ).toBe(false)
+
+                        expect(
+                            predicate({
+                                queryKey: ['tickets', 'ticket_ids', undefined],
+                            }),
+                        ).toBe(false)
+
+                        expect(
+                            predicate({
+                                queryKey: ['tickets', 'ticket_ids', 123],
+                            }),
+                        ).toBe(false)
+
+                        // Should return false for empty array
+                        expect(
+                            predicate({
+                                queryKey: ['tickets', 'ticket_ids', []],
+                            }),
+                        ).toBe(false)
+
+                        // Should work with mixed types in array (numbers and nulls)
+                        expect(
+                            predicate({
+                                queryKey: [
+                                    'tickets',
+                                    'ticket_ids',
+                                    [456, null, undefined, 123],
+                                ],
+                            }),
+                        ).toBe(true)
+
+                        // Should handle string ticket IDs that convert to numbers
+                        expect(
+                            predicate({
+                                queryKey: [
+                                    'tickets',
+                                    'ticket_ids',
+                                    ['456', 789, 123],
+                                ],
+                            }),
+                        ).toBe(false) // String '456' !== Number(456)
+                    })
+            })
+
+            it('should work with numeric ticket ID input', () => {
+                mockServer
+                    .onPut('/api/tickets/789/messages/10/?action=retry')
+                    .reply(200, { id: 10 })
+
+                return store
+                    .dispatch(
+                        actions.updateTicketMessage(
+                            789, // numeric input
+                            10,
+                            { id: 10 } as TicketMessage,
+                            'retry',
+                        ),
+                    )
+                    .then(() => {
+                        const predicateCall =
+                            invalidateQueriesSpy.mock.calls.find(
+                                (call) => call[0].predicate,
+                            )
+                        const predicate = predicateCall[0].predicate
+
+                        expect(
+                            predicate({
+                                queryKey: [
+                                    'tickets',
+                                    'ticket_ids',
+                                    [456, 789, 123],
+                                ],
+                            }),
+                        ).toBe(true)
+                    })
+            })
+
+            it('should not invalidate queries when action is not retry', () => {
+                mockServer
+                    .onPut('/api/tickets/1/messages/10/?action=send')
+                    .reply(200, { id: 10 })
+
+                return store
+                    .dispatch(
+                        actions.updateTicketMessage(
+                            '1',
+                            10,
+                            { id: 10 } as TicketMessage,
+                            'send',
+                        ),
+                    )
+                    .then(() => {
+                        expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+                    })
+            })
+
+            it('should not invalidate queries when no action specified', () => {
+                mockServer
+                    .onPut('/api/tickets/1/messages/10/')
+                    .reply(200, { id: 10 })
+
+                return store
+                    .dispatch(
+                        actions.updateTicketMessage('1', 10, {
+                            id: 10,
+                        } as TicketMessage),
+                    )
+                    .then(() => {
+                        expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+                    })
+            })
+
+            it('should not invalidate queries when retry action fails', () => {
+                mockServer
+                    .onPut('/api/tickets/1/messages/10/?action=retry')
+                    .reply(400, { message: 'Retry failed' })
+
+                return store
+                    .dispatch(
+                        actions.updateTicketMessage(
+                            '1',
+                            10,
+                            { id: 10 } as TicketMessage,
+                            'retry',
+                        ),
+                    )
+                    .then(() => {
+                        // Queries should not be invalidated on error
+                        expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+                        expect(store.getActions()).toMatchSnapshot()
+                    })
+            })
+        })
     })
 
     it('clearTicket()', () => {

@@ -7,8 +7,10 @@ import { compressToEncodedURIComponent } from 'lz-string'
 import { Moment } from 'moment'
 import { dismissNotification } from 'reapop'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import { Macro as MacroModel, Tag } from '@gorgias/helpdesk-types'
 
+import { appQueryClient } from 'api/queryClient'
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -1143,9 +1145,9 @@ export const displayAuditLogEvents =
         const generators = [client.getTicketEvents(ticketId)]
 
         /*
-          The ticket API does not return the satisfaction survey id when the survey is not scored.
-          If the satisfactionSurveyId is missing, search for the un-scored survey using the /api/satisfaction-surveys API.
-        */
+                                          The ticket API does not return the satisfaction survey id when the survey is not scored.
+                                          If the satisfactionSurveyId is missing, search for the un-scored survey using the /api/satisfaction-surveys API.
+                                        */
         const surveyId =
             satisfactionSurveyId ||
             (await client.getSatisfactionSurvey(ticketId))?.id
@@ -1296,6 +1298,31 @@ export function updateTicketMessage(
             .then((json) => json?.data)
             .then(
                 (resp) => {
+                    if (action === 'retry') {
+                        // Invalidate ticket-related queries when retrying
+                        void appQueryClient.invalidateQueries({
+                            queryKey: queryKeys.tickets.getTicket(
+                                Number(ticketId),
+                            ),
+                        })
+
+                        // Invalidate listTickets queries (like timeline data)
+                        void appQueryClient.invalidateQueries({
+                            queryKey: ['tickets', 'listTickets'],
+                        })
+
+                        // Also invalidate ticket list queries that might contain this ticket
+                        void appQueryClient.invalidateQueries({
+                            queryKey: ['tickets', 'ticket_ids'],
+                            predicate: (query) => {
+                                const [, , ticketIds] = query.queryKey
+                                return (
+                                    Array.isArray(ticketIds) &&
+                                    ticketIds.includes(Number(ticketId))
+                                )
+                            },
+                        })
+                    }
                     return dispatch({
                         type: types.UPDATE_TICKET_MESSAGE_SUCCESS,
                         messageId,

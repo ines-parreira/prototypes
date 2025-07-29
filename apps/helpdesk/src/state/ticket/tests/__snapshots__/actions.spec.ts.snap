@@ -2240,7 +2240,53 @@ exports[`ticket actions updateCustomFieldValue() should dispatch UPDATE_CUSTOM_F
 ]
 `;
 
-exports[`ticket actions updateTicketMessage() 1`] = `
+exports[`ticket actions updateTicketMessage() retry action should not invalidate queries when retry action fails 1`] = `
+[
+  {
+    "messageId": 10,
+    "type": "UPDATE_TICKET_MESSAGE_START",
+  },
+  {
+    "error": [Error: Request failed with status code 400],
+    "messageId": 10,
+    "reason": "Message was not sent. Please try again in a few moments. If the problem persists, contact us.",
+    "type": "UPDATE_TICKET_MESSAGE_ERROR",
+  },
+]
+`;
+
+exports[`ticket actions updateTicketMessage() retry action should retry message and invalidate queries 1`] = `
+[
+  {
+    "messageId": 10,
+    "type": "UPDATE_TICKET_MESSAGE_START",
+  },
+  {
+    "messageId": 10,
+    "resp": {
+      "id": 10,
+    },
+    "type": "UPDATE_TICKET_MESSAGE_SUCCESS",
+  },
+]
+`;
+
+exports[`ticket actions updateTicketMessage() should handle error when updating message 1`] = `
+[
+  {
+    "messageId": 10,
+    "type": "UPDATE_TICKET_MESSAGE_START",
+  },
+  {
+    "error": [Error: Request failed with status code 400],
+    "messageId": 10,
+    "reason": "Message was not sent. Please try again in a few moments. If the problem persists, contact us.",
+    "type": "UPDATE_TICKET_MESSAGE_ERROR",
+  },
+]
+`;
+
+exports[`ticket actions updateTicketMessage() should update message successfully 1`] = `
 [
   {
     "messageId": 10,
