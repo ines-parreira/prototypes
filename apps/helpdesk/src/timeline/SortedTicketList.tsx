@@ -1,63 +1,94 @@
-import { useMemo } from 'react'
+import { RefObject, useMemo } from 'react'
 
-import { TicketCompact } from '@gorgias/helpdesk-types'
-
+import { FeatureFlagKey } from '../config/featureFlags'
+import { useFlag } from '../core/flags'
 import DisplayedDate from './DisplayedDate'
+import * as timelineItem from './helpers/timelineItem'
+import { OrderTicketCard } from './order-ticket'
 import { TicketModal, useTicketModal } from './ticket-modal'
 import { useModalShortcuts } from './ticket-modal/hooks/useModalShortcuts'
 import { TicketListItem } from './TicketListItem'
-import { SortOption } from './types'
+import { SortOption, TimelineItem, TimelineItemKind } from './types'
 
 import css from './SortedTicketList.less'
 
 type Props = {
     ticketId: number
-    sortedTickets: TicketCompact[]
+    sortedItems: TimelineItem[]
     sortOption: SortOption
-    containerRef?: React.RefObject<HTMLDivElement>
+    containerRef?: RefObject<HTMLDivElement>
 }
 
 export function SortedTicketList({
     ticketId,
-    sortedTickets,
+    sortedItems,
     sortOption,
     containerRef,
 }: Props) {
-    const ticketIds = useMemo(
-        () => sortedTickets.map((ticket) => ticket.id),
-        [sortedTickets],
+    const itemIds = useMemo(
+        () => sortedItems.map((item) => timelineItem.getItemId(item)),
+        [sortedItems],
     )
 
-    const modal = useTicketModal(ticketIds)
+    const modal = useTicketModal(itemIds)
     useModalShortcuts(modal)
 
     const selectedTicket = modal.ticketId
-        ? sortedTickets.find((ticket) => ticket.id === modal.ticketId)
+        ? sortedItems
+              .filter(timelineItem.isTicket)
+              .find((item) => item.ticket.id === modal.ticketId)
         : undefined
+
+    const enableShopifyOrderInTimeline = useFlag(
+        FeatureFlagKey.ShopifyCustomerTimeline,
+        false,
+    )
 
     return (
         <>
             <ol className={css.list}>
-                {sortedTickets
-                    .filter((ticket) => ticket.channel)
-                    .map((ticket) => {
-                        return (
-                            <TicketListItem
-                                key={ticket.id}
-                                ticket={ticket}
-                                isHighlighted={ticketId === ticket.id}
-                                displayedDate={DisplayedDate(
-                                    sortOption,
-                                    ticket,
-                                )}
-                                onModalOpen={modal.onOpen}
-                            />
-                        )
-                    })}
+                {sortedItems.map((item) => {
+                    switch (item.kind) {
+                        case TimelineItemKind.Order: {
+                            if (enableShopifyOrderInTimeline) {
+                                return (
+                                    <li key={item.order.id}>
+                                        <OrderTicketCard
+                                            className={css.card}
+                                            order={item.order}
+                                        />
+                                    </li>
+                                )
+                            }
+                            return null
+                        }
+                        case TimelineItemKind.Ticket: {
+                            if (!item.ticket.channel) {
+                                return null
+                            }
+
+                            return (
+                                <TicketListItem
+                                    key={item.ticket.id}
+                                    ticket={item.ticket}
+                                    isHighlighted={ticketId === item.ticket.id}
+                                    displayedDate={DisplayedDate(
+                                        sortOption,
+                                        item.ticket,
+                                    )}
+                                    onModalOpen={modal.onOpen}
+                                />
+                            )
+                        }
+                        default: {
+                            return null
+                        }
+                    }
+                })}
             </ol>
             {!!modal.ticketId && (
                 <TicketModal
-                    summary={selectedTicket}
+                    summary={selectedTicket?.ticket}
                     {...modal}
                     containerRef={containerRef}
                 />

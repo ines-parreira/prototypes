@@ -1,4 +1,6 @@
-import { TicketStatus } from '@gorgias/helpdesk-queries'
+import { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
+
+import { Order } from 'constants/integrations/types/shopify'
 
 import { SORTABLE_KEY_TO_LABEL, SORTABLE_KEYS } from './constants'
 
@@ -17,3 +19,24 @@ export type SortOption = {
     key: SortableKey
     label: (typeof SORTABLE_KEY_TO_LABEL)[SortableKey]
 }
+
+export enum TimelineItemKind {
+    Ticket = 'ticket',
+    Order = 'order',
+}
+
+interface TimelineItemBase {
+    kind: TimelineItemKind
+}
+
+export interface TimelineTicket extends TimelineItemBase {
+    kind: TimelineItemKind.Ticket
+    ticket: TicketCompact
+}
+
+export interface TimelineOrder extends TimelineItemBase {
+    kind: TimelineItemKind.Order
+    order: Order
+}
+
+export type TimelineItem = TimelineTicket | TimelineOrder

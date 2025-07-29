@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import * as timelineItem from './helpers/timelineItem'
 import { useRangeFilter } from './hooks/useRangeFilter'
 import { useSort } from './hooks/useSort'
 import { useStatusFilter } from './hooks/useStatusFilter'
@@ -83,7 +84,7 @@ export function Timeline({
                 ) : (
                     <SortedTicketList
                         ticketId={ticketId}
-                        sortedTickets={sortedTickets}
+                        sortedItems={sortedTickets.map(timelineItem.fromTicket)}
                         sortOption={sortOption}
                         containerRef={containerRef}
                     />
