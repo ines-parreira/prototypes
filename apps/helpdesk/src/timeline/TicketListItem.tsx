@@ -52,7 +52,6 @@ export function TicketListItem({
                     displayedDate={displayedDate}
                 />
             </Link>
-            ) : (
         </li>
     )
 }
