@@ -1211,8 +1211,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
             case 'llm_prompt_trigger':
                 return (
                     <DropdownBody>
-                        {(!!visualBuilderGraph.advanced_datetime ||
-                            liquidTemplateStepFlag?.actions) && (
+                        {!!visualBuilderGraph.advanced_datetime && (
                             <>
                                 <DropdownItem header className="text-uppercase">
                                     Custom
