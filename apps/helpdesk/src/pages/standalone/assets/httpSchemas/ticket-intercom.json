@@ -7,7 +7,7 @@
         },
         "body": "{{ticket.messages[-1]['body_html']}}",
         "subject": "Handover: {{ticket.subject}}",
-        "referer": "https://twitter.com/bob"
+        "message_type": "email"
     },
     "headers": {
         "X-Intercom-Version": "2.0",
