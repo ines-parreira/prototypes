@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
+import { ListCustomFieldsParams } from '@gorgias/helpdesk-queries'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useUpdateCustomFieldDefinitions } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
-import { CustomFieldObjectTypes, ListParams } from 'custom-fields/types'
+import {
+    CustomFieldAIManagedType,
+    CustomFieldObjectTypes,
+} from 'custom-fields/types'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useDebouncedValue from 'hooks/useDebouncedValue'
@@ -48,10 +53,10 @@ export default function CustomFields({
     const [search, setSearch] = useState('')
     const debouncedSearch = useDebouncedValue(search, 300)
 
-    const activeParams: ListParams = {
+    const activeParams: ListCustomFieldsParams = {
         archived: false,
         object_type: objectType,
-        cursor: activeCursor,
+        cursor: activeCursor ?? undefined,
         search: debouncedSearch,
     }
     const {
@@ -74,7 +79,7 @@ export default function CustomFields({
     } = useCustomFieldDefinitions({
         archived: true,
         object_type: objectType,
-        cursor: archivedCursor,
+        cursor: archivedCursor ?? undefined,
         search: debouncedSearch || undefined,
     })
 
@@ -95,8 +100,10 @@ export default function CustomFields({
     const isLoading = isLoadingActive || isLoadingArchived
     const customFieldsCountingTowardsTheLimit = activeFields.filter(
         (field) =>
-            field.managed_type == null ||
-            !Object.values(AI_MANAGED_TYPES).includes(field.managed_type),
+            !field.managed_type ||
+            !Object.values(AI_MANAGED_TYPES).includes(
+                field.managed_type as CustomFieldAIManagedType,
+            ),
     )
 
     const createFieldButton =

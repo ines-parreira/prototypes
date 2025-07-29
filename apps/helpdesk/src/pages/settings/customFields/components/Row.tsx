@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
@@ -48,7 +48,9 @@ export default function Row({
         CUSTOM_FIELD_ROUTES[customField.object_type]
     }/${customField.id}/edit`
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
-    const isAIManaged = isCustomFieldAIManagedType(customField.managed_type)
+    const isAIManaged = isCustomFieldAIManagedType(
+        customField.managed_type ?? null,
+    )
     const tooltipId = 'a' + ulid()
 
     return (
@@ -137,7 +139,7 @@ export default function Row({
                             intent="secondary"
                             isLoading={isLoading}
                             isDisabled={isCustomFieldSystemReadOnly(
-                                customField.managed_type,
+                                customField.managed_type ?? null,
                             )}
                             title="Archive"
                             id={`archive-custom-field-${customField.id}`}
@@ -173,7 +175,7 @@ export default function Row({
                         fillStyle="ghost"
                         intent="secondary"
                         isDisabled={isCustomFieldSystemReadOnly(
-                            customField.managed_type,
+                            customField.managed_type ?? null,
                         )}
                         isLoading={isLoading}
                         title="Unarchive"

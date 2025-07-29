@@ -96,7 +96,7 @@ export default function SuggestionBody({
                     {actions?.map((action, index) => {
                         return (
                             <TicketReplyAction
-                                key={action.name + 'suggestion'}
+                                key={action.name + 'suggestion' + index}
                                 index={index}
                                 action={fromJS(action)}
                                 ticketId={ticketId}

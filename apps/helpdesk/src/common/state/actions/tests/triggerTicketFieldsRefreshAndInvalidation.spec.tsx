@@ -5,7 +5,10 @@ import { Provider } from 'react-redux'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { listCustomFieldConditions } from '@gorgias/helpdesk-client'
+import {
+    listCustomFieldConditions,
+    listCustomFields,
+} from '@gorgias/helpdesk-client'
 import { RequirementType } from '@gorgias/helpdesk-queries'
 import {
     ExpressionFieldSource,
@@ -14,7 +17,6 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { getCustomFields } from 'custom-fields/resources'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
@@ -35,11 +37,10 @@ type MockedRootState = {
     views?: Map<any, any>
 }
 
-jest.mock('custom-fields/resources')
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('core/flags/hooks/useFlag')
 
-const mockedGetCustomFields = assumeMock(getCustomFields)
+const mockedListCustomFields = assumeMock(listCustomFields)
 const mockedListCustomFieldConditions = assumeMock(listCustomFieldConditions)
 
 const middlewares = [thunk]
@@ -71,7 +72,7 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
             ticket: ticketState,
             newMessage: newMessageState,
         })
-        mockedGetCustomFields.mockResolvedValue({
+        mockedListCustomFields.mockResolvedValue({
             data: { data: [visibleTicketField] },
         } as any)
         mockedListCustomFieldConditions.mockResolvedValue({
@@ -97,7 +98,7 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
         })
 
         // Mock the data for invalidation and re-fetch
-        mockedGetCustomFields.mockResolvedValue({
+        mockedListCustomFields.mockResolvedValue({
             data: {
                 data: [
                     conditionalTicketField,

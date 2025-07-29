@@ -1,19 +1,20 @@
-import { useGetCustomFieldDefinition } from 'custom-fields/hooks/queries/queries'
-import { CustomField } from 'custom-fields/types'
+import { useGetCustomField } from '@gorgias/helpdesk-queries'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 
 export const useCustomFieldDefinition = (
-    id: number,
-    overrides?: Parameters<typeof useGetCustomFieldDefinition>[1],
+    ...args: Parameters<typeof useGetCustomField>
 ) => {
-    return useGetCustomFieldDefinition<CustomField>(id, {
-        ...overrides,
-        staleTime: STALE_TIME_MS,
-        select: (data) => data.data,
-        refetchOnWindowFocus: false,
-        meta: {
-            errorMessage: 'Failed to fetch custom field',
+    return useGetCustomField(args[0], {
+        ...args[1],
+        query: {
+            staleTime: STALE_TIME_MS,
+            refetchOnWindowFocus: false,
+            ...args[1]?.query,
+            meta: {
+                errorMessage: 'Failed to fetch custom field',
+            },
+            select: (data) => data.data,
         },
     })
 }

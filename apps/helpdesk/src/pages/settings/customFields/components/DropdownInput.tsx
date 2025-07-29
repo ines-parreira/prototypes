@@ -1,7 +1,8 @@
-import React, { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import uniqueId from 'lodash/uniqueId'
 
+import { CreateCustomField } from '@gorgias/helpdesk-types'
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
@@ -23,7 +24,7 @@ import DropdownInputRow from './DropdownInputRow'
 import css from './DropdownInput.less'
 
 interface DropdownInputProps {
-    field: CustomField | CustomFieldInput
+    field: CustomField | CustomFieldInput | CreateCustomField
     value: CustomFieldValue[]
     onChange: (value: string[]) => void
     isDisabled?: boolean

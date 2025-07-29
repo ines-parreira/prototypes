@@ -29,10 +29,15 @@ export default function useCustomFieldsFilters({
         [objectPath],
     )
 
-    // @ts-ignore - customFieldId can be null - but the query is disabled in that case
-    const { data: customField } = useCustomFieldDefinition(customFieldId, {
-        enabled: typeof customFieldId === 'number',
-    })
+    const { data: customField } = useCustomFieldDefinition(
+        // @ts-ignore - customFieldId can be null - but the query is disabled in that case
+        customFieldId,
+        {
+            query: {
+                enabled: customFieldId !== null,
+            },
+        },
+    )
 
     const customFields = useCustomFieldDefinitions({
         archived: false,

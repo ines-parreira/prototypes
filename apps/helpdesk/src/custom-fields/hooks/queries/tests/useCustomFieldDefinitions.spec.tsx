@@ -1,6 +1,9 @@
-import React from 'react'
+import {
+    HttpResponse,
+    ListCustomFields200,
+    useListCustomFields,
+} from '@gorgias/helpdesk-queries'
 
-import { useGetCustomFieldDefinitions } from 'custom-fields/hooks/queries/queries'
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
@@ -14,10 +17,8 @@ import {
     useCustomFieldDefinitions,
 } from '../useCustomFieldDefinitions'
 
-jest.mock('custom-fields/hooks/queries/queries')
-const useGetCustomFieldDefinitionsMock = assumeMock(
-    useGetCustomFieldDefinitions,
-)
+jest.mock('@gorgias/helpdesk-queries')
+const useListCustomFieldsMock = assumeMock(useListCustomFields)
 
 describe('useCustomFieldDefinitions', () => {
     beforeEach(() => {
@@ -29,17 +30,15 @@ describe('useCustomFieldDefinitions', () => {
     it('should call useGetCustomFieldDefinitions with proper id', () => {
         renderHook(() => useCustomFieldDefinitions(listParams))
 
-        expect(useGetCustomFieldDefinitionsMock.mock.calls[0][0]).toBe(
-            listParams,
-        )
+        expect(useListCustomFieldsMock.mock.calls[0][0]).toBe(listParams)
     })
 
     it('should provide a stale time param', () => {
         renderHook(() => useCustomFieldDefinitions(listParams))
 
-        expect(
-            useGetCustomFieldDefinitionsMock.mock.calls[0][1]?.staleTime,
-        ).toBe(STALE_TIME_MS)
+        expect(useListCustomFieldsMock.mock.calls[0][1]?.query?.staleTime).toBe(
+            STALE_TIME_MS,
+        )
     })
 
     it('should provide a select param that picks the correct subset of data', () => {
@@ -50,8 +49,10 @@ describe('useCustomFieldDefinitions', () => {
         ])
 
         expect(
-            useGetCustomFieldDefinitionsMock.mock.calls[0][1]?.select!(
-                axiosSuccessResponse(ticketDropdownFieldDefinitions),
+            useListCustomFieldsMock.mock.calls[0][1]?.query?.select!(
+                axiosSuccessResponse(
+                    ticketDropdownFieldDefinitions,
+                ) as HttpResponse<ListCustomFields200>,
             ),
         ).toBe(ticketDropdownFieldDefinitions)
     })
@@ -60,8 +61,7 @@ describe('useCustomFieldDefinitions', () => {
         renderHook(() => useCustomFieldDefinitions(listParams))
 
         expect(
-            useGetCustomFieldDefinitionsMock.mock.calls[0][1]?.meta
-                ?.errorMessage,
+            useListCustomFieldsMock.mock.calls[0][1]?.query?.meta?.errorMessage,
         ).toBe('Failed to fetch custom fields')
     })
 })

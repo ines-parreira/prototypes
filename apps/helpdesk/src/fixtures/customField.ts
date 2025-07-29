@@ -10,6 +10,7 @@ import {
     CustomTypeDefinitionBoolean,
     CustomTypeDefinitionNumber,
     CustomTypeDefinitionText,
+    RequirementType,
 } from 'custom-fields/types'
 
 export const customFieldInputDefinition: CustomFieldInput = {
@@ -31,6 +32,7 @@ const fieldBaseDefinition = {
     object_type: OBJECT_TYPES.TICKET,
     required: false,
     managed_type: null,
+    requirement_type: 'visible' as RequirementType,
     created_datetime: '2022-01-02T03:04:05.123456+00:00',
     updated_datetime: '2022-01-02T03:04:05.123456+00:00',
     deactivated_datetime: null,
@@ -58,7 +60,7 @@ export const ticketInputFieldDefinition: CustomField & {
             input_type: 'input',
             placeholder: 'Some placeholder',
         },
-    } as CustomTypeDefinitionText<CustomFieldInputSettingsText>,
+    },
 }
 
 export const ticketNumberFieldDefinition: CustomField & {
@@ -76,7 +78,7 @@ export const ticketNumberFieldDefinition: CustomField & {
             min: '1',
             max: '10',
         },
-    } as CustomTypeDefinitionNumber,
+    },
 }
 
 export const ticketDropdownFieldDefinition: CustomField & {
@@ -97,7 +99,7 @@ export const ticketDropdownFieldDefinition: CustomField & {
                 'Choice 3::Sub 2::Sub 3::Sub 4::Sub 5',
             ],
         },
-    } as CustomTypeDefinitionText<CustomFieldInputSettingsDropdown>,
+    },
 }
 
 export const ticketBooleanFieldDefinition: CustomField & {
@@ -108,13 +110,14 @@ export const ticketBooleanFieldDefinition: CustomField & {
     priority: 2,
     label: 'Yes/No field',
     description: 'This is a boolean field',
+    requirement_type: 'required',
     definition: {
         data_type: 'boolean',
         input_settings: {
             input_type: 'dropdown',
             choices: [true, false],
         },
-    } as CustomTypeDefinitionBoolean,
+    },
 }
 
 export const customerInputFieldDefinition: CustomField & {

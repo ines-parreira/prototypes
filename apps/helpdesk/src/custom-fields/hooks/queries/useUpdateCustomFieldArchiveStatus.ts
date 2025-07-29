@@ -1,14 +1,14 @@
 import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 
-import { ObjectType } from '@gorgias/helpdesk-queries'
+import {
+    ObjectType,
+    queryKeys,
+    UpdateCustomField,
+    useUpdateCustomField,
+} from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
-import {
-    customFieldDefinitionKeys,
-    useUpdatePartialCustomField,
-} from 'custom-fields/hooks/queries/queries'
-import { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -21,11 +21,11 @@ export const useUpdateCustomFieldArchiveStatus = (
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const { mutate, mutateAsync, ...mutationQueryAPI } =
-        useUpdatePartialCustomField({
-            onSuccess: (_, [, { deactivated_datetime }]) => {
+    const { mutate, mutateAsync, ...mutationQueryAPI } = useUpdateCustomField({
+        mutation: {
+            onSuccess: (_, { data: { deactivated_datetime } }) => {
                 void queryClient.invalidateQueries({
-                    queryKey: customFieldDefinitionKeys.all(),
+                    queryKey: queryKeys.customFields.all(),
                 })
                 void dispatch(
                     notify({
@@ -40,7 +40,7 @@ export const useUpdateCustomFieldArchiveStatus = (
                     }),
                 )
             },
-            onError: (error, [, { deactivated_datetime }]) => {
+            onError: (error, { data: { deactivated_datetime } }) => {
                 void dispatch(
                     notify({
                         title: `Failed to ${
@@ -52,7 +52,8 @@ export const useUpdateCustomFieldArchiveStatus = (
                     }),
                 )
             },
-        })
+        },
+    })
 
     return {
         ...mutationQueryAPI,
@@ -68,11 +69,11 @@ export const useUpdateCustomFieldArchiveStatus = (
 function onMutate(
     id: number,
     archived: boolean,
-): [id: number, data: Partial<CustomField>] {
-    return [
+): { id: number; data: UpdateCustomField } {
+    return {
         id,
-        {
+        data: {
             deactivated_datetime: archived ? moment.utc().toISOString() : null,
         },
-    ]
+    }
 }

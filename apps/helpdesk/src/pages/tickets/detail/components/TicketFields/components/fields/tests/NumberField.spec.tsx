@@ -1,28 +1,29 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import client from 'models/api/resources'
+import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { getLastMockCall } from 'utils/testing'
 
 import NumberField from '../NumberField'
 
 const mockStore = configureMockStore()
-const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
 
 const ticketId = 'whateva'
+
+jest.mock('custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue')
+const useUpdateOrDeleteTicketFieldValueMock =
+    useUpdateOrDeleteTicketFieldValue as jest.Mock
 
 describe('<NumberField />', () => {
     const defaultState = {
@@ -45,12 +46,15 @@ describe('<NumberField />', () => {
     }
 
     let store = mockStore(defaultState)
+    const mutateMock = jest.fn()
 
     beforeEach(() => {
         store = mockStore(defaultState)
         store.dispatch = jest.fn()
-        mockedServer.reset()
         queryClient.clear()
+        useUpdateOrDeleteTicketFieldValueMock.mockReturnValue({
+            mutate: mutateMock,
+        })
     })
 
     it.each([999, undefined, 0, 2.3e-34])(
@@ -106,11 +110,6 @@ describe('<NumberField />', () => {
     })
 
     it('should update accordingly when value is typed', async () => {
-        mockedServer
-            .onPut(`/api/tickets/${ticketId}/custom-fields/${fieldState.id}`)
-            .reply(200, {
-                data: 'not used, don’t care',
-            })
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -136,7 +135,11 @@ describe('<NumberField />', () => {
         fireEvent.blur(input)
 
         await waitFor(() => {
-            expect(mockedServer.history.put[0].data).toEqual('100')
+            expect(mutateMock).toHaveBeenCalledWith({
+                fieldId: fieldState.id,
+                ticketId,
+                value: Number(newValue),
+            })
         })
         expect(store.dispatch).toHaveBeenCalledTimes(4)
         expect(store.dispatch).toHaveBeenNthCalledWith(
@@ -145,43 +148,31 @@ describe('<NumberField />', () => {
         )
     })
 
-    it('should not http update value when blurred on a new ticket', async () => {
-        mockedServer
-            .onPut(`/api/tickets/${ticketId}/custom-fields/${fieldState.id}`)
-            .reply(200, {
-                data: 'not used, don’t care',
-            })
+    it('should disable the update query when ticket is new', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({ ticket: fromJS({}) })}>
                     <NumberField
                         {...{
                             ...initialProps,
-                            fieldState: { ...fieldState, hasError: true },
+                            fieldState: { ...fieldState },
                         }}
                     />
                 </Provider>
             </QueryClientProvider>,
         )
 
-        const input = screen.getByRole('spinbutton')
-        userEvent.clear(input)
-        await userEvent.type(input, '100')
-        fireEvent.blur(input)
-        await waitFor(() => {
-            expect(mockedServer.history.put).toHaveLength(0)
-        })
+        expect(useUpdateOrDeleteTicketFieldValueMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                onError: expect.any(Function),
+            }),
+            { isDisabled: true },
+        )
     })
 
     it.each([999, undefined, 0, 2.3e-34])(
         'should have onError to revert to a previous state',
         async (initialValue) => {
-            mockedServer
-                .onPut(
-                    `/api/tickets/${ticketId}/custom-fields/${fieldState.id}`,
-                )
-                .reply(400)
-
             const props = {
                 ...initialProps,
                 fieldState: { ...initialProps.fieldState, value: initialValue },
@@ -199,6 +190,8 @@ describe('<NumberField />', () => {
             const input = screen.getByRole('spinbutton')
             await userEvent.type(input, (fieldState.value + 1).toString())
             fireEvent.blur(input)
+
+            getLastMockCall(useUpdateOrDeleteTicketFieldValueMock)[0].onError()
 
             await waitFor(() => {
                 expect(store.dispatch).toHaveBeenLastCalledWith(

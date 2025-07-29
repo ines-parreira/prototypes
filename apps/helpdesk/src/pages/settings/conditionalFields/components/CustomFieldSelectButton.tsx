@@ -63,7 +63,7 @@ export default function CustomFieldSelectButton({
                 archived: false,
                 object_type: objectType,
             },
-            { refetchOnWindowFocus: 'always' },
+            { query: { refetchOnWindowFocus: 'always' } },
         )
 
     const options = useMemo(
@@ -71,7 +71,7 @@ export default function CustomFieldSelectButton({
             customFields
                 .filter(
                     ({ managed_type }) =>
-                        !isCustomFieldAIManagedType(managed_type),
+                        !isCustomFieldAIManagedType(managed_type ?? null),
                 )
                 .filter(({ id }) => !ignoreIds?.includes(id)),
 

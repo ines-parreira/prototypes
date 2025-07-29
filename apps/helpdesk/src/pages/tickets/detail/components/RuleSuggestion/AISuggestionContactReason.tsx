@@ -73,14 +73,11 @@ export default function ContactReasonSuggestion({ ticket }: Props) {
                 },
             }),
         )
-        mutate([
-            {
-                fieldType: 'Ticket',
-                holderId: ticket.id,
-                fieldId: contactReasonPrediction.id,
-                value: contactReasonPrediction.value,
-            },
-        ])
+        mutate({
+            ticketId: ticket.id,
+            fieldId: contactReasonPrediction.id,
+            value: contactReasonPrediction.value,
+        })
     }
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -6,8 +6,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
 import { appQueryClient } from 'api/queryClient'
-import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
 import { withDefaultCustomFieldAndLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import CustomFieldsFilter from 'domains/reporting/pages/common/filters/CustomFieldsFilter'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
@@ -27,9 +28,12 @@ const storyConfig: Meta = {
 const Template: StoryFn<ComponentProps<typeof CustomFieldsFilter>> = (
     props,
 ) => {
-    appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
-        data: customFieldsMockResponse,
-    })
+    appQueryClient.setQueryData(
+        queryKeys.customFields.listCustomFields(activeParams),
+        {
+            data: customFieldsMockResponse,
+        },
+    )
     return (
         <QueryClientProvider client={appQueryClient}>
             <Provider store={configureMockStore([thunk])(defaultState)}>

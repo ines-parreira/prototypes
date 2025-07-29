@@ -54,12 +54,30 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
     return input
 }
 
+function pickDefinitionFields(
+    field: CustomField | CustomFieldInput,
+): CustomFieldInput {
+    return cloneDeep(
+        pick(field, [
+            'object_type',
+            'label',
+            'description',
+            'required',
+            'requirement_type',
+            'managed_type',
+            'definition',
+        ]),
+    )
+}
+
 export default function FieldForm(props: FieldFormProps) {
     const dispatch = useAppDispatch()
 
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
-    const isReadOnly = isCustomFieldSystemReadOnly(props.field.managed_type)
+    const isReadOnly = isCustomFieldSystemReadOnly(
+        props.field.managed_type ?? null,
+    )
     const { mutateAsync } = useUpdateCustomFieldArchiveStatus(
         // this `: 0` case should never happen
         isCustomField(props.field) ? props.field.id : 0,
@@ -73,20 +91,7 @@ export default function FieldForm(props: FieldFormProps) {
     const [isFormValid, setIsFormValid] = useState(false)
     const [isFormDirty, setIsFormDirty] = useState(false)
 
-    // we need to deep clone the initial form to avoid mutating the initial definition object & choices array that is passed by reference
-    const [form, setForm] = useState(
-        cloneDeep(
-            pick(props.field, [
-                'object_type',
-                'label',
-                'description',
-                'required',
-                'requirement_type',
-                'managed_type',
-                'definition',
-            ]),
-        ),
-    )
+    const [form, setForm] = useState(pickDefinitionFields(props.field))
 
     // Use an effect since useRef() does not notify when the value is set
     useEffect(() => {
@@ -246,7 +251,7 @@ export default function FieldForm(props: FieldFormProps) {
                     <InputField
                         name="settings.placeholder"
                         label="Placeholder"
-                        value={form.definition.input_settings.placeholder}
+                        value={form.definition.input_settings.placeholder ?? ''}
                         onChange={(val) =>
                             setValue(
                                 'definition.input_settings.placeholder',

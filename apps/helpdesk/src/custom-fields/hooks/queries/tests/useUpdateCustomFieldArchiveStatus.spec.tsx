@@ -1,15 +1,15 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { OBJECT_TYPES } from 'custom-fields/constants'
 import {
-    customFieldDefinitionKeys,
-    useUpdatePartialCustomField,
-} from 'custom-fields/hooks/queries/queries'
+    CustomField,
+    queryKeys,
+    useUpdateCustomField,
+} from '@gorgias/helpdesk-queries'
+
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { NotificationStatus } from 'state/notifications/types'
@@ -21,8 +21,8 @@ import { useUpdateCustomFieldArchiveStatus } from '../useUpdateCustomFieldArchiv
 
 const queryClient = mockQueryClient()
 
-jest.mock('custom-fields/hooks/queries/queries')
-const useUpdatePartialCustomFieldMock = assumeMock(useUpdatePartialCustomField)
+jest.mock('@gorgias/helpdesk-queries')
+const useUpdateCustomFieldMock = assumeMock(useUpdateCustomField)
 
 const updateMutateMock = jest.fn()
 
@@ -32,11 +32,11 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
     beforeEach(() => {
         mockStore.clearActions()
         jest.resetAllMocks()
-        useUpdatePartialCustomFieldMock.mockImplementation(() => {
+        useUpdateCustomFieldMock.mockImplementation(() => {
             return {
                 mutate: updateMutateMock,
                 mutateAsync: updateMutateMock,
-            } as unknown as ReturnType<typeof useUpdatePartialCustomField>
+            } as unknown as ReturnType<typeof useUpdateCustomField>
         })
         jest.useFakeTimers().setSystemTime(42)
     })
@@ -61,10 +61,10 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
             },
         )
 
-        const expectedData = [
-            ticketDropdownFieldDefinition.id,
-            { deactivated_datetime: '1970-01-01T00:00:00.042Z' },
-        ]
+        const expectedData = {
+            id: ticketDropdownFieldDefinition.id,
+            data: { deactivated_datetime: '1970-01-01T00:00:00.042Z' },
+        }
 
         result.current.mutate(true)
         expect(updateMutateMock).toHaveBeenNthCalledWith(1, expectedData)
@@ -120,16 +120,16 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
                 },
             )
 
-            useUpdatePartialCustomFieldMock.mock.calls[0][0]?.onSuccess!(
-                axiosSuccessResponse(fieldDefinition),
-                [
-                    fieldDefinition.id,
-                    { deactivated_datetime: deactivatedDatetime },
-                ],
+            useUpdateCustomFieldMock.mock.calls[0][0]?.mutation?.onSuccess!(
+                axiosSuccessResponse(fieldDefinition as CustomField),
+                {
+                    id: fieldDefinition.id,
+                    data: { deactivated_datetime: deactivatedDatetime },
+                },
                 undefined,
             )
             expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-                queryKey: customFieldDefinitionKeys.all(),
+                queryKey: queryKeys.customFields.all(),
             })
 
             expect(mockStore.getActions()).toMatchObject([
@@ -159,9 +159,12 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
             },
         )
 
-        useUpdatePartialCustomFieldMock.mock.calls[0][0]?.onError!(
+        useUpdateCustomFieldMock.mock.calls[0][0]?.mutation?.onError!(
             {},
-            [ticketDropdownFieldDefinition.id, { deactivated_datetime: '42' }],
+            {
+                id: ticketDropdownFieldDefinition.id,
+                data: { deactivated_datetime: '42' },
+            },
             undefined,
         )
 

@@ -1,8 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, waitFor } from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import moment from 'moment'
@@ -15,12 +14,12 @@ import { useAgentActivity } from '@gorgias/realtime'
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import client from 'models/api/resources'
 import { MacroActionName } from 'models/macroAction/types'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
@@ -50,7 +49,6 @@ import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
 import { TicketDetailContainer } from '../TicketDetailContainer'
 
-const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
 jest.useFakeTimers()
 
@@ -64,6 +62,9 @@ jest.spyOn(localForageManager, 'getTable').mockReturnValue(mockGetTableObject)
 jest.spyOn(localForageManager, 'clearTable')
 
 const voiceCallsSpy = jest.spyOn(voiceCallQueries, 'useListVoiceCalls')
+
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+const useCustomFieldDefinitionsMock = useCustomFieldDefinitions as jest.Mock
 
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('../components/TicketView', () => {
@@ -148,7 +149,7 @@ jest.mock(
     'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults',
     () => ({
         useCustomFieldsConditionsEvaluationResults: jest.fn(() => ({
-            evaluationResults: [],
+            evaluationResults: {},
             conditionsLoading: false,
         })),
     }),
@@ -247,13 +248,18 @@ describe('TicketDetailContainer component', () => {
     })
 
     beforeEach(() => {
-        mockedServer.reset()
         mockedStore = mockStore({
             ticket: fromJS({
                 tags: [],
             }),
         })
         mockedStore.dispatch = jest.fn()
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                data: [ticketDropdownFieldDefinition],
+            },
+        })
         prepareTicketMessageMock.mockReturnValue(preparedData)
         setStatusMock.mockImplementation((status, callback) => {
             act(callback)
@@ -1428,13 +1434,15 @@ describe('TicketDetailContainer component', () => {
 
     describe('ticket fields', () => {
         it('should not allow ticket to be set to close if errored', async () => {
-            mockedServer.onGet('/api/custom-fields/').reply(200, {
-                data: [
-                    ticketDropdownFieldDefinition,
-                    { ...ticketInputFieldDefinition, required: true },
-                ],
+            useCustomFieldDefinitionsMock.mockReturnValue({
+                isLoading: false,
+                data: {
+                    data: [
+                        ticketDropdownFieldDefinition,
+                        { ...ticketInputFieldDefinition, required: true },
+                    ],
+                },
             })
-
             const { getByTestId } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
