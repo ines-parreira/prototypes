@@ -49,6 +49,9 @@ export const AnalyticsCard = ({
         abandonedCartJourney.state,
     )
 
+    // const isEmpty = !analyticsData?.length
+    const isEmpty = true
+
     useEffect(() => {
         setJourneyState(abandonedCartJourney.state)
     }, [abandonedCartJourney])
@@ -62,6 +65,10 @@ export const AnalyticsCard = ({
     const statusBadgeClass = classNames(css.statusBadge, {
         [css['statusBadge--active']]: journeyState === 'active',
         [css['statusBadge--paused']]: journeyState === 'paused',
+    })
+
+    const analyticsContentClass = classNames(css.analyticsContent, {
+        [css['analyticsContent--empty']]: isEmpty,
     })
 
     const { offer_discount: isDiscountEnabled } = journeyConfigurations || {}
@@ -90,12 +97,9 @@ export const AnalyticsCard = ({
         }
     }, [journeyState, dispatch, handleUpdate])
 
-    // const isEmpty = !analyticsData?.length
-    const isEmpty = true
-
     return (
         <div className={css.analyticsCard}>
-            <div className={css.analyticsContent}>
+            <div className={analyticsContentClass}>
                 <div className={css.status}>
                     <img src={statusIcon[journeyState]} alt="sphere-icon" />
                     <span>Abandoned Cart</span>

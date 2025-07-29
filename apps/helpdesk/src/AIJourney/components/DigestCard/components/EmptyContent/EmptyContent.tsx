@@ -11,8 +11,8 @@ export const EmptyContent = () => {
             </i>
             <span className={css.noData}>No data available yet</span>
             <span className={css.info}>
-                Your Abandoned Cart flow has been activated recently. Data will
-                soon be available.
+                Your Abandoned Cart flow has been activated recently. No data is
+                available yet.
             </span>
         </div>
     )

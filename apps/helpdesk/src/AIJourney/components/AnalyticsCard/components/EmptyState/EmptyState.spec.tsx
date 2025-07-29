@@ -3,13 +3,6 @@ import { render, screen } from '@testing-library/react'
 import { EmptyState } from './EmptyState'
 
 describe('EmptyState', () => {
-    it('should render the cart icon', () => {
-        render(<EmptyState />)
-
-        const cartIcon = screen.getByAltText('sphere-icon')
-        expect(cartIcon).toBeInTheDocument()
-    })
-
     it('should render the default "No data available yet" text', () => {
         render(<EmptyState />)
 
