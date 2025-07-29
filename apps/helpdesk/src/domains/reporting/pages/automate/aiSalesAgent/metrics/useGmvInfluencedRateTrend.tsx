@@ -1,7 +1,7 @@
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
-import { gmvQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { gmvUSDQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchGenericTrend,
@@ -19,8 +19,8 @@ const useGmvInfluencedRateTrend = (filters: StatsFilters, timezone: string) =>
         {
             gmvInfluenced: useGmvInfluencedTrendInUSD(filters, timezone),
             gmv: useMetricTrend(
-                gmvQueryFactory(filters, timezone),
-                gmvQueryFactory(
+                gmvUSDQueryFactory(filters, timezone),
+                gmvUSDQueryFactory(
                     {
                         ...filters,
                         period: getPreviousPeriod(filters.period),
@@ -37,8 +37,8 @@ const fetchGmvInfluencedRateTrend = (filters: StatsFilters, timezone: string) =>
         {
             gmvInfluenced: fetchGmvInfluencedTrendInUSD(filters, timezone),
             gmv: fetchMetricTrend(
-                gmvQueryFactory(filters, timezone),
-                gmvQueryFactory(
+                gmvUSDQueryFactory(filters, timezone),
+                gmvUSDQueryFactory(
                     {
                         ...filters,
                         period: getPreviousPeriod(filters.period),

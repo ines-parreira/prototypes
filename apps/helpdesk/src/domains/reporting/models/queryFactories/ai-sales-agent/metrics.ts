@@ -81,7 +81,7 @@ export const averageOrderValuePreviewQueryFactory = (
     }
 }
 
-export const gmvQueryFactory = (
+export const gmvUSDQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
@@ -128,6 +128,21 @@ export const gmvInfluencedQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+})
+
+export const gmvQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.Gmv],
+    dimensions: [AiSalesAgentOrdersDimension.Currency],
+    filters: [
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
             filters,

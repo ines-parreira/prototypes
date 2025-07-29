@@ -1,11 +1,10 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
+import { fetchMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
@@ -17,9 +16,8 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { useTrialMetrics } from '../hooks/useTrialMetrics'
 
-const server = setupServer()
-
 // Mock all dependencies
+jest.mock('domains/reporting/hooks/useMetricPerDimension')
 jest.mock('hooks/useAppSelector')
 jest.mock('models/billing/queries')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
@@ -31,6 +29,7 @@ jest.mock(
     }),
 )
 
+const mockFetchMetricPerDimension = assumeMock(fetchMetricPerDimension)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseStoreActivations = assumeMock(useStoreActivations)
@@ -48,53 +47,51 @@ const mocksStore = {
     replaceReducer: jest.fn(),
 } as unknown as Store
 
-// Mock API responses
-const mockGmvReportingResponse = http.post('*/api/reporting', () => {
-    return HttpResponse.json({
-        data: {
-            allData: [
-                { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
-                { [AiSalesAgentOrdersMeasure.Gmv]: '1500' },
-                { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
-            ],
-        },
-    })
-})
+// Mock data responses
+const gmvReportingData = {
+    data: {
+        value: null,
+        decile: null,
+        allData: [
+            { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
+            { [AiSalesAgentOrdersMeasure.Gmv]: '1500' },
+            { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
+        ],
+    },
+    isFetching: false,
+    isError: false,
+}
 
-const mockEmptyGmvReportingResponse = http.post('*/api/reporting', () => {
-    return HttpResponse.json({
-        data: {
-            allData: [],
-        },
-    })
-})
+const emptyGmvReportingData = {
+    data: {
+        value: null,
+        decile: null,
+        allData: [],
+    },
+    isFetching: false,
+    isError: false,
+}
 
-const mockGmvReportingResponseWithNulls = http.post('*/api/reporting', () => {
-    return HttpResponse.json({
-        data: {
-            allData: [
-                { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
-                { [AiSalesAgentOrdersMeasure.Gmv]: null },
-                { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
-            ],
-        },
-    })
-})
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
+const gmvReportingDataWithNulls = {
+    data: {
+        value: null,
+        decile: null,
+        allData: [
+            { [AiSalesAgentOrdersMeasure.Gmv]: '1000' },
+            { [AiSalesAgentOrdersMeasure.Gmv]: null },
+            { [AiSalesAgentOrdersMeasure.Gmv]: '2000' },
+        ],
+    },
+    isFetching: false,
+    isError: false,
+}
 
 beforeEach(() => {
-    server.use(mockGmvReportingResponse)
+    mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
 })
 
 afterEach(() => {
-    server.resetHandlers()
-})
-
-afterAll(() => {
-    server.close()
+    jest.clearAllMocks()
 })
 
 describe('useTrialMetrics', () => {
@@ -170,7 +167,8 @@ describe('useTrialMetrics', () => {
     })
 
     describe('basic functionality', () => {
-        it('should calculate GMV correctly from time series data', async () => {
+        it('should calculate GMV metrics correctly from time series data', async () => {
+            mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
@@ -178,9 +176,8 @@ describe('useTrialMetrics', () => {
                 expect(result.current.isLoading).toBe(false)
             })
         })
-
         it('should return 0 GMV when no data is available', async () => {
-            server.use(mockEmptyGmvReportingResponse)
+            mockFetchMetricPerDimension.mockResolvedValue(emptyGmvReportingData)
             mockFormatAmount.mockReturnValue('$0')
 
             const { result } = renderHookWithWrapper()
@@ -191,7 +188,7 @@ describe('useTrialMetrics', () => {
         })
 
         it('should return 0 GMV when data is empty', async () => {
-            server.use(mockEmptyGmvReportingResponse)
+            mockFetchMetricPerDimension.mockResolvedValue(emptyGmvReportingData)
             mockFormatAmount.mockReturnValue('$0')
 
             const { result } = renderHookWithWrapper()
@@ -202,7 +199,9 @@ describe('useTrialMetrics', () => {
         })
 
         it('should handle null values in GMV data', async () => {
-            server.use(mockGmvReportingResponseWithNulls)
+            mockFetchMetricPerDimension.mockResolvedValue(
+                gmvReportingDataWithNulls,
+            )
             mockFormatAmount.mockReturnValue('$3,000')
 
             const { result } = renderHookWithWrapper()
@@ -215,6 +214,7 @@ describe('useTrialMetrics', () => {
 
     describe('store integrations', () => {
         it('should handle store integrations correctly', async () => {
+            mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
@@ -260,6 +260,7 @@ describe('useTrialMetrics', () => {
 
     describe('timezone handling', () => {
         it('should use timezone from selector', async () => {
+            mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
@@ -283,7 +284,7 @@ describe('useTrialMetrics', () => {
 
     describe('remaining days calculation', () => {
         it('should return 0 when no store activations exist', async () => {
-            server.use(mockEmptyGmvReportingResponse)
+            mockFetchMetricPerDimension.mockResolvedValue(emptyGmvReportingData)
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: null,
                 isFetchLoading: false,
@@ -298,7 +299,7 @@ describe('useTrialMetrics', () => {
         })
 
         it('should return 0 when all stores have missing trial dates', async () => {
-            server.use(mockEmptyGmvReportingResponse)
+            mockFetchMetricPerDimension.mockResolvedValue(emptyGmvReportingData)
             const storeActivationsWithMissingDates = {
                 'store-1': {
                     name: 'store-1',
@@ -326,6 +327,7 @@ describe('useTrialMetrics', () => {
 
     describe('date range', () => {
         it('should handle date range correctly', async () => {
+            mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
@@ -356,11 +358,13 @@ describe('useTrialMetrics', () => {
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
-                expect(result.current.gmvInfluencedRate).toBe(0) // Mock returns 0 for now
+                expect(result.current.gmvInfluencedRate).toBe(1)
             })
         })
 
-        it('should return 0 gmvInfluencedRate when no data', async () => {
+        it('should return gmvInfluencedRate correctly', async () => {
+            mockFetchMetricPerDimension.mockResolvedValue(emptyGmvReportingData)
+            appQueryClient.clear()
             const { result } = renderHookWithWrapper()
 
             await waitFor(() => {
