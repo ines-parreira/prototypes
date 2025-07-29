@@ -210,7 +210,7 @@ export const HandoverConfigurationDrawer: React.FC<
                     />
                     <RadioButton
                         value={HandoverMethods.WEBHOOK}
-                        caption="Use this Webhook to send handover conversations to the tool of your choice."
+                        caption="Conversations that need human intervention will use this webhook to send handover conversations to the tool of your choice."
                         label="Webhook"
                         isSelected={handoverMethod === HandoverMethods.WEBHOOK}
                         onClick={() =>

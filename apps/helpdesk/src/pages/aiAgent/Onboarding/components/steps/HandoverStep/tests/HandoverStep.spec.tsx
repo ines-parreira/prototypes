@@ -509,4 +509,46 @@ describe('HandoverStep', () => {
 
         delete (window as any).GORGIAS_STATE
     })
+
+    it('should change toggle to the clicked card when clicking on the card', async () => {
+        renderComponent()
+        jest.runAllTimers()
+
+        const emailCard = screen
+            .getByText(
+                'Conversations that need human intervention will be sent to this email address.',
+            )
+            .closest('.card')
+        const emailRadio = emailCard?.querySelector('input[type="radio"]')
+        expect(emailRadio).toBeChecked()
+
+        const webhookCard = screen
+            .getByText(
+                'Conversations that need human intervention will use this webhook to send handover conversations to the tool of your choice.',
+            )
+            .closest('.card')
+
+        await act(async () => {
+            fireEvent.click(webhookCard!)
+        })
+
+        const webhookRadio = webhookCard?.querySelector('input[type="radio"]')
+        expect(webhookRadio).toBeChecked()
+        expect(emailRadio).not.toBeChecked()
+
+        const gorgiasCard = screen
+            .getByText(
+                'Conversations that need human intervention will be sent to handover tickets within Gorgias.',
+            )
+            .closest('.card')
+
+        await act(async () => {
+            fireEvent.click(gorgiasCard!)
+        })
+
+        const gorgiasRadio = gorgiasCard?.querySelector('input[type="radio"]')
+        expect(gorgiasRadio).toBeChecked()
+        expect(webhookRadio).not.toBeChecked()
+        expect(emailRadio).not.toBeChecked()
+    })
 })

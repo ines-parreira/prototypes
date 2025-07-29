@@ -2,10 +2,12 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -123,6 +125,10 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan')
 const useAiAgentScopesForAutomationPlanMock = assumeMock(
     useAiAgentScopesForAutomationPlan,
 )
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(() => ({})),
+}))
 
 const goToStep = jest.fn()
 
@@ -852,6 +858,49 @@ describe('ChannelsStep', () => {
                     WizardStepEnum.SHOPIFY_INTEGRATION,
                 )
             })
+        })
+
+        it('should disable email channel (isEmailChannelEnabled=false) and hide email integration when in standalone mode, not backtracking, with no preselected emails', async () => {
+            // Mock flags to simulate standalone mode (isStandalone = true)
+            const mockUseFlags = useFlags as jest.Mock
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.StandaloneHandoverCapabilities]: true,
+            })
+
+            // Set currentStepName to CHANNELS to simulate not backtracking (isBacktracking = false)
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    ...defaultOnboardingData,
+                    currentStepName: WizardStepEnum.CHANNELS,
+                    emailIntegrationIds: [],
+                    chatIntegrationIds: [],
+                },
+                isLoading: false,
+            } as any)
+
+            usePreselectedEmailsMock.mockReturnValue([])
+            usePreselectedChatMock.mockReturnValue([])
+
+            renderWithProvider()
+
+            await waitFor(() => {
+                expect(screen.queryByText('Email')).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText(
+                        'Enable your AI Agent to respond to customers via email.',
+                    ),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText(
+                        /AI agent will respond to the following emails/,
+                    ),
+                ).not.toBeInTheDocument()
+
+                expect(screen.getByText('Chat')).toBeInTheDocument()
+                expect(screen.getByRole('checkbox')).toBeChecked()
+            })
+
+            mockUseFlags.mockReturnValue({})
         })
     })
 

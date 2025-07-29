@@ -2,12 +2,14 @@ import React, { useMemo, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import {
     EMAIL_INTEGRATION_TYPES,
@@ -59,7 +61,7 @@ import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
-import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -156,6 +158,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
         const channelsStepIndex = STEPS_INDEX[WizardStepEnum.CHANNELS]
         return currentStepIndex > channelsStepIndex
     }, [data?.currentStepName])
+
+    const flags = useFlags()
+    const isStandalone = flags[FeatureFlagKey.StandaloneHandoverCapabilities]
 
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)
@@ -266,13 +271,15 @@ export const ChannelsStep: React.FC<StepProps> = ({
         [preselectedEmails, alreadyUsedEmailIntegrationIds],
     )
 
+    const isEmailChannelEnabled =
+        !isStandalone &&
+        (!isBacktracking || filteredPreselectedEmails.length > 0)
+
     const methods = useForm<ChannelsFormValues>({
         // Before the next step is visited we always
         // pre-select both the integrations
         values: {
-            emailChannelEnabled: !isBacktracking
-                ? true
-                : !!filteredPreselectedEmails?.length,
+            emailChannelEnabled: isEmailChannelEnabled,
             emailIntegrationIds: filteredPreselectedEmails,
             chatChannelEnabled: !isBacktracking
                 ? true
@@ -486,7 +493,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     </AIBanner>
                 )}
 
-                {data?.scopes.includes(AiAgentScopes.SUPPORT) && (
+                {!isStandalone && (
                     <>
                         <ToggleCard
                             checked={emailChannelEnabled}

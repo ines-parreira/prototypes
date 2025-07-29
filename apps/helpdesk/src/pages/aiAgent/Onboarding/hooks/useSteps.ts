@@ -46,12 +46,12 @@ export const useSteps = ({
                 condition: scopes.includes(AiAgentScopes.SALES),
             },
             {
-                step: WizardStepEnum.PERSONALITY_PREVIEW,
-                condition: true,
-            },
-            {
                 step: WizardStepEnum.HANDOVER,
                 condition: handoverEnabled,
+            },
+            {
+                step: WizardStepEnum.PERSONALITY_PREVIEW,
+                condition: true,
             },
             {
                 step: WizardStepEnum.KNOWLEDGE,

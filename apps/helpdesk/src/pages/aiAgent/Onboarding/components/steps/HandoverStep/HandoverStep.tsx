@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useEffect, useMemo, useRef } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -58,23 +58,27 @@ const HandoverCard: FC<{
     badgeType,
     badgeContent,
     children,
-}) => (
-    <Card className={css.card}>
-        <div className={css.cardTitleRow}>
-            <RadioButton
-                label={label}
-                caption={caption}
-                value={value}
-                isSelected={isSelected}
-                onChange={onChange}
-            ></RadioButton>
-            {badgeType && badgeContent && (
-                <Badge type="success">{badgeContent}</Badge>
-            )}
-        </div>
-        {children}
-    </Card>
-)
+}) => {
+    const toggleRef = useRef<HTMLInputElement>(null)
+    return (
+        <Card className={css.card} onClick={() => toggleRef.current!.click()}>
+            <div className={css.cardTitleRow}>
+                <RadioButton
+                    ref={toggleRef}
+                    label={label}
+                    caption={caption}
+                    value={value}
+                    isSelected={isSelected}
+                    onChange={onChange}
+                ></RadioButton>
+                {badgeType && badgeContent && (
+                    <Badge type="success">{badgeContent}</Badge>
+                )}
+            </div>
+            {children}
+        </Card>
+    )
+}
 
 export const HandoverStep: FC<StepProps> = ({
     currentStep,
@@ -267,14 +271,14 @@ export const HandoverStep: FC<StepProps> = ({
 
                     <HandoverCard
                         label="Gorgias"
-                        caption="Use this Webhook to send handover conversations to the tool of your choice."
+                        caption="Conversations that need human intervention will be sent to handover tickets within Gorgias."
                         value="gorgias"
                         isSelected={handoverMethod === 'gorgias'}
                         onChange={(value) => setValue('handoverMethod', value)}
                     />
                     <HandoverCard
                         label="Webhook"
-                        caption="Use this Webhook to send handover conversations to the tool of your choice."
+                        caption="Conversations that need human intervention will use this webhook to send handover conversations to the tool of your choice."
                         value="webhook"
                         isSelected={handoverMethod === 'webhook'}
                         onChange={(value) => setValue('handoverMethod', value)}

@@ -928,7 +928,7 @@ export const StoreConfigForm = ({
                                                 type={'badge'}
                                                 badgeText={
                                                     formValues.handoverMethod ??
-                                                    'gorgias'
+                                                    undefined
                                                 }
                                                 onClick={() =>
                                                     setIsHandoverDrawerOpen(
