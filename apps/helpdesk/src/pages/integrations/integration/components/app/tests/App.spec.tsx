@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -81,7 +79,7 @@ describe(`App`, () => {
             return [200, dummyAppData]
         })
 
-        const { findAllByText } = renderWithRouter(
+        renderWithRouter(
             <Provider store={store}>
                 <App />
             </Provider>,
@@ -90,16 +88,16 @@ describe(`App`, () => {
                 route: `/integrations/app/${appId}?preview=1`,
             },
         )
-        await findAllByText(new RegExp(dummyAppData.name))
+        await screen.findAllByText(new RegExp(dummyAppData.name))
 
         expect(mockServer.history.get.length).toEqual(2)
     })
 
-    it.skip('should render the advanced tab', async () => {
+    it('should render the advanced tab', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
         mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
 
-        const { container } = renderWithRouter(
+        renderWithRouter(
             <Provider store={store}>
                 <App />
             </Provider>,
@@ -109,10 +107,8 @@ describe(`App`, () => {
             },
         )
 
-        expect(container.firstChild).toMatchSnapshot()
-        await screen.findAllByText(new RegExp(dummyAppData.name))
         await waitFor(() => {
-            expect(container.firstChild).toMatchSnapshot()
+            expect(screen.getByText('Granted permissions')).toBeInTheDocument()
         })
     })
 
@@ -137,7 +133,7 @@ describe(`App`, () => {
             }),
         } as unknown as RootState)
 
-        const { getByText } = renderWithRouter(
+        renderWithRouter(
             <Provider store={store}>
                 <App />
             </Provider>,
@@ -148,9 +144,9 @@ describe(`App`, () => {
         )
 
         await screen.findAllByText(new RegExp(dummyAppData.name))
-        expect(getByText('App Details')).toBeDefined()
-        expect(getByText('Advanced')).toBeDefined()
-        expect(getByText('Connections')).toBeDefined()
+        expect(screen.getByText('App Details')).toBeDefined()
+        expect(screen.getByText('Advanced')).toBeDefined()
+        expect(screen.getByText('Connections')).toBeDefined()
     })
 
     it('should render the connections tab with the button add connection for apps that support multiple connections', async () => {
@@ -180,7 +176,7 @@ describe(`App`, () => {
             }),
         } as unknown as RootState)
 
-        const { getByText } = renderWithRouter(
+        renderWithRouter(
             <Provider store={store}>
                 <App />
             </Provider>,
@@ -191,7 +187,7 @@ describe(`App`, () => {
         )
 
         await screen.findAllByText(new RegExp(dummyAppData.name))
-        expect(getByText('Add Account')).toBeDefined()
+        expect(screen.getByText('Add Account')).toBeDefined()
     })
 
     it('should not render the connections tab with no integrations', async () => {
@@ -200,7 +196,7 @@ describe(`App`, () => {
             .reply(200, { ...dummyAppData, is_installed: true })
         mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
 
-        const { queryByText } = renderWithRouter(
+        renderWithRouter(
             <Provider store={store}>
                 <App />
             </Provider>,
@@ -211,9 +207,9 @@ describe(`App`, () => {
         )
 
         await screen.findAllByText(new RegExp(dummyAppData.name))
-        expect(queryByText('App Details')).not.toBeNull()
-        expect(queryByText('Advanced')).not.toBeNull()
-        expect(queryByText('Connections')).toBeNull()
+        expect(screen.queryByText('App Details')).not.toBeNull()
+        expect(screen.queryByText('Advanced')).not.toBeNull()
+        expect(screen.queryByText('Connections')).toBeNull()
     })
 
     it('should have a functionnal disconnect flow', async () => {
