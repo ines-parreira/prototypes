@@ -199,7 +199,7 @@ export const Setup = () => {
         isLoadingIntegrations ||
         isLoadingStoreConfiguration ||
         isLoadingJourneys ||
-        isLoadingJourneyConfiguration
+        (!!abandonedCartJourney?.id && isLoadingJourneyConfiguration)
 
     if (isLoading) {
         return <LoadingSpinner />
