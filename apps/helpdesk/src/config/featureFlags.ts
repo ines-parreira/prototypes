@@ -163,7 +163,6 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketLevelFeedback = 'linear.project_add-global-ai-agent-feedback-in-ticket.show-ticket-level-feedback',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
-    TimelineTicketModal = 'timeline-ticket-modal',
     UseLiveVoiceUpdates = 'use-live-voice-updates',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
