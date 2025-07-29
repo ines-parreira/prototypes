@@ -1,5 +1,6 @@
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { ERROR_ICON } from 'pages/common/components/SourceIcon'
 import type { TicketPayload } from 'tickets/notifications/types'
 
@@ -16,6 +17,11 @@ const MessageFailedNotification = ({ notification, ...props }: Props) => {
             icon={{ type: ERROR_ICON }}
             title="Message not delivered"
             url={`/app/ticket/${ticket.id}`}
+            onClick={() => {
+                logEvent(SegmentEvent.FailedMessageNotification, {
+                    ticketId: ticket.id,
+                })
+            }}
         >
             {customer?.name ? (
                 <Subtitle>

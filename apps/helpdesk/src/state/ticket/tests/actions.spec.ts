@@ -1188,6 +1188,97 @@ describe('ticket actions', () => {
         })
     })
 
+    describe('updateTicketMessage() query invalidation predicate logic', () => {
+        const createPredicateFunction = (ticketId: string | number) => {
+            return (query: { queryKey: unknown[] }) => {
+                const [, , ticketIds] = query.queryKey
+                return (
+                    Array.isArray(ticketIds) &&
+                    ticketIds.includes(Number(ticketId))
+                )
+            }
+        }
+
+        it('should correctly validate ticket IDs array and inclusion logic', () => {
+            const ticketId = '123'
+            const predicate = createPredicateFunction(ticketId)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', [123, 456, 789]],
+                }),
+            ).toBe(true)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', ['123', 456, 789]],
+                }),
+            ).toBe(false)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', [456, 789]],
+                }),
+            ).toBe(false)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', 'not-an-array'],
+                }),
+            ).toBe(false)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', 123],
+                }),
+            ).toBe(false)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', null],
+                }),
+            ).toBe(false)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', undefined],
+                }),
+            ).toBe(false)
+
+            expect(
+                predicate({
+                    queryKey: ['tickets', 'ticket_ids', []],
+                }),
+            ).toBe(false)
+
+            expect(
+                predicate({
+                    queryKey: [
+                        'tickets',
+                        'ticket_ids',
+                        [123, 456, null, undefined],
+                    ],
+                }),
+            ).toBe(true)
+        })
+
+        it('should handle different ticket ID types correctly', () => {
+            const numericPredicate = createPredicateFunction(456)
+            expect(
+                numericPredicate({
+                    queryKey: ['tickets', 'ticket_ids', [123, 456, 789]],
+                }),
+            ).toBe(true)
+
+            const stringPredicate = createPredicateFunction('789')
+            expect(
+                stringPredicate({
+                    queryKey: ['tickets', 'ticket_ids', [123, 456, 789]],
+                }),
+            ).toBe(true)
+        })
+    })
+
     it('clearTicket()', () => {
         store.dispatch(actions.clearTicket())
         return expect(store.getActions()).toMatchSnapshot()

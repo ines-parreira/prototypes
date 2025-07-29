@@ -204,6 +204,7 @@ export enum SegmentEvent {
     FallbackWorkerStarted = 'fallback-worker-started',
     FlowBuilderSaved = 'flow-builder-saved',
     FlowBuilderViewed = 'flow-builder-viewed',
+    FailedMessageNotification = 'failed-message-notification',
     GlobalSearchAdvancedButtonClick = 'search-advanced-button-click',
     GlobalSearchAdvancedShortcut = 'search-advanced-shortcut',
     GlobalSearchAllTabClick = 'all-tab-click',

@@ -1,10 +1,22 @@
 import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
+import { logEvent, SegmentEvent } from 'common/segment'
 
 import type { TicketPayload } from '../../types'
 import MessageFailedNotification from '../MessageFailedNotification'
+
+// Mock the segment tracking
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        FailedMessageNotification: 'failed-message-notification',
+    },
+}))
+
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
 const notification: Notification<TicketPayload> = {
     id: '1',
@@ -29,6 +41,10 @@ const notification: Notification<TicketPayload> = {
 }
 
 describe('<MessageFailedNotification />', () => {
+    beforeEach(() => {
+        mockLogEvent.mockClear()
+    })
+
     it('should render message failed content with error icon', () => {
         const { getByText } = render(
             <MessageFailedNotification
@@ -65,5 +81,23 @@ describe('<MessageFailedNotification />', () => {
             getByText('Message didn’t deliver. Please try again.'),
         ).toBeInTheDocument()
         expect(queryByText('Foo Bar.')).not.toBeInTheDocument()
+    })
+
+    it('should track segment event when notification is clicked', async () => {
+        const user = userEvent.setup()
+
+        const { container } = render(
+            <MessageFailedNotification notification={notification} />,
+        )
+
+        const notificationLink = container.querySelector('.container')!
+        await user.click(notificationLink)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.FailedMessageNotification,
+            {
+                ticketId: notification.payload.ticket.id,
+            },
+        )
     })
 })
