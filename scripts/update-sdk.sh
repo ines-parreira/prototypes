@@ -10,7 +10,7 @@ then
     # using taze because pnpm update does not yet support updating catalog dependencies via the CLI
     # we can switch to using pnpm update once it supports this
 
-    pnpm taze major --include "@gorgias/${1}-*" -w -r
+    pnpm taze latest --include "@gorgias/${1}-*" --write --recursive
     pnpm install
 
     echo "SDK updated for ${1}"
