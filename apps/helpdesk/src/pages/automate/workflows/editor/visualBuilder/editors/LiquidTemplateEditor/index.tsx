@@ -74,7 +74,7 @@ export default function LiquidTemplateEditor({
                         </a>
                     </div>
                     <div className={css.formField}>
-                        <Label isRequired>Request name</Label>
+                        <Label isRequired>Step name</Label>
                         <TextInput
                             className={css.textInput}
                             // ref={setInputRef}

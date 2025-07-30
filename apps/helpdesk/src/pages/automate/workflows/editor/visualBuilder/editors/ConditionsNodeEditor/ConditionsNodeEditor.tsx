@@ -218,7 +218,7 @@ export default function ConditionsNodeEditor({
                             maxLength={50}
                             label={
                                 <>
-                                    <span>Step Name</span>
+                                    <span>Step name</span>
                                     <HintTooltip title="Used to help you better understand your Flow, not visible to customers." />
                                 </>
                             }

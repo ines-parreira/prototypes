@@ -161,7 +161,7 @@ describe('<LiquidTemplateEditor />', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Common Liquid Examples')).toBeInTheDocument()
-        expect(screen.getByText('Request name')).toBeInTheDocument()
+        expect(screen.getByText('Step name')).toBeInTheDocument()
         expect(screen.getByText('Template')).toBeInTheDocument()
         expect(screen.getByText('Output variable')).toBeInTheDocument()
     })
@@ -293,7 +293,7 @@ describe('<LiquidTemplateEditor />', () => {
         setupTest(nodeInEdition)
 
         // Both name and template fields should be marked as required
-        const nameLabel = screen.getByText('Request name')
+        const nameLabel = screen.getByText('Step name')
         const templateLabel = screen.getByText('Template')
 
         expect(nameLabel).toBeInTheDocument()

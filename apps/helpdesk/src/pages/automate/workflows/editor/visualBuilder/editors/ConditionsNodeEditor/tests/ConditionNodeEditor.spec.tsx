@@ -51,7 +51,7 @@ describe('ConditionsNodeEditor', () => {
             />,
         )
 
-        expect(screen.getByText('Step Name')).toBeInTheDocument()
+        expect(screen.getByText('Step name')).toBeInTheDocument()
         const conditionsInput = screen.container.querySelector('#conditions')
         expect(conditionsInput).toHaveValue('Test Node')
     })
