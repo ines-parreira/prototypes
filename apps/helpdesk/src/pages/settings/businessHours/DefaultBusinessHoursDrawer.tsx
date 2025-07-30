@@ -56,7 +56,6 @@ export const DefaultBusinessHoursDrawer = ({
             {isMounted() && (
                 <Form<AccountSettingsItem>
                     onValidSubmit={onSubmit}
-                    mode="all"
                     defaultValues={businessHoursSettingsData}
                     validator={validator}
                     className={css.form}

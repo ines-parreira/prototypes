@@ -1,12 +1,18 @@
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { useEffect, useMemo } from 'react'
 
-import { FormField } from 'core/forms'
+import { get } from 'lodash'
+
+import { Box, IconButton } from '@gorgias/merchant-ui-kit'
+
+import { FormField, useFormContext } from 'core/forms'
 import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
 import { DAYS_OPTIONS } from 'pages/settings/businessHours/constants'
 
 import TimeInputField from './TimeInputField'
 
 import css from './TimeScheduleRow.less'
+
+const TO_TIME_ERROR_MESSAGE = 'To time must be greater than From time'
 
 type Props = {
     index: number
@@ -23,7 +29,32 @@ export default function TimeScheduleRow({
     onRemove,
     root,
 }: Props) {
-    const namePrefix = `${name}.${index}`
+    const namePrefix = useMemo(() => `${name}.${index}`, [name, index])
+
+    const {
+        watch,
+        setError,
+        formState: { errors },
+    } = useFormContext()
+    const toTime = watch(`${namePrefix}.to_time`)
+    const fromTime = watch(`${namePrefix}.from_time`)
+
+    useEffect(() => {
+        if (toTime < fromTime) {
+            setError(
+                `${namePrefix}.to_time`,
+                {
+                    message: TO_TIME_ERROR_MESSAGE,
+                },
+                { shouldFocus: true },
+            )
+        } else if (
+            get(errors, `${namePrefix}.to_time`)?.message ===
+            TO_TIME_ERROR_MESSAGE
+        ) {
+            setError(`${namePrefix}.to_time`, { message: undefined })
+        }
+    }, [toTime, fromTime, namePrefix, setError, errors])
 
     return (
         <div className={css.container}>
@@ -53,7 +84,7 @@ export default function TimeScheduleRow({
                 field={TimeInputField}
             />
 
-            <div>to</div>
+            <Box pt="var(--layout-spacing-xxs)">to</Box>
 
             <FormField name={`${namePrefix}.to_time`} field={TimeInputField} />
 

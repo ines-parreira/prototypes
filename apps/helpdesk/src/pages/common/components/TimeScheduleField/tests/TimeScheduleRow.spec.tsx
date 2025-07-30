@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import { Form } from 'core/forms'
+import { Form, FormField } from 'core/forms'
 
 import TimeScheduleRow from '../TimeScheduleRow'
 
@@ -72,5 +73,46 @@ describe('TimeScheduleRow', () => {
 
         expect(screen.queryByText('Monday')).not.toBeInTheDocument()
         expect(screen.getByText('Tuesday')).toBeInTheDocument()
+    })
+
+    it('should show error message if to time is less than from time', async () => {
+        const { type } = userEvent.setup()
+        render(
+            <Form
+                onValidSubmit={jest.fn()}
+                defaultValues={{
+                    business_hours_config: {
+                        business_hours: [
+                            {
+                                days: '1',
+                                from_time: '09:00',
+                                to_time: '07:00',
+                            },
+                        ],
+                    },
+                }}
+            >
+                <TimeScheduleRow {...props} />
+                <FormField name="someField" type="checkbox" />
+            </Form>,
+        )
+
+        expect(
+            screen.getByText('To time must be greater than From time'),
+        ).toBeInTheDocument()
+
+        await act(async () => {
+            const input: HTMLInputElement = screen.getByDisplayValue('07:00')
+            await type(input, '10:00', {
+                initialSelectionStart: 0,
+                initialSelectionEnd: input.value.length,
+            })
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('To time must be greater than From time'),
+            ).not.toBeInTheDocument()
+        })
     })
 })

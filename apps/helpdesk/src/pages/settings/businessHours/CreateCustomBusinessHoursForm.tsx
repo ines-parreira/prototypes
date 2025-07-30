@@ -37,7 +37,6 @@ export default function CreateCustomBusinessHoursForm({
         <>
             <Form<BusinessHoursCreateFormValues>
                 onValidSubmit={onSubmit}
-                mode="all"
                 defaultValues={getCreateBusinessHoursFormDefaultValues(
                     defaultTimezone,
                 )}
