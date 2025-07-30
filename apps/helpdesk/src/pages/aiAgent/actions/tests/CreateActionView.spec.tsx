@@ -11,6 +11,7 @@ import { ulid } from 'ulidx'
 
 import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
@@ -79,19 +80,6 @@ const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 const queryClient = mockQueryClient()
-
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
-}
 
 describe('<CreateActionView />', () => {
     beforeEach(() => {

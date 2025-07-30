@@ -5,6 +5,7 @@ export enum AiAgentNotificationType {
     MeetAiAgent = 'meet-ai-agent',
     FirstAiAgentTicket = 'first-ai-agent-ticket',
     ScrapingProcessingFinished = 'scraping-processing-finished',
+    AiShoppingAssistantTrialRequest = 'ai-shopping-assistant-trial-request',
 }
 
 export type AiAgentNotificationPayload = {
@@ -12,6 +13,7 @@ export type AiAgentNotificationPayload = {
     shop_name: string
     shop_type: string
     ticket_id?: string
+    agent_id?: number
 }
 
 export type WorkflowConfigurationUpdatedNotificationPayload = {

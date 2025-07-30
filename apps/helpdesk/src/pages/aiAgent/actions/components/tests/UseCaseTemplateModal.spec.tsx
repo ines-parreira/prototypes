@@ -5,6 +5,7 @@ import { act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { ulid } from 'ulidx'
 
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
@@ -132,20 +133,6 @@ b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('error', {
 })
 
 const template = b.build<ActionTemplate>()
-
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
-}
-
 describe('<UseCaseTemplateModal />', () => {
     beforeEach(() => {
         mockUseApps.mockReturnValue({

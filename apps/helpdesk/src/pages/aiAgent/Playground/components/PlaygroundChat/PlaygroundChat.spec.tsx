@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import useFlag from 'core/flags/hooks/useFlag'
+import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useSearchCustomer } from 'models/aiAgent/queries'
 import {
@@ -104,18 +105,8 @@ const defaultUsePlaygroundFormProps = {
     disabledMessage: undefined,
 }
 
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: getOnboardingNotificationStateFixture(),
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
-}
+const defaultUseAiAgentOnboardingNotification =
+    defaultUseAiAgentOnboardingNotificationFixture()
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])

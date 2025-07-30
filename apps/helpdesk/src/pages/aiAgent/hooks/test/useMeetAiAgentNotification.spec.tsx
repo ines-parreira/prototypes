@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { account } from 'fixtures/account'
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
@@ -73,19 +74,6 @@ const getDependencyWrapper = (state = defaultState) => {
     )
 
     return dependencyWrapper
-}
-
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
 }
 
 describe('useMeetAiAgentNotifications', () => {

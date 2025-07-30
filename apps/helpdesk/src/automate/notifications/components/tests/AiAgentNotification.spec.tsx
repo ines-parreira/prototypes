@@ -10,7 +10,7 @@ import {
 import { getNotificationReceivedDatetimePayload } from 'automate/notifications/utils'
 import type { Notification } from 'common/notifications'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { getLDClient } from 'utils/launchDarkly'
 import { assumeMock } from 'utils/testing'
@@ -41,20 +41,10 @@ const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification,
 )
 
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: getOnboardingNotificationStateFixture({
+const defaultUseAiAgentOnboardingNotification =
+    defaultUseAiAgentOnboardingNotificationFixture({
         shopName: SHOP_NAME,
-    }),
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
-}
+    })
 
 describe('AiAgentNotification', () => {
     const mockDatetime = '2024-11-04T13:07:00'
@@ -198,7 +188,9 @@ describe('AiAgentNotification', () => {
 
             expect(
                 defaultUseAiAgentOnboardingNotification.handleOnSave,
-            ).toHaveBeenCalledWith(getNotificationReceivedDatetimePayload(type))
+            ).toHaveBeenCalledWith(
+                getNotificationReceivedDatetimePayload(notification.payload),
+            )
 
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentOnboardingNotificationReceived,

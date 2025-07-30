@@ -77,6 +77,7 @@ describe('ConnectedChannelsEmailView', () => {
             handleOnPerformActionPostReceivedNotification: jest.fn(),
             handleOnTriggerActivateAiAgentNotification: jest.fn(),
             handleOnCancelActivateAiAgentNotification: jest.fn(),
+            handleOnTriggerTrialRequestNotification: jest.fn(),
             isAiAgentOnboardingNotificationEnabled: true,
         })
         mockFlags({

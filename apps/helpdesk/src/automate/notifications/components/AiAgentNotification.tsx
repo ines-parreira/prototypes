@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Content, Subtitle } from 'common/notifications'
+import { Content, Excerpt, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
@@ -40,14 +40,15 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
             return
 
         const isAlreadyReceived = isNotificationAlreadyReceived(
-            payload.ai_agent_notification_type,
+            payload,
             onboardingNotificationState,
         )
 
         if (!isAlreadyReceived) {
             const notificationReceivedDatetimePayload =
                 getNotificationReceivedDatetimePayload(
-                    payload.ai_agent_notification_type,
+                    payload,
+                    onboardingNotificationState,
                 )
             void handleOnSave(notificationReceivedDatetimePayload)
 
@@ -84,7 +85,16 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
             url={notificationParams.redirectTo}
             onClick={handleOnClick}
         >
-            <Subtitle>{notificationParams.subtitle}</Subtitle>
+            <Subtitle>
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: notificationParams.subtitle,
+                    }}
+                />
+            </Subtitle>
+            {notificationParams.excerpt && (
+                <Excerpt>{notificationParams.excerpt}</Excerpt>
+            )}
         </Content>
     )
 }

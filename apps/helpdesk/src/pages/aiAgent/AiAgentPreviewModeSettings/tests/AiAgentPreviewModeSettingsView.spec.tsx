@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import { getAiAgentStoreFixture } from 'pages/aiAgent/fixtures/aiAgentStoreFixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
@@ -62,19 +63,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
 const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification,
 )
-
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
-}
 
 const mockUseParams = assumeMock(useParams)
 const queryClient = mockQueryClient()

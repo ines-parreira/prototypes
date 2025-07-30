@@ -76,6 +76,7 @@ const mockedUseAiAgentOnboardingNotification = {
     handleOnPerformActionPostReceivedNotification: jest.fn(),
     handleOnTriggerActivateAiAgentNotification: jest.fn(),
     handleOnCancelActivateAiAgentNotification: jest.fn(),
+    handleOnTriggerTrialRequestNotification: jest.fn(),
     isLoading: false,
     isAiAgentOnboardingNotificationEnabled: true,
 }

@@ -9,16 +9,16 @@ import {
     getNotificationParams,
     getNotificationReceivedDatetime,
     getNotificationReceivedDatetimePayload,
+    isLessThan24HoursAgo,
     isNotificationAlreadyReceived,
 } from '../utils'
 
+const basePayload = {
+    shop_name: 'store_1',
+    shop_type: 'shopify',
+    ticket_id: '12345',
+}
 describe('getNotificationParams', () => {
-    const basePayload = {
-        shop_name: 'store_1',
-        shop_type: 'shopify',
-        ticket_id: '12345',
-    }
-
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
         let client = getLDClient()
@@ -126,6 +126,54 @@ describe('getNotificationParams', () => {
         })
     })
 
+    it('should return correct params for AiShoppingAssistantTrialRequest with agent info', () => {
+        jest.spyOn(
+            require('services/notificationTracker/notificationTracker'),
+            'getAgent',
+        ).mockReturnValue({ name: 'Test Agent' })
+
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            agent_id: 123,
+        }
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'New message',
+            subtitle: '<b>Trial request</b> from <b>Test Agent</b>',
+            excerpt:
+                'Test Agent has expressed interest in trying out the Shopping Assistant for 14 days at no additional cost.',
+            redirectTo: '/app/ai-agent/shopify/store_1/sales',
+        })
+    })
+
+    it('should handle AiShoppingAssistantTrialRequest when agent is not found', () => {
+        jest.spyOn(
+            require('services/notificationTracker/notificationTracker'),
+            'getAgent',
+        ).mockReturnValue(undefined)
+
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            agent_id: 123,
+        }
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'New message',
+            subtitle: '<b>Trial request</b> from <b>Your team</b>',
+            excerpt:
+                'Your team has expressed interest in trying out the Shopping Assistant for 14 days at no additional cost.',
+            redirectTo: '/app/ai-agent/shopify/store_1/sales',
+        })
+    })
+
     it('should return null for unsupported notification series', () => {
         const payload = {
             ...basePayload,
@@ -141,59 +189,162 @@ describe('getNotificationParams', () => {
 
 describe('getNotificationReceivedDatetimePayload', () => {
     it('should return correct received datetime payload for StartAiAgentSetup', () => {
-        const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.StartAiAgentSetup,
-        )
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.StartAiAgentSetup,
+        })
         expect(result).toHaveProperty(
             'startAiAgentSetupNotificationReceivedDatetime',
         )
     })
 
     it('should return correct received datetime payload for FinishAiAgentSetup', () => {
-        const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.FinishAiAgentSetup,
-        )
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.FinishAiAgentSetup,
+        })
         expect(result).toHaveProperty(
             'finishAiAgentSetupNotificationReceivedDatetime',
         )
     })
 
     it('should return correct received datetime payload for ActivateAiAgent', () => {
-        const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.ActivateAiAgent,
-        )
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type: AiAgentNotificationType.ActivateAiAgent,
+        })
         expect(result).toHaveProperty(
             'activateAiAgentNotificationReceivedDatetime',
         )
     })
 
     it('should return correct received datetime payload for MeetAiAgent', () => {
-        const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.MeetAiAgent,
-        )
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type: AiAgentNotificationType.MeetAiAgent,
+        })
         expect(result).toHaveProperty('meetAiAgentNotificationReceivedDatetime')
     })
 
     it('should return correct received datetime payload for FirstAiAgentTicket', () => {
-        const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.FirstAiAgentTicket,
-        )
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.FirstAiAgentTicket,
+        })
         expect(result).toHaveProperty(
             'firstAiAgentTicketNotificationReceivedDatetime',
         )
     })
 
     it('should return correct received datetime payload for ScrapingProcessingFinished', () => {
-        const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.ScrapingProcessingFinished,
-        )
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.ScrapingProcessingFinished,
+        })
         expect(result).toHaveProperty('scrapingProcessingFinishedDatetime')
     })
 
-    it('should return an empty object for unsupported notification types', () => {
-        const result = getNotificationReceivedDatetimePayload(
-            'unsupported-series' as AiAgentNotificationType,
+    it('should create new trial request notification when user does not exist', () => {
+        const userId = 123
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            agent_id: userId,
+        })
+
+        expect(result).toHaveProperty('trialRequestNotification')
+        expect(result.trialRequestNotification).toHaveLength(1)
+        expect(result.trialRequestNotification?.[0]).toHaveProperty(
+            'userId',
+            userId,
         )
+        expect(result.trialRequestNotification?.[0]).toHaveProperty(
+            'receivedDatetime',
+        )
+    })
+
+    it('should update existing trial request notification when user already exists', () => {
+        const userId = 123
+        const existingDatetime = '2024-01-01T00:00:00Z'
+        const existingState = {
+            ...getOnboardingNotificationStateFixture(),
+            trialRequestNotification: [
+                { userId, receivedDatetime: existingDatetime },
+            ],
+        }
+
+        const result = getNotificationReceivedDatetimePayload(
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                agent_id: userId,
+            },
+            existingState,
+        )
+
+        expect(result).toHaveProperty('trialRequestNotification')
+        expect(result.trialRequestNotification).toHaveLength(1)
+        expect(result.trialRequestNotification?.[0]).toHaveProperty(
+            'userId',
+            userId,
+        )
+        expect(result.trialRequestNotification?.[0].receivedDatetime).not.toBe(
+            existingDatetime,
+        )
+    })
+
+    it('should add new trial request notification when different user requests trial', () => {
+        const existingUserId = 123
+        const newUserId = 456
+        const existingDatetime = '2024-01-01T00:00:00Z'
+        const existingState = {
+            ...getOnboardingNotificationStateFixture(),
+            trialRequestNotification: [
+                { userId: existingUserId, receivedDatetime: existingDatetime },
+            ],
+        }
+
+        const result = getNotificationReceivedDatetimePayload(
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                agent_id: newUserId,
+            },
+            existingState,
+        )
+
+        expect(result).toHaveProperty('trialRequestNotification')
+        expect(result.trialRequestNotification).toHaveLength(2)
+        expect(result.trialRequestNotification?.[0]).toHaveProperty(
+            'userId',
+            existingUserId,
+        )
+        expect(result.trialRequestNotification?.[0]).toHaveProperty(
+            'receivedDatetime',
+            existingDatetime,
+        )
+        expect(result.trialRequestNotification?.[1]).toHaveProperty(
+            'userId',
+            newUserId,
+        )
+        expect(result.trialRequestNotification?.[1]).toHaveProperty(
+            'receivedDatetime',
+        )
+    })
+
+    it('should return an empty object for unsupported notification types', () => {
+        const result = getNotificationReceivedDatetimePayload({
+            ...basePayload,
+            ai_agent_notification_type:
+                'unsupported-series' as AiAgentNotificationType,
+        })
         expect(result).toEqual({})
     })
 })
@@ -204,7 +355,11 @@ describe('isNotificationAlreadyReceived', () => {
 
     it('should return false if onboardingNotificationState is undefined', () => {
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.StartAiAgentSetup,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.StartAiAgentSetup,
+            },
             undefined,
         )
         expect(result).toBe(false)
@@ -212,7 +367,11 @@ describe('isNotificationAlreadyReceived', () => {
 
     it('should return false if notification has not been received', () => {
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.StartAiAgentSetup,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.StartAiAgentSetup,
+            },
             baseState,
         )
         expect(result).toBe(false)
@@ -225,7 +384,11 @@ describe('isNotificationAlreadyReceived', () => {
                 '2024-12-01T12:00:00Z',
         }
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.StartAiAgentSetup,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.StartAiAgentSetup,
+            },
             state,
         )
         expect(result).toBe(true)
@@ -238,7 +401,11 @@ describe('isNotificationAlreadyReceived', () => {
                 '2024-12-01T12:00:00Z',
         }
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.FinishAiAgentSetup,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.FinishAiAgentSetup,
+            },
             state,
         )
         expect(result).toBe(true)
@@ -250,7 +417,11 @@ describe('isNotificationAlreadyReceived', () => {
             activateAiAgentNotificationReceivedDatetime: '2024-12-01T12:00:00Z',
         }
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.ActivateAiAgent,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.ActivateAiAgent,
+            },
             state,
         )
         expect(result).toBe(true)
@@ -262,7 +433,10 @@ describe('isNotificationAlreadyReceived', () => {
             meetAiAgentNotificationReceivedDatetime: '2024-12-01T12:00:00Z',
         }
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.MeetAiAgent,
+            {
+                ...basePayload,
+                ai_agent_notification_type: AiAgentNotificationType.MeetAiAgent,
+            },
             state,
         )
         expect(result).toBe(true)
@@ -275,7 +449,11 @@ describe('isNotificationAlreadyReceived', () => {
                 '2024-12-01T12:00:00Z',
         }
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.FirstAiAgentTicket,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.FirstAiAgentTicket,
+            },
             state,
         )
         expect(result).toBe(true)
@@ -287,15 +465,119 @@ describe('isNotificationAlreadyReceived', () => {
             scrapingProcessingFinishedDatetime: '2024-12-01T12:00:00Z',
         }
         const result = isNotificationAlreadyReceived(
-            AiAgentNotificationType.ScrapingProcessingFinished,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.ScrapingProcessingFinished,
+            },
             state,
         )
         expect(result).toBe(true)
     })
 
+    it('should return true for AiShoppingAssistantTrialRequest within 24 hours', () => {
+        const userId = 123
+        const twentyThreeHoursAgo = new Date(
+            Date.now() - 23 * 60 * 60 * 1000,
+        ).toISOString()
+        const state = {
+            ...baseState,
+            trialRequestNotification: [
+                { userId, receivedDatetime: twentyThreeHoursAgo },
+            ],
+        }
+
+        const result = isNotificationAlreadyReceived(
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                agent_id: userId,
+            },
+            state,
+        )
+
+        expect(result).toBe(true)
+    })
+
+    it('should return false for AiShoppingAssistantTrialRequest older than 24 hours', () => {
+        const userId = 123
+        const twentyFiveHoursAgo = new Date(
+            Date.now() - 25 * 60 * 60 * 1000,
+        ).toISOString()
+        const state = {
+            ...baseState,
+            trialRequestNotification: [
+                { userId, receivedDatetime: twentyFiveHoursAgo },
+            ],
+        }
+
+        const result = isNotificationAlreadyReceived(
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                agent_id: userId,
+            },
+            state,
+        )
+
+        expect(result).toBe(false)
+    })
+
+    it('should return false for AiShoppingAssistantTrialRequest when no trial request exists for user', () => {
+        const userId = 123
+        const otherUserId = 456
+        const state = {
+            ...baseState,
+            trialRequestNotification: [
+                {
+                    userId: otherUserId,
+                    receivedDatetime: new Date().toISOString(),
+                },
+            ],
+        }
+
+        const result = isNotificationAlreadyReceived(
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                agent_id: userId,
+            },
+            state,
+        )
+
+        expect(result).toBe(false)
+    })
+
+    it('should return false for AiShoppingAssistantTrialRequest when trialRequestNotification is empty', () => {
+        const userId = 123
+        const state = {
+            ...baseState,
+            trialRequestNotification: [],
+        }
+
+        const result = isNotificationAlreadyReceived(
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                agent_id: userId,
+            },
+            state,
+        )
+
+        expect(result).toBe(false)
+    })
+
     it('should return false for unsupported notification types', () => {
         const result = isNotificationAlreadyReceived(
-            'unsupported-series' as AiAgentNotificationType,
+            {
+                ...basePayload,
+                ai_agent_notification_type:
+                    'unsupported-series' as AiAgentNotificationType,
+            },
             baseState,
         )
         expect(result).toBe(false)
@@ -384,6 +666,56 @@ describe('getNotificationReceivedDatetime', () => {
         expect(result).toBe('2024-12-01T12:00:00Z')
     })
 
+    it('should return correct received datetime for AiShoppingAssistantTrialRequest', () => {
+        const userId = 123
+        const receivedDatetime = '2024-01-01T00:00:00Z'
+        const state = {
+            ...baseState,
+            trialRequestNotification: [{ userId, receivedDatetime }],
+        }
+
+        const result = getNotificationReceivedDatetime(
+            AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            state,
+            userId,
+        )
+
+        expect(result).toBe(receivedDatetime)
+    })
+
+    it('should return undefined when trial request notification does not exist for user', () => {
+        const userId = 123
+        const otherUserId = 456
+        const receivedDatetime = '2024-01-01T00:00:00Z'
+        const state = {
+            ...baseState,
+            trialRequestNotification: [
+                { userId: otherUserId, receivedDatetime },
+            ],
+        }
+
+        const result = getNotificationReceivedDatetime(
+            AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            state,
+            userId,
+        )
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when trialRequestNotification is null', () => {
+        const userId = 123
+        const state = baseState
+
+        const result = getNotificationReceivedDatetime(
+            AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            state,
+            userId,
+        )
+
+        expect(result).toBeUndefined()
+    })
+
     it('should return null for unsupported notification types', () => {
         const result = getNotificationReceivedDatetime(
             'unsupported-series' as AiAgentNotificationType,
@@ -391,4 +723,33 @@ describe('getNotificationReceivedDatetime', () => {
         )
         expect(result).toBe(null)
     })
+})
+
+it('should correctly determine if a datetime is less than 24 hours ago', () => {
+    const now = new Date()
+
+    // Test case 2: Date 23 hours ago (should return true)
+    const twentyThreeHoursAgo = new Date(now.getTime() - 23 * 60 * 60 * 1000)
+    expect(isLessThan24HoursAgo(twentyThreeHoursAgo.toISOString())).toBe(true)
+
+    // Test case 3: Date exactly 24 hours ago (should return false)
+    const exactlyTwentyFourHoursAgo = new Date(
+        now.getTime() - 24 * 60 * 60 * 1000,
+    )
+    expect(isLessThan24HoursAgo(exactlyTwentyFourHoursAgo.toISOString())).toBe(
+        false,
+    )
+
+    // Test case 4: Date 25 hours ago (should return false)
+    const twentyFiveHoursAgo = new Date(now.getTime() - 25 * 60 * 60 * 1000)
+    expect(isLessThan24HoursAgo(twentyFiveHoursAgo.toISOString())).toBe(false)
+
+    // Test case 5: Current time (should return true)
+    expect(isLessThan24HoursAgo(now.toISOString())).toBe(true)
+
+    // Test case 6: Invalid date string (should return false due to NaN calculation)
+    expect(isLessThan24HoursAgo('invalid-date')).toBe(false)
+
+    // Test case 7: Empty string (should return false)
+    expect(isLessThan24HoursAgo('')).toBe(false)
 })

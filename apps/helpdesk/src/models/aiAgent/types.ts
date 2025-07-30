@@ -218,6 +218,11 @@ export enum AiAgentOnboardingState {
     FullyOnboarded = 'fully-onboarded',
 }
 
+export type TrialRequestNotification = {
+    userId: number
+    receivedDatetime: string
+}
+
 export type OnboardingNotificationState = {
     shopName: string
     welcomePageVisitedDatetimes: string[]
@@ -230,6 +235,7 @@ export type OnboardingNotificationState = {
     scrapingProcessingFinishedDatetime: string | null
     firstAiAgentTicketNotificationReceivedDatetime: string | null
     onboardingState: AiAgentOnboardingState | null
+    trialRequestNotification: TrialRequestNotification[] | null
 }
 
 export type OnboardingNotificationStateResponse = {

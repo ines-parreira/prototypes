@@ -8,6 +8,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -86,19 +87,6 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
     duplicateGuidanceArticle: jest.fn(),
-}
-
-const defaultUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: true,
 }
 
 const defaultUseGuidanceAiSuggestions = {

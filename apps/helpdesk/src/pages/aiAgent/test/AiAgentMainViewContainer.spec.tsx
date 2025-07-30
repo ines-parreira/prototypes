@@ -12,6 +12,7 @@ import thunk from 'redux-thunk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { Wizard } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
@@ -219,18 +220,9 @@ const setupMocks = ({
         error: null,
     })
 
-    mockUseAiAgentOnboardingNotification.mockReturnValue({
-        isAdmin: true,
-        isLoading: false,
-        onboardingNotificationState: undefined,
-        handleOnSave: jest.fn(),
-        handleOnSendOrCancelNotification: jest.fn(),
-        handleOnEnablementPostReceivedNotification: jest.fn(),
-        handleOnPerformActionPostReceivedNotification: jest.fn(),
-        handleOnTriggerActivateAiAgentNotification: jest.fn(),
-        handleOnCancelActivateAiAgentNotification: jest.fn(),
-        isAiAgentOnboardingNotificationEnabled: true,
-    })
+    mockUseAiAgentOnboardingNotification.mockReturnValue(
+        defaultUseAiAgentOnboardingNotification,
+    )
 
     mockUseGetHelpCenterList.mockReturnValue({
         ...getHelpCenterListResponse,

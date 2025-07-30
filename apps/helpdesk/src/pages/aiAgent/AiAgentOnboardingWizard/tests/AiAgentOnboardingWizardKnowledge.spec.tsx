@@ -14,6 +14,7 @@ import thunk from 'redux-thunk'
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import {
     AiAgentOnboardingState,
     AiAgentOnboardingWizardStep,
@@ -87,20 +88,6 @@ const mockedUseAiAgentOnboardingWizard = {
     updateValue: jest.fn(),
     storeConfiguration: mockedStoreConfiguration,
 }
-
-const mockedUseAiAgentOnboardingNotification = {
-    isAdmin: true,
-    onboardingNotificationState: undefined,
-    handleOnSave: jest.fn(),
-    handleOnSendOrCancelNotification: jest.fn(),
-    handleOnEnablementPostReceivedNotification: jest.fn(),
-    handleOnPerformActionPostReceivedNotification: jest.fn(),
-    handleOnTriggerActivateAiAgentNotification: jest.fn(),
-    handleOnCancelActivateAiAgentNotification: jest.fn(),
-    isLoading: false,
-    isAiAgentOnboardingNotificationEnabled: false,
-}
-
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
@@ -151,7 +138,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             articleIngestionLogsStatus: [],
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            mockedUseAiAgentOnboardingNotification,
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -536,7 +523,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
     it('should trigger cancellation call on finish AI agent setup notification when Finish is clicked', async () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...mockedUseAiAgentOnboardingNotification,
+            ...defaultUseAiAgentOnboardingNotification,
             isAiAgentOnboardingNotificationEnabled: true,
         })
 
@@ -546,13 +533,13 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         await waitFor(() => {
             expect(
-                mockedUseAiAgentOnboardingNotification.handleOnSave,
+                defaultUseAiAgentOnboardingNotification.handleOnSave,
             ).toHaveBeenCalledWith({
                 onboardingState: AiAgentOnboardingState.FinishedSetup,
             })
 
             expect(
-                mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
+                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
             ).toHaveBeenCalledWith({
                 aiAgentNotificationType:
                     AiAgentNotificationType.FinishAiAgentSetup,
@@ -563,7 +550,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
     it('should log notification segment event when Finish is clicked after receiving finish setup notification', async () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...mockedUseAiAgentOnboardingNotification,
+            ...defaultUseAiAgentOnboardingNotification,
             isAiAgentOnboardingNotificationEnabled: true,
             onboardingNotificationState: getOnboardingNotificationStateFixture({
                 finishAiAgentSetupNotificationReceivedDatetime:
@@ -577,7 +564,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         await waitFor(() => {
             expect(
-                mockedUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification,
+                defaultUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification,
             ).toHaveBeenCalledWith(AiAgentNotificationType.FinishAiAgentSetup)
         })
     })

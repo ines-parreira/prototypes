@@ -14,5 +14,6 @@ export const getOnboardingNotificationStateFixture = (
     firstAiAgentTicketNotificationReceivedDatetime: null,
     scrapingProcessingFinishedDatetime: null,
     onboardingState: null,
+    trialRequestNotification: null,
     ...props,
 })

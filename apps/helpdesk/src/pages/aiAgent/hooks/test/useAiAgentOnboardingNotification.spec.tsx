@@ -17,6 +17,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { NotificationEvent } from 'services/notificationTracker/constants'
 import * as notificationTracker from 'services/notificationTracker/notificationTracker'
@@ -56,6 +57,13 @@ const mockUseOnboardingNotificationStateMutation = assumeMock(
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const mockUseAppDispatch = assumeMock(useAppDispatch)
+
+jest.mock('models/aiAgent/resources/configuration', () => ({
+    getOnboardingNotificationState: jest.fn(),
+}))
+
+const mockGetOnboardingNotificationState =
+    getOnboardingNotificationState as jest.Mock
 
 const ACCOUNT_DOMAIN = 'account-domain'
 const SHOP_NAME = 'shop-name'
@@ -851,5 +859,45 @@ describe('useAiAgentOnboardingNotification', () => {
         expect(logEventSpy).not.toHaveBeenCalled()
         expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
         expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should trigger trial request notification with correct parameters', async () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
+            },
+            isLoading: false,
+        })
+
+        const mockOnboardingState = getOnboardingNotificationStateFixture({
+            shopName: SHOP_NAME,
+        })
+
+        mockGetOnboardingNotificationState.mockResolvedValue({
+            data: {
+                onboardingNotificationState: mockOnboardingState,
+            },
+        })
+
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        act(() => {
+            result.current.handleOnTriggerTrialRequestNotification()
+        })
+
+        expect(mockGetOnboardingNotificationState).toHaveBeenCalledWith(
+            ACCOUNT_DOMAIN,
+            SHOP_NAME,
+        )
     })
 })

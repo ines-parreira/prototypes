@@ -1,8 +1,12 @@
+import moment from 'moment'
+
+import { User } from 'config/types/user'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
 } from 'models/aiAgent/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { getAgent } from 'services/notificationTracker/notificationTracker'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { AiAgentNotificationPayload, AiAgentNotificationType } from './types'
@@ -11,6 +15,7 @@ type NotificationParams = {
     title: string
     subtitle: string
     redirectTo: string
+    excerpt?: string
 }
 
 export const getNotificationParams = (
@@ -21,10 +26,16 @@ export const getNotificationParams = (
         ai_agent_notification_type: aiAgentNotificationType,
         shop_name: shopName,
         ticket_id: ticketId,
+        agent_id: agentId,
     } = payload
 
     const flags = getLDClient().allFlags()
     const routes = getAiAgentNavigationRoutes(shopName, flags)
+    let agent: User | undefined
+
+    if (agentId) {
+        agent = getAgent(agentId)
+    }
 
     switch (aiAgentNotificationType) {
         case AiAgentNotificationType.StartAiAgentSetup:
@@ -71,14 +82,28 @@ export const getNotificationParams = (
                         ? `/app/views/${aiAgentTicketViewId}/${ticketId}`
                         : '',
             }
+        case AiAgentNotificationType.AiShoppingAssistantTrialRequest:
+            const agentName = agent?.name || 'Your team'
+            return {
+                title: 'New message',
+                subtitle: `<b>Trial request</b> from <b>${agentName}</b>`,
+                excerpt: `${agentName} has expressed interest in trying out the Shopping Assistant for 14 days at no additional cost.`,
+                redirectTo: `/app/ai-agent/shopify/${shopName}/sales`,
+            }
         default:
             return null
     }
 }
 
 export const getNotificationReceivedDatetimePayload = (
-    aiAgentNotificationType: AiAgentNotificationType,
+    payload: AiAgentNotificationPayload,
+    onboardingNotificationState?: OnboardingNotificationState,
 ): Partial<OnboardingNotificationState> => {
+    const {
+        ai_agent_notification_type: aiAgentNotificationType,
+        agent_id: agentId,
+    } = payload
+
     const receivedDatetime = new Date().toISOString()
     switch (aiAgentNotificationType) {
         case AiAgentNotificationType.StartAiAgentSetup:
@@ -108,18 +133,51 @@ export const getNotificationReceivedDatetimePayload = (
                     receivedDatetime,
                 onboardingState: AiAgentOnboardingState.FullyOnboarded,
             }
+        case AiAgentNotificationType.AiShoppingAssistantTrialRequest:
+            const existingNotifications =
+                onboardingNotificationState?.trialRequestNotification || []
+            let updatedNotifications = [...existingNotifications]
+
+            const existingUserIndex = updatedNotifications.findIndex(
+                (request) => request.userId === agentId,
+            )
+
+            if (existingUserIndex >= 0) {
+                updatedNotifications[existingUserIndex] = {
+                    ...updatedNotifications[existingUserIndex],
+                    receivedDatetime,
+                }
+            } else {
+                updatedNotifications.push({
+                    userId: agentId!,
+                    receivedDatetime,
+                })
+            }
+
+            return {
+                trialRequestNotification: updatedNotifications,
+            }
         default:
             return {}
     }
 }
 
+export const isLessThan24HoursAgo = (datetimeString: string): boolean => {
+    return moment().diff(moment(datetimeString), 'hours') < 24
+}
+
 export const isNotificationAlreadyReceived = (
-    aiAgentNotificationType: AiAgentNotificationType,
+    payload: AiAgentNotificationPayload,
     onboardingNotificationState?: OnboardingNotificationState,
 ) => {
     if (!onboardingNotificationState) {
         return false
     }
+
+    const {
+        ai_agent_notification_type: aiAgentNotificationType,
+        agent_id: agentId,
+    } = payload
 
     switch (aiAgentNotificationType) {
         case AiAgentNotificationType.StartAiAgentSetup:
@@ -134,6 +192,15 @@ export const isNotificationAlreadyReceived = (
             return !!onboardingNotificationState.scrapingProcessingFinishedDatetime
         case AiAgentNotificationType.FirstAiAgentTicket:
             return !!onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
+        case AiAgentNotificationType.AiShoppingAssistantTrialRequest:
+            const trialRequest =
+                onboardingNotificationState.trialRequestNotification?.find(
+                    (trialRequest) => trialRequest.userId === agentId,
+                )
+            if (!trialRequest) {
+                return false
+            }
+            return isLessThan24HoursAgo(trialRequest.receivedDatetime)
         default:
             return false
     }
@@ -142,6 +209,7 @@ export const isNotificationAlreadyReceived = (
 export const getNotificationReceivedDatetime = (
     aiAgentNotificationType: AiAgentNotificationType,
     onboardingNotificationState: OnboardingNotificationState,
+    userId?: number,
 ) => {
     switch (aiAgentNotificationType) {
         case AiAgentNotificationType.StartAiAgentSetup:
@@ -156,6 +224,10 @@ export const getNotificationReceivedDatetime = (
             return onboardingNotificationState.scrapingProcessingFinishedDatetime
         case AiAgentNotificationType.FirstAiAgentTicket:
             return onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
+        case AiAgentNotificationType.AiShoppingAssistantTrialRequest:
+            return onboardingNotificationState.trialRequestNotification?.find(
+                (trialRequest) => trialRequest.userId === userId,
+            )?.receivedDatetime
         default:
             return null
     }

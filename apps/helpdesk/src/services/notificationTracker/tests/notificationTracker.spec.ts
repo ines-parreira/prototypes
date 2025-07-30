@@ -62,4 +62,13 @@ describe('notificationTracker', () => {
             },
         ])
     })
+
+    it('should find and return agent by ID or handle missing data gracefully', () => {
+        const { getAgent } = require('../notificationTracker')
+        expect(getAgent(2)).toEqual({ id: 2, role: { name: UserRole.Agent } })
+        expect(getAgent(3)).toEqual({ id: 3, role: { name: UserRole.Admin } })
+
+        window.GORGIAS_STATE = undefined as any
+        expect(getAgent(2)).toBeUndefined()
+    })
 })

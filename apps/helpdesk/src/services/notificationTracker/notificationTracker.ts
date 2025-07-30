@@ -38,6 +38,12 @@ export const getAdminRecipientIds = () => {
     return sortedAdminIds
 }
 
+export const getAgent = (agentId: number) => {
+    return window.GORGIAS_STATE?.agents?.all.find(
+        (agent) => agent.id === agentId,
+    )
+}
+
 notificationTrackerInstance.createUserContext({
     account_id: window.GORGIAS_STATE?.currentAccount?.id,
     recipient_ids: getAdminRecipientIds(),

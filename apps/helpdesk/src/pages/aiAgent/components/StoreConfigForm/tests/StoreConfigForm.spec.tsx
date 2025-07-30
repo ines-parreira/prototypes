@@ -21,6 +21,7 @@ import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
+import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
@@ -445,19 +446,6 @@ describe('<StoreConfigForm />', () => {
         setFormValues: jest.fn(),
         handleOnSave: mockHandleOnSave,
         isPendingCreateOrUpdate: false,
-    }
-
-    const defaultUseAiAgentOnboardingNotification = {
-        isAdmin: true,
-        onboardingNotificationState: undefined,
-        handleOnSave: jest.fn(),
-        handleOnSendOrCancelNotification: jest.fn(),
-        handleOnEnablementPostReceivedNotification: jest.fn(),
-        handleOnPerformActionPostReceivedNotification: jest.fn(),
-        handleOnTriggerActivateAiAgentNotification: jest.fn(),
-        handleOnCancelActivateAiAgentNotification: jest.fn(),
-        isLoading: false,
-        isAiAgentOnboardingNotificationEnabled: true,
     }
 
     beforeEach(() => {

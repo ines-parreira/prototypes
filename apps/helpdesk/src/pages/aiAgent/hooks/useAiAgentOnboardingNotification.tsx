@@ -8,12 +8,16 @@ import {
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
 } from 'automate/notifications/constants'
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { getNotificationReceivedDatetime } from 'automate/notifications/utils'
+import {
+    getNotificationReceivedDatetime,
+    getNotificationReceivedDatetimePayload,
+} from 'automate/notifications/utils'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
@@ -110,9 +114,11 @@ export const useAiAgentOnboardingNotification = ({
         ({
             aiAgentNotificationType,
             isCancel = false,
+            agentId,
         }: {
             aiAgentNotificationType: AiAgentNotificationType
             isCancel?: boolean
+            agentId?: number
         }) => {
             if (
                 !isAiAgentOnboardingNotificationEnabled ||
@@ -122,14 +128,26 @@ export const useAiAgentOnboardingNotification = ({
                 return
             }
 
+            if (
+                aiAgentNotificationType ===
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest &&
+                !agentId
+            ) {
+                return
+            }
+
             const adminRecipientIdsList = getAdminRecipientIds() ?? []
 
-            const idempotencyKey = `idempotent:${accountDomain}+${shopName}+${aiAgentNotificationType}+${hash(adminRecipientIdsList)}`
-            const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}`
+            const userIdPart = agentId ? `+${agentId}` : ''
+
+            const idempotencyKey = `idempotent:${accountDomain}+${shopName}+${aiAgentNotificationType}${userIdPart}+${hash(adminRecipientIdsList)}`
+            const cancellationKey = `cancel:${accountDomain}+${shopName}+${aiAgentNotificationType}${userIdPart}`
+
             const notificationData = {
                 ai_agent_notification_type: aiAgentNotificationType,
                 shop_name: shopName,
                 shop_type: 'shopify',
+                agent_id: agentId,
             }
             const notificationProps = {
                 command_type: 'cancel-notification',
@@ -332,6 +350,41 @@ export const useAiAgentOnboardingNotification = ({
         shopName,
     ])
 
+    const handleOnTriggerTrialRequestNotification = useCallback(async () => {
+        if (!isAiAgentOnboardingNotificationEnabled || !shopName) return
+
+        const { data } = await getOnboardingNotificationState(
+            accountDomain,
+            shopName,
+        )
+
+        handleOnSendOrCancelNotification({
+            aiAgentNotificationType:
+                AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            isCancel: false,
+            agentId: currentUser.get('id'),
+        })
+
+        const payload = getNotificationReceivedDatetimePayload(
+            {
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                shop_name: shopName,
+                shop_type: 'shopify',
+                agent_id: currentUser.get('id'),
+            },
+            data.onboardingNotificationState,
+        )
+
+        void handleOnSave(payload)
+    }, [
+        handleOnSendOrCancelNotification,
+        isAiAgentOnboardingNotificationEnabled,
+        shopName,
+        currentUser,
+        accountDomain,
+    ])
+
     return {
         isAdmin,
         onboardingNotificationState,
@@ -341,6 +394,7 @@ export const useAiAgentOnboardingNotification = ({
         handleOnPerformActionPostReceivedNotification,
         handleOnTriggerActivateAiAgentNotification,
         handleOnCancelActivateAiAgentNotification,
+        handleOnTriggerTrialRequestNotification,
         isLoading: isLoadingCreateOrUpdate || isLoadingGet,
         isAiAgentOnboardingNotificationEnabled,
     }
