@@ -82,6 +82,7 @@ export default function ChannelFilter({
                 placement="bottom-end"
                 target={targetRef}
                 onToggle={setIsOpen}
+                value={selected}
             >
                 {withSearch && <DropdownSearch autoFocus />}
                 <DropdownBody>

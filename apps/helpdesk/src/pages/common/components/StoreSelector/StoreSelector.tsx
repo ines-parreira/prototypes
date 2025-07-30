@@ -69,6 +69,7 @@ export default function StoreSelector({
                 placement="bottom-end"
                 target={targetRef}
                 onToggle={setIsOpen}
+                value={selected?.id || null}
             >
                 {withSearch && <DropdownSearch autoFocus />}
                 <DropdownBody>
