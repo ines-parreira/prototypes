@@ -7,13 +7,10 @@ import {
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import { AI_AGENT, DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
+import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 import { renderHook } from 'utils/testing/renderHook'
 
-import {
-    playgroundCustomerMessage,
-    playgroundMessageFixture,
-} from '../../../fixtures/playgroundMessages.fixture'
+import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
 import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { usePlaygroundApi } from '../usePlaygroundApi'
@@ -87,22 +84,6 @@ describe('usePlaygroundMessages hook', () => {
         jest.useFakeTimers().setSystemTime(new Date('2020-01-01'))
     })
 
-    it('should return initial message', () => {
-        const { result } = renderHook(() =>
-            usePlaygroundMessages(defaultParams),
-        )
-
-        expect(result.current.messages.length).toBe(1)
-        expect(result.current.messages[0]).toMatchObject({
-            content: expect.stringContaining(
-                'Welcome to your AI Agent test area',
-            ),
-            createdDatetime: '2020-01-01T00:00:00.000Z',
-            sender: 'AI Agent',
-            type: 'MESSAGE',
-        })
-    })
-
     it('should submit a message', async () => {
         const submitMessageMock = jest.fn(() =>
             Promise.resolve(getSubmitPlaygroundTicketResponseFixture()),
@@ -140,8 +121,7 @@ describe('usePlaygroundMessages hook', () => {
             createTestSession: expect.any(Function),
         })
 
-        // Initial message + user message + AI response
-        expect(result.current.messages.length).toBe(3)
+        expect(result.current.messages.length).toBe(2)
     })
 
     it('should handle errors during message submission', async () => {
@@ -164,8 +144,8 @@ describe('usePlaygroundMessages hook', () => {
         })
 
         // Should have error message
-        expect(result.current.messages.length).toBe(3)
-        expect(result.current.messages[2].type).toBe(MessageType.ERROR)
+        expect(result.current.messages.length).toBe(2)
+        expect(result.current.messages[1].type).toBe(MessageType.ERROR)
     })
 
     it('should cancel previous request on new conversation', async () => {
@@ -186,39 +166,7 @@ describe('usePlaygroundMessages hook', () => {
         })
 
         expect(abortMock).toHaveBeenCalled()
-        expect(result.current.messages.length).toBe(1) // Reset to initial message
-    })
-
-    it('should add greeting message for chat channel with first customer message', async () => {
-        mockedUseFlag.mockReturnValue(false)
-        mockedUsePlaygroundApi.mockReturnValue({
-            submitMessage: jest.fn(() =>
-                Promise.resolve(getSubmitPlaygroundTicketResponseFixture()),
-            ),
-            isSubmitting: false,
-            abortCurrentRequest: jest.fn(),
-        })
-
-        const { result } = renderHook(() =>
-            usePlaygroundMessages({
-                ...defaultParams,
-                channel: 'chat',
-            }),
-        )
-
-        await act(async () => {
-            await result.current.onMessageSend(playgroundCustomerMessage, {
-                customer: DEFAULT_PLAYGROUND_CUSTOMER,
-            })
-        })
-
-        // Should add the greeting message
-        expect(result.current.messages.length).toBe(5)
-        expect(result.current.messages[2]).toMatchObject({
-            content: 'Hey there 👋',
-            type: MessageType.MESSAGE,
-            sender: AI_AGENT,
-        })
+        expect(result.current.messages.length).toBe(0)
     })
 
     it('should update waiting response state based on action display', async () => {
@@ -331,8 +279,7 @@ describe('usePlaygroundMessages hook', () => {
                 usePlaygroundMessages(defaultParams),
             )
 
-            // Initial message
-            expect(result.current.messages.length).toBe(1)
+            expect(result.current.messages.length).toBe(0)
 
             // Update with test session logs
             const testSessionLogs = {
@@ -368,15 +315,15 @@ describe('usePlaygroundMessages hook', () => {
             // Trigger re-render with new test session logs
             rerender()
 
-            // Should have initial message + insight message + placeholder
-            expect(result.current.messages.length).toBe(3)
-            expect(result.current.messages[1].type).toBe(
+            // Should have insight message + placeholder
+            expect(result.current.messages.length).toBe(2)
+            expect(result.current.messages[0].type).toBe(
                 MessageType.INTERNAL_NOTE,
             )
             expect(
-                (result.current.messages[1] as { content: string }).content,
+                (result.current.messages[0] as { content: string }).content,
             ).toBe('Insight message')
-            expect(result.current.messages[2].type).toBe(
+            expect(result.current.messages[1].type).toBe(
                 MessageType.PLACEHOLDER,
             )
         })
@@ -421,9 +368,9 @@ describe('usePlaygroundMessages hook', () => {
 
             rerender()
 
-            // Should have initial message + reply + placeholder
-            expect(result.current.messages.length).toBe(3)
-            expect(result.current.messages[2].type).toBe(
+            // Should have reply + placeholder
+            expect(result.current.messages.length).toBe(2)
+            expect(result.current.messages[1].type).toBe(
                 MessageType.PLACEHOLDER,
             )
 
@@ -461,9 +408,9 @@ describe('usePlaygroundMessages hook', () => {
 
             rerender()
 
-            // Should have initial message + reply + execution finished, no placeholder
-            expect(result.current.messages.length).toBe(3)
-            expect(result.current.messages[2].type).toBe(
+            // Should have reply + execution finished, no placeholder
+            expect(result.current.messages.length).toBe(2)
+            expect(result.current.messages[1].type).toBe(
                 MessageType.TICKET_EVENT,
             )
 
@@ -511,8 +458,8 @@ describe('usePlaygroundMessages hook', () => {
 
             rerender()
 
-            // Should have initial + insight message + placeholder
-            expect(result.current.messages.length).toBe(3)
+            // Should have insight message + placeholder
+            expect(result.current.messages.length).toBe(2)
 
             // Add a new log but keep the old one too
             const updatedLogs = {
@@ -548,16 +495,17 @@ describe('usePlaygroundMessages hook', () => {
             rerender()
 
             // Should only add the new message, not duplicate the insight
-            expect(result.current.messages.length).toBe(4)
-            expect(result.current.messages[1].type).toBe(
+            expect(result.current.messages.length).toBe(3)
+            expect(result.current.messages[0].type).toBe(
                 MessageType.INTERNAL_NOTE,
             )
+            expect(result.current.messages[1].type).toBe(MessageType.MESSAGE)
+            expect(
+                (result.current.messages[0] as { content: string }).content,
+            ).toBe('Insight message')
+            expect(result.current.messages[1].type).toBe(MessageType.MESSAGE)
             expect(
                 (result.current.messages[1] as { content: string }).content,
-            ).toBe('Insight message')
-            expect(result.current.messages[2].type).toBe(MessageType.MESSAGE)
-            expect(
-                (result.current.messages[2] as { content: string }).content,
             ).toBe('Reply message')
         })
 
@@ -601,9 +549,9 @@ describe('usePlaygroundMessages hook', () => {
 
             rerender()
 
-            // Should only have initial message + placeholder, unknown log type message is filtered out
-            expect(result.current.messages.length).toBe(2)
-            expect(result.current.messages[1].type).toBe(
+            // Should only have placeholder, unknown log type message is filtered out
+            expect(result.current.messages.length).toBe(1)
+            expect(result.current.messages[0].type).toBe(
                 MessageType.PLACEHOLDER,
             )
         })

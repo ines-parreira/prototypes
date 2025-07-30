@@ -71,21 +71,18 @@ export const mapPlaygroundMessagesToServerMessages = (
     messages: PlaygroundMessage[],
     channel: PlaygroundChannels,
 ): CreatePlaygroundMessage[] => {
-    return messages
-        .slice(1) // remove initial message
-        .filter(isApiEligiblePlaygroundMessage)
-        .map((m, index) => {
-            return {
-                bodyText: m.content,
-                fromAgent: m.sender === AI_AGENT_SENDER,
-                createdDatetime: m.createdDatetime,
-                // We should annotate the first message as an entry message
-                meta: getPlaygroundMessageMeta({
-                    message: m,
-                    firstShopperMessage: channel === 'chat' && index === 0,
-                }),
-            }
-        })
+    return messages.filter(isApiEligiblePlaygroundMessage).map((m, index) => {
+        return {
+            bodyText: m.content,
+            fromAgent: m.sender === AI_AGENT_SENDER,
+            createdDatetime: m.createdDatetime,
+            // We should annotate the first message as an entry message
+            meta: getPlaygroundMessageMeta({
+                message: m,
+                firstShopperMessage: channel === 'chat' && index === 0,
+            }),
+        }
+    })
 }
 
 export const mapPlaygroundFormValuesToMessage = (
@@ -142,20 +139,4 @@ export const shouldAiAgentResponseDisplay = (
         aiAgentResponse.qa.output.validate_generated_message &&
         ((isHandover && !isSilentHandover) || (!isHandover && hasHtmlReply))
     )
-}
-
-export const getPlaygroundInitialMessage = (
-    channel: PlaygroundChannels,
-    currentUserFirstName?: string,
-) => {
-    switch (channel) {
-        case 'chat':
-            return `Hi${
-                currentUserFirstName ? ` ${currentUserFirstName}` : ''
-            }<br/><br/>Welcome to your AI Agent test area.<br/><br/>You can use this to send messages to AI Agent in the same way your customers do and test how it responds. If you want to improve the response, you can edit your resources and re-test your question.`
-        default:
-            return `Hi${
-                currentUserFirstName ? ` ${currentUserFirstName}` : ''
-            }!<br/><br/>Welcome to your AI Agent test area.<br/><br/>Your test area lets you search for an <b>existing customer</b> to see how your AI Agent would respond <b>based on your resources and the customer’s order history.</b><br/><br/>If you want to improve the response, you can edit your resources and re-test your question.`
-    }
 }

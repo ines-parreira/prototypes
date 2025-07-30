@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import classNames from 'classnames'
+
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {
@@ -20,6 +22,7 @@ import {
     mapPlaygroundFormValuesToMessage,
     mapPlaygroundPromptToMessage,
 } from '../../utils/playground-messages.utils'
+import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
 import { PlaygroundInputSection } from '../PlaygroundInputSection/PlaygroundInputSection'
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
@@ -236,15 +239,24 @@ export const PlaygroundChat = ({
                 </>
             )}
             <div className={css.outputContainer}>
-                <div className={css.outputInner} ref={messageContainerRef}>
-                    {messages.map((message, index) => (
-                        <PlaygroundMessageComponent
-                            message={message}
-                            key={index}
-                            channel={channel}
-                            withAnimation
-                        />
-                    ))}
+                <div
+                    className={classNames(css.outputInner, {
+                        [css['outputInner--empty']]: messages.length === 0,
+                    })}
+                    ref={messageContainerRef}
+                >
+                    {messages.length === 0 ? (
+                        <PlaygroundInitialContent />
+                    ) : (
+                        messages.map((message, index) => (
+                            <PlaygroundMessageComponent
+                                message={message}
+                                key={index}
+                                channel={channel}
+                                withAnimation
+                            />
+                        ))
+                    )}
                 </div>
             </div>
             <div className={css.inputContainer}>

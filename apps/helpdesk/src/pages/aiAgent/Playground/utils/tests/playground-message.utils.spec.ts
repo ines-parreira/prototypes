@@ -59,13 +59,6 @@ describe('playground-message utils', () => {
                     agentSkill: AgentSkill.SUPPORT,
                     sender: 'agent',
                     createdDatetime: '2021-07-29T09:00:00Z',
-                    content: 'Init message',
-                },
-                {
-                    type: MessageType.MESSAGE,
-                    agentSkill: AgentSkill.SUPPORT,
-                    sender: 'agent',
-                    createdDatetime: '2021-07-29T09:00:00Z',
                     content: 'Hello, how can I help you?',
                 },
                 {

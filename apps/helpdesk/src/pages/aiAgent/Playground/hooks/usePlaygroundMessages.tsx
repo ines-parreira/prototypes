@@ -28,10 +28,7 @@ import {
     handleAiAgentResponse,
     handleAiAgentTestSessionLog,
 } from '../utils/playground-handler.utils'
-import {
-    getPlaygroundInitialMessage,
-    shouldDisplayActions,
-} from '../utils/playground-messages.utils'
+import { shouldDisplayActions } from '../utils/playground-messages.utils'
 import { usePlaygroundApi } from './usePlaygroundApi'
 import { usePlaygroundPolling } from './usePlaygroundPolling'
 import { useTestSession } from './useTestSession'
@@ -53,7 +50,6 @@ export const usePlaygroundMessages = ({
     gorgiasDomain,
     accountId,
     httpIntegrationId,
-    currentUserFirstName,
     channel,
     channelIntegrationId,
     channelAvailability,
@@ -71,20 +67,7 @@ export const usePlaygroundMessages = ({
         FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
     )
 
-    const initialMessages: PlaygroundMessage[] = useMemo(
-        () => [
-            {
-                sender: AI_AGENT_SENDER,
-                type: MessageType.MESSAGE,
-                content: getPlaygroundInitialMessage(
-                    channel,
-                    currentUserFirstName,
-                ),
-                createdDatetime: new Date().toISOString(),
-            },
-        ],
-        [channel, currentUserFirstName],
-    )
+    const initialMessages: PlaygroundMessage[] = useMemo(() => [], [])
 
     const { testSessionId, createTestSession } = useTestSession()
 
