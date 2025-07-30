@@ -43,6 +43,7 @@ const activityTrackerInstance = BrowserEventTracker.initialize({
         partitionkey: `{"account_id": ${window.GORGIAS_STATE?.currentAccount?.id}, "user_id": ${window.GORGIAS_STATE?.currentUser?.id}}`,
         reverseDNSName: 'com.gorgias.helpdesk.ui',
     },
+    enableSessionParams: true,
     getApiHeaders: async () => {
         return await appAuthService.getAccessTokenHeaders()
     },

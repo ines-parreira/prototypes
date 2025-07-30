@@ -15,6 +15,7 @@ const notificationTrackerInstance = EventTracker.initialize({
         partitionkey: `{"accountId": ${window.GORGIAS_STATE?.currentAccount?.id}}`,
         reverseDNSName: 'com.gorgias.notifications',
     },
+    enableQueue: false,
     getApiHeaders: async () => {
         return await appAuthService.getAccessTokenHeaders()
     },

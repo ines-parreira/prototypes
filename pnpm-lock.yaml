@@ -271,11 +271,11 @@ importers:
         specifier: ^0.10.5
         version: 0.10.5
       '@gorgias/event-tracker-api':
-        specifier: 1.1.0
-        version: 1.1.0
+        specifier: 1.2.0
+        version: 1.2.0
       '@gorgias/event-tracker-browser':
-        specifier: 2.0.3
-        version: 2.0.3
+        specifier: 2.0.4
+        version: 2.0.4
       '@gorgias/events':
         specifier: ^0.7.0
         version: 0.7.0
@@ -2700,11 +2700,11 @@ packages:
   '@gorgias/design-tokens@0.10.6':
     resolution: {integrity: sha512-FuHWeHfIXEBZikMkROibNW+ExpXBSN/DCl5okENo+Z/0hwhjxpwyaXxXd3xVoj4tizRSZtFqDrHO4/azq9dJIQ==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.6/ba39830b7c97655df64fd35c4f6f64a49fe577db}
 
-  '@gorgias/event-tracker-api@1.1.0':
-    resolution: {integrity: sha512-a8GgwT7PtdbbayjpPKBUBl8gGCzGA1n64/X3qYzXSQQ3zboCNFaJ0L2nKhcuu7E6cbANCeFyf/kRqD+Wa5wrkQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.1.0/d9b9487ff2eba9161dfa48efa5a927397ded692d}
+  '@gorgias/event-tracker-api@1.2.0':
+    resolution: {integrity: sha512-Ugrqt2bKColPX7Y1/ZLx1BPRGSPbQv8tTl8MO5wX8gngLcG04WsdrFH2UYKOoIr8ieSMGgmAANlj+ed8qbAGjQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.2.0/44a3eb2d588633389959a46627b687f98c4346bf}
 
-  '@gorgias/event-tracker-browser@2.0.3':
-    resolution: {integrity: sha512-hnouzhAxIAyhRUXQBFPafYQWgJN2qAe3sXOHceZokYbwGeuVUcUdxS8S5sOywOgC4KwShFv6OiRS+X/QTcgvjQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/2.0.3/add2450e32f65eaeb0e0e30d0db7d649ba4e1994}
+  '@gorgias/event-tracker-browser@2.0.4':
+    resolution: {integrity: sha512-6ipp8bCpOLmNOFWjhiH709761iy8gOT/erLcjp8DZoTEnqKEXfk8I+O+2lK00HKsQKvysU6goM3LwNxWGNEJ2Q==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/2.0.4/a44d74a59485e2757b2ed89dea58d864a875676b}
 
   '@gorgias/event-tracker-utils@1.0.1':
     resolution: {integrity: sha512-q3p9eb/ooIga/5tJCLryVIuRIaI+E2fjIJoJsUVTse8BwYW14pvcK/0G87fHAOEDezbTCFacm3KisxxgeTIarw==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.0.1/25a551ebe4ce428f03e1157f60263b2ef049d5c7}
@@ -5508,9 +5508,6 @@ packages:
     resolution: {integrity: sha512-aR99oXhpEDGo0UuAlYcn2iGRds30k366Zfa05XWScR9QaQD4JYiP3/1Qt1u7YlefUOK+cn0CcwoL1oefavQUlQ==}
     peerDependencies:
       axios: 0.x || 1.x
-
-  axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
   axios@1.8.4:
     resolution: {integrity: sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==}
@@ -13234,18 +13231,18 @@ snapshots:
 
   '@gorgias/design-tokens@0.10.6': {}
 
-  '@gorgias/event-tracker-api@1.1.0':
+  '@gorgias/event-tracker-api@1.2.0':
     dependencies:
       '@gorgias/event-tracker-utils': 1.0.1
-      axios: 1.7.7
+      axios: 1.8.4
       cloudevents: 8.0.2
       uuid: 9.0.1
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/event-tracker-browser@2.0.3':
+  '@gorgias/event-tracker-browser@2.0.4':
     dependencies:
-      '@gorgias/event-tracker-api': 1.1.0
+      '@gorgias/event-tracker-api': 1.2.0
       localforage: 1.10.0
       localforage-getitems: 1.4.2
     transitivePeerDependencies:
@@ -16834,14 +16831,6 @@ snapshots:
     dependencies:
       axios: 1.8.4
       is-retry-allowed: 2.2.0
-
-  axios@1.7.7:
-    dependencies:
-      follow-redirects: 1.15.9
-      form-data: 4.0.2
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
 
   axios@1.8.4:
     dependencies:
