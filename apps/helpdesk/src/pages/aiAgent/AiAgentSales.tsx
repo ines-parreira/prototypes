@@ -19,6 +19,8 @@ export const AiAgentSales = () => {
     }>()
     const flags = useFlags()
     const isSalesPageEnabled = flags[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const isActionDrivenAiAgentNavigationEnabled =
+        flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
     const history = useHistory()
     const analyticsRoute = getAiAgentNavigationRoutes(shopName, flags).analytics
     const strategyRoute = getAiAgentNavigationRoutes(
@@ -33,9 +35,11 @@ export const AiAgentSales = () => {
             return
         }
 
-        const route = isShoppingAssistantEnabled
-            ? analyticsRoute
-            : strategyRoute
+        const route =
+            !isActionDrivenAiAgentNavigationEnabled &&
+            isShoppingAssistantEnabled
+                ? analyticsRoute
+                : strategyRoute
 
         history.replace(route)
     }, [
@@ -45,6 +49,7 @@ export const AiAgentSales = () => {
         history,
         analyticsRoute,
         strategyRoute,
+        isActionDrivenAiAgentNavigationEnabled,
     ])
 
     return (

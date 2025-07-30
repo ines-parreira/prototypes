@@ -25,6 +25,9 @@ export const useActivation = (
         autoDisplayEarlyAccessDisabled?: boolean
     } = {},
 ) => {
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
     const location = useLocation()
     const pageName = location.pathname
     const hasAiAgentNewActivationXp = useFlag(
@@ -214,17 +217,21 @@ export const useActivation = (
                 hasAiAgentNewActivationXp={hasAiAgentNewActivationXp}
             />
         ),
-        activationButton: hasActivationEnabled ? (
-            <ActivationManageButton
-                onClick={() => {
-                    setIsModalVisible(true)
-                    logEvent(SegmentEvent.AiAgentActivateMainButtonClicked, {
-                        page: pageName,
-                    })
-                }}
-                {...activationButtonProps}
-            />
-        ) : null,
+        activationButton:
+            !isActionDrivenAiAgentNavigationEnabled && hasActivationEnabled ? (
+                <ActivationManageButton
+                    onClick={() => {
+                        setIsModalVisible(true)
+                        logEvent(
+                            SegmentEvent.AiAgentActivateMainButtonClicked,
+                            {
+                                page: pageName,
+                            },
+                        )
+                    }}
+                    {...activationButtonProps}
+                />
+            ) : null,
         earlyAccessModal: (
             <EarlyAccessModal
                 isLoading={isLoading}

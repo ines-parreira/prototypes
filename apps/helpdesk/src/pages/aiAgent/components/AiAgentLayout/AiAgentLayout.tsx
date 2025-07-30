@@ -3,6 +3,8 @@ import { ReactNode, useMemo } from 'react'
 import classnames from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
@@ -38,6 +40,9 @@ export const AiAgentLayout = ({
     hideViewAiAgentTicketsButton,
     fullscreen,
 }: Props) => {
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
 
     const { aiAgentTicketViewId } = useAccountStoreConfiguration({
@@ -70,23 +75,27 @@ export const AiAgentLayout = ({
             <div className={css.customAiAgentTitle}>
                 <div className={css.customAiAgentTitleSubContainer}>
                     <h1 className="d-flex align-items-center">{title}</h1>
-                    {!hideViewAiAgentTicketsButton && aiAgentTicketViewId && (
-                        <Button
-                            size="small"
-                            intent="secondary"
-                            onClick={() => {
-                                logEvent(SegmentEvent.AiAgentViewTicketsClicked)
-                                history.push(
-                                    `/app/views/${aiAgentTicketViewId}`,
-                                    {
-                                        skipRedirect: true,
-                                    },
-                                )
-                            }}
-                        >
-                            View AI Agent Tickets
-                        </Button>
-                    )}
+                    {!isActionDrivenAiAgentNavigationEnabled &&
+                        !hideViewAiAgentTicketsButton &&
+                        aiAgentTicketViewId && (
+                            <Button
+                                size="small"
+                                intent="secondary"
+                                onClick={() => {
+                                    logEvent(
+                                        SegmentEvent.AiAgentViewTicketsClicked,
+                                    )
+                                    history.push(
+                                        `/app/views/${aiAgentTicketViewId}`,
+                                        {
+                                            skipRedirect: true,
+                                        },
+                                    )
+                                }}
+                            >
+                                View AI Agent Tickets
+                            </Button>
+                        )}
                 </div>
                 <div>{activationButton}</div>
             </div>
@@ -96,6 +105,7 @@ export const AiAgentLayout = ({
         aiAgentTicketViewId,
         title,
         activationButton,
+        isActionDrivenAiAgentNavigationEnabled,
     ])
 
     return (

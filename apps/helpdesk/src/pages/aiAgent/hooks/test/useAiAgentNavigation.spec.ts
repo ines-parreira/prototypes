@@ -261,9 +261,10 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return ai-agent route for analytics when ai shopping assistant is enabled', () => {
+        it('should return ai-agent route for analytics when ai shopping assistant is enabled and action driven ai agent navbar is disabled', () => {
             useFlagsMock.mockReturnValue({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.ActionDrivenAiAgentNavigation]: false,
             })
 
             const { result } = renderHook(() =>
@@ -275,6 +276,31 @@ describe('useAiAgentNavigation', () => {
             )?.items
 
             expect(salesItems).toEqual(
+                expect.arrayContaining([
+                    {
+                        route: '/app/ai-agent/shopify/my-shop/sales/analytics',
+                        title: ANALYTICS,
+                        exact: true,
+                    },
+                ]),
+            )
+        })
+
+        it('should not return ai-agent route for analytics when action driven ai agent navbar is enabled', () => {
+            useFlagsMock.mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                [FeatureFlagKey.ActionDrivenAiAgentNavigation]: true,
+            })
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'my-shop' }),
+            )
+
+            const salesItems = result.current.navigationItems.find(
+                (item) => item.title === SALES,
+            )?.items
+
+            expect(salesItems).not.toEqual(
                 expect.arrayContaining([
                     {
                         route: '/app/ai-agent/shopify/my-shop/sales/analytics',

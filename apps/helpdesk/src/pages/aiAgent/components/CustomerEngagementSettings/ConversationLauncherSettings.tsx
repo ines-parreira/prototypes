@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom'
 
 import { Button, CheckBoxField, Label } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
@@ -18,6 +20,7 @@ import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 import TextArea from 'pages/common/forms/TextArea'
 import translationsAvailableKeys from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
 import { Translations } from 'rest_api/gorgias_chat_protected_api/types'
+import { STATS_ROUTES } from 'routes/constants'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 import { assetsUrl } from 'utils'
 
@@ -276,6 +279,9 @@ export const ConversationLauncherSettings = ({
     translations,
     onAdvancedSettingsSave,
 }: Props) => {
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
     const [isSidebarOpen, setSidebarOpen] = useState(false)
 
     const { watch, setValue } = useFormContext()
@@ -374,7 +380,11 @@ export const ConversationLauncherSettings = ({
                         {storeConfiguration?.floatingChatInputConfiguration
                             ?.isEnabled && (
                             <EngagementSettingsCardLinkButton
-                                href={routes.analytics}
+                                href={
+                                    isActionDrivenAiAgentNavigationEnabled
+                                        ? `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
+                                        : routes.analytics
+                                }
                                 text="Track Performance"
                             />
                         )}

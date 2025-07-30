@@ -1,9 +1,12 @@
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { STATS_ROUTES } from 'routes/constants'
 import { assetsUrl } from 'utils'
 
 import {
@@ -36,6 +39,9 @@ export const ConversationStartersSettings = ({
     gmv,
     isGmvLoading,
 }: Props) => {
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
     const { watch, setValue } = useFormContext()
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
     const { shopName } = useParams<{ shopName: string }>()
@@ -94,7 +100,11 @@ export const ConversationStartersSettings = ({
 
                     {storeConfiguration?.isConversationStartersEnabled && (
                         <EngagementSettingsCardLinkButton
-                            href={routes.analytics}
+                            href={
+                                isActionDrivenAiAgentNavigationEnabled
+                                    ? `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
+                                    : routes.analytics
+                            }
                             text="Track Performance"
                         />
                     )}

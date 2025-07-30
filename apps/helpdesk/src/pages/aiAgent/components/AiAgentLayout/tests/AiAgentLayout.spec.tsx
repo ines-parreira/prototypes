@@ -9,6 +9,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { AI_AGENT } from 'pages/aiAgent/constants'
 import history from 'pages/history'
@@ -37,6 +38,9 @@ jest.mock('../../../hooks/useAiAgentEnabled', () => ({
         updateSettingsAfterAiAgentEnabled: jest.fn(),
     }),
 }))
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 const defaultStore = mockStore({
     currentAccount: fromJS({
@@ -84,6 +88,16 @@ describe('<AiAgentLayout />', () => {
         expect(history.push).toHaveBeenCalledWith('/app/views/1', {
             skipRedirect: true,
         })
+    })
+
+    it('should hide ai agent ticket view button if action driven ai agent navigation feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderComponent({})
+        const ticketViewButton = screen.queryByRole('button', {
+            name: 'View AI Agent Tickets',
+        })
+        expect(ticketViewButton).not.toBeInTheDocument()
     })
 
     it('should hide ai agent ticket view button if hideAiAgentTicketsViewButton props is passed', () => {

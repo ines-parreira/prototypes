@@ -332,6 +332,10 @@ describe('useActivation', () => {
                 if (flag === FeatureFlagKey.AiAgentNewActivationXp) {
                     return aiAgentNewActivationXp
                 }
+
+                if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
+                    return false
+                }
                 return false
             })
         })
@@ -340,6 +344,19 @@ describe('useActivation', () => {
             const { result } = renderHookWithRouter()
 
             expect(result.current.activationButton).toBeDefined()
+        })
+
+        it('should not render activation button when action driven ai agent navigation feature flag is enabled', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
+                    return true
+                }
+                return false
+            })
+
+            const { result } = renderHookWithRouter()
+
+            expect(result.current.activationButton).toBeFalsy()
         })
 
         it('should render bordered variant when on overview page', () => {
