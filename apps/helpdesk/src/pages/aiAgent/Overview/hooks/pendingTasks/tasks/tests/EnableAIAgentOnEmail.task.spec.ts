@@ -57,6 +57,25 @@ describe('EnableAIAgentOnEmail', () => {
         expect(task.display).toBe(false)
     })
 
+    it('should not display the task for standalone merchants', () => {
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withConnectedEmailIntegrations({
+                    email: 'test@test.com',
+                    id: 1,
+                })
+                .build()
+
+        const task = new EnableAIAgentOnEmailTask(
+            buildRuleEngineData({
+                aiAgentStoreConfiguration,
+                isStandaloneMerchant: true,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.display).toBe(false)
+    })
+
     describe('feature URL generation', () => {
         const storeName = 'test-store'
         const routes = buildRuleEngineRoutes()

@@ -189,6 +189,10 @@ export const usePendingTasksRuleEngine = ({
     })
 
     const isActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation, false)
+    const isStandaloneMerchant = useFlag(
+        FeatureFlagKey.StandaloneHandoverCapabilities,
+        false,
+    )
     const isAiShoppingAssistantEnabled = !!useFlag(
         FeatureFlagKey.AiShoppingAssistantEnabled,
         false,
@@ -223,6 +227,7 @@ export const usePendingTasksRuleEngine = ({
                         selfServiceChatChannels,
                         storeKnowledgeStatus: storeKnowledgeStatusData,
                         alreadyUsedEmailIntegrationsIds,
+                        isStandaloneMerchant,
                     },
                     {
                         aiAgentRoutes: routes,

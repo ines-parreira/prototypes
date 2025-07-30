@@ -61,6 +61,7 @@ export type RuleEngineData = {
     isActivationEnabled: boolean
     isAiShoppingAssistantEnabled: boolean
     isAiSalesAgentHelpOnSearchTemplateQueryEnabled: boolean
+    isStandaloneMerchant?: boolean
 }
 
 export type RuleEngineRoutes = {

@@ -20,6 +20,10 @@ export class ConnectYourDefaultEmailTask extends Task {
     // AND there should be at least one email integration
     // AND the default email must be connected to the ai agent store configuration
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
+        if (data.isStandaloneMerchant) {
+            return false
+        }
+
         if (
             data.aiAgentStoreConfiguration.emailChannelDeactivatedDatetime !==
             null

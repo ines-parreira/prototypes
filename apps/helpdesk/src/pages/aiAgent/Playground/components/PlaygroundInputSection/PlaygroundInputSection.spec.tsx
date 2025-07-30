@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import useFlag from 'core/flags/hooks/useFlag'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 import { userEvent } from 'utils/testing/userEvent'
@@ -30,6 +31,11 @@ jest.mock('./PlaygroundInputSection.less', () => ({
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
+}))
+
+jest.mock('core/flags/hooks/useFlag', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }))
 
 jest.mock(
@@ -67,6 +73,7 @@ jest.mock('../PlaygroundSegmentControl/PlaygroundSegmentControl', () => ({
         segments,
         selectedValue,
         onValueChange,
+        isDisabled,
     }: any) => (
         <div>
             {segments.map((segment: any) => (
@@ -75,6 +82,7 @@ jest.mock('../PlaygroundSegmentControl/PlaygroundSegmentControl', () => ({
                     role="tab"
                     aria-selected={selectedValue === segment.value}
                     onClick={() => onValueChange(segment.value)}
+                    disabled={isDisabled}
                 >
                     {segment.label}
                 </button>
@@ -122,6 +130,7 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
+const mockUseFlag = jest.mocked(useFlag)
 
 const defaultProps = {
     formValues: {
@@ -160,6 +169,7 @@ const renderComponent = (props = {}) => {
 describe('PlaygroundInputSection', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
     })
 
     describe('Reset button', () => {
@@ -255,6 +265,35 @@ describe('PlaygroundInputSection', () => {
 
             expect(screen.getByText('Online')).toBeInTheDocument()
             expect(screen.getByText('Offline')).toBeInTheDocument()
+        })
+
+        describe('when standalone feature flag is enabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(true)
+            })
+
+            it('should only show chat channel option', () => {
+                renderComponent()
+
+                expect(screen.getByText('Chat')).toBeInTheDocument()
+                expect(screen.queryByText('Email')).not.toBeInTheDocument()
+            })
+
+            it('should not have any other channel segments', () => {
+                renderComponent()
+
+                const tabs = screen.getAllByRole('tab')
+                expect(tabs).toHaveLength(1)
+                expect(tabs[0]).toHaveTextContent('Chat')
+            })
+
+            it('should disable channel switching when not initial message', () => {
+                renderComponent({ isInitialMessage: false })
+
+                const tabs = screen.getAllByRole('tab')
+                expect(tabs).toHaveLength(1)
+                expect(tabs[0]).toBeDisabled()
+            })
         })
     })
 })

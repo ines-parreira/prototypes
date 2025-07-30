@@ -171,6 +171,7 @@ describe('ChannelsFormComponent', () => {
         // Mock the feature flags
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: true,
+            [FeatureFlagKey.StandaloneHandoverCapabilities]: false,
         })
 
         // Mock the app selector (hasAutomate)
@@ -517,6 +518,56 @@ describe('ChannelsFormComponent', () => {
             expect(
                 screen.getByTestId('has-uninstalled-channels'),
             ).toHaveAttribute('data-value', 'false')
+        })
+    })
+
+    describe('StandaloneHandoverCapabilities feature flag', () => {
+        it('should hide email section when standalone flag is true', () => {
+            // Enable standalone flag
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.StandaloneHandoverCapabilities]: true,
+            })
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            // Chat components should be present
+            screen.getByText('channel toggle chat')
+            screen.getByText('chat settings form')
+
+            // Email components should NOT be present
+            expect(
+                screen.queryByText('channel toggle email'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('email form')).not.toBeInTheDocument()
+            expect(screen.queryByText('signature form')).not.toBeInTheDocument()
+        })
+
+        it('should show email section when standalone flag is false', () => {
+            // Explicitly set standalone flag to false
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.StandaloneHandoverCapabilities]: false,
+            })
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            // Chat components should be present
+            screen.getByText('channel toggle chat')
+            screen.getByText('chat settings form')
+
+            // Email components SHOULD be present
+            screen.getByText('channel toggle email')
+            screen.getByText('email form')
+            screen.getByText('signature form')
         })
     })
 })

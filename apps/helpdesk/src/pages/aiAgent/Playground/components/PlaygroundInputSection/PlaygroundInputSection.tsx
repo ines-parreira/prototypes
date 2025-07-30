@@ -11,6 +11,8 @@ import { useParams } from 'react-router'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import useFlag from 'core/flags/hooks/useFlag'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import Button from 'pages/common/components/button/Button'
@@ -38,6 +40,13 @@ import { PlaygroundEditor } from '../PlaygroundEditor/PlaygroundEditor'
 import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 
 import css from './PlaygroundInputSection.less'
+
+const STANDALONE_CHANNEL_SEGMENTS = [
+    {
+        label: 'Chat',
+        value: 'chat',
+    },
+]
 
 const CHANNEL_SEGMENTS = [
     {
@@ -196,6 +205,8 @@ export const PlaygroundInputSection = ({
         })
     }
 
+    const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
+
     return (
         <div className={css.container}>
             <div
@@ -208,7 +219,11 @@ export const PlaygroundInputSection = ({
                         selectedValue={channel}
                         onValueChange={handleChannelChange}
                         isDisabled={!isInitialMessage}
-                        segments={CHANNEL_SEGMENTS}
+                        segments={
+                            isStandalone
+                                ? STANDALONE_CHANNEL_SEGMENTS
+                                : CHANNEL_SEGMENTS
+                        }
                     />
                     {channel === 'chat' && (
                         <PlaygroundSegmentControl

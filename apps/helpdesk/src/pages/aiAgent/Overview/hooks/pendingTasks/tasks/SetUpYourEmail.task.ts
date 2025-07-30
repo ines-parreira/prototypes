@@ -17,7 +17,10 @@ export class SetUpYourEmailTask extends Task {
     }
 
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return !data.aiAgentStoreConfiguration.monitoredEmailIntegrations.length
+        return (
+            !data.isStandaloneMerchant &&
+            !data.aiAgentStoreConfiguration.monitoredEmailIntegrations.length
+        )
     }
 
     protected getFeatureUrl({

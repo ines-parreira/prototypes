@@ -30,7 +30,11 @@ export class EnableAIAgentOnEmailTask extends Task {
             data.aiAgentStoreConfiguration.emailChannelDeactivatedDatetime !==
             null
 
-        return hasSelectedEmails && isEmailChannelDeactivated
+        return (
+            !data.isStandaloneMerchant &&
+            hasSelectedEmails &&
+            isEmailChannelDeactivated
+        )
     }
 
     protected getFeatureUrl({

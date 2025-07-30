@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
+import useFlag from 'core/flags/hooks/useFlag'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useSearchCustomer } from 'models/aiAgent/queries'
 import {
@@ -37,6 +38,11 @@ import { PlaygroundChat } from './PlaygroundChat'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
+}))
+
+jest.mock('core/flags/hooks/useFlag', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }))
 
 jest.mock('../../hooks/usePlaygroundMessages', () => ({
@@ -77,6 +83,7 @@ const mockedUsePlaygroundForm = jest.mocked(usePlaygroundForm)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
 )
+const mockUseFlag = jest.mocked(useFlag)
 
 const defaultUsePlaygroundMessagesProps = {
     messages: [],
@@ -159,6 +166,7 @@ describe('PlaygroundChat', () => {
             isRefetchError: false,
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useGetStoreWorkflowsConfigurations>)
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render', () => {
@@ -181,6 +189,26 @@ describe('PlaygroundChat', () => {
         expect(
             screen.getAllByRole('tab', { selected: true })[0],
         ).toHaveTextContent('Chat')
+    })
+
+    describe('when standalone feature flag is enabled', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should default to chat channel', () => {
+            renderComponent()
+
+            expect(
+                screen.getAllByRole('tab', { selected: true })[0],
+            ).toHaveTextContent('Chat')
+        })
+
+        it('should not show email channel option', () => {
+            renderComponent()
+
+            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+        })
     })
 
     it('should render channel availability', () => {

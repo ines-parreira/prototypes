@@ -150,4 +150,28 @@ describe('ConnectYourDefaultEmail', () => {
         )
         expect(task.available).toBe(false)
     })
+
+    it('should not display the task for standalone merchants', () => {
+        const emailIntegrations = EmailIntegrationsDataFixture.start()
+            .withEmailIntegration({
+                isDefault: true,
+            })
+            .build()
+
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withoutConnectedEmailIntegrations()
+                .withEmailChannelEnabled()
+                .build()
+
+        const task = new ConnectYourDefaultEmailTask(
+            buildRuleEngineData({
+                aiAgentStoreConfiguration,
+                emailIntegrations,
+                isStandaloneMerchant: true,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.display).toBe(false)
+    })
 })

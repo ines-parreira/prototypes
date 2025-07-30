@@ -40,6 +40,23 @@ describe('SetUpYourEmailTask', () => {
         expect(task.display).toBe(false)
     })
 
+    it('should not display the task for standalone merchants', () => {
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withoutConnectedEmailIntegrations()
+                .build()
+
+        const task = new SetUpYourEmailTask(
+            buildRuleEngineData({
+                aiAgentStoreConfiguration,
+                isStandaloneMerchant: true,
+            }),
+            buildRuleEngineRoutes(),
+        )
+
+        expect(task.display).toBe(false)
+    })
+
     it('should redirect to ai agent channel settings if there are available integrations', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()

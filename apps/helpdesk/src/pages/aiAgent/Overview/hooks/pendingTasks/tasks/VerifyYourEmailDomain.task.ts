@@ -19,6 +19,10 @@ export class VerifyYourEmailDomainTask extends Task {
     // Email channel should be activated
     // AND at least one email integration connected to the ai agent store configuration is not verified
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
+        if (data.isStandaloneMerchant) {
+            return false
+        }
+
         if (
             data.aiAgentStoreConfiguration.emailChannelDeactivatedDatetime !==
             null

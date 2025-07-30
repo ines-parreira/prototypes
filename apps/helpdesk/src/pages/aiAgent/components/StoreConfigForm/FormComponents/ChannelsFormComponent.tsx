@@ -85,6 +85,9 @@ export const ChannelsFormComponent = ({
     const hasAiAgentNewActivationXp =
         !!useFlags()[FeatureFlagKey.AiAgentNewActivationXp]
 
+    const isStandalone =
+        !!useFlags()[FeatureFlagKey.StandaloneHandoverCapabilities]
+
     const showToggles = !isAiAgentActivationEnabled || hasAiAgentNewActivationXp
 
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -179,45 +182,51 @@ export const ChannelsFormComponent = ({
                     />
                 </ConfigurationSection>
             )}
-            <ConfigurationSection
-                title="Email"
-                data-candu-id="ai-agent-configuration-email-settings"
-            >
-                {showToggles && (
-                    <div className={css.sectionBlock}>
-                        <ChannelToggleInput
-                            isToggled={isEmailChannelEnabled}
-                            onUpdate={(isToggled) => {
-                                updateEmailChannelDeactivatedDatetime(
-                                    isToggled ? null : new Date().toISOString(),
-                                )
-                            }}
-                            channel="email"
-                            isDisabled={!hasAutomate}
-                            deactivatedDatetime={
-                                emailChannelDeactivatedDatetime
-                            }
-                            type={SettingsBannerType.Email}
-                            orderManagementRoute={
-                                routes.automationOrderManagement
-                            }
-                            flowsRoute={routes.automationFlows}
-                        />
-                    </div>
-                )}
+            {!isStandalone && (
+                <ConfigurationSection
+                    title="Email"
+                    data-candu-id="ai-agent-configuration-email-settings"
+                >
+                    {showToggles && (
+                        <div className={css.sectionBlock}>
+                            <ChannelToggleInput
+                                isToggled={isEmailChannelEnabled}
+                                onUpdate={(isToggled) => {
+                                    updateEmailChannelDeactivatedDatetime(
+                                        isToggled
+                                            ? null
+                                            : new Date().toISOString(),
+                                    )
+                                }}
+                                channel="email"
+                                isDisabled={!hasAutomate}
+                                deactivatedDatetime={
+                                    emailChannelDeactivatedDatetime
+                                }
+                                type={SettingsBannerType.Email}
+                                orderManagementRoute={
+                                    routes.automationOrderManagement
+                                }
+                                flowsRoute={routes.automationFlows}
+                            />
+                        </div>
+                    )}
+                    <EmailFormComponent
+                        updateValue={updateValue}
+                        monitoredEmailIntegrations={monitoredEmailIntegrations}
+                        isRequired={emailChannelDeactivatedDatetime === null}
+                    />
+                    <SignatureFormComponent
+                        isRequired={emailChannelDeactivatedDatetime === null}
+                        updateValue={updateValue}
+                        signature={signature}
+                        useEmailIntegrationSignature={
+                            useEmailIntegrationSignature
+                        }
+                    />
+                </ConfigurationSection>
+            )}
 
-                <EmailFormComponent
-                    updateValue={updateValue}
-                    monitoredEmailIntegrations={monitoredEmailIntegrations}
-                    isRequired={emailChannelDeactivatedDatetime === null}
-                />
-                <SignatureFormComponent
-                    isRequired={emailChannelDeactivatedDatetime === null}
-                    updateValue={updateValue}
-                    signature={signature}
-                    useEmailIntegrationSignature={useEmailIntegrationSignature}
-                />
-            </ConfigurationSection>
             {isAiAgentSmsEnabled && (
                 <ConfigurationSection
                     title="Sms for AI Journey"

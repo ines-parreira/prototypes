@@ -136,4 +136,31 @@ describe('VerifyYourEmailDomain', () => {
         expect(task.available).toBe(true)
         expect(task.display).toBe(false)
     })
+
+    it('should not display the task for standalone merchants', () => {
+        const emailIntegrations = EmailIntegrationsDataFixture.start()
+            .withEmailIntegration({
+                isVerified: false,
+            })
+            .build()
+
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withConnectedEmailIntegrations({
+                    email: emailIntegrations[0].address,
+                    id: emailIntegrations[0].id,
+                })
+                .withEmailChannelEnabled()
+                .build()
+
+        const task = new VerifyYourEmailDomainTask(
+            buildRuleEngineData({
+                emailIntegrations,
+                aiAgentStoreConfiguration,
+                isStandaloneMerchant: true,
+            }),
+            buildRuleEngineRoutes(),
+        )
+        expect(task.display).toBe(false)
+    })
 })

@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import useFlag from 'core/flags/hooks/useFlag'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {
     AccountConfigurationWithHttpIntegration,
@@ -45,8 +47,12 @@ export const PlaygroundChat = ({
     accountData,
     currentUserFirstName,
 }: Props) => {
+    const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
+
     const messageContainerRef = useRef<HTMLDivElement>(null)
-    const [channel, setChannel] = useState<PlaygroundChannels>('email')
+    const [channel, setChannel] = useState<PlaygroundChannels>(
+        isStandalone ? 'chat' : 'email',
+    )
     const [channelAvailability, setChannelAvailability] =
         useState<PlaygroundChannelAvailability>('online')
 
