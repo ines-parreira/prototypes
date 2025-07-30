@@ -314,12 +314,12 @@ export const useActionResources = (
     }
 }
 
-export const emptyMetadata = {
+export const getEmptyMetadata = () => ({
     title: '',
     content: '',
     isDeleted: true,
     isLoading: false,
-}
+})
 
 export const getResourceMetadata = (
     {
@@ -402,7 +402,7 @@ export const getResourceMetadata = (
                       url: articleUrl ?? '',
                       helpCenterId: article.helpCenterId,
                   }
-                : emptyMetadata
+                : getEmptyMetadata()
         }
         case AiAgentKnowledgeResourceTypeEnum.GUIDANCE: {
             const guidance = guidanceArticles?.find(
@@ -416,7 +416,7 @@ export const getResourceMetadata = (
                       url: aiAgentRoutes?.guidanceArticleEdit(idAsNumber),
                       helpCenterId: guidance.helpCenterId,
                   }
-                : emptyMetadata
+                : getEmptyMetadata()
         }
         case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET: {
             const snippet = sourceItems?.find(
@@ -434,7 +434,7 @@ export const getResourceMetadata = (
                         ) ?? '',
                 }
             }
-            return emptyMetadata
+            return getEmptyMetadata()
         }
         case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET: {
             const storeWebsiteQuestion = storeWebsiteQuestions?.find(
@@ -449,7 +449,7 @@ export const getResourceMetadata = (
                         '',
                 }
             }
-            return emptyMetadata
+            return getEmptyMetadata()
         }
         case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET: {
             const fileSnippet = ingestedFiles
@@ -465,7 +465,7 @@ export const getResourceMetadata = (
                               parseInt(id),
                           ) ?? '',
                   }
-                : emptyMetadata
+                : getEmptyMetadata()
         }
         case AiAgentKnowledgeResourceTypeEnum.ACTION: {
             const action = actions?.find((action) => action.id === id)
@@ -475,7 +475,7 @@ export const getResourceMetadata = (
                       content: action.name ?? '',
                       url: aiAgentRoutes?.editAction(id) ?? '',
                   }
-                : emptyMetadata
+                : getEmptyMetadata()
         }
         case AiAgentKnowledgeResourceTypeEnum.ORDER: {
             return {
@@ -495,10 +495,10 @@ export const getResourceMetadata = (
                       content: title ?? '',
                       url: aiAgentRoutes?.productsContentDetail(idAsNumber),
                   }
-                : emptyMetadata
+                : getEmptyMetadata()
         }
         default: {
-            return emptyMetadata
+            return getEmptyMetadata()
         }
     }
 }
@@ -681,7 +681,12 @@ export const useProcessResources = (
                                     ? previousResourceDataRef.current
                                     : resourceData,
                             )
-                            if (!metadata) {
+                            if (
+                                !metadata ||
+                                ('isDeleted' in metadata &&
+                                    metadata.isDeleted &&
+                                    !resourceData.isLoading)
+                            ) {
                                 return
                             }
                             output.suggestedResources.push({

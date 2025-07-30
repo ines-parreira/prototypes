@@ -548,7 +548,7 @@ describe('knowledgeService utils', () => {
                 })
             })
 
-            it('should not modify resource when no matching feedback ID found', () => {
+            it('should add feedback to resource when no existing feedback', () => {
                 const prevData = createMockPrevData()
                 prevData.data.executions[0].resources = [
                     {
@@ -579,13 +579,16 @@ describe('knowledgeService utils', () => {
                 )
                 const result = updater(prevData)
 
-                // Resource should remain unchanged as no feedback with matching ID was found
+                // Resource should have new feedback added
                 expect(
                     result?.data.executions[0].resources[0].feedback,
-                ).toBeUndefined()
+                ).toMatchObject({
+                    id: 4,
+                    feedbackValue: 'thumbs_up',
+                })
             })
 
-            it('should return undefined when no matching execution found for resource', () => {
+            it('should return data unchanged when no matching execution found for resource', () => {
                 const prevData = createMockPrevData()
                 // No resources in execution
                 const upsertRequest: any = {
@@ -609,11 +612,11 @@ describe('knowledgeService utils', () => {
                 )
                 const result = updater(prevData)
 
-                // Function returns early without returning newData
-                expect(result).toBeUndefined()
+                // Function continues but returns the data unchanged
+                expect(result).toEqual(prevData)
             })
 
-            it('should return undefined when execution exists but no resource with targetId found', () => {
+            it('should return data unchanged when execution exists but no resource with targetId found', () => {
                 const prevData = createMockPrevData()
                 prevData.data.executions[0].resources = [
                     {
@@ -643,7 +646,7 @@ describe('knowledgeService utils', () => {
                 )
                 const result = updater(prevData)
 
-                expect(result).toBeUndefined()
+                expect(result).toEqual(prevData)
             })
         })
 

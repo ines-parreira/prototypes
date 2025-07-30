@@ -202,9 +202,10 @@ describe('useGetResourceData', () => {
             {
                 id: 4,
                 title: 'test.pdf',
-                status: 'SUCCESSFUL',
+                ingestionStatus: 'SUCCESSFUL',
                 filename: 'test.pdf',
                 google_storage_url: 'https://storage.example.com/test.pdf',
+                ingestionId: 300,
             },
         ]
         const mockActions = [{ id: '6', name: 'Action 1' }]
@@ -759,9 +760,10 @@ describe('useEnrichFeedbackData', () => {
                 {
                     id: 4,
                     title: 'test.pdf',
-                    status: 'SUCCESSFUL',
+                    ingestionStatus: 'SUCCESSFUL',
                     filename: 'test.pdf',
                     google_storage_url: 'https://storage.example.com/test.pdf',
+                    ingestionId: 300,
                 },
             ]
             const mockActions = [{ id: '6', name: 'Action 1' }]
@@ -860,7 +862,6 @@ describe('useEnrichFeedbackData', () => {
             expect(suggestedResourceTypes).toEqual([
                 'GUIDANCE',
                 'ACTION',
-                'ARTICLE',
                 'ARTICLE',
                 'EXTERNAL_SNIPPET',
                 'FILE_EXTERNAL_SNIPPET',
@@ -1441,19 +1442,8 @@ describe('useEnrichFeedbackData', () => {
 
         expect(
             nonExistentResult.current?.enrichedData.suggestedResources,
-        ).toHaveLength(1)
-        // When resourceData is in any loading state, metadata shows isLoading: true and isDeleted: false
-        // even for non-existent resources. This is the expected behavior.
-        const metadata =
-            nonExistentResult.current?.enrichedData.suggestedResources[0]
-                .metadata
-
-        // The resource should either be deleted (when not loading) or loading
-        if (metadata.isLoading) {
-            expect(metadata.isDeleted).toBe(false)
-        } else {
-            expect(metadata.isDeleted).toBe(true)
-        }
+        ).toHaveLength(0)
+        // Non-existent resources are filtered out when isDeleted is true
     })
 
     it('should handle nullish coalescing for undefined storeConfiguration properties', () => {

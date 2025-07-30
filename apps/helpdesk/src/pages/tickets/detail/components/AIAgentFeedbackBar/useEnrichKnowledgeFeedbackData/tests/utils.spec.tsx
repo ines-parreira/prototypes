@@ -13,7 +13,7 @@ import { renderHook } from 'utils/testing/renderHook'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import {
-    emptyMetadata,
+    getEmptyMetadata,
     getResourceMetadata,
     getResourceType,
     knowledgeResourceOrder,
@@ -1058,7 +1058,7 @@ describe('utils', () => {
                 mockResourceData,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should return correct metadata for ACTION type', () => {
@@ -1149,7 +1149,7 @@ describe('utils', () => {
                 mockResourceData,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should return emptyMetadata when resource is not found', () => {
@@ -1164,7 +1164,7 @@ describe('utils', () => {
                 mockResourceData,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should return null when resourceData is null', () => {
@@ -1213,7 +1213,7 @@ describe('utils', () => {
                 mockResourceData,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle resources with no resourceData.storeWebsiteQuestions', () => {
@@ -1233,7 +1233,7 @@ describe('utils', () => {
                 resourceDataWithoutQuestions,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should return emptyMetadata for EXTERNAL_SNIPPET when no matching source item found', () => {
@@ -1248,7 +1248,7 @@ describe('utils', () => {
                 mockResourceData,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle resources with no resourceData.sourceItems', () => {
@@ -1268,7 +1268,7 @@ describe('utils', () => {
                 resourceDataWithoutSourceItems,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle missing helpCenter in resourceData for articles', () => {
@@ -1338,7 +1338,7 @@ describe('utils', () => {
                 resourceDataWithoutGuidance,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle external snippet not found in sourceItems', () => {
@@ -1358,7 +1358,7 @@ describe('utils', () => {
                 resourceDataWithoutSourceItems,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle store website question not found', () => {
@@ -1378,7 +1378,7 @@ describe('utils', () => {
                 resourceDataWithoutQuestions,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle file snippet not found in ingestedFiles', () => {
@@ -1398,7 +1398,7 @@ describe('utils', () => {
                 resourceDataWithoutFiles,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle action not found in actions', () => {
@@ -1418,7 +1418,7 @@ describe('utils', () => {
                 resourceDataWithoutActions,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle product not found for PRODUCT_KNOWLEDGE', () => {
@@ -1438,7 +1438,7 @@ describe('utils', () => {
                 resourceDataWithoutProducts,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle product not found for PRODUCT_RECOMMENDATION', () => {
@@ -1458,7 +1458,7 @@ describe('utils', () => {
                 resourceDataWithoutProducts,
             )
 
-            expect(result).toEqual(emptyMetadata)
+            expect(result).toEqual(getEmptyMetadata())
         })
 
         it('should handle missing title in guidance article', () => {
@@ -2277,11 +2277,11 @@ describe('utils', () => {
             expect(
                 result.current.knowledgeResources[0].metadata.isDeleted,
             ).toBe(true)
-            expect(result.current.suggestedResources).toHaveLength(3)
+            expect(result.current.suggestedResources).toHaveLength(2)
             const resourceTypes = result.current.suggestedResources.map(
                 (sr) => sr.parsedResource.resourceType,
             )
-            expect(resourceTypes).toEqual(['ACTION', 'ARTICLE', 'ARTICLE'])
+            expect(resourceTypes).toEqual(['ACTION', 'ARTICLE'])
         })
 
         it('should skip knowledge resources when getResourceMetadata returns null', () => {
@@ -2416,10 +2416,7 @@ describe('utils', () => {
             expect(
                 result.current.knowledgeResources[0].metadata.isDeleted,
             ).toBe(true)
-            expect(result.current.suggestedResources).toHaveLength(1)
-            expect(
-                result.current.suggestedResources[0].metadata.isDeleted,
-            ).toBe(true)
+            expect(result.current.suggestedResources).toHaveLength(0)
 
             console.error = originalConsoleError
         })
@@ -3559,7 +3556,7 @@ describe('utils', () => {
 
     describe('emptyMetadata', () => {
         it('should have the correct structure', () => {
-            expect(emptyMetadata).toEqual({
+            expect(getEmptyMetadata()).toEqual({
                 title: '',
                 content: '',
                 isDeleted: true,

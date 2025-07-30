@@ -176,10 +176,12 @@ export const optimisticallyUpdateFeedback =
                             ),
                         )
 
-                    if (!knowledgeResourceExecution) return
-
+                    if (!knowledgeResourceExecution) continue
                     const resource = knowledgeResourceExecution.resources.find(
-                        (resource) => resource.feedback?.id === item.id,
+                        (resource) =>
+                            resource.feedback
+                                ? resource.feedback?.id === item.id
+                                : resource.id === item.targetId,
                     )
 
                     if (resource) {
