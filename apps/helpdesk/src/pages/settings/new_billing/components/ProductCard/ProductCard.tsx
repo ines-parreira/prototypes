@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
@@ -191,7 +191,9 @@ const ProductCard = ({
                     className={css.tooltip}
                     autohide={false}
                 >
-                    {PRODUCT_INFO[type].tooltip}
+                    <div data-candu-id={`product-card-${type}-tooltip`}>
+                        {PRODUCT_INFO[type].tooltip}
+                    </div>
                     <a
                         href={PRODUCT_INFO[type].tooltipLink}
                         target="_blank"

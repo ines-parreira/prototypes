@@ -389,7 +389,11 @@ const ProductPlanSelection = ({
                                 className={css.tooltip}
                                 autohide={false}
                             >
-                                {PRODUCT_INFO[type].tooltip}
+                                <div
+                                    data-candu-id={`plan-selection-${type}-tooltip`}
+                                >
+                                    {PRODUCT_INFO[type].tooltip}
+                                </div>
                                 <a
                                     href={PRODUCT_INFO[type].tooltipLink}
                                     target="_blank"

@@ -1,7 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -15,6 +13,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
+import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
 import { assumeMock } from 'utils/testing'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
@@ -528,4 +527,51 @@ describe('ProductPlanSelection', () => {
             screen.queryByText('Cancel auto-renewal'),
         ).not.toBeInTheDocument()
     })
+
+    it.each(Object.values(ProductType))(
+        'should render a tooltip on an active ProductPlanSelection component for %p',
+        async (productType: ProductType) => {
+            const testProps: ProductPlanSelectionProps = {
+                ...props,
+                type: productType,
+                selectedPlans: {
+                    ...props.selectedPlans,
+                    [productType]: {
+                        ...props.selectedPlans[productType],
+                        isSelected: true,
+                    },
+                },
+            }
+            const user = userEvent.setup()
+            const { container } = render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...testProps} />
+                </Provider>,
+            )
+
+            const productInfo = PRODUCT_INFO[productType]
+            const infoIcon = container.querySelector(
+                `#priceSelectInfo_${productType}`,
+            )
+
+            await act(async () => {
+                await user.hover(infoIcon!)
+            })
+
+            const tooltip = screen.getByText(productInfo.tooltip)
+            expect(tooltip).toBeInTheDocument()
+
+            const tooltipContainer = screen.getByRole('tooltip')
+            expect(tooltipContainer).toBeInTheDocument()
+
+            const link = within(tooltipContainer!).getByText('Learn more')
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute('href', productInfo.tooltipLink)
+
+            expect(tooltip).toHaveAttribute(
+                'data-candu-id',
+                `plan-selection-${productType}-tooltip`,
+            )
+        },
+    )
 })

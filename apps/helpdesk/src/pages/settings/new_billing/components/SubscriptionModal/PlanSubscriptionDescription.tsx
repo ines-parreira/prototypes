@@ -174,7 +174,11 @@ const PlanSubscriptionDescription = ({
                                 className={css.tooltip}
                                 container={ref}
                             >
-                                {productInfo.tooltip}
+                                <div
+                                    data-candu-id={'plan-subscription-tooltip'}
+                                >
+                                    {productInfo.tooltip}
+                                </div>
                             </Tooltip>
                         </div>
                     </div>

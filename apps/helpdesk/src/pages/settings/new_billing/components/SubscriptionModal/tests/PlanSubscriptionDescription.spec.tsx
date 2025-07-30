@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { convertProduct } from 'fixtures/productPrices'
@@ -7,7 +7,10 @@ import { getProductLabel } from 'models/billing/utils'
 import PlanSubscriptionDescription, {
     PlanSubscriptionDescriptionProps,
 } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import { PRODUCT_SUBSCRIPTION_DESCRIPTION } from 'pages/settings/new_billing/constants'
+import {
+    PRODUCT_INFO,
+    PRODUCT_SUBSCRIPTION_DESCRIPTION,
+} from 'pages/settings/new_billing/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('PlanSubscriptionDescription', () => {
@@ -84,4 +87,38 @@ describe('PlanSubscriptionDescription', () => {
         await userEvent.click(items[0])
         expect(setSelectedPlanMock).toHaveBeenCalledWith(availablePlans[0])
     })
+
+    it.each(Object.values(ProductType))(
+        'should render a tooltip for %p',
+        async (productType: ProductType) => {
+            const testProps: PlanSubscriptionDescriptionProps = {
+                ...props,
+                productType,
+            }
+            const user = userEvent.setup()
+            const { container } = renderWithStoreAndQueryClientProvider(
+                <PlanSubscriptionDescription {...testProps} />,
+            )
+
+            const productInfo = PRODUCT_INFO[productType]
+            expect(
+                screen.getByText(`Ready to upgrade with ${productInfo.title}`, {
+                    exact: false,
+                }),
+            ).toBeInTheDocument()
+
+            const infoIcon = container.querySelector('#priceSelectInfo')
+            await act(async () => {
+                await user.hover(infoIcon!)
+            })
+
+            const tooltip = screen.getByText(productInfo.tooltip)
+            expect(tooltip).toBeInTheDocument()
+
+            expect(tooltip).toHaveAttribute(
+                'data-candu-id',
+                'plan-subscription-tooltip',
+            )
+        },
+    )
 })
