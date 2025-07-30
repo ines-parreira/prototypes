@@ -7,7 +7,10 @@
             },
             "priority": "high",
             "subject": "Handover: {{ticket.subject}}",
-            "email_ccs": [{ "user_email": "{{ticket.customer.email}}" }]
+            "requester": {
+                "email": "{{ticket.customer.email}}",
+                "name": "{{ticket.customer.email}}"
+            }
         }
     },
     "headers": {
