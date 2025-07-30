@@ -11,6 +11,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { store as reduxStore } from 'common/store'
 import { isSpecificTicketPath } from 'common/utils'
 import { MAX_RECENT_CHATS } from 'config/recentChats'
+import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
 import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
@@ -177,7 +178,7 @@ const receivedEvents: ReceivedEvent[] = [
         name: 'ticket-message-action-failed',
         onReceive: function (json) {
             void appQueryClient.invalidateQueries({
-                queryKey: queryKeys.customFields.all(),
+                queryKey: customFieldDefinitionKeys.all(),
             })
             reduxStore.dispatch(
                 ticketActions.handleMessageActionError(

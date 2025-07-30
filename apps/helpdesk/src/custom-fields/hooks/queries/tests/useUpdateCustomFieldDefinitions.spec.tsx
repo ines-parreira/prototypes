@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -5,11 +7,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    queryKeys,
-    UpdateCustomFieldItem,
+    customFieldDefinitionKeys,
+    UseGetCustomFieldDefinitions,
     useUpdateCustomFields,
-} from '@gorgias/helpdesk-queries'
-
+} from 'custom-fields/hooks/queries/queries'
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
@@ -24,7 +25,7 @@ import { useUpdateCustomFieldDefinitions } from '../useUpdateCustomFieldDefiniti
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/helpdesk-queries')
+jest.mock('custom-fields/hooks/queries/queries')
 const useUpdateCustomFieldsMock = assumeMock(useUpdateCustomFields)
 
 const updateMutateMock = jest.fn()
@@ -54,12 +55,12 @@ describe('useUpdateCustomFieldDefinitions', () => {
             ),
         })
 
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onMutate!({
-            data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem],
-        })
+        useUpdateCustomFieldsMock.mock.calls[0][0]?.onMutate!([
+            [ticketDropdownFieldDefinition],
+        ])
 
         expect(cancelQueryMock).toHaveBeenLastCalledWith({
-            queryKey: queryKeys.customFields.listCustomFields(listParams),
+            queryKey: customFieldDefinitionKeys.list(listParams),
         })
     })
 
@@ -86,18 +87,19 @@ describe('useUpdateCustomFieldDefinitions', () => {
                 </QueryClientProvider>
             ),
         })
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onMutate!({
-            data: [
+        useUpdateCustomFieldsMock.mock.calls[0][0]?.onMutate!([
+            [
                 { id: 422, priority: 1 },
                 { id: 420, priority: 2 },
                 { id: 421, priority: 3 },
             ],
-        })
+        ])
         await waitFor(() => expect(setQueryDataMock).toHaveBeenCalledTimes(1))
         expect(setQueryDataMock.mock.calls[0][0]).toEqual(
-            queryKeys.customFields.listCustomFields(listParams),
+            customFieldDefinitionKeys.list(listParams),
         )
-        const results = setQueryDataMock.mock.results[0].value
+        const results: UseGetCustomFieldDefinitions =
+            setQueryDataMock.mock.results[0].value
         const data = results.data.data
 
         expect([
@@ -121,14 +123,14 @@ describe('useUpdateCustomFieldDefinitions', () => {
             ),
         })
 
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onSettled!(
+        useUpdateCustomFieldsMock.mock.calls[0][0]?.onSettled!(
             undefined,
             {},
-            { data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem] },
+            [[ticketDropdownFieldDefinition]],
             undefined,
         )
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey: queryKeys.customFields.listCustomFields(listParams),
+            queryKey: customFieldDefinitionKeys.list(listParams),
         })
     })
 
@@ -141,9 +143,9 @@ describe('useUpdateCustomFieldDefinitions', () => {
             ),
         })
 
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onError!(
+        useUpdateCustomFieldsMock.mock.calls[0][0]?.onError!(
             {},
-            { data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem] },
+            [[ticketDropdownFieldDefinition]],
             undefined,
         )
 

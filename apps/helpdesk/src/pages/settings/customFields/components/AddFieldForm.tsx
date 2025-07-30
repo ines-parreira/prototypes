@@ -1,5 +1,3 @@
-import { CreateCustomField } from '@gorgias/helpdesk-types'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useCreateCustomFieldDefinition } from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
 import { CustomFieldInput, CustomFieldObjectTypes } from 'custom-fields/types'
@@ -38,7 +36,7 @@ export default function AddFieldForm({
             objectType,
         })
 
-        return mutateAsync({ data: field as CreateCustomField })
+        return mutateAsync([field])
     }
 
     return (

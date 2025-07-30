@@ -1,17 +1,15 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {
-    CustomField,
-    CustomFieldDefinition,
-    CustomFieldManagedTypeProperty,
-    ManagedTicketFieldType,
-} from '@gorgias/helpdesk-types'
+import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
+import { CustomFieldDefinition } from 'custom-fields/types'
 import {
     callStatusManagedTicketInputFieldDefinition,
     ticketDropdownFieldDefinition,
@@ -113,49 +111,40 @@ describe('<TicketField />', () => {
     })
 
     it.each([
-        [
-            {
-                ...ticketInputFieldDefinition,
-                definition: {
-                    ...ticketInputFieldDefinition.definition,
-                },
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...ticketInputFieldDefinition.definition,
             },
-            false,
-        ],
-        [
-            {
-                ...ticketInputFieldDefinition,
-                definition: {
-                    ...ticketInputFieldDefinition.definition,
-                },
-                managed_type:
-                    'contact_reason' as CustomFieldManagedTypeProperty,
+            should_be_disabled: false,
+        },
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...ticketInputFieldDefinition.definition,
             },
-            false,
-        ],
-        [
-            {
-                ...ticketInputFieldDefinition,
-                definition: {
-                    ...ticketInputFieldDefinition.definition,
-                },
-                managed_type: 'ai_intent' as CustomFieldManagedTypeProperty,
+            managed_type: 'contact_reason',
+            should_be_disabled: false,
+        },
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...ticketInputFieldDefinition.definition,
             },
-            true,
-        ],
-        [
-            {
-                ...ticketInputFieldDefinition,
-                definition: {
-                    ...callStatusManagedTicketInputFieldDefinition.definition,
-                },
-                managed_type: ManagedTicketFieldType.CallStatus,
+            managed_type: 'ai_intent',
+            should_be_disabled: true,
+        },
+        {
+            ...ticketInputFieldDefinition,
+            definition: {
+                ...callStatusManagedTicketInputFieldDefinition.definition,
             },
-            true,
-        ],
+            managed_type: ManagedTicketFieldType.CallStatus,
+            should_be_disabled: true,
+        },
     ])(
         'should render enabled or disabled fields according to managed_type',
-        (customField: CustomField, shouldBeDisabled: boolean) => {
+        (customField) => {
             const fieldState = {
                 ...baseFieldState,
                 value: getValueForDataType(customField.definition.data_type),
@@ -173,7 +162,7 @@ describe('<TicketField />', () => {
                 </QueryClientProvider>,
             )
 
-            if (shouldBeDisabled) {
+            if (customField.should_be_disabled) {
                 expect(
                     screen
                         .getByPlaceholderText('Some placeholder')

@@ -29,8 +29,7 @@ export default function EditCustomField({
     const params = useParams<{ id: string }>()
     const id = parseInt(params.id, 10)
 
-    const { data: field, isLoading, isStale } = useCustomFieldDefinition(id)
-
+    const { data: field, isLoading } = useCustomFieldDefinition(id)
     const helpArticleLink =
         objectType === OBJECT_TYPES.CUSTOMER
             ? 'https://link.gorgias.com/tjj'
@@ -38,8 +37,7 @@ export default function EditCustomField({
 
     useTitle(field?.label)
 
-    // We don’t want to display the form if the data is stale
-    if (isLoading || isStale || !field) {
+    if (isLoading || !field) {
         return <Loader />
     }
 
@@ -63,9 +61,7 @@ export default function EditCustomField({
                 <div className={css.contentWrapper}>
                     {Boolean(field.managed_type) && (
                         <Alert icon type={AlertType.Info} className="mb-4">
-                            {isCustomFieldAIManagedType(
-                                field.managed_type ?? null,
-                            ) ? (
+                            {isCustomFieldAIManagedType(field.managed_type) ? (
                                 <>
                                     This field is managed by Gorgias AI Agent
                                     and cannot be edited

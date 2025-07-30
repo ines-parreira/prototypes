@@ -1,6 +1,9 @@
+import React from 'react'
+
 import { act, render, screen, waitFor } from '@testing-library/react'
 
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useUpdateOrDeleteCustomerFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue'
 import {
     customerDropdownFieldDefinition,
@@ -144,11 +147,14 @@ describe('CustomerField', () => {
             getLastMockCall(mockedCustomFieldInput)[0].onBlur!()
         })
 
-        expect(mockedMutate).toHaveBeenCalledWith({
-            customerId: defaultProps.customerId,
-            fieldId: customerNumberFieldDefinition.id,
-            value: 2,
-        })
+        expect(mockedMutate).toHaveBeenCalledWith([
+            {
+                fieldType: OBJECT_TYPES.CUSTOMER,
+                holderId: defaultProps.customerId,
+                fieldId: customerNumberFieldDefinition.id,
+                value: 2,
+            },
+        ])
     })
 
     it("should call the mutation with trimmed value when CustomFieldInput's onBlur is called with an text input type", () => {
@@ -161,11 +167,14 @@ describe('CustomerField', () => {
             getLastMockCall(mockedCustomFieldInput)[0].onBlur!()
         })
 
-        expect(mockedMutate).toHaveBeenCalledWith({
-            customerId: defaultProps.customerId,
-            fieldId: defaultProps.field.id,
-            value: 'new value',
-        })
+        expect(mockedMutate).toHaveBeenCalledWith([
+            {
+                fieldType: OBJECT_TYPES.CUSTOMER,
+                holderId: defaultProps.customerId,
+                fieldId: defaultProps.field.id,
+                value: 'new value',
+            },
+        ])
     })
 
     it('should not call the mutation when an undefined text input type is blurred with an empty value', () => {
@@ -194,11 +203,14 @@ describe('CustomerField', () => {
                 getLastMockCall(mockedCustomFieldInput)[0].onChange('new value')
             })
 
-            expect(mockedMutate).toHaveBeenCalledWith({
-                customerId: defaultProps.customerId,
-                fieldId: customerDropdownFieldDefinition.id,
-                value: 'new value',
-            })
+            expect(mockedMutate).toHaveBeenCalledWith([
+                {
+                    fieldType: OBJECT_TYPES.CUSTOMER,
+                    holderId: defaultProps.customerId,
+                    fieldId: customerDropdownFieldDefinition.id,
+                    value: 'new value',
+                },
+            ])
         })
 
         it('should not call the mutation when queryValue of input type changes', () => {

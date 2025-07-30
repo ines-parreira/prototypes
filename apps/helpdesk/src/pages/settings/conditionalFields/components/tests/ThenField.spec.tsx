@@ -1,3 +1,6 @@
+import React from 'react'
+
+import { UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { RequirementType } from '@gorgias/helpdesk-queries'
@@ -65,7 +68,7 @@ useCustomFieldDefinitionMock.mockImplementation(
         ({
             data: customFields[id],
             isLoading: false,
-        }) as ReturnType<typeof useCustomFieldDefinition>,
+        }) as UseQueryResult<CustomField, unknown>,
 )
 useCustomFieldDefinitionsMock.mockReturnValue({
     data: { data: Object.values(customFields) },
@@ -213,7 +216,7 @@ describe('ThenField', () => {
                     ({
                         data: fields[id],
                         isLoading: false,
-                    }) as ReturnType<typeof useCustomFieldDefinition>,
+                    }) as UseQueryResult<CustomField, unknown>,
             )
 
             useCustomFieldDefinitionsMock.mockReturnValue({

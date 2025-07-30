@@ -1,13 +1,9 @@
+import React from 'react'
+
 import { render, screen } from '@testing-library/react'
 
-import {
-    CustomerCustomFieldWithValue,
-    ListCustomerCustomFieldsValues200,
-    ListCustomFields200,
-} from '@gorgias/helpdesk-queries'
-
-import { useCustomerFieldValues } from 'custom-fields/hooks/queries/useCustomerFieldValues'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldValues } from 'custom-fields/hooks/queries/useCustomFieldValues'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { customerInputFieldDefinition } from 'fixtures/customField'
 import { assumeMock } from 'utils/testing'
@@ -18,8 +14,8 @@ import CustomerFields from '../CustomerFields'
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
-jest.mock('custom-fields/hooks/queries/useCustomerFieldValues', () => ({
-    useCustomerFieldValues: jest.fn(),
+jest.mock('custom-fields/hooks/queries/useCustomFieldValues', () => ({
+    useCustomFieldValues: jest.fn(),
 }))
 jest.mock('../Heading', () => ({
     Heading: () => <div>Heading</div>,
@@ -29,21 +25,18 @@ jest.mock('../CustomerField', () => {
 })
 
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
-const mockedUseCustomerFieldValues = assumeMock(useCustomerFieldValues)
+const mockedUseCustomFieldValues = assumeMock(useCustomFieldValues)
 const mockedCustomerField = assumeMock(CustomerField)
 
 const firstValue = 'firstValue'
 const secondValue = 'secondValue'
 
 const mockedValuesData = [
-    {
-        field: customerInputFieldDefinition,
-        value: firstValue,
-    } as CustomerCustomFieldWithValue,
+    { field: customerInputFieldDefinition, value: firstValue },
     {
         field: { ...customerInputFieldDefinition, id: 2 },
         value: secondValue,
-    } as CustomerCustomFieldWithValue,
+    },
 ]
 
 describe('CustomerFields', () => {
@@ -51,25 +44,23 @@ describe('CustomerFields', () => {
         mockedUseCustomFieldDefinitions.mockReturnValue({
             data: apiListCursorPaginationResponse([
                 customerInputFieldDefinition,
-            ]) as ListCustomFields200,
+            ]),
             isLoading: false,
             isError: false,
-        } as ReturnType<typeof useCustomFieldDefinitions>)
-        mockedUseCustomerFieldValues.mockReturnValue({
-            data: apiListCursorPaginationResponse(
-                mockedValuesData,
-            ) as ListCustomerCustomFieldsValues200,
+        } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
+        mockedUseCustomFieldValues.mockReturnValue({
+            data: apiListCursorPaginationResponse(mockedValuesData),
             isLoading: false,
             isError: false,
-        } as ReturnType<typeof useCustomerFieldValues>)
+        } as unknown as ReturnType<typeof useCustomFieldValues>)
     })
 
     it("should return null if there's no custom field definitions", () => {
         mockedUseCustomFieldDefinitions.mockReturnValue({
-            data: apiListCursorPaginationResponse([]) as ListCustomFields200,
+            data: apiListCursorPaginationResponse([]),
             isLoading: false,
             isError: false,
-        } as ReturnType<typeof useCustomFieldDefinitions>)
+        } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
         const { container } = render(<CustomerFields customerId={1} />)
 
@@ -101,13 +92,11 @@ describe('CustomerFields', () => {
     })
 
     it('should return null if values are loading', () => {
-        mockedUseCustomerFieldValues.mockReturnValue({
-            data: apiListCursorPaginationResponse(
-                mockedValuesData,
-            ) as ListCustomerCustomFieldsValues200,
-            isLoading: true as false,
+        mockedUseCustomFieldValues.mockReturnValue({
+            data: mockedValuesData,
+            isLoading: true,
             isError: false,
-        } as ReturnType<typeof useCustomerFieldValues>)
+        } as unknown as ReturnType<typeof useCustomFieldValues>)
 
         const { container } = render(<CustomerFields customerId={1} />)
 
@@ -115,13 +104,11 @@ describe('CustomerFields', () => {
     })
 
     it("should return null if there's an error in values' loading", () => {
-        mockedUseCustomerFieldValues.mockReturnValue({
-            data: apiListCursorPaginationResponse(
-                mockedValuesData,
-            ) as ListCustomerCustomFieldsValues200,
+        mockedUseCustomFieldValues.mockReturnValue({
+            data: mockedValuesData,
             isLoading: false,
             isError: true,
-        } as ReturnType<typeof useCustomerFieldValues>)
+        } as unknown as ReturnType<typeof useCustomFieldValues>)
 
         const { container } = render(<CustomerFields customerId={1} />)
 

@@ -9,7 +9,7 @@ import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
-import { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
+import { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCallbackRef from 'hooks/useCallbackRef'
@@ -75,7 +75,7 @@ function TicketFields() {
                 (definition) =>
                     !definition.managed_type ||
                     !Object.values(AI_MANAGED_TYPES).includes(
-                        definition.managed_type as CustomFieldAIManagedType,
+                        definition.managed_type,
                     ),
             ),
         [ticketFieldDefinitions],

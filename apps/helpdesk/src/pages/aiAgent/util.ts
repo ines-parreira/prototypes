@@ -1,5 +1,5 @@
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
-import { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
+import { CustomField } from 'custom-fields/types'
 
 import {
     GUIDANCE_ARTICLE_LIMIT,
@@ -30,10 +30,8 @@ export const isAiAgentEnabled = (deactivatedDatetime: string | null) => {
 }
 
 export const isAiAgentCustomField = (customField: CustomField) =>
-    !!customField.managed_type &&
-    Object.values(AI_MANAGED_TYPES).includes(
-        customField.managed_type as CustomFieldAIManagedType,
-    )
+    customField.managed_type !== null &&
+    Object.values(AI_MANAGED_TYPES).includes(customField.managed_type)
 
 export const getGuidanceArticleLimitWarning = (
     isIncreaseGuidanceCreationLimit: boolean,

@@ -1,17 +1,15 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    CreateCustomField,
-    CustomField,
-    HttpResponse,
-    queryKeys,
-    useCreateCustomField,
-} from '@gorgias/helpdesk-queries'
-
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
+import {
+    customFieldDefinitionKeys,
+    useCreateCustomField,
+} from 'custom-fields/hooks/queries/queries'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { NotificationStatus } from 'state/notifications/types'
@@ -23,7 +21,7 @@ import { useCreateCustomFieldDefinition } from '../useCreateCustomFieldDefinitio
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/helpdesk-queries')
+jest.mock('custom-fields/hooks/queries/queries')
 const useCreateCustomFieldMock = assumeMock(useCreateCustomField)
 
 const mockStore = configureMockStore([thunk])()
@@ -40,7 +38,7 @@ describe('useCreateCustomFieldDefinition', () => {
             const fieldDefinition = {
                 ...ticketDropdownFieldDefinition,
                 object_type: objectType,
-            } as CreateCustomField
+            }
 
             const invalidateQueryMock = jest.spyOn(
                 queryClient,
@@ -54,15 +52,13 @@ describe('useCreateCustomFieldDefinition', () => {
                 ),
             })
 
-            useCreateCustomFieldMock.mock.calls[0][0]?.mutation?.onSuccess!(
-                axiosSuccessResponse(
-                    fieldDefinition,
-                ) as HttpResponse<CustomField>,
-                { data: fieldDefinition },
+            useCreateCustomFieldMock.mock.calls[0][0]?.onSuccess!(
+                axiosSuccessResponse(fieldDefinition),
+                [fieldDefinition],
                 undefined,
             )
             expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-                queryKey: queryKeys.customFields.all(),
+                queryKey: customFieldDefinitionKeys.all(),
             })
 
             expect(mockStore.getActions()).toMatchObject([
@@ -85,9 +81,9 @@ describe('useCreateCustomFieldDefinition', () => {
             ),
         })
 
-        useCreateCustomFieldMock.mock.calls[0][0]?.mutation?.onError!(
+        useCreateCustomFieldMock.mock.calls[0][0]?.onError!(
             {},
-            { data: ticketDropdownFieldDefinition as CreateCustomField },
+            [ticketDropdownFieldDefinition],
             undefined,
         )
 

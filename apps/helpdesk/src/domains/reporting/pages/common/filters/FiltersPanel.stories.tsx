@@ -7,10 +7,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { queryKeys } from '@gorgias/helpdesk-queries'
-
 import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
+import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanel } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
@@ -35,12 +34,9 @@ const storyConfig: Meta = {
 }
 
 const Template: StoryFn<ComponentProps<typeof FiltersPanel>> = (props) => {
-    appQueryClient.setQueryData(
-        queryKeys.customFields.listCustomFields(activeParams),
-        {
-            data: customFieldsMockResponse,
-        },
-    )
+    appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
+        data: customFieldsMockResponse,
+    })
     return (
         <QueryClientProvider client={appQueryClient}>
             <Provider store={configureMockStore([thunk])(defaultState)}>

@@ -2,8 +2,6 @@ import React, { memo, useCallback, useEffect, useRef } from 'react'
 
 import classnames from 'classnames'
 
-import { CreateCustomField } from '@gorgias/helpdesk-types'
-
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import { CustomField, CustomFieldInput } from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -14,7 +12,7 @@ import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 import css from './DropdownInputRow.less'
 
 interface DropdownInputRowProps {
-    field: CustomField | CustomFieldInput | CreateCustomField
+    field: CustomField | CustomFieldInput
     value: string
     error?: string
     onChange: (index: number, value: string) => void

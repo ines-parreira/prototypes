@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { ListCustomFieldsParams } from '@gorgias/helpdesk-client'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomField } from 'custom-fields/types'
+import { CustomField, ListParams } from 'custom-fields/types'
 import css from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect.less'
 import {
     getSelectedCustomField,
@@ -24,7 +23,7 @@ export const SELECT_FIELD_LABEL = 'Select field'
 export const TOOLTIP_CONTENT =
     'This report is available only for ticket fields of type "dropdown" that are currently active (i.e. not archived).'
 
-export const activeParams: ListCustomFieldsParams = {
+export const activeParams: ListParams = {
     archived: false,
     object_type: 'Ticket',
 }

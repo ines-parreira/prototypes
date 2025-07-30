@@ -1,8 +1,6 @@
 import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
 
-import { CustomFieldManagedTypeProperty } from '@gorgias/helpdesk-types'
-
 import {
     OBJECT_TYPE_SETTINGS,
     OBJECT_TYPES,
@@ -434,7 +432,7 @@ describe('<FieldForm/>', () => {
                 ...defaultProps,
                 field: {
                     ...ticketDropdownFieldDefinition,
-                    managed_type: 'ai_intent' as CustomFieldManagedTypeProperty,
+                    managed_type: 'ai_intent',
                 },
             }
 

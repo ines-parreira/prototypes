@@ -1,33 +1,31 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
-import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
+import client from 'models/api/resources'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLastMockCall } from 'utils/testing'
 
 import DropdownField from '../DropdownField'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 const mockStore = configureMockStore()
+const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
-const mutateMock = jest.fn()
 
 const ticketId = 'whateva'
-
-jest.mock('custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue')
-const useUpdateOrDeleteTicketFieldValueMock =
-    useUpdateOrDeleteTicketFieldValue as jest.Mock
 
 describe('<DropdownField />', () => {
     const defaultState = {
@@ -62,10 +60,8 @@ describe('<DropdownField />', () => {
     beforeEach(() => {
         store = mockStore(defaultState)
         store.dispatch = jest.fn()
+        mockedServer.reset()
         queryClient.clear()
-        useUpdateOrDeleteTicketFieldValueMock.mockReturnValue({
-            mutate: mutateMock,
-        })
     })
 
     it('should show full value on hover', async () => {
@@ -127,6 +123,11 @@ describe('<DropdownField />', () => {
     })
 
     it('should call onChange with correct params and dismiss modal when selecting a value', async () => {
+        mockedServer
+            .onPut(`/api/tickets/${ticketId}/custom-fields/${fieldState.id}`)
+            .reply(200, {
+                data: 'not used, don’t care',
+            })
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -146,17 +147,16 @@ describe('<DropdownField />', () => {
             updateCustomFieldValue(fieldState.id, 's1::ss2::c1'),
         )
         await waitFor(() => {
-            expect(mutateMock).toHaveBeenCalledWith({
-                fieldId: fieldState.id,
-                ticketId,
-                value: 's1::ss2::c1',
-            })
+            expect(mockedServer.history.put[0].data).toEqual('"s1::ss2::c1"')
         })
         expect(store.dispatch).toHaveBeenCalledTimes(2)
         expect(screen.queryByTestId('floating-overlay')).toBe(null)
     })
 
     it('should call dispatch state to previous state when failing to update the value', async () => {
+        mockedServer
+            .onPut(`/api/tickets/${ticketId}/custom-fields/${fieldState.id}`)
+            .reply(400)
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -166,9 +166,6 @@ describe('<DropdownField />', () => {
         )
         await userEvent.click(screen.getByRole('textbox'))
         await userEvent.click(screen.getByText('c1'))
-
-        getLastMockCall(useUpdateOrDeleteTicketFieldValueMock)[0].onError()
-
         await waitFor(() => {
             expect(store.dispatch).toHaveBeenLastCalledWith(
                 updateCustomFieldState(fieldState),
@@ -188,16 +185,12 @@ describe('<DropdownField />', () => {
         await userEvent.click(screen.getByRole('textbox'))
         await userEvent.click(screen.getByText(/Clear/))
         await waitFor(() => {
-            expect(mutateMock).toHaveBeenCalledWith({
-                fieldId: fieldState.id,
-                ticketId,
-                value: '',
-            })
+            expect(mockedServer.history.delete[0]).toBeDefined()
         })
         expect(screen.queryByTestId('floating-overlay')).toBe(null)
     })
 
-    it('should disable the update query when ticket is new', async () => {
+    it('should not http update value onChange when on a new ticket', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({ ticket: fromJS({}) })}>
@@ -208,13 +201,9 @@ describe('<DropdownField />', () => {
 
         await userEvent.click(screen.getByRole('textbox'))
         await userEvent.click(screen.getByText(/Clear/))
-
-        expect(useUpdateOrDeleteTicketFieldValueMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                onError: expect.any(Function),
-            }),
-            { isDisabled: true },
-        )
+        await waitFor(() => {
+            expect(mockedServer.history.delete).toHaveLength(0)
+        })
     })
 
     it('should not display a search input if not text choices', async () => {

@@ -1,12 +1,13 @@
 import {
-    CustomField as ApiCustomField,
     CustomFieldDefinition as ApiCustomFieldDefinition,
-    CustomFieldManagedTypeProperty,
     ExpressionFieldType,
 } from '@gorgias/helpdesk-types'
 
+import { ApiPaginationParams } from 'models/api/types'
+
 import {
     AI_MANAGED_TYPES,
+    MANAGED_TYPES,
     OBJECT_TYPES,
     SUPPORTED_UI_DATA_TYPES,
     SYSTEM_READ_ONLY_MANAGED_TYPES,
@@ -17,7 +18,18 @@ export type CustomFieldObjectTypes =
 
 export type RequirementType = 'required' | 'visible' | 'conditional'
 
+export type ListParams = ApiPaginationParams & {
+    archived?: boolean
+    object_type: CustomFieldObjectTypes
+    search?: string
+}
+
 export type CustomFieldValue = string | number | boolean
+
+export type CustomFieldDefinition =
+    | CustomTypeDefinitionText
+    | CustomTypeDefinitionBoolean
+    | CustomTypeDefinitionNumber
 
 export interface CustomTypeDefinitionText<
     InputSettings =
@@ -56,19 +68,14 @@ interface CustomFieldInputSettingsNumber {
 export type CustomFieldAIManagedType =
     (typeof AI_MANAGED_TYPES)[keyof typeof AI_MANAGED_TYPES]
 
-export type CustomFieldSystemReadOnlyManagedType =
-    (typeof SYSTEM_READ_ONLY_MANAGED_TYPES)[keyof typeof SYSTEM_READ_ONLY_MANAGED_TYPES]
-
-export type CustomFieldManagedType = CustomFieldManagedTypeProperty
+export type CustomFieldManagedType =
+    (typeof MANAGED_TYPES)[keyof typeof MANAGED_TYPES]
 
 export function isCustomFieldAIManagedType(
     managedType: string | null,
 ): managedType is CustomFieldAIManagedType {
     return Boolean(
-        managedType &&
-            Object.values(AI_MANAGED_TYPES).includes(
-                managedType as CustomFieldAIManagedType,
-            ),
+        managedType && Object.values(AI_MANAGED_TYPES).includes(managedType),
     )
 }
 
@@ -77,24 +84,28 @@ export function isCustomFieldSystemReadOnly(
 ): boolean {
     return Boolean(
         managedType &&
-            Object.values(SYSTEM_READ_ONLY_MANAGED_TYPES).includes(
-                managedType as CustomFieldSystemReadOnlyManagedType,
-            ),
+            Object.values(SYSTEM_READ_ONLY_MANAGED_TYPES).includes(managedType),
     )
 }
 
 export type CustomFieldInput = {
-    object_type: ApiCustomField['object_type']
-    label: ApiCustomField['label']
-    description?: ApiCustomField['description']
-    priority?: ApiCustomField['priority']
-    required: ApiCustomField['required']
-    requirement_type?: ApiCustomField['requirement_type']
-    managed_type?: ApiCustomField['managed_type']
-    definition: ApiCustomField['definition']
+    object_type: CustomFieldObjectTypes
+    label: string
+    description?: string
+    priority?: number
+    required: boolean
+    requirement_type?: RequirementType
+    managed_type: CustomFieldManagedType | null
+    definition: CustomFieldDefinition
 }
 
-export type CustomField = ApiCustomField
+export type CustomField = CustomFieldInput & {
+    id: number
+    priority: number
+    created_datetime: string
+    updated_datetime: string
+    deactivated_datetime: string | null
+}
 
 export type PartialCustomFieldWithId = Partial<CustomField> &
     Pick<CustomField, 'id'>

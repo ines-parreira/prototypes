@@ -1,6 +1,5 @@
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
-import { TextInputSettingsPlaceholder } from '@gorgias/helpdesk-types'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -23,7 +22,7 @@ type Props = {
     id: CustomFieldState['id']
     label: string
     fieldState?: CustomFieldState
-    placeholder?: TextInputSettingsPlaceholder
+    placeholder?: string
     isRequired?: boolean
     isDisabled?: boolean
 }
@@ -93,7 +92,7 @@ export default function TextField({
                     name={label}
                     type="text"
                     value={currentValue}
-                    placeholder={placeholder || undefined}
+                    placeholder={placeholder}
                     onChange={handleChange}
                     hasError={hasError}
                     isDisabled={isDisabled}
@@ -116,11 +115,14 @@ export default function TextField({
                             updateCustomFieldValue(id, trimmedCurrentValue),
                         )
                         if (trimmedCurrentValue !== stateValue) {
-                            mutate({
-                                ticketId,
-                                fieldId: id,
-                                value: trimmedCurrentValue,
-                            })
+                            mutate([
+                                {
+                                    fieldType: 'Ticket',
+                                    holderId: ticketId,
+                                    fieldId: id,
+                                    value: trimmedCurrentValue,
+                                },
+                            ])
                         }
                     }}
                 />

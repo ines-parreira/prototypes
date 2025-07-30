@@ -152,11 +152,14 @@ export default function NumberField({
                         setCurrentValue(currentValue)
                         dispatch(updateCustomFieldValue(id, currentValue))
                         if (currentValue !== stateValue) {
-                            mutate({
-                                ticketId,
-                                fieldId: id,
-                                value: currentValue,
-                            })
+                            mutate([
+                                {
+                                    fieldType: 'Ticket',
+                                    holderId: ticketId,
+                                    fieldId: id,
+                                    value: currentValue,
+                                },
+                            ])
                         }
                     }}
                 />

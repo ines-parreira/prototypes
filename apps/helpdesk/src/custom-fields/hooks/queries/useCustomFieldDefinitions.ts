@@ -1,20 +1,27 @@
-import { useListCustomFields } from '@gorgias/helpdesk-queries'
+import { UseQueryOptions } from '@tanstack/react-query'
+
+import {
+    useGetCustomFieldDefinitions,
+    UseGetCustomFieldDefinitions,
+} from 'custom-fields/hooks/queries/queries'
+import { ListParams } from 'custom-fields/types'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 
 export const useCustomFieldDefinitions = (
-    ...args: Parameters<typeof useListCustomFields>
+    params: ListParams,
+    overrides: UseQueryOptions<
+        UseGetCustomFieldDefinitions,
+        unknown,
+        UseGetCustomFieldDefinitions['data']
+    > = {},
 ) => {
-    return useListCustomFields(args[0], {
-        ...args[1],
-        query: {
-            staleTime: STALE_TIME_MS,
-            refetchOnWindowFocus: false,
-            ...args[1]?.query,
-            select: (data) => data.data,
-            meta: {
-                errorMessage: 'Failed to fetch custom fields',
-            },
+    return useGetCustomFieldDefinitions(params, {
+        staleTime: STALE_TIME_MS,
+        select: (data) => data.data,
+        meta: {
+            errorMessage: 'Failed to fetch custom fields',
         },
+        ...overrides,
     })
 }

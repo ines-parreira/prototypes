@@ -138,9 +138,9 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
         fireEvent.click(confirmButton)
 
         await waitFor(() => {
-            expect(mutateAsync).toHaveBeenCalledWith({
-                id: mockCustomField.id,
-                data: {
+            expect(mutateAsync).toHaveBeenCalledWith([
+                mockCustomField.id,
+                {
                     object_type: mockCustomField.object_type,
                     definition: mockCustomField.definition,
                     label: mockCustomField.label,
@@ -148,7 +148,7 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
                     required: false,
                     requirement_type: RequirementType.Conditional,
                 },
-            })
+            ])
             expect(defaultProps.onConfirmationSuccess).toHaveBeenCalled()
         })
     })

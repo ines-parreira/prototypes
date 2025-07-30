@@ -1,13 +1,14 @@
+import React from 'react'
+
 import { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { queryKeys } from '@gorgias/helpdesk-queries'
-
 import { appQueryClient } from 'api/queryClient'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
+import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
 import { reportingKeys } from 'domains/reporting/models/queries'
 import {
     INTENT_DIMENSION,
@@ -81,12 +82,9 @@ export const sentimentCustomFieldsMockResponse = {
     },
 }
 
-appQueryClient.setQueryData(
-    queryKeys.customFields.listCustomFields(activeParams),
-    {
-        data: sentimentCustomFieldsMockResponse,
-    },
-)
+appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
+    data: sentimentCustomFieldsMockResponse,
+})
 appQueryClient.setQueryData(
     reportingKeys.post([
         sentimentsTicketCountPerProductQueryFactory(

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -72,11 +72,14 @@ export default function DropdownField(props: Props) {
             if (isCustomFieldValueEmpty(newValue) && props.isRequired) {
                 dispatch(updateCustomFieldError(id, true))
             }
-            mutate({
-                ticketId: ticketId,
-                fieldId: id,
-                value: newValue,
-            })
+            mutate([
+                {
+                    fieldType: 'Ticket',
+                    holderId: ticketId,
+                    fieldId: id,
+                    value: newValue,
+                },
+            ])
         },
         [dispatch, id, mutate, ticketId, props.isRequired],
     )

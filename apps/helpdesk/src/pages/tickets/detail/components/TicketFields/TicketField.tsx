@@ -26,7 +26,7 @@ function TicketField({ fieldDefinition, fieldState, isRequired }: Props) {
         label,
         fieldState,
         isRequired,
-        isDisabled: isCustomFieldSystemReadOnly(managed_type ?? null),
+        isDisabled: isCustomFieldSystemReadOnly(managed_type),
     }
 
     if (
@@ -58,7 +58,7 @@ function TicketField({ fieldDefinition, fieldState, isRequired }: Props) {
     ) {
         const dropdownProps = {
             ...baseFieldProps,
-            choices: definition.input_settings.choices || [],
+            choices: definition.input_settings.choices,
         }
         return <DropdownField {...dropdownProps} />
     }

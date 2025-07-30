@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { UseQueryResult } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -31,6 +32,7 @@ import {
     initialState as ticketInsightsState,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
@@ -99,9 +101,11 @@ describe('<SupportPerformanceTicketInsights />', () => {
     } as unknown as RootState
 
     const useCustomFieldDefinitionsMockReturnValue = {
-        data: { data: [] as CustomField[] },
+        data: { data: [] },
         isLoading: false,
-    } as ReturnType<typeof useCustomFieldDefinitions>
+    } as unknown as UseQueryResult<
+        ApiListResponseCursorPagination<CustomField[]>
+    >
 
     useCustomFieldDefinitionsMock.mockReturnValue(
         useCustomFieldDefinitionsMockReturnValue,
@@ -236,7 +240,9 @@ describe('<SupportPerformanceTicketInsights />', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             ...useCustomFieldDefinitionsMockReturnValue,
             isLoading: false,
-        } as ReturnType<typeof useCustomFieldDefinitions>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
         useAppSelectorMock.mockReturnValue({ id: null, isLoading: false })
 
         render(
@@ -254,7 +260,9 @@ describe('<SupportPerformanceTicketInsights />', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             ...useCustomFieldDefinitionsMockReturnValue,
             isLoading: true,
-        } as ReturnType<typeof useCustomFieldDefinitions>)
+        } as unknown as UseQueryResult<
+            ApiListResponseCursorPagination<CustomField[]>
+        >)
 
         render(
             <Provider store={mockStore(defaultState)}>

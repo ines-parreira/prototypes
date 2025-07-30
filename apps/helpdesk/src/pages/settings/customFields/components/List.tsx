@@ -14,11 +14,9 @@ import css from './List.less'
 export type Props = {
     customFields: CustomField[]
     canReorder: boolean
-    onReorder: ({
-        data,
-    }: {
-        data: Pick<CustomField, 'id' | 'priority'>[]
-    }) => void
+    onReorder: (
+        updatedPriorities: [Pick<CustomField, 'id' | 'priority'>[]],
+    ) => void
 }
 
 export default function List({ customFields, canReorder, onReorder }: Props) {
@@ -69,7 +67,7 @@ export default function List({ customFields, canReorder, onReorder }: Props) {
             }
         })
 
-        onReorder({ data: updatedPriorities })
+        onReorder([updatedPriorities])
     }
 
     return (

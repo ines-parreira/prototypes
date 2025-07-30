@@ -1,15 +1,15 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    queryKeys,
-    TicketCustomFieldValueField,
-    useDeleteTicketCustomField,
-    useUpdateTicketCustomField,
-} from '@gorgias/helpdesk-queries'
-
+    customFieldValueKeys,
+    useDeleteCustomFieldValue,
+    useUpdateCustomFieldValue,
+} from 'custom-fields/hooks/queries/queries'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { NotificationStatus } from 'state/notifications/types'
@@ -21,9 +21,9 @@ import { useUpdateOrDeleteTicketFieldValue } from '../useUpdateOrDeleteTicketFie
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/helpdesk-queries')
-const useUpdateTicketCustomFieldMock = assumeMock(useUpdateTicketCustomField)
-const useDeleteTicketCustomFieldMock = assumeMock(useDeleteTicketCustomField)
+jest.mock('custom-fields/hooks/queries/queries')
+const useUpdateCustomFieldValueMock = assumeMock(useUpdateCustomFieldValue)
+const useDeleteCustomFieldValueMock = assumeMock(useDeleteCustomFieldValue)
 
 const updateMutateMock = jest.fn()
 const deleteMutateMock = jest.fn()
@@ -33,21 +33,22 @@ const mockStore = configureMockStore([thunk])()
 describe('useUpdateOrDeleteTicketFieldValue', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        useUpdateTicketCustomFieldMock.mockImplementation(() => {
+        useUpdateCustomFieldValueMock.mockImplementation(() => {
             return {
                 mutate: updateMutateMock,
-            } as unknown as ReturnType<typeof useUpdateTicketCustomField>
+            } as unknown as ReturnType<typeof useUpdateCustomFieldValue>
         })
 
-        useDeleteTicketCustomFieldMock.mockImplementation(() => {
+        useDeleteCustomFieldValueMock.mockImplementation(() => {
             return {
                 mutate: deleteMutateMock,
-            } as unknown as ReturnType<typeof useDeleteTicketCustomField>
+            } as unknown as ReturnType<typeof useDeleteCustomFieldValue>
         })
     })
 
     const dataToMutate = {
-        ticketId: 1,
+        fieldType: 'Ticket' as const,
+        holderId: 1,
         fieldId: 1,
     }
 
@@ -66,7 +67,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
             },
         )
 
-        result.current.mutate(dataToMutate)
+        result.current.mutate([dataToMutate])
 
         expect(updateMutateMock).not.toHaveBeenCalled()
         expect(deleteMutateMock).not.toHaveBeenCalled()
@@ -84,23 +85,18 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
             },
         )
 
-        result.current.mutate(dataToMutate)
+        result.current.mutate([dataToMutate])
         expect(updateMutateMock).not.toHaveBeenCalled()
-        expect(deleteMutateMock).toHaveBeenNthCalledWith(1, {
-            id: dataToMutate.fieldId,
-            ticketId: dataToMutate.ticketId,
-        })
+        expect(deleteMutateMock).toHaveBeenNthCalledWith(1, [dataToMutate])
 
         updateMutateMock.mockClear()
         deleteMutateMock.mockClear()
 
         const dataToMutateWithValue = { ...dataToMutate, value: 'foo' }
-        result.current.mutate(dataToMutateWithValue)
-        expect(updateMutateMock).toHaveBeenNthCalledWith(1, {
-            id: dataToMutateWithValue.fieldId,
-            ticketId: dataToMutateWithValue.ticketId,
-            data: dataToMutateWithValue.value,
-        })
+        result.current.mutate([dataToMutateWithValue])
+        expect(updateMutateMock).toHaveBeenNthCalledWith(1, [
+            dataToMutateWithValue,
+        ])
         expect(deleteMutateMock).not.toHaveBeenCalled()
     })
 
@@ -120,10 +116,9 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
                 ),
             },
         )
-        expect(
-            useUpdateTicketCustomFieldMock.mock.calls[0][0]?.mutation
-                ?.cacheTime,
-        ).toBe(cacheTime)
+        expect(useUpdateCustomFieldValueMock.mock.calls[0][0]?.cacheTime).toBe(
+            cacheTime,
+        )
     })
 
     it('should invalidate proper query data on success if not provided with another success handler', () => {
@@ -141,30 +136,23 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
             initialProps: { onSuccess },
         })
 
-        expect(
-            useUpdateTicketCustomFieldMock.mock.calls[0][0]?.mutation
-                ?.onSuccess,
-        ).toBe(onSuccess)
+        expect(useUpdateCustomFieldValueMock.mock.calls[0][0]?.onSuccess).toBe(
+            onSuccess,
+        )
         expect(invalidateQueryMock).not.toHaveBeenCalled()
         // we can’t only provide undefined here because it would then keep the old params 🤷
         rerender({})
-        useUpdateTicketCustomFieldMock.mock.calls[1][0]?.mutation?.onSuccess!(
+        useUpdateCustomFieldValueMock.mock.calls[1][0]?.onSuccess!(
             axiosSuccessResponse({
-                field: ticketDropdownFieldDefinition as TicketCustomFieldValueField,
+                field: ticketDropdownFieldDefinition,
                 value: undefined,
                 prediction: null,
             }),
-            {
-                id: dataToMutate.fieldId,
-                ticketId: dataToMutate.ticketId,
-                data: '',
-            },
+            [dataToMutate],
             undefined,
         )
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey: queryKeys.tickets.listTicketCustomFields(
-                dataToMutate.ticketId,
-            ),
+            queryKey: customFieldValueKeys.value(dataToMutate.fieldId),
         })
     })
 
@@ -182,7 +170,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
                 ),
             })
 
-            useDeleteTicketCustomFieldMock.mock.calls[0][0]?.mutation?.onError!(
+            useDeleteCustomFieldValueMock.mock.calls[0][0]?.onError!(
                 useResponseError
                     ? {
                           isAxiosError: true,
@@ -195,7 +183,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
                           error: new Error('foo'),
                           message: 'fooloulou',
                       },
-                { id: dataToMutate.fieldId, ticketId: dataToMutate.ticketId },
+                [dataToMutate],
                 undefined,
             )
 
@@ -213,7 +201,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
         },
     )
     it('should update the prediction value when the value is mutated', () => {
-        useUpdateTicketCustomFieldMock.mockImplementation(() => {
+        useUpdateCustomFieldValueMock.mockImplementation(() => {
             return {
                 mutate: updateMutateMock,
                 data: axiosSuccessResponse({
@@ -227,7 +215,7 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
                         modified: false,
                     },
                 }),
-            } as unknown as ReturnType<typeof useUpdateTicketCustomField>
+            } as unknown as ReturnType<typeof useUpdateCustomFieldValue>
         })
 
         renderHook(() => useUpdateOrDeleteTicketFieldValue(), {

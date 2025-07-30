@@ -65,7 +65,7 @@ export const CustomFieldsFormComponent = ({
             accountCustomFields.filter(
                 (field) =>
                     // Only non-read only custom fields
-                    !isCustomFieldSystemReadOnly(field.managed_type ?? null) &&
+                    !isCustomFieldSystemReadOnly(field.managed_type) &&
                     // Only non-conditional custom fields
                     field.requirement_type !== RequirementType.Conditional &&
                     !customFieldIds?.includes(field.id),
