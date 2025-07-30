@@ -56,10 +56,9 @@ export default function TrackstarConnectButton({ app, actionApp }: Props) {
     return (
         <>
             <div>
-                This step requires an active {app.name} account. Click the
-                button below to authenticate your account. Once authenticated,
-                any future Action with a {app.name}
-                step for this store will automatically be connected.
+                {connectionId
+                    ? `Your ${app.name} account is already connected. Click the button below to reconnect your account.`
+                    : `This step requires an active ${app.name} account. Click the button below to authenticate your account. Once authenticated, any future Action with a ${app.name} step for this store will automatically be connected.`}
             </div>
             <Button
                 className={styles.button}

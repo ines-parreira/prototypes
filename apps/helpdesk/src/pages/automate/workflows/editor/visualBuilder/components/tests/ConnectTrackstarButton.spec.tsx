@@ -113,6 +113,12 @@ describe('<ConnectTrackstarButton />', () => {
             screen.getByText(`Reconnect ${mockApp.name}`),
         ).toBeInTheDocument()
 
+        expect(
+            screen.getByText(
+                `Your ${mockApp.name} account is already connected. Click the button below to reconnect your account.`,
+            ),
+        ).toBeInTheDocument()
+
         expect(mockUseTrackstarLink).toHaveBeenCalledWith(
             expect.objectContaining({
                 integrationAllowList: undefined,
