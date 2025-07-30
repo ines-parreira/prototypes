@@ -1,0 +1,257 @@
+@import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
+
+:local {
+    .promoCard {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 8px;
+        border: 1px solid var(--neutral-grey-1, #f9f9f9);
+        background: var(--neutral-grey-0, #fff);
+        width: 240px;
+    }
+
+    .contentContainer {
+        padding: var(--layout-spacing-s) var(--layout-spacing-s)
+            var(--layout-spacing-xs) var(--layout-spacing-s);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+    }
+
+    .mediaContainer {
+        width: 100%;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+
+        &.collapsed {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    .image {
+        width: 100%;
+        height: auto;
+        display: block;
+        max-height: 200px;
+        object-fit: cover;
+    }
+
+    .playButton {
+        z-index: 1;
+        font-size: 32px !important;
+    }
+
+    .video {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--layout-spacing-xxs);
+        align-self: stretch;
+    }
+
+    .title {
+        .caption-semibold();
+        width: 100%;
+        color: var(--neutral-grey-6, #222);
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .description {
+        .caption-regular();
+        color: var(--Neutral-Grey_5, #6a6a6a);
+        margin-bottom: 0;
+        &.collapsed {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    .collapseButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease;
+        margin-left: auto;
+        width: 16px;
+        height: 16px;
+        padding: 0;
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .progressSection {
+        &.collapsed {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    .progressBarTrack {
+        width: 100%;
+        background: var(--neutral-grey-2, #e8e8e8);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .progressBarFill {
+        height: 100%;
+        background: var(--neutral-grey-6, #222);
+        border-radius: 3px;
+        transition: width 0.4s ease;
+        position: relative;
+    }
+
+    .text {
+        .caption-regular();
+        color: var(--neutral-grey-5, #6a6a6a);
+        margin: var(--layout-spacing-xs) 0;
+
+        &.collapsed {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    .actions {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+
+        &.collapsed {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    .ctaButton {
+        .component-button-small();
+        display: flex;
+        padding: 2px var(--layout-spacing-xs);
+        border: 1px solid;
+        justify-content: center;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        border-radius: 4px;
+        text-align: center;
+
+        &.primary {
+            background: var(--neutral-grey-6, #222);
+            color: var(--neutral-grey-0, #fff);
+            border-color: var(--neutral-grey-6, #222);
+
+            svg {
+                fill: var(--neutral-grey-0, #fff);
+            }
+        }
+
+        &.secondary {
+            background: var(--neutral-grey-0, #fff);
+            color: var(--neutral-grey-6, #222);
+            border-color: var(--neutral-grey-3, #d0d0d0);
+
+            svg {
+                fill: var(--neutral-grey-6, #222);
+            }
+        }
+
+        &.ghost {
+            background: transparent;
+            color: var(--neutral-grey-5, #6a6a6a);
+            border-color: transparent;
+
+            svg {
+                fill: var(--neutral-grey-5, #6a6a6a);
+            }
+        }
+    }
+
+    .ctaIcon {
+        font-size: 18px;
+        margin-left: var(--layout-spacing-xxs);
+    }
+
+    .videoModalContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--Neutral-Grey_6, #222);
+            opacity: 0.5;
+            z-index: -1;
+        }
+    }
+
+    .videoModalContent {
+        position: relative;
+        width: 981px;
+        height: 553px;
+        background: var(--neutral-grey-100);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        z-index: 1;
+    }
+
+    .videoModalClose {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 1;
+    }
+
+    .modalVideo {
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+        display: block;
+    }
+
+    .videoCTAOverlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video {
+        width: 100%;
+        height: auto;
+    }
+}
