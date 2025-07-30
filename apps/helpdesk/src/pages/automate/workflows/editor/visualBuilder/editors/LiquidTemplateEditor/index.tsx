@@ -136,10 +136,11 @@ export default function LiquidTemplateEditor({
                     </Button>
                     <div className={css.formField}>
                         <div>
-                            <Label>Output variables</Label>
+                            <Label>Output variable</Label>
                             <Caption>
-                                Create variables from the request response which
-                                can be used in subsequent steps
+                                The result of the template evaluation will be
+                                available for use in subsequent steps. Specify
+                                its data type.
                             </Caption>
                         </div>
                         <SelectField

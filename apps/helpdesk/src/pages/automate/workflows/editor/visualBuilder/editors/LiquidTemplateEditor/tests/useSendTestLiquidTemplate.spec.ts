@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 
-import useSendTestLiquidTemplate from './useSendTestLiquidTemplate'
+import useSendTestLiquidTemplate from '../useSendTestLiquidTemplate'
 
 // Mock the workflows API client
 const mockValidateStep = jest.fn()

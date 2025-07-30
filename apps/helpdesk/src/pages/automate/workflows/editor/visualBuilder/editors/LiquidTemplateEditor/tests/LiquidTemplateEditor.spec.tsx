@@ -163,7 +163,7 @@ describe('<LiquidTemplateEditor />', () => {
         expect(screen.getByText('Common Liquid Examples')).toBeInTheDocument()
         expect(screen.getByText('Request name')).toBeInTheDocument()
         expect(screen.getByText('Template')).toBeInTheDocument()
-        expect(screen.getByText('Output variables')).toBeInTheDocument()
+        expect(screen.getByText('Output variable')).toBeInTheDocument()
     })
 
     it('should display current node values', () => {
@@ -259,7 +259,7 @@ describe('<LiquidTemplateEditor />', () => {
 
         // The SelectField should have all the data type options
         // We can verify this by checking the current selected value and that the field exists
-        const outputSection = screen.getByText('Output variables')
+        const outputSection = screen.getByText('Output variable')
         expect(outputSection).toBeInTheDocument()
 
         // The default value should be displayed in the dropdown label
