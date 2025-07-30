@@ -25,8 +25,18 @@ describe('useFetchInfluencedOrdersForCurrentTicket', () => {
         ],
         ticketId: 999,
         orders: [
-            { id: 111, order_number: 1110 },
-            { id: 222, order_number: 2220 },
+            {
+                id: 111,
+                order_number: 1110,
+                created_at: '2021-01-01T00:00:00.000Z',
+                updated_at: '2021-01-01T01:00:00.000Z',
+            },
+            {
+                id: 222,
+                order_number: 2220,
+                created_at: '2021-01-01T00:00:00.000Z',
+                updated_at: '2021-01-02T01:00:00.000Z',
+            },
         ],
         shopifyIntegrations: [],
     }
@@ -53,12 +63,45 @@ describe('useFetchInfluencedOrdersForCurrentTicket', () => {
             accountId: mockTicketContext.accountId,
             integrationIds: [],
             periodStart: '2021-01-01T00:00:00.000Z',
+            periodEnd: '2021-01-02T23:59:59.999Z',
             orderIds: [111, 222],
         })
 
         expect(result.current).toEqual({
             influencedOrders: mockInfluencedOrders,
             ticketContext: mockTicketContext,
+        })
+    })
+
+    it('should not raise an error if order does not have created_at or updated_at', () => {
+        const mockTicketContext: ReturnType<typeof useGetTicketContext> = {
+            accountId: 123,
+            customers: [{ id: 789 }],
+            ticketId: 999,
+            orders: [
+                {
+                    id: 111,
+                    order_number: 1110,
+                    updated_at: '2021-01-01T01:00:00.000Z',
+                },
+                {
+                    id: 222,
+                    order_number: 2220,
+                    created_at: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            shopifyIntegrations: [],
+        }
+        mockUseGetTicketContext.mockReturnValue(mockTicketContext)
+
+        renderHook(() => useFetchInfluencedOrdersForCurrentTicket())
+
+        expect(mockUseFetchInfluencedOrders).toHaveBeenCalledWith({
+            accountId: mockTicketContext.accountId,
+            integrationIds: [],
+            periodStart: '2021-01-01T00:00:00.000Z',
+            periodEnd: '2021-01-01T23:59:59.999Z',
+            orderIds: [111, 222],
         })
     })
 

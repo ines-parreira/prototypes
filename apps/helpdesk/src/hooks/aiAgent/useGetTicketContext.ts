@@ -36,7 +36,12 @@ export const useGetTicketContext = () => {
         .filter(Boolean) as IntegrationCustomer[]
 
     const orders = ticketCustomerShopifyIntegrations.reduce<
-        Array<{ id: number; order_number: number }>
+        Array<{
+            id: number
+            order_number: number
+            created_at?: string
+            updated_at?: string
+        }>
     >((acc, [, integrationData]) => {
         if (!Array.isArray(integrationData?.orders)) {
             return acc

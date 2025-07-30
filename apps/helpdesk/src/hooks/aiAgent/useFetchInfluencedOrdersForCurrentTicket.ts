@@ -13,8 +13,12 @@ export const useFetchInfluencedOrdersForCurrentTicket = (): {
 } => {
     const ticketContext = useGetTicketContext()
 
-    const periodStart = getFirstCustomerCreatedAt(ticketContext)
+    const { start: periodStart, end: periodEnd } =
+        getStartAndEndDate(ticketContext)
 
+    // Query relies on the order ids so we can safely assume that
+    // if there are no orders, there are no influenced orders
+    // and we can take created_at and updated_at from the orders to set the period
     const influencedOrders = useFetchInfluencedOrders({
         accountId: ticketContext.accountId,
         integrationIds: ticketContext.shopifyIntegrations.map(
@@ -22,23 +26,58 @@ export const useFetchInfluencedOrdersForCurrentTicket = (): {
         ),
         orderIds: ticketContext.orders.map((order) => order.id),
         periodStart,
+        periodEnd,
     })
 
     return { influencedOrders, ticketContext }
 }
 
-const getFirstCustomerCreatedAt = (
+const getOrdersCreatedAt = (
     ticketContext: ReturnType<typeof useGetTicketContext>,
-) => {
-    if (!ticketContext.customers.length) return undefined
+): number[] | undefined => {
+    if (!ticketContext.orders.length) return undefined
 
-    const allCreatedAt = ticketContext.customers
-        .map((c) =>
-            c.created_at ? new Date(c.created_at).getTime() : undefined,
-        )
+    const allCreatedAt = ticketContext.orders
+        .map((o) => {
+            const createdAt = o.created_at
+                ? new Date(o.created_at).getTime()
+                : undefined
+            const updatedAt = o.updated_at
+                ? new Date(o.updated_at).getTime()
+                : undefined
+
+            return [createdAt, updatedAt]
+        })
+        .reduce((acc, [createdAt, updatedAt]) => {
+            if (createdAt !== undefined) acc.push(createdAt)
+            if (updatedAt !== undefined) acc.push(updatedAt)
+            return acc
+        }, [] as number[])
         .filter((x): x is number => x !== undefined && !isNaN(x))
 
     if (!allCreatedAt.length) return undefined
 
-    return new Date(Math.min(...allCreatedAt)).toISOString()
+    return allCreatedAt
+}
+
+const getStartAndEndDate = (
+    ticketContext: ReturnType<typeof useGetTicketContext>,
+): { start: string | undefined; end: string | undefined } => {
+    const allCreatedAt = getOrdersCreatedAt(ticketContext)
+
+    if (!allCreatedAt) return { start: undefined, end: undefined }
+    if (!allCreatedAt.length) return { start: undefined, end: undefined }
+
+    const periodStart = new Date(Math.min(...allCreatedAt))
+    // Set to the start of the day in UTC
+    // This ensures that the period starts at 00:00:00 UTC
+    // It's similar solution to what we have when set filters in stats section
+    // to the start of the day
+    periodStart.setUTCHours(0, 0, 0, 0)
+
+    const periodEnd = new Date(Math.max(...allCreatedAt))
+    // It's similar solution to what we have when set filters in stats section
+    // to the end of the day
+    periodEnd.setUTCHours(23, 59, 59, 999)
+    return { start: periodStart.toISOString(), end: periodEnd.toISOString() }
 }
