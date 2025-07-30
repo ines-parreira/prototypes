@@ -24,6 +24,123 @@ describe('useBusinessHours', () => {
         timezone: 'Europe/Rome',
     }
 
+    describe('getBusinessHoursConfigTimeFrameLabelList', () => {
+        beforeEach(() => {
+            useAppSelectorMock.mockReturnValue(TimeFormatType.TwentyFourHour)
+        })
+
+        it('should return "Outside business hours" when business hours timeframes are empty', () => {
+            const { result } = renderHook(() => useBusinessHours())
+
+            const emptyConfig: BusinessHoursConfig = {
+                business_hours: [],
+                timezone: 'Europe/Rome',
+            }
+
+            const labelList =
+                result.current.getBusinessHoursConfigTimeFrameLabelList(
+                    emptyConfig,
+                )
+
+            expect(labelList).toStrictEqual(['Outside business hours'])
+        })
+
+        it('should format single business hours timeframe with 24-hour format', () => {
+            useAppSelectorMock.mockReturnValue(TimeFormatType.TwentyFourHour)
+
+            const { result } = renderHook(() => useBusinessHours())
+
+            const labelList =
+                result.current.getBusinessHoursConfigTimeFrameLabelList(
+                    sampleBusinessHoursConfig,
+                )
+
+            expect(labelList).toStrictEqual(['Mon-Fri, 09:00-17:00'])
+        })
+
+        it('should format single business hours timeframe with 24-hour format', () => {
+            useAppSelectorMock.mockReturnValue(TimeFormatType.AmPm)
+
+            const { result } = renderHook(() => useBusinessHours())
+
+            const labelList =
+                result.current.getBusinessHoursConfigTimeFrameLabelList(
+                    sampleBusinessHoursConfig,
+                )
+
+            expect(labelList).toStrictEqual(['Mon-Fri, 9:00 AM-5:00 PM'])
+        })
+
+        it.each([
+            { days: '1', daysLabel: 'Monday' },
+            { days: '2', daysLabel: 'Tuesday' },
+            { days: '3', daysLabel: 'Wednesday' },
+            { days: '4', daysLabel: 'Thursday' },
+            { days: '5', daysLabel: 'Friday' },
+            { days: '6', daysLabel: 'Saturday' },
+            { days: '7', daysLabel: 'Sunday' },
+            { days: '1,2,3,4,5', daysLabel: 'Mon-Fri' },
+            { days: '6,7', daysLabel: 'Weekend' },
+            { days: '1,2,3,4,5,6,7', daysLabel: 'Everyday' },
+        ])('should return correct days labels', ({ days, daysLabel }) => {
+            const { result } = renderHook(() => useBusinessHours())
+
+            const labelList =
+                result.current.getBusinessHoursConfigTimeFrameLabelList({
+                    business_hours: [
+                        { days: days, from_time: '09:00', to_time: '17:00' },
+                    ],
+                    timezone: 'Europe/Rome',
+                })
+
+            expect(labelList).toStrictEqual([`${daysLabel}, 09:00-17:00`])
+        })
+
+        it('should return only time range when days is not found', () => {
+            const { result } = renderHook(() => useBusinessHours())
+
+            const labelList =
+                result.current.getBusinessHoursConfigTimeFrameLabelList({
+                    business_hours: [
+                        {
+                            days: '999', // Invalid day
+                            from_time: '09:00',
+                            to_time: '17:00',
+                        },
+                    ],
+                    timezone: 'Europe/Rome',
+                })
+
+            expect(labelList).toStrictEqual(['09:00-17:00'])
+        })
+
+        it('should handle multiple timeframes', () => {
+            const { result } = renderHook(() => useBusinessHours())
+
+            const labelList =
+                result.current.getBusinessHoursConfigTimeFrameLabelList({
+                    business_hours: [
+                        {
+                            days: '1,2,3,4,5',
+                            from_time: '09:00',
+                            to_time: '17:00',
+                        },
+                        {
+                            days: '6,7',
+                            from_time: '11:00',
+                            to_time: '16:00',
+                        },
+                    ],
+                    timezone: 'Europe/Rome',
+                })
+
+            expect(labelList).toStrictEqual([
+                'Mon-Fri, 09:00-17:00',
+                'Weekend, 11:00-16:00',
+            ])
+        })
+    })
+
     describe('getBusinessHoursConfigLabel', () => {
         beforeEach(() => {
             useAppSelectorMock.mockReturnValue(TimeFormatType.TwentyFourHour)

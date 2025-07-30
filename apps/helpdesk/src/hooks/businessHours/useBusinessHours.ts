@@ -14,13 +14,13 @@ import { getTimeFormatPreferenceSetting } from 'state/currentUser/selectors'
 export const useBusinessHours = () => {
     const timeFormatSetting = useAppSelector(getTimeFormatPreferenceSetting)
 
-    const getBusinessHoursTimeframeLabel = useCallback(
+    const getBusinessHoursTimeFrameLabel = useCallback(
         (businessHoursTimeFrame: BusinessHoursTimeframe) => {
-            let from_time =
+            let fromTime =
                 timeFormatSetting === TimeFormatType.AmPm
                     ? convertToAmPm(businessHoursTimeFrame.from_time)
                     : businessHoursTimeFrame.from_time
-            let to_time =
+            let toTime =
                 timeFormatSetting === TimeFormatType.AmPm
                     ? convertToAmPm(businessHoursTimeFrame.to_time)
                     : businessHoursTimeFrame.to_time
@@ -29,7 +29,7 @@ export const useBusinessHours = () => {
                 (day) => day.value === businessHoursTimeFrame.days,
             )?.label
 
-            const timeRange = `${from_time}-${to_time}`
+            const timeRange = `${fromTime}-${toTime}`
 
             if (!displayName) {
                 return timeRange
@@ -40,29 +40,44 @@ export const useBusinessHours = () => {
         [timeFormatSetting],
     )
 
+    const getBusinessHoursConfigTimeFrameLabelList = useCallback(
+        (businessHoursConfig: BusinessHoursConfig) => {
+            if (businessHoursConfig.business_hours.length === 0) {
+                return ['Outside business hours']
+            }
+
+            return businessHoursConfig.business_hours.map((businessHours) =>
+                getBusinessHoursTimeFrameLabel(businessHours),
+            )
+        },
+        [getBusinessHoursTimeFrameLabel],
+    )
+
     const getBusinessHoursConfigLabel = useCallback(
         (
             businessHoursConfig: BusinessHoursConfig,
-            show_timezone: boolean = false,
+            showTimezone: boolean = false,
         ) => {
             if (businessHoursConfig.business_hours.length === 0) {
                 return 'Outside business hours'
             }
 
-            const timeframe = businessHoursConfig.business_hours
-                .map((businessHours) =>
-                    getBusinessHoursTimeframeLabel(businessHours),
-                )
-                .join(' | ')
+            const configLabel =
+                getBusinessHoursConfigTimeFrameLabelList(
+                    businessHoursConfig,
+                ).join(' | ')
 
-            if (show_timezone) {
-                return `${timeframe}, ${businessHoursConfig.timezone}`
+            if (showTimezone) {
+                return `${configLabel}, ${businessHoursConfig.timezone}`
             }
 
-            return timeframe
+            return configLabel
         },
-        [getBusinessHoursTimeframeLabel],
+        [getBusinessHoursConfigTimeFrameLabelList],
     )
 
-    return { getBusinessHoursConfigLabel }
+    return {
+        getBusinessHoursConfigTimeFrameLabelList,
+        getBusinessHoursConfigLabel,
+    }
 }

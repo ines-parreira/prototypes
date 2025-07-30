@@ -1,11 +1,18 @@
-import { screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { UserSettingType } from 'config/types/user'
 import { TimeFormatType } from 'constants/datetime'
-import { renderWithStore } from 'utils/testing'
+import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 import BusinessHoursScheduleDisplay from '../BusinessHoursScheduleDisplay'
+
+jest.mock('hooks/useId', () => () => 'test-id')
+jest.mock('pages/common/hooks/useTextOverflow')
+
+const useTextOverflowMock = assumeMock(useTextOverflow)
 
 const renderComponent = ({
     timeFormat,
@@ -48,6 +55,13 @@ const renderComponent = ({
 }
 
 describe('BusinessHoursScheduleDisplay', () => {
+    beforeEach(() => {
+        useTextOverflowMock.mockReturnValue({
+            ref: { current: null },
+            isOverflowing: false,
+        })
+    })
+
     it('should render all business hours with 24 hour format when the preference is set to 24 hour', () => {
         renderComponent({ timeFormat: TimeFormatType.TwentyFourHour })
 
@@ -73,5 +87,51 @@ describe('BusinessHoursScheduleDisplay', () => {
                 'Mon-Fri, 9:00 AM-5:00 PM | Weekend, 10:00 AM-6:00 PM',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should show complete schedule when text overflows', async () => {
+        const user = userEvent.setup()
+
+        useTextOverflowMock.mockReturnValue({
+            ref: { current: null },
+            isOverflowing: true,
+        })
+
+        renderComponent()
+
+        const textElement = screen.getByText(
+            'Mon-Fri, 9:00 AM-5:00 PM | Weekend, 10:00 AM-6:00 PM',
+        )
+
+        await act(() => user.hover(textElement))
+
+        await waitFor(() => {
+            const tooltip = screen.getByRole('tooltip')
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent('Schedule')
+            expect(tooltip).toHaveTextContent('Mon-Fri, 9:00 AM-5:00 PM')
+            expect(tooltip).toHaveTextContent('Weekend, 10:00 AM-6:00 PM')
+        })
+    })
+
+    it('should not show tooltip when text does not overflow', async () => {
+        const user = userEvent.setup()
+
+        useTextOverflowMock.mockReturnValue({
+            ref: { current: null },
+            isOverflowing: false,
+        })
+
+        renderComponent()
+
+        const textElement = screen.getByText(
+            'Mon-Fri, 9:00 AM-5:00 PM | Weekend, 10:00 AM-6:00 PM',
+        )
+
+        await act(() => user.hover(textElement))
+
+        await waitFor(() => {
+            expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        })
     })
 })

@@ -143,6 +143,7 @@ describe('<BusinessHoursSelectField />', () => {
             handleBusinessHoursSearch: mockHandleBusinessHoursSearch,
         } as any)
         useBusinessHoursMock.mockReturnValue({
+            getBusinessHoursConfigTimeFrameLabelList: jest.fn(),
             getBusinessHoursConfigLabel: mockGetBusinessHoursConfigLabel,
         })
         mockGetBusinessHoursConfigLabel.mockImplementation(
