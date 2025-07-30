@@ -15,9 +15,9 @@
         "jest": "catalog:jest"
     },
     "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "jest": "catalog:jest",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier"
+        "prettier": "catalog:prettier"
     }
 }

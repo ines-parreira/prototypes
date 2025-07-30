@@ -87,52 +87,52 @@ catalogs:
       version: 18.2.0
   rest-api-sdk:
     '@gorgias/convert-client':
-      specifier: 0.2.16
-      version: 0.2.16
+      specifier: ^0.3.1
+      version: 0.3.1
     '@gorgias/help-center-client':
-      specifier: 0.2.13
-      version: 0.2.13
+      specifier: ^0.3.0
+      version: 0.3.0
     '@gorgias/help-center-mocks':
-      specifier: 0.2.13
-      version: 0.2.13
+      specifier: ^0.2.14
+      version: 0.2.14
     '@gorgias/help-center-queries':
-      specifier: 0.2.13
-      version: 0.2.13
+      specifier: ^0.2.14
+      version: 0.2.14
     '@gorgias/help-center-types':
-      specifier: 0.2.8
+      specifier: ^0.2.8
       version: 0.2.8
     '@gorgias/help-center-validators':
-      specifier: 0.2.12
+      specifier: ^0.2.12
       version: 0.2.12
     '@gorgias/helpdesk-client':
-      specifier: 0.10.9
+      specifier: ^0.10.9
       version: 0.10.9
     '@gorgias/helpdesk-mocks':
-      specifier: 0.7.70
+      specifier: ^0.7.9
       version: 0.7.70
     '@gorgias/helpdesk-queries':
-      specifier: 0.9.26
+      specifier: ^0.9.9
       version: 0.9.26
     '@gorgias/helpdesk-types':
-      specifier: 0.7.67
+      specifier: ^0.7.9
       version: 0.7.67
     '@gorgias/helpdesk-validators':
-      specifier: 0.7.69
+      specifier: ^0.7.9
       version: 0.7.69
     '@gorgias/knowledge-service-client':
-      specifier: 0.3.3
+      specifier: ^0.3.3
       version: 0.3.3
     '@gorgias/knowledge-service-mocks':
-      specifier: 0.2.22
+      specifier: ^0.2.22
       version: 0.2.22
     '@gorgias/knowledge-service-queries':
-      specifier: 0.2.22
+      specifier: ^0.2.22
       version: 0.2.22
     '@gorgias/knowledge-service-types':
-      specifier: 0.2.16
+      specifier: ^0.2.16
       version: 0.2.16
     '@gorgias/knowledge-service-validators':
-      specifier: 0.2.20
+      specifier: ^0.2.20
       version: 0.2.20
   testing-library:
     '@testing-library/dom':
@@ -204,6 +204,9 @@ importers:
       semver:
         specifier: ^7.7.1
         version: 7.7.1
+      taze:
+        specifier: ^19.1.0
+        version: 19.1.0
       tsx:
         specifier: ^4.19.2
         version: 4.19.3
@@ -266,7 +269,7 @@ importers:
         version: 0.2.1
       '@gorgias/convert-client':
         specifier: catalog:rest-api-sdk
-        version: 0.2.16
+        version: 0.3.1
       '@gorgias/design-tokens':
         specifier: ^0.10.5
         version: 0.10.5
@@ -281,10 +284,10 @@ importers:
         version: 0.7.0
       '@gorgias/help-center-client':
         specifier: catalog:rest-api-sdk
-        version: 0.2.13
+        version: 0.3.0
       '@gorgias/help-center-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.2.13(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.2.14(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/help-center-types':
         specifier: catalog:rest-api-sdk
         version: 0.2.8
@@ -741,7 +744,7 @@ importers:
         version: 0.2.4(@babel/core@7.27.4)(@babel/eslint-parser@7.23.10(@babel/core@7.27.4)(eslint@8.1.0))(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.1))(eslint-plugin-import@2.25.2(eslint@8.1.0))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)
       '@gorgias/help-center-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.2.13(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.2.14(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.7.70(@types/node@22.13.13)(typescript@5.3.3)
@@ -1485,6 +1488,10 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
+
+  '@antfu/ni@24.4.0':
+    resolution: {integrity: sha512-ZjriRbGyWGSrBE1RY2qBIXyilejMWLDWh2Go2dqFottyiuOze36+BpPch2z2WnGEgEbzTBVPetMmQvt0xt+iww==}
+    hasBin: true
 
   '@anttiviljami/dtsgenerator@3.20.0':
     resolution: {integrity: sha512-b90uOx7/dC53mo8fHfXXz3Iy20nLkIaZXBZt6RwPzxMll9MZTG5rVkJdy74vxw9ngmnrtC8Z4elmGgNA2aeTIA==}
@@ -2688,11 +2695,11 @@ packages:
       eslint-plugin-react: ^7.34.3
       eslint-plugin-react-hooks: ^4.6.2
 
-  '@gorgias/convert-client@0.2.16':
-    resolution: {integrity: sha512-IydVQ70jgtEpSvirfizLYgn72iFJu9SD94wAFkYcyncCe/MY2omyiO0Uwc8+NfkvuHMW1bUpSNucgvsJulsypQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.2.16/cd0db7620f741e38bc079c26dc9197ddbcb58cf4}
+  '@gorgias/convert-client@0.3.1':
+    resolution: {integrity: sha512-oUyK82wJvQtgRLGKhHGQeQp+8nWzjhNLhZtwi+YG9nhfoNtVP9dNxntiMK7Z73dmetEGhef4euAcavawvWH/bw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.1/9e5e2ed583ec8147f70383f37fa273327bc1731c}
 
-  '@gorgias/convert-types@0.2.12':
-    resolution: {integrity: sha512-KkYt4H92kEO+V1wjQTdp20htxBzoTskXJYJTLeS58bkatz/bpk/2/NgosMpFDkRoqIT+YWZaQCiphhAF+wwmVQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.2.12/eaceac5203d7c2046f67cb9e3532a992b154e49c}
+  '@gorgias/convert-types@0.2.13':
+    resolution: {integrity: sha512-brDc3ZCX+pGyeBsNV54z7FgjHj8hwGEPHnJjGA2Y6TQerftAaORzwLpOQFgHR5UlHWp76tVCeV5jy0uYD9wrxA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.2.13/41501ce7581d48898733ea49aebaa80eb9043a7b}
 
   '@gorgias/design-tokens@0.10.5':
     resolution: {integrity: sha512-qx8g0V81tVGQYJNhpNwbo+XpdMU/QUUfb2EukKjzKeTE9elPYKuZj0LrWErax2MibAeSh5ngOl/5mPtbcHpAgg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.5/f9bd803a287ca6ae26e6c47b2234e67fbc0f8242}
@@ -2713,14 +2720,14 @@ packages:
     resolution: {integrity: sha512-fHCm1VZEP++PBPquQXi6Lege+qGlMtyz3e4xug3nrI27etOI+fjRvAPO8fJxuDoPOIEascYuw5DsZmhKWOpWGQ==, tarball: https://npm.pkg.github.com/download/@gorgias/events/0.7.0/b41c222d9c217796b0103d0b52803ed11e6cbe55}
     engines: {node: '>=18'}
 
-  '@gorgias/help-center-client@0.2.13':
-    resolution: {integrity: sha512-XzZ6MlPr9nvFYmyjk/M1d2e0d+R/sFjIwp6h93vcBVV+opaa7hwRA3dvZQ14VDNSoxTI3IQn976L7hK10YInMw==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-client/0.2.13/2fc97337712c6698c70a1abd0ef85ed230cdb135}
+  '@gorgias/help-center-client@0.3.0':
+    resolution: {integrity: sha512-N3MivNJeR6Hy2q/MNVz2GVcNUUCElLe8wOVAcwT6+vTrcEJaCTL7paeuc5i74ASHYJFNo/Kdx3xKpqH/+qt9FQ==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-client/0.3.0/0c8d3878ef3fc6399edae645f634ed108940716a}
 
-  '@gorgias/help-center-mocks@0.2.13':
-    resolution: {integrity: sha512-zBquTmvduFREGYTGk1mv0gcKDbdzqMYzonCV0UYcZGzn0eewvVQwptDJp27eNr00JABVOqmuquWNbwbuU926IQ==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-mocks/0.2.13/4f0537ca29dffb7b8cb2a5452aac559476590321}
+  '@gorgias/help-center-mocks@0.2.14':
+    resolution: {integrity: sha512-rwR/rZoYt3yJvFudNtwfikJlSsQn3TLxmADqzQJLlKrDQwARETi/wcwQ7ydDw/+THtAcOP+C/R0X5gJ9NLZHZQ==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-mocks/0.2.14/5f6233e2fbf24373ff50ec043626d719536b4c32}
 
-  '@gorgias/help-center-queries@0.2.13':
-    resolution: {integrity: sha512-SJlS8XjLtn3sp+yg/7Sj//qu9dKOGQmvZIfxoq9/4ZJnE3NKy3n8ecSeDy9LbeSzkfEOVG96XGYD1tkr1wY2IQ==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-queries/0.2.13/9e316d434621c6c9779025bf2c64c57fde20b1df}
+  '@gorgias/help-center-queries@0.2.14':
+    resolution: {integrity: sha512-VH+17Xro9srmlR3ZLAwovxBHR+jARpL4vbXNWVHvYUMXx4gZEO93DbnUlaV77NruPxA8xFBeiIPm+6X7iHJGfw==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-queries/0.2.14/99c3ccbd5ccc347a79b60203e5cf6182a076884d}
 
   '@gorgias/help-center-spec@0.3.4':
     resolution: {integrity: sha512-U58ABgr6MT64Oo3ar6Kxn5IpCiB4fQSW18d+ib3PU/1BjnxjufehDOH4D2J/GlyvSVpzNgIUKriJmbSKr1XKOw==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-spec/0.3.4/d60a495e49603d416737cb131d1c703d730d436f}
@@ -3315,6 +3322,10 @@ packages:
     resolution: {integrity: sha512-naxcJgUJ6BTOROJ7C3QML7KvwKwCXQJYTc5L/b0eEsdYgPB6SxwoQ1vDGcS0Q7GVjAenVq/tXrybVdFShHYZWg==}
     peerDependencies:
       preact: 10.x
+
+  '@quansync/fs@0.1.3':
+    resolution: {integrity: sha512-G0OnZbMWEs5LhDyqy2UL17vGhSVHkQIfVojMtEWVenvj0V5S84VBgy86kJIuNsGDp2p7sTKlpSIpBUWdC35OKg==}
+    engines: {node: '>=20.0.0'}
 
   '@radix-ui/primitive@1.1.1':
     resolution: {integrity: sha512-SJ31y+Q/zAyShtXJc8x83i9TYdbAfHZ++tUZnvjJJqFjzsdUnKsxPL6IEtBlxKkU7yzer//GQtZSV4GbldL3YA==}
@@ -5380,6 +5391,10 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
+  ansis@4.1.0:
+    resolution: {integrity: sha512-BGcItUBWSMRgOCe+SVZJ+S7yTRG0eGt9cXAHev72yuGcY23hnLA7Bky5L/xLyPINoSN95geovfBkqoTlNZYa7w==}
+    engines: {node: '>=14'}
+
   anymatch@3.1.2:
     resolution: {integrity: sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg==}
     engines: {node: '>= 8'}
@@ -5759,6 +5774,10 @@ packages:
   bytes@3.1.2:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
+
+  cac@6.7.14:
+    resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
+    engines: {node: '>=8'}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -6454,6 +6473,9 @@ packages:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==}
     engines: {node: '>= 0.4'}
 
+  defu@6.1.4:
+    resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
+
   degenerator@5.0.1:
     resolution: {integrity: sha512-TllpMR/t0M5sqCXfj85i4XaAzxmS5tVA16dqvdkMwGmzI+dXLXnw3J+3Vdv7VKw+ThlTMboK6i9rnZ6Nntj5CQ==}
     engines: {node: '>= 14'}
@@ -6482,6 +6504,9 @@ packages:
 
   des.js@1.1.0:
     resolution: {integrity: sha512-r17GxjhUCjSRy8aiJpr8/UadFIzMzJGexI3Nmz4ADi9LYSFx4gTBp80+NaX/YsXWWLhpZ7v/v/ubEc/bCNfKwg==}
+
+  destr@2.0.5:
+    resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
 
   destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
@@ -7093,6 +7118,14 @@ packages:
   fbjs@0.8.17:
     resolution: {integrity: sha512-Q1MvLM+cllhk7lv9Pci7dIdpC5W8MS6W0slOWizKG66+te0m9/YqjfIt41rKmH+Nqz+mMiGgdEVonDadPyKnug==}
 
+  fdir@6.4.6:
+    resolution: {integrity: sha512-hiFoqpyZcfNm1yc4u8oWCf9A2c4D3QjCrks3zmoVKVxpQRzmPNar1hUJcBG2RQHvEVGDN+Jm81ZheVLAQMK6+w==}
+    peerDependencies:
+      picomatch: ^3 || ^4
+    peerDependenciesMeta:
+      picomatch:
+        optional: true
+
   fflate@0.8.2:
     resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
 
@@ -7148,6 +7181,10 @@ packages:
 
   find-root@1.1.0:
     resolution: {integrity: sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==}
+
+  find-up-simple@1.0.1:
+    resolution: {integrity: sha512-afd4O7zpqHeRyg4PfDQsXmlDe2PfdHtJt6Akt8jOWaApLOZk5JXs6VMR29lz03pRe9mpykrRCYIYxaJYcfpncQ==}
+    engines: {node: '>=18'}
 
   find-up@2.1.0:
     resolution: {integrity: sha512-NWzkk0jSJtTt08+FBFMvXoeZnOJD+jTtsRmBYbAIzJdX6l7dLgR7CTubCM5/eDdPUBvLCeVasP1brfVR/9/EZQ==}
@@ -7316,6 +7353,9 @@ packages:
   fuse.js@6.6.2:
     resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
     engines: {node: '>=10'}
+
+  fzf@0.5.2:
+    resolution: {integrity: sha512-Tt4kuxLXFKHy8KT40zwsUPUkg1CrsgY25FxA2U/j/0WgEDCk3ddc/zLTCCcbSHX9FcKtLuVaDGtGE/STWC+j3Q==}
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -8980,6 +9020,10 @@ packages:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
 
+  mimic-function@5.0.1:
+    resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
+    engines: {node: '>=18'}
+
   mimic-response@3.1.0:
     resolution: {integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==}
     engines: {node: '>=10'}
@@ -9130,6 +9174,9 @@ packages:
   node-addon-api@6.1.0:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
 
+  node-fetch-native@1.6.6:
+    resolution: {integrity: sha512-8Mc2HhqPdlIfedsuZoc3yioPuzp6b+L5jRCRY1QzuWZh2EGJVQrGppC6V6cF0bLdbW0+O2YpqCA25aF/1lvipQ==}
+
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
@@ -9257,6 +9304,9 @@ packages:
   obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
 
+  ofetch@1.4.1:
+    resolution: {integrity: sha512-QZj2DfGplQAr2oj9KzceK9Hwz6Whxazmn85yYeVuS3u9XTMOGMRx0kO95MQ+vLsj/S/NwBDMMLU5hpxvI6Tklw==}
+
   on-finished@2.3.0:
     resolution: {integrity: sha512-ikqdkGAAyf/X/gPhXGvfgAytDZtDbr+bkNUJ0N9h5MI/dmdgCs3l6hoHrcUv41sRKew3jIwrp4qQDXiK99Utww==}
     engines: {node: '>= 0.8'}
@@ -9275,6 +9325,10 @@ packages:
   onetime@5.1.2:
     resolution: {integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==}
     engines: {node: '>=6'}
+
+  onetime@7.0.0:
+    resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
+    engines: {node: '>=18'}
 
   open@10.1.0:
     resolution: {integrity: sha512-mnkeQ1qP5Ue2wd+aivTD3NHd/lZ96Lu0jgf0pwktLPtx6cTZiH7tyeGRRHs0zX0rbrahXPnXlUnbeXyaBBuIaw==}
@@ -9404,6 +9458,9 @@ packages:
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
+  package-manager-detector@1.3.0:
+    resolution: {integrity: sha512-ZsEbbZORsyHuO00lY1kV3/t72yp6Ysay6Pd17ZAlNGuGwmWDLCJxFpRs0IzfXfj1o4icJOkUEioexFHzyPurSQ==}
+
   pako@1.0.11:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
 
@@ -9516,6 +9573,9 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  pathe@2.0.3:
+    resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
+
   pathval@2.0.0:
     resolution: {integrity: sha512-vE7JKRyES09KiunauX7nd2Q9/L7lhok4smP9RZTDeD4MVs72Dp2qNFVz39Nz5a0FVEW0BJR6C0DYrq6unoziZA==}
     engines: {node: '>= 14.16'}
@@ -9595,6 +9655,9 @@ packages:
 
   pnpm-lock.yaml@1.0.0:
     resolution: {integrity: sha512-uLHgA8KscUeNrIiMmhxOv5x9FR0ghJxgVPXAgmmCMo/UIkg8/Xlq6xfRysD1UeW+VxFEGstUj/1UeCbm0z6GIg==}
+
+  pnpm-workspace-yaml@0.3.1:
+    resolution: {integrity: sha512-3nW5RLmREmZ8Pm8MbPsO2RM+99RRjYd25ynj3NV0cFsN7CcEl4sDFzgoFmSyduFwxFQ2Qbu3y2UdCh6HlyUOeA==}
 
   polished@4.2.2:
     resolution: {integrity: sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==}
@@ -9803,6 +9866,9 @@ packages:
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
+
+  quansync@0.2.10:
+    resolution: {integrity: sha512-t41VRkMYbkHyCYmOvx/6URnN80H7k4X0lLdBMGsz+maAwrJQYB1djpV6vHrQIBE0WBSGqhtEHrK9U3DWWH8v7A==}
 
   querystring-es3@0.2.1:
     resolution: {integrity: sha512-773xhDQnZBMFobEiztv8LIl70ch5MSF/jUQVlhwFyBILqq96anmoctVIYz+ZRp0qbCKATTn6ev02M3r7Ga5vqA==}
@@ -10375,6 +10441,10 @@ packages:
   restore-cursor@3.1.0:
     resolution: {integrity: sha512-l+sSefzHpj5qimhFSE5a8nufZYAM3sBSVMAPtYkmC+4EH2anSGaEMXSD0izRQbu9nfyQ9y5JrVmp7E8oZrUjvA==}
     engines: {node: '>=8'}
+
+  restore-cursor@5.1.0:
+    resolution: {integrity: sha512-oMA2dcrw6u0YfxJQXm342bFKX/E4sG9rbTzO9ptUcR/e8A33cHuvStiYOwH7fszkZlZ1z/ta9AAoPk2F4qIOHA==}
+    engines: {node: '>=18'}
 
   ret@0.2.2:
     resolution: {integrity: sha512-M0b3YWQs7R3Z917WRQy1HHA7Ba7D8hvZg6UE5mLykJxQVE2ju0IXbGlaHPPlkY+WN7wFP+wUMXmBFA0aV6vYGQ==}
@@ -11012,6 +11082,10 @@ packages:
   tar-stream@3.1.7:
     resolution: {integrity: sha512-qJj60CXt7IU1Ffyc3NJMjh6EkuCFej46zUqJ4J7pqYlThyd9bO0XBTmcOIhSzZJVWfsLks0+nle/j538YAW9RQ==}
 
+  taze@19.1.0:
+    resolution: {integrity: sha512-MDN2WZb7TgsIvtFxqsLJ4GYy9dTDG5Dea/ZfPHrG98Cy7UH1EFIOzH+zDjnoP38ImuBbxZy1Zl8AbiwOZpYMUQ==}
+    hasBin: true
+
   terser-webpack-plugin@5.3.10:
     resolution: {integrity: sha512-BKFPWlPDndPs+NGGCr1U59t0XScL5317Y0UReNrHaw9/FwhPENlq6bfgs+4yPfyP51vqC1bQ4rp1EfXW5ZSH9w==}
     engines: {node: '>= 10.13.0'}
@@ -11074,6 +11148,13 @@ packages:
 
   tiny-warning@1.0.3:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
+
+  tinyexec@1.0.1:
+    resolution: {integrity: sha512-5uC6DDlmeqiOwCPmK9jMSdOuZTh8bU39Ys6yidB+UTt5hfZUPGAypSgFRiEp+jbi9qH40BLDvy85jIU88wKSqw==}
+
+  tinyglobby@0.2.14:
+    resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
+    engines: {node: '>=12.0.0'}
 
   tinyrainbow@1.2.0:
     resolution: {integrity: sha512-weEDEq7Z5eTHPDh4xjX789+fHfF+P8boiFB+0vbWzpbnbsEr/GRaohi/uMKxg8RZMXnl1ItAi/IUHWMsjDV7kQ==}
@@ -11258,6 +11339,9 @@ packages:
   uc.micro@1.0.6:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
 
+  ufo@1.6.1:
+    resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
+
   ulidx@0.5.0:
     resolution: {integrity: sha512-fZFAVMxsp3QSwOpIta6uqc3ZjHfRe4m3GllM+HO4MNQMXlzcUhWihHKWuBxFcDYATsuyxjBwCH0MqVsj/D/how==}
 
@@ -11267,6 +11351,9 @@ packages:
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
+
+  unconfig@7.3.2:
+    resolution: {integrity: sha512-nqG5NNL2wFVGZ0NA/aCFw0oJ2pxSf1lwg4Z5ill8wd7K4KX/rQbHlwbh+bjctXL5Ly1xtzHenHGOK0b+lG6JVg==}
 
   underscore@1.12.1:
     resolution: {integrity: sha512-hEQt0+ZLDVUMhebKxL4x1BTtDY7bavVofhZ9KZ4aI26X9SRaE+Y3m83XUL1UP2jn8ynjndwCCpEHdUG+9pP1Tw==}
@@ -11907,6 +11994,13 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.12
       '@jridgewell/trace-mapping': 0.3.29
+
+  '@antfu/ni@24.4.0':
+    dependencies:
+      ansis: 4.1.0
+      fzf: 0.5.2
+      package-manager-detector: 1.3.0
+      tinyexec: 1.0.1
 
   '@anttiviljami/dtsgenerator@3.20.0(encoding@0.1.13)':
     dependencies:
@@ -13217,15 +13311,15 @@ snapshots:
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
 
-  '@gorgias/convert-client@0.2.16':
+  '@gorgias/convert-client@0.3.1':
     dependencies:
-      '@gorgias/convert-types': 0.2.12
+      '@gorgias/convert-types': 0.2.13
       '@gorgias/sdk-client': 0.9.3
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/convert-types@0.2.12': {}
+  '@gorgias/convert-types@0.2.13': {}
 
   '@gorgias/design-tokens@0.10.5': {}
 
@@ -13252,7 +13346,7 @@ snapshots:
 
   '@gorgias/events@0.7.0': {}
 
-  '@gorgias/help-center-client@0.2.13':
+  '@gorgias/help-center-client@0.3.0':
     dependencies:
       '@gorgias/help-center-types': 0.2.8
       '@gorgias/sdk-client': 0.9.3
@@ -13260,7 +13354,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/help-center-mocks@0.2.13(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/help-center-mocks@0.2.14(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
       '@gorgias/help-center-spec': 0.3.4
       '@gorgias/help-center-types': 0.2.8
@@ -13272,9 +13366,9 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@gorgias/help-center-queries@0.2.13(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/help-center-queries@0.2.14(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/help-center-client': 0.2.13
+      '@gorgias/help-center-client': 0.3.0
       '@gorgias/help-center-types': 0.2.8
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
@@ -14134,6 +14228,10 @@ snapshots:
     dependencies:
       '@preact/signals-core': 1.8.0
       preact: 10.26.4
+
+  '@quansync/fs@0.1.3':
+    dependencies:
+      quansync: 0.2.10
 
   '@radix-ui/primitive@1.1.1': {}
 
@@ -16681,6 +16779,8 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
+  ansis@4.1.0: {}
+
   anymatch@3.1.2:
     dependencies:
       normalize-path: 3.0.0
@@ -17152,6 +17252,8 @@ snapshots:
   bytes@3.0.0: {}
 
   bytes@3.1.2: {}
+
+  cac@6.7.14: {}
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
@@ -17862,6 +17964,8 @@ snapshots:
       has-property-descriptors: 1.0.2
       object-keys: 1.1.1
 
+  defu@6.1.4: {}
+
   degenerator@5.0.1:
     dependencies:
       ast-types: 0.13.4
@@ -17884,6 +17988,8 @@ snapshots:
     dependencies:
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
+
+  destr@2.0.5: {}
 
   destroy@1.2.0: {}
 
@@ -18736,6 +18842,10 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  fdir@6.4.6(picomatch@4.0.2):
+    optionalDependencies:
+      picomatch: 4.0.2
+
   fflate@0.8.2: {}
 
   figures@2.0.0:
@@ -18811,6 +18921,8 @@ snapshots:
       pkg-dir: 7.0.0
 
   find-root@1.1.0: {}
+
+  find-up-simple@1.0.1: {}
 
   find-up@2.1.0:
     dependencies:
@@ -18988,6 +19100,8 @@ snapshots:
   functions-have-names@1.2.3: {}
 
   fuse.js@6.6.2: {}
+
+  fzf@0.5.2: {}
 
   gensync@1.0.0-beta.2: {}
 
@@ -21218,6 +21332,8 @@ snapshots:
 
   mimic-fn@2.1.0: {}
 
+  mimic-function@5.0.1: {}
+
   mimic-response@3.1.0: {}
 
   min-indent@1.0.1: {}
@@ -21352,6 +21468,8 @@ snapshots:
   node-abort-controller@3.1.1: {}
 
   node-addon-api@6.1.0: {}
+
+  node-fetch-native@1.6.6: {}
 
   node-fetch@2.7.0(encoding@0.1.13):
     dependencies:
@@ -21554,6 +21672,12 @@ snapshots:
 
   obuf@1.1.2: {}
 
+  ofetch@1.4.1:
+    dependencies:
+      destr: 2.0.5
+      node-fetch-native: 1.6.6
+      ufo: 1.6.1
+
   on-finished@2.3.0:
     dependencies:
       ee-first: 1.1.1
@@ -21571,6 +21695,10 @@ snapshots:
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
+
+  onetime@7.0.0:
+    dependencies:
+      mimic-function: 5.0.1
 
   open@10.1.0:
     dependencies:
@@ -21759,6 +21887,8 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
+  package-manager-detector@1.3.0: {}
+
   pako@1.0.11: {}
 
   param-case@3.0.4:
@@ -21878,6 +22008,8 @@ snapshots:
 
   path-type@4.0.0: {}
 
+  pathe@2.0.3: {}
+
   pathval@2.0.0: {}
 
   pbkdf2@3.1.3:
@@ -21959,6 +22091,10 @@ snapshots:
       - typescript
       - uglify-js
       - webpack-cli
+
+  pnpm-workspace-yaml@0.3.1:
+    dependencies:
+      yaml: 2.8.0
 
   polished@4.2.2:
     dependencies:
@@ -22193,6 +22329,8 @@ snapshots:
   qs@6.14.0:
     dependencies:
       side-channel: 1.1.0
+
+  quansync@0.2.10: {}
 
   querystring-es3@0.2.1: {}
 
@@ -22920,6 +23058,11 @@ snapshots:
     dependencies:
       onetime: 5.1.2
       signal-exit: 3.0.7
+
+  restore-cursor@5.1.0:
+    dependencies:
+      onetime: 7.0.0
+      signal-exit: 4.1.0
 
   ret@0.2.2: {}
 
@@ -23741,6 +23884,21 @@ snapshots:
       fast-fifo: 1.3.2
       streamx: 2.22.1
 
+  taze@19.1.0:
+    dependencies:
+      '@antfu/ni': 24.4.0
+      cac: 6.7.14
+      find-up-simple: 1.0.1
+      ofetch: 1.4.1
+      package-manager-detector: 1.3.0
+      pathe: 2.0.3
+      pnpm-workspace-yaml: 0.3.1
+      restore-cursor: 5.1.0
+      tinyexec: 1.0.1
+      tinyglobby: 0.2.14
+      unconfig: 7.3.2
+      yaml: 2.8.0
+
   terser-webpack-plugin@5.3.10(@swc/core@1.12.1(@swc/helpers@0.5.17))(esbuild@0.25.2)(webpack@5.97.1(@swc/core@1.12.1(@swc/helpers@0.5.17))(esbuild@0.25.2)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.29
@@ -23793,6 +23951,13 @@ snapshots:
   tiny-invariant@1.3.3: {}
 
   tiny-warning@1.0.3: {}
+
+  tinyexec@1.0.1: {}
+
+  tinyglobby@0.2.14:
+    dependencies:
+      fdir: 6.4.6(picomatch@4.0.2)
+      picomatch: 4.0.2
 
   tinyrainbow@1.2.0: {}
 
@@ -23978,6 +24143,8 @@ snapshots:
 
   uc.micro@1.0.6: {}
 
+  ufo@1.6.1: {}
+
   ulidx@0.5.0:
     dependencies:
       layerr: 0.1.2
@@ -23995,6 +24162,13 @@ snapshots:
       has-bigints: 1.1.0
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
+
+  unconfig@7.3.2:
+    dependencies:
+      '@quansync/fs': 0.1.3
+      defu: 6.1.4
+      jiti: 2.4.2
+      quansync: 0.2.10
 
   underscore@1.12.1: {}
 

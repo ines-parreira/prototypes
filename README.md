@@ -78,6 +78,11 @@ This helps maintain unique versions, signal that some dependencies should be cha
 
 To update a package whose version is specified in a catalog, you need to update the catalog itself in the `pnpm-workspace.yaml` file manually. The `pnpm update` command [doesn't yet support the catalogs for now](https://pnpm.io/catalogs#caveats).
 
+### Updating SDKs
+
+To update the SDKs, you can use the `pnpm platform:update:sdk` command (ie. `pnpm platform:update:sdk helpdesk`)
+This will bump all the services' packages to their latest version (updating correctly both the workspace/catalogs manifest and the lockfile).
+
 ## Development
 
 ### Environment Configuration

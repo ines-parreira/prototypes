@@ -33,6 +33,7 @@
         "platform:chromatic": "pnpm --filter @repo/helpdesk chromatic",
         "platform:deprecated-analysis": "pnpm static-analysis",
         "platform:check-node-engines": "tsx scripts/dependencies-management/dependencies-engines.ts",
+        "platform:update:sdk": "scripts/update-sdk.sh",
         "postinstall": "pnpm oxlint:bridge"
     },
     "devDependencies": {
@@ -49,6 +50,7 @@
         "oxlint": "^0.17.0",
         "prettier": "catalog:prettier",
         "semver": "^7.7.1",
+        "taze": "^19.1.0",
         "tsx": "^4.19.2",
         "typescript": "catalog:typescript"
     },
@@ -57,14 +59,14 @@
     },
     "packageManager": "pnpm@10.8.0",
     "overrides": {
+        "@emotion/styled-base": "10.0.31",
+        "@formatjs/ecma402-abstract": "1.11.4",
         "@tanstack/react-query": "4.36.1",
         "@types/escodegen": "^0.0.10",
         "@types/react": "^17.0.2",
-        "@formatjs/ecma402-abstract": "1.11.4",
+        "isomorphic-fetch": "^3.0.0",
         "jquery": "3.5.1",
-        "json-schema": "0.4.0",
-        "@emotion/styled-base": "10.0.31",
-        "isomorphic-fetch": "^3.0.0"
+        "json-schema": "0.4.0"
     },
     "peerDependenciesMeta": {
         "react-native": {

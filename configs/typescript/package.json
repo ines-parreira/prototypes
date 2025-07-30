@@ -12,8 +12,8 @@
         "lint": "oxlint --quiet"
     },
     "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier"
+        "prettier": "catalog:prettier"
     }
 }

@@ -33,6 +33,7 @@ const mockAbandonedCartJourney = {
     store_name: 'leobel-campaigns',
     store_type: 'shopify',
     state: JourneyStatusEnum.Active,
+    created_datetime: '2025-07-30T12:00:00Z',
 }
 
 const mockJourneyConfigurations = {
