@@ -107,25 +107,29 @@ export default function ListCustomBusinessHours() {
                         new Array(5)
                             .fill(null)
                             .map((_, key) => <RowSkeleton key={key} />)
-                    ) : isError ? (
+                    ) : !businessHours?.length ? (
                         <tr>
                             <td colSpan={4}>
                                 <NoDataAvailable
                                     className={css.noDataAvailable}
                                     description={
-                                        <>
-                                            <p>
-                                                Something went wrong when
-                                                fetching the data. Please try
-                                                again.
-                                            </p>
-                                            <Button
-                                                fillStyle="ghost"
-                                                onClick={() => refetch()}
-                                            >
-                                                Refresh
-                                            </Button>
-                                        </>
+                                        isError ? (
+                                            <>
+                                                <p>
+                                                    Something went wrong when
+                                                    fetching the data. Please
+                                                    try again.
+                                                </p>
+                                                <Button
+                                                    fillStyle="ghost"
+                                                    onClick={() => refetch()}
+                                                >
+                                                    Refresh
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            "We couldn't find any business hours. Please adjust filters."
+                                        )
                                     }
                                 />
                             </td>

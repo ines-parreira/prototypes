@@ -131,7 +131,7 @@ export default function IntegrationRowsField({
                 ))
             ) : (
                 <tr>
-                    <td colSpan={4}>
+                    <td colSpan={5}>
                         <NoDataAvailable
                             className={css.noDataAvailable}
                             description={

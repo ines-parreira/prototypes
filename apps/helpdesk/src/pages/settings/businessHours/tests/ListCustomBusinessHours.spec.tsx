@@ -261,6 +261,34 @@ describe('ListCustomBusinessHours', () => {
         expect(screen.getByRole('form')).toBeEmptyDOMElement()
     })
 
+    it('should handle empty state when totalResources is greater than 0 but data is empty (filters are applied)', async () => {
+        const mockHandlerWithEmptyArray = mockListBusinessHoursHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: [],
+                    meta: {
+                        next_cursor: null,
+                        prev_cursor: null,
+                        total_resources: 1,
+                    },
+                }),
+        )
+
+        server.use(mockHandlerWithEmptyArray.handler)
+
+        renderComponent()
+
+        await waitFor(() => {
+            expect(screen.getByText('No data available')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /We couldn't find any business hours. Please adjust filters/,
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
     it('should handle error state', async () => {
         const mockHandlerWithError = mockListBusinessHoursHandler(async () =>
             HttpResponse.json({} as any, { status: 500 }),
