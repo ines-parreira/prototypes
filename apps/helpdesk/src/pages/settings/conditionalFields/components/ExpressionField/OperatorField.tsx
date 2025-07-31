@@ -1,9 +1,6 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 
-import {
-    CustomFieldConditionExpressionField,
-    ExpressionOperator,
-} from '@gorgias/helpdesk-queries'
+import { ExpressionOperator } from '@gorgias/helpdesk-queries'
 import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import { useFormContext } from 'core/forms'
@@ -17,8 +14,8 @@ import {
 
 type OperatorFieldProps = {
     pickedDefinition?: CustomField
-    value?: CustomFieldConditionExpressionField | null
-    onChange: (value: CustomFieldConditionExpressionField) => void
+    value?: string | number | null
+    onChange: (value: string | number) => void
     index: number
 }
 

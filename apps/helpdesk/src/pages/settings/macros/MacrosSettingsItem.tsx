@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { ListMacrosTagsItem, Macro } from '@gorgias/helpdesk-queries'
+import { Macro } from '@gorgias/helpdesk-queries'
 
 import { DateTimeResultFormatType } from 'constants/datetime'
 import { ISO639English } from 'constants/languages'
@@ -26,7 +26,7 @@ type Props = {
     onMacroDelete: (id: number) => void
     onMacroDuplicate: (macro: Macro) => void
     onMacroArchiveOrUnarchived: (id: number) => void
-    firstTagFilter?: ListMacrosTagsItem
+    firstTagFilter?: string | null
     selectedMacrosIds: number[]
     setSelectedMacrosIds: Dispatch<SetStateAction<number[]>>
 }

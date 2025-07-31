@@ -188,7 +188,9 @@ const config = {
         new rspack.BannerPlugin(
             'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined',
         ),
-        new TsCheckerRspackPlugin(),
+        new TsCheckerRspackPlugin({
+            formatter: { type: 'codeframe', pathType: 'absolute' },
+        }),
     ].filter(Boolean),
     module: {
         rules: [

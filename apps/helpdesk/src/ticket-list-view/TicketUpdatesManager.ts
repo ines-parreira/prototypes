@@ -1,7 +1,4 @@
-import {
-    PaginationMetaNextCursor,
-    SearchTicketsOrderBy,
-} from '@gorgias/helpdesk-types'
+import { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
 /* istanbul ignore file */
 import { appQueryClient } from 'api/queryClient'
@@ -11,10 +8,7 @@ import { getViewTicketUpdates } from 'models/view/resources'
 import type { TicketPartial } from './types'
 import transformApiTicketPartial from './utils/transformApiTicketPartial'
 
-export type Listener = (
-    tickets: TicketPartial[],
-    cursor: PaginationMetaNextCursor,
-) => void
+export type Listener = (tickets: TicketPartial[], cursor: string | null) => void
 export type Unsubscribe = () => void
 
 const PAGE_LIMIT = 25
@@ -27,7 +21,7 @@ export default class TicketUpdatesManager {
     private latestIndex = 0
     private listener: Listener | null = null
     private loading = false
-    private nextCursor: PaginationMetaNextCursor = null
+    private nextCursor: string | null = null
     private pollTimeout: ReturnType<typeof setTimeout> | null = null
     private sortOrder: SearchTicketsOrderBy
     private tickets: TicketPartial[] = []
@@ -87,7 +81,7 @@ export default class TicketUpdatesManager {
 
     private async getPage(
         sortOrder: SearchTicketsOrderBy,
-        cursor: PaginationMetaNextCursor,
+        cursor: string | null,
     ) {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
