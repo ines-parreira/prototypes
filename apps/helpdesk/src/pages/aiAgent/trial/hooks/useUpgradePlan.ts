@@ -27,8 +27,7 @@ export const useUpgradePlan = () => {
         onSuccess: () => {
             void dispatch(
                 notify({
-                    message:
-                        'Plan upgraded! Watch Shopping Assistant turn visitors into buyers.',
+                    message: 'Your plan has been upgraded!',
                     status: NotificationStatus.Success,
                 }),
             )
