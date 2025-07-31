@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
@@ -14,6 +16,8 @@ import VoiceMessageField from './VoiceMessageField'
 import css from './VoiceIntegrationSettingVoicemail.less'
 
 function VoiceIntegrationSettingVoicemail() {
+    const isCBHEnabled = useFlag(FeatureFlagKey.CustomBusinessHours)
+
     const accountBusinessHours = useAppSelector(getBusinessHoursSettings)
     const hasBusinessHoursSet =
         !!accountBusinessHours?.data?.business_hours?.length
@@ -44,9 +48,10 @@ function VoiceIntegrationSettingVoicemail() {
                         'meta.voicemail.outside_business_hours.use_during_business_hours_settings'
                     }
                     field={CheckBoxField}
-                    isDisabled={!hasBusinessHoursSet}
+                    isDisabled={!isCBHEnabled && !hasBusinessHoursSet}
                     label={'Use same voicemail outside of business hours'}
                     caption={
+                        !isCBHEnabled &&
                         !hasBusinessHoursSet && (
                             <Link to={'/app/settings/business-hours'}>
                                 Set business hours
@@ -54,7 +59,7 @@ function VoiceIntegrationSettingVoicemail() {
                         )
                     }
                 />
-                {!useSameSettings && hasBusinessHoursSet && (
+                {!useSameSettings && (isCBHEnabled || hasBusinessHoursSet) && (
                     <div className={css.outsideBusinessHoursMessage}>
                         <FormField
                             name={'meta.voicemail.outside_business_hours'}
