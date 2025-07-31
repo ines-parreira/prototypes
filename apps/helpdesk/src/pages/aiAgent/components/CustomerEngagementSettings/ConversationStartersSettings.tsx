@@ -102,7 +102,7 @@ export const ConversationStartersSettings = ({
                         <EngagementSettingsCardLinkButton
                             href={
                                 isActionDrivenAiAgentNavigationEnabled
-                                    ? `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
+                                    ? `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/${shopName}`
                                     : routes.analytics
                             }
                             text="Track Performance"

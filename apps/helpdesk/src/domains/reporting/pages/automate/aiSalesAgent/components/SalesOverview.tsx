@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
-import { useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { Banner, Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
@@ -33,9 +33,13 @@ import { useStoreIntegrationById } from 'pages/aiAgent/hooks/useStoreIntegration
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 
 const SalesOverview = () => {
+    const history = useHistory()
+    const location = useLocation()
     const getGridCellSize = useGridSize()
     const isDiscountSectionVisible: boolean | undefined =
         useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const isActionDrivenAiAgentNavigationEnabled =
+        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation]
     const { shopName } = useParams<{
         shopName: string
     }>()
@@ -63,13 +67,36 @@ const SalesOverview = () => {
     })
 
     const filteredPersistentFilters = useMemo((): StaticFilter[] => {
-        if (shopName) {
+        if (!isActionDrivenAiAgentNavigationEnabled && shopName) {
             return AiSalesAgentReportConfig.reportFilters.persistent.filter(
                 (filter) => filter !== FilterKey.StoreIntegrations,
             )
         }
         return AiSalesAgentReportConfig.reportFilters.persistent
-    }, [shopName])
+    }, [shopName, isActionDrivenAiAgentNavigationEnabled])
+
+    useEffect(() => {
+        const pathnameEndsWithShopName = location.pathname.endsWith(
+            `/${shopName}`,
+        )
+
+        if (
+            isActionDrivenAiAgentNavigationEnabled &&
+            shopName &&
+            pathnameEndsWithShopName &&
+            activeStoreIntegrationId === storeIntegration?.id
+        ) {
+            const basePath = location.pathname.replace(`/${shopName}`, '')
+            history.replace(basePath)
+        }
+    }, [
+        isActionDrivenAiAgentNavigationEnabled,
+        shopName,
+        activeStoreIntegrationId,
+        storeIntegration?.id,
+        history,
+        location.pathname,
+    ])
 
     useEffect(() => {
         if (storeIntegration?.id) {

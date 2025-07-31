@@ -58,6 +58,7 @@ const mockUseStoreIntegrationByShopName =
     useStoreIntegrationByShopName as jest.Mock
 const mockUseHistory = useHistory as jest.Mock
 const mockHistoryPush = jest.fn()
+const mockHistoryReplace = jest.fn()
 
 const queryClient = mockQueryClient()
 
@@ -125,6 +126,7 @@ describe('<SalesOverview />', () => {
     beforeEach(() => {
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            [FeatureFlagKey.ActionDrivenAiAgentNavigation]: true,
         })
         mockUseFirstStoreWithAiSalesData.mockReturnValue({
             isLoading: false,
@@ -141,7 +143,10 @@ describe('<SalesOverview />', () => {
             name: 'test-shop',
             type: 'shopify',
         })
-        mockUseHistory.mockReturnValue({ push: mockHistoryPush })
+        mockUseHistory.mockReturnValue({
+            push: mockHistoryPush,
+            replace: mockHistoryReplace,
+        })
     })
 
     describe.each([
@@ -259,6 +264,24 @@ describe('<SalesOverview />', () => {
             await userEvent.click(screen.getByText('Update Installation'))
 
             expect(mockRedirectToChatSettings).toHaveBeenCalled()
+        })
+
+        it('should replace history path when action-driven AI agent navigation is enabled and conditions match', () => {
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SalesOverview />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    route: '/app/stats/ai-sales-agent/overview/test-shop',
+                    path: '/app/stats/ai-sales-agent/overview/:shopName',
+                },
+            )
+
+            expect(mockHistoryReplace).toHaveBeenCalledWith(
+                '/app/stats/ai-sales-agent/overview',
+            )
         })
     })
 })

@@ -364,7 +364,7 @@ describe('StatsRoutes', () => {
             mock: AutomateAiAgentStatsReportMock,
         },
         {
-            route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`,
+            route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/:shopName?`,
             mock: AiSalesAgentSalesOverviewMock,
         },
     ])('should render %p page', ({ route, mock }) => {

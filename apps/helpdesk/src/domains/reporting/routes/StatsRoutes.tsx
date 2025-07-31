@@ -503,11 +503,11 @@ export const StatsRoutes = () => {
                     />
                 </ProtectedRoute>
                 <ProtectedRoute
-                    path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`}
+                    path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/:shopName?`}
                 >
                     <Route
                         exact
-                        path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`}
+                        path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/:shopName?`}
                         render={() => (
                             <App
                                 content={AiSalesAgentSalesOverview}
