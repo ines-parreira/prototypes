@@ -133,4 +133,99 @@ describe('<ActionEventSidePanel />', () => {
                 containers.indexOf(errorContainer),
             )
     })
+
+    it('should render output variables when present', () => {
+        const executionWithOutputs: LlmTriggeredExecution = {
+            ...execution,
+            state: {
+                ...execution.state,
+                steps_state: {
+                    'step-1': {
+                        kind: 'reusable-llm-prompt-call',
+                        at: '2024-09-27T19:42:16.071Z',
+                        outputs: {
+                            result: null,
+                            value: null,
+                        },
+                        objects: {},
+                        custom_inputs: null,
+                        values: {},
+                        success: true,
+                    },
+                },
+            },
+        }
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <ActionEventSidePanel
+                    isLoading={false}
+                    isOpen={true}
+                    onClose={jest.fn()}
+                    execution={executionWithOutputs}
+                    actionConfiguration={actionConfiguration}
+                />
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('Output Variables')).toBeInTheDocument()
+        expect(screen.getByText('Outputs')).toBeInTheDocument()
+        screen.getByText('Outputs').click()
+        expect(screen.getByText(/"result": null/)).toBeInTheDocument()
+        expect(screen.getByText(/"value": null/)).toBeInTheDocument()
+    })
+
+    it('should render output variables from nested reusable-llm-prompt-call steps', async () => {
+        const executionWithNestedOutputs: LlmTriggeredExecution = {
+            ...execution,
+            state: {
+                ...execution.state,
+                steps_state: {
+                    'outer-step': {
+                        kind: 'reusable-llm-prompt-call',
+                        at: '2024-09-27T19:42:16.071Z',
+                        outputs: {
+                            outerResult: null,
+                        },
+                        objects: {},
+                        custom_inputs: null,
+                        values: {},
+                        success: true,
+                        // Type cast due to OpenAPI type limitations
+                        steps_state: {
+                            'inner-step': {
+                                kind: 'reusable-llm-prompt-call',
+                                at: '2024-09-27T19:43:16.071Z',
+                                outputs: {
+                                    innerResult: null,
+                                },
+                                objects: {},
+                                custom_inputs: null,
+                                values: {},
+                                success: true,
+                            } as any,
+                        } as any,
+                    } as any,
+                },
+            },
+        }
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <ActionEventSidePanel
+                    isLoading={false}
+                    isOpen={true}
+                    onClose={jest.fn()}
+                    execution={executionWithNestedOutputs}
+                    actionConfiguration={actionConfiguration}
+                />
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('Output Variables')).toBeInTheDocument()
+        expect(screen.getByText('Outputs')).toBeInTheDocument()
+        screen.getByText('Outputs').click()
+        expect(screen.getByText(/"outerResult": null/)).toBeInTheDocument()
+        expect(screen.getByText(/"innerResult": null/)).toBeInTheDocument()
+    })
 })

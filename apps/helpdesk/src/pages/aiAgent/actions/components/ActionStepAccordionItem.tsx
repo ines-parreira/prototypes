@@ -114,6 +114,19 @@ const ActionStepAccordionItem = ({
         templateConfigurations,
     ])
 
+    const stepOutputs = useMemo(() => {
+        if (!step.steps_state) return null
+        return Object.entries(step.steps_state ?? {}).reduce(
+            (acc, [, state]) => {
+                if (state.kind === 'http-request') {
+                    return state.content
+                }
+                return acc
+            },
+            {} as Record<string, any>,
+        )
+    }, [step.steps_state])
+
     return shouldRenderChildAccordions ? (
         <div className={css.parentAccordionWrapper}>
             <div className={css.actionEventTitleWrapper}>
@@ -167,7 +180,10 @@ const ActionStepAccordionItem = ({
                     {!logs || logs.length === 0 ? (
                         <NoHttpRequestLogsView step={step} />
                     ) : (
-                        <HttpRequestLogsView logs={logs} />
+                        <HttpRequestLogsView
+                            logs={logs}
+                            stepOutputs={stepOutputs}
+                        />
                     )}
                 </AccordionBody>
             </AccordionItem>

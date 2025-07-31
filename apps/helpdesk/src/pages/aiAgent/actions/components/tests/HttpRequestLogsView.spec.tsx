@@ -171,4 +171,39 @@ describe('<HttpRequestLogsView />', () => {
             expect(pre.textContent).toBe('')
         })
     })
+
+    it('should render Output Variables section with JSON code block for provided stepOutputs', () => {
+        const stepOutputs = {
+            'step-1': { foo: 'bar', num: 42 },
+            'step-2': { hello: 'world' },
+        }
+        const logWithStepId: Components.Schemas.HttpRequestEventsResponseDto[0] =
+            {
+                ...mockLogEntry,
+                step_id: 'step-1',
+            }
+        renderWithRouter(
+            <HttpRequestLogsView
+                logs={[logWithStepId]}
+                stepOutputs={stepOutputs}
+            />,
+        )
+        expect(screen.getByText('Output Variables')).toBeInTheDocument()
+        // Should render the JSON stringified output
+        expect(screen.getByText(/"foo": "bar"/)).toBeInTheDocument()
+        expect(screen.getByText(/"num": 42/)).toBeInTheDocument()
+    })
+
+    it('should not render Output Variables section with undefined if stepOutputs is not provided', () => {
+        renderWithRouter(<HttpRequestLogsView logs={[mockLogEntry]} />)
+        expect(screen.queryByText('Output Variables')).not.toBeInTheDocument()
+    })
+
+    it('should render Output Variables section with empty object if stepOutputs is empty', () => {
+        renderWithRouter(
+            <HttpRequestLogsView logs={[mockLogEntry]} stepOutputs={{}} />,
+        )
+        expect(screen.getByText('Output Variables')).toBeInTheDocument()
+        expect(screen.getByText('{}')).toBeInTheDocument()
+    })
 })

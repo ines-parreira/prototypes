@@ -69,4 +69,6 @@ export type ActionStepItem = ValueOf<
     stepId: string
     steps_state?: LlmTriggeredExecution['state']['steps_state']
     error?: Record<string, unknown>
+    outputs?: Record<string, any> | undefined
+    content?: Record<string, any> | undefined
 }

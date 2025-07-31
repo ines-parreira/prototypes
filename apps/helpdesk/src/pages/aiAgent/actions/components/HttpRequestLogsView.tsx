@@ -5,9 +5,13 @@ import css from './HttpRequestLogsView.less'
 
 type HttpRequestLogsViewProps = {
     logs: Components.Schemas.HttpRequestEventsResponseDto
+    stepOutputs?: Record<string, any> | null
 }
 
-const HttpRequestLogsView = ({ logs }: HttpRequestLogsViewProps) => {
+const HttpRequestLogsView = ({
+    logs,
+    stepOutputs,
+}: HttpRequestLogsViewProps) => {
     const renderHeaders = (headers: Record<string, string>, key: string) => {
         return (
             <li key={key}>
@@ -76,6 +80,23 @@ const HttpRequestLogsView = ({ logs }: HttpRequestLogsViewProps) => {
                                 'responseBody',
                             )}
                         </div>
+                        {stepOutputs && (
+                            <>
+                                <Separator className={css.separator} />
+                                <div className={css.executionLogs}>
+                                    <p>Output Variables</p>
+                                    <pre className={css.codeBlock}>
+                                        {JSON.stringify(
+                                            stepOutputs
+                                                ? stepOutputs
+                                                : undefined,
+                                            null,
+                                            2,
+                                        )}
+                                    </pre>
+                                </div>
+                            </>
+                        )}
                     </div>
                 )
             })}

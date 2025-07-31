@@ -7,6 +7,7 @@ import { Drawer } from 'pages/common/components/Drawer'
 import { Components } from 'rest_api/workflows_api/client.generated'
 
 import {
+    ActionStepItem,
     HTTPExecutionLogs,
     LlmTriggeredExecution,
     TemplateConfiguration,
@@ -50,7 +51,7 @@ export default function ActionEventSidePanel({
 
     const isCustomAction = !actionConfiguration?.template_internal_id
 
-    const hasVariables =
+    const hasInputVariables =
         Object.keys(execution?.state.objects?.customer || {}).length > 0 ||
         Object.keys(execution?.state.objects?.order || {}).length > 0 ||
         Object.keys(execution?.state.custom_inputs || {}).length > 0
@@ -85,6 +86,24 @@ export default function ActionEventSidePanel({
         [steps],
     )
 
+    const actionOutputs = useMemo(() => {
+        const combinedOutputs = {}
+        function recurse(stepsState: ActionStepItem['steps_state']) {
+            if (!stepsState) return
+            for (const [, state] of Object.entries(stepsState)) {
+                if (state.kind === 'reusable-llm-prompt-call') {
+                    Object.assign(combinedOutputs, state.outputs)
+                    state.steps_state &&
+                        recurse(
+                            state.steps_state as ActionStepItem['steps_state'],
+                        )
+                }
+            }
+        }
+        execution && recurse(execution.state?.steps_state)
+        return Object.keys(combinedOutputs).length ? combinedOutputs : null
+    }, [execution])
+
     return (
         <Drawer
             fullscreen={false}
@@ -108,9 +127,9 @@ export default function ActionEventSidePanel({
                     hideFiller
                     status={execution?.status}
                 />
-                {hasVariables && (
+                {hasInputVariables && (
                     <div className={css.variablesContainer}>
-                        <p>Variables</p>
+                        <p>Input Variables</p>
                         <div
                             className={classnames(
                                 css.variablesItems,
@@ -128,6 +147,22 @@ export default function ActionEventSidePanel({
                             <CollapsableVariables
                                 title="Custom variables"
                                 body={execution?.state.custom_inputs}
+                            />
+                        </div>
+                    </div>
+                )}
+                {actionOutputs && (
+                    <div className={css.variablesContainer}>
+                        <p>Output Variables</p>
+                        <div
+                            className={classnames(
+                                css.variablesItems,
+                                css.codeBlock,
+                            )}
+                        >
+                            <CollapsableVariables
+                                title="Outputs"
+                                body={actionOutputs}
                             />
                         </div>
                     </div>

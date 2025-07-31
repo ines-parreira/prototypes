@@ -3,6 +3,7 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 
+import { Components } from 'rest_api/workflows_api/client.generated'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -364,5 +365,72 @@ describe('<ActionStepAccordionItem />', () => {
 
         fireEvent.click(screen.getByText('Cancel order.'))
         expect(screen.getByText('ERROR')).toBeInTheDocument()
+    })
+
+    it('should render Output Variables from http-request stepOutputs', () => {
+        const stepWithHttpRequest = {
+            kind: 'reusable-llm-prompt-call',
+            stepId: 'llm_step_id',
+            at: '2024-12-27T20:07:04.067Z',
+            success: true,
+            steps_state: {
+                http_step: {
+                    kind: 'http-request',
+                    at: '2024-12-27T20:07:04.128Z',
+                    status_code: 200,
+                    success: true,
+                    content: {
+                        foo: 'bar',
+                        baz: 123,
+                    },
+                },
+            },
+        } as any
+
+        // Provide a log with step_id matching the child step
+        const httpExecutionLogs: Components.Schemas.HttpRequestEventsResponseDto =
+            [
+                {
+                    id: 'log1',
+                    step_id: 'http_step',
+                    request_url: 'https://example.com',
+                    request_method: 'GET',
+                    request_body: '',
+                    request_headers: '{}',
+                    request_datetime: '2024-12-27T20:07:04.128Z',
+                    response_status_code: 200,
+                    response_headers: '{}',
+                    response_body: '',
+                },
+            ]
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <ActionStepAccordionItem
+                    step={stepWithHttpRequest}
+                    templateConfigurations={defaultProps.templateConfigurations}
+                    httpExecutionLogs={httpExecutionLogs}
+                    parentTemplateConfiguration={
+                        defaultProps.parentTemplateConfiguration
+                    }
+                />
+            </QueryClientProvider>,
+        )
+        // Expand the accordion using the toggle icon (keyboard_arrow_down)
+        const toggle = screen.getByText(
+            (content, element) =>
+                element?.tagName.toLowerCase() === 'i' &&
+                content.includes('keyboard_arrow_down'),
+        )
+        toggle.click()
+        // Output Variables section should be present (use function matcher for split text)
+        expect(
+            screen.getByText((content) =>
+                content.replace(/\s+/g, ' ').includes('Output Variables'),
+            ),
+        ).toBeInTheDocument()
+        // The output variable keys/values
+        expect(screen.getByText(/"foo": "bar"/)).toBeInTheDocument()
+        expect(screen.getByText(/"baz": 123/)).toBeInTheDocument()
     })
 })
