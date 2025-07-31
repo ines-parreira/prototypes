@@ -63,7 +63,9 @@ describe('<AddFieldForm/>', () => {
 
         FieldFormMock.mock.calls[0][0].onSubmit(ticketNumberFieldDefinition)
 
-        expect(mutateAsync).toHaveBeenCalledWith([ticketNumberFieldDefinition])
+        expect(mutateAsync).toHaveBeenCalledWith({
+            data: ticketNumberFieldDefinition,
+        })
     })
 
     it('should call history push when calling onClose prop', () => {

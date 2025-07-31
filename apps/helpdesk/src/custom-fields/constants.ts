@@ -20,9 +20,9 @@ export const OBJECT_TYPE_SETTINGS: {
         PLACEHOLDERS: {
             LABEL: string
             DESCRIPTION: string
-            DROPDOWN: Record<CustomFieldManagedType, string> & {
+            DROPDOWN: {
                 DEFAULT: string
-            }
+            } & Partial<Record<NonNullable<CustomFieldManagedType>, string>>
         }
     }
 } = {
@@ -100,12 +100,12 @@ export const AI_MANAGED_TYPES = {
     AI_SALES: 'ai_sales',
     AI_DISCOUNT: 'ai_discount',
     MANAGED_SENTIMENT: 'managed_sentiment',
-}
+} as const satisfies Record<string, CustomFieldManagedType>
 
 export const SYSTEM_READ_ONLY_MANAGED_TYPES = {
     ...AI_MANAGED_TYPES,
     CALL_STATUS: ManagedTicketFieldType.CallStatus,
-}
+} as const satisfies Record<string, CustomFieldManagedType>
 
 export const MANAGED_TYPES = {
     CONTACT_REASON: 'contact_reason',
@@ -113,7 +113,7 @@ export const MANAGED_TYPES = {
     RESOLUTION: 'resolution',
     CUSTOMER_TYPE: 'customer_type',
     ...AI_MANAGED_TYPES,
-}
+} as const satisfies Record<string, CustomFieldManagedType>
 
 export const DROPDOWN_NESTING_DELIMITER = '::'
 

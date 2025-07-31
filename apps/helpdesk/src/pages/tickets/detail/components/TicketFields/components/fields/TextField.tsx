@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -19,10 +19,10 @@ import { getTicket } from 'state/ticket/selectors'
 import css from './Field.less'
 
 type Props = {
-    id: CustomFieldState['id']
+    id: number
     label: string
     fieldState?: CustomFieldState
-    placeholder?: string
+    placeholder?: string | null
     isRequired?: boolean
     isDisabled?: boolean
 }
@@ -92,7 +92,7 @@ export default function TextField({
                     name={label}
                     type="text"
                     value={currentValue}
-                    placeholder={placeholder}
+                    placeholder={placeholder || undefined}
                     onChange={handleChange}
                     hasError={hasError}
                     isDisabled={isDisabled}
@@ -115,14 +115,11 @@ export default function TextField({
                             updateCustomFieldValue(id, trimmedCurrentValue),
                         )
                         if (trimmedCurrentValue !== stateValue) {
-                            mutate([
-                                {
-                                    fieldType: 'Ticket',
-                                    holderId: ticketId,
-                                    fieldId: id,
-                                    value: trimmedCurrentValue,
-                                },
-                            ])
+                            mutate({
+                                ticketId,
+                                fieldId: id,
+                                value: trimmedCurrentValue,
+                            })
                         }
                     }}
                 />

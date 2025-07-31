@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
 import Label from 'custom-fields/components/Label'
 import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
-import { OBJECT_TYPES } from 'custom-fields/constants'
 import { getNumberOrUndefined } from 'custom-fields/helpers/getNumberOrUndefined'
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import {
@@ -36,21 +35,17 @@ export default function CustomerField({
         CustomFieldValue | undefined
     >(queryValue)
     const [isActive, setActive] = useState(false)
-    const { mutate: rootMutate } = useUpdateOrDeleteCustomerFieldValue(
-        {},
-        { isDisabled: !customerId },
-    )
+    const { mutate: rootMutate } = useUpdateOrDeleteCustomerFieldValue({
+        isDisabled: !customerId,
+    })
     const isDropdownInputField = isDropdownInput(field)
 
     const mutate = (value: CustomFieldValue | undefined) => {
-        return rootMutate([
-            {
-                fieldType: OBJECT_TYPES.CUSTOMER,
-                holderId: customerId,
-                fieldId: field.id,
-                value,
-            },
-        ])
+        return rootMutate({
+            customerId,
+            fieldId: field.id,
+            value,
+        })
     }
 
     const handleChange = (

@@ -1,3 +1,5 @@
+import { UpdateCustomField } from '@gorgias/helpdesk-types'
+
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import { CustomField, CustomFieldInput } from 'custom-fields/types'
 import history from 'pages/history'
@@ -18,7 +20,10 @@ export default function EditFieldForm(props: EditFieldFormProps) {
         )
 
     const handleSubmit = (field: CustomFieldInput) => {
-        return mutateAsync([props.field.id, field])
+        return mutateAsync({
+            id: props.field.id,
+            data: field as UpdateCustomField,
+        })
     }
 
     return (

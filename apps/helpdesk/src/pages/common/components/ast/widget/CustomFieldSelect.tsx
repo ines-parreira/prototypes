@@ -1,4 +1,4 @@
-import React, { ComponentProps, useEffect, useMemo } from 'react'
+import { ComponentProps, useEffect, useMemo } from 'react'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { isCustomFieldAIManagedType } from 'custom-fields/types'
@@ -46,7 +46,7 @@ const CustomFieldSelect = ({
                 .filter(
                     ({ managed_type }) =>
                         showManagedFields ||
-                        !isCustomFieldAIManagedType(managed_type),
+                        !isCustomFieldAIManagedType(managed_type ?? null),
                 )
                 .map(({ id, label }) => ({
                     value: id,

@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useGetCustomFieldDefinitions } from 'custom-fields/hooks/queries/queries'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     getCustomFieldValueSerializer,
     withDefaultCustomFieldAndLogicalOperator,
@@ -36,10 +34,8 @@ const defaultState = {
     stats: statsSlice.initialState,
 } as RootState
 
-jest.mock('custom-fields/hooks/queries/queries')
-const useGetCustomFieldDefinitionsMock = assumeMock(
-    useGetCustomFieldDefinitions,
-)
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -82,7 +78,7 @@ const clearFilterIcon = 'close'
 
 describe('CustomFieldsFilter', () => {
     beforeEach(() => {
-        useGetCustomFieldDefinitionsMock.mockReturnValue({
+        useCustomFieldDefinitionsMock.mockReturnValue({
             data: apiListCursorPaginationResponse([
                 dropdownCustomFieldDefinition,
             ]),
@@ -398,7 +394,7 @@ describe('CustomFieldsFilterFilterWithState', () => {
     } as RootState
 
     beforeEach(() => {
-        useGetCustomFieldDefinitionsMock.mockReturnValue({
+        useCustomFieldDefinitionsMock.mockReturnValue({
             data: apiListCursorPaginationResponse([
                 dropdownCustomFieldDefinition,
             ]),
@@ -477,7 +473,7 @@ describe('CustomFieldsFilterWithSavedState', () => {
     } as RootState
 
     beforeEach(() => {
-        useGetCustomFieldDefinitionsMock.mockReturnValue({
+        useCustomFieldDefinitionsMock.mockReturnValue({
             data: apiListCursorPaginationResponse([
                 dropdownCustomFieldDefinition,
             ]),

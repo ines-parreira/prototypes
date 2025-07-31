@@ -1,9 +1,4 @@
-import React, {
-    ComponentProps,
-    createContext,
-    forwardRef,
-    ReactNode,
-} from 'react'
+import { ComponentProps, createContext, forwardRef, ReactNode } from 'react'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 

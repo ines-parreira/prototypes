@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
@@ -37,6 +35,13 @@ function setTicketFieldDefinition(definition: CustomField) {
 describe('<EditCustomField/>', () => {
     beforeEach(() => {
         setTicketFieldDefinition(ticketInputFieldDefinition)
+    })
+
+    it('should not render the form if the data is stale', () => {
+        useCustomFieldDefinitionMock.mockReturnValue({
+            data: ticketInputFieldDefinition,
+            isStale: true,
+        } as ReturnType<typeof useCustomFieldDefinition>)
     })
 
     it('should provide EditFieldForm with fields returned from query hook', () => {

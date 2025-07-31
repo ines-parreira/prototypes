@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 
 import { Tag, useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
-import { useGetCustomFieldDefinitions } from 'custom-fields/hooks/queries/queries'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -79,10 +79,8 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 }))
 jest.mock('@gorgias/helpdesk-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
-jest.mock('custom-fields/hooks/queries/queries')
-const useGetCustomFieldDefinitionsMock = assumeMock(
-    useGetCustomFieldDefinitions,
-)
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 jest.mock('domains/reporting/hooks/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)
 
@@ -152,7 +150,7 @@ const defaultState = {
 
 describe('FiltersPanel without data', () => {
     beforeEach(() => {
-        useGetCustomFieldDefinitionsMock.mockReturnValue(
+        useCustomFieldDefinitionsMock.mockReturnValue(
             apiListCursorPaginationResponse([]) as any,
         )
         useListSlaPoliciesMock.mockReturnValue({
@@ -215,7 +213,7 @@ describe('FiltersPanel', () => {
     }, {})
 
     beforeEach(() => {
-        useGetCustomFieldDefinitionsMock.mockReturnValue(
+        useCustomFieldDefinitionsMock.mockReturnValue(
             apiListCursorPaginationResponse(customFieldsMockResponse) as any,
         )
         useTagSearchMock.mockReturnValue({

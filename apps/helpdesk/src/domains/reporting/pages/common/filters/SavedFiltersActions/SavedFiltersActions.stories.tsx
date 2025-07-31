@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -7,9 +7,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
 import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
-import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanel } from 'domains/reporting/pages/common/filters/FiltersPanel'
@@ -41,9 +42,12 @@ const storyConfig: Meta = {
 const FiltersPanelWithSavedFilters: StoryFn<
     ComponentProps<typeof SavedFiltersActions>
 > = (props) => {
-    appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
-        data: customFieldsMockResponse,
-    })
+    appQueryClient.setQueryData(
+        queryKeys.customFields.listCustomFields(activeParams),
+        {
+            data: customFieldsMockResponse,
+        },
+    )
     appQueryClient.setQueryData(['savedFilters', 'listAnalyticsFilters'], {
         data: [
             { id: 1, name: 'Temp Filter 1', filter_group: [] },

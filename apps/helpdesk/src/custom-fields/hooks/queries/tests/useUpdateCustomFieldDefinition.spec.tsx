@@ -1,15 +1,16 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import {
-    customFieldDefinitionKeys,
+    CustomField,
+    queryKeys,
+    UpdateCustomField,
     useUpdateCustomField,
-} from 'custom-fields/hooks/queries/queries'
+} from '@gorgias/helpdesk-queries'
+
+import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { NotificationStatus } from 'state/notifications/types'
@@ -21,7 +22,7 @@ import { useUpdateCustomFieldDefinition } from '../useUpdateCustomFieldDefinitio
 
 const queryClient = mockQueryClient()
 
-jest.mock('custom-fields/hooks/queries/queries')
+jest.mock('@gorgias/helpdesk-queries')
 const useUpdateCustomFieldMock = assumeMock(useUpdateCustomField)
 
 const mockStore = configureMockStore([thunk])()
@@ -52,13 +53,16 @@ describe('useUpdateCustomFieldDefinition', () => {
                 ),
             })
 
-            useUpdateCustomFieldMock.mock.calls[0][0]?.onSuccess!(
-                axiosSuccessResponse(fieldDefinition),
-                [fieldDefinition.id, fieldDefinition],
+            useUpdateCustomFieldMock.mock.calls[0][0]?.mutation?.onSuccess!(
+                axiosSuccessResponse(fieldDefinition as CustomField),
+                {
+                    id: fieldDefinition.id,
+                    data: fieldDefinition as UpdateCustomField,
+                },
                 undefined,
             )
             expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-                queryKey: customFieldDefinitionKeys.all(),
+                queryKey: queryKeys.customFields.all(),
             })
 
             expect(mockStore.getActions()).toMatchObject([
@@ -81,9 +85,12 @@ describe('useUpdateCustomFieldDefinition', () => {
             ),
         })
 
-        useUpdateCustomFieldMock.mock.calls[0][0]?.onError!(
+        useUpdateCustomFieldMock.mock.calls[0][0]?.mutation?.onError!(
             {},
-            [ticketDropdownFieldDefinition.id, ticketDropdownFieldDefinition],
+            {
+                id: ticketDropdownFieldDefinition.id,
+                data: ticketDropdownFieldDefinition as UpdateCustomField,
+            },
             undefined,
         )
 

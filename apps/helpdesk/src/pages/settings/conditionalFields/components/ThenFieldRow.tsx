@@ -1,7 +1,7 @@
+import { CustomFieldDefinition } from '@gorgias/helpdesk-queries'
 import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import { CustomFieldDefinition } from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
