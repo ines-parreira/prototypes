@@ -24,7 +24,7 @@
         "test:cover:changed": "jest --coverage --changedSince=main --onlyChanged --coverageReporters=lcov --coverageReporters=text-summary",
         "test:update": "jest -u",
         "test:watch": "jest --watch",
-        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=20% --testTimeout=10000 --silent",
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=2 --testTimeout=10000 --silent --forceExit",
         "patch-package": "patch-package",
         "postinstall": "run-p patch-package",
         "build": "run-s build:clean build:app build:sharedWorker",
