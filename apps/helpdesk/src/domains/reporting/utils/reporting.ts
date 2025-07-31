@@ -108,6 +108,7 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     periodEnd: HelpdeskMessageMember.PeriodEnd,
     channels: TicketMember.Channel,
     integrations: TicketMessagesMember.Integration,
+    stores: TicketMessagesMember.Store,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,

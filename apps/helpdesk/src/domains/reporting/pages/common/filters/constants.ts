@@ -136,5 +136,6 @@ export const SAVEABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
     FilterKey.Score,
     FilterKey.IsDuringBusinessHours,
     FilterKey.VoiceQueues,
+    FilterKey.Stores,
     ...AUTO_QA_FILTER_KEYS,
 ]

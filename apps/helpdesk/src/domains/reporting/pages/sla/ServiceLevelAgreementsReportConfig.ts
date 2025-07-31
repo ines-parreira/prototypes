@@ -47,6 +47,7 @@ export const SERVICE_LEVEL_OPTIONAL_FILTERS = [
     FilterKey.Tags,
     FilterKey.CustomFields,
     FilterKey.Score,
+    FilterKey.Stores,
     ...AUTO_QA_FILTER_KEYS,
 ]
 

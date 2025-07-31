@@ -12,6 +12,12 @@ import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersP
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 
+const LIVE_VOICE_PERSISTENT_FILTERS: StaticFilter[] = [
+    FilterComponentKey.PhoneIntegrations,
+    FilterKey.Agents,
+    FilterKey.VoiceQueues,
+]
+
 export default function LiveVoiceFilters() {
     useCleanStatsFilters()
 
@@ -19,19 +25,14 @@ export default function LiveVoiceFilters() {
         FeatureFlagKey.VoiceCallDuringBusinessHours,
     )
 
-    const persistentFilters: StaticFilter[] = useMemo(() => {
-        return isDuringBusinessHoursEnabled
-            ? [
-                  FilterComponentKey.PhoneIntegrations,
-                  FilterKey.Agents,
-                  FilterKey.VoiceQueues,
-                  FilterKey.IsDuringBusinessHours,
-              ]
-            : [
-                  FilterComponentKey.PhoneIntegrations,
-                  FilterKey.Agents,
-                  FilterKey.VoiceQueues,
-              ]
+    const persistentFilters = useMemo(() => {
+        const filters = [...LIVE_VOICE_PERSISTENT_FILTERS]
+
+        if (isDuringBusinessHoursEnabled) {
+            filters.push(FilterKey.IsDuringBusinessHours)
+        }
+
+        return filters
     }, [isDuringBusinessHoursEnabled])
 
     return (

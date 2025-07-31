@@ -17,11 +17,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { getTimeFilters } from 'pages/aiAgent/trial/utils/getTimeFilters'
 import { formatAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
-
-import { getTimeFilters } from '../utils/getTimeFilters'
 
 export type TrialMetrics = {
     gmvInfluenced: string

@@ -12,6 +12,7 @@ export type VoiceCallStatListItem = {
     [VoiceCallDimension.CustomerId]: string | null
     [VoiceCallDimension.Direction]: VoiceCallDirection
     [VoiceCallDimension.IntegrationId]: string | null
+    [VoiceCallDimension.Store]: string | null
     [VoiceCallDimension.CreatedAt]: string
     [VoiceCallDimension.Status]: VoiceCallStatus
     [VoiceCallDimension.Duration]: string | null

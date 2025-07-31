@@ -45,6 +45,7 @@ export const AUTO_QA_OPTIONAL_FILTERS = [
     FilterKey.Tags,
     FilterKey.CustomFields,
     FilterKey.Score,
+    FilterKey.Stores,
     ...AUTO_QA_FILTER_KEYS,
 ]
 export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {

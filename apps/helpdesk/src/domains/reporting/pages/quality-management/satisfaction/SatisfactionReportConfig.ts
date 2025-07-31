@@ -46,6 +46,7 @@ export const SATISFACTION_OPTIONAL_FILTERS = [
     FilterKey.CustomFields,
     FilterKey.Tags,
     FilterKey.Score,
+    FilterKey.Stores,
     ...AUTO_QA_FILTER_KEYS,
 ]
 

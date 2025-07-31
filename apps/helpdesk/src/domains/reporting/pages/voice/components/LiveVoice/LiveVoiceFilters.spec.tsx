@@ -73,4 +73,44 @@ describe('LiveVoiceFilters', () => {
             {},
         )
     })
+
+    it('should render the stores filter if the flag is enabled', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ReportingMultiStoreFilter) {
+                return true
+            }
+        })
+        renderComponent()
+
+        expect(FiltersPanelWrapperMock).toHaveBeenCalledWith(
+            {
+                persistentFilters: [
+                    FilterComponentKey.PhoneIntegrations,
+                    FilterKey.Agents,
+                    FilterKey.VoiceQueues,
+                ],
+            },
+            {},
+        )
+    })
+
+    it('should not render the stores filter if the flag is disabled', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ReportingMultiStoreFilter) {
+                return false
+            }
+        })
+        renderComponent()
+
+        expect(FiltersPanelWrapperMock).toHaveBeenCalledWith(
+            {
+                persistentFilters: [
+                    FilterComponentKey.PhoneIntegrations,
+                    FilterKey.Agents,
+                    FilterKey.VoiceQueues,
+                ],
+            },
+            {},
+        )
+    })
 })

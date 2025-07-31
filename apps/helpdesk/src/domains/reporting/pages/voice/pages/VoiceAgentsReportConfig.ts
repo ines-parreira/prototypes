@@ -27,6 +27,7 @@ export const VOICE_AGENTS_OPTIONAL_FILTERS: OptionalFilter[] = [
     FilterComponentKey.PhoneIntegrations,
     FilterKey.Tags,
     FilterKey.Agents,
+    FilterKey.Stores,
 ]
 
 export const VOICE_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [

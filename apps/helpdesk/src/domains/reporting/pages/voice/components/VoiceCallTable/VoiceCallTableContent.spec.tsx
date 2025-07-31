@@ -73,6 +73,7 @@ const data = [
         customerId: 1,
         direction: VoiceCallDirection.Inbound,
         integrationId: 1,
+        store: 'store1',
         createdAt: '2022-12-21T15:21:47.87.000',
         status: VoiceCallStatus.Completed,
         duration: 100,
@@ -93,6 +94,7 @@ const data = [
         customerId: 2,
         direction: VoiceCallDirection.Outbound,
         integrationId: 2,
+        store: 'store2',
         createdAt: '2022-12-25T10:21:00.00.000',
         status: VoiceCallStatus.Missed,
         duration: 101,
@@ -111,6 +113,7 @@ const data = [
     {
         agentId: 3,
         customerId: 3,
+        store: 'store3',
         direction: VoiceCallDirection.Inbound,
         integrationId: null,
         createdAt: '2022-12-26T10:21:00.00.000',

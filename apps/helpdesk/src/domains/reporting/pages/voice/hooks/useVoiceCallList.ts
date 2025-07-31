@@ -62,6 +62,7 @@ export const selectVoiceCallData = (
         integrationId: parseNullableInteger(
             row[VoiceCallDimension.IntegrationId],
         ),
+        store: row[VoiceCallDimension.Store],
         createdAt: row[VoiceCallDimension.CreatedAt],
         status: row[VoiceCallDimension.Status],
         duration: parseNullableInteger(row[VoiceCallDimension.Duration]),

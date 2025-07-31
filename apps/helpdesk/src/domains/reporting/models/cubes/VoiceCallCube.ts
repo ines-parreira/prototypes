@@ -16,6 +16,7 @@ export enum VoiceCallDimension {
     PeriodEnd = 'VoiceCall.periodEnd',
     Direction = 'VoiceCall.direction',
     IntegrationId = 'VoiceCall.integrationId',
+    Store = 'VoiceCall.store',
     Status = 'VoiceCall.status',
     Duration = 'VoiceCall.duration',
     TicketId = 'VoiceCall.ticketId',
@@ -40,6 +41,7 @@ export enum VoiceCallMember {
     PeriodStart = 'VoiceCall.periodStart',
     PeriodEnd = 'VoiceCall.periodEnd',
     IntegrationId = 'VoiceCall.integrationId',
+    Store = 'VoiceCall.store',
     AgentId = 'VoiceCall.filteringAgentId',
     AssignedAgentId = 'VoiceCall.agentId',
     TalkTime = 'VoiceCall.talkTimeSeconds',
@@ -74,6 +76,7 @@ export const VoiceCallFiltersMembers: StatsFiltersMembers = {
     communicationSkills: TicketMember.CommunicationSkillsScore,
     languageProficiency: TicketMember.LanguageProficiencyScore,
     voiceQueues: VoiceCallMember.QueueId,
+    stores: VoiceCallMember.Store,
 }
 
 export type VoiceCallCube = Cube<
