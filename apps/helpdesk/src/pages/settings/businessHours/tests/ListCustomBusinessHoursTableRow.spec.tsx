@@ -1,5 +1,6 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { act } from 'react-dom/test-utils'
 
 import { mockListBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
 
@@ -7,11 +8,17 @@ import { Form } from 'core/forms'
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import { IntegrationType } from 'models/integration/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { assumeMock } from 'utils/testing'
 
+import LinkedIntegrationsList from '../LinkedIntegrationsList'
 import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'
 
 jest.mock('hooks/businessHours/useDeleteCustomBusinessHours')
 jest.mock('state/notifications/actions')
+jest.mock('../LinkedIntegrationsList')
+
+const LinkedIntegrationsListMock = assumeMock(LinkedIntegrationsList)
+LinkedIntegrationsListMock.mockReturnValue(<div>LinkedIntegrationsList</div>)
 
 const useDeleteCustomBusinessHoursMock = jest.mocked(
     useDeleteCustomBusinessHours,
@@ -73,7 +80,8 @@ describe('ListCustomBusinessHoursTableRow', () => {
         expect(screen.getByText('delete')).toBeInTheDocument()
     })
 
-    it('should render badge when integration_count is not 1', () => {
+    it('should render badge when integration_count is not 1', async () => {
+        const { hover } = userEvent.setup()
         renderWithStoreAndQueryClientProvider(
             <Form onValidSubmit={jest.fn()}>
                 <ListCustomBusinessHoursTableRow
@@ -86,6 +94,19 @@ describe('ListCustomBusinessHoursTableRow', () => {
         )
 
         expect(screen.getByText('2 integrations')).toBeInTheDocument()
+
+        await act(async () => {
+            await hover(screen.getByText('2 integrations'))
+        })
+
+        await waitFor(() => {
+            expect(LinkedIntegrationsListMock).toHaveBeenCalledWith(
+                {
+                    businessHoursId: businessHours.id,
+                },
+                {},
+            )
+        })
     })
 
     it('should render integration only when count is 1 and store is not defined', () => {

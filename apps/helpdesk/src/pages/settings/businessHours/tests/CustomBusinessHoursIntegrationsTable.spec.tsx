@@ -427,9 +427,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             'Search integrations',
         )
 
-        await act(() => {
-            user.clear(searchInput)
-            user.type(searchInput, searchTerm)
+        await act(async () => {
+            await user.clear(searchInput)
+            await user.type(searchInput, searchTerm)
         })
 
         await waitFor(() => {

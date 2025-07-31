@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { BusinessHoursList } from '@gorgias/helpdesk-types'
-import { Badge, IconButton, Label } from '@gorgias/merchant-ui-kit'
+import { Badge, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import SourceIcon from 'pages/common/components/SourceIcon'
@@ -13,6 +13,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import BusinessHoursScheduleDisplay from './BusinessHoursScheduleDisplay'
 import { DeleteModal } from './DeleteModal'
+import LinkedIntegrationsList from './LinkedIntegrationsList'
 
 import css from './ListCustomBusinessHours.less'
 
@@ -75,9 +76,24 @@ export default function ListCustomBusinessHoursTableRow({
                         </div>
                     </div>
                 ) : !!businessHours.integration_count ? (
-                    <Badge type="blue" corner="square">
-                        {businessHours.integration_count} integrations
-                    </Badge>
+                    <>
+                        <Badge
+                            type="blue"
+                            corner="square"
+                            id={`integrations-badge-${businessHours.id}`}
+                        >
+                            {businessHours.integration_count} integrations
+                        </Badge>
+                        <Tooltip
+                            delay={300}
+                            autohide={false}
+                            target={`integrations-badge-${businessHours.id}`}
+                        >
+                            <LinkedIntegrationsList
+                                businessHoursId={businessHours.id}
+                            />
+                        </Tooltip>
+                    </>
                 ) : (
                     '-'
                 )}
