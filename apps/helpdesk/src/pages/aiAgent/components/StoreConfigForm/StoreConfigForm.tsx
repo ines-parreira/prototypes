@@ -925,11 +925,11 @@ export const StoreConfigForm = ({
                                             <SettingsFeatureRow
                                                 title="Handover method"
                                                 description="Choose the method for which AI Agent will handover tickets."
-                                                type={'badge'}
                                                 badgeText={
                                                     formValues.handoverMethod ??
                                                     undefined
                                                 }
+                                                nbFeatures={1}
                                                 onClick={() =>
                                                     setIsHandoverDrawerOpen(
                                                         true,

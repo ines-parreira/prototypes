@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 
 import { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Banner, Label } from '@gorgias/merchant-ui-kit'
 
 import InputField from 'pages/common/forms/input/InputField'
 import { SelectInputBoxContextState } from 'pages/common/forms/input/SelectInputBox'
@@ -21,6 +21,7 @@ interface HandoverWebhookFieldsProps {
     errors: FieldErrors<HandoverFormValues>
     selectedIntegration?: number
     webhookRequiredFields?: Record<string, string>
+    configuredThirdParty?: string | null
     setValue: UseFormSetValue<HandoverFormValues>
 }
 
@@ -63,6 +64,7 @@ const HandoverWebhookFields: React.FC<HandoverWebhookFieldsProps> = ({
     errors,
     selectedIntegration,
     webhookRequiredFields,
+    configuredThirdParty,
     setValue,
 }) => {
     return (
@@ -79,12 +81,13 @@ const HandoverWebhookFields: React.FC<HandoverWebhookFieldsProps> = ({
                 />
             </div>
 
-            {selectedIntegration && (
-                <span style={{ color: 'green' }}>
-                    ✅ Webhook already configured. Adjust the fields below to
-                    edit it.
-                </span>
-            )}
+            {selectedIntegration &&
+                webhookThirdParty === configuredThirdParty && (
+                    <Banner type="success">
+                        Webhook already configured. Adjust the fields below to
+                        edit it.
+                    </Banner>
+                )}
             <WebhookInputFields
                 webhookThirdParty={webhookThirdParty || ''}
                 webhookRequiredFields={webhookRequiredFields || {}}

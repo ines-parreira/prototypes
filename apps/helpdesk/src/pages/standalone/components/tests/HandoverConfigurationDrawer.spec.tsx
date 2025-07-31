@@ -179,9 +179,35 @@ describe('<HandoverConfigurationDrawer />', () => {
         expect(
             screen.getByText('Select a third-party integration'),
         ).toBeInTheDocument()
+    })
+
+    it('displays success banner when webhook is already configured', () => {
+        jest.spyOn(
+            useStoreConfigurationFormModule,
+            'useStoreConfigurationForm',
+        ).mockReturnValue({
+            setFormValues: mockSetFormValues,
+            handleOnSave: mockHandleOnSave,
+            formValues: {
+                ...mockStoreConfig,
+                handoverMethod: 'webhook',
+                handoverHttpIntegrationId: 123,
+            },
+            isEmailChannelEnabled: true,
+            isChatChannelEnabled: true,
+            isSmsChannelEnabled: true,
+            resetForm: jest.fn(),
+            isFormDirty: false,
+            updateValue: jest.fn(),
+            isFieldDirty: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
+        render(<HandoverConfigurationDrawer {...defaultProps} />)
+
         expect(
             screen.getByText(
-                '✅ Webhook already configured. Adjust the fields below to edit it.',
+                'Webhook already configured. Adjust the fields below to edit it.',
             ),
         ).toBeInTheDocument()
     })
@@ -196,7 +222,7 @@ describe('<HandoverConfigurationDrawer />', () => {
         })
 
         // Submit the form
-        const saveButton = screen.getByText('Save Method')
+        const saveButton = screen.getByText('Save Changes')
         fireEvent.click(saveButton)
 
         await waitFor(() => {
@@ -235,7 +261,7 @@ describe('<HandoverConfigurationDrawer />', () => {
         render(<HandoverConfigurationDrawer {...defaultProps} />)
 
         // Submit the form
-        const saveButton = screen.getByText('Save Method')
+        const saveButton = screen.getByText('Save Changes')
         fireEvent.click(saveButton)
 
         await waitFor(() => {
@@ -266,7 +292,7 @@ describe('<HandoverConfigurationDrawer />', () => {
         render(<HandoverConfigurationDrawer {...defaultProps} />)
 
         // Submit the form
-        const saveButton = screen.getByText('Save Method')
+        const saveButton = screen.getByText('Save Changes')
         fireEvent.click(saveButton)
 
         // onClose should have been called via the onSuccess callback
@@ -377,7 +403,7 @@ describe('<HandoverConfigurationDrawer />', () => {
             ).not.toBeInTheDocument()
         })
 
-        const saveButton = screen.getByText('Save Method')
+        const saveButton = screen.getByText('Save Changes')
         fireEvent.click(saveButton)
 
         await waitFor(() => {

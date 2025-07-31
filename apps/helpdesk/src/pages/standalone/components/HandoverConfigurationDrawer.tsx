@@ -168,7 +168,7 @@ export const HandoverConfigurationDrawer: React.FC<
             onBackdropClick={onClose}
             isLoading={false}
         >
-            <Drawer.Header>Handover Method</Drawer.Header>
+            <Drawer.Header>Handover method</Drawer.Header>
             <Drawer.Content>
                 <div className={css.radioButtonContainer}>
                     <RadioButton
@@ -179,7 +179,7 @@ export const HandoverConfigurationDrawer: React.FC<
                         label={
                             <span className={css.labelWithBadge}>
                                 <span>Email</span>
-                                <Badge type="success">Recommended</Badge>
+                                <Badge type="blue">Recommended</Badge>
                             </span>
                         }
                         isSelected={handoverMethod === HandoverMethods.EMAIL}
@@ -230,16 +230,17 @@ export const HandoverConfigurationDrawer: React.FC<
                                 undefined
                             }
                             webhookRequiredFields={webhookRequiredFields}
+                            configuredThirdParty={currentIntegrationType}
                         />
                     )}
                 </div>
             </Drawer.Content>
             <Drawer.Footer className={css.footer}>
+                <Button type="submit" onClick={handleSubmit(onSubmit)}>
+                    Save Changes
+                </Button>
                 <Button intent="secondary" onClick={onClose}>
                     Cancel
-                </Button>
-                <Button type="submit" onClick={handleSubmit(onSubmit)}>
-                    Save Method
                 </Button>
             </Drawer.Footer>
         </Drawer>
