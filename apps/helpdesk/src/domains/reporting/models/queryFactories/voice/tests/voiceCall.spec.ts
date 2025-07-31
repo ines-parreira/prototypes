@@ -44,7 +44,6 @@ const voiceCallListDimensions = [
     VoiceCallDimension.CustomerId,
     VoiceCallDimension.Direction,
     VoiceCallDimension.IntegrationId,
-    VoiceCallDimension.Store,
     VoiceCallDimension.CreatedAt,
     VoiceCallDimension.Status,
     VoiceCallDimension.Duration,
