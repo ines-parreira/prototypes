@@ -387,6 +387,7 @@ export enum SegmentEvent {
     StatDrillDownTicketClicked = 'stat-drill-down-ticket-clicked',
     StatFilterSelected = 'stat-filter-selected',
     StatSavedFilterSelected = 'stat-saved-filter-selected',
+    StatSavedFilterPinned = 'stat-saved-filter-pinned',
     StatShoppingAssistantPageViewed = 'stat-shopping-assistant-page-viewed',
     StatTableMetricVisibilityEnabled = 'stat-table-metric-visibility-enabled',
     StatTableRowVisibilityEnabled = 'stat-table-row-visibility-enabled',

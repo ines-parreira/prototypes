@@ -2,13 +2,16 @@ import { ComponentProps } from 'react'
 
 import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+import { SavedFilter } from 'domains/reporting/models/stat/types'
+
 export interface PinSavedFilterButtonProps
     extends Omit<
         ComponentProps<typeof IconButton>,
         'icon' | 'iconClassName' | 'onClick'
     > {
-    savedFilterId: number
-    onClick: (savedFilterId: number) => any
+    filter: Pick<SavedFilter, 'id' | 'name'>
+    onClick: () => any
     isPinned?: boolean
     setDisableOuter: (disable: boolean) => void
 }
@@ -17,17 +20,22 @@ export const REMOVE_AS_DEFAULT_FILTER_TOOLTIP = 'Remove as default filter'
 export const SET_AS_DEFAULT_FILTER_TOOLTIP = 'Set as default filter'
 
 export const PinSavedFilterButton = ({
-    savedFilterId,
+    filter,
     isPinned,
     onClick,
     setDisableOuter,
     ...props
 }: PinSavedFilterButtonProps) => {
     const handleClick = () => {
-        onClick(savedFilterId)
+        onClick()
+        logEvent(SegmentEvent.StatSavedFilterPinned, {
+            name: filter.name,
+            id: filter.id,
+            isPinned: Boolean(isPinned),
+        })
     }
 
-    const iconId = `save-filter-pin-${savedFilterId}`
+    const iconId = `save-filter-pin-${filter.id}`
 
     return (
         <>

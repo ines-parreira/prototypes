@@ -176,10 +176,10 @@ const ApplySavedFilters = ({
                                     </span>
                                     {canEdit && pinnedFilter && (
                                         <PinSavedFilterButton
-                                            savedFilterId={filter.id}
-                                            onClick={(savedFilterId) =>
+                                            filter={filter}
+                                            onClick={() =>
                                                 pinnedFilter.pin(
-                                                    savedFilterId,
+                                                    filter.id,
                                                     filter.name,
                                                 )
                                             }

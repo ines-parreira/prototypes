@@ -1,15 +1,20 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     PinSavedFilterButton,
     REMOVE_AS_DEFAULT_FILTER_TOOLTIP,
     SET_AS_DEFAULT_FILTER_TOOLTIP,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton'
+import { assumeMock } from 'utils/testing'
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 describe('PinSavedFilterButton', () => {
     const defaultProps = {
-        savedFilterId: 123,
+        filter: { id: 123, name: 'Test Filter' },
         onClick: jest.fn(),
         setDisableOuter: jest.fn(),
     }
@@ -80,20 +85,44 @@ describe('PinSavedFilterButton', () => {
             const button = screen.getByRole('button')
             await user.click(button)
 
-            expect(onPin).toHaveBeenCalledWith(123)
+            expect(onPin).toHaveBeenCalled()
             expect(onPin).toHaveBeenCalledTimes(1)
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatSavedFilterPinned,
+                {
+                    name: defaultProps.filter.name,
+                    id: defaultProps.filter.id,
+                    isPinned: false,
+                },
+            )
         })
 
         it('should work without onClick prop', async () => {
             const user = userEvent.setup()
             const onPin = jest.fn()
 
-            render(<PinSavedFilterButton {...defaultProps} onClick={onPin} />)
+            render(
+                <PinSavedFilterButton
+                    {...defaultProps}
+                    onClick={onPin}
+                    isPinned
+                />,
+            )
 
             const button = screen.getByRole('button')
             await user.click(button)
 
-            expect(onPin).toHaveBeenCalledWith(123)
+            expect(onPin).toHaveBeenCalled()
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatSavedFilterPinned,
+                {
+                    name: defaultProps.filter.name,
+                    id: defaultProps.filter.id,
+                    isPinned: true,
+                },
+            )
         })
     })
 
@@ -145,7 +174,7 @@ describe('PinSavedFilterButton', () => {
             button.focus()
 
             await user.keyboard('{Enter}')
-            expect(onPin).toHaveBeenCalledWith(123)
+            expect(onPin).toHaveBeenCalledWith()
 
             await user.keyboard(' ')
             expect(onPin).toHaveBeenCalledTimes(2)
