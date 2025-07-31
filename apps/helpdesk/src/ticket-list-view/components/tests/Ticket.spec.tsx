@@ -1,5 +1,5 @@
-import { userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { TicketPriority } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
@@ -15,6 +15,10 @@ const useFlagMock = assumeMock(useFlag)
 
 jest.mock('ticket-list-view/hooks/useIsTicketViewed', () => jest.fn())
 const useIsTicketViewedMock = useIsTicketViewed as jest.Mock
+
+jest.mock('pages/tickets/common/components/PriorityLabel', () => ({
+    PriorityLabel: jest.fn(({ priority }) => <div>priority: {priority}</div>),
+}))
 
 describe('Ticket', () => {
     const defaultTicket = {
@@ -129,10 +133,14 @@ describe('Ticket', () => {
         ).toHaveTextContent('')
     })
 
-    it('should select a ticket when the checkbox is clicked', () => {
+    it('should select a ticket when the checkbox is clicked', async () => {
+        const user = userEvent.setup()
         const onSelect = jest.fn()
         render(<Ticket {...defaultProps} onSelect={onSelect} />)
-        userEvent.click(screen.getByRole('checkbox'))
+
+        await act(async () => {
+            await user.click(screen.getByRole('checkbox'))
+        })
 
         expect(onSelect).toHaveBeenCalledWith(1, true, false)
     })
@@ -400,7 +408,9 @@ describe('Ticket', () => {
                 />,
             )
 
-            expect(screen.getByText('keyboard_arrow_up')).toBeInTheDocument()
+            expect(
+                screen.getByText(`priority: ${TicketPriority.High}`),
+            ).toBeInTheDocument()
         })
 
         it('should not display priority badge when feature flag is disabled', () => {
@@ -417,7 +427,7 @@ describe('Ticket', () => {
             )
 
             expect(
-                screen.queryByText('keyboard_arrow_up'),
+                screen.queryByText(`priority: ${TicketPriority.High}`),
             ).not.toBeInTheDocument()
         })
 
@@ -439,14 +449,16 @@ describe('Ticket', () => {
 
             // Check that no priority icons are displayed
             expect(
-                screen.queryByText('keyboard_arrow_down'),
-            ).not.toBeInTheDocument()
-            expect(screen.queryByText('drag_handle')).not.toBeInTheDocument()
-            expect(
-                screen.queryByText('keyboard_arrow_up'),
+                screen.queryByText(`priority: ${TicketPriority.Low}`),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByText('keyboard_double_arrow_up'),
+                screen.queryByText(`priority: ${TicketPriority.Normal}`),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(`priority: ${TicketPriority.High}`),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(`priority: ${TicketPriority.Critical}`),
             ).not.toBeInTheDocument()
         })
     })

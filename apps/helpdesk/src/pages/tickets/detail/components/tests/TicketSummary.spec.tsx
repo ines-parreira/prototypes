@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
@@ -40,6 +41,8 @@ const baseSummary = {
 }
 
 describe('TicketSummarySection', () => {
+    const user = userEvent.setup()
+
     beforeEach(() => {
         jest.clearAllMocks()
         useGetDateAndTimeFormatMock.mockReturnValue(jest.fn(() => 'MM/DD/YYYY'))
@@ -127,7 +130,7 @@ describe('TicketSummarySection', () => {
         expect(screen.queryByText('Try Again')).not.toBeInTheDocument()
     })
 
-    it('calls requestSummary when retry button clicked', () => {
+    it('calls requestSummary when retry button clicked', async () => {
         const requestSummary = jest.fn()
 
         useTicketSummaryMock.mockReturnValue({
@@ -141,7 +144,7 @@ describe('TicketSummarySection', () => {
 
         render(<TicketSummarySection summary={null} ticketId={123} />)
 
-        fireEvent.click(screen.getByText('Try Again'))
+        await user.click(screen.getByText('Try Again'))
 
         expect(requestSummary).toHaveBeenCalledTimes(1)
     })
@@ -163,7 +166,7 @@ describe('TicketSummarySection', () => {
         expect(screen.getByText('Something went wrong')).toBeInTheDocument()
     })
 
-    it('should log an event when summary is manually triggered in non-popover mode', () => {
+    it('should log an event when summary is manually triggered in non-popover mode', async () => {
         useTicketSummaryMock.mockReturnValue({
             summary: baseSummary,
             isLoading: false,
@@ -182,7 +185,7 @@ describe('TicketSummarySection', () => {
         const button = screen.getByText('Summarize')
         expect(button).toBeInTheDocument()
 
-        fireEvent.click(button)
+        await user.click(button)
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AiTicketSummaryInitManuallyRequested,
@@ -195,17 +198,45 @@ describe('TicketSummarySection', () => {
 })
 
 describe('TicketSummaryButton', () => {
-    it('renders with icon and children and handles click', () => {
+    const user = userEvent.setup()
+
+    it('renders with icon and children and handles click', async () => {
         const handleClick = jest.fn()
         render(<TicketSummaryButton onClick={handleClick} />)
 
-        fireEvent.click(screen.getByText('Summarize'))
+        await user.click(screen.getByText('Summarize'))
 
         expect(handleClick).toHaveBeenCalledTimes(1)
     })
 
     it('should set a candu target attribute', () => {
         render(<TicketSummaryButton onClick={() => {}} />)
+        expect(screen.getByRole('button')).toHaveAttribute(
+            'data-candu-trigger-summary',
+            'true',
+        )
+    })
+
+    it('renders Button when displayLabel is true', () => {
+        const handleClick = jest.fn()
+        render(
+            <TicketSummaryButton onClick={handleClick} displayLabel={true} />,
+        )
+
+        expect(screen.getByText('Summarize')).toBeInTheDocument()
+        expect(screen.getByRole('button')).toHaveAttribute(
+            'data-candu-trigger-summary',
+            'true',
+        )
+    })
+
+    it('renders IconButton when displayLabel is false', () => {
+        const handleClick = jest.fn()
+        render(
+            <TicketSummaryButton onClick={handleClick} displayLabel={false} />,
+        )
+
+        expect(screen.queryByText('Summarize')).not.toBeInTheDocument()
         expect(screen.getByRole('button')).toHaveAttribute(
             'data-candu-trigger-summary',
             'true',

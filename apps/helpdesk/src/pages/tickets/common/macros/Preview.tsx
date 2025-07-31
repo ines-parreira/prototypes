@@ -1,9 +1,4 @@
-import React, {
-    Component,
-    ComponentClass,
-    ComponentProps,
-    ReactNode,
-} from 'react'
+import { Component, ComponentClass, ComponentProps, ReactNode } from 'react'
 
 import classnames from 'classnames'
 import { LDFlagSet } from 'launchdarkly-js-client-sdk'
@@ -23,12 +18,12 @@ import TicketTag from 'pages/common/components/TicketTag'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {
     AgentLabel,
-    PriorityLabel,
     RecipientsLabel,
     StatusLabel,
     TeamLabel,
     TimedeltaLabel,
 } from 'pages/common/utils/labels'
+import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import {
     fileIconFromContentType,
     getSortedIntegrationActions,

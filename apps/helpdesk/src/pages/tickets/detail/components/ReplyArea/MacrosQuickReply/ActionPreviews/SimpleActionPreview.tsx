@@ -3,6 +3,7 @@ import { Badge } from 'reactstrap'
 
 import { MacroAction, MacroActionName } from 'models/macroAction/types'
 import * as Label from 'pages/common/utils/labels'
+import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import { CustomFieldName } from 'pages/tickets/common/macros/Preview'
 import { fileIconFromContentType } from 'pages/tickets/common/utils'
 import { getActionTemplate } from 'utils'
@@ -28,7 +29,7 @@ export const SimpleActionPreview = ({ action }: Props) => {
                 )
             case MacroActionName.SetPriority:
                 return (
-                    <Label.PriorityLabel
+                    <PriorityLabel
                         priority={args.priority!}
                         className={css.smallTag}
                     />

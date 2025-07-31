@@ -158,6 +158,40 @@ describe('ViewTable::Table::HeaderCell', () => {
         expect(setOrderDirectionMock).not.toHaveBeenCalled()
     })
 
+    it('should not execute onClick when field has no filter', () => {
+        const fieldWithoutFilter = viewConfigFields.find(
+            (field: Map<any, any>) => field.get('name') === ViewField.TicketId,
+        ) as Map<any, any>
+
+        render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} field={fieldWithoutFilter} />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText(fieldWithoutFilter.get('title')))
+
+        expect(fetchViewItemsMock).not.toHaveBeenCalled()
+        expect(setOrderDirectionMock).not.toHaveBeenCalled()
+    })
+
+    it('should not execute onClick when field has filter but no sort', () => {
+        const fieldWithFilterNoSort = viewConfigFields.find(
+            (field: Map<any, any>) => field.get('name') === ViewField.Status,
+        ) as Map<any, any>
+
+        render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} field={fieldWithFilterNoSort} />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText(fieldWithFilterNoSort.get('title')))
+
+        expect(fetchViewItemsMock).not.toHaveBeenCalled()
+        expect(setOrderDirectionMock).not.toHaveBeenCalled()
+    })
+
     it.each([
         [
             'when field is not the active sorted field',
@@ -226,4 +260,36 @@ describe('ViewTable::Table::HeaderCell', () => {
             })
         },
     )
+
+    it('should clear sort when field is currently sorted in ascending order', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    views: fromJS({
+                        active: {
+                            order_by: createdViewField.get('path'),
+                            order_dir: OrderDirection.Asc,
+                        },
+                    }),
+                })}
+            >
+                <HeaderCell {...minProps} field={createdViewField} />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText(createdViewField.get('title')))
+
+        expect(fetchViewItemsMock).toHaveBeenCalledWith(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+        )
+        expect(setOrderDirectionMock).toHaveBeenCalledWith({
+            direction: undefined,
+            fieldPath: createdViewField.get('path'),
+            isEditable: false,
+        })
+    })
 })

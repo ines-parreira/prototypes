@@ -80,10 +80,9 @@ const TicketHeader = ({
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents,
     )
-    const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary, false)
+    const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary)
     const setPriorityFlagEnabled = useFlag(
         FeatureFlagKey.TicketAllowPriorityUsage,
-        false,
     )
 
     const dispatch = useAppDispatch()
@@ -339,7 +338,9 @@ const TicketHeader = ({
                                     onUpdate={handleSnoozeTicket}
                                 />
                             )}
-                            {enableAITicketSummary && <TicketSummaryPopover />}
+                            {enableAITicketSummary && (
+                                <TicketSummaryPopover displayLabel={false} />
+                            )}
                             {isUpdate && (
                                 <ConfirmationPopover
                                     buttonProps={{

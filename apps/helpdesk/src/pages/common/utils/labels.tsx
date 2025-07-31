@@ -4,7 +4,6 @@ import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Map } from 'immutable'
 
-import { TicketPriority } from '@gorgias/helpdesk-types'
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import { isImmutable } from 'common/utils'
@@ -18,6 +17,7 @@ import { ViewField } from 'models/view/types'
 import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import TicketTag from 'pages/common/components/TicketTag'
+import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { getHumanAgents } from 'state/agents/selectors'
 import { getDisplayName } from 'state/customers/helpers'
@@ -225,20 +225,6 @@ const STATUS_TO_BADGE: Record<string, ColorType> = {
     closed: 'light-dark',
 }
 
-export const PRIORITY_TO_ICON: Record<TicketPriority, string> = {
-    low: 'keyboard_arrow_down',
-    normal: 'drag_handle',
-    high: 'keyboard_arrow_up',
-    critical: 'keyboard_double_arrow_up',
-}
-
-export const PRIORITY_TO_BADGE: Record<TicketPriority, ColorType> = {
-    low: 'light-grey',
-    normal: 'light-dark',
-    high: 'light-warning',
-    critical: 'light-error',
-}
-
 export const StatusLabel = ({
     className,
     status,
@@ -251,25 +237,6 @@ export const StatusLabel = ({
     return (
         <Badge className={className ?? 'text-center'} type={type}>
             {status}
-        </Badge>
-    )
-}
-
-export const PriorityLabel = ({
-    className,
-    displayLabel = true,
-    priority,
-}: {
-    className?: string
-    displayLabel?: boolean
-    priority: TicketPriority
-}) => {
-    const type = PRIORITY_TO_BADGE[priority] || 'modern'
-
-    return (
-        <Badge className={className ?? 'text-center'} type={type}>
-            <span className="material-icons">{PRIORITY_TO_ICON[priority]}</span>
-            {displayLabel && priority}
         </Badge>
     )
 }

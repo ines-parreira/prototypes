@@ -4,7 +4,7 @@ import cn from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -15,27 +15,8 @@ import css from './TicketPriorityDropdown.less'
 const PRIORITY_OPTIONS: TicketPriority[] =
     Object.values(TicketPriority).reverse()
 
-const PRIORITY_TO_ICON: Record<TicketPriority, string> = {
-    low: 'keyboard_arrow_down',
-    normal: 'drag_handle',
-    high: 'keyboard_arrow_up',
-    critical: 'keyboard_double_arrow_up',
-}
-
-const PRIORITY_TO_COLOR: Record<TicketPriority, string> = {
-    low: 'neutral-grey-4',
-    normal: 'neutral-grey-5',
-    high: 'feedback-warning-4',
-    critical: 'feedback-error-4',
-}
-
 const PriorityIcon = ({ priority }: { priority: TicketPriority }) => (
-    <i
-        className={cn(css.icon, 'material-icons')}
-        style={{ color: `var(--${PRIORITY_TO_COLOR[priority]})` }}
-    >
-        {PRIORITY_TO_ICON[priority]}
-    </i>
+    <i className={cn(css.icon, css[priority])} />
 )
 
 const TicketPriorityDropdown = ({
@@ -99,6 +80,7 @@ const TicketPriorityDropdown = ({
                     ))}
                 </DropdownBody>
             </Dropdown>
+            <Tooltip target={buttonRef}>Change priority</Tooltip>
         </>
     )
 }
