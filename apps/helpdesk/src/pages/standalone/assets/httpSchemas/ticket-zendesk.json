@@ -3,7 +3,7 @@
     "body": {
         "ticket": {
             "comment": {
-                "body": "{{ticket.messages[-1]['body_text']}}"
+                "html_body": "{{ticket.messages[-1]['body_html']}}"
             },
             "priority": "high",
             "subject": "Handover: {{ticket.subject}}",
