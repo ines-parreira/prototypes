@@ -69,7 +69,6 @@ const AIAgentSimplifiedFeedback = () => {
     })
 
     const {
-        onKnowledgeResourceClick,
         onKnowledgeResourceEditClick,
         onKnowledgeResourceCreateClick,
         onKnowledgeResourceSaved,
@@ -297,7 +296,6 @@ const AIAgentSimplifiedFeedback = () => {
                     }}
                     shopName={shopName}
                     shopType={shopType}
-                    onKnowledgeResourceClick={onKnowledgeResourceClick}
                     isMetadataLoading
                 />
             ))
@@ -309,18 +307,10 @@ const AIAgentSimplifiedFeedback = () => {
                 resource={resource}
                 shopName={shopName}
                 shopType={shopType}
-                onKnowledgeResourceClick={onKnowledgeResourceClick}
                 isMetadataLoading={resource.metadata.isLoading}
             />
         ))
-    }, [
-        feedback,
-        enrichedData,
-        shopName,
-        shopType,
-        onKnowledgeResourceClick,
-        handleIconClick,
-    ])
+    }, [feedback, enrichedData, shopName, shopType, handleIconClick])
 
     return (
         <>
@@ -398,9 +388,6 @@ const AIAgentSimplifiedFeedback = () => {
                                 accountId={accountId}
                                 shopName={shopName}
                                 shopType={shopType}
-                                onKnowledgeResourceClick={
-                                    onKnowledgeResourceClick
-                                }
                             />
                         )}
 

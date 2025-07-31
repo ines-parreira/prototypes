@@ -2,6 +2,8 @@ import { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+import useAppSelector from 'hooks/useAppSelector'
+import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import {
     KnowledgeSourceSideBarContext,
     KnowledgeSourceSideBarMode,
@@ -11,6 +13,8 @@ import {
     KnowledgeResourcePreview,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getTicketState } from 'state/ticket/selectors'
 
 export function KnowledgeSourceSideBarProvider({
     children,
@@ -22,6 +26,20 @@ export function KnowledgeSourceSideBarProvider({
         setIsEnabled: setSplitTicketView,
         isEnabled: isSplitTicketViewEnabled,
     } = useSplitTicketView()
+
+    const ticket = useAppSelector(getTicketState)
+    const account = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector((state) => state.currentUser)
+
+    const ticketId: number = ticket.get('id')
+    const accountId: number = account.get('id')
+    const userId: number = currentUser.get('id')
+
+    const { onKnowledgeResourceClick } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
+    })
 
     const navBarDisplayInitialValue = useRef(navBarDisplay)
     const isSplitTicketViewEnabledInitialValue = useRef(
@@ -68,8 +86,14 @@ export function KnowledgeSourceSideBarProvider({
             setSelectedResource(resource)
             setSideBarMode(KnowledgeSourceSideBarMode.PREVIEW)
             onOpen()
+
+            onKnowledgeResourceClick(
+                resource.id,
+                resource.knowledgeResourceType,
+                resource.helpCenterId || '',
+            )
         },
-        [onOpen],
+        [onOpen, onKnowledgeResourceClick],
     )
 
     const openEdit = useCallback(

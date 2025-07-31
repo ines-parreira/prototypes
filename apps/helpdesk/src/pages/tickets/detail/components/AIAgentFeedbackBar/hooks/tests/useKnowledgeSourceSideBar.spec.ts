@@ -1,3 +1,12 @@
+import React from 'react'
+
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { RootState, StoreDispatch } from 'state/types'
 import { renderHook } from 'utils/testing/renderHook'
 
 import { KnowledgeSourceSideBarProvider } from '../../KnowledgeSourceSideBarProvider'
@@ -16,7 +25,24 @@ jest.mock('split-ticket-view-toggle', () => ({
         setIsEnabled: jest.fn(),
     }),
 }))
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking',
+    () => ({
+        useFeedbackTracking: jest.fn(() => ({
+            onKnowledgeResourceClick: jest.fn(),
+        })),
+    }),
+)
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
 describe('useKnowledgeSourceSideBar', () => {
+    const store = mockStore({
+        ticket: Map({ id: 123 }),
+        currentAccount: fromJS(account),
+        currentUser: fromJS(user),
+    } as any)
+
     it('throws an error if used outside the provider', () => {
         expect(() => renderHook(useKnowledgeSourceSideBar)).toThrow(
             new Error(
@@ -27,7 +53,16 @@ describe('useKnowledgeSourceSideBar', () => {
 
     it('returns context value when used within the provider', () => {
         const { result } = renderHook(() => useKnowledgeSourceSideBar(), {
-            wrapper: KnowledgeSourceSideBarProvider as any,
+            wrapper: ({ children }) =>
+                React.createElement(
+                    Provider,
+                    { store },
+                    React.createElement(
+                        KnowledgeSourceSideBarProvider,
+                        null,
+                        children,
+                    ),
+                ),
         })
 
         expect(result.current).toMatchObject({

@@ -34,11 +34,6 @@ type KnowledgeSourceProps = {
     shopName: string
     shopType: string
     isMetadataLoading?: boolean
-    onKnowledgeResourceClick: (
-        resourceId: string,
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
-        resourceSetId: string,
-    ) => void
 }
 
 type ThumbButtonProps = {
@@ -56,7 +51,6 @@ const KnowledgeSourceFeedback = ({
     onIconClick,
     shopName,
     shopType,
-    onKnowledgeResourceClick,
     isMetadataLoading,
 }: KnowledgeSourceProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
@@ -96,12 +90,6 @@ const KnowledgeSourceFeedback = ({
         if (isMetadataLoading) {
             return
         }
-
-        onKnowledgeResourceClick(
-            resource.resource.id,
-            resource.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
-            resource.resource.resourceSetId,
-        )
 
         if (!enableKnowledgeManagementFromTicketView || isLink || isDeleted) {
             return

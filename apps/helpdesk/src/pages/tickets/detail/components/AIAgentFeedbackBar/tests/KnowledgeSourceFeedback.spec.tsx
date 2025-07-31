@@ -52,7 +52,6 @@ describe('KnowledgeSourceFeedback', () => {
         onIconClick: jest.fn(),
         shopName: 'test-shop',
         shopType: 'test-type',
-        onKnowledgeResourceClick: jest.fn(),
     }
 
     beforeEach(() => {
@@ -204,19 +203,6 @@ describe('KnowledgeSourceFeedback', () => {
             fireEvent.click(knowledgeSource)
         }
 
-        it('should call onKnowledgeResourceClick with correct parameters', () => {
-            const onKnowledgeResourceClick = jest.fn()
-            renderComponentAndClickSource(mockResource(), {
-                onKnowledgeResourceClick,
-            })
-
-            expect(onKnowledgeResourceClick).toHaveBeenCalledWith(
-                'resource-1',
-                'ARTICLE',
-                'help-center-1',
-            )
-        })
-
         it('should not call openPreview when feature flag is disabled', () => {
             useFlagMock.mockReturnValue(false)
             renderComponentAndClickSource(mockResource())
@@ -259,14 +245,11 @@ describe('KnowledgeSourceFeedback', () => {
         })
 
         it('should not call any functions when isMetadataLoading is true', () => {
-            const onKnowledgeResourceClick = jest.fn()
             useFlagMock.mockReturnValue(true)
             renderComponentAndClickSource(mockResource(), {
-                onKnowledgeResourceClick,
                 isMetadataLoading: true,
             })
 
-            expect(onKnowledgeResourceClick).not.toHaveBeenCalled()
             expect(mockOpenPreview).not.toHaveBeenCalled()
         })
     })

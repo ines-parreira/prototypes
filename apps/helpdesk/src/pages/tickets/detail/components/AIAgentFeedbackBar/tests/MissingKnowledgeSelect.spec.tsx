@@ -256,7 +256,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -290,7 +289,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -318,7 +316,6 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={handleRemove}
                 shopName="test-shop"
                 shopType="test-type"
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -348,7 +345,6 @@ describe('MissingKnowledgeSelect', () => {
                 onSubmit={onSubmit}
                 onRemove={onRemove}
                 disabled={true}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -388,7 +384,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -411,7 +406,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -432,7 +426,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
                 knowledgeResources={[
@@ -519,7 +512,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -586,7 +578,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={customEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -635,7 +626,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={customEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -690,7 +680,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={customEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -716,7 +705,6 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -741,7 +729,6 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -779,7 +766,6 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -802,7 +788,6 @@ describe('MissingKnowledgeSelect', () => {
                 handleRemove={jest.fn()}
                 shopName="test-shop"
                 shopType="test-type"
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -842,7 +827,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataWithDuplicates}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -909,7 +893,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataWithDuplicates}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
             { container },
         )
@@ -993,7 +976,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataWithComplexDuplicates}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -1017,7 +999,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={{} as any}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -1055,7 +1036,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={complexEnrichedData}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -1156,7 +1136,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -1187,7 +1166,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={null as any}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -1238,7 +1216,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 
@@ -1303,7 +1280,6 @@ describe('MissingKnowledgeSelect', () => {
                 resourcesData={enrichedDataMock}
                 onSubmit={onSubmit}
                 onRemove={onRemove}
-                onKnowledgeResourceClick={jest.fn()}
             />,
         )
 

@@ -1,10 +1,16 @@
 import { act, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
 import { useKnowledgeSourceSideBar } from '../hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -15,6 +21,15 @@ const useNavBarMocked = assumeMock(useNavBar)
 
 jest.mock('split-ticket-view-toggle')
 const useSplitTicketViewMocked = assumeMock(useSplitTicketView)
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking',
+    () => ({
+        useFeedbackTracking: jest.fn(() => ({
+            onKnowledgeResourceClick: jest.fn(),
+        })),
+    }),
+)
 
 const mockResource = {
     id: '123',
@@ -54,9 +69,17 @@ function TestConsumer() {
     )
 }
 
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
 describe('KnowledgeSourceSideBarProvider', () => {
     const setNavBarDisplay = jest.fn()
     const setIsEnabled = jest.fn()
+
+    const store = mockStore({
+        ticket: Map({ id: 123 }),
+        currentAccount: fromJS(account),
+        currentUser: fromJS(user),
+    } as any)
 
     beforeEach(() => {
         jest.useFakeTimers()
@@ -78,9 +101,11 @@ describe('KnowledgeSourceSideBarProvider', () => {
     })
     it('sets mode and selectedResource on openPreview', () => {
         render(
-            <KnowledgeSourceSideBarProvider>
-                <TestConsumer />
-            </KnowledgeSourceSideBarProvider>,
+            <Provider store={store}>
+                <KnowledgeSourceSideBarProvider>
+                    <TestConsumer />
+                </KnowledgeSourceSideBarProvider>
+            </Provider>,
         )
 
         act(() => {
@@ -95,9 +120,11 @@ describe('KnowledgeSourceSideBarProvider', () => {
 
     it('sets mode and selectedResource on openEdit', () => {
         render(
-            <KnowledgeSourceSideBarProvider>
-                <TestConsumer />
-            </KnowledgeSourceSideBarProvider>,
+            <Provider store={store}>
+                <KnowledgeSourceSideBarProvider>
+                    <TestConsumer />
+                </KnowledgeSourceSideBarProvider>
+            </Provider>,
         )
 
         act(() => {
@@ -112,9 +139,11 @@ describe('KnowledgeSourceSideBarProvider', () => {
 
     it('sets mode to CREATE and initializes a blank resource on openCreate', () => {
         render(
-            <KnowledgeSourceSideBarProvider>
-                <TestConsumer />
-            </KnowledgeSourceSideBarProvider>,
+            <Provider store={store}>
+                <KnowledgeSourceSideBarProvider>
+                    <TestConsumer />
+                </KnowledgeSourceSideBarProvider>
+            </Provider>,
         )
 
         act(() => {
@@ -129,9 +158,11 @@ describe('KnowledgeSourceSideBarProvider', () => {
 
     it('resets mode and selectedResource on closeModal', () => {
         render(
-            <KnowledgeSourceSideBarProvider>
-                <TestConsumer />
-            </KnowledgeSourceSideBarProvider>,
+            <Provider store={store}>
+                <KnowledgeSourceSideBarProvider>
+                    <TestConsumer />
+                </KnowledgeSourceSideBarProvider>
+            </Provider>,
         )
 
         act(() => {
@@ -149,9 +180,11 @@ describe('KnowledgeSourceSideBarProvider', () => {
 
     it('calls setNavBarDisplay and setIsEnabled on openPreview (inside setTimeout)', () => {
         render(
-            <KnowledgeSourceSideBarProvider>
-                <TestConsumer />
-            </KnowledgeSourceSideBarProvider>,
+            <Provider store={store}>
+                <KnowledgeSourceSideBarProvider>
+                    <TestConsumer />
+                </KnowledgeSourceSideBarProvider>
+            </Provider>,
         )
 
         act(() => {
@@ -167,9 +200,11 @@ describe('KnowledgeSourceSideBarProvider', () => {
 
     it('restores navBarDisplay and splitTicketView on closeModal (inside setTimeout)', () => {
         render(
-            <KnowledgeSourceSideBarProvider>
-                <TestConsumer />
-            </KnowledgeSourceSideBarProvider>,
+            <Provider store={store}>
+                <KnowledgeSourceSideBarProvider>
+                    <TestConsumer />
+                </KnowledgeSourceSideBarProvider>
+            </Provider>,
         )
 
         act(() => {
