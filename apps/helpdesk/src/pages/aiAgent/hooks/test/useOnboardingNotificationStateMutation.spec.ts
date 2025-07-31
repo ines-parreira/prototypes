@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { useQueryClient } from '@tanstack/react-query'
 
 import {
@@ -5,7 +6,6 @@ import {
     useUpsertOnboardingNotificationState,
 } from 'models/aiAgent/queries'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { getOnboardingNotificationStateFixture } from '../../fixtures/onboardingNotificationState.fixture'
 import { useOnboardingNotificationStateMutation } from '../useOnboardingNotificationStateMutation'

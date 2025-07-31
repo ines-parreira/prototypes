@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
@@ -11,7 +12,6 @@ import { closePanels } from 'state/layout/actions'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import { setViewActive } from 'state/views/actions'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { RecentChats } from '../RecentChats'
 

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { Map as mockMap } from 'immutable'
 
 import { RequirementType } from '@gorgias/helpdesk-queries'
@@ -23,7 +24,6 @@ import {
     getTicketFieldState,
 } from 'state/ticket/selectors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useTicketFieldsCheck } from '../useTicketFieldsCheck'
 

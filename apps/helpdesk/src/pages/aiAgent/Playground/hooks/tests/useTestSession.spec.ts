@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useCreateTestSessionMutation } from 'models/aiAgent/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useTestSession } from '../useTestSession'
 

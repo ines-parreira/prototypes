@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     fetchMetricPerDimension,
     MetricWithDecile,
@@ -17,7 +19,6 @@ import {
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

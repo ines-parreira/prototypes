@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import {
     QueryClient,
     QueryClientProvider,
@@ -12,7 +13,6 @@ import { StoreConfigurationsResponse } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useStoreConfiguration } from '../useStoreConfiguration'
 

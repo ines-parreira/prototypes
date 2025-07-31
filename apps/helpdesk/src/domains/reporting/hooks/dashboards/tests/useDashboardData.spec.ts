@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
 import { useDistributionTrendReportData } from 'domains/reporting/hooks/common/useDistributionTrendReportData'
@@ -37,7 +38,6 @@ import {
 } from 'domains/reporting/services/supportPerformanceReportingService'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/dashboards/useSanitizedDashboard')
 const useSanitizedDashboardMock = assumeMock(useSanitizedDashboard)

@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     mockBillingState,
     mockCreditCard,
@@ -5,7 +7,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { ResponseBillingState, useBillingState } from '../useBillingState'
 import { useHasCreditCard } from '../useHasCreditCard'

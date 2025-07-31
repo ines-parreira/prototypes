@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     fetchAutomationDatasetByEventTypeTimeSeries,
     fetchAutomationDatasetTimeSeries,
@@ -22,7 +24,6 @@ import { averageCSATScorePerDimensionTimeSeriesFactory } from 'domains/reporting
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)

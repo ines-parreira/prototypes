@@ -1,8 +1,8 @@
+import { userEvent } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 import { reportError } from 'utils/errors'
-import { userEvent } from 'utils/testing/userEvent'
 
 import withTypingActivity, { TypingActivityProps } from '../withTypingActivity'
 

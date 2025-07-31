@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { User } from 'config/types/user'
 import {
     fetchClosedTicketsMetricPerAgent,
@@ -23,7 +25,6 @@ import {
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/metricsPerAgent')
 const useClosedTicketsMetricPerAgentMock = assumeMock(

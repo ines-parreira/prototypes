@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
@@ -8,7 +9,6 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useNewAutomateFilters', () => {
     const periodStart = moment()

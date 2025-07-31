@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { UncontrolledButtonDropdown } from 'reactstrap'
 
 import RichDropdownOptions from 'pages/common/components/RichDropdown/RichDropdownOptions'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('<RichDropdownOptions/>', () => {
     const onClick = jest.fn()

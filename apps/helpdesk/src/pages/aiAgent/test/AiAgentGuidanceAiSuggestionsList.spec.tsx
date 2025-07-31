@@ -3,11 +3,11 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import history from 'pages/history'
 import { renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { GuidanceAiSuggestionsList } from '../components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'

@@ -3,6 +3,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { AiAgentGuidanceTemplateNewContainer } from '../AiAgentGuidanceTemplateNewContainer'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'

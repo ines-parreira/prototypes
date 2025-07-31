@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from 'utils/testing/renderHook'
+import { renderHook } from '@repo/testing'
 
 import { BannersContext } from '../../context'
 import { useBannersContext } from '../useBannersContext'

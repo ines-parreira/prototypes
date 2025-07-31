@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -16,7 +17,6 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     ComputeActivationPercentage,

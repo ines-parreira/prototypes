@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -12,7 +13,6 @@ import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useSh
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useShoppingAssistantTrialBanner } from '../hooks/useShoppingAssistantTrialBanner'
 

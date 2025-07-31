@@ -1,10 +1,10 @@
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import _times from 'lodash/times'
 
 import FilterValue, {
     getTooltipLabels,
 } from 'pages/common/forms/FilterInput/FilterValue'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('FilterValue', () => {
     it('renders without errors', () => {

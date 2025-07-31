@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,7 +14,6 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
-import { userEvent } from 'utils/testing/userEvent'
 
 import IvrMenuActionField from '../IvrMenuActionField'
 

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -8,7 +9,6 @@ import {
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useSearchResultRange } from 'domains/reporting/pages/help-center/hooks/useSearchResultRange'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,7 +10,6 @@ import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUse
 import { agents } from 'fixtures/agents'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

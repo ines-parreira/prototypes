@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
 import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useTrackingBundleInstallationWarningBanner } from '../useTrackingBundleInstallationWarningBanner'
 

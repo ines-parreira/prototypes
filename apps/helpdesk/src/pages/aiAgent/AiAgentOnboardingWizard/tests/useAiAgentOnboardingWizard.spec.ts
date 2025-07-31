@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
@@ -23,7 +24,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { WIZARD_BUTTON_ACTIONS } from '../../constants'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'

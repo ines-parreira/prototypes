@@ -1,9 +1,10 @@
+import { renderHook } from '@repo/testing'
+
 import {
     WhatsAppCodeVerificationMethod,
     WhatsAppPhoneNumberStatus,
     WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useWhatsAppMigration, {
     privateFunctions,

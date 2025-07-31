@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 import useLocalStorage from 'hooks/useLocalStorage'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useSortOrder from '../useSortOrder'
 

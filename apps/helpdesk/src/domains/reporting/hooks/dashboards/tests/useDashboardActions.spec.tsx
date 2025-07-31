@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { sortBy } from 'lodash'
@@ -38,7 +39,6 @@ import { OverviewChart } from 'domains/reporting/pages/support-performance/overv
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 const server = setupServer()
 const queryClient = mockQueryClient()

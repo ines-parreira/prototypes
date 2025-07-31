@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import {
@@ -51,7 +52,6 @@ import {
     withFilter,
 } from 'domains/reporting/utils/reporting'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useMetric')
 const useMetricMock = assumeMock(useMetric)

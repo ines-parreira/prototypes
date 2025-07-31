@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,7 +13,6 @@ import {
     toggleHeatmapMode,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { RootState, StoreDispatch } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

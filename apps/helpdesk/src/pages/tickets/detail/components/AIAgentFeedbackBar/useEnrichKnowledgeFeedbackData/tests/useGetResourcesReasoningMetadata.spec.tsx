@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-types'
@@ -5,7 +6,6 @@ import { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-typ
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { getLDClient } from 'utils/launchDarkly'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useGetResourceData } from '../useEnrichFeedbackData'

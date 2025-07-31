@@ -1,10 +1,10 @@
+import { act, renderHook } from '@repo/testing'
+
 import {
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/helpdesk-queries'
-
-import { act, renderHook } from 'utils/testing/renderHook'
 
 import useAutoQA from '../useAutoQA'
 

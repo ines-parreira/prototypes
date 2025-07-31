@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
@@ -17,7 +18,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     QUEUE_CAPACITY_VALIDATION_ERROR,

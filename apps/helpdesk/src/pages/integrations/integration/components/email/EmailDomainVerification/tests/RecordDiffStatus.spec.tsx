@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { EmailDNSRecord } from '@gorgias/helpdesk-queries'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import RecordDiffStatus from '../components/RecordDiffStatus'
 

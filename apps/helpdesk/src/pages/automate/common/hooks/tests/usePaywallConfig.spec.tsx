@@ -1,8 +1,7 @@
-import React from 'react'
+import { renderHook } from '@repo/testing'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 import { assetsUrl } from 'utils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { AutomateFeatures } from '../../types'
 import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'

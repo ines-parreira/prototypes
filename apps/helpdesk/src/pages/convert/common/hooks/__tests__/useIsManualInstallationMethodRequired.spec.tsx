@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     MAGENTO2_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -9,7 +11,6 @@ import {
 } from 'models/integration/types'
 import * as useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 import * as useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useIsManualInstallationMethodRequired from '../useIsManualInstallationMethodRequired'
 

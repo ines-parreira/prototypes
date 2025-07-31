@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -22,7 +24,6 @@ import {
 import * as files from 'utils/file'
 import { createCsv } from 'utils/file'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('utils/file')
 jest.mock('domains/reporting/hooks/timeSeries')

@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     ExpressionFieldSource,
     ExpressionOperator,
@@ -8,7 +10,6 @@ import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useCustomFieldsConditionsEvaluationResults } from '../useCustomFieldsConditionsEvaluationResults'
 

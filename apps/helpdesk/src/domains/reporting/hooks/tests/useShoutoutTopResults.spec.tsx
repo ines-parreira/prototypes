@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +12,6 @@ import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { AgentsShoutOutsConfig } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
 import { agents } from 'fixtures/agents'
 import { RootState } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore([thunk])
 

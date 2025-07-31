@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import _noop from 'lodash/noop'
 
 import shortcutManager from 'services/shortcutManager'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useConditionalShortcuts from '../useConditionalShortcuts'
 

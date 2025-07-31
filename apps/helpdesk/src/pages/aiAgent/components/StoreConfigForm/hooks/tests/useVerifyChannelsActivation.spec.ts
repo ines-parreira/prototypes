@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
 import { notify } from 'state/notifications/actions'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useVerifyChannelsActivation } from '../useVerifyChannelsActivation'
 

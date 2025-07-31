@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
 import { bigCommerceCartFixture } from 'fixtures/bigcommerce'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { Coupon } from '../Coupon'
 

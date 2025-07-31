@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useSocketIOPresence from '../useSocketIOPresence'
 

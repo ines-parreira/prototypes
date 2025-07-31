@@ -1,4 +1,4 @@
-import { act, renderHook } from 'utils/testing/renderHook'
+import { act, renderHook } from '@repo/testing'
 
 import { useTicketTagsState } from '../useTicketTagsState'
 

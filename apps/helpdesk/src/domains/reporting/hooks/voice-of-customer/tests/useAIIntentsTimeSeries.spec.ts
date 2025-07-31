@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     useAIIntentCustomFieldsTimeSeries,
     useCustomFieldsForProductTimeSeries,
@@ -14,7 +16,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { TOP_INTENTS_PER_PAGE } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useCustomFieldsTimeSeries')
 const useAIIntentCustomFieldsTimeSeriesMock = assumeMock(

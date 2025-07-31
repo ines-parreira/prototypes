@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import { TicketChannel, TicketVia } from 'business/types/ticket'
@@ -9,7 +10,6 @@ import { useGetTicketContext } from 'hooks/aiAgent/useGetTicketContext'
 import { ShopifyIntegration } from 'models/integration/types'
 import { TicketMessage } from 'models/ticket/types'
 import { useInsertShoppingAssistantEventElements } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/aiAgent/useGetTicketContext')
 const mockUseGetTicketContext = jest.mocked(useGetTicketContext)

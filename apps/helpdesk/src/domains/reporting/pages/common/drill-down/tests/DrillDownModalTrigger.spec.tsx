@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -16,7 +17,6 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { assumeMock, renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

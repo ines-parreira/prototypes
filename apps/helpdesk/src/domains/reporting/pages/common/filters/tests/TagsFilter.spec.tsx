@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -35,7 +36,6 @@ import { tags } from 'fixtures/tag'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('domains/reporting/hooks/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)

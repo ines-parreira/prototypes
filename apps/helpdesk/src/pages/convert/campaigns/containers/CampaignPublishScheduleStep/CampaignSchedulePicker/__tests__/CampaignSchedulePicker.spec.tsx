@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, fireEvent, render } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
@@ -8,7 +9,6 @@ import thunk from 'redux-thunk'
 
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { RootState } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import CampaignSchedulePicker from '../CampaignSchedulePicker'
 

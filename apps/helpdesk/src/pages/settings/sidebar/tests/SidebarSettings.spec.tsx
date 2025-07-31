@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -12,7 +13,6 @@ import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import * as accountActions from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockViewsStore = fromJS({
     items: [

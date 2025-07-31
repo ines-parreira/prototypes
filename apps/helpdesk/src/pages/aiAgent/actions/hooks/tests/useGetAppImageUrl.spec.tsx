@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { dummyAppListData } from 'fixtures/apps'
 import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
 import { useListActionsApps } from 'models/workflows/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useGetAppImageUrl from '../useGetAppImageUrl'
 

@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useValidateActionTemplateGraph from '../useValidateActionTemplateGraph'
 

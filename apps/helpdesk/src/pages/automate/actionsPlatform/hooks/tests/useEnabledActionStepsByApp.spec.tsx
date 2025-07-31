@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ulid } from 'ulidx'
@@ -7,7 +8,6 @@ import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useApps from '../useApps'
 import useEnabledActionStepsByApp from '../useEnabledActionStepsByApp'

@@ -1,4 +1,4 @@
-import { renderHook } from 'utils/testing/renderHook'
+import { renderHook } from '@repo/testing'
 
 import { ChoiceOption } from '../../MissingKnowledgeSelect'
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'

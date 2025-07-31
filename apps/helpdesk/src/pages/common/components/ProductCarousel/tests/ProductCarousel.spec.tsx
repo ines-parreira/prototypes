@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen, within } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { ProductCarousel } from '../ProductCarousel'
 

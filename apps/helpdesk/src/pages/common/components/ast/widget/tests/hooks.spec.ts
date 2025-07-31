@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import { fromJS, List, Map } from 'immutable'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useOptions } from '../hooks'
 

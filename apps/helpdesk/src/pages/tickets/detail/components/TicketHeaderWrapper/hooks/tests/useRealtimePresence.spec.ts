@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useRealtimePresence from '../useRealtimePresence'
 

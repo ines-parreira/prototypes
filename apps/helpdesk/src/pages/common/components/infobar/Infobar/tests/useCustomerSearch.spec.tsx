@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,7 +11,6 @@ import { useCustomerSearch } from 'pages/common/components/infobar/Infobar/useCu
 import { searchWithHighlights } from 'state/infobar/actions'
 import * as constants from 'state/infobar/constants'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore([thunk])
 jest.mock('state/infobar/actions')

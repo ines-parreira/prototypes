@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
@@ -15,7 +16,6 @@ import {
     GorgiasChatStatusEnum,
 } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import * as hookGorgiasChatIntegrationStatusData from '../../../hooks/useGorgiasChatIntegrationStatusData'
 import GorgiasChatIntegrationListRow, {

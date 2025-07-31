@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -18,7 +19,6 @@ import {
 } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

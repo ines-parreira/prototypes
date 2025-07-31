@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     fetchAIAgentInteractionsDatasetBySkillTimeSeries,
     useAIAgentInteractionsBySkillTimeSeries,
@@ -19,7 +21,6 @@ import {
 } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)

@@ -1,7 +1,6 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetSelfServiceConfiguration } from '../queries'
 import { fetchSelfServiceConfigurationSSP } from '../resources'

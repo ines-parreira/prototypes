@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { getLDClient } from 'utils/launchDarkly'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useLaunchDarklyClient from '../useLaunchDarklyClient'
 

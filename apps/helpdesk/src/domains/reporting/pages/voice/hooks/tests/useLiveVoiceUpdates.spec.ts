@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { DomainEvent } from '@gorgias/events'
@@ -15,7 +16,6 @@ import { appQueryClient } from 'api/queryClient'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('@gorgias/helpdesk-queries', () => {
     return {

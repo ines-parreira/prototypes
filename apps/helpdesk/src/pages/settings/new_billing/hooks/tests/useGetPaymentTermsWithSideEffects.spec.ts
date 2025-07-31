@@ -1,9 +1,10 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetPaymentTerms } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { FETCH_BILLING_PAYMENT_TERMS_ERROR } from 'state/billing/constants'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetPaymentTermsWithSideEffects } from '../useGetPaymentTermsWithSideEffects'
 

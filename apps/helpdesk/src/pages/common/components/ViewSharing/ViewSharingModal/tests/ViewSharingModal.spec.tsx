@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import { view as mockViewFixture } from 'fixtures/views'
 import { ViewVisibility } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
-import { userEvent } from 'utils/testing/userEvent'
 
 import ViewSharingModal from '../ViewSharingModal'
 

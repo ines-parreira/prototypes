@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
 import * as segment from 'common/segment'
@@ -8,7 +9,6 @@ import { BusiestTimesOfDaysDownloadDataButton } from 'domains/reporting/pages/su
 import { useAggregatedBusiestTimesOfDayReportData } from 'domains/reporting/services/busiestTimesOfDaysReportingService'
 import { saveZippedFiles } from 'utils/file'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)

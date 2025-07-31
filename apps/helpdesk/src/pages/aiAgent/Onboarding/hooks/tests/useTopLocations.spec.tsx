@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { useMetric } from 'domains/reporting/hooks/useMetric'
@@ -8,7 +9,6 @@ import {
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { shopifyIntegration } from 'fixtures/integrations'
 import useAppSelector from 'hooks/useAppSelector'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useTopLocations } from '../useTopLocations'
 

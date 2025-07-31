@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import LogicalOperator from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator'
@@ -7,7 +8,6 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('LogicalOperator', () => {
     const logicalOperators = [

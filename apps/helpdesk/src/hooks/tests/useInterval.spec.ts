@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import useInterval from 'hooks/useInterval'
-import { renderHook } from 'utils/testing/renderHook'
 
 const callback = jest.fn()
 

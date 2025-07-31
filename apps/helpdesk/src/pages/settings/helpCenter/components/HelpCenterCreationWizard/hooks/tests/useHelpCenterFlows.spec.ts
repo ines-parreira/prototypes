@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import Promise from 'promise-polyfill'
 
 import { createWorkflowConfigurationShallow } from 'fixtures/workflows'
@@ -9,7 +10,6 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import { ChannelLanguage } from 'pages/automate/common/types'
 import { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { Components } from 'rest_api/help_center_api/client.generated'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCenterFlows } from '../useHelpCenterFlows'
 

@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useBannersContext } from '../../../Context'
 import { BannerCategories, ContextBanner } from '../../../types'

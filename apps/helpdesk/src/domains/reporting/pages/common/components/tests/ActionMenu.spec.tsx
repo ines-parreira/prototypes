@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import {
@@ -9,7 +10,6 @@ import {
     ActionMenuSelectItem,
     ActionMenuSeparator,
 } from 'domains/reporting/pages/common/components/ActionMenu'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('ActionMenu', () => {
     it('should open and close the menu', () => {

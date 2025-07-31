@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
@@ -5,7 +7,6 @@ import {
 
 import { useFlag } from 'core/flags'
 import { slaPolicy3 } from 'pages/settings/SLAs/fixtures/fixtures'
-import { renderHook } from 'utils/testing/renderHook'
 
 import makeMappedFormSLAPolicy from '../makeMappedFormSLAPolicy'
 import useFormValues from '../useFormValues'

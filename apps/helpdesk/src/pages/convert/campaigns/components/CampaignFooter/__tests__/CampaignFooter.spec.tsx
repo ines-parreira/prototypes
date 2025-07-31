@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
 import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { CampaignFooter } from '../CampaignFooter'
 

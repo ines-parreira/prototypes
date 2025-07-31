@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,7 +9,6 @@ import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/c
 import { setSidePanelData } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

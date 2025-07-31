@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import {
@@ -9,7 +10,6 @@ import {
 import { PeriodShortcutSelector } from 'domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/PeriodShortcutSelector'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('PeriodShortcutSelector', () => {
     it('should render the component with "Show Date Range" button', () => {

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { AxiosError } from 'axios'
 import { useHistory } from 'react-router-dom'
 
@@ -6,7 +7,6 @@ import { useGetIntegration } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from 'models/integration/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useStoreGetter from '../useStoreGetter'
 

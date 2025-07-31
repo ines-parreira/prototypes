@@ -1,13 +1,13 @@
 import React from 'react'
 import type { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { createBrowserHistory } from 'history'
 import type { History } from 'history'
 import { Router } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useAutomateRedirects } from '../useAutomateRedirects'
 

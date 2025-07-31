@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

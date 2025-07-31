@@ -1,6 +1,7 @@
 import React from 'react'
 import type { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { createBrowserHistory } from 'history'
 import type { History } from 'history'
 import { Route, Router } from 'react-router-dom'
@@ -8,7 +9,6 @@ import { Route, Router } from 'react-router-dom'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useStoreSelector } from '../useStoreSelector'
 

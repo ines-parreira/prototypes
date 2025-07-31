@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
@@ -8,7 +9,6 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useBannerCarousel } from '../useBannerCarousel'
 

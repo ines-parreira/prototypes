@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 
@@ -12,7 +13,6 @@ import { integrationDataItemProductFixture } from 'fixtures/shopify'
 import * as resources from 'models/integration/resources'
 import { IntegrationDataItem } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     isProductExcludedFromAiAgent,

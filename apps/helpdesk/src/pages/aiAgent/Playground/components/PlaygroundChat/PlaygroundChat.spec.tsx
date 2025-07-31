@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -24,7 +25,6 @@ import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import {
     CustomerHttpIntegrationDataMock,

@@ -1,8 +1,9 @@
 import { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
+
 import { VoiceQueueContext } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueContext'
 import { useVoiceQueueContext } from 'domains/reporting/pages/voice/hooks/useVoiceQueueContext'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useVoiceQueueContext', () => {
     it('should throw an error if used outside of VoiceQueueProvider', () => {

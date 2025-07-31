@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
-import { renderHook } from 'utils/testing/renderHook'
 
 // Mock dependencies
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')

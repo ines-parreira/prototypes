@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -8,7 +9,6 @@ import useStoresRequiringScriptTagMigration from 'pages/common/components/Script
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useScriptTagMigrationBanner } from '../useScriptTagMigrationBanner'
 

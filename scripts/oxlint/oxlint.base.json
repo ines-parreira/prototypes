@@ -49,7 +49,7 @@
                     {
                         "name": "@testing-library/react-hooks",
                         "importNames": ["renderHook"],
-                        "message": "Import 'renderHook' from 'utils/testing/renderHook' using alias: import { renderHook } from 'utils/testing/renderHook'"
+                        "message": "Import 'renderHook' from '@repo/testing' using alias: import { renderHook } from '@repo/testing'"
                     },
                     {
                         "name": "react-bootstrap-daterangepicker",

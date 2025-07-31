@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -24,7 +25,6 @@ import { AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { opposite, OrderDirection } from 'models/api/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

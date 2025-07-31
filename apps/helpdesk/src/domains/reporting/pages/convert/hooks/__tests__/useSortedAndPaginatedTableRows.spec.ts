@@ -1,9 +1,10 @@
+import { renderHook } from '@repo/testing'
+
 import CAMPAIGN_PERFORMANCE_ROWS from 'domains/reporting/pages/convert/fixtures/campaignPerformanceRows'
 import { useSortedAndPaginatedTableRows } from 'domains/reporting/pages/convert/hooks/useSortedAndPaginatedTableRows'
 import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { OrderDirection } from 'models/api/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 const MOCK_ITEMS_PER_PAGE = 5
 

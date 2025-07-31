@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { getLDClient } from 'utils/launchDarkly'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useFlag from '../useFlag'
 

@@ -4,7 +4,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import React, { ComponentType } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from 'utils/testing/renderHook'
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { TicketPriority } from 'business/types/ticket'
@@ -6,7 +7,6 @@ import { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
 import { TicketCompact } from 'ticket-list-view/types'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import Ticket from '../Ticket'
 

@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -19,7 +20,6 @@ import { user } from 'fixtures/users'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import {
     AiAgentPaywallView,

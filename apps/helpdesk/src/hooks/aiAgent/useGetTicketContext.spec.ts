@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
@@ -6,7 +7,6 @@ import { ShopifyIntegration } from 'models/integration/types'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { getTicketState } from 'state/ticket/selectors'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetTicketContext } from './useGetTicketContext'
 

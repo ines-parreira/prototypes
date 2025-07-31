@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { Chart, TooltipModel } from 'chart.js'
 
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useCustomTooltip', () => {
     it('should initialize with default state', () => {

@@ -1,11 +1,9 @@
-import React from 'react'
-
+import { act, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { OrderDirection } from 'models/api/types'
-import { act, renderHook } from 'utils/testing/renderHook'
 
 import { IntentTableColumn } from '../../types'
 import { useIntentQuery } from '../useIntentQuery'

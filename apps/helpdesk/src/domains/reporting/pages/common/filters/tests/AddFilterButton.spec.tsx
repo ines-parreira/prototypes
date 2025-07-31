@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AddFilterButton } from 'domains/reporting/pages/common/filters/AddFilterButton'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('AddFilterButton', () => {
     it('should list options and select one on Click', () => {

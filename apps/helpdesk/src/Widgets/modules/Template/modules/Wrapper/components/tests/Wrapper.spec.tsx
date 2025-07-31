@@ -1,5 +1,6 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -18,7 +19,6 @@ import {
 } from 'state/widgets/constants'
 import { Widget, WidgetType } from 'state/widgets/types'
 import { assumeMock, getLastMockCall } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 
 import WrapperEditActions, { FormData } from '../views/WrapperEditActions'

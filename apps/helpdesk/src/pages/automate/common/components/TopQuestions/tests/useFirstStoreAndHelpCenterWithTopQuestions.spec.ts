@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { AIArticle, HelpCenter } from 'models/helpCenter/types'
@@ -5,7 +6,6 @@ import { StoreIntegration } from 'models/integration/types'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { NonEmptyArray } from 'types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useFirstStoreAndHelpCenterWithTopQuestions } from '../useFirstStoreAndHelpCenterWithTopQuestions'
 import { useHasEmailToStoreConnection } from '../useHasEmailToStoreConnection'

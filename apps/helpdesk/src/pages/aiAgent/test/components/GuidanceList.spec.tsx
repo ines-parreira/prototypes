@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import {
     fireEvent,
     render,
@@ -17,7 +18,6 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import { GuidanceArticle } from 'pages/aiAgent/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { GuidanceList } from '../../components/GuidanceList/GuidanceList'
 

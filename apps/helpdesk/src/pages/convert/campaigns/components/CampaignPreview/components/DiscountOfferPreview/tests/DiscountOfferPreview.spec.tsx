@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { DiscountOfferPreview } from '../DiscountOfferPreview'
 

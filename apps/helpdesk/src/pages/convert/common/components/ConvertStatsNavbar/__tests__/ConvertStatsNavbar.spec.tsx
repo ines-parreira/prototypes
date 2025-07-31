@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -19,7 +20,6 @@ import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscribe
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { ConvertStatsNavbar } from '../ConvertStatsNavbar'
 

@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { Location } from 'history'
 import { useLocation } from 'react-router-dom'
 
 import history from 'pages/history'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useSearchParam } from '../useSearchParam'
 

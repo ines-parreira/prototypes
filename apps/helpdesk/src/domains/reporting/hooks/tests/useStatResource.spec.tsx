@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 import { Provider } from 'react-redux'
@@ -26,7 +27,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('state/notifications/actions')
 const notifyMock = notify as jest.Mock

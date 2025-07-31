@@ -1,6 +1,6 @@
-import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
+import { renderHook } from '@repo/testing'
 
-import { renderHook } from 'utils/testing/renderHook'
+import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
 
 import Provider from '../ThemeProvider'
 import useTheme from '../useTheme'

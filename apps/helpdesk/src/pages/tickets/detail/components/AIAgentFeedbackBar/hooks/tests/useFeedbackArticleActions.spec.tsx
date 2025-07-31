@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -13,7 +14,6 @@ import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/querie
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useFeedbackArticleActions } from '../useFeedbackArticleActions'
 

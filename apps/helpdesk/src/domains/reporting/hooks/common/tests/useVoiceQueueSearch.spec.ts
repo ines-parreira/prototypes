@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 import { mocked } from 'jest-mock'
@@ -18,7 +19,6 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/common/useInfiniteListVoiceQueues')
 jest.mock('hooks/useAppDispatch')

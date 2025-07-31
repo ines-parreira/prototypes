@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -12,7 +13,6 @@ import Filter, {
 } from 'domains/reporting/pages/common/components/Filter/Filter'
 import { NON_EXISTENT_VALUES_WARNING_MESSAGE } from 'domains/reporting/pages/common/filters/utils'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('Filter', () => {
     const filterName = 'Test Filter'

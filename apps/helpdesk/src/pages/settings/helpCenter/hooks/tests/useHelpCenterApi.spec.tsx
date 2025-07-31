@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import * as auth from 'rest_api/auth'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     HelpCenterApiClientProvider,

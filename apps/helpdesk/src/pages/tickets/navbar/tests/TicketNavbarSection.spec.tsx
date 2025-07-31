@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -13,7 +14,6 @@ import { view } from 'fixtures/views'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { mockStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { TicketNavbarSectionContainer } from '../TicketNavbarSection'

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import { useFileUpload } from '../useFileUpload'

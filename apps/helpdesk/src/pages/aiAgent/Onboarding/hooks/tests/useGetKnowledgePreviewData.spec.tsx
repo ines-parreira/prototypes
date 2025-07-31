@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
 import { useAverageDiscountPercentage } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageDiscountPercentage'
@@ -7,7 +8,6 @@ import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/
 import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValue'
 import { useGetRepeatRate } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRate'
 import { assumeMock, mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetKnowledgePreviewData } from '../useGetKnowledgePreviewData'
 

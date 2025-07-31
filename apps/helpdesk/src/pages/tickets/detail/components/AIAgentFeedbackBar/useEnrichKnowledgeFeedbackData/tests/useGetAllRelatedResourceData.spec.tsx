@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
@@ -5,7 +6,6 @@ import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetResourceData } from '../useEnrichFeedbackData'
 import { useGetAllRelatedResourceData } from '../useGetAllRelatedResourceData'

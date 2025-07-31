@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 
@@ -6,7 +7,6 @@ import { useGetAIGeneratedGuidances } from 'models/aiAgent/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { getAIGuidanceFixture } from '../../fixtures/aiGuidance.fixture'
 import { getGuidanceArticleFixture } from '../../fixtures/guidanceArticle.fixture'

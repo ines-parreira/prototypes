@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -14,7 +15,6 @@ import {
 } from 'fixtures/productPrices'
 import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { account } from '../../../../../../fixtures/account'
 import { billingState } from '../../../../../../fixtures/billing'

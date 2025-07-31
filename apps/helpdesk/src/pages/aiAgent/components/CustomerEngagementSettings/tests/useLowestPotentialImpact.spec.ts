@@ -1,4 +1,4 @@
-import { renderHook } from 'utils/testing/renderHook'
+import { renderHook } from '@repo/testing'
 
 import { useLowestPotentialImpact } from '../hooks/useLowestPotentialImpact'
 import * as potentialImpactModule from '../hooks/usePotentialImpact'

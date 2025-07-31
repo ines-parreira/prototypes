@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import moment from 'moment'
@@ -13,7 +14,6 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useTopProducts from '../hooks'
 

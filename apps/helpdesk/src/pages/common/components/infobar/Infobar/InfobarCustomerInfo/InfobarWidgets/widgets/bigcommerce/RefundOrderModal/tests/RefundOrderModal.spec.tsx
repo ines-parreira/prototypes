@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map as ImmutableMap } from 'immutable'
@@ -33,7 +34,6 @@ import {
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
 import * as integrationHelpers from 'state/integrations/helpers'
-import { userEvent } from 'utils/testing/userEvent'
 
 import RefundOrderModalRenderWrapper, {
     RefundOrderModal,

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { Location } from '@sentry/react/types/types'
 import { cleanup, screen, waitFor } from '@testing-library/react'
 import { fromJS, List } from 'immutable'
@@ -8,7 +9,6 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import * as useAppSelector from 'hooks/useAppSelector'
 import { mockStore, renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import EmailDisconnectedBanner from '..'
 

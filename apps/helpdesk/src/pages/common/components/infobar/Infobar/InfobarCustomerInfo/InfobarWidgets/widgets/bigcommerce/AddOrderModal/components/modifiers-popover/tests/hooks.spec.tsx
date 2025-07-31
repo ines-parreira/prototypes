@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
@@ -6,7 +7,6 @@ import {
     bigCommerceProductFixture,
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useAddModifiersPopover from '../useAddModifiersPopover'
 import useEditModifiersPopover from '../useEditModifiersPopover'

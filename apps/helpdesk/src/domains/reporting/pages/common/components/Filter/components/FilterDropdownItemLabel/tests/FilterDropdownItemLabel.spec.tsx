@@ -1,11 +1,11 @@
 import React, { ContextType } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import FilterDropdownItemLabel from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
 import { LABEL_MAX_WIDTH } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockContext: ContextType<typeof DropdownContext> = {
     isMultiple: false,

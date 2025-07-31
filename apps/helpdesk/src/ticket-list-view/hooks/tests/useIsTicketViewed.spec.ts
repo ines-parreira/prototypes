@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import * as viewUtils from 'state/views/utils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useIsTicketViewed from '../useIsTicketViewed'
 

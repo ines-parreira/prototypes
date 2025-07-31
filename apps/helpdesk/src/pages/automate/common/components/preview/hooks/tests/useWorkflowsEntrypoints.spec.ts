@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useSelfServicePreviewContext } from '../../SelfServicePreviewContext'
 import useWorkflowsEntrypoints from '../useWorkflowsEntrypoints'

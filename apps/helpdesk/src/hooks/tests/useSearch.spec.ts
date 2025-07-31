@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import { useLocation } from 'react-router-dom'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useSearch from '../useSearch'
 

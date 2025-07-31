@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
-import { userEvent } from 'utils/testing/userEvent'
+import { userEvent } from '@repo/testing'
 
 import { ToggleCard } from '../ToggleCard'
 

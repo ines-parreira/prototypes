@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import client from 'models/api/resources'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import RemoveShopifyBilling from '../RemoveShopifyBilling'
 

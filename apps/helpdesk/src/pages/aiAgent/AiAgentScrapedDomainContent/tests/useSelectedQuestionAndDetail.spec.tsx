@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetHelpCenterArticle,
@@ -9,7 +11,6 @@ import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useSelectedQuestionAndDetail } from '../hooks/useSelectedQuestionAndDetail'
 

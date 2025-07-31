@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import type { Location } from 'history'
 import { useLocation } from 'react-router-dom'
 
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useActiveItem from '../useActiveItem'
 

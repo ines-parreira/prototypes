@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import {
     cleanup,
     fireEvent,
@@ -21,7 +22,6 @@ import { initialState } from 'state/twilio/voiceDevice'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockDevice } from 'tests/twilioMocks'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import ClickablePhoneNumber from '../ClickablePhoneNumber'
 

@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import useGetBadgeTiers from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useGetBadgeTiers Hook', () => {
     test('should return a single tier when values array is empty', () => {

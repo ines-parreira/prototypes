@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Integration, IntegrationType } from 'models/integration/types'
 import { StoreState } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     CssClasses,

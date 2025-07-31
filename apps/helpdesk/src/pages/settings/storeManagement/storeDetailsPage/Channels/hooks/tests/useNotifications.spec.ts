@@ -1,10 +1,11 @@
+import { renderHook } from '@repo/testing'
+
 import { useNotify } from 'hooks/useNotify'
 import { IntegrationType } from 'models/integration/constants'
 import {
     EmailIntegration,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { ChannelChange, ChannelWithMetadata } from '../../../../types'
 import { useNotifications } from '../useNotifications'

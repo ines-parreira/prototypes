@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
@@ -6,7 +7,6 @@ import {
     TextsMultiLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'
 import * as IntegrationsActions from 'state/integrations/actions'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useTexts } from '../hooks/useTexts'
 

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
 import { useBulkUnarchiveMacros as useBulkUnarchiveMacrosPrimitive } from '@gorgias/helpdesk-queries'
@@ -7,7 +8,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,

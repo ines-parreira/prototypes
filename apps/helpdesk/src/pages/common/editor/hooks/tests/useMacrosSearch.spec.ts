@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { ticket as defaultTicket } from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as debounceHook from 'hooks/useDebouncedValue'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useMacrosSearch from '../useMacrosSearch'
 

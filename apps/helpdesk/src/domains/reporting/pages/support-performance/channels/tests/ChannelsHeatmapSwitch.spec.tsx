@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -14,7 +15,6 @@ import {
 } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('ChannelsHeatmapSwitch', () => {
     const defaultState = {

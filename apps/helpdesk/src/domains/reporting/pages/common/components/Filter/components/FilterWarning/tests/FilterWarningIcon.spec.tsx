@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 
 import { FilterWarningIcon } from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import { FILTER_WARNING_ICON } from 'domains/reporting/pages/common/components/Filter/constants'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('FilterWarningIcon', () => {
     it.each(['not-applicable' as const, 'non-existent' as const])(

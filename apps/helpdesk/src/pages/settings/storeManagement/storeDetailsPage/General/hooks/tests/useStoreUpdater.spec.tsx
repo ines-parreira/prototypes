@@ -1,7 +1,8 @@
+import { renderHook } from '@repo/testing'
+
 import { useUpdateIntegration } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useStoreUpdater from '../useStoreUpdater'
 

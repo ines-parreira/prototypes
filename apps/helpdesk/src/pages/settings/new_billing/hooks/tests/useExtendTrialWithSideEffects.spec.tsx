@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -10,7 +11,6 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock

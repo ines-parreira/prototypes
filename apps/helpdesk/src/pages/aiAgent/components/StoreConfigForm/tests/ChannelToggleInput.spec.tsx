@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -8,7 +9,6 @@ import {
     SettingsBannerType,
 } from 'pages/aiAgent/components/StoreConfigForm/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { ChannelToggleInput } from '../FormComponents/ChannelToggleInput'
 

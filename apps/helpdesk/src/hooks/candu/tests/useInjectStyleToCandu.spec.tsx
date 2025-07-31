@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useInjectStyleToCandu from '../useInjectStyleToCandu'
 

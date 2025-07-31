@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 
 import {
@@ -7,7 +8,6 @@ import {
     IvrMenuActionType,
     VoiceMessageType,
 } from 'models/integration/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import IvrMenuActionSelect from '../IvrMenuActionSelect'
 

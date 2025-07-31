@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 import { TicketChannel } from 'business/types/ticket'
 import { customer } from 'fixtures/customer'
 import { user } from 'fixtures/users'
-import { userEvent } from 'utils/testing/userEvent'
 
 import SpotlightCustomerRow from '../SpotlightCustomerRow'
 

@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useFetchGuidancesData } from '../useFetchGuidancesData'
 

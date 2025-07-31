@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { SegmentEvent } from 'common/segment'
@@ -7,7 +8,6 @@ import { logEventWithSampling } from 'common/segment/segment'
 import { TicketMessage } from 'models/ticket/types'
 import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import FeedbackEvents from '../FeedbackEvents'
 import { TicketEventEnum } from '../types'

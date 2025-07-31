@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { userEvent } from 'utils/testing/userEvent'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
 
 describe('<AmountInput/>', () => {

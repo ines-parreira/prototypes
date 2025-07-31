@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useContextValue from '../useContextValue'
 

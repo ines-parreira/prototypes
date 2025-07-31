@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -29,7 +30,6 @@ import { campaignsList } from 'fixtures/campaign'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
 const mockedCampaignsList = campaignsList

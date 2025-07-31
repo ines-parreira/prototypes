@@ -1,7 +1,8 @@
+import { renderHook } from '@repo/testing'
+
 import { useListTickets } from '@gorgias/helpdesk-queries'
 
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { TICKET_FETCH_STALE_TIME, TICKET_FETCHED_LIMIT } from '../../constants'
 import { useTimelineData } from '../useTimelineData'

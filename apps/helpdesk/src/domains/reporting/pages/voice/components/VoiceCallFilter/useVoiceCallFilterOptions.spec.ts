@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import useVoiceCallFilterOptions from 'domains/reporting/pages/voice/components/VoiceCallFilter/useVoiceCallFilterOptions'
 import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useVoiceCallFilterOptions', () => {
     const onFilterSelectMock = jest.fn()

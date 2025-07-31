@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useFetchFaqHelpCentersData } from '../useFetchFaqHelpCentersData'
 

@@ -1,4 +1,4 @@
-import { renderHook } from 'utils/testing/renderHook'
+import { renderHook } from '@repo/testing'
 
 import {
     HIGH_TIERS_DROPOFF_BACKGROUND,

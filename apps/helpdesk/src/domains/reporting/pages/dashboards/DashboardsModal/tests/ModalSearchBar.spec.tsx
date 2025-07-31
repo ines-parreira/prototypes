@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { REPORTS_CONFIG } from 'domains/reporting/pages/dashboards/config'
@@ -8,7 +9,6 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { userEvent } from 'utils/testing/userEvent'
 
 const setConfig = jest.fn()
 const setSelectedReport = jest.fn()

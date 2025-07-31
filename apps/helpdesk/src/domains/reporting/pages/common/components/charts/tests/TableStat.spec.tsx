@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -16,7 +17,6 @@ import { Integration } from 'models/integration/types'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import * as channelsService from 'services/channels'
 import { initialState } from 'state/tags/reducers'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 

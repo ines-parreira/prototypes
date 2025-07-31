@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -15,7 +16,6 @@ import {
 } from 'state/currentAccount/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import SatisfactionSurveyView from '../SatisfactionSurveyView'
 

@@ -1,4 +1,4 @@
-import { renderHook } from 'utils/testing/renderHook'
+import { renderHook } from '@repo/testing'
 
 import { BannerCategories } from '../../../types'
 import { STORAGE_CLEAR_TIMEOUT } from '../../constants'

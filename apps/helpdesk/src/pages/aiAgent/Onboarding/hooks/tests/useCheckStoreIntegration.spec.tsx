@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -9,7 +10,6 @@ import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')

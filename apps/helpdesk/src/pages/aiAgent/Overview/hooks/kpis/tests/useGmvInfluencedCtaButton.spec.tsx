@@ -1,3 +1,4 @@
+import { renderHook, userEvent } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
@@ -19,8 +20,6 @@ import {
 } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluencedCtaButton'
 import { getStoresEligibleForTrial } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = createMockStore([thunk])
 const queryClient = new QueryClient({})

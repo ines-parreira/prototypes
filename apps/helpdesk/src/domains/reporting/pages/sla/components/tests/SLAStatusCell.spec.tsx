@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -12,7 +13,6 @@ import {
     SLAStatusCell,
 } from 'domains/reporting/pages/sla/components/SlaStatusCell'
 import { SlaStatusLabel } from 'domains/reporting/services/constants'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('<SLAStatusCell />', () => {
     it("should render Ticket SLA's status with metrics in a tooltip", () => {

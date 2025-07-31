@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,7 +10,6 @@ import {
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { initialFormFieldValues } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
 import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'

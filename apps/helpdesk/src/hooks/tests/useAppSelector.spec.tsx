@@ -1,5 +1,6 @@
 import React, { ComponentType } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import configureMockStore from 'redux-mock-store'
 import { tags } from 'fixtures/tag'
 import useAppSelector from 'hooks/useAppSelector'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

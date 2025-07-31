@@ -1,8 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useActualTheme from '../useActualTheme'
 

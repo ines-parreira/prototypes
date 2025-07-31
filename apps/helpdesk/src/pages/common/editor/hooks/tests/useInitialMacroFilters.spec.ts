@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { fromJS, Map } from 'immutable'
 
 import { getMacroParametersOptions } from 'state/macro/selectors'
 import { getTicket } from 'state/ticket/selectors'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useInitialMacroFilters from '../useInitialMacroFilters'
 

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
@@ -7,7 +8,6 @@ import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import { notify } from 'state/notifications/actions'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
 import { useSelfServiceConfigurationUpdate } from '../useSelfServiceConfigurationUpdate'

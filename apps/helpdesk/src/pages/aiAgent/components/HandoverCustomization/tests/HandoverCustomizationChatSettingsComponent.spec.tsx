@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
@@ -7,7 +8,6 @@ import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/ho
 import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { HandoverCustomizationChatSettingsComponent } from '../HandoverCustomizationChatSettingsComponent'
 

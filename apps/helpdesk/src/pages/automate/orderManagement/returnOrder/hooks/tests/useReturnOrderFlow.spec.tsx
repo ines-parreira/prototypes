@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useReturnOrderFlow from '../useReturnOrderFlow'
 

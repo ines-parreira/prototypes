@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { GorgiasInitialState } from 'types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useRangeFilter } from '../useRangeFilter'
 

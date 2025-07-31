@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCentersArticleCount } from '../useHelpCentersArticleCount'
 

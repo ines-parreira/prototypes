@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     fetchFilteredAutomatedInteractions,
     useFilteredAutomatedInteractions,
@@ -10,7 +12,6 @@ import {
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')

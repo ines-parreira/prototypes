@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetPlaygroundExecutions } from 'models/aiAgent/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useFetchAiAgentPlaygroundExecutionsData } from '../useFetchAiAgentPlaygroundExecutionsData'
 

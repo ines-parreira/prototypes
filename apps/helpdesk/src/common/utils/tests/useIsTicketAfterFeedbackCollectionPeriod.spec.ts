@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     NUMBER_OF_MONTHS_TO_SKIP_NEW_FEEDBACK_COLLECTION,

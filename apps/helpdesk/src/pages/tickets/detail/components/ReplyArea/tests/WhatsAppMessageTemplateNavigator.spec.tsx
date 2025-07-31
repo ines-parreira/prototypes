@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -5,7 +6,6 @@ import { whatsAppMessageTemplates as mockWhatsAppMessageTemplates } from 'fixtur
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import WhatsAppMessageTemplateNavigator from '../WhatsAppMessageTemplateNavigator'
 

@@ -1,8 +1,8 @@
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { useFlag } from 'core/flags'
-import { userEvent } from 'utils/testing/userEvent'
 
 import ActionSelect from '../ActionSelect'
 import { actionsConfig } from '../config'

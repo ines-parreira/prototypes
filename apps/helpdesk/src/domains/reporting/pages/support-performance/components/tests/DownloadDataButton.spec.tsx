@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('DownloadOverviewData', () => {
     it('should be disabled', () => {

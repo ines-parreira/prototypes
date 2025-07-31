@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useScreenSize from '../useScreenSize'
 

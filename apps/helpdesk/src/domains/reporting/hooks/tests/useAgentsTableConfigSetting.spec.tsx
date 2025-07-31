@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -26,7 +27,6 @@ import {
 } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 jest.mock('state/currentAccount/actions')

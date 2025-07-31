@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -10,7 +11,6 @@ import {
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useDistributionTrendReportData', () => {
     const defaultStatsFilters: StatsFilters = {

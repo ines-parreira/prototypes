@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { mockStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import TicketVoiceCallSource from '../TicketVoiceCallSource'
 

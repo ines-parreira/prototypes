@@ -2,6 +2,7 @@ import 'tests/__mocks__/editionManagerContextMock'
 
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,7 +18,6 @@ import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCen
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { RootState, StoreDispatch } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import AIArticlesLibraryArticleEditor from '../AIArticlesLibraryArticleEditor'
 

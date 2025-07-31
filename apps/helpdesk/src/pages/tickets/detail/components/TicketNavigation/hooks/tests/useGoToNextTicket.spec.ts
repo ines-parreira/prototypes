@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
@@ -5,7 +6,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useGoToNextTicket from '../useGoToNextTicket'
 import useIsTicketNavigationAvailable from '../useIsTicketNavigationAvailable'

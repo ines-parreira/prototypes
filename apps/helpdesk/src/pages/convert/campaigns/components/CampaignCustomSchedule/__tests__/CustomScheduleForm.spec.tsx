@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
 import { DAYS_OPTIONS } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
-import { userEvent } from 'utils/testing/userEvent'
 
 import CustomScheduleForm from '../CustomScheduleForm'
 

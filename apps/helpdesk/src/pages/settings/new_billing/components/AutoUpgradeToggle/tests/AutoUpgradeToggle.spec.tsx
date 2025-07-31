@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,7 +14,6 @@ import {
     convertProduct,
 } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import AutoUpgradeToggle, { AutoUpgradeToggleProps } from '../AutoUpgradeToggle'
 

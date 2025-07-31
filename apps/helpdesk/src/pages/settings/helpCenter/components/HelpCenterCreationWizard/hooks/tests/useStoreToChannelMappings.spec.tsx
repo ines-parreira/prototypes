@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import {
     useCreateStoreMapping,
     useUpdateStoreMapping,
 } from 'models/storeMapping/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { Components } from '../../../../../../../rest_api/help_center_api/client.generated'
 import { useStoreToChannelMappings } from '../useStoreToChannelMappings'

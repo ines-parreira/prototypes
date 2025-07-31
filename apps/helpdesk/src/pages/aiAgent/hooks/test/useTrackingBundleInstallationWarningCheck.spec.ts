@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
@@ -10,7 +11,6 @@ import { useListBundles } from 'models/convert/bundle/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('launchdarkly-react-client-sdk')
 const mockUseFlags = jest.mocked(useFlags)

@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import { AccordionValues } from 'components/Accordion/utils/types'
 import { useStatsNavbarSections } from 'domains/reporting/pages/common/components/StatsNavbarView/useStatsNavbarSections'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useLocalStorage')
 const useLocalStorageMock =

@@ -1,5 +1,6 @@
 import React, { ComponentType } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -16,7 +17,6 @@ import {
 } from 'models/workflows/queries'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useStoreWorkflowsApi } from '../useStoreWorkflowsApi'
 import { useSelfServiceConfigurationUpdateMockSetter } from './fixtures/mockBuilders'

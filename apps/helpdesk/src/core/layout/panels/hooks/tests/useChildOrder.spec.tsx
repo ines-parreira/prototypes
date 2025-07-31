@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { render } from '@testing-library/react'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useChildOrder from '../useChildOrder'
 

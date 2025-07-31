@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
@@ -5,7 +6,6 @@ import moment from 'moment'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { isAdmin } from 'utils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useIsOnboardingHidden from '../useIsOnboardingHidden'
 

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -18,7 +19,6 @@ import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useUpdateCustomFieldDefinitions } from '../useUpdateCustomFieldDefinitions'
 

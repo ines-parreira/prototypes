@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
@@ -16,7 +17,6 @@ import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiShoppingAssistantTrialBanner } from '../useAiShoppingAssistantTrialBanner'
 

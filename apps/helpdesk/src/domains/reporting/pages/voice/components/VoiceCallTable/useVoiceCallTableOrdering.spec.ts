@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
@@ -5,7 +6,6 @@ import useVoiceCallTableOrdering from 'domains/reporting/pages/voice/components/
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useOrderBy')
 const mockUseOrderBy = assumeMock(useOrderBy)

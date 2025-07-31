@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import noop from 'lodash/noop'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useDebouncedCallback from '../useDebouncedCallback'
 

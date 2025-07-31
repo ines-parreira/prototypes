@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('<AgentsHeaderCellContent>', () => {
     const title = 'Some title'

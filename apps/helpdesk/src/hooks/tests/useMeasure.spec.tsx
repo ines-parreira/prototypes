@@ -1,7 +1,6 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import noop from 'lodash/noop'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useMeasure from '../useMeasure'
 

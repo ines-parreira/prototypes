@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
@@ -35,7 +36,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'

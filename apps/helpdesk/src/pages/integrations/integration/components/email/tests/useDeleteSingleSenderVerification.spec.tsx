@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { deleteVerification } from 'models/singleSenderVerification/resources'
 import { mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
 

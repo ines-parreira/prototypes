@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,7 +9,6 @@ import { TicketChannel } from 'business/types/ticket'
 import { MacroAction } from 'models/macroAction/types'
 import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
 import { mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useWhatsAppEditor from '../useWhatsAppEditor'
 import * as whatsAppUtils from '../utils'

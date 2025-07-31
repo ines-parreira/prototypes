@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_NAME } from 'core/theme'
-import { userEvent } from 'utils/testing/userEvent'
 
 import Content from '../Content'
 

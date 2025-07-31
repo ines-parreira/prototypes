@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import _debounce from 'lodash/debounce'
 
 import { ReceiverValue } from 'state/ticket/utils'
 import { isEmail } from 'utils'
-import { userEvent } from 'utils/testing/userEvent'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField'
 

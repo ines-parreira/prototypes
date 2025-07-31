@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useHasUninstalledChatIntegration } from '../useHasUninstalledChatIntegration'
 

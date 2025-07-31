@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { History, Location } from 'history'
 import { fromJS, Map } from 'immutable'
@@ -12,7 +13,6 @@ import {
 } from 'constants/integration'
 import { YotpoIntegrationDetailComponent } from 'pages/integrations/integration/components/yotpo/YotpoIntegrationDetail'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import { userEvent } from 'utils/testing/userEvent'
 
 type Integration = ComponentProps<
     typeof YotpoIntegrationDetailComponent

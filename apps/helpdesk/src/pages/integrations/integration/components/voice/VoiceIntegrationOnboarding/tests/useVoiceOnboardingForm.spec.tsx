@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -15,7 +16,6 @@ import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
 import {

@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { mockStoresWithAssignedChannels } from 'pages/settings/storeManagement/fixtures'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     StoreManagementProvider,

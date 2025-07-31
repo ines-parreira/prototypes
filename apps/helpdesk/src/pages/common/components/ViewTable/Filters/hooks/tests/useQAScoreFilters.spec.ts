@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useQAScoreFilters from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'
 import * as qaScoreDimensions from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)

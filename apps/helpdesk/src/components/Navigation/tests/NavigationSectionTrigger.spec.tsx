@@ -1,7 +1,7 @@
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { AccordionState } from 'components/Accordion/utils/accordion-state'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { Navigation } from '../Navigation'
 

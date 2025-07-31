@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import CurrentHelpCenterContext from '../../../../../contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getHelpCentersResponse.fixture'

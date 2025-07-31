@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
-import { renderHook } from 'utils/testing/renderHook'
 
 // Mock the useGetStoresConfigurationForAccount hook
 jest.mock('models/aiAgent/queries', () => ({

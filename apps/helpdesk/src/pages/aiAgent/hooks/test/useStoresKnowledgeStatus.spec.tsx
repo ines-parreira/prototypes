@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
@@ -6,7 +7,6 @@ import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterA
 import { buildSDKMocks } from 'rest_api/help_center_api/tests/buildSdkMocks'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import * as errors from 'utils/errors'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useStoresKnowledgeStatus } from '../useStoresKnowledgeStatus'
 

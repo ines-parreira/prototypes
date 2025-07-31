@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -13,7 +14,6 @@ import {
 import { useShouldDisplayEmailIntegrationsLink } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useShouldDisplayEmailIntegrationsLink'
 import { Account } from 'state/currentAccount/types'
 import { mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useShouldDisplayEmailIntegrationsLink', () => {
     const renderUseShouldDisplayEmailIntegrationsLink = ({

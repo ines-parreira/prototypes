@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +12,6 @@ import {
     statFiltersDirty,
 } from 'domains/reporting/state/ui/stats/actions'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('domains/reporting/state/ui/stats/actions', () => ({
     statFiltersClean: jest.fn(() => () => ({})),

@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenterAutomateType } from 'models/helpCenter/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useGetAutomateType from '../useGetAutomateType'
 

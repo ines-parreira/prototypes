@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import * as timeSeriesHooks from 'domains/reporting/hooks/timeSeries'
@@ -21,7 +22,6 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 const queryClient = mockQueryClient()
 

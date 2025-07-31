@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     HttpResponse,
     ListCustomFields200,
@@ -10,7 +12,6 @@ import {
 } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     STALE_TIME_MS,

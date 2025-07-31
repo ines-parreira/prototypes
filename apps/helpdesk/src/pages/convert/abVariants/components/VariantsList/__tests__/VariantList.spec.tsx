@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -8,7 +9,6 @@ import { campaignWithABGroup } from 'fixtures/abGroup'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { assumeMock, renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import VariantsList from '../VariantList'
 

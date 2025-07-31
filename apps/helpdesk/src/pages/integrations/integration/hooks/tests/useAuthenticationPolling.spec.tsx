@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +8,6 @@ import thunk from 'redux-thunk'
 
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import * as actions from 'state/integrations/actions'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useAuthenticationPolling from '../useAuthenticationPolling'
 

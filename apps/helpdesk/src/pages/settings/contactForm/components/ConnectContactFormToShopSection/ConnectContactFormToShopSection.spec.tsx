@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,7 +12,6 @@ import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { useShopifyStoreWithChatConnectionsOptions } from '../../../helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'
 import { ConnectContactFormToShopSection } from './ConnectContactFormToShopSection'

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -37,7 +38,6 @@ import {
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const fetchTicketsCreatedTimeSeriesMock = assumeMock(

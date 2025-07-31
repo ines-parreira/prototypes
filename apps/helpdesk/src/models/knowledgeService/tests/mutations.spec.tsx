@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { setupServer } from 'msw/node'
@@ -16,7 +17,6 @@ import {
 import { queryKeys } from '@gorgias/knowledge-service-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     useUpsertFeedback,

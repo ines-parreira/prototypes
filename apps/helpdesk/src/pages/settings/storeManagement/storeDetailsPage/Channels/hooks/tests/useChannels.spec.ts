@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import { useParams } from 'react-router-dom'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useStoreManagementState } from '../../../../StoreManagementProvider'
 import { ChannelWithMetadata } from '../../../../types'

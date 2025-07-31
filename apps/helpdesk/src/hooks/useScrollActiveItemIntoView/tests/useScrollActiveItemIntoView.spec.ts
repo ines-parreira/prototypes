@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import scrollIntoView from 'scroll-into-view-if-needed'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useScrollActiveItemIntoView from '../useScrollActiveItemIntoView'
 

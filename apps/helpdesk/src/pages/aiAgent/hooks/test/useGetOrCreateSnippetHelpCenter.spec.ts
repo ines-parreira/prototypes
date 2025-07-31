@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { useCreateStoreSnippetHelpCenter } from 'models/aiAgent/queries'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetOrCreateSnippetHelpCenter } from '../useGetOrCreateSnippetHelpCenter'
 

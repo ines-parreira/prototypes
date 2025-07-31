@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
@@ -7,8 +8,6 @@ import type {
     Integration,
     ListIntegrations200,
 } from '@gorgias/helpdesk-client'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useAllIntegrations from '../useAllIntegrations'
 

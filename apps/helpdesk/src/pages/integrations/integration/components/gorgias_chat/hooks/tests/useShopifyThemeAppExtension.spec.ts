@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { ShopifyIntegration } from 'models/integration/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useShopifyThemeAppExtension from '../useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'

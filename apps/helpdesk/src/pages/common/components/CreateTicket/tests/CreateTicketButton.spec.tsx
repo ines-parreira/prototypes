@@ -1,7 +1,8 @@
+import { userEvent } from '@repo/testing'
+
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import { renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
 

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import { useMetric } from 'domains/reporting/hooks/useMetric'
@@ -11,7 +12,6 @@ import {
 import { usePerformanceByArticleMetrics } from 'domains/reporting/pages/help-center/hooks/usePerformanceByArticleMetrics'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { Components } from 'rest_api/help_center_api/client.generated'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useMetric', () => ({
     useMetric: jest.fn(),

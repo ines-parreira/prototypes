@@ -1,10 +1,10 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import createBillingErrorNotification from '../../utils/createBillingErrorNotification'
 import useDispatchBillingError from '../useDispatchBillingError'

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
@@ -16,7 +17,6 @@ import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArti
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     useEnrichFeedbackData,

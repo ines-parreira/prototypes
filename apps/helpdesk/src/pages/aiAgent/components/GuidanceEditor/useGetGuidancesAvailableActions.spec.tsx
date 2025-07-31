@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetGuidancesAvailableActions } from './useGetGuidancesAvailableActions'
 

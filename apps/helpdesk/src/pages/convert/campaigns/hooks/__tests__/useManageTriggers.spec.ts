@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import _omit from 'lodash/omit'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { CampaignTrigger } from '../../types/CampaignTrigger'
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import {
@@ -5,7 +6,6 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
-import { renderHook } from 'utils/testing/renderHook'
 
 const integrationWithScriptTagAndValidDates = {
     meta: {

@@ -1,5 +1,6 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Expression, Identifier } from 'estree'
 import { fromJS } from 'immutable'
@@ -11,7 +12,6 @@ import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
 import { RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
 import { CHANNELS } from 'tickets/common/config'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

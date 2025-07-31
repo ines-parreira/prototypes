@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import useThrottledValue from 'hooks/useThrottledValue'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockedFn = jest.fn((value) => value as unknown)
 jest.useFakeTimers()

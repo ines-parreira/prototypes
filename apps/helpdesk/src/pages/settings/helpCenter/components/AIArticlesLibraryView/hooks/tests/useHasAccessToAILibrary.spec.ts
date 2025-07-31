@@ -1,10 +1,10 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useHasAccessToAILibrary } from '../useHasAccessToAILibrary'
 

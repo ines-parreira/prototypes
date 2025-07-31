@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
@@ -5,7 +6,6 @@ import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 import { voiceQueue } from 'fixtures/voiceQueue'
 import history from 'pages/history'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'

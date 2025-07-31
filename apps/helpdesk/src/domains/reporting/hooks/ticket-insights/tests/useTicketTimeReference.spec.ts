@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -10,7 +11,6 @@ import {
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

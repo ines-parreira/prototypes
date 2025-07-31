@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { getDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
     fetchBillableTicketsExcludingAIAgent,
@@ -17,7 +19,6 @@ import {
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(

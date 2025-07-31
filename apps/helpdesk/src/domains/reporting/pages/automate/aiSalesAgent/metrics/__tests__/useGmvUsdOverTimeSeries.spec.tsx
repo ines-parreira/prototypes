@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
@@ -9,7 +10,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useGmvUsdOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const timezone = 'UTC'
 

@@ -1,5 +1,6 @@
 import React, { ComponentType } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
@@ -7,7 +8,6 @@ import { createStore } from 'redux'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { IntegrationType } from 'models/integration/types'
 import { RootState } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 const defaultState = {
     integrations: fromJS({

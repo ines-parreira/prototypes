@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import useId from 'hooks/useId'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useId', () => {
     it('should generate the unique ids for two different components', () => {

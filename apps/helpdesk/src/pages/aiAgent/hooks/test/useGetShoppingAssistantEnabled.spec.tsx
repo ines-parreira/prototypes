@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useGetShoppingAssistantEnabled } from 'pages/aiAgent/hooks/useGetShoppingAssistantEnabled'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 

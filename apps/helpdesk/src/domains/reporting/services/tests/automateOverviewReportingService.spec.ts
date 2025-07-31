@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import { AutomateStatsMeasureLabelMap } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
@@ -38,7 +39,6 @@ import {
 } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 const useNewAutomateFiltersMock = assumeMock(useAutomateFilters)

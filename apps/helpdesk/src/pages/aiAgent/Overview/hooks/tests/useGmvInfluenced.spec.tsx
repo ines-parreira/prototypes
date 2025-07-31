@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -18,7 +19,6 @@ import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInflue
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)

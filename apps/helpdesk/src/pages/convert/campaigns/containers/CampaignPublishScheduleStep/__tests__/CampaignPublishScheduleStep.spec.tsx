@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -23,7 +24,6 @@ import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/Cam
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { RootState, StoreDispatch } from 'state/types'
-import { userEvent } from 'utils/testing/userEvent'
 
 import {
     CampaignPublishScheduleStep,

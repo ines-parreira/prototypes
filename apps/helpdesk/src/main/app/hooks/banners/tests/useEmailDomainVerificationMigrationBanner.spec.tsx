@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -9,7 +10,6 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { getEmailIntegrations } from 'state/integrations/selectors'
 import { isAdmin } from 'utils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useEmailDomainVerificationBanner } from '../useEmailDomainVerificationBanner'
 

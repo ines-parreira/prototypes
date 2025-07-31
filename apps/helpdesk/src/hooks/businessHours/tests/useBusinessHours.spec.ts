@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     BusinessHoursConfig,
     BusinessHoursTimeframe,
@@ -5,7 +7,6 @@ import {
 
 import { TimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useBusinessHours } from '../useBusinessHours'
 

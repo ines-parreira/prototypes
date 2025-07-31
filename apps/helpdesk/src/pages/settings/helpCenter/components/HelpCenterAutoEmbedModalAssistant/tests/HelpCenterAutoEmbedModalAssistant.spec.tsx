@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
@@ -8,7 +9,6 @@ import { HELP_CENTER_EMBED_FORM_TEXTS } from 'pages/settings/helpCenter/constant
 import { useCreatePageEmbedment } from 'pages/settings/helpCenter/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { MODAL_LABELS } from '../constants'
 import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'

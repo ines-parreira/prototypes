@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
 import { MergedRecordWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -33,7 +34,6 @@ import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/ty
 import { RootState } from 'state/types'
 import { assetsUrl } from 'utils'
 import { assumeMock, mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/voice-of-customer/metricsPerProduct')
 const useTicketCountPerProductWithEnrichmentMock = assumeMock(

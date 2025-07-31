@@ -1,10 +1,10 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
 import { createJourney } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useCreateNewJourney } from './useCreateNewJourney'
 

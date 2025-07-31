@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -11,7 +12,6 @@ import history from 'pages/history'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { AiAgentGuidanceLibraryContainer } from '../AiAgentGuidanceLibraryContainer'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'

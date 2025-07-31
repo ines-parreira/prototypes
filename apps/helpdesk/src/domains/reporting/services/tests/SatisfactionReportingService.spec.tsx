@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -33,7 +34,6 @@ import { SatisfactionMetric } from 'domains/reporting/state/ui/stats/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { createCsv } from 'utils/file'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useSatisfactionMetrics',

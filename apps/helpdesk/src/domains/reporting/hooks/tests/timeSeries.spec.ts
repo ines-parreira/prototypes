@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { TicketChannel } from 'business/types/ticket'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
@@ -57,7 +59,6 @@ import {
 } from 'domains/reporting/models/types'
 import { OrderDirection } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)

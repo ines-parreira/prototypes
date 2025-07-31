@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
@@ -11,7 +12,6 @@ import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { reportError } from 'utils/errors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
 import { usePublicResourcesPooling } from '../usePublicResourcesPooling'

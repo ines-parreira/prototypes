@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import useAppSelector from 'hooks/useAppSelector'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useIsSingleStore } from '../useIsSingleStore'
 

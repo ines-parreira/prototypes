@@ -1,7 +1,6 @@
+import { renderHook } from '@repo/testing'
 import type { AxiosResponse, CancelToken } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import client from '../../models/api/resources'
 import useCancellableRequest from '../useCancellableRequest'

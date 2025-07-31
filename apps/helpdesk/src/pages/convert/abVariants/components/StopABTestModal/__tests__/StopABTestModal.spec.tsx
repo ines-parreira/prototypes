@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 
 import { campaignWithABGroup, variants } from 'fixtures/abGroup'
-import { userEvent } from 'utils/testing/userEvent'
 
 import StopABTestModal from '../StopABTestModal'
 

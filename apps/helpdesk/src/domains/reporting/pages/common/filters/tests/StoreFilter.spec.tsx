@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -29,7 +30,6 @@ import {
 } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()

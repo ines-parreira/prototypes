@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useListIngestedResources } from 'models/helpCenter/queries'
 import { getIngestedResourcesListResponse } from 'pages/aiAgent/fixtures/ingestedResource.fixture'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { usePaginatedIngestedResources } from '../hooks/usePaginatedIngestedResources'
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -25,7 +26,6 @@ import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
 import { RootState } from 'state/types'
 import { assumeMock, mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/common/useTableReportData')
 const useTableReportDataMock = assumeMock(useTableReportData)

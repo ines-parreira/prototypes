@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -14,7 +15,6 @@ import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { ToneOfVoice } from '../../constants'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'

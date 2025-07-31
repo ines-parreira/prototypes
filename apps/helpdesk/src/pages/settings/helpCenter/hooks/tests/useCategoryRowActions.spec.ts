@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { CATEGORY_TREE_MAX_LEVEL } from '../../constants'
 import { useCategoryRowActions } from '../useCategoryRowActions'

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
@@ -5,7 +6,6 @@ import { Route, Router } from 'react-router-dom'
 import { useFlag } from 'core/flags'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { assumeMock, mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
 

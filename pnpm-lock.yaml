@@ -766,6 +766,9 @@ importers:
       '@repo/jest-config':
         specifier: workspace:*
         version: link:../../configs/jest
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../../utils/testing
       '@repo/tsconfigs':
         specifier: workspace:*
         version: link:../../configs/typescript

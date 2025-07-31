@@ -1,7 +1,8 @@
+import { renderHook } from '@repo/testing'
+
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetHelpCentersByShopName } from '../useGetHelpCentersByShopName'
 

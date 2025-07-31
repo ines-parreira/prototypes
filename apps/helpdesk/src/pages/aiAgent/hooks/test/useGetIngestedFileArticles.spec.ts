@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetFileIngestionArticleTitlesAndStatus } from 'models/helpCenter/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetIngestedFileArticles } from '../useGetIngestedFileArticles'
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { HEATMAP_MODE_LABEL } from 'domains/reporting/pages/common/components/Table/TableHeatmapSwitch'
@@ -14,7 +15,6 @@ import {
 } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('domains/reporting/pages/ticket-insights/tags/AllUsedTagsTable')
 const AllUsedTagsTableMock = assumeMock(AllUsedTagsTable)

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +12,6 @@ import {
 } from 'state/entities/helpCenter/helpCenters'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCenterList } from '../useHelpCenterList'
 

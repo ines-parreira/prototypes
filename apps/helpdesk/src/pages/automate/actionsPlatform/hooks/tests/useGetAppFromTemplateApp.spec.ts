@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { IntegrationType } from 'models/integration/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { App } from '../../types'
 import useGetAppFromTemplateApp from '../useGetAppFromTemplateApp'

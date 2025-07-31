@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import {
@@ -9,7 +10,6 @@ import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { getLDClient } from 'utils/launchDarkly'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import {

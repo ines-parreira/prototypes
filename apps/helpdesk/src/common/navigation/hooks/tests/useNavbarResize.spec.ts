@@ -1,10 +1,10 @@
 import type { MouseEvent as MouseEventReact, RefObject } from 'react'
 
+import { act, renderHook } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import { useSavedSizes } from 'core/layout/panels'
 import { assumeMock } from 'utils/testing'
-import { act, renderHook } from 'utils/testing/renderHook'
 
 import useNavbarResize, { DEFAULT_WIDTH } from '../useNavbarResize'
 

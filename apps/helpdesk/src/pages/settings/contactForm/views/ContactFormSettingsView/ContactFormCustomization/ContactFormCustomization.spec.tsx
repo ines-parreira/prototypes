@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -15,7 +16,6 @@ import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFo
 import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDisplayMode.enum'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import ContactFormCustomization from './ContactFormCustomization'
 

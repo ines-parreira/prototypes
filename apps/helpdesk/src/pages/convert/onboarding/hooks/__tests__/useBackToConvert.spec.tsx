@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     BACK_TO_CONVERT_ONBOARDING_KEY,

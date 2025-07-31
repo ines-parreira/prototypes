@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -5,7 +6,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
 import { reportError } from 'utils/errors'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { customToneOfVoicePreviewFixture } from '../../fixtures/customToneOfVoicePreview.fixture'
 import { createCustomToneOfVoicePreviewBody } from '../../utils/custom-tone-of-voice-preview.utils'

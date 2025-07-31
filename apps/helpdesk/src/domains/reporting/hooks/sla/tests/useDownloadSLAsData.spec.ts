@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { useTimeSeriesPerDimensionReportData } from 'domains/reporting/hooks/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'domains/reporting/hooks/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
@@ -9,7 +11,6 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { Period } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

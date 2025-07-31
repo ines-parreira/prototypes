@@ -1,6 +1,5 @@
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import FilterName from '../FilterName'
 

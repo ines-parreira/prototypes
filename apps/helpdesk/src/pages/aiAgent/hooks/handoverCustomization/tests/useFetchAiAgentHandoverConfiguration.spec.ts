@@ -1,10 +1,11 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetStoreHandoverConfigurations } from 'models/aiAgent/queries'
 import {
     HandoverConfigurationData,
     HandoverConfigurationResponse,
 } from 'models/aiAgent/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { getHandoverConfigurationsFixture } from '../../../fixtures/handoverConfiguration.fixture'
 import {

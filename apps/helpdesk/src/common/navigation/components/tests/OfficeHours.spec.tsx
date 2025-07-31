@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -10,7 +11,6 @@ import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import OfficeHours from '../OfficeHours'
 

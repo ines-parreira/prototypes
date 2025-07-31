@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { Value } from 'pages/common/forms/SelectField/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useCustomFieldsState } from '../useCustomFieldsState'
 

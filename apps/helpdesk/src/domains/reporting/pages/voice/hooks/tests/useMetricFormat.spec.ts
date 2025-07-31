@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -8,7 +9,6 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useMetric')

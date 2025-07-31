@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import _zip from 'lodash/zip'
 import { Provider } from 'react-redux'
@@ -26,7 +27,6 @@ import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 import { notUndefined } from 'utils/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()

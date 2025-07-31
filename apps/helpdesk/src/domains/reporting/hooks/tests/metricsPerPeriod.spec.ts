@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -33,7 +34,6 @@ import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const periodStart = moment()
 const periodEnd = periodStart.add(7, 'days')

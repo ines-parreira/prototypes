@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useViewId from '../useViewId'
 

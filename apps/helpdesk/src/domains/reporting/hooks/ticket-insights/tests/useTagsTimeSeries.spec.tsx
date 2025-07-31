@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -28,7 +29,6 @@ import { ticketInsightsSlice } from 'domains/reporting/state/ui/stats/ticketInsi
 import { TagsState } from 'state/entities/tags/types'
 import { RootState } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore([thunk])
 

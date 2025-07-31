@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { QueryObserverResult } from '@tanstack/react-query'
 
 import { useFlag } from 'core/flags'
 import { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { mapArticleApiToGuidanceArticle } from '../../utils/guidance.utils'
 import {

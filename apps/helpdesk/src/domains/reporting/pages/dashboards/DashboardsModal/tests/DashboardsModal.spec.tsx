@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
@@ -32,7 +33,6 @@ import {
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)

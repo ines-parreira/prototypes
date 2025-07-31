@@ -1,6 +1,5 @@
+import { renderHook, type RenderHookOptions } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
-
-import { renderHook, RenderHookOptions } from 'utils/testing/renderHook'
 
 type RenderHookWithRouterOptions<TProps> = {
     initialEntries?: [string]

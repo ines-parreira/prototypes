@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -14,7 +15,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchTags } from 'models/tag/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useListTags from '../useListTags'
 

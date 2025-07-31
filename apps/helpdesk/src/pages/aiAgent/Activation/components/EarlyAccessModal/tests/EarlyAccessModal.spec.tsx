@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, within } from '@testing-library/react'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import '@testing-library/jest-dom/extend-expect'
 

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -12,7 +13,6 @@ import {
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { StoreState } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useHelpCenterAIArticlesLibrary } from '../useHelpCenterAIArticlesLibrary'
 

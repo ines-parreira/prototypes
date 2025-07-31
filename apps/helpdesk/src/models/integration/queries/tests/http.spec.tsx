@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -14,7 +15,6 @@ import {
     useGetHTTPEvents,
 } from 'models/integration/queries/http'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()

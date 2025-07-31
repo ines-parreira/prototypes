@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
@@ -18,7 +19,6 @@ import {
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const timezone = 'UTC'
 

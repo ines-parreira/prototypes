@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import {
     CONVERT_LIGHT_TRIGGERS,
     TRIGGERS_CONFIG,
 } from 'pages/convert/campaigns/constants/triggers'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 import { useAvailableTriggerList } from '../useAvailableTriggerList'

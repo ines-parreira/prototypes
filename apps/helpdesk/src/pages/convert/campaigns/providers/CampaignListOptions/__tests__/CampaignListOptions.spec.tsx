@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 
 import useSearch from 'hooks/useSearch'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { CampaignListOptions } from '../CampaignListOptions'
 import { CampaignListOptionsContext } from '../context'

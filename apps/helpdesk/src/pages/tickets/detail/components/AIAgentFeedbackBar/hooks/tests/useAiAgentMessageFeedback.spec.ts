@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useAiAgentMessageFeedback from '../useAiAgentMessageFeedback'
 

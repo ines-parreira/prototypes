@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { THEME_CONFIGS, THEME_NAME } from 'core/theme'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('ThemeList', () => {
     it('should render all themes', () => {

@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'
 import * as utils from 'utils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useIsToggleEnabled from '../useIsToggleEnabled'
 

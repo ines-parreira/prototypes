@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -15,7 +16,6 @@ import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import * as errors from 'utils/errors'
 import { mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const getIngestionLogsSpy = jest.spyOn(resources, 'getIngestionLogs')
 const getHelpCenterListSpy = jest.spyOn(resources, 'getHelpCenterList')

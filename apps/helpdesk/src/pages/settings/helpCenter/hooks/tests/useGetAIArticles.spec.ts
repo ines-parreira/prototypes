@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { doNotRetry40XErrorsHandler } from 'api/utils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetAIArticlesByHelpCenterAndStore } from '../../queries'
 import { useGetAIArticles } from '../useGetAIArticles'

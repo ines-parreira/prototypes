@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
@@ -16,7 +17,6 @@ import { useStandaloneIntegrationUpsert } from 'pages/standalone/hooks/useStanda
 import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationById } from 'state/integrations/selectors'
-import { renderHook } from 'utils/testing/renderHook'
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector', () => jest.fn())

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
@@ -10,7 +11,6 @@ import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterA
 import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import { Components } from 'rest_api/help_center_api/client.generated'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../../pages/settings/helpCenter/constants'
 import {

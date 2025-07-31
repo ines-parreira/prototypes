@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import { OrderDirection } from '@gorgias/helpdesk-queries'
@@ -36,7 +37,6 @@ import { agents } from 'fixtures/agents'
 import useAppSelector from 'hooks/useAppSelector'
 import { createCsv } from 'utils/file'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const timeSeriesMock = [
     [

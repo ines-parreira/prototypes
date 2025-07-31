@@ -1,7 +1,8 @@
+import { renderHook } from '@repo/testing'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useShortcuts from 'hooks/useShortcuts'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useAppShortcuts from '../useAppShortcuts'
 

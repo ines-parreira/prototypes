@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useCookies } from 'react-cookie'
@@ -12,7 +13,6 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { SegmentEvent } from '../../../../../../common/segment'
 import {

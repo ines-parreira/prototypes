@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { SsoToggleButton } from '../SsoToggleButton'
 

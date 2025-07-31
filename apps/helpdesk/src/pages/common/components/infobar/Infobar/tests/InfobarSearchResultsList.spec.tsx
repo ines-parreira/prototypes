@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
 import {
     InfobarSearchResultsList,
     NO_CUSTOMER_FOUND_PLACEHOLDER,
 } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
-import { userEvent } from 'utils/testing/userEvent'
 
 const commonProps = {
     errorMessage: '',

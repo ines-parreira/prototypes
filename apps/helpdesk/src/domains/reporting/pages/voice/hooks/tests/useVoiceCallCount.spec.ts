@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
@@ -8,7 +9,6 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

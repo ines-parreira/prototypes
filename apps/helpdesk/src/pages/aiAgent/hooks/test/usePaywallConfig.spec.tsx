@@ -1,9 +1,10 @@
+import { renderHook } from '@repo/testing'
+
 import DynamicDiscount from 'assets/img/ai-agent/ai-agent_paywall_dynamic-discount.png'
 import ProductRecommendations from 'assets/img/ai-agent/ai-agent_paywall_product-recommendations.png'
 import SalesStrategy from 'assets/img/ai-agent/ai-agent_paywall_sales-strategy.png'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { assetsUrl } from 'utils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'
 

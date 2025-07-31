@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { ArticleTemplatesListFixture } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { ArticleTemplateModal } from '../ArticleTemplateModal'
 

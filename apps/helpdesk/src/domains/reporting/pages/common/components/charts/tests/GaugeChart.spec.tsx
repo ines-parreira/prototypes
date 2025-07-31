@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
 import GaugeChart from 'domains/reporting/pages/common/components/charts/GaugeChart'
@@ -9,7 +10,6 @@ import {
     InstagramWorkload,
     PhoneWorkload,
 } from 'fixtures/chart'
-import { userEvent } from 'utils/testing/userEvent'
 
 describe('<GaugeChart />', () => {
     it('should render the gauge chart', () => {

@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useShopifySettingsForm } from '../useShopifySettingsForm'
 

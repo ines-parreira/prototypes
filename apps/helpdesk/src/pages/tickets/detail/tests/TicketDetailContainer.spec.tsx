@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -43,7 +44,6 @@ import {
     makeExecuteKeyboardAction,
     renderWithRouter,
 } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'

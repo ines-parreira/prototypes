@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { useEmailIntegrations } from '../../../hooks/useEmailIntegrations'
 import ContactFormMailtoReplacementSection from '../ContactFormMailtoReplacementSection'

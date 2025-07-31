@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useStoresKnowledgeStatus } from 'pages/aiAgent/hooks/useStoresKnowledgeStatus'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useFetchStoreKnowledgeStatusData } from '../useFetchStoreKnowledgeStatusData'
 

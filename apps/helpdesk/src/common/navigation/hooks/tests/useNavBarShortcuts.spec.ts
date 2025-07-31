@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import useShortcuts from 'hooks/useShortcuts'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useNavBar } from '../useNavBar/useNavBar'
 import { useNavBarShortcuts } from '../useNavBarShortcuts'

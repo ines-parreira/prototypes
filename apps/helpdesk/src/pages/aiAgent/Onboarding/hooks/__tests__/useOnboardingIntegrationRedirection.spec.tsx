@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import { IntegrationType } from 'models/integration/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     LOCAL_STORAGE_ID_KEY,

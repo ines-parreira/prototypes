@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { renderHook } from 'utils/testing/renderHook'
+import { renderHook } from '@repo/testing'
 
 import type Client from '../../Client'
 import Context from '../../Context'

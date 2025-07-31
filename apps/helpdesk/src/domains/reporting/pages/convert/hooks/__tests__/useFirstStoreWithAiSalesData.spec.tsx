@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { useFirstStoreWithAiSalesData } from 'domains/reporting/pages/convert/hooks/useFirstStoreWithAiSalesData'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/useStatsFilters',

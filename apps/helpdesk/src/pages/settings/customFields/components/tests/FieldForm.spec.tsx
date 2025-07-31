@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
 
@@ -23,7 +24,6 @@ import FieldForm from 'pages/settings/customFields/components/FieldForm'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)

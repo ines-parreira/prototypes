@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from 'react-dom/test-utils'
 
 import {
@@ -7,7 +8,6 @@ import {
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
 

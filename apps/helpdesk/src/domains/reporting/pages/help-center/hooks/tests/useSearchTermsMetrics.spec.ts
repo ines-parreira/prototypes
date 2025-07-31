@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -7,7 +9,6 @@ import {
     HelpCenterTrackingEventSegment,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { useSearchTermsMetrics } from 'domains/reporting/pages/help-center/hooks/useSearchTermsMetrics'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useMetric', () => ({
     useMetric: jest.fn(),

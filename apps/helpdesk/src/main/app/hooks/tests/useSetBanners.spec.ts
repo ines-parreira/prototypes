@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import { useShoppingAssistantTrialBanner } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialBanner'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     useEmailDisconnectedBanner,

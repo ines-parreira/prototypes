@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { userEvent } from 'utils/testing/userEvent'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import TaxesPopover from '../TaxesPopover'

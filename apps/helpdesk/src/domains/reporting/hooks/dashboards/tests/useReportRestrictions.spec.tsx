@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -15,7 +16,6 @@ import { automationSubscriptionProductPrices } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
-import { renderHook } from 'utils/testing/renderHook'
 
 const mockStore = configureMockStore<RootState>([])
 

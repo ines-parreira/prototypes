@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import {
     cleanup,
     fireEvent,
@@ -19,7 +20,6 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, mockStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import NewPhoneNumber from '../NewPhoneNumber'
 

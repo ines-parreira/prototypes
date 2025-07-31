@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetArticleIngestionArticlesTitleAndStatus } from 'models/helpCenter/queries'
 import { useGetIngestedUrlArticles } from 'pages/aiAgent/hooks/useGetIngestedUrlArticles'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('models/helpCenter/queries')
 const useGetArticleIngestionArticleTitlesMock = jest.mocked(

@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import {
     useGetFileIngestion,
     useGetHelpCenterList,
 } from 'models/helpCenter/queries'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useFetchFileIngestionData } from '../useFetchFileIngestionData'
 

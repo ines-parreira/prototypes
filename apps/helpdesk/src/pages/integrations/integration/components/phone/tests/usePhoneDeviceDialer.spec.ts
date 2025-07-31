@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
@@ -7,7 +8,6 @@ import { UserSearchResult } from 'models/search/types'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 import * as selectors from 'state/integrations/selectors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useDialerOutboundCall from '../useDialerOutboundCall'
 import usePhoneDeviceDialer from '../usePhoneDeviceDialer'

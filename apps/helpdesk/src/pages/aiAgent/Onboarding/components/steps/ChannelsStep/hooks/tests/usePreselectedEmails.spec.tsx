@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -13,7 +14,6 @@ import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/ut
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const queryClient = mockQueryClient()
 

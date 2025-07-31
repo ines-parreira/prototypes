@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -7,7 +8,6 @@ import thunk from 'redux-thunk'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     getColumnContentAlignment,

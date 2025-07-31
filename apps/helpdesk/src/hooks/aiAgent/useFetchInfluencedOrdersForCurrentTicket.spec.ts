@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { QueryObserverSuccessResult } from '@tanstack/react-query'
 
 import { useGetTicketContext } from 'hooks/aiAgent/useGetTicketContext'
-import { renderHook } from 'utils/testing/renderHook'
 
 import {
     InfluencedOrderData,

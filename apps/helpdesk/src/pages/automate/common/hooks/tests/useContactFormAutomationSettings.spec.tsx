@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useContactFormAutomationSettings from '../useContactFormAutomationSettings'
 import useContactFormsAutomationSettings from '../useContactFormsAutomationSettings'

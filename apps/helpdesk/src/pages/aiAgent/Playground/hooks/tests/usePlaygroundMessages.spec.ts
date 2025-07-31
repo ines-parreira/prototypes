@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
@@ -8,7 +9,6 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'

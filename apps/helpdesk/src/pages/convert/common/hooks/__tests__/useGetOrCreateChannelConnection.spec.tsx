@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
@@ -12,7 +13,6 @@ import {
 import { IntegrationType } from 'models/integration/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useGetOrCreateChannelConnection } from '../useGetOrCreateChannelConnection'
 

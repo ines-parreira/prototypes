@@ -1,6 +1,5 @@
+import { renderHook } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useMouseRelease from '../useMouseRelease'
 

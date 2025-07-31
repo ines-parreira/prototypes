@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { POSITIONS } from 'reapop'
 
 import { JobType } from '@gorgias/helpdesk-queries'
@@ -8,7 +9,6 @@ import {
 } from 'state/notifications/types'
 import { buildJobMessage } from 'utils/notificationUtils'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useNotificationPayload from '../useNotificationPayload'
 

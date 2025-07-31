@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -33,7 +34,6 @@ import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 const timezone = 'UTC'
 

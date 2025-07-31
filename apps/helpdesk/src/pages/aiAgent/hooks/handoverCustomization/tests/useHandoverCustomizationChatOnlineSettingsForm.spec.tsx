@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -21,7 +22,6 @@ import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/ha
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { HandoverCustomizationChatOnlineSettingsFormValues } from '../../../types'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'

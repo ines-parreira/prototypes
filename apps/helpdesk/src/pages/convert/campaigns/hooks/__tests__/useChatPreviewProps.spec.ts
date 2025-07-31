@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import {
@@ -8,7 +9,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
 import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useChatPreviewProps()', () => {
     describe('integration is empty', () => {

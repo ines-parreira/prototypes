@@ -1,4 +1,4 @@
-// import { userEvent } from 'utils/testing/userEvent'
+// import { userEvent } from '@repo/testing'
 import React from 'react'
 
 import { addBreadcrumb } from '@sentry/react'

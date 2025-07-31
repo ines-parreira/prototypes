@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import { usePostReporting } from 'domains/reporting/models/queries'
@@ -5,7 +6,6 @@ import { CampaignOrderEventsMeasure } from 'domains/reporting/pages/convert/clie
 import { useCanRequestABTest } from 'domains/reporting/pages/convert/hooks/stats/useCanRequestABTest'
 import { getMetricFromCubeData } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.useFakeTimers().setSystemTime(new Date('2024-04-08'))
 jest.mock('domains/reporting/models/queries')

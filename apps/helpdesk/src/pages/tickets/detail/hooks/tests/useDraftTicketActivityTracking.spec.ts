@@ -1,6 +1,7 @@
+import { renderHook } from '@repo/testing'
+
 import * as activityTracker from 'services/activityTracker'
 import { ActivityEvents } from 'services/activityTracker'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useDraftTicketActivityTracking from '../useDraftTicketActivityTracking'
 

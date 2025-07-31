@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { AILibraryArticleItem } from 'models/helpCenter/types'
 import { AIArticlesListFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import { userEvent } from 'utils/testing/userEvent'
 
 import AIArticleRow, { AIArticleRowProps } from '../AIArticleRow'
 

@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import * as H from 'history'
 import { createMemoryHistory } from 'history'
 import { Route, Router } from 'react-router-dom'
 
 import history from 'pages/history'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useUnsavedChangesPrompt from '../useUnsavedChangesPrompt'
 

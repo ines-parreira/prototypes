@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import AssignUser from '../AssignUser'
 import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'

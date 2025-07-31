@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { AxiosError } from 'axios'
 
@@ -14,7 +15,6 @@ import {
     TextsPerLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'
 import * as integrationsActions from 'state/integrations/actions'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from '../useHandoverCustomizationChatLanguageTextsConfiguration'
 

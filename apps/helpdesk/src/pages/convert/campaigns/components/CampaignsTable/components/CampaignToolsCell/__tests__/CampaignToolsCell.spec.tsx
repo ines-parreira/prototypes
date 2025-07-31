@@ -1,9 +1,9 @@
+import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { CampaignToolsCell } from '../CampaignToolsCell'
 

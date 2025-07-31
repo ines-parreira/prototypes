@@ -1,7 +1,8 @@
+import { renderHook } from '@repo/testing'
+
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { TICKET_QUERIES_DEFAULT_CONFIG } from 'tickets/ticket-detail/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useAllEvents } from '../useAllEvents'
 import { useAllVoiceCalls } from '../useAllVoiceCalls'

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -14,7 +15,6 @@ import { getArticleTranslationWithRatingFixture } from 'pages/aiAgent/fixtures/a
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { notify } from 'state/notifications/actions'
 import { reportError } from 'utils/errors'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useArticleTranslations } from '../useArticleTranslations'
 

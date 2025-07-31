@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment-timezone'
@@ -27,7 +28,6 @@ import { agents } from 'fixtures/agents'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 jest.mock(
     'hooks/useAppSelector',

@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
@@ -20,7 +22,6 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/metrics')
 const useCustomerSatisfactionMetricMock = assumeMock(

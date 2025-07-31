@@ -1,7 +1,6 @@
+import { renderHook } from '@repo/testing'
 import { fromJS, List } from 'immutable'
 import moment from 'moment'
-
-import { renderHook } from 'utils/testing/renderHook'
 
 import useLastMessageDatetimeAfterMount from '../useLastMessageDatetimeAfterMount'
 

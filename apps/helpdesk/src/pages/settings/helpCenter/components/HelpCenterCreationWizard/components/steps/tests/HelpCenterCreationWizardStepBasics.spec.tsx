@@ -1,9 +1,8 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import 'tests/__mocks__/intersectionObserverMock'
 

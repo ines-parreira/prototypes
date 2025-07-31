@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -18,7 +19,6 @@ import {
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from '../hooks/useShoppingAssistantTrialAccess'

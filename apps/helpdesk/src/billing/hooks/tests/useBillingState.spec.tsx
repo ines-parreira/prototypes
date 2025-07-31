@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -7,7 +8,6 @@ import { mockGetBillingStateHandler } from '@gorgias/helpdesk-mocks'
 import { BillingState } from '@gorgias/helpdesk-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useBillingState } from '../useBillingState'
 

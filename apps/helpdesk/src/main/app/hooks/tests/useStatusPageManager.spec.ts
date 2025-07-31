@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import statusPageManager from 'services/statusPageManager/statusPageManager'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useStatusPageManager } from '../useStatusPageManager'
 

@@ -1,3 +1,4 @@
+import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -17,7 +18,6 @@ import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import ABTestVariantEditPage from '../ABTestVariantEditPage'
 

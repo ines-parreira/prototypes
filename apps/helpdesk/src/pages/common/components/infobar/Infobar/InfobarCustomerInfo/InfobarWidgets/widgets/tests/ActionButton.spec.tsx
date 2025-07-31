@@ -1,9 +1,8 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { cleanup, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-
-import { userEvent } from 'utils/testing/userEvent'
 
 import { ActionButtonContainer } from '../ActionButton'
 

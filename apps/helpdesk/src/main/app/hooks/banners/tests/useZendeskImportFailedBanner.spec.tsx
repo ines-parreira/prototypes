@@ -1,8 +1,9 @@
+import { renderHook } from '@repo/testing'
+
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import { ImportStatus } from 'pages/settings/importZendesk/zendesk/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useZendeskImportFailedBanner } from '../useZendeskImportFailedBanner'
 

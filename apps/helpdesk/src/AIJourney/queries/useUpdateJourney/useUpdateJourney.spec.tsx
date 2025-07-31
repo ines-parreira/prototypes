@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
@@ -5,7 +6,6 @@ import { JourneyStatusEnum, patchJourney } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useUpdateJourney } from './useUpdateJourney'
 

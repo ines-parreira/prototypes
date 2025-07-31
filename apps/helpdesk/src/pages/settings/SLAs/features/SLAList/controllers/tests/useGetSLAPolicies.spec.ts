@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import {
     HttpResponse,
     ListSlaPolicies200,
@@ -5,7 +7,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
-import { renderHook } from 'utils/testing/renderHook'
 
 import makeUISLAPolicy from '../makeUISLAPolicy'
 import useGetSLAPolicies from '../useGetSLAPolicies'

@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { listEvents } from '@gorgias/helpdesk-client'
@@ -6,7 +7,6 @@ import type { Event } from '@gorgias/helpdesk-types'
 
 import { useExhaustEndpoint } from 'hooks/useExhaustEndpoint'
 import { TICKET_QUERIES_DEFAULT_CONFIG } from 'tickets/ticket-detail/constants'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useAllEvents } from '../useAllEvents'
 

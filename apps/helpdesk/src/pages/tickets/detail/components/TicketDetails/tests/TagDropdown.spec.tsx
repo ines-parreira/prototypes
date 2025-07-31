@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
@@ -8,7 +9,6 @@ import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import { TagDropdownMenu } from 'tags'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import TagDropdown from '../TagDropdown'
 

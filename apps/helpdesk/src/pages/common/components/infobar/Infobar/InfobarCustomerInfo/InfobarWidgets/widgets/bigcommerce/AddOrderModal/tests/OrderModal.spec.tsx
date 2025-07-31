@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { renderHook } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -28,7 +29,6 @@ import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
-import { renderHook } from 'utils/testing/renderHook'
 
 import * as utils from '../utils'
 

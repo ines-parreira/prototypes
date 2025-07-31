@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
+
 import { Customer } from 'models/customer/types'
 import { Ticket } from 'models/ticket/types'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
@@ -11,7 +13,6 @@ import {
 import { getActiveCustomer } from 'state/customers/selectors'
 import { getTicket } from 'state/ticket/selectors'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useTemplateContext } from '../useTemplateContext'
 

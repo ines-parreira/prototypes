@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useTicketModal } from '../useTicketModal'
 

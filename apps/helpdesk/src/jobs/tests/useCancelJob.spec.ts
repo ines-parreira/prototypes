@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { POSITIONS } from 'reapop'
 
 import { useCancelJob as useCancelJobQuery } from '@gorgias/helpdesk-queries'
@@ -9,7 +10,6 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useCancelJob from '../useCancelJob'
 

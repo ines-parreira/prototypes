@@ -1,5 +1,6 @@
+import { renderHook } from '@repo/testing'
+
 import * as environment from 'utils/environment'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { useConvertBundleInstallationSnippet } from '../useConvertBundleInstallationSnippet'
 

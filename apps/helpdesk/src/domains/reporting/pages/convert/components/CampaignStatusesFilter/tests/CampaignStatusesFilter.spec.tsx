@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -21,7 +22,6 @@ import { InferredCampaignStatus } from 'models/convert/campaign/types'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockedRemove = jest.fn()
 

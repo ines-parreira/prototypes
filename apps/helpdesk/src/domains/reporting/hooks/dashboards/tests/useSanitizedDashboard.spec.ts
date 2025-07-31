@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { useSanitizedDashboard } from 'domains/reporting/hooks/dashboards/useSanitizedDashboard'
 import {
     DashboardChartSchema,
@@ -10,7 +12,6 @@ import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { TicketFieldsChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

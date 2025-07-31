@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -7,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import { useSelfServiceStoreIntegrationMultiStore } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import { renderHook } from 'utils/testing/renderHook'
 
 describe('useSelfServiceStoreIntegrationMultiStore', () => {
     const SHOP_NAME_1 = 'My Shop'

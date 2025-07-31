@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { identifyUser } from 'common/segment'
@@ -6,7 +7,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import userActivityManager from 'services/userActivityManager'
 import { handle2FAEnforced } from 'state/currentUser/actions'
 import { fetchVisibleViewsCounts } from 'state/views/actions'
-import { renderHook } from 'utils/testing/renderHook'
 
 import useSharedLogic from '../useSharedLogic'
 

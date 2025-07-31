@@ -1,8 +1,9 @@
 import { Dispatch } from 'react'
 
+import { renderHook } from '@repo/testing'
+
 import useLocalStorage from 'hooks/useLocalStorage'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { BannerCategories } from '../../../types'
 import { DISMISSED_BANNER_STORAGE_KEY } from '../../constants'

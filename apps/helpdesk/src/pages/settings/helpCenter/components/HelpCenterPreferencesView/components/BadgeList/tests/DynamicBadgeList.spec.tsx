@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { BadgeItemProps } from 'pages/common/components/BadgetItem'
-import { userEvent } from 'utils/testing/userEvent'
 
 import { BadgeSelectItem, DynamicBadgeList } from '../DynamicBadgeList'
 

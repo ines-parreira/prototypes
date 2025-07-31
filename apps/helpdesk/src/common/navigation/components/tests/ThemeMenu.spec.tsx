@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { render, within } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -11,7 +12,6 @@ import {
     useTheme,
 } from 'core/theme'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 import ThemeMenu from '../ThemeMenu'
 

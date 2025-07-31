@@ -1,3 +1,5 @@
+import { renderHook } from '@repo/testing'
+
 import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
@@ -5,7 +7,6 @@ import {
     PLAYGROUND_CUSTOMER_MOCK,
 } from 'pages/aiAgent/constants'
 import { playgroundCustomerMessage } from 'pages/aiAgent/fixtures/playgroundMessages.fixture'
-import { renderHook } from 'utils/testing/renderHook'
 
 import { getTicketCustomer } from '../../utils/playground-ticket.util'
 import { usePlaygroundApi } from '../usePlaygroundApi'

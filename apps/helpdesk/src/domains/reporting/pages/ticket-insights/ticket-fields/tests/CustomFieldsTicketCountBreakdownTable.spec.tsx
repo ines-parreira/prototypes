@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -30,7 +31,6 @@ import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
-import { userEvent } from 'utils/testing/userEvent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

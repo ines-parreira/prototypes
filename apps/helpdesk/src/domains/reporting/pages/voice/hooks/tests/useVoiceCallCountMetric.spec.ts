@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import { useMetric } from 'domains/reporting/hooks/useMetric'
@@ -7,7 +8,6 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useVoiceCallCountMetric } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountMetric'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { assumeMock } from 'utils/testing'
-import { renderHook } from 'utils/testing/renderHook'
 
 jest.mock('domains/reporting/hooks/useMetric')
 const useMetricMock = assumeMock(useMetric)
