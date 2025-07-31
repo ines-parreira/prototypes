@@ -147,10 +147,17 @@ export default function reducer(
         case constants.SET_ORDER_DIRECTION: {
             return state.set(
                 'active',
-                activeView.merge({
-                    order_by: action.fieldPath,
-                    order_dir: action.direction,
-                }),
+                activeView.merge(
+                    action.direction
+                        ? {
+                              order_by: action.fieldPath,
+                              order_dir: action.direction,
+                          }
+                        : {
+                              order_by: undefined,
+                              order_dir: undefined,
+                          },
+                ),
             )
         }
 

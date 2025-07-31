@@ -1,12 +1,13 @@
-import React, { ComponentType, useCallback, useMemo } from 'react'
+import { ComponentType, useCallback, useMemo } from 'react'
 
 import classnames from 'classnames'
 import { Map } from 'immutable'
 
+import { OrderDirection, UpdateViewItemsOrderBy } from '@gorgias/helpdesk-types'
+
 import { getConfigByName } from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { OrderDirection } from 'models/api/types'
 import { TicketSearchSortableProperties } from 'models/search/types'
 import { EntityType } from 'models/view/types'
 import { fetchViewItems, setOrderDirection } from 'state/views/actions'
@@ -67,23 +68,6 @@ const HeaderCell = ({
         [field, isSearch, isTicketSearchSortingEnabled],
     )
 
-    const renderOrderIcon = useCallback(
-        (isOrderingField = false) => {
-            if (isOrderingField) {
-                return (
-                    <i className="material-icons md-1">
-                        {orderDirection === 'desc'
-                            ? 'arrow_drop_down'
-                            : 'arrow_drop_up'}
-                    </i>
-                )
-            }
-
-            return null
-        },
-        [orderDirection],
-    )
-
     const onClick = useCallback(() => {
         // if currently searching, can't do anything (no edition)
         if (
@@ -92,21 +76,36 @@ const HeaderCell = ({
             action === 'sort' &&
             isClickable
         ) {
-            const newDirection =
-                orderDirection === OrderDirection.Desc
-                    ? OrderDirection.Asc
-                    : OrderDirection.Desc
+            let newDirection = undefined
+            if (orderBy === fieldPath) {
+                if (orderDirection === 'desc') {
+                    newDirection = OrderDirection.Asc
+                }
+            } else {
+                newDirection = OrderDirection.Desc
+            }
+
             dispatch(
-                setOrderDirection(
+                setOrderDirection({
+                    direction: newDirection,
+                    isEditable: isSearch || isEditMode,
                     fieldPath,
-                    newDirection,
-                    isSearch || isEditMode,
-                ),
-            )
-            void dispatch(
-                fetchViewItems(undefined, undefined, undefined, undefined, {
-                    orderBy: `${fieldPath}:${newDirection}`,
                 }),
+            )
+            const params = !!newDirection
+                ? {
+                      orderBy:
+                          `${fieldPath}:${newDirection}` as UpdateViewItemsOrderBy,
+                  }
+                : undefined
+            void dispatch(
+                fetchViewItems(
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    params,
+                ),
             )
         }
     }, [
@@ -119,6 +118,7 @@ const HeaderCell = ({
         isTicketSearchSortingEnabled,
         orderDirection,
         isClickable,
+        orderBy,
     ])
 
     const isMainField = config.get('mainField') === field.get('name')
@@ -150,8 +150,14 @@ const HeaderCell = ({
                             >
                                 {field.get('title')}
                             </span>
-                            {action === 'sort' &&
-                                renderOrderIcon(fieldPath === orderBy)}
+
+                            {fieldPath === orderBy && !!orderDirection && (
+                                <i className="material-icons md-1">
+                                    {orderDirection === 'desc'
+                                        ? 'arrow_drop_down'
+                                        : 'arrow_drop_up'}
+                                </i>
+                            )}
                         </div>
                     )}
                 </div>

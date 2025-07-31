@@ -1318,7 +1318,11 @@ describe('actions', () => {
                 const direction = OrderDirection.Desc
 
                 store.dispatch(
-                    actions.setOrderDirection(fieldPath, direction, isEditable),
+                    actions.setOrderDirection({
+                        direction,
+                        fieldPath,
+                        isEditable,
+                    }),
                 )
 
                 expect(store.getActions()).toEqual([

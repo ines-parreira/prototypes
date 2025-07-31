@@ -6,14 +6,12 @@ import { notify as updateNotification } from 'reapop'
 import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
 import { JobType } from '@gorgias/helpdesk-queries'
+import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import * as viewsConfig from 'config/views'
 import { SearchRank } from 'hooks/useSearchRankScenario'
 import client from 'models/api/resources'
-import {
-    ApiListResponseLegacyPagination,
-    OrderDirection,
-} from 'models/api/types'
+import { ApiListResponseLegacyPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { JOBS_PATH } from 'models/job/resources'
@@ -86,11 +84,15 @@ export const toggleViewSelection = () => ({
 })
 
 export const setOrderDirection =
-    (
-        fieldPath: string,
-        direction: OrderDirection = OrderDirection.Asc,
-        isEditable: boolean,
-    ) =>
+    ({
+        direction,
+        fieldPath,
+        isEditable,
+    }: {
+        direction?: OrderDirection
+        fieldPath: string
+        isEditable: boolean
+    }) =>
     (dispatch: StoreDispatch) => {
         dispatch({
             type: types.SET_ORDER_DIRECTION,

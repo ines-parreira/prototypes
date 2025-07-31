@@ -1,7 +1,5 @@
-import React from 'react'
-
-import { fireEvent, render } from '@testing-library/react'
-import { List, Map } from 'immutable'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -21,14 +19,11 @@ const setOrderDirectionMock = assumeMock(setOrderDirection)
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
+const mockActionsComponent = 'ACTIONS'
+const ActionsComponent = () => <div>{mockActionsComponent}</div>
+
 describe('ViewTable::Table::HeaderCell', () => {
     const viewConfig = views.first() as Map<any, any>
-
-    class ActionsComponent extends React.Component {
-        render() {
-            return <div>ACTIONS</div>
-        }
-    }
 
     const viewConfigFields = viewConfig.get('fields') as List<any>
 
@@ -49,21 +44,23 @@ describe('ViewTable::Table::HeaderCell', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
     it('displays the default cell', () => {
-        const { container } = render(
+        render(
             <Provider store={mockStore({})}>
                 <HeaderCell {...minProps} />
             </Provider>,
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(screen.getByText(mockActionsComponent)).toBeInTheDocument()
     })
 
     it('does not display ActionsComponent for non-main field cell', () => {
-        const { container } = render(
+        render(
             <Provider store={mockStore()}>
                 <HeaderCell {...minProps} field={viewConfigFields.get(1)} />
             </Provider>,
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(screen.queryByText(mockActionsComponent)).not.toBeInTheDocument()
     })
 
     it.each([
@@ -98,7 +95,7 @@ describe('ViewTable::Table::HeaderCell', () => {
         ['when in search mode and not in edit mode', true, false],
         ['when not in search mode and in edit mode', false, true],
     ])('sorts by the field value on click %s', (_, isSearch, isEditMode) => {
-        const { getByText } = render(
+        render(
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
@@ -109,7 +106,7 @@ describe('ViewTable::Table::HeaderCell', () => {
             </Provider>,
         )
 
-        fireEvent.click(getByText(createdViewField.get('title')))
+        fireEvent.click(screen.getByText(createdViewField.get('title')))
 
         expect(fetchViewItemsMock).toHaveBeenCalledWith(
             undefined,
@@ -122,11 +119,11 @@ describe('ViewTable::Table::HeaderCell', () => {
                 }`,
             },
         )
-        expect(setOrderDirectionMock).toHaveBeenCalledWith(
-            createdViewField.get('path'),
-            OrderDirection.Desc,
-            isSearch || isEditMode,
-        )
+        expect(setOrderDirectionMock).toHaveBeenCalledWith({
+            direction: OrderDirection.Desc,
+            isEditable: isSearch || isEditMode,
+            fieldPath: createdViewField.get('path'),
+        })
     })
 
     it('should sort by field value on click when in search mode', () => {
@@ -160,4 +157,73 @@ describe('ViewTable::Table::HeaderCell', () => {
         expect(fetchViewItemsMock).not.toHaveBeenCalled()
         expect(setOrderDirectionMock).not.toHaveBeenCalled()
     })
+
+    it.each([
+        [
+            'when field is not the active sorted field',
+            {
+                order_by: (
+                    viewConfigFields.find(
+                        (field: Map<any, any>) =>
+                            field.get('name') === ViewField.Updated,
+                    ) as Map<any, any>
+                ).get('name'),
+                order_dir: OrderDirection.Desc,
+            },
+            OrderDirection.Desc,
+            {
+                orderBy: `${createdViewField.get('path') as string}:${OrderDirection.Desc}`,
+            },
+        ],
+        [
+            'when field is the active sorted field',
+            {
+                order_by: createdViewField.get('path'),
+                order_dir: OrderDirection.Desc,
+            },
+            OrderDirection.Asc,
+            {
+                orderBy: `${createdViewField.get('path') as string}:${OrderDirection.Asc}`,
+            },
+        ],
+        [
+            'when field is the active sorted field',
+            {
+                order_by: createdViewField.get('path'),
+                order_dir: OrderDirection.Asc,
+            },
+            undefined,
+            undefined,
+        ],
+    ])(
+        'sorts by the field value on click %s and %s %s',
+        (_, active, direction, params) => {
+            render(
+                <Provider
+                    store={mockStore({
+                        views: fromJS({
+                            active,
+                        }),
+                    })}
+                >
+                    <HeaderCell {...minProps} field={createdViewField} />
+                </Provider>,
+            )
+
+            fireEvent.click(screen.getByText(createdViewField.get('title')))
+
+            expect(fetchViewItemsMock).toHaveBeenCalledWith(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                params,
+            )
+            expect(setOrderDirectionMock).toHaveBeenCalledWith({
+                direction,
+                fieldPath: createdViewField.get('path'),
+                isEditable: false,
+            })
+        },
+    )
 })
