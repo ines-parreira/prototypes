@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Button, Separator } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
@@ -16,7 +14,6 @@ import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/Su
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
-import FeedbackInternalNote from 'pages/tickets/detail/components/AIAgentFeedbackBar/FeedbackInternalNote'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
 import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -50,14 +47,10 @@ const AIAgentSimplifiedFeedback = () => {
     const viewsState = useAppSelector(getViewsState)
     const existingSections = useAppSelector(getSectionIdByName)
     const { selectedResource } = useKnowledgeSourceSideBar()
-    const showTicketLevelFeedback = useFlag(FeatureFlagKey.TicketLevelFeedback)
 
     const showNextTicketButton =
         viewsState.getIn(['active', 'section_id']) ===
         existingSections['AI Agent']
-
-    const [loadingFreeFormMutation, setLoadingFreeFormMutation] =
-        useState<boolean>()
 
     const ticket = useAppSelector(getTicketState)
     const account = useAppSelector(getCurrentAccountState)
@@ -220,46 +213,6 @@ const AIAgentSimplifiedFeedback = () => {
         [loadingMutations, upsertFeedback, ticketId, feedback],
     )
 
-    const handleFreeFormFeedbackChange = useCallback(
-        async (value: string) => {
-            setLoadingFreeFormMutation(true)
-
-            const executionId =
-                enrichedData?.freeForm?.executionId ??
-                feedback?.executions?.[0]?.executionId
-
-            // should never happen, since we're showing that we're still processing the details of this conversation
-            // if there are no executions
-            if (!executionId) return
-
-            await upsertFeedback({
-                data: {
-                    feedbackToUpsert: [
-                        {
-                            id: enrichedData?.freeForm?.feedback?.id,
-                            objectId: ticketId.toString(),
-                            objectType: 'TICKET',
-                            executionId: executionId,
-                            targetType: 'TICKET',
-                            targetId: ticketId.toString(),
-                            feedbackValue: value,
-                            feedbackType: 'TICKET_FREEFORM',
-                        },
-                    ],
-                },
-            })
-
-            setLoadingFreeFormMutation(false)
-        },
-        [
-            ticketId,
-            upsertFeedback,
-            enrichedData?.freeForm?.executionId,
-            enrichedData?.freeForm?.feedback?.id,
-            feedback?.executions,
-        ],
-    )
-
     const { onSubmitMissingKnowledge, onSubmitNewMissingKnowledge } =
         useFeedbackActions({
             upsertFeedback,
@@ -376,15 +329,11 @@ const AIAgentSimplifiedFeedback = () => {
                     "We're still processing the details of this conversation. You'll be able to review shortly."
                 ) : (
                     <div className={css.feedbackSection}>
-                        {showTicketLevelFeedback && (
-                            <>
-                                <AIAgentTicketLevelFeedback
-                                    upsertFeedback={upsertFeedback}
-                                    feedback={feedback}
-                                />
-                                <Separator className={css.separator} />
-                            </>
-                        )}
+                        <AIAgentTicketLevelFeedback
+                            upsertFeedback={upsertFeedback}
+                            feedback={feedback}
+                        />
+                        <Separator className={css.separator} />
                         <div className={css.sourcesContainer}>
                             <div className={css.heading}>
                                 <span>Review sources used</span>
@@ -462,25 +411,6 @@ const AIAgentSimplifiedFeedback = () => {
                                 onKnowledgeResourceCreateClick
                             }
                         />
-                        {!showTicketLevelFeedback && (
-                            <>
-                                <Separator className={css.separator} />
-                                <FeedbackInternalNote
-                                    onDebouncedChange={
-                                        handleFreeFormFeedbackChange
-                                    }
-                                    isMutationLoading={loadingFreeFormMutation}
-                                    initialValue={
-                                        enrichedData?.freeForm?.feedback
-                                            ?.feedbackValue ?? ''
-                                    }
-                                    lastUpdated={
-                                        enrichedData?.freeForm?.feedback
-                                            ?.updatedDatetime
-                                    }
-                                />
-                            </>
-                        )}
                     </div>
                 )}
             </div>

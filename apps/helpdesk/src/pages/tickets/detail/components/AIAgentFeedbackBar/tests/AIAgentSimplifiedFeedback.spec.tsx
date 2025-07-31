@@ -225,7 +225,15 @@ describe('AIAgentSimplifiedFeedback', () => {
                     {
                         executionId: 'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
                         resources: [],
-                        feedback: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId:
+                                    'b41ac70f-40f3-4d16-8f34-e9d44ae8ade5',
+                            },
+                        ],
                     },
                 ],
             },
@@ -271,7 +279,14 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [],
-                        feedback: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
+                        ],
                     },
                 ],
             },
@@ -614,7 +629,14 @@ describe('AIAgentSimplifiedFeedback', () => {
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [],
-                        feedback: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
+                        ],
                     },
                 ],
             },
@@ -637,6 +659,32 @@ describe('AIAgentSimplifiedFeedback', () => {
         expect(textarea).toHaveValue('')
 
         // Update with freeForm feedback value
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
+                            {
+                                id: 2,
+                                feedbackType: 'TICKET_FREEFORM',
+                                feedbackValue: 'Test feedback from API',
+                                executionId: '123',
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
         useEnrichFeedbackDataMock.mockReturnValue({
             ...initialFeedbackData,
             enrichedData: {
@@ -910,10 +958,18 @@ describe('AIAgentSimplifiedFeedback', () => {
             data: {
                 executions: [
                     {
+                        executionId: '123',
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [],
-                        feedback: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
+                        ],
                     },
                 ],
             },
@@ -924,7 +980,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [],
                 freeForm: {
-                    executionId: 123,
+                    executionId: '123',
                     feedback: {
                         feedbackValue: '',
                     },
@@ -939,7 +995,7 @@ describe('AIAgentSimplifiedFeedback', () => {
         const textarea = screen.getByRole('textbox')
 
         // Type new feedback
-        await fireEvent.change(textarea, {
+        fireEvent.change(textarea, {
             target: { value: 'New feedback text' },
         })
 
@@ -953,7 +1009,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             data: {
                 feedbackToUpsert: [
                     expect.objectContaining({
-                        executionId: 123,
+                        executionId: '123',
                         feedbackType: 'TICKET_FREEFORM',
                         feedbackValue: 'New feedback text',
                         objectId: '123',
@@ -974,10 +1030,24 @@ describe('AIAgentSimplifiedFeedback', () => {
             data: {
                 executions: [
                     {
+                        executionId: '123',
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [],
-                        feedback: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
+                            {
+                                id: 456,
+                                feedbackType: 'TICKET_FREEFORM',
+                                feedbackValue: existingFeedback,
+                                executionId: '123',
+                            },
+                        ],
                     },
                 ],
             },
@@ -988,7 +1058,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [],
                 freeForm: {
-                    executionId: 123,
+                    executionId: '123',
                     feedback: {
                         feedbackValue: existingFeedback,
                         id: 456,
@@ -1024,10 +1094,24 @@ describe('AIAgentSimplifiedFeedback', () => {
             data: {
                 executions: [
                     {
+                        executionId: '123',
                         id: 123,
                         storeConfiguration: 'test',
                         resources: [],
-                        feedback: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
+                            {
+                                id: 2,
+                                feedbackType: 'TICKET_FREEFORM',
+                                feedbackValue: existingFeedback,
+                                executionId: '123',
+                            },
+                        ],
                     },
                 ],
             },
@@ -1038,7 +1122,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [],
                 freeForm: {
-                    executionId: 123,
+                    executionId: '123',
                     feedback: {
                         feedbackValue: existingFeedback,
                     },
@@ -1058,12 +1142,39 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         // Now mock different data
         const newFeedback = 'Updated feedback text'
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        executionId: '123',
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
+                            {
+                                id: 2,
+                                feedbackType: 'TICKET_FREEFORM',
+                                feedbackValue: newFeedback,
+                                executionId: '123',
+                            },
+                        ],
+                    },
+                ],
+            },
+        })
+
         useEnrichFeedbackDataMock.mockReturnValue({
             ...initialFeedbackData,
             enrichedData: {
                 knowledgeResources: [],
                 freeForm: {
-                    executionId: 123,
+                    executionId: '123',
                     feedback: {
                         feedbackValue: newFeedback,
                     },
@@ -1483,9 +1594,16 @@ describe('AIAgentSimplifiedFeedback', () => {
             data: {
                 executions: [
                     {
+                        executionId: '123',
                         id: 123,
                         storeConfiguration: 'test',
                         feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                executionId: '123',
+                            },
                             {
                                 id: 789,
                                 feedbackType: 'TICKET_FREEFORM',
@@ -1493,6 +1611,7 @@ describe('AIAgentSimplifiedFeedback', () => {
                                     'Test feedback with no update time',
                                 // No updatedDatetime property
                                 createdDatetime: '2023-01-01T00:00:00.000Z',
+                                executionId: '123',
                             },
                         ],
                         resources: [],
@@ -1506,7 +1625,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             enrichedData: {
                 knowledgeResources: [],
                 freeForm: {
-                    executionId: 123,
+                    executionId: '123',
                     feedback: {
                         id: 789,
                         feedbackValue: 'Test feedback with no update time',
@@ -1687,7 +1806,14 @@ describe('AIAgentSimplifiedFeedback', () => {
                     {
                         // executionId missing from main execution
                         resources: [],
-                        feedback: [],
+                        feedback: [
+                            {
+                                id: 1,
+                                feedbackType: 'TICKET_RATING',
+                                feedbackValue: 'GOOD',
+                                // No executionId
+                            },
+                        ],
                     },
                 ],
             },
@@ -1716,8 +1842,12 @@ describe('AIAgentSimplifiedFeedback', () => {
             jest.runAllTimers()
         })
 
-        // Should not call mutateAsync when executionId is missing
-        expect(mutateAsyncMock).not.toHaveBeenCalled()
+        // Should call mutateAsync with empty array when executionId is missing
+        expect(mutateAsyncMock).toHaveBeenCalledWith({
+            data: {
+                feedbackToUpsert: [],
+            },
+        })
     })
 
     it('should render KnowledgeSourceSideBar when there is no helpCenterId within selected resources if helpCenter is present', () => {
@@ -2368,7 +2498,14 @@ describe('AIAgentSimplifiedFeedback', () => {
                         {
                             executionId: 'test-execution',
                             resources: [],
-                            feedback: [],
+                            feedback: [
+                                {
+                                    id: 1,
+                                    feedbackType: 'TICKET_RATING',
+                                    feedbackValue: 'GOOD',
+                                    executionId: 'test-execution',
+                                },
+                            ],
                         },
                     ],
                 },

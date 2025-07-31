@@ -162,7 +162,6 @@ export enum FeatureFlagKey {
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketAllowPriorityUsage = 'ticket-allow-priority-usage',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
-    TicketLevelFeedback = 'linear.project_add-global-ai-agent-feedback-in-ticket.show-ticket-level-feedback',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
     UseLiveVoiceUpdates = 'use-live-voice-updates',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
