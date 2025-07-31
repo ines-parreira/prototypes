@@ -1,19 +1,6 @@
 import { fireEvent, render } from '@testing-library/react'
 
-import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-
-import { usePaginatedProductIntegration } from '../../../AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
-import { ProductSelectionDrawer } from '../ProductSelectionDrawer'
-
-jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
-jest.mock(
-    '../../../AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration',
-)
-
-const mockUseShopifyIntegrationAndScope =
-    useShopifyIntegrationAndScope as jest.Mock
-const mockUsePaginatedProductIntegration =
-    usePaginatedProductIntegration as jest.Mock
+import { ItemSelectionDrawer } from '../ItemSelectionDrawer'
 
 const mockChatContainer = document.createElement('div')
 mockChatContainer.id = 'gorgias-chat-container'
@@ -34,89 +21,77 @@ const renderComponent = (
     options: {
         isOpen?: boolean
         isLoading?: boolean
-        selectedProductIds?: number[]
+        hasImages?: boolean
+        title?: string
+        selectedItemIds?: string[]
+        itemLabelPlural?: string
+        items?: Array<{
+            id: string
+            title: string
+            img?: string
+        }>
         hasNextPage?: boolean
         hasPrevPage?: boolean
-        products?: Array<{
-            id: number
-            title: string
-            image?: {
-                src: string
-            }
-        }>
     } = {},
 ) => {
     const {
         isOpen = true,
         isLoading = false,
-        selectedProductIds = [],
+        hasImages = true,
+        title = 'Add products',
+        selectedItemIds = [],
+        itemLabelPlural = 'products',
+        items = [
+            {
+                id: '1',
+                title: 'Test product 1',
+                img: 'my-image-1-url',
+            },
+            {
+                id: '2',
+                title: 'Test product 2',
+                img: 'my-image-2-url',
+            },
+            { id: '3', title: 'Test product 3' },
+            { id: '4', title: 'Test product 4' },
+            { id: '5', title: 'Test product 5' },
+            { id: '6', title: 'Test product 6' },
+            { id: '7', title: 'Test product 7' },
+            { id: '8', title: 'Test product 8' },
+        ],
         hasNextPage = false,
         hasPrevPage = false,
-        products = [
-            {
-                id: 1,
-                title: 'Test product 1',
-                image: {
-                    src: 'my-image-1-url',
-                },
-            },
-            {
-                id: 2,
-                title: 'Test product 2',
-                image: {
-                    src: 'my-image-2-url',
-                },
-            },
-            { id: 3, title: 'Test product 3' },
-            { id: 4, title: 'Test product 4' },
-            { id: 5, title: 'Test product 5' },
-            { id: 6, title: 'Test product 6' },
-            { id: 7, title: 'Test product 7' },
-            { id: 8, title: 'Test product 8' },
-        ],
     } = options
 
-    mockUseShopifyIntegrationAndScope.mockReturnValue({
-        integrationId: 123,
-    })
-
-    mockUsePaginatedProductIntegration.mockReturnValue({
-        itemsData: products,
-        isLoading,
-        setSearchTerm: mockSetSearchTerm,
-        fetchNext: mockFetchNext,
-        fetchPrev: mockFetchPrev,
-        hasNextPage,
-        hasPrevPage,
-    })
-
     return render(
-        <ProductSelectionDrawer
-            shopName="test-shop"
+        <ItemSelectionDrawer
             isOpen={isOpen}
-            selectedProductIds={selectedProductIds}
+            isLoading={isLoading}
+            hasImages={hasImages}
+            title={title}
+            selectedItemIds={selectedItemIds}
+            itemLabelPlural={itemLabelPlural}
+            items={items}
+            pagination={{
+                hasNextPage: hasNextPage,
+                hasPrevPage: hasPrevPage,
+                onNextClick: mockFetchNext,
+                onPrevClick: mockFetchPrev,
+            }}
             onClose={mockOnClose}
             onSubmit={mockOnSubmit}
+            onSearch={mockSetSearchTerm}
         />,
     )
 }
 
-describe('ProductSelectionDrawer', () => {
+describe('ItemSelectionDrawer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
     it('should render the component correctly when visible', () => {
         const screen = renderComponent()
-
-        expect(mockUseShopifyIntegrationAndScope).toHaveBeenCalledWith(
-            'test-shop',
-        )
-        expect(mockUsePaginatedProductIntegration).toHaveBeenCalledWith({
-            integrationId: 123,
-            initialParams: { limit: 25 },
-            enabled: true,
-        })
 
         expect(screen.queryByText('Add products')).toBeInTheDocument()
         expect(
@@ -147,7 +122,7 @@ describe('ProductSelectionDrawer', () => {
         expect(screen.queryByText('Loading...')).toBeInTheDocument()
     })
 
-    it('should submit the selected products', () => {
+    it('should submit the selected items', () => {
         const screen = renderComponent()
 
         fireEvent.click(screen.getByText('Test product 3'))
@@ -155,12 +130,12 @@ describe('ProductSelectionDrawer', () => {
         fireEvent.click(screen.getByText('Test product 8'))
         fireEvent.click(screen.getByText('Done'))
 
-        expect(mockOnSubmit).toHaveBeenCalledWith([3, 6, 8])
+        expect(mockOnSubmit).toHaveBeenCalledWith(['3', '6', '8'])
     })
 
-    it('should correctly update the selected products', () => {
+    it('should correctly update the selected items', () => {
         const screen = renderComponent({
-            selectedProductIds: [2, 5, 6],
+            selectedItemIds: ['2', '5', '6'],
         })
 
         fireEvent.click(screen.getByText('Test product 1'))
@@ -169,7 +144,7 @@ describe('ProductSelectionDrawer', () => {
         fireEvent.click(screen.getByText('Test product 8'))
         fireEvent.click(screen.getByText('Done'))
 
-        expect(mockOnSubmit).toHaveBeenCalledWith([6, 1, 8])
+        expect(mockOnSubmit).toHaveBeenCalledWith(['6', '1', '8'])
     })
 
     it('should close the drawer when the cancel button is clicked', () => {
@@ -218,9 +193,9 @@ describe('ProductSelectionDrawer', () => {
         expect(mockFetchPrev).toHaveBeenCalled()
     })
 
-    it('should handle no products found correctly', () => {
+    it('should handle no items found correctly', () => {
         const screen = renderComponent({
-            products: [],
+            items: [],
         })
 
         expect(screen.queryByText('No products found')).toBeInTheDocument()

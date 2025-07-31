@@ -1,9 +1,13 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
+import { ApiPaginationParams } from 'models/api/types'
 import { IntegrationDataItem } from 'models/integration/types/misc'
 
-import { fetchEcommerceItemByExternalId } from './resources'
+import {
+    fetchEcommerceItemByExternalId,
+    fetchEcommerceProductTags,
+} from './resources'
 
 export const ecommerceKeys = {
     all: () => ['ecommerce'] as const,
@@ -20,6 +24,13 @@ export const ecommerceKeys = {
             sourceType,
             integrationId,
             externalId,
+        ] as const,
+    productTags: (integrationId: number, params: EcommerceProductTagsParams) =>
+        [
+            ...ecommerceKeys.all(),
+            'product-tags',
+            integrationId,
+            params,
         ] as const,
 }
 
@@ -55,6 +66,28 @@ export const useGetEcommerceItemByExternalId = <
                 sourceType,
                 integrationId,
                 externalId,
+            )
+            return response.data
+        },
+        ...overrides,
+    })
+}
+
+type EcommerceProductTagsParams = ApiPaginationParams & { value?: string }
+
+export const useGetEcommerceProductTags = (
+    integrationId: number,
+    params: EcommerceProductTagsParams = {},
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof fetchEcommerceProductTags>>['data']
+    >,
+) => {
+    return useQuery({
+        queryKey: ecommerceKeys.productTags(integrationId, params),
+        queryFn: async () => {
+            const response = await fetchEcommerceProductTags(
+                integrationId,
+                params,
             )
             return response.data
         },

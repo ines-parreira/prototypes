@@ -10,42 +10,53 @@ import {
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { Drawer } from 'pages/common/components/Drawer'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
-import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
-import { usePaginatedProductIntegration } from '../../AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
+import css from './ItemSelectionDrawer.less'
 
-import css from './ProductSelectionDrawer.less'
-
-const PAGINATED_ITEMS_PER_PAGE = 25
-
-export const ProductSelectionDrawer = ({
-    shopName,
+export const ItemSelectionDrawer = ({
     isOpen,
-    selectedProductIds,
+    isLoading,
+    hasImages,
+    title,
+    selectedItemIds,
+    itemLabelPlural,
+    items,
+    pagination,
     onClose,
     onSubmit,
+    onSearch,
 }: {
-    shopName: string
     isOpen: boolean
-    selectedProductIds: number[]
+    isLoading: boolean
+    hasImages: boolean
+    title: string
+    selectedItemIds: string[]
+    itemLabelPlural: string
+    items: Array<{
+        id: string
+        title: string
+        img?: string
+    }>
+    pagination: {
+        hasPrevPage: boolean
+        hasNextPage: boolean
+        onPrevClick: () => void
+        onNextClick: () => void
+    }
     onClose: () => void
-    onSubmit: (productIds: number[]) => Promise<void>
+    onSubmit: (itemsIds: string[]) => Promise<void>
+    onSearch: (searchTerm: string) => void
 }) => {
-    const [isEnabled, setIsEnabled] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [localSelectedProductIds, setLocalSelectedProductIds] =
-        useState(selectedProductIds)
     const [localSearchTerm, setLocalSearchTerm] = useState('')
+    const [localSelectedItemIds, setLocalSelectedItemIds] =
+        useState(selectedItemIds)
 
-    // Only load products when drawer is open
     useEffect(() => {
-        if (!isOpen) {
-            setLocalSelectedProductIds(selectedProductIds)
-            return
-        }
-
-        setIsEnabled(true)
-    }, [isOpen, selectedProductIds])
+        if (!isOpen) return
+        setLocalSelectedItemIds(selectedItemIds)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen])
 
     useEffect(() => {
         const chatContainer = document.getElementById('gorgias-chat-container')
@@ -68,46 +79,30 @@ export const ProductSelectionDrawer = ({
 
     useDebouncedEffect(
         () => {
-            setSearchTerm(localSearchTerm)
+            onSearch(localSearchTerm)
         },
         [localSearchTerm],
         200,
     )
 
-    const { integrationId } = useShopifyIntegrationAndScope(shopName)
-
-    const {
-        itemsData: products,
-        isLoading,
-        setSearchTerm,
-        fetchNext,
-        fetchPrev,
-        hasNextPage,
-        hasPrevPage,
-    } = usePaginatedProductIntegration({
-        integrationId: integrationId || 0,
-        initialParams: { limit: PAGINATED_ITEMS_PER_PAGE },
-        enabled: !!integrationId && isEnabled,
-    })
-
-    const handleProductClick = (productId: number) =>
-        setLocalSelectedProductIds((prev) =>
-            prev.includes(productId)
-                ? prev.filter((id) => id !== productId)
-                : [...prev, productId],
+    const handleItemClick = (itemId: string) =>
+        setLocalSelectedItemIds((prev) =>
+            prev.includes(itemId)
+                ? prev.filter((id) => id !== itemId)
+                : [...prev, itemId],
         )
 
     return (
         <Drawer
             fullscreen={false}
             isLoading={false}
-            aria-label="Add products"
+            aria-label={title}
             open={isOpen}
             portalRootId="app-root"
             onBackdropClick={onClose}
         >
             <Drawer.Header>
-                Add products
+                {title}
                 <Drawer.HeaderActions
                     onClose={onClose}
                     closeButtonId="close-drawer"
@@ -118,58 +113,58 @@ export const ProductSelectionDrawer = ({
                 <div className={css.contentInner}>
                     <div className={css.searchBar}>
                         <SearchBar
-                            placeholder="Search products"
+                            placeholder={`Search ${itemLabelPlural}`}
                             onChange={setLocalSearchTerm}
                             value={localSearchTerm}
                         />
                     </div>
 
-                    <div className={css.products}>
+                    <div className={css.items}>
                         {isLoading && (
                             <div className={css.loading}>
                                 <LoadingSpinner size="big" />
                             </div>
                         )}
 
-                        {!isLoading && products.length === 0 && (
-                            <div className={css.noProducts}>
-                                No products found
+                        {!isLoading && items.length === 0 && (
+                            <div className={css.noItemsFound}>
+                                No {itemLabelPlural} found
                             </div>
                         )}
 
                         {!isLoading &&
-                            products?.map((product) => (
+                            items?.map((item) => (
                                 <div
-                                    key={product.id}
-                                    className={css.product}
-                                    onClick={() =>
-                                        handleProductClick(product.id)
-                                    }
+                                    key={item.id}
+                                    className={css.item}
+                                    onClick={() => handleItemClick(item.id)}
                                 >
                                     <div>
                                         <CheckBoxField
-                                            value={localSelectedProductIds.includes(
-                                                product.id,
+                                            value={localSelectedItemIds.includes(
+                                                item.id,
                                             )}
                                         />
                                     </div>
-                                    <div>
-                                        {product.image?.src ? (
-                                            <img
-                                                className={css.productImage}
-                                                src={product.image.src}
-                                                alt={product.title}
-                                            />
-                                        ) : (
-                                            <div
-                                                className={
-                                                    css.productImagePlaceholder
-                                                }
-                                            />
-                                        )}
-                                    </div>
-                                    <div className={css.productTitle}>
-                                        {product.title}
+                                    {hasImages && (
+                                        <div>
+                                            {item.img ? (
+                                                <img
+                                                    className={css.itemImage}
+                                                    src={item.img}
+                                                    alt={item.title}
+                                                />
+                                            ) : (
+                                                <div
+                                                    className={
+                                                        css.itemImagePlaceholder
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+                                    )}
+                                    <div className={css.itemTitle}>
+                                        {item.title}
                                     </div>
                                 </div>
                             ))}
@@ -183,21 +178,29 @@ export const ProductSelectionDrawer = ({
                         <IconButton
                             size="small"
                             fillStyle="ghost"
-                            className={hasPrevPage ? css.iconButton : undefined}
-                            onClick={fetchPrev}
+                            className={
+                                pagination.hasPrevPage
+                                    ? css.iconButton
+                                    : undefined
+                            }
+                            onClick={pagination.onPrevClick}
                             aria-label="Previous page"
                             icon="chevron_left"
-                            isDisabled={isLoading || !hasPrevPage}
+                            isDisabled={isLoading || !pagination.hasPrevPage}
                         />
 
                         <IconButton
                             size="small"
                             fillStyle="ghost"
-                            className={hasNextPage ? css.iconButton : undefined}
-                            onClick={fetchNext}
+                            className={
+                                pagination.hasNextPage
+                                    ? css.iconButton
+                                    : undefined
+                            }
+                            onClick={pagination.onNextClick}
                             aria-label="Next page"
                             icon="chevron_right"
-                            isDisabled={isLoading || !hasNextPage}
+                            isDisabled={isLoading || !pagination.hasNextPage}
                         />
                     </div>
 
@@ -213,7 +216,8 @@ export const ProductSelectionDrawer = ({
                         <Button
                             onClick={async () => {
                                 setIsSubmitting(true)
-                                await onSubmit(localSelectedProductIds)
+                                await onSubmit(localSelectedItemIds)
+                                onClose()
                                 setIsSubmitting(false)
                             }}
                             intent="primary"

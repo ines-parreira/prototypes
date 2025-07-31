@@ -50,3 +50,51 @@ export const mockEcommerceData = {
         ...mockEcommerceItem,
     },
 }
+
+export const mockEcommerceProductTags = [
+    {
+        id: '019838e2-e878-752a-8202-eb2f0c88c48c',
+        account_id: 456,
+        integration_id: 123,
+        source_type: 'shopify',
+        lookup_type: 'product_tag',
+        created_datetime: '2025-07-23T20:04:11.512000+00:00',
+        value: 'Adidas',
+    },
+    {
+        id: '019838e2-e878-752a-8202-eb308715a301',
+        account_id: 456,
+        integration_id: 123,
+        source_type: 'shopify',
+        lookup_type: 'product_tag',
+        created_datetime: '2025-07-23T20:04:11.512000+00:00',
+        value: 'Nike',
+    },
+    {
+        id: '019838e2-e878-752a-8202-eb31a0c096a3',
+        account_id: 456,
+        integration_id: 123,
+        source_type: 'shopify',
+        lookup_type: 'product_tag',
+        created_datetime: '2025-07-23T20:04:11.512000+00:00',
+        value: 'Puma',
+    },
+    {
+        id: '019838e2-e878-752a-8202-eb322b9978ca',
+        account_id: 456,
+        integration_id: 123,
+        source_type: 'shopify',
+        lookup_type: 'product_tag',
+        created_datetime: '2025-07-23T20:04:11.512000+00:00',
+        value: 'Reebok',
+    },
+    {
+        id: '019838e2-e878-752a-8202-eb33a26e8372',
+        account_id: 456,
+        integration_id: 123,
+        source_type: 'shopify',
+        lookup_type: 'product_tag',
+        created_datetime: '2025-07-23T20:04:11.512000+00:00',
+        value: 'Under Armour',
+    },
+]

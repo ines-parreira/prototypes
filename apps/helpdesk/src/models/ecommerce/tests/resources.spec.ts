@@ -2,8 +2,11 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 
-import { fetchEcommerceItemByExternalId } from '../resources'
-import { mockEcommerceData } from './mocks'
+import {
+    fetchEcommerceItemByExternalId,
+    fetchEcommerceProductTags,
+} from '../resources'
+import { mockEcommerceData, mockEcommerceProductTags } from './mocks'
 
 jest.mock('utils/gorgiasAppsAuth', () => ({
     gorgiasAppsAuthInterceptor: jest.fn().mockImplementation((config) => {
@@ -63,6 +66,46 @@ describe('Ecommerce Resources', () => {
                     integrationId,
                     externalId,
                 ),
+            ).rejects.toEqual(new Error('Request failed with status code 500'))
+        })
+    })
+
+    describe('fetchEcommerceProductTags', () => {
+        it('should fetch product tags', async () => {
+            const integrationId = 123
+
+            mockedServer
+                .onGet(
+                    `/api/ecommerce/lookup_values/product_tag/shopify/${integrationId}`,
+                )
+                .reply(200, {
+                    data: mockEcommerceProductTags,
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                })
+
+            const result = await fetchEcommerceProductTags(integrationId)
+
+            expect(result.data.data).toEqual(mockEcommerceProductTags)
+            expect(result.data.metadata).toEqual({
+                next_cursor: 'next-cursor',
+                prev_cursor: 'prev-cursor',
+            })
+        })
+
+        it('should handle error when fetching product tags', async () => {
+            const integrationId = 123
+
+            mockedServer
+                .onGet(
+                    `/api/ecommerce/lookup_values/product_tag/shopify/${integrationId}`,
+                )
+                .reply(500, { message: 'error' })
+
+            return expect(
+                fetchEcommerceProductTags(integrationId),
             ).rejects.toEqual(new Error('Request failed with status code 500'))
         })
     })

@@ -17,13 +17,13 @@
         border-bottom: 1px solid var(--neutral-grey-3);
     }
 
-    .noProducts {
+    .noItemsFound {
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
         .body-regular();
         color: var(--neutral-grey-6);
     }
 
-    .products {
+    .items {
         flex-grow: 1;
         overflow-y: auto;
 
@@ -35,7 +35,7 @@
         }
     }
 
-    .product {
+    .item {
         display: flex;
         gap: var(--layout-spacing-s);
         align-items: center;
@@ -50,21 +50,21 @@
             cursor: pointer;
         }
 
-        .productImage {
+        .itemImage {
             width: 32px;
             height: 32px;
             object-fit: cover;
             border-radius: 3px;
         }
 
-        .productImagePlaceholder {
+        .itemImagePlaceholder {
             width: 32px;
             height: 32px;
             background-color: var(--neutral-grey-4);
             border-radius: 3px;
         }
 
-        .productTitle {
+        .itemTitle {
             flex-grow: 1;
             .body-semibold();
             color: var(--neutral-grey-6);

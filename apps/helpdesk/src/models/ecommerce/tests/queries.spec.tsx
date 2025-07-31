@@ -7,13 +7,25 @@ import { AxiosResponse } from 'axios'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { useGetEcommerceItemByExternalId } from '../queries'
+import {
+    useGetEcommerceItemByExternalId,
+    useGetEcommerceProductTags,
+} from '../queries'
 import * as resources from '../resources'
-import { mockEcommerceData, mockEcommerceItem } from './mocks'
+import {
+    mockEcommerceData,
+    mockEcommerceItem,
+    mockEcommerceProductTags,
+} from './mocks'
 
 const fetchEcommerceItemByExternalId = jest.spyOn(
     resources,
     'fetchEcommerceItemByExternalId',
+)
+
+const fetchEcommerceProductTags = jest.spyOn(
+    resources,
+    'fetchEcommerceProductTags',
 )
 
 const queryClient = mockQueryClient()
@@ -79,6 +91,60 @@ describe('Ecommerce Queries', () => {
 
             expect(result.current.isLoading).toBe(true)
 
+            expect(fetchEcommerceItemByExternalId).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetEcommerceProductTags', () => {
+        it('should fetch ecommerce product tags', async () => {
+            fetchEcommerceProductTags.mockResolvedValueOnce({
+                data: {
+                    data: mockEcommerceProductTags,
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                },
+            } as AxiosResponse)
+
+            const { result } = renderHook(
+                () => useGetEcommerceProductTags(123),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+
+            expect(result.current.data).toEqual({
+                data: mockEcommerceProductTags,
+                metadata: {
+                    next_cursor: 'next-cursor',
+                    prev_cursor: 'prev-cursor',
+                },
+            })
+            expect(fetchEcommerceProductTags).toHaveBeenCalledWith(123, {})
+        })
+
+        it('should not call the api function when enabled false', () => {
+            fetchEcommerceProductTags.mockResolvedValueOnce({
+                data: {
+                    data: mockEcommerceProductTags,
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                },
+            } as AxiosResponse)
+
+            const { result } = renderHook(
+                () => useGetEcommerceProductTags(123, {}, { enabled: false }),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
             expect(fetchEcommerceItemByExternalId).toHaveBeenCalledTimes(0)
         })
     })

@@ -1,6 +1,9 @@
 import { createClient } from 'models/api/resources'
+import { ApiPaginationParams } from 'models/api/types'
 import { IntegrationDataItem } from 'models/integration/types/misc'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
+
+import { LookupValue } from './types'
 
 const client = createClient()
 client.interceptors.request.use(gorgiasAppsAuthInterceptor)
@@ -22,3 +25,17 @@ export const fetchEcommerceItemByExternalId = async <T>(
     await client.get<IntegrationDataItem<T>>(
         `/api/ecommerce/${objectType}/${sourceType}/${integrationId}/${externalId}`,
     )
+
+export const fetchEcommerceProductTags = async (
+    integrationId: number,
+    params: ApiPaginationParams & { value?: string } = {},
+) =>
+    await client.get<{
+        data: LookupValue[]
+        metadata: {
+            next_cursor: string | null
+            prev_cursor: string | null
+        }
+    }>(`/api/ecommerce/lookup_values/product_tag/shopify/${integrationId}`, {
+        params,
+    })
