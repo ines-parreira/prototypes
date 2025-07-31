@@ -188,6 +188,7 @@ jobs:
 
   build-docker-image:
     name: Build docker image
+    if: github.ref == 'refs/heads/main'
     uses: gorgias/reusable-actions/.github/workflows/image-build.yml@main
     with:
       image-names: us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/web-app
