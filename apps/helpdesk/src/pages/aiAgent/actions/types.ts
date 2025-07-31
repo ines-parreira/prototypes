@@ -57,9 +57,14 @@ export type LlmTriggeredExecution =
 
 export type HTTPExecutionLogs = Components.Schemas.HttpRequestEventsResponseDto
 
+export type TransitionsState = NonNullable<
+    LlmTriggeredExecution['state']['transitions']
+>[string]
+
 export type ActionStepItem = ValueOf<
     NonNullable<LlmTriggeredExecution['state']['steps_state']>
 > & {
+    transition?: TransitionsState
     success?: boolean
     stepId: string
     steps_state?: LlmTriggeredExecution['state']['steps_state']

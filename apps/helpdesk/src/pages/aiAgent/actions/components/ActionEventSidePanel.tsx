@@ -62,8 +62,13 @@ export default function ActionEventSidePanel({
         for (const [stepId, value] of Object.entries(
             execution.state.steps_state ?? {},
         )) {
+            const transition = Object.entries(
+                execution.state.transitions ?? {},
+            ).find(([, transition]) => transition.to_step_id === stepId)?.[1]
+
             arr.push({
                 ...value,
+                transition,
                 stepId,
             } as ActionStepAccordionItemProps['step'])
         }

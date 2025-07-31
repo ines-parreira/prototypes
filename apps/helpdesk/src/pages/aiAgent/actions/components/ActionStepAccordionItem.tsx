@@ -11,6 +11,7 @@ import { ActionStepItem, TemplateConfiguration } from '../types'
 import ActionEventTitle from './ActionEventTitle'
 import HttpRequestLogsView from './HttpRequestLogsView'
 import NoHttpRequestLogsView from './NoHttpRequestLogsView'
+import TransitionConditionsAccordion from './TransitionConditionsAccordion'
 
 import css from './ActionStepAccordionItem.less'
 
@@ -148,24 +149,29 @@ const ActionStepAccordionItem = ({
             </div>
         </div>
     ) : (
-        <AccordionItem id={step.stepId} highlightOnExpand={false}>
-            <AccordionHeader>
-                <ActionEventTitle
-                    isCustomAction={isCustomAction}
-                    appImageUrl={appImageUrl}
-                    appImageAlt={templateConfiguration?.apps?.[0]?.type}
-                    title={actionName}
-                    status={step?.success ? 'success' : 'error'}
-                />
-            </AccordionHeader>
-            <AccordionBody>
-                {!logs || logs.length === 0 ? (
-                    <NoHttpRequestLogsView step={step} />
-                ) : (
-                    <HttpRequestLogsView logs={logs} />
-                )}
-            </AccordionBody>
-        </AccordionItem>
+        <>
+            {step.transition && (
+                <TransitionConditionsAccordion transition={step.transition} />
+            )}
+            <AccordionItem id={step.stepId} highlightOnExpand={false}>
+                <AccordionHeader>
+                    <ActionEventTitle
+                        isCustomAction={isCustomAction}
+                        appImageUrl={appImageUrl}
+                        appImageAlt={templateConfiguration?.apps?.[0]?.type}
+                        title={actionName}
+                        status={step?.success ? 'success' : 'error'}
+                    />
+                </AccordionHeader>
+                <AccordionBody>
+                    {!logs || logs.length === 0 ? (
+                        <NoHttpRequestLogsView step={step} />
+                    ) : (
+                        <HttpRequestLogsView logs={logs} />
+                    )}
+                </AccordionBody>
+            </AccordionItem>
+        </>
     )
 }
 

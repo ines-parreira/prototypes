@@ -3477,6 +3477,107 @@ declare namespace Components {
                 preview_mode?: boolean | null
                 channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                 channel_integration_id?: number | null
+                transitions?: {
+                    [name: string]: {
+                        to_step_id?: string | null
+                        from_step_id?: string | null
+                        name?: string | null
+                        result?: boolean
+                        conditions?:
+                            | ({
+                                  or: (
+                                      | {
+                                            equals: any
+                                        }
+                                      | {
+                                            notEqual: any
+                                        }
+                                      | {
+                                            contains: any
+                                        }
+                                      | {
+                                            doesNotContain: any
+                                        }
+                                      | {
+                                            endsWith: any
+                                        }
+                                      | {
+                                            startsWith: any
+                                        }
+                                      | {
+                                            exists: any
+                                        }
+                                      | {
+                                            doesNotExist: any
+                                        }
+                                      | {
+                                            lessThan: any
+                                        }
+                                      | {
+                                            lessThanInterval: any
+                                        }
+                                      | {
+                                            lessOrEqual: any
+                                        }
+                                      | {
+                                            greaterThan: any
+                                        }
+                                      | {
+                                            greaterThanInterval: any
+                                        }
+                                      | {
+                                            greaterOrEqual: any
+                                        }
+                                  )[]
+                              } | null)
+                            | ({
+                                  and: (
+                                      | {
+                                            equals: any
+                                        }
+                                      | {
+                                            notEqual: any
+                                        }
+                                      | {
+                                            contains: any
+                                        }
+                                      | {
+                                            doesNotContain: any
+                                        }
+                                      | {
+                                            endsWith: any
+                                        }
+                                      | {
+                                            startsWith: any
+                                        }
+                                      | {
+                                            exists: any
+                                        }
+                                      | {
+                                            doesNotExist: any
+                                        }
+                                      | {
+                                            lessThan: any
+                                        }
+                                      | {
+                                            lessThanInterval: any
+                                        }
+                                      | {
+                                            lessOrEqual: any
+                                        }
+                                      | {
+                                            greaterThan: any
+                                        }
+                                      | {
+                                            greaterThanInterval: any
+                                        }
+                                      | {
+                                            greaterOrEqual: any
+                                        }
+                                  )[]
+                              } | null)
+                    }
+                } | null
                 trigger?: 'llm-prompt'
                 entrypoint?: 'llm-conversation'
                 objects?: {
@@ -8616,6 +8717,107 @@ declare namespace Components {
                       preview_mode?: boolean | null
                       channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                       channel_integration_id?: number | null
+                      transitions?: {
+                          [name: string]: {
+                              to_step_id?: string | null
+                              from_step_id?: string | null
+                              name?: string | null
+                              result?: boolean
+                              conditions?:
+                                  | ({
+                                        or: (
+                                            | {
+                                                  equals: any
+                                              }
+                                            | {
+                                                  notEqual: any
+                                              }
+                                            | {
+                                                  contains: any
+                                              }
+                                            | {
+                                                  doesNotContain: any
+                                              }
+                                            | {
+                                                  endsWith: any
+                                              }
+                                            | {
+                                                  startsWith: any
+                                              }
+                                            | {
+                                                  exists: any
+                                              }
+                                            | {
+                                                  doesNotExist: any
+                                              }
+                                            | {
+                                                  lessThan: any
+                                              }
+                                            | {
+                                                  lessThanInterval: any
+                                              }
+                                            | {
+                                                  lessOrEqual: any
+                                              }
+                                            | {
+                                                  greaterThan: any
+                                              }
+                                            | {
+                                                  greaterThanInterval: any
+                                              }
+                                            | {
+                                                  greaterOrEqual: any
+                                              }
+                                        )[]
+                                    } | null)
+                                  | ({
+                                        and: (
+                                            | {
+                                                  equals: any
+                                              }
+                                            | {
+                                                  notEqual: any
+                                              }
+                                            | {
+                                                  contains: any
+                                              }
+                                            | {
+                                                  doesNotContain: any
+                                              }
+                                            | {
+                                                  endsWith: any
+                                              }
+                                            | {
+                                                  startsWith: any
+                                              }
+                                            | {
+                                                  exists: any
+                                              }
+                                            | {
+                                                  doesNotExist: any
+                                              }
+                                            | {
+                                                  lessThan: any
+                                              }
+                                            | {
+                                                  lessThanInterval: any
+                                              }
+                                            | {
+                                                  lessOrEqual: any
+                                              }
+                                            | {
+                                                  greaterThan: any
+                                              }
+                                            | {
+                                                  greaterThanInterval: any
+                                              }
+                                            | {
+                                                  greaterOrEqual: any
+                                              }
+                                        )[]
+                                    } | null)
+                          }
+                      } | null
                       trigger?: 'llm-prompt'
                       entrypoint?: 'llm-conversation'
                       objects?: {
@@ -11381,6 +11583,107 @@ declare namespace Components {
                       preview_mode?: boolean | null
                       channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                       channel_integration_id?: number | null
+                      transitions?: {
+                          [name: string]: {
+                              to_step_id?: string | null
+                              from_step_id?: string | null
+                              name?: string | null
+                              result?: boolean
+                              conditions?:
+                                  | ({
+                                        or: (
+                                            | {
+                                                  equals: any
+                                              }
+                                            | {
+                                                  notEqual: any
+                                              }
+                                            | {
+                                                  contains: any
+                                              }
+                                            | {
+                                                  doesNotContain: any
+                                              }
+                                            | {
+                                                  endsWith: any
+                                              }
+                                            | {
+                                                  startsWith: any
+                                              }
+                                            | {
+                                                  exists: any
+                                              }
+                                            | {
+                                                  doesNotExist: any
+                                              }
+                                            | {
+                                                  lessThan: any
+                                              }
+                                            | {
+                                                  lessThanInterval: any
+                                              }
+                                            | {
+                                                  lessOrEqual: any
+                                              }
+                                            | {
+                                                  greaterThan: any
+                                              }
+                                            | {
+                                                  greaterThanInterval: any
+                                              }
+                                            | {
+                                                  greaterOrEqual: any
+                                              }
+                                        )[]
+                                    } | null)
+                                  | ({
+                                        and: (
+                                            | {
+                                                  equals: any
+                                              }
+                                            | {
+                                                  notEqual: any
+                                              }
+                                            | {
+                                                  contains: any
+                                              }
+                                            | {
+                                                  doesNotContain: any
+                                              }
+                                            | {
+                                                  endsWith: any
+                                              }
+                                            | {
+                                                  startsWith: any
+                                              }
+                                            | {
+                                                  exists: any
+                                              }
+                                            | {
+                                                  doesNotExist: any
+                                              }
+                                            | {
+                                                  lessThan: any
+                                              }
+                                            | {
+                                                  lessThanInterval: any
+                                              }
+                                            | {
+                                                  lessOrEqual: any
+                                              }
+                                            | {
+                                                  greaterThan: any
+                                              }
+                                            | {
+                                                  greaterThanInterval: any
+                                              }
+                                            | {
+                                                  greaterOrEqual: any
+                                              }
+                                        )[]
+                                    } | null)
+                          }
+                      } | null
                       trigger?: 'llm-prompt'
                       entrypoint?: 'llm-conversation'
                       objects?: {
@@ -13516,6 +13819,107 @@ declare namespace Components {
                 preview_mode?: boolean | null
                 channel: 'chat' | 'help-center' | 'contact-form' | 'email'
                 channel_integration_id?: number | null
+                transitions?: {
+                    [name: string]: {
+                        to_step_id?: string | null
+                        from_step_id?: string | null
+                        name?: string | null
+                        result?: boolean
+                        conditions?:
+                            | ({
+                                  or: (
+                                      | {
+                                            equals: any
+                                        }
+                                      | {
+                                            notEqual: any
+                                        }
+                                      | {
+                                            contains: any
+                                        }
+                                      | {
+                                            doesNotContain: any
+                                        }
+                                      | {
+                                            endsWith: any
+                                        }
+                                      | {
+                                            startsWith: any
+                                        }
+                                      | {
+                                            exists: any
+                                        }
+                                      | {
+                                            doesNotExist: any
+                                        }
+                                      | {
+                                            lessThan: any
+                                        }
+                                      | {
+                                            lessThanInterval: any
+                                        }
+                                      | {
+                                            lessOrEqual: any
+                                        }
+                                      | {
+                                            greaterThan: any
+                                        }
+                                      | {
+                                            greaterThanInterval: any
+                                        }
+                                      | {
+                                            greaterOrEqual: any
+                                        }
+                                  )[]
+                              } | null)
+                            | ({
+                                  and: (
+                                      | {
+                                            equals: any
+                                        }
+                                      | {
+                                            notEqual: any
+                                        }
+                                      | {
+                                            contains: any
+                                        }
+                                      | {
+                                            doesNotContain: any
+                                        }
+                                      | {
+                                            endsWith: any
+                                        }
+                                      | {
+                                            startsWith: any
+                                        }
+                                      | {
+                                            exists: any
+                                        }
+                                      | {
+                                            doesNotExist: any
+                                        }
+                                      | {
+                                            lessThan: any
+                                        }
+                                      | {
+                                            lessThanInterval: any
+                                        }
+                                      | {
+                                            lessOrEqual: any
+                                        }
+                                      | {
+                                            greaterThan: any
+                                        }
+                                      | {
+                                            greaterThanInterval: any
+                                        }
+                                      | {
+                                            greaterOrEqual: any
+                                        }
+                                  )[]
+                              } | null)
+                    }
+                } | null
                 trigger?: 'llm-prompt'
                 entrypoint?: 'llm-conversation'
                 objects?: {

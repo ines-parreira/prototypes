@@ -1,0 +1,33 @@
+@import (reference) '~css/typography';
+
+:local {
+    .title {
+        display: flex;
+        flex-direction: row;
+        gap: var(--layout-spacing-xxs);
+        & > p {
+            .body-semibold();
+            margin: 0;
+        }
+        & > i {
+            transform: scale(-1, -1);
+            font-size: 20px;
+        }
+    }
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+        p {
+            .body-semibold();
+            margin: 0;
+        }
+    }
+    .codeBlock {
+        border-radius: 4px;
+        min-height: var(--layout-spacing-m);
+        border: 1px solid var(--Neutral-Grey_3, #ddd);
+        background: var(--Neutral-Grey_1, #f9f9f9);
+        padding: calc(var(--layout-spacing-xs) - 2px) var(--layout-spacing-xs);
+    }
+}
