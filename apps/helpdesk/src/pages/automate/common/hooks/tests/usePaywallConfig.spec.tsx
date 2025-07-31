@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { THEME_NAME, useTheme } from 'core/theme'
 import { assetsUrl } from 'utils'
 import { renderHook } from 'utils/testing/renderHook'
 
@@ -8,14 +9,24 @@ import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('utils')
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
 
 const mockAssetsUrl = assetsUrl as jest.MockedFunction<typeof assetsUrl>
+const mockUseTheme = useTheme as jest.MockedFunction<typeof useTheme>
 
 describe('usePaywallConfig', () => {
     beforeEach(() => {
         mockAssetsUrl.mockImplementation(
             (path: string) => `https://mockedurl.com${path}`,
         )
+        mockUseTheme.mockReturnValue({
+            name: THEME_NAME.Light,
+            resolvedName: THEME_NAME.Light,
+            tokens: {} as any,
+        })
     })
 
     it('should return the correct config for AutomateFeatures.Automate', () => {
@@ -156,6 +167,22 @@ describe('usePaywallConfig', () => {
         }
 
         expect(result.current).toEqual(expectedConfig)
+    })
+
+    it('should return the correct logo for AutomateFeatures.AiAgent in dark theme', () => {
+        mockUseTheme.mockReturnValue({
+            name: THEME_NAME.Dark,
+            resolvedName: 'dark',
+            tokens: {} as any,
+        })
+
+        const { result } = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AiAgent),
+        )
+
+        expect(result.current.paywallLogo).toBe(
+            'https://mockedurl.com/img/ai-agent/ai-agent-logo-white.png',
+        )
     })
 
     it('should return the correct config for AutomateFeatures.AutomateChat', () => {

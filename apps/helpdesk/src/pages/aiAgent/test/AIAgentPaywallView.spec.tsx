@@ -8,6 +8,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
+import { THEME_NAME, useTheme } from 'core/theme'
 import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
@@ -27,9 +28,14 @@ import {
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('common/segment')
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseTheme = useTheme as jest.MockedFunction<typeof useTheme>
 const queryClient = mockQueryClient()
 
 const defaultState = {
@@ -67,6 +73,11 @@ const renderComponent = (props: AiAgentPaywallViewProps = defaultProps) =>
 describe('<AiAgentPaywallView />', () => {
     beforeEach(() => {
         mockLogEvent.mockClear()
+        mockUseTheme.mockReturnValue({
+            name: THEME_NAME.Light,
+            resolvedName: THEME_NAME.Light,
+            tokens: {} as any,
+        })
     })
 
     it('should render the sales paywall component', () => {
@@ -193,5 +204,33 @@ describe('<AiAgentPaywallView />', () => {
 
         await userEvent.click(screen.getByText('Select plan to get started'))
         expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    describe('AI Agent logo display', () => {
+        it('displays logo in light theme', () => {
+            renderComponent({
+                aiAgentPaywallFeature: AIAgentPaywallFeatures.SalesSetup,
+            })
+
+            const logo = screen.getByAltText('AI Agent Logo')
+            expect(logo).toBeInTheDocument()
+            expect(logo).toHaveAttribute('src', 'test-file-stub')
+        })
+
+        it('displays logo in dark theme', () => {
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Dark,
+                resolvedName: 'dark',
+                tokens: {} as any,
+            })
+
+            renderComponent({
+                aiAgentPaywallFeature: AIAgentPaywallFeatures.SalesSetup,
+            })
+
+            const logo = screen.getByAltText('AI Agent Logo')
+            expect(logo).toBeInTheDocument()
+            expect(logo).toHaveAttribute('src', 'test-file-stub')
+        })
     })
 })

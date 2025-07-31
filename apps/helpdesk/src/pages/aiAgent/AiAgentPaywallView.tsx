@@ -5,9 +5,11 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.png'
 import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.png'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useTheme } from 'core/theme'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { usePaywallConfig } from 'pages/aiAgent/hooks/usePaywallConfig'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -91,13 +93,19 @@ export const AiAgentPaywallView = ({
         setIsAutomationModalOpened(true)
     }
 
+    const theme = useTheme()
+
     return (
         <div className={css.pageContainer}>
             <div className={css.setupPaywall}>
                 <section className={css.infoContainer}>
                     <div>
                         <img
-                            src={AiAgentLogo}
+                            src={
+                                theme.resolvedName === 'dark'
+                                    ? AiAgentLogoWhite
+                                    : AiAgentLogo
+                            }
                             className={css.logo}
                             alt="AI Agent Logo"
                         />

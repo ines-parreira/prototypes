@@ -1,3 +1,4 @@
+import { useTheme } from 'core/theme'
 import { CarouselData } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import { assetsUrl } from 'utils'
 
@@ -20,6 +21,7 @@ export const usePaywallConfig = (
     automateFeature: AutomateFeatures,
     customCta?: React.ReactNode,
 ): PaywallFeature => {
+    const theme = useTheme()
     switch (automateFeature) {
         case AutomateFeatures.Automate:
             return {
@@ -126,7 +128,10 @@ export const usePaywallConfig = (
         case AutomateFeatures.AiAgent:
             return {
                 headerTitle: 'AI Agent',
-                paywallLogo: assetsUrl('/img/ai-agent/ai-agent-logo.png'),
+                paywallLogo:
+                    theme.resolvedName === 'dark'
+                        ? assetsUrl('/img/ai-agent/ai-agent-logo-white.png')
+                        : assetsUrl('/img/ai-agent/ai-agent-logo.png'),
                 paywallLogoAlt: 'AI Agent',
                 paywallTitle:
                     'Introducing AI Agent for email, your team’s newest member for seamless customer support',
