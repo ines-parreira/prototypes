@@ -5,10 +5,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { getTicket } from '@gorgias/helpdesk-client'
 
-import {
-    useSearchCustomer,
-    useSearchEmailTickets,
-} from 'models/aiAgent/queries'
+import { useSearchCustomer, useSearchTickets } from 'models/aiAgent/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import {
@@ -22,7 +19,7 @@ import {
 
 jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
-    useSearchEmailTickets: jest.fn(),
+    useSearchTickets: jest.fn(),
 }))
 
 jest.mock('@gorgias/helpdesk-client', () => ({
@@ -30,7 +27,7 @@ jest.mock('@gorgias/helpdesk-client', () => ({
 }))
 
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
-const mockUseSearchEmailTickets = jest.mocked(useSearchEmailTickets)
+const mockUseSearchTickets = jest.mocked(useSearchTickets)
 const mockGetTicket = jest.mocked(getTicket)
 
 const mockOnCustomerChange = jest.fn()
@@ -76,7 +73,7 @@ describe('PlaygroundCustomerSelection', () => {
         } as unknown as ReturnType<typeof useSearchCustomer>)
 
         // Mock for search email tickets - returns empty initially
-        mockUseSearchEmailTickets.mockReturnValue({
+        mockUseSearchTickets.mockReturnValue({
             isLoading: false,
             error: null,
             isRefetching: false,
@@ -97,7 +94,7 @@ describe('PlaygroundCustomerSelection', () => {
                     ],
                 },
             }),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         // Mock getTicket to return a full ticket
         mockGetTicket.mockResolvedValue({
@@ -179,7 +176,7 @@ describe('PlaygroundCustomerSelection', () => {
     })
 
     test('real ticket search integration - searches and selects ticket', async () => {
-        mockUseSearchEmailTickets.mockReturnValue({
+        mockUseSearchTickets.mockReturnValue({
             isLoading: false,
             error: null,
             isRefetching: false,
@@ -200,7 +197,7 @@ describe('PlaygroundCustomerSelection', () => {
                 },
             },
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         renderComponent({
             senderType: SenderTypeValues.EXISTING_TICKET,

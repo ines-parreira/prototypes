@@ -7,7 +7,7 @@ import {
 } from '@gorgias/helpdesk-client'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useSearchEmailTickets } from 'models/aiAgent/queries'
+import { useSearchTickets } from 'models/aiAgent/queries'
 import { reportError } from 'utils/errors'
 
 import { TicketSearchDropdownSelectComponent } from './TicketSearchDropdownSelectComponent'
@@ -49,7 +49,7 @@ export const TicketSearchDropdownSelectView = ({
         isRefetchError,
         data,
         refetch: ticketSearchRefetch,
-    } = useSearchEmailTickets({ query: searchTerm }, { enabled: false })
+    } = useSearchTickets({ query: searchTerm }, { enabled: false })
 
     const isDropdownLoading =
         (isLoading || isRefetching || isTyping) && searchTerm.length > 0

@@ -5,12 +5,12 @@ import { userEvent } from '@testing-library/user-event'
 
 import { getTicket, Ticket } from '@gorgias/helpdesk-client'
 
-import { useSearchEmailTickets } from 'models/aiAgent/queries'
+import { useSearchTickets } from 'models/aiAgent/queries'
 
 import { TicketSearchDropdownSelectView } from './TicketSearchDropdownSelectView'
 
 jest.mock('models/aiAgent/queries', () => ({
-    useSearchEmailTickets: jest.fn(),
+    useSearchTickets: jest.fn(),
 }))
 
 jest.mock('@gorgias/helpdesk-client', () => ({
@@ -21,7 +21,7 @@ jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
 }))
 
-const mockUseSearchTickets = jest.mocked(useSearchEmailTickets)
+const mockUseSearchTickets = jest.mocked(useSearchTickets)
 const mockGetTicket = jest.mocked(getTicket)
 
 const mockTicketSearchResults = [
@@ -85,7 +85,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: null,
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
     })
 
     afterEach(() => {
@@ -108,7 +108,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: null,
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         renderComponent()
 
@@ -139,7 +139,7 @@ describe('TicketSearchDropdownSelectView', () => {
                 isRefetchError: false,
                 data: null,
                 refetch: mockRefetch,
-            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+            } as unknown as ReturnType<typeof useSearchTickets>)
             .mockReturnValue({
                 isLoading: false,
                 error: null,
@@ -147,7 +147,7 @@ describe('TicketSearchDropdownSelectView', () => {
                 isRefetchError: false,
                 data: { data: { data: mockTicketSearchResults } },
                 refetch: mockRefetch,
-            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+            } as unknown as ReturnType<typeof useSearchTickets>)
 
         const { rerender } = renderComponent()
 
@@ -186,7 +186,7 @@ describe('TicketSearchDropdownSelectView', () => {
                 isRefetchError: false,
                 data: null,
                 refetch: mockRefetch,
-            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+            } as unknown as ReturnType<typeof useSearchTickets>)
             .mockReturnValue({
                 isLoading: false,
                 error: null,
@@ -194,7 +194,7 @@ describe('TicketSearchDropdownSelectView', () => {
                 isRefetchError: false,
                 data: { data: { data: [] } },
                 refetch: mockRefetch,
-            } as unknown as ReturnType<typeof useSearchEmailTickets>)
+            } as unknown as ReturnType<typeof useSearchTickets>)
 
         const { rerender } = renderComponent()
 
@@ -224,7 +224,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: { data: { data: mockTicketSearchResults } },
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         mockGetTicket.mockResolvedValue({ data: mockFullTicket } as any)
 
@@ -271,7 +271,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: { data: { data: mockTicketSearchResults } },
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         mockGetTicket.mockResolvedValue({ data: mockFullTicket } as any)
 
@@ -323,7 +323,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: null,
             refetch: mockRefetch,
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         renderComponent()
 
@@ -356,7 +356,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: { data: { data: mockTicketSearchResults } },
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         mockGetTicket.mockRejectedValue(new Error('API Error'))
 
@@ -412,7 +412,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: { data: { data: ticketWithoutCustomerName } },
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         renderComponent()
 
@@ -452,7 +452,7 @@ describe('TicketSearchDropdownSelectView', () => {
             isRefetchError: false,
             data: { data: { data: ticketWithoutCustomer } },
             refetch: jest.fn(),
-        } as unknown as ReturnType<typeof useSearchEmailTickets>)
+        } as unknown as ReturnType<typeof useSearchTickets>)
 
         renderComponent()
 

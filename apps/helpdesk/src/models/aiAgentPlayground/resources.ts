@@ -1,6 +1,5 @@
 import { searchTickets as helpdeskSearchTickets } from '@gorgias/helpdesk-client'
 
-import { TicketChannel } from 'business/types/ticket'
 import client from 'models/api/resources'
 import { SearchType } from 'models/search/types'
 
@@ -19,11 +18,11 @@ export const searchCustomer = async (body: SearchCustomerRequest) => {
     })
 }
 
-export const searchEmailTickets = async (query: string) => {
+export const searchTickets = async (query: string) => {
     return await helpdeskSearchTickets(
         {
             search: query,
-            filters: `eq(ticket.channel, "${TicketChannel.Email}")`,
+            filters: '',
         },
         { limit: 10 },
     )

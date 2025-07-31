@@ -2,15 +2,10 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { searchTickets as helpdeskSearchTickets } from '@gorgias/helpdesk-client'
 
-import { TicketChannel } from 'business/types/ticket'
 import client from 'models/api/resources'
 import { SearchType } from 'models/search/types'
 
-import {
-    getAiAgentCustomer,
-    searchCustomer,
-    searchEmailTickets,
-} from '../resources'
+import { getAiAgentCustomer, searchCustomer, searchTickets } from '../resources'
 
 jest.mock('@gorgias/helpdesk-client', () => ({
     searchTickets: jest.fn(),
@@ -77,15 +72,15 @@ describe('aiAgentPlayground resources', () => {
         })
     })
 
-    describe('searchEmailTickets', () => {
+    describe('searchTickets', () => {
         it('should call helpdeskSearchTickets with email channel filter', async () => {
             const query = 'test search query'
-            await searchEmailTickets(query)
+            await searchTickets(query)
 
             expect(mockHelpdeskSearchTickets).toHaveBeenCalledWith(
                 {
                     search: query,
-                    filters: `eq(ticket.channel, "${TicketChannel.Email}")`,
+                    filters: '',
                 },
                 { limit: 10 },
             )

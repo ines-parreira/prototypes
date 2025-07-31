@@ -32,7 +32,7 @@ import {
 } from 'models/aiAgent/resources/configuration'
 import {
     searchCustomer,
-    searchEmailTickets,
+    searchTickets,
 } from 'models/aiAgentPlayground/resources'
 import {
     SearchCustomerRequest,
@@ -233,13 +233,13 @@ export const useSearchCustomer = (
     })
 }
 
-export const useSearchEmailTickets = (
+export const useSearchTickets = (
     params: SearchTicketsRequest,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof searchEmailTickets>>>,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof searchTickets>>>,
 ) => {
     return useQuery({
         queryKey: searchTicketKeys.search(params.query),
-        queryFn: () => searchEmailTickets(params.query),
+        queryFn: () => searchTickets(params.query),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         ...overrides,
