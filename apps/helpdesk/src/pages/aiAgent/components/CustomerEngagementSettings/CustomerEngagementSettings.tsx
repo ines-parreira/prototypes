@@ -237,6 +237,8 @@ export const CustomerEngagementSettings = () => {
                             />
                         )}
 
+                        <div data-candu-id="ai-sales-agent-customer-engagement-settings-educational-content" />
+
                         {isTriggerOnSearchEnabled && (
                             <TriggerOnSearchSettings
                                 gmv={gmv}
