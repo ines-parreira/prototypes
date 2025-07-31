@@ -63,7 +63,7 @@ export default function LiveVoiceMetrics({
                     <LiveVoiceMetricCard {...card} />
                 </DashboardGridCell>
             ))}
-            {useLiveUpdates && lastUpdated && (
+            {useLiveUpdates && lastUpdated ? (
                 <DashboardGridCell className={css.metricCardInfoCell}>
                     <div className={css.metricCardInfo}>
                         <i className={'material-icons'}>sync</i>
@@ -77,6 +77,8 @@ export default function LiveVoiceMetrics({
                         (auto-refresh every 30 seconds)
                     </div>
                 </DashboardGridCell>
+            ) : (
+                <></>
             )}
         </DashboardSection>
     )
