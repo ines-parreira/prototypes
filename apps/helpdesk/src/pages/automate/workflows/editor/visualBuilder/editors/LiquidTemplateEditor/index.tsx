@@ -22,6 +22,7 @@ import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 import TestLiquidTemplateModal from './TestLiquidTemplateModal'
 
 import css from '../NodeEditor.less'
+import liquidTemplateEditorCss from './LiquidTemplateEditor.less'
 
 export default function LiquidTemplateEditor({
     nodeInEdition,
@@ -54,24 +55,27 @@ export default function LiquidTemplateEditor({
                 nodeInEdition={nodeInEdition}
             ></NodeEditorDrawerHeader>
             <Drawer.Content>
-                <div className={css.container}>
-                    {/* TODO: Style this */}
-                    <div>
+                <div className={`${css.container}`}>
+                    <div className={liquidTemplateEditorCss.description}>
                         <p>
                             Write a Liquid template to generate a variable for
                             use in subsequent steps.
                         </p>
-                        <a
-                            href="https://shopify.github.io/liquid/basics/introduction/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                                color: '#0070f3',
-                                textDecoration: 'underline',
-                            }}
+                        <div
+                            className={
+                                liquidTemplateEditorCss.helpLinkContainer
+                            }
                         >
-                            Common Liquid Examples
-                        </a>
+                            <i className={`material-icons`}>menu_book</i>
+                            <a
+                                href="https://shopify.github.io/liquid/basics/introduction/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={liquidTemplateEditorCss.helpLink}
+                            >
+                                Common Liquid Examples
+                            </a>
+                        </div>
                     </div>
                     <div className={css.formField}>
                         <Label isRequired>Step name</Label>
