@@ -7,7 +7,7 @@ import MetafieldsContainer from '../MetafieldsContainer'
 describe('<MetafieldsContainer />', () => {
     it('should expand when clicked', () => {
         const wrapper = render(
-            <MetafieldsContainer>
+            <MetafieldsContainer title="Metafields">
                 <div className={'test-class'}>expect when expanded</div>
             </MetafieldsContainer>,
         )

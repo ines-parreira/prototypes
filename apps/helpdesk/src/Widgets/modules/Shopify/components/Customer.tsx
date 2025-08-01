@@ -29,6 +29,7 @@ import { StaticField } from 'Widgets/modules/Template/modules/Field'
 import { CustomizationContext } from '../../Template'
 import { ShopifyContext } from '../contexts/ShopifyContext'
 import { getShopifyResourceIds } from '../helpers/getShopifyResourceIds'
+import CustomerMetafieldsSection from './CustomerMetafieldsSection'
 
 function Wrapper({
     source,
@@ -57,16 +58,17 @@ function Wrapper({
 
 type AfterTitleProps = {
     source: Map<any, any>
+    isEditing: boolean
 }
 
 const AfterTitleContainer = ({
     source,
     integrations,
+    isEditing,
 }: AfterTitleProps & ConnectedProps<typeof connector>) => {
     const { integration } = useContext(IntegrationContext)
     const { hideActionsForCustomer = false } =
         useContext(CustomizationContext) || {}
-
     const actions: Array<InfobarAction> = [
         {
             key: 'createOrder',
@@ -124,6 +126,7 @@ const AfterTitleContainer = ({
             {integrations.length > 1 && (
                 <StaticField label="Store">{shopName}</StaticField>
             )}
+            <CustomerMetafieldsSection isEditing={isEditing} />
         </>
     )
 }

@@ -9,11 +9,11 @@ import css from './MetafieldsContainer.less'
 
 type Props = {
     children: ReactNode
+    title: string
 }
 
-export default function MetafieldsContainer({ children }: Props) {
+export default function MetafieldsContainer({ children, title }: Props) {
     const [isOpen, setIsOpen] = useState(false)
-
     const onClick = () => {
         setIsOpen(!isOpen)
         if (!isOpen) {
@@ -24,7 +24,7 @@ export default function MetafieldsContainer({ children }: Props) {
         <div className={css.container}>
             <div className={css.header}>
                 <img alt={'Metafields'} src={orderIcon} className={css.icon} />
-                <span className={css.title}>Metafields</span>
+                <span className={css.title}>{title}</span>
                 <span
                     className={classnames(css.dropdownIcon, 'clickable')}
                     onClick={onClick}

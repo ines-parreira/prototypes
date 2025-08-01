@@ -1,31 +1,20 @@
-import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
+import { useListShopifyCustomerMetafields } from '@gorgias/helpdesk-queries'
 import { ShopifyMetafield } from '@gorgias/helpdesk-types'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import {
-    Metafield,
-    MetafieldsContainer,
-} from 'Widgets/modules/Shopify/modules/Metafields'
+import { Metafield } from 'Widgets/modules/Shopify/modules/Metafields'
 
-import css from './OrderMetafields.less'
+import { MetafieldProps } from './types'
 
-type Props = {
-    integrationId: number
-    orderId: number
-}
+import css from './CustomerMetafields.less'
 
-export default function WrappedOrderMetafields(props: Props) {
-    return (
-        <MetafieldsContainer title="Metafields">
-            <OrderMetafields {...props} />
-        </MetafieldsContainer>
-    )
-}
-
-export function OrderMetafields({ integrationId, orderId }: Props) {
-    const { data, isLoading, isError } = useListShopifyOrderMetafields(
+export function CustomerMetafields({
+    integrationId,
+    customerId,
+}: MetafieldProps) {
+    const { data, isLoading, isError } = useListShopifyCustomerMetafields(
         integrationId,
-        orderId,
+        customerId,
         {
             query: {
                 refetchInterval: false,
@@ -44,7 +33,6 @@ export function OrderMetafields({ integrationId, orderId }: Props) {
             </div>
         )
     }
-
     if (isError) {
         return (
             <span className={css.errorMessage}>
@@ -53,20 +41,20 @@ export function OrderMetafields({ integrationId, orderId }: Props) {
         )
     }
 
-    if (!data || data.data?.data?.length <= 0) {
+    if (!data?.data?.data?.length) {
         return (
-            <span className={css.infoMessage}>
-                Order has no metafields populated.
-            </span>
+            <div className={css.infoMessage}>
+                Customer has no metafields populated.
+            </div>
         )
     }
 
     const metafields = data.data.data as unknown as ShopifyMetafield[]
     return (
-        <>
+        <div className={css.metafields}>
             {metafields.map((field, index) => (
                 <Metafield key={index} metafield={field} />
             ))}
-        </>
+        </div>
     )
 }
