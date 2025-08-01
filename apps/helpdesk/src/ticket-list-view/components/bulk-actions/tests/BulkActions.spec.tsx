@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { render, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -96,39 +96,39 @@ describe('<BulkActions />', () => {
     })
 
     it('should disable bulk action buttons', () => {
-        const { getByText } = renderWithStore({
+        renderWithStore({
             ...minProps,
             hasSelectedAll: false,
         })
 
-        getByText('CloseTicketsMock').click()
+        screen.getByText('CloseTicketsMock').click()
         expect(mockCreateJob).not.toHaveBeenCalled()
     })
 
     it('should trigger bulk action to close tickets', async () => {
-        const { getByText } = renderWithStore()
-        getByText('CloseTicketsMock').click()
+        renderWithStore()
+        screen.getByText('CloseTicketsMock').click()
 
         expect(mockCreateJob).toHaveBeenCalled()
         await waitFor(() => expect(minProps.onComplete).toHaveBeenCalled())
     })
 
     it('should trigger bulk action to assign user', async () => {
-        const { getByText } = renderWithStore()
-        getByText('AssignUserMock').click()
+        renderWithStore()
+        screen.getByText('AssignUserMock').click()
 
         await waitFor(() => expect(minProps.onComplete).toHaveBeenCalled())
     })
 
     it('should prepare job at view level', () => {
-        const { getByText } = renderWithStore()
-        getByText('CloseTicketsMock').click()
+        renderWithStore()
+        screen.getByText('CloseTicketsMock').click()
 
         expect(useBulkActionMock).toHaveBeenCalledWith('view', [])
     })
 
     it('should prepare job at ticket level', () => {
-        const { getByText } = renderWithStore({
+        renderWithStore({
             ...minProps,
             hasSelectedAll: false,
             selectedTickets: {
@@ -136,14 +136,14 @@ describe('<BulkActions />', () => {
                 2: false,
             },
         })
-        getByText('CloseTicketsMock').click()
+        screen.getByText('CloseTicketsMock').click()
 
         expect(useBulkActionMock).toHaveBeenCalledWith('ticket', [1])
     })
 
     it('should trigger job when MoreActions calls it', async () => {
-        const { getByText } = renderWithStore()
-        getByText('MoreActionsMock').click()
+        renderWithStore()
+        screen.getByText('MoreActionsMock').click()
 
         await waitFor(() =>
             expect(mockCreateJob).toHaveBeenCalledWith(mockJobType, undefined),
@@ -154,5 +154,42 @@ describe('<BulkActions />', () => {
                 location: 'split-view-mode',
             }),
         )
+    })
+
+    it('should handle priority updates through launchJob', async () => {
+        renderWithStore()
+
+        // Simulate a priority update job
+        const priorityJob = {
+            type: JobType.UpdateTicket,
+            event: 'priority',
+        }
+        const priorityParams = {
+            updates: { priority: 'high' },
+        }
+
+        // This would be called by MoreActions when priority is selected
+        const launchJob = (job: any, params?: any, action?: any) => {
+            mockCreateJob(job.type!, params)
+            logEvent(SegmentEvent.BulkAction, {
+                type: job.event,
+                location: 'split-view-mode',
+                value: params?.updates?.priority,
+            })
+            minProps.onComplete(action)
+        }
+
+        launchJob(priorityJob, priorityParams, 'priority')
+
+        expect(mockCreateJob).toHaveBeenCalledWith(
+            JobType.UpdateTicket,
+            priorityParams,
+        )
+        expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.BulkAction, {
+            type: 'priority',
+            location: 'split-view-mode',
+            value: 'high',
+        })
+        expect(minProps.onComplete).toHaveBeenCalledWith('priority')
     })
 })

@@ -1,10 +1,4 @@
-import React, {
-    KeyboardEvent,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 
 import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import { User } from 'config/types/user'

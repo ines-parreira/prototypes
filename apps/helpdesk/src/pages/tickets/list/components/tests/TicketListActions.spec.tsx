@@ -2,6 +2,7 @@ import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import {
+    act,
     fireEvent,
     render,
     RenderResult,
@@ -9,6 +10,7 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS, List, Map } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -16,6 +18,8 @@ import configureMockStore from 'redux-mock-store'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
+import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { Update } from 'jobs'
@@ -37,7 +41,18 @@ jest.mock('state/views/actions')
 jest.mock('state/tickets/actions')
 jest.mock('pages/history')
 jest.mock('common/segment')
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
+const useThemeMock = jest.mocked(useTheme)
+
 const logEventMock = assumeMock(logEvent)
+const useFlagMock = useFlag as jest.MockedFunction<typeof useFlag>
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -61,6 +76,16 @@ jest.mock(
         ({ onClick }: ComponentProps<typeof TagDropdownMenu>) => (
             <div onClick={() => onClick({ name: 'tag added' })}>
                 TagDropdownMenuMock
+            </div>
+        ),
+)
+
+jest.mock(
+    'ticket-list-view/components/bulk-actions/PriorityDropdownMenu',
+    () =>
+        ({ onClick }: { onClick: (item: { name: string }) => void }) => (
+            <div onClick={() => onClick({ name: 'high' })}>
+                PriorityDropdownMenuMock
             </div>
         ),
 )
@@ -104,6 +129,12 @@ describe('TicketListActions component', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        useFlagMock.mockReturnValue(false) // Default to disabled for priority feature
+        useThemeMock.mockReturnValue({
+            name: THEME_NAME.Light,
+            resolvedName: THEME_NAME.Light,
+            tokens: themeTokenMap[THEME_NAME.Light],
+        })
     })
 
     it('should render enabled buttons when some tickets are selected', async () => {
@@ -213,8 +244,9 @@ describe('TicketListActions component', () => {
         expect(screen.getAllByText('Clear assignee')).toHaveLength(2)
     })
 
-    it('should render the delete action for lead and admin agents', () => {
-        const { getByText } = render(
+    it('should render the delete action for lead and admin agents', async () => {
+        const user = userEvent.setup()
+        render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -225,15 +257,21 @@ describe('TicketListActions component', () => {
                     }),
                 })}
             >
-                <TicketListActions {...props} />
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
             </Provider>,
         )
 
-        expect(getByText('Delete')).toBeInTheDocument()
+        await act(async () => {
+            await user.click(screen.getByText('More'))
+        })
+
+        expect(screen.getByText('Delete')).toBeInTheDocument()
     })
 
-    it('should render the special actions for lead and admin agents', () => {
-        const { getByText } = render(
+    it('should render the special actions for lead and admin agents', async () => {
+        const user = userEvent.setup()
+
+        render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -250,17 +288,21 @@ describe('TicketListActions component', () => {
                     }),
                 })}
             >
-                <TicketListActions {...props} />
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
             </Provider>,
         )
 
-        expect(getByText('Export tickets')).toBeInTheDocument()
-        expect(getByText('Delete forever')).toBeInTheDocument()
-        expect(getByText('Undelete')).toBeInTheDocument()
+        await act(async () => {
+            await user.click(screen.getByText('More'))
+        })
+
+        expect(screen.getByText('Export tickets')).toBeInTheDocument()
+        expect(screen.getByText('Delete forever')).toBeInTheDocument()
+        expect(screen.getByText('Undelete')).toBeInTheDocument()
     })
 
     it('should not render the delete and export buttons for user below agent role', () => {
-        const { queryByText } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -275,12 +317,14 @@ describe('TicketListActions component', () => {
             </Provider>,
         )
 
-        expect(queryByText('Delete')).not.toBeInTheDocument()
-        expect(queryByText('Export tickets')).not.toBeInTheDocument()
+        expect(screen.queryByText('Delete')).not.toBeInTheDocument()
+        expect(screen.queryByText('Export tickets')).not.toBeInTheDocument()
     })
 
-    it('should send event to segment on click export tickets button', () => {
-        const { getByText } = render(
+    it('should send event to segment on click export tickets button', async () => {
+        const user = userEvent.setup()
+
+        render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -291,11 +335,17 @@ describe('TicketListActions component', () => {
                     }),
                 })}
             >
-                <TicketListActions {...props} selectedItemsIds={fromJS([])} />
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
             </Provider>,
         )
 
-        fireEvent.click(getByText(/Export tickets/))
+        await act(async () => {
+            await user.click(screen.getByText('More'))
+        })
+
+        await act(async () => {
+            await user.click(screen.getByText(/Export tickets/))
+        })
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.TicketExport,
@@ -459,8 +509,8 @@ describe('TicketListActions component', () => {
         expect(props.openMacroModal).not.toHaveBeenCalled()
     })
 
-    it('should show delete confirmation on delete ticket shortcut', () => {
-        const { queryByText } = render(
+    it('should show delete confirmation on delete ticket shortcut', async () => {
+        render(
             <Provider store={store}>
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
             </Provider>,
@@ -468,11 +518,15 @@ describe('TicketListActions component', () => {
 
         hitShortcut('DELETE_TICKET')
 
-        expect(queryByText(/Are you sure you want to delete/)).not.toBe(null)
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/Are you sure you want to delete/),
+            ).not.toBe(null)
+        })
     })
 
     it('should not show delete confirmation on delete ticket shortcut when no selected items', () => {
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <TicketListActions {...props} />
             </Provider>,
@@ -480,11 +534,11 @@ describe('TicketListActions component', () => {
 
         hitShortcut('DELETE_TICKET')
 
-        expect(queryByText(/Are you sure you want to delete/)).toBe(null)
+        expect(screen.queryByText(/Are you sure you want to delete/)).toBe(null)
     })
 
     it("should not show delete confirmation on delete ticket shortcut when the user's role is basic, lite or observer", () => {
-        const { queryByText } = render(
+        render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -501,7 +555,277 @@ describe('TicketListActions component', () => {
 
         hitShortcut('DELETE_TICKET')
 
-        expect(queryByText(/Are you sure you want to delete/)).toBe(null)
+        expect(screen.queryByText(/Are you sure you want to delete/)).toBe(null)
+    })
+
+    describe('search functionality', () => {
+        it('should filter teams when searching', async () => {
+            const user = userEvent.setup()
+            const teams = [
+                { id: 1, name: 'Team Alpha' },
+                { id: 2, name: 'Team Beta' },
+                { id: 3, name: 'Team Gamma' },
+            ]
+
+            render(
+                <Provider
+                    store={mockStore({
+                        ...state,
+                        teams: fromJS({
+                            all: teams,
+                        }),
+                    })}
+                >
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open teams dropdown
+            await user.click(screen.getByText('Assign to team'))
+
+            // Type in search
+            const searchInput = screen.getByPlaceholderText('Search teams...')
+            await user.type(searchInput, 'Alpha')
+
+            // Should only show Team Alpha
+            expect(screen.getByText('Team Alpha')).toBeInTheDocument()
+            expect(screen.queryByText('Team Beta')).not.toBeInTheDocument()
+            expect(screen.queryByText('Team Gamma')).not.toBeInTheDocument()
+        })
+
+        it('should filter agents when searching', async () => {
+            const user = userEvent.setup()
+            const agents = [
+                { id: 1, name: 'John Doe' },
+                { id: 2, name: 'Jane Smith' },
+                { id: 3, name: 'Bob Johnson' },
+            ]
+
+            render(
+                <Provider
+                    store={mockStore({
+                        ...state,
+                        agents: fromJS({
+                            all: agents,
+                        }),
+                    })}
+                >
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open agents dropdown
+            await user.click(screen.getByText('Assign to me'))
+
+            // Type in search
+            const searchInput = screen.getByPlaceholderText('Search agents...')
+            await user.type(searchInput, 'John')
+
+            // Should only show John Doe and Bob Johnson
+            expect(screen.getByText('John Doe')).toBeInTheDocument()
+            expect(screen.queryByText('Jane Smith')).not.toBeInTheDocument()
+            expect(screen.getByText('Bob Johnson')).toBeInTheDocument()
+        })
+
+        it('should show "Could not find any team" when no teams match search', async () => {
+            const user = userEvent.setup()
+            const teams = [
+                { id: 1, name: 'Team Alpha' },
+                { id: 2, name: 'Team Beta' },
+            ]
+
+            render(
+                <Provider
+                    store={mockStore({
+                        ...state,
+                        teams: fromJS({
+                            all: teams,
+                        }),
+                    })}
+                >
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open teams dropdown
+            await user.click(screen.getByText('Assign to team'))
+
+            // Type in search
+            const searchInput = screen.getByPlaceholderText('Search teams...')
+            await user.type(searchInput, 'NonExistent')
+
+            // Should show no results message
+            expect(
+                screen.getByText('Could not find any team'),
+            ).toBeInTheDocument()
+        })
+
+        it('should show "Could not find any agent" when no agents match search', async () => {
+            const user = userEvent.setup()
+            const agents = [
+                { id: 1, name: 'John Doe' },
+                { id: 2, name: 'Jane Smith' },
+            ]
+
+            render(
+                <Provider
+                    store={mockStore({
+                        ...state,
+                        agents: fromJS({
+                            all: agents,
+                        }),
+                    })}
+                >
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open agents dropdown
+            await user.click(screen.getByText('Assign to me'))
+
+            // Type in search
+            const searchInput = screen.getByPlaceholderText('Search agents...')
+            await user.type(searchInput, 'NonExistent')
+
+            // Should show no results message
+            expect(
+                screen.getByText('Could not find any agent'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('priority dropdown functionality', () => {
+        beforeEach(() => {
+            useFlagMock.mockReturnValue(true) // Enable priority feature
+        })
+
+        it('should render priority dropdown when feature flag is enabled', () => {
+            render(
+                <Provider store={store}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open more dropdown
+            fireEvent.click(screen.getByText('More'))
+
+            expect(screen.getByText('Change priority')).toBeInTheDocument()
+        })
+
+        it('should not render priority dropdown when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false) // Disable priority feature
+
+            render(
+                <Provider store={store}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open more dropdown
+            fireEvent.click(screen.getByText('More'))
+
+            expect(
+                screen.queryByText('Change priority'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open priority dropdown when clicking change priority', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <Provider store={store}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open more dropdown
+            await user.click(screen.getByText('More'))
+
+            // Click change priority
+            await user.click(screen.getByText('Change priority'))
+
+            // Should show priority dropdown
+            expect(
+                screen.getByText('PriorityDropdownMenuMock'),
+            ).toBeInTheDocument()
+        })
+
+        it('should go back to more dropdown when clicking back in priority dropdown', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <Provider store={store}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open more dropdown
+            await user.click(screen.getByText('More'))
+
+            // Click change priority
+            await user.click(screen.getByText('Change priority'))
+
+            // Click back
+            await user.click(screen.getByText('Back'))
+
+            // Should be back in more dropdown
+            expect(screen.getByText('Change priority')).toBeInTheDocument()
+            expect(
+                screen.queryByText('PriorityDropdownMenuMock'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should create job when selecting priority', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <Provider store={store}>
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
+                </Provider>,
+            )
+
+            // Open more dropdown
+            await user.click(screen.getByText('More'))
+
+            // Click change priority
+            await user.click(screen.getByText('Change priority'))
+
+            // Click on priority option
+            await user.click(screen.getByText('PriorityDropdownMenuMock'))
+
+            expect(mockedCreateJobTicket).toHaveBeenCalledWith(
+                fromJS([1]),
+                JobType.UpdateTicket,
+                { updates: { priority: 'high' } },
+            )
+        })
     })
 
     type CreateJobTestSuite = [
@@ -974,14 +1298,20 @@ describe('TicketListActions component', () => {
         },
     )
 
-    it('should call openMacroModal on Apply macro dropdown item click', () => {
-        const { getByText } = render(
+    it('should call openMacroModal on Apply macro dropdown item click', async () => {
+        const user = userEvent.setup()
+
+        render(
             <Provider store={store}>
-                <TicketListActions {...props} />
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
             </Provider>,
         )
 
-        fireEvent.click(getByText('Apply macro'))
+        await act(async () => {
+            await user.click(screen.getByText('More'))
+        })
+
+        fireEvent.click(screen.getByText('Apply macro'))
 
         expect(props.openMacroModal).toHaveBeenLastCalledWith(expect.anything())
     })
@@ -1005,8 +1335,9 @@ describe('TicketListActions component', () => {
             }),
         }
 
-        it('should render mark as read and mark as unread dropdown items', () => {
-            const { queryByText } = render(
+        it('should render mark as read and mark as unread dropdown items', async () => {
+            const user = userEvent.setup()
+            render(
                 <Provider store={mockStore(newState)}>
                     <TicketListActions
                         {...props}
@@ -1015,12 +1346,18 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            expect(queryByText('Mark as read')).not.toBe(null)
-            expect(queryByText('Mark as unread')).not.toBe(null)
+            await act(async () => {
+                await user.click(screen.getByText('More'))
+            })
+
+            expect(screen.queryByText('Mark as read')).not.toBe(null)
+            expect(screen.queryByText('Mark as unread')).not.toBe(null)
         })
 
-        it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
-            const { queryByText } = render(
+        it('should render mark as read and mark as unread dropdown items when all view items selected', async () => {
+            const user = userEvent.setup()
+
+            render(
                 <Provider
                     store={mockStore({
                         ...newState,
@@ -1040,8 +1377,12 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            expect(queryByText('Mark as read')).not.toBe(null)
-            expect(queryByText('Mark as unread')).not.toBe(null)
+            await act(async () => {
+                await user.click(screen.getByText('More'))
+            })
+
+            expect(screen.queryByText('Mark as read')).not.toBe(null)
+            expect(screen.queryByText('Mark as unread')).not.toBe(null)
         })
 
         it('should create a job on mark as read shortcut', () => {
@@ -1091,8 +1432,10 @@ describe('TicketListActions component', () => {
             }),
         }
 
-        it('should render mark as read dropdown item', () => {
-            const { queryByText } = render(
+        it('should render mark as read dropdown item', async () => {
+            const user = userEvent.setup()
+
+            render(
                 <Provider store={mockStore(newState)}>
                     <TicketListActions
                         {...props}
@@ -1101,12 +1444,18 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            expect(queryByText('Mark as read')).not.toBe(null)
-            expect(queryByText('Mark as unread')).toBe(null)
+            await act(async () => {
+                await user.click(screen.getByText('More'))
+            })
+
+            expect(screen.queryByText('Mark as read')).not.toBe(null)
+            expect(screen.queryByText('Mark as unread')).toBe(null)
         })
 
-        it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
-            const { queryByText } = render(
+        it('should render mark as read and mark as unread dropdown items when all view items selected', async () => {
+            const user = userEvent.setup()
+
+            render(
                 <Provider
                     store={mockStore({
                         ...newState,
@@ -1126,8 +1475,12 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            expect(queryByText('Mark as read')).not.toBe(null)
-            expect(queryByText('Mark as unread')).not.toBe(null)
+            await act(async () => {
+                await user.click(screen.getByText('More'))
+            })
+
+            expect(screen.queryByText('Mark as read')).not.toBe(null)
+            expect(screen.queryByText('Mark as unread')).not.toBe(null)
         })
 
         it('should create a job on mark as read shortcut', () => {
@@ -1177,8 +1530,10 @@ describe('TicketListActions component', () => {
             }),
         }
 
-        it('should render mark as read dropdown item', () => {
-            const { queryByText } = render(
+        it('should render mark as read dropdown item', async () => {
+            const user = userEvent.setup()
+
+            render(
                 <Provider store={mockStore(newState)}>
                     <TicketListActions
                         {...props}
@@ -1187,12 +1542,18 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            expect(queryByText('Mark as read')).toBe(null)
-            expect(queryByText('Mark as unread')).not.toBe(null)
+            await act(async () => {
+                await user.click(screen.getByText('More'))
+            })
+
+            expect(screen.queryByText('Mark as read')).toBe(null)
+            expect(screen.queryByText('Mark as unread')).not.toBe(null)
         })
 
-        it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
-            const { queryByText } = render(
+        it('should render mark as read and mark as unread dropdown items when all view items selected', async () => {
+            const user = userEvent.setup()
+
+            render(
                 <Provider
                     store={mockStore({
                         ...newState,
@@ -1205,12 +1566,19 @@ describe('TicketListActions component', () => {
                         }),
                     })}
                 >
-                    <TicketListActions {...props} />
+                    <TicketListActions
+                        {...props}
+                        selectedItemsIds={fromJS([1])}
+                    />
                 </Provider>,
             )
 
-            expect(queryByText('Mark as read')).not.toBe(null)
-            expect(queryByText('Mark as unread')).not.toBe(null)
+            await act(async () => {
+                await user.click(screen.getByText('More'))
+            })
+
+            expect(screen.queryByText('Mark as read')).not.toBe(null)
+            expect(screen.queryByText('Mark as unread')).not.toBe(null)
         })
 
         it('should not create a job on mark as read shortcut', () => {
@@ -1243,8 +1611,10 @@ describe('TicketListActions component', () => {
         })
     })
 
-    it('should render mark as read dropdown item when only unread tickets are selected', () => {
-        const { queryByText } = render(
+    it('should render mark as read dropdown item when only unread tickets are selected', async () => {
+        const user = userEvent.setup()
+
+        render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -1263,12 +1633,18 @@ describe('TicketListActions component', () => {
             </Provider>,
         )
 
-        expect(queryByText('Mark as read')).not.toBe(null)
-        expect(queryByText('Mark as unread')).toBe(null)
+        await act(async () => {
+            await user.click(screen.getByText('More'))
+        })
+
+        expect(screen.queryByText('Mark as read')).not.toBe(null)
+        expect(screen.queryByText('Mark as unread')).toBe(null)
     })
 
-    it('should render mark as unread dropdown item when only read tickets are selected', () => {
-        const { queryByText } = render(
+    it('should render mark as unread dropdown item when only read tickets are selected', async () => {
+        const user = userEvent.setup()
+
+        render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -1287,7 +1663,11 @@ describe('TicketListActions component', () => {
             </Provider>,
         )
 
-        expect(queryByText('Mark as read')).toBe(null)
-        expect(queryByText('Mark as unread')).not.toBe(null)
+        await act(async () => {
+            await user.click(screen.getByText('More'))
+        })
+
+        expect(screen.queryByText('Mark as read')).toBe(null)
+        expect(screen.queryByText('Mark as unread')).not.toBe(null)
     })
 })

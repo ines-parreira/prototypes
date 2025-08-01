@@ -125,4 +125,24 @@ describe('<Body />', () => {
         expect(onRenderItemMock).toHaveBeenNthCalledWith(1, mockContext.data[0])
         expect(onRenderItemMock).toHaveBeenNthCalledWith(2, mockContext.data[1])
     })
+
+    it('should not render search input when hasSearch is false', () => {
+        const { queryByPlaceholderText, getAllByRole } = renderWithContexts(
+            mockContext,
+            { hasSearch: false },
+        )
+
+        expect(queryByPlaceholderText('Search')).not.toBeInTheDocument()
+        expect(getAllByRole('listitem').length).toBe(2) // Only the dropdown items, no search input
+    })
+
+    it('should render search input by default when hasSearch is true', () => {
+        const { getByPlaceholderText, getAllByRole } = renderWithContexts(
+            mockContext,
+            { hasSearch: true },
+        )
+
+        expect(getByPlaceholderText('Search')).toBeInTheDocument()
+        expect(getAllByRole('listitem').length).toBe(3) // Search input + 2 dropdown items
+    })
 })

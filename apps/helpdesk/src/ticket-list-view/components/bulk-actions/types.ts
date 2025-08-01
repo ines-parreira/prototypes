@@ -22,4 +22,5 @@ export enum Action {
     Untrash = 'untrash',
     Delete = 'delete',
     Trash = 'trash',
+    Priority = 'priority',
 }

@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,14 +12,19 @@ import { JobType } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { TagDropdownMenu } from 'tags'
 
 import ApplyMacro from '../ApplyMacro'
 import MoreActions from '../MoreActions'
+import PriorityDropdownMenu from '../PriorityDropdownMenu'
 import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
     'tags/TagDropdownMenu',
@@ -36,6 +41,15 @@ jest.mock(
         ({ onClick }: ComponentProps<typeof TeamAssigneeDropdownMenu>) => (
             <button onClick={() => onClick({ id: 8 })}>
                 TeamAssigneeDropdownMenuMock
+            </button>
+        ),
+)
+jest.mock(
+    '../PriorityDropdownMenu',
+    () =>
+        ({ onClick }: ComponentProps<typeof PriorityDropdownMenu>) => (
+            <button onClick={() => onClick({ name: 'high' })}>
+                PriorityDropdownMenuMock
             </button>
         ),
 )
@@ -75,6 +89,10 @@ describe('<MoreActions />', () => {
                 <MoreActions {...props} />
             </Provider>,
         )
+
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
 
     it('should trigger a job for marking as unread tickets', async () => {
         renderWithStore(minProps)
@@ -243,6 +261,35 @@ describe('<MoreActions />', () => {
         )
         expect(screen.queryByText('TagDropdownMenuMock')).not.toBeInTheDocument
         expect(screen.queryByText('Assign to team')).not.toBeInTheDocument
+    })
+
+    it('should trigger a job for changing priority when feature flag is enabled', async () => {
+        useFlagMock.mockReturnValue(true)
+        renderWithStore()
+        await userEvent.click(screen.getByText('more_horiz'))
+        await userEvent.click(screen.getByText('Change priority'))
+        expect(screen.getByText('arrow_back')).toBeInTheDocument
+        await userEvent.click(screen.getByText('PriorityDropdownMenuMock'))
+
+        expect(minProps.launchJob).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: JobType.UpdateTicket,
+                label: 'Change priority',
+            }),
+            { updates: { priority: 'high' } },
+            'priority',
+        )
+        expect(screen.queryByText('PriorityDropdownMenuMock')).not
+            .toBeInTheDocument
+        expect(screen.queryByText('Change priority')).not.toBeInTheDocument
+    })
+
+    it('should not show priority option when feature flag is disabled', async () => {
+        useFlagMock.mockReturnValue(false)
+        renderWithStore()
+        await userEvent.click(screen.getByText('more_horiz'))
+
+        expect(screen.queryByText('Change priority')).not.toBeInTheDocument
     })
 
     it('should not display the inaccessible actions for user below agent role', async () => {

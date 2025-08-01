@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
 
-import cn from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
@@ -9,15 +8,12 @@ import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { PriorityIcon } from 'pages/tickets/common/components/PriorityIcon'
 
 import css from './TicketPriorityDropdown.less'
 
 const PRIORITY_OPTIONS: TicketPriority[] =
     Object.values(TicketPriority).reverse()
-
-const PriorityIcon = ({ priority }: { priority: TicketPriority }) => (
-    <i className={cn(css.icon, css[priority])} />
-)
 
 const TicketPriorityDropdown = ({
     priority,

@@ -1,4 +1,4 @@
-import React, { MouseEvent, useMemo, useRef, useState } from 'react'
+import { MouseEvent, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -8,23 +8,23 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
-    Popover,
-    PopoverBody,
-    PopoverHeader,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
 import { JobType } from '@gorgias/helpdesk-queries'
+import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
-import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { Popover } from 'components/Popover'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
+import DropdownItemInternal from 'pages/common/components/dropdown/DropdownItem'
 import Group from 'pages/common/components/layout/Group'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
@@ -45,6 +45,7 @@ import {
     getViewCount,
 } from 'state/views/selectors'
 import { TagDropdownMenu } from 'tags'
+import PriorityDropdownMenu from 'ticket-list-view/components/bulk-actions/PriorityDropdownMenu'
 import { hasRole } from 'utils'
 
 export const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
@@ -59,6 +60,8 @@ enum ActionDropdown {
     Agents = 'agents',
     Tags = 'tags',
     Trash = 'trash',
+    Priority = 'priority',
+    More = 'more',
 }
 
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
@@ -76,6 +79,9 @@ export const TicketListActions = ({
     const areFiltersValid = useAppSelector(getAreFiltersValid)
     const activeView = useAppSelector(getActiveView)
     const viewCount = useAppSelector(getViewCount(activeView.get('id')))
+    const hasPriorityFilteringEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+    )
 
     const tickets = useAppSelector(getTickets)
 
@@ -85,11 +91,11 @@ export const TicketListActions = ({
     const [teamsSearchQuery, setTeamsSearchQuery] = useState('')
     const [agentsSearchQuery, setAgentsSearchQuery] = useState('')
     const tagDropdownButtonRef = useRef(null)
+    const moreDropdownButtonRef = useRef(null)
 
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
         useState(false)
     const [isLaunchingJob, setIsLaunchingJob] = useState(false)
-    const appNode = useAppNode()
     const hasAgentRole = useMemo(
         () => hasRole(currentUser, UserRole.Agent),
         [currentUser],
@@ -202,7 +208,8 @@ export const TicketListActions = ({
             | 'assignee_user'
             | 'is_unread'
             | 'status'
-            | 'tags',
+            | 'tags'
+            | 'priority',
         value: any,
     ) => {
         if (!hasSelectedItems) {
@@ -349,6 +356,7 @@ export const TicketListActions = ({
                         onClick={() => bulkUpdate('status', 'closed')}
                         isDisabled={isDisabled}
                         size="small"
+                        className={css.button}
                     >
                         Close
                     </Button>
@@ -357,9 +365,9 @@ export const TicketListActions = ({
                             intent="secondary"
                             size="small"
                             isDisabled={isDisabled}
-                        >
-                            arrow_drop_down
-                        </IconButton>
+                            icon="arrow_drop_down"
+                            className={css.arrow}
+                        />
                     </DropdownToggle>
                 </Group>
                 <DropdownMenu right>
@@ -389,6 +397,7 @@ export const TicketListActions = ({
                             })
                         }
                         isDisabled={isDisabled}
+                        className={css.button}
                     >
                         Assign to me
                     </Button>
@@ -397,9 +406,9 @@ export const TicketListActions = ({
                             intent="secondary"
                             size="small"
                             isDisabled={isDisabled}
-                        >
-                            arrow_drop_down
-                        </IconButton>
+                            icon="arrow_drop_down"
+                            className={css.arrow}
+                        />
                     </DropdownToggle>
                 </Group>
                 <DropdownMenu right className={css['assignee-dropdown-list']}>
@@ -564,102 +573,145 @@ export const TicketListActions = ({
             >
                 <TagDropdownMenu onClick={(item) => addTag(item.name)} />
             </Dropdown>
-            <UncontrolledButtonDropdown>
-                <DropdownToggle tag="span" disabled={isDisabled}>
-                    <Button
-                        intent="secondary"
-                        size="small"
-                        isDisabled={isDisabled}
-                        trailingIcon="arrow_drop_down"
+            <Button
+                ref={moreDropdownButtonRef}
+                intent="secondary"
+                size="small"
+                isDisabled={isDisabled}
+                onClick={() => toggleDropdown(ActionDropdown.More)}
+                trailingIcon="arrow_drop_down"
+            >
+                More
+            </Button>
+            <Dropdown
+                isOpen={openDropdown === ActionDropdown.More}
+                onToggle={() => toggleDropdown(ActionDropdown.More)}
+                target={moreDropdownButtonRef}
+                placement="bottom-end"
+                className={css.dropdown}
+            >
+                <DropdownItemInternal
+                    option={{ label: 'Apply macro', value: 'apply-macro' }}
+                    onClick={openMacroModal}
+                >
+                    Apply macro
+                </DropdownItemInternal>
+                {isMarkAsReadActionAvailable && (
+                    <DropdownItemInternal
+                        option={{
+                            label: 'Mark as read',
+                            value: 'mark-as-read',
+                        }}
+                        onClick={() => bulkUpdate('is_unread', false)}
                     >
-                        More
-                    </Button>
-                </DropdownToggle>
-                <DropdownMenu right>
-                    <DropdownItem type="button" onClick={openMacroModal}>
-                        Apply macro
-                    </DropdownItem>
-                    {isMarkAsReadActionAvailable && (
-                        <DropdownItem
-                            type="button"
-                            onClick={() => bulkUpdate('is_unread', false)}
+                        Mark as read
+                    </DropdownItemInternal>
+                )}
+                {isMarkAsUnreadActionAvailable && (
+                    <DropdownItemInternal
+                        option={{
+                            label: 'Mark as unread',
+                            value: 'mark-as-unread',
+                        }}
+                        onClick={() => bulkUpdate('is_unread', true)}
+                    >
+                        Mark as unread
+                    </DropdownItemInternal>
+                )}
+                {hasPriorityFilteringEnabled && (
+                    <DropdownItemInternal
+                        option={{
+                            label: 'Change priority',
+                            value: 'change-priority',
+                        }}
+                        onClick={() => toggleDropdown(ActionDropdown.Priority)}
+                    >
+                        Change priority
+                    </DropdownItemInternal>
+                )}
+                {hasAgentRole && (
+                    <>
+                        <DropdownItemInternal
+                            option={{
+                                label: 'Export tickets',
+                                value: 'export-tickets',
+                            }}
+                            onClick={bulkExport}
                         >
-                            Mark as read
-                        </DropdownItem>
-                    )}
-                    {isMarkAsUnreadActionAvailable && (
-                        <DropdownItem
-                            type="button"
-                            onClick={() => bulkUpdate('is_unread', true)}
-                        >
-                            Mark as unread
-                        </DropdownItem>
-                    )}
-                    {hasAgentRole && (
-                        <>
-                            <DropdownItem type="button" onClick={bulkExport}>
-                                Export tickets
-                            </DropdownItem>
-                            <DropdownItem divider />
-                            {isActiveViewTrashView ? (
-                                [
-                                    <DropdownItem
-                                        key="undelete-button"
-                                        type="button"
-                                        onClick={bulkUnTrash}
-                                    >
-                                        Undelete
-                                    </DropdownItem>,
-                                    <DropdownItem
-                                        key="delete-button"
-                                        type="button"
-                                        className="text-danger"
-                                        onClick={toggleDeleteConfirmation}
-                                    >
-                                        Delete forever
-                                    </DropdownItem>,
-                                ]
-                            ) : (
-                                <DropdownItem
-                                    type="button"
-                                    className="text-danger"
-                                    onClick={toggleTrashConfirmation}
+                            Export tickets
+                        </DropdownItemInternal>
+                        <div className={css.divider} />
+                        {isActiveViewTrashView ? (
+                            <>
+                                <DropdownItemInternal
+                                    option={{
+                                        label: 'Undelete',
+                                        value: 'undelete',
+                                    }}
+                                    onClick={bulkUnTrash}
                                 >
-                                    Delete
-                                </DropdownItem>
-                            )}
-                        </>
-                    )}
-                </DropdownMenu>
-                <div
-                    className={css['delete-popover-target']}
-                    id="bulk-more-button"
+                                    Undelete
+                                </DropdownItemInternal>
+                                ,
+                                <DropdownItemInternal
+                                    option={{
+                                        label: 'Delete forever',
+                                        value: 'delete-forever',
+                                    }}
+                                    className="text-danger"
+                                    onClick={toggleDeleteConfirmation}
+                                >
+                                    Delete forever
+                                </DropdownItemInternal>
+                                ,
+                            </>
+                        ) : (
+                            <DropdownItemInternal
+                                className="text-danger"
+                                option={{ label: 'Delete', value: 'delete' }}
+                                onClick={() => toggleTrashConfirmation(true)}
+                            >
+                                Delete
+                            </DropdownItemInternal>
+                        )}
+                    </>
+                )}
+            </Dropdown>
+            <Dropdown
+                isOpen={openDropdown === ActionDropdown.Priority}
+                onToggle={() => toggleDropdown(ActionDropdown.Priority)}
+                target={moreDropdownButtonRef}
+                placement="bottom-end"
+            >
+                <DropdownHeader
+                    prefix={<i className="material-icons">arrow_back</i>}
+                    onClick={() => toggleDropdown(ActionDropdown.More)}
+                >
+                    Back
+                </DropdownHeader>
+                <PriorityDropdownMenu
+                    onClick={(item) => bulkUpdate('priority', item!.name!)}
                 />
-            </UncontrolledButtonDropdown>
+            </Dropdown>
             <Popover
                 placement="bottom"
-                className="popoverDark"
+                className={css.popover}
                 isOpen={isDeleteConfirmationOpen}
-                target="bulk-more-button"
-                toggle={toggleDeleteConfirmation}
-                trigger="legacy"
-                container={appNode ?? undefined}
+                target={moreDropdownButtonRef}
+                setIsOpen={toggleDeleteConfirmation}
+                buttonProps={{
+                    size: 'small',
+                    intent: 'primary',
+                    onClick: isActiveViewTrashView ? bulkDelete : bulkTrash,
+                    className: css.popoverFooter,
+                }}
             >
-                <PopoverHeader>Are you sure?</PopoverHeader>
-                <PopoverBody>
-                    <p>
-                        Are you sure you want to delete {selectedCount} ticket
-                        {selectedCount && selectedCount > 1 && 's'}
-                        {isActiveViewTrashView && ' forever'}?
-                    </p>
-                    <Button
-                        type="submit"
-                        onClick={isActiveViewTrashView ? bulkDelete : bulkTrash}
-                        autoFocus
-                    >
-                        Confirm
-                    </Button>
-                </PopoverBody>
+                <div className={css.popoverHeader}>Are you sure?</div>
+                <div className={css.popoverBody}>
+                    Are you sure you want to delete {selectedCount} ticket
+                    {selectedCount && selectedCount > 1 && 's'}
+                    {isActiveViewTrashView && ' forever'}?
+                </div>
             </Popover>
         </div>
     )

@@ -1,10 +1,4 @@
-import React, {
-    KeyboardEvent,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 
 import { ListTeamsOrderBy } from '@gorgias/helpdesk-queries'
 

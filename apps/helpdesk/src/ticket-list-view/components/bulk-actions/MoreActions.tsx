@@ -1,19 +1,15 @@
-import React, {
-    ComponentProps,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { ComponentProps, useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { JobType } from '@gorgias/helpdesk-queries'
+import { JobType, TicketPriority } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { Item } from 'components/Dropdown'
 import { Popover } from 'components/Popover'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { Update } from 'jobs'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -28,6 +24,7 @@ import { hasRole } from 'utils'
 import { getMoment } from 'utils/date'
 
 import ApplyMacro from './ApplyMacro'
+import PriorityDropdownMenu from './PriorityDropdownMenu'
 import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
 import { Action, Job } from './types'
 
@@ -36,6 +33,7 @@ import css from './style.less'
 const getActions = (
     hasUserRole: boolean,
     isActiveViewTrashView: boolean,
+    isPriorityEnabled?: boolean,
 ): Record<string, Job> => ({
     tag: {
         label: 'Add tag',
@@ -78,6 +76,17 @@ const getActions = (
     macro: {
         label: 'Apply macro',
     },
+    ...(isPriorityEnabled
+        ? {
+              priority: {
+                  label: 'Change priority',
+                  type: JobType.UpdateTicket,
+                  params: (item?: Item | null) => ({
+                      updates: { priority: item!.name! as TicketPriority },
+                  }),
+              },
+          }
+        : {}),
     ...(hasUserRole
         ? {
               export_tickets: {
@@ -131,8 +140,10 @@ const getDropdownItems = (actions: ReturnType<typeof getActions>) =>
 
 function isItemNested(
     value: Action,
-): value is Action.Tag | Action.Team | Action.Macro {
-    return [Action.Tag, Action.Team, Action.Macro].includes(value)
+): value is Action.Tag | Action.Team | Action.Macro | Action.Priority {
+    return [Action.Tag, Action.Team, Action.Macro, Action.Priority].includes(
+        value,
+    )
 }
 
 export default function MoreActions({
@@ -162,7 +173,7 @@ export default function MoreActions({
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [level, setLevel] = useState<
-        Action.Tag | Action.Team | Action.Macro | null
+        Action.Tag | Action.Team | Action.Macro | Action.Priority | null
     >(null)
     const currentUser = useAppSelector(getCurrentUserState)
     const hasAgentRole = useMemo(
@@ -170,7 +181,12 @@ export default function MoreActions({
         [currentUser],
     )
     const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
-    const actions = getActions(hasAgentRole, isActiveViewTrashView)
+    const isPriorityEnabled = useFlag(FeatureFlagKey.TicketAllowPriorityUsage)
+    const actions = getActions(
+        hasAgentRole,
+        isActiveViewTrashView,
+        isPriorityEnabled,
+    )
     const dropdownItems = getDropdownItems(actions)
 
     const toggle = useCallback((value: boolean) => {
@@ -269,8 +285,12 @@ export default function MoreActions({
                                 className={css.dropdownMenu}
                                 onClick={(item) => onClick(level, item)}
                             />
-                        ) : (
+                        ) : level === Action.Team ? (
                             <TeamAssigneeDropdownMenu
+                                onClick={(item) => onClick(level, item)}
+                            />
+                        ) : (
+                            <PriorityDropdownMenu
                                 onClick={(item) => onClick(level, item)}
                             />
                         )}

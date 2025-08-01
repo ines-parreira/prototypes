@@ -1,4 +1,4 @@
-import React, {
+import {
     KeyboardEvent,
     ReactNode,
     useCallback,
@@ -21,7 +21,9 @@ import css from './style.less'
 
 const Body = ({
     onRenderItem,
+    hasSearch = true,
 }: {
+    hasSearch?: boolean
     onRenderItem?: (label: Item) => ReactNode
 }) => {
     const context = useContext(Context)
@@ -44,10 +46,6 @@ const Body = ({
 
     const handleClick = useCallback(
         (item: Item) => {
-            if (!item.name) {
-                return
-            }
-
             onClick?.(item)
             searchInputRef.current?.focus()
         },
@@ -60,18 +58,20 @@ const Body = ({
 
     return (
         <>
-            <div className={css.search}>
-                <TextInput
-                    ref={searchInputRef}
-                    role="listitem"
-                    placeholder="Search"
-                    onChange={setSearch}
-                    onKeyDown={onKeyDown}
-                    prefix={<IconInput icon="search" />}
-                    value={search}
-                    autoFocus
-                />
-            </div>
+            {hasSearch && (
+                <div className={css.search}>
+                    <TextInput
+                        ref={searchInputRef}
+                        role="listitem"
+                        placeholder="Search"
+                        onChange={setSearch}
+                        onKeyDown={onKeyDown}
+                        prefix={<IconInput icon="search" />}
+                        value={search}
+                        autoFocus
+                    />
+                </div>
+            )}
             <InfiniteScroll
                 isLoading={isLoading}
                 onLoad={() => {
