@@ -500,7 +500,7 @@ describe('<HandoverConfigurationDrawer />', () => {
             ).not.toBeInTheDocument()
         })
 
-        const saveButton = screen.getByText('Save Method')
+        const saveButton = screen.getByText('Save Changes')
         fireEvent.click(saveButton)
 
         await waitFor(() => {
