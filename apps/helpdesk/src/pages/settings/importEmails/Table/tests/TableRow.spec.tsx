@@ -249,20 +249,16 @@ describe('TableRow', () => {
 
             renderTableRow(importItem)
 
-            // Email column
             expect(screen.getByAltText('outlook logo')).toBeInTheDocument()
             expect(screen.getByText('complete@test.com')).toBeInTheDocument()
 
-            // Import data column
             expect(screen.getByText('9,876 emails')).toBeInTheDocument()
 
-            // Date range can vary based on timezone - check for either possible format
             const dateRangeExists =
                 screen.queryByText('Feb 1, 2025 – Mar 1, 2025') ||
                 screen.queryByText('Feb 1, 2025 – Feb 28, 2025')
             expect(dateRangeExists).toBeInTheDocument()
 
-            // Status column
             expect(screen.getByText('42% COMPLETED')).toBeInTheDocument()
         })
     })
@@ -274,7 +270,7 @@ describe('TableRow', () => {
 
             const tableRow = container.querySelector('tr')
             expect(tableRow).toBeInTheDocument()
-            expect(tableRow?.children).toHaveLength(3) // 3 columns
+            expect(tableRow?.children).toHaveLength(3)
         })
 
         it('provides alt text for provider icons', () => {
@@ -283,6 +279,9 @@ describe('TableRow', () => {
             })
             renderTableRow(gmailItem)
             expect(screen.getByAltText('gmail logo')).toBeInTheDocument()
+            expect(
+                screen.getByText('info@betseyjohnson.com'),
+            ).toBeInTheDocument()
 
             const outlookItem = createMockImportItem({
                 provider: IntegrationType.Outlook,

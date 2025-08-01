@@ -51,7 +51,6 @@ describe('useTableImport', () => {
         it('sorts import list in ascending order by email', () => {
             const { result } = renderHook(() => useTableImport())
 
-            // Should be sorted ascending by default
             const emails = result.current.importList.map((item) => item.email)
             const sortedEmails = [...emails].sort()
 

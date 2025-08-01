@@ -1,0 +1,77 @@
+import { useState } from 'react'
+
+import { IntegrationType } from '@gorgias/helpdesk-client'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+
+import { EmailSelectSearch } from './EmailSelectSearch'
+import { useEmailIntegrations } from './hooks/useEmailIntegrations'
+
+import css from '../CreateImportModal.less'
+
+export type EmailOption = {
+    provider: IntegrationType
+    email: string
+}
+
+type EmailMultiselectProps = {
+    email: string
+    setEmail: (email: string) => void
+}
+
+export const EmailMultiselect = ({
+    email,
+    setEmail,
+}: EmailMultiselectProps) => {
+    const [forwardingProvider, setForwardingProvider] = useState<
+        'gmail' | 'outlook'
+    >('gmail')
+
+    const emailOptions = useEmailIntegrations()
+
+    const selectedProvider =
+        emailOptions.find((option) => option.email === email)?.provider || null
+
+    const showProviderRadios = selectedProvider === IntegrationType.Email
+
+    const providerOptions = [
+        IntegrationType.Gmail,
+        IntegrationType.Outlook,
+    ].map((provider) => ({
+        value: provider,
+        label: provider.charAt(0).toUpperCase() + provider.slice(1),
+    }))
+
+    const handleProviderChange = (provider: string) => {
+        setForwardingProvider(provider as 'gmail' | 'outlook')
+    }
+
+    return (
+        <>
+            <div className={css.formGroup}>
+                <Label className="mb-2" isRequired>
+                    Email address
+                </Label>
+                <EmailSelectSearch
+                    emailOptions={emailOptions}
+                    email={email}
+                    setEmail={setEmail}
+                />
+            </div>
+            {showProviderRadios && (
+                <div className={css.formGroup}>
+                    <Label className="mb-2" isRequired>
+                        Provider
+                    </Label>
+                    <RadioFieldSet
+                        options={providerOptions}
+                        selectedValue={forwardingProvider}
+                        onChange={handleProviderChange}
+                        isHorizontal={true}
+                    />
+                </div>
+            )}
+        </>
+    )
+}

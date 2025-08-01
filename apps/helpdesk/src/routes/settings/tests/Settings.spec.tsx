@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
@@ -82,8 +84,13 @@ jest.mock('../helpers/settingsRenderer', () => ({
     renderAppSettings: jest.fn((Component: () => JSX.Element) => <Component />),
 }))
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
 const mockedRoute = Route as jest.Mock
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
+const mockedUseFlag = useFlag as jest.Mock
 
 const basePath = 'settings'
 
@@ -287,6 +294,14 @@ describe('Settings', () => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
         } as ReturnType<typeof useRouteMatch>)
+
+        // Enable the HistoricalImports feature flag so ImportEmailsRoute renders
+        mockedUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.HistoricalImports) {
+                return true
+            }
+            return false
+        })
     })
 
     it('should call HelpCenterApiClientProvider', () => {

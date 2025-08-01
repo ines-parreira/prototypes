@@ -24,8 +24,8 @@ describe('TableImportEmail', () => {
         it('displays email counts with proper formatting', () => {
             render(<TableImportEmail />)
 
-            expect(screen.getByText('890 emails')).toBeInTheDocument() // hello@luxurystore.co.uk
-            expect(screen.getByText('333 emails')).toBeInTheDocument() // info@betseyjohnson.com
+            expect(screen.getByText('890 emails')).toBeInTheDocument()
+            expect(screen.getByText('333 emails')).toBeInTheDocument()
         })
 
         it('shows date ranges are properly displayed', () => {
@@ -70,16 +70,17 @@ describe('TableImportEmail', () => {
             render(<TableImportEmail />)
 
             expect(screen.getByText('50% COMPLETED')).toBeInTheDocument()
+            expect(screen.getByText('75% COMPLETED')).toBeInTheDocument()
         })
+    })
 
-        it('shows material icons for status indicators', () => {
-            render(<TableImportEmail />)
+    it('shows material icons for status indicators', () => {
+        render(<TableImportEmail />)
 
-            const checkIcons = screen.getAllByText('check_circle_outline')
-            const errorIcons = screen.queryAllByText('error_outline')
+        const checkIcons = screen.getAllByText('check_circle_outline')
+        const errorIcons = screen.queryAllByText('error_outline')
 
-            expect(checkIcons.length).toBeGreaterThan(0)
-            expect(checkIcons.length + errorIcons.length).toBeLessThanOrEqual(8)
-        })
+        expect(checkIcons.length).toBeGreaterThan(0)
+        expect(checkIcons.length + errorIcons.length).toBeLessThanOrEqual(8)
     })
 })

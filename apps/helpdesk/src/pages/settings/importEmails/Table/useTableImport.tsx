@@ -22,7 +22,6 @@ export const useTableImport = () => {
         )
     }
 
-    // This is just mocked behavior used to simulate pagination and sorting
     const importList: ImportItem[] = useMemo(() => {
         return mockImportItems
             .slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)

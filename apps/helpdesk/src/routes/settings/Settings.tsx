@@ -1,12 +1,14 @@
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { PageSection } from 'config/pages'
 import {
     paywallConfigs as defaultPaywallConfigs,
     PaywallConfig,
 } from 'config/paywalls'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
+import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'
@@ -80,6 +82,11 @@ export const PaywalledOrderManagement = () => (
 export function SettingRoutes() {
     const { path } = useRouteMatch()
 
+    const isEmailImportEnabled = useFlag(
+        FeatureFlagKey.HistoricalImports,
+        false,
+    )
+
     return (
         <HelpCenterApiClientProvider>
             <Switch>
@@ -120,9 +127,11 @@ export function SettingRoutes() {
                 <Route path={`${path}/import-zendesk`}>
                     <ImportZendeskRoute />
                 </Route>
-                <Route path={`${path}/import-email`}>
-                    <ImportEmailsRoute />
-                </Route>
+                {isEmailImportEnabled && (
+                    <Route path={`${path}/import-email`}>
+                        <ImportEmailsRoute />
+                    </Route>
+                )}
                 <Route path={`${path}/integrations`}>
                     <Integrations />
                 </Route>

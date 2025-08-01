@@ -79,6 +79,8 @@ const form = screen.getByRole('form')
 - Add meaningful `alt` attributes to images
 - Use proper `aria-*` attributes for accessibility
 - Ensure form inputs have associated labels
+- Avoid mocking the components
+- Don't test if components have a certain class as this is too brittle, instead focus on behavioral testing
 
 ### For Mock Components:
 

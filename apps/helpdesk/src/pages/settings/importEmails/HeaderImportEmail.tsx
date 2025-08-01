@@ -7,11 +7,15 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import css from '../settings.less'
 
-const HeaderImportEmail = () => {
+const HeaderImportEmail = ({
+    onOpenCreateImportModal,
+}: {
+    onOpenCreateImportModal: () => void
+}) => {
     return (
         <>
             <PageHeader title="Email import">
-                <Button>Import</Button>
+                <Button onClick={onOpenCreateImportModal}>Import</Button>
             </PageHeader>
             <div className={css.pageContainer}>
                 <div className={classnames('body-regular', css.contentWrapper)}>
