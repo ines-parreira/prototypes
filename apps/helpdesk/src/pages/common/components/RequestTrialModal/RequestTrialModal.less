@@ -1,0 +1,76 @@
+@import (reference) '~css/typography';
+
+:local {
+    .modalContent {
+        border-radius: var(--layout-spacing-xs);
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-m);
+    }
+
+    .header,
+    .body,
+    .footer {
+        padding: 0;
+        border: none;
+    }
+
+    .header {
+        .heading-section-semibold();
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-l);
+        margin-top: var(--layout-spacing-xs);
+
+        .subtitle {
+            .body-regular();
+        }
+    }
+
+    .adminList {
+        .caption-regular();
+
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .adminItem {
+        display: flex;
+        width: fit-content;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .avatarStack {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .stackedAvatar {
+        margin-left: -10px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: var(--layout-spacing-l);
+        gap: var(--layout-spacing-xs);
+        background-color: var(--neutral-grey-0);
+    }
+
+    .modalContent .footer .primaryButton {
+        background: var(--neutral-grey-6, #222);
+        color: var(--neutral-grey-0, #fff);
+        border-color: var(--neutral-grey-6, #222);
+    }
+}
