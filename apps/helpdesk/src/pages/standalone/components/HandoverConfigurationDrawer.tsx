@@ -44,11 +44,16 @@ export const HandoverConfigurationDrawer: React.FC<
         useStoreConfigurationForm(shopName, shopType, faqHelpcenters)
 
     const validBaseEmailIntegration = useMemo(() => {
-        return emailIntegrations.find(
-            (integration) =>
+        return emailIntegrations.find((integration) => {
+            const integrationMeta = (integration as EmailIntegration).meta
+            const verificationStatus =
+                integrationMeta.outbound_verification_status?.domain
+
+            return (
                 isBaseEmailIntegration(integration) &&
-                (integration as EmailIntegration).meta.verified,
-        )
+                (integrationMeta.verified || verificationStatus === 'success')
+            )
+        })
     }, [emailIntegrations])
 
     const formMethods = useForm<HandoverFormValues>({

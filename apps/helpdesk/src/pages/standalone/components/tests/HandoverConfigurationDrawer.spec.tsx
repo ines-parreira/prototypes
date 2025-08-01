@@ -22,6 +22,8 @@ describe('<HandoverConfigurationDrawer />', () => {
     const mockSetFormValues = jest.fn()
     const mockHandleOnSave = jest.fn()
     const mockUpsert = jest.fn()
+    const baseEmailIntegrationId = 888
+    const baseEmailForwardingDomain = 'emails-test.gorgi.us'
 
     const defaultProps = {
         isOpen: true,
@@ -40,6 +42,46 @@ describe('<HandoverConfigurationDrawer />', () => {
         {
             id: 2,
             meta: { address: 'another@example.com' },
+            type: EMAIL_INTEGRATION_TYPES[0],
+        },
+    ]
+
+    const mockEmailIntegrationsWithOutboundVerification = [
+        {
+            id: 1,
+            meta: {
+                address: 'another@example.com',
+            },
+            type: EMAIL_INTEGRATION_TYPES[0],
+        },
+        {
+            id: 2,
+            meta: {
+                address: 'another@example.com',
+                outbound_verification_status: {},
+            },
+            type: EMAIL_INTEGRATION_TYPES[0],
+        },
+        {
+            id: 3,
+            meta: {
+                address: `random-string@${baseEmailForwardingDomain}`,
+                verified: false,
+                outbound_verification_status: {
+                    domain: 'invalid',
+                },
+            },
+            type: EMAIL_INTEGRATION_TYPES[0],
+        },
+        {
+            id: baseEmailIntegrationId,
+            meta: {
+                address: `random-string@${baseEmailForwardingDomain}`,
+                verified: false,
+                outbound_verification_status: {
+                    domain: 'success',
+                },
+            },
             type: EMAIL_INTEGRATION_TYPES[0],
         },
     ]
@@ -404,6 +446,61 @@ describe('<HandoverConfigurationDrawer />', () => {
         })
 
         const saveButton = screen.getByText('Save Changes')
+        fireEvent.click(saveButton)
+
+        await waitFor(() => {
+            expect(mockHandleOnSave).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shopName: 'Test Shop',
+                    stepName: AiAgentOnboardingWizardStep.Personalize,
+                    payload: expect.objectContaining({
+                        handoverMethod: 'email',
+                        handoverEmailIntegrationId: baseEmailIntegrationId,
+                    }),
+                }),
+            )
+        })
+
+        delete (window as any).GORGIAS_STATE
+    })
+
+    it('shows email integration as valid when outbound_verification_status.domain is success', async () => {
+        jest.spyOn(
+            useStoreConfigurationFormModule,
+            'useStoreConfigurationForm',
+        ).mockReturnValue({
+            ...mockStoreConfigurationParams,
+            formValues: {
+                ...mockStoreConfig,
+                handoverMethod: 'email',
+                handoverEmailIntegrationId: null,
+            },
+        })
+        ;(window as any).GORGIAS_STATE = {
+            integrations: {
+                authentication: {
+                    email: {
+                        forwarding_email_address: `forwarding@${baseEmailForwardingDomain}`,
+                    },
+                },
+            },
+        }
+
+        mockUseAppSelector.mockReturnValue(
+            mockEmailIntegrationsWithOutboundVerification,
+        )
+
+        render(<HandoverConfigurationDrawer {...defaultProps} />)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    'Email from which handover emails will be sent',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        const saveButton = screen.getByText('Save Method')
         fireEvent.click(saveButton)
 
         await waitFor(() => {
