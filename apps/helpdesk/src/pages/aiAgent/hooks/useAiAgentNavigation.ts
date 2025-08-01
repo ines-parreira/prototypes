@@ -114,6 +114,8 @@ export const getAiAgentNavigationRoutes = (
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>
             `${basePath}/optimize/${intentId}`,
+        intents: `${basePath}/intents`,
+        intentsWithId: (intentId: string) => `${basePath}/intents/${intentId}`,
     }
 }
 
@@ -157,7 +159,9 @@ const useNavigationItems = (
         () =>
             [
                 isAiAgentOptimizeTabEnabled && {
-                    route: routes.optimize,
+                    route: isActionDrivenAiAgentNavigationEnabled
+                        ? routes.intents
+                        : routes.optimize,
                     title: OPTIMIZE,
                     dataCanduId: 'ai-agent-navbar-optimize',
                     exact: false,

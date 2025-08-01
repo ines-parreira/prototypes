@@ -1,10 +1,12 @@
 import moment, { Moment } from 'moment'
 import { useParams } from 'react-router-dom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { OPTIMIZE } from 'pages/aiAgent/constants'
+import { INTENTS, OPTIMIZE } from 'pages/aiAgent/constants'
 import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
 import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
@@ -30,11 +32,15 @@ export const OptimizeContainer = () => {
         shopName: string
     }>()
 
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
+
     return (
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={OPTIMIZE}
+            title={isActionDrivenAiAgentNavigationEnabled ? INTENTS : OPTIMIZE}
         >
             <div className={css.section}>
                 <AdjustedPeriodFilter />

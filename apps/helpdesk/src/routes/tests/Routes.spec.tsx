@@ -722,6 +722,31 @@ describe('<Routes/>', () => {
 
             expect(screen.getByText('AiAgentAnalytics')).toBeInTheDocument()
         })
+
+        it('should redirect to /intents when accessing /optimize', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentOptimizeTab]: true,
+                [FeatureFlagKey.ActionDrivenAiAgentNavigation]: true,
+            })
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push('/app/ai-agent/shopify/test-shop/optimize'),
+            )
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop/intents',
+            )
+        })
     })
 
     describe('AiAgentBaseRoutes', () => {

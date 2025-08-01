@@ -3,12 +3,16 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment, { Moment } from 'moment/moment'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -51,6 +55,9 @@ jest.mock('pages/aiAgent/insights/IntentTableWidget/IntentTableWidget', () => ({
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => <></>),
 }))
+
+jest.mock('core/flags')
+const mockUseFlag = assumeMock(useFlag)
 
 const defaultStore = {
     currentAccount: fromJS({
@@ -98,6 +105,20 @@ describe('OptimizeContainer', () => {
         expect(Level1IntentsPerformance).toHaveBeenCalled()
         expect(IntentTableWidget).toHaveBeenCalled()
     })
+
+    it('renders the component with the new page title when ActionDrivenAiAgentNavigation feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
+            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
+                ? true
+                : false
+        })
+
+        renderComponent()
+
+        expect(screen.queryByText('Optimize')).not.toBeInTheDocument()
+        expect(screen.getByText('Intents')).toBeInTheDocument()
+    })
+
     describe('subtractsPeriodWithoutData', () => {
         it('should subtract 72 hours from the given moment date', () => {
             const inputDate: Moment = moment('2024-01-01T12:00:00.000Z')

@@ -54,9 +54,15 @@ export const IntentNameCellContent = ({
     const isL1Drilldown = intentLevel === INTENT_LEVEL
     const hasL2DrilldownEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTabL2Drilldown]
+    const isActionDrivenAiAgentNavigationEnabled =
+        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation]
     const goToIntent = () => {
         if (hasL2DrilldownEnabled && isL1Drilldown) {
-            history.push(routes.optimizeIntent(String(intent.id)))
+            history.push(
+                isActionDrivenAiAgentNavigationEnabled
+                    ? routes.intentsWithId(String(intent.id))
+                    : routes.optimizeIntent(String(intent.id)),
+            )
         }
     }
 

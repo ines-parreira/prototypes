@@ -8,6 +8,7 @@ import { FormValues, WizardFormValues } from './types'
 // NAVBAR CONSTANTS
 export const AI_AGENT = 'AI Agent'
 export const OPTIMIZE = 'Optimize'
+export const INTENTS = 'Intents'
 export const SETTINGS = 'Settings'
 export const CHANNELS = 'Channels'
 export const KNOWLEDGE = 'Knowledge'

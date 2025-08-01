@@ -187,6 +187,30 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
+    it('should return correct paths for optimize', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+        expect(result.current.routes.optimize).toBe(
+            '/app/ai-agent/shopify/test/optimize',
+        )
+        expect(result.current.routes.optimizeIntent('123')).toBe(
+            '/app/ai-agent/shopify/test/optimize/123',
+        )
+    })
+
+    it('should return correct paths for intents', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+        expect(result.current.routes.intents).toBe(
+            '/app/ai-agent/shopify/test/intents',
+        )
+        expect(result.current.routes.intentsWithId('123')).toBe(
+            '/app/ai-agent/shopify/test/intents/123',
+        )
+    })
+
     describe('useNavigationItems', () => {
         describe('when AiShoppingAssistantEnabled=false', () => {
             beforeEach(() => {

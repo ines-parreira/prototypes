@@ -336,6 +336,9 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     const isShoppingAssitantDeactivationEnforced =
         flags[FeatureFlagKey.ShoppingAssistantEnforceDeactivation]
 
+    const isActionDrivenAiAgentNavigationEnabled =
+        flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
+
     const { routes } = useAiAgentNavigation({ shopName })
 
     if (shopType !== 'shopify') {
@@ -615,6 +618,26 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                         />
                                     )}
                                 </>
+                            )}
+                        </AiAgentErrorBoundary>
+                    )}
+                    {isActionDrivenAiAgentNavigationEnabled && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-intents"
+                            team={SentryTeam.CONVAI_KNOWLEDGE}
+                        >
+                            <Route
+                                path={`${path}/intents`}
+                                exact
+                                component={OptimizeContainer}
+                            />
+                            {location.pathname.includes('/optimize') && (
+                                <Redirect
+                                    to={location.pathname.replace(
+                                        '/optimize',
+                                        '/intents',
+                                    )}
+                                />
                             )}
                         </AiAgentErrorBoundary>
                     )}

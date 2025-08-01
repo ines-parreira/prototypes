@@ -34,6 +34,8 @@ const AiAgentMainViewContainer = () => {
 
     const isAiAgentOptimizeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
+    const isActionDrivenAiAgentNavigationEnabled =
+        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
     const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
         useAiAgentStoreConfigurationContext()
@@ -127,7 +129,9 @@ const AiAgentMainViewContainer = () => {
         case OnboardingState.Onboarded:
             history.replace(
                 isAiAgentOptimizeTabEnabled
-                    ? routes.optimize
+                    ? isActionDrivenAiAgentNavigationEnabled
+                        ? routes.intents
+                        : routes.optimize
                     : routes.configuration(),
             )
     }
