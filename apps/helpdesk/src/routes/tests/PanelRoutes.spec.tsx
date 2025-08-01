@@ -1,10 +1,17 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
-import { StaticRouter } from 'react-router-dom'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
+import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
+import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+import { account } from 'fixtures/account'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
 import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { assumeMock } from 'utils/testing'
 
 import PanelRoutes from '../PanelRoutes'
@@ -21,6 +28,10 @@ jest.mock('hooks/useIsMobileResolution', () => ({
 const useIsMobileResolutionMock = assumeMock(useIsMobileResolution)
 jest.mock('hooks/useWindowSize', () => jest.fn())
 const useWindowSizeMock = assumeMock(useWindowSize)
+jest.mock('common/navigation/hooks/useNavBar/useNavBar')
+const useNavBarMock = assumeMock(useNavBar)
+jest.mock('split-ticket-view-toggle')
+const useSplitTicketViewMock = assumeMock(useSplitTicketView)
 jest.mock('tickets/navigation', () => ({
     TicketsNavbarPanel: () => <div>TicketsNavbarPanel</div>,
 }))
@@ -48,111 +59,127 @@ describe('PanelRoutes', () => {
     beforeEach(() => {
         useIsMobileResolutionMock.mockReturnValue(false)
         useWindowSizeMock.mockReturnValue({ width: 1000, height: 1000 })
+        useNavBarMock.mockReturnValue({
+            navBarDisplay: NavBarDisplayMode.Open,
+            setNavBarDisplay: jest.fn(),
+        } as any)
+        useSplitTicketViewMock.mockReturnValue({
+            isEnabled: true,
+            setIsEnabled: jest.fn(),
+        } as any)
     })
 
     it('should render the mobile routes for mobile resolutions', () => {
         useIsMobileResolutionMock.mockReturnValue(true)
-        render(
-            <StaticRouter location="/app">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app', path: '*' },
         )
         expect(screen.getByText('MobileRoutes')).toBeInTheDocument()
     })
 
     it('should render the global navigation', () => {
-        render(
-            <StaticRouter location="/app">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app', path: '*' },
         )
         expect(screen.getByText('GlobalNavigationPanel')).toBeInTheDocument()
     })
 
     it('should render the tickets navbar', () => {
-        render(
-            <StaticRouter location="/app">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app', path: '*' },
         )
         expect(screen.getByText('TicketsNavbarPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app', () => {
-        render(
-            <StaticRouter location="/app">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets', () => {
-        render(
-            <StaticRouter location="/app/tickets">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app/tickets', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/new/:visibility?', () => {
-        render(
-            <StaticRouter location="/app/tickets/new/private">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app/tickets/new/private', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/search', () => {
-        render(
-            <StaticRouter location="/app/tickets/search">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app/tickets/search', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/:viewId/:viewSlug?', () => {
-        render(
-            <StaticRouter location="/app/tickets/123456/boop">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app/tickets/123456/boop', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/ticket/:ticketId', () => {
-        render(
-            <StaticRouter location="/app/ticket/123456">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {
+                currentUser: fromJS(user),
+                currentAccount: fromJS(account),
+                ticket: fromJS(ticket),
+            },
+            { route: '/app/ticket/123456', path: '*' },
         )
         expect(screen.getByText('TicketDetailPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketInfobarPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/views/:viewId?', () => {
-        render(
-            <StaticRouter location="/app/views/123456">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {},
+            { route: '/app/views/123456', path: '*' },
         )
         expect(screen.getByText('TicketsListPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketEmptyPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/views/:viewId/:ticketId', () => {
-        render(
-            <StaticRouter location="/app/views/123456/789987">
-                <PanelRoutes />
-            </StaticRouter>,
+        renderWithStoreAndQueryClientAndRouter(
+            <PanelRoutes />,
+            {
+                currentUser: fromJS(user),
+                currentAccount: fromJS(account),
+                ticket: fromJS(ticket),
+            },
+            { route: '/app/views/123456/789987', path: '*' },
         )
         expect(screen.getByText('TicketsListPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketDetailPanel')).toBeInTheDocument()

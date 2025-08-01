@@ -8,18 +8,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
-import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
 import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
-import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
 import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedbackSkeleton'
-import KnowledgeSourceSideBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar'
 import MissingKnowledgeSelect from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
 import {
     AiAgentBinaryFeedbackEnum,
@@ -28,8 +23,6 @@ import {
     AutoSaveState,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { UnsavedChangesModalProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
-import { getHelpCenterIdByResourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
@@ -46,7 +39,6 @@ const AIAgentSimplifiedFeedback = () => {
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
     const viewsState = useAppSelector(getViewsState)
     const existingSections = useAppSelector(getSectionIdByName)
-    const { selectedResource } = useKnowledgeSourceSideBar()
 
     const showNextTicketButton =
         viewsState.getIn(['active', 'section_id']) ===
@@ -68,11 +60,7 @@ const AIAgentSimplifiedFeedback = () => {
         objectType: 'TICKET',
     })
 
-    const {
-        onKnowledgeResourceEditClick,
-        onKnowledgeResourceCreateClick,
-        onKnowledgeResourceSaved,
-    } = useFeedbackTracking({
+    const { onKnowledgeResourceCreateClick } = useFeedbackTracking({
         ticketId,
         accountId,
         userId,
@@ -139,8 +127,6 @@ const AIAgentSimplifiedFeedback = () => {
         isLoading: isLoadingEnrichedData,
         enrichedData,
         helpCenters,
-        resourceArticles,
-        resourceGuidanceArticles,
     } = useMemo(() => {
         if (!enrichedFeedbackMetadata)
             return {
@@ -212,44 +198,20 @@ const AIAgentSimplifiedFeedback = () => {
         [loadingMutations, upsertFeedback, ticketId, feedback],
     )
 
-    const { onSubmitMissingKnowledge, onSubmitNewMissingKnowledge } =
-        useFeedbackActions({
-            upsertFeedback,
-            feedback,
-            ticketId,
-            storeConfiguration,
-            actions,
-            guidanceArticles,
-            articles,
-            sourceItems,
-            ingestedFiles,
-            storeWebsiteQuestions,
-            enrichedData,
-            setLoadingMutations,
-        })
-
-    const helpCenter = useMemo(() => {
-        if (!helpCenters || !selectedResource) return null
-
-        if (!selectedResource?.helpCenterId) {
-            const storeConfigurationHelpCenterId =
-                getHelpCenterIdByResourceType(
-                    storeConfiguration,
-                    selectedResource.knowledgeResourceType,
-                )
-            return helpCenters.find(
-                (helpCenter) =>
-                    !!helpCenter &&
-                    helpCenter.id === storeConfigurationHelpCenterId,
-            )
-        }
-
-        return helpCenters.find(
-            (helpCenter) =>
-                !!helpCenter &&
-                helpCenter.id === Number(selectedResource.helpCenterId),
-        )
-    }, [helpCenters, selectedResource, storeConfiguration])
+    const { onSubmitMissingKnowledge } = useFeedbackActions({
+        upsertFeedback,
+        feedback,
+        ticketId,
+        storeConfiguration,
+        actions,
+        guidanceArticles,
+        articles,
+        sourceItems,
+        ingestedFiles,
+        storeWebsiteQuestions,
+        enrichedData,
+        setLoadingMutations,
+    })
 
     const knowledgeResources = useMemo(() => {
         const resources = feedback?.executions.flatMap((execution) =>
@@ -416,34 +378,6 @@ const AIAgentSimplifiedFeedback = () => {
                         Review next ticket
                     </Button>
                 </div>
-            )}
-
-            {!!helpCenter && (
-                <SupportedLocalesProvider>
-                    <CurrentHelpCenterContext.Provider value={helpCenter}>
-                        <UnsavedChangesModalProvider>
-                            <EditionManagerContextProvider>
-                                <KnowledgeSourceSideBar
-                                    articles={resourceArticles ?? []}
-                                    guidanceArticles={
-                                        resourceGuidanceArticles ?? []
-                                    }
-                                    shopName={shopName}
-                                    shopType={shopType}
-                                    onSubmitNewMissingKnowledge={
-                                        onSubmitNewMissingKnowledge
-                                    }
-                                    onKnowledgeResourceEditClick={
-                                        onKnowledgeResourceEditClick
-                                    }
-                                    onKnowledgeResourceSaved={
-                                        onKnowledgeResourceSaved
-                                    }
-                                />
-                            </EditionManagerContextProvider>
-                        </UnsavedChangesModalProvider>
-                    </CurrentHelpCenterContext.Provider>
-                </SupportedLocalesProvider>
             )}
         </>
     )

@@ -19,7 +19,6 @@ import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessa
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
 
-import { KnowledgeSourceSideBarProvider } from '../AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
 import { AiAgentReasoning } from './AiAgentReasoning'
@@ -262,11 +261,9 @@ export class Container extends Component<Props> {
                             {isAIAgentMessage &&
                                 (isSimplifiedFeedbackCollectionEnabled ? (
                                     showAiReasoning && message.id ? (
-                                        <KnowledgeSourceSideBarProvider>
-                                            <AiAgentReasoning
-                                                messageId={message.id}
-                                            />
-                                        </KnowledgeSourceSideBarProvider>
+                                        <AiAgentReasoning
+                                            messageId={message.id}
+                                        />
                                     ) : (
                                         <SimplifiedAIAgentBanner
                                             message={message}

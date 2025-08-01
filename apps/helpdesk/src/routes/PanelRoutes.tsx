@@ -11,9 +11,8 @@ import useWindowSize from 'hooks/useWindowSize'
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
 import { TicketsPage } from 'tickets/pages'
-import { TicketDetailPanel } from 'tickets/ticket-detail'
+import { TicketDetailWithInfobar } from 'tickets/pages/TicketDetailWithInfobar'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
-import { TicketInfobarPanel } from 'tickets/ticket-infobar'
 import { TicketsListPanel } from 'tickets/tickets-list'
 import { ViewPanel } from 'tickets/view'
 
@@ -53,9 +52,7 @@ export default function PanelRoutes() {
                     <Route exact path="/app/ticket/:ticketId">
                         <TicketsNavbarPanel key="navbar" />
                         <Handle />
-                        <TicketDetailPanel key="ticket-detail-panel" />
-                        <Handle />
-                        <TicketInfobarPanel key="infobar-panel" />
+                        <TicketDetailWithInfobar />
                     </Route>
                 </Switch>
             </Panels>
@@ -95,9 +92,7 @@ export default function PanelRoutes() {
                         <OnboardingPanel key="onboarding-panel" />
                     </Route>
                     <Route exact path="/app/ticket/:ticketId">
-                        <TicketDetailPanel key="ticket-detail-panel" />
-                        <Handle />
-                        <TicketInfobarPanel key="infobar-panel" />
+                        <TicketDetailWithInfobar />
                     </Route>
                     <Route exact path="/app/views/:viewId?">
                         <TicketsListPanel key={`ticket-list-panel-${viewId}`} />
@@ -110,12 +105,9 @@ export default function PanelRoutes() {
                             registerOnToggleUnread={registerOnToggleUnread}
                         />
                         <Handle />
-                        <TicketDetailPanel
-                            key="ticket-detail-panel"
+                        <TicketDetailWithInfobar
                             onToggleUnread={onToggleUnread}
                         />
-                        <Handle />
-                        <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                 </Switch>
             </ContentPanels>

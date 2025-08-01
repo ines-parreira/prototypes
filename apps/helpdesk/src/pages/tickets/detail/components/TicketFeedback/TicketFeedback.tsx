@@ -9,11 +9,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
 import AIAgentSimplifiedFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback'
 import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
-import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import { getTicketState } from 'state/ticket/selectors'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
@@ -51,13 +49,7 @@ export default function TicketFeedback() {
     }
 
     if (isSimplifiedFeedbackCollectionEnabled) {
-        return (
-            <HelpCenterApiClientProvider>
-                <KnowledgeSourceSideBarProvider>
-                    <AIAgentSimplifiedFeedback key={ticketId} />
-                </KnowledgeSourceSideBarProvider>
-            </HelpCenterApiClientProvider>
-        )
+        return <AIAgentSimplifiedFeedback key={ticketId} />
     }
 
     return (

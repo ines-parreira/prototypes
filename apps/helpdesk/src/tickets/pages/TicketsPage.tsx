@@ -5,11 +5,11 @@ import { ContentPanels } from 'core/ui'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
-import { TicketDetailPanel } from 'tickets/ticket-detail'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
-import { TicketInfobarPanel } from 'tickets/ticket-infobar'
 import { TicketsListPanel } from 'tickets/tickets-list'
 import { ViewPanel } from 'tickets/view'
+
+import { TicketDetailWithInfobar } from './TicketDetailWithInfobar'
 
 export function TicketsPage() {
     const { path } = useRouteMatch()
@@ -46,12 +46,9 @@ export function TicketsPage() {
                         )}
                         <Switch>
                             <Route path={`${path}/:viewId/:ticketId`}>
-                                <TicketDetailPanel
-                                    key="ticket-detail-panel"
+                                <TicketDetailWithInfobar
                                     onToggleUnread={onToggleUnread}
                                 />
-                                <Handle />
-                                <TicketInfobarPanel key="infobar-panel" />
                             </Route>
                             <Route>
                                 {isEnabled ? (
