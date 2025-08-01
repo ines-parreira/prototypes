@@ -115,4 +115,54 @@ describe('TestRequestInputs Component', () => {
             'https://example.com/token',
         )
     })
+
+    it('loads initial values from props when provided', () => {
+        const initialValues = {
+            input1: 'persisted value 1',
+            input2: 'persisted value 2',
+        }
+
+        render(
+            <TestRequestInputs
+                {...defaultProps}
+                initialValues={initialValues}
+                initialRefreshToken="persisted-refresh-token"
+            />,
+        )
+
+        // Check that input fields have the initial values
+        expect(screen.getByLabelText('Input 1')).toHaveValue(
+            'persisted value 1',
+        )
+        expect(screen.getByLabelText('Input 2')).toHaveValue(
+            'persisted value 2',
+        )
+        expect(screen.getByLabelText('Refresh Token')).toHaveValue(
+            'persisted-refresh-token',
+        )
+    })
+
+    it('uses initial values when Continue is clicked', () => {
+        const initialValues = {
+            input1: 'initial value 1',
+            input2: 'initial value 2',
+        }
+
+        render(
+            <TestRequestInputs
+                {...defaultProps}
+                initialValues={initialValues}
+                initialRefreshToken="initial-refresh-token"
+            />,
+        )
+
+        // Click Continue without changing values
+        fireEvent.click(screen.getByText('Continue'))
+
+        expect(mockOnSendTestRequest).toHaveBeenCalledWith(
+            initialValues,
+            'initial-refresh-token',
+            'https://example.com/token',
+        )
+    })
 })

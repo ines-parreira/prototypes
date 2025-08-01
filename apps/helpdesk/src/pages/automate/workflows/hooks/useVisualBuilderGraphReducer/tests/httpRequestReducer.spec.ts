@@ -157,4 +157,62 @@ describe('httpRequestReducer', () => {
             }),
         )
     })
+
+    test('SET_HTTP_REQUEST_TEST_REQUEST_INPUTS', () => {
+        const g = visualBuilderGraphLlmPromptTriggerFixture
+        const testInputs = {
+            variable1: 'test value 1',
+            variable2: 'test value 2',
+        }
+        const refreshToken = 'test-refresh-token'
+
+        const nextG = httpRequestReducer(g, {
+            type: 'SET_HTTP_REQUEST_TEST_REQUEST_INPUTS',
+            httpRequestNodeId: 'http_request1',
+            inputs: testInputs,
+            refreshToken: refreshToken,
+        })
+
+        expect(nextG.nodes.find((n) => n.type === 'http_request')).toEqual(
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    testRequestInputs: testInputs,
+                    testRequestRefreshToken: refreshToken,
+                }),
+            }),
+        )
+    })
+
+    test('RESET_HTTP_REQUEST_TEST_REQUEST_RESULT should only clear result, not inputs', () => {
+        const g = visualBuilderGraphLlmPromptTriggerFixture
+
+        // First set some test inputs and result
+        let nextG = httpRequestReducer(g, {
+            type: 'SET_HTTP_REQUEST_TEST_REQUEST_INPUTS',
+            httpRequestNodeId: 'http_request1',
+            inputs: { var1: 'value1' },
+            refreshToken: 'token',
+        })
+
+        nextG = httpRequestReducer(nextG, {
+            type: 'SET_HTTP_REQUEST_TEST_REQUEST_RESULT',
+            httpRequestNodeId: 'http_request1',
+            result: { status: 200, content: 'ok' },
+        })
+
+        // Now reset
+        nextG = httpRequestReducer(nextG, {
+            type: 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT',
+            httpRequestNodeId: 'http_request1',
+        })
+
+        const node = nextG.nodes.find((n) => n.type === 'http_request')
+        expect(node).toBeDefined()
+        if (node && node.type === 'http_request') {
+            expect(node.data.testRequestResult).toBeUndefined()
+            // Inputs should be preserved
+            expect(node.data.testRequestInputs).toEqual({ var1: 'value1' })
+            expect(node.data.testRequestRefreshToken).toBe('token')
+        }
+    })
 })

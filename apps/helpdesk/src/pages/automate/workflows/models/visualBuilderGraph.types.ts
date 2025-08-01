@@ -267,6 +267,8 @@ export type HttpRequestNodeType = Node<
             status: number
             content?: string
         }
+        testRequestInputs?: Record<string, string>
+        testRequestRefreshToken?: string
         outputs?: {
             id: string
             path: string

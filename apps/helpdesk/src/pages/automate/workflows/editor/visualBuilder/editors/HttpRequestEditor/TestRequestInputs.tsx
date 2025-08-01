@@ -13,6 +13,8 @@ type Props = {
     isLoading: boolean
     inputs: WorkflowVariable[]
     refreshTokenUrl?: string
+    initialValues?: Record<string, string>
+    initialRefreshToken?: string
     onSendTestRequest: (
         values: Record<string, string>,
         refreshToken?: string,
@@ -27,9 +29,15 @@ const TestRequestInputs = ({
     onSendTestRequest,
     onClose,
     refreshTokenUrl,
+    initialValues,
+    initialRefreshToken,
 }: Props) => {
-    const [refreshToken, setRefreshToken] = useState<string>('')
-    const [values, setValues] = useState<Record<string, string>>({})
+    const [refreshToken, setRefreshToken] = useState<string>(
+        initialRefreshToken || '',
+    )
+    const [values, setValues] = useState<Record<string, string>>(
+        initialValues || {},
+    )
 
     const isDisabled = inputs.some((input) => !values[input.value])
 

@@ -9,6 +9,8 @@ type Props = {
     isLoading: boolean
     isOpen: boolean
     refreshTokenUrl?: string
+    initialValues?: Record<string, string>
+    initialRefreshToken?: string
     onClose: () => void
     sendTestRequest: (
         variables: Record<string, string>,
@@ -33,6 +35,8 @@ const TestRequestModalWithInputs = ({
     isLoading,
     isOpen,
     refreshTokenUrl,
+    initialValues,
+    initialRefreshToken,
     nodeId,
     onClose,
     sendTestRequest,
@@ -64,6 +68,8 @@ const TestRequestModalWithInputs = ({
                     isLoading={isLoading}
                     inputs={inputs}
                     refreshTokenUrl={refreshTokenUrl}
+                    initialValues={initialValues}
+                    initialRefreshToken={initialRefreshToken}
                     onSendTestRequest={sendTestRequest}
                     onClose={onClose}
                 />

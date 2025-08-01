@@ -187,6 +187,28 @@ export default function HttpRequestEditor({
 
     const oauth2ToggleId = `oauth2-toggle-${useId()}`
 
+    const sendTestRequestWithPersistence = useCallback(
+        async (
+            variables?: Record<string, string>,
+            refreshToken?: string,
+            refreshTokenUrl?: string,
+        ) => {
+            // Store the inputs in the node data if provided
+            if (variables) {
+                dispatch({
+                    type: 'SET_HTTP_REQUEST_TEST_REQUEST_INPUTS',
+                    httpRequestNodeId: nodeInEdition.id,
+                    inputs: variables,
+                    refreshToken,
+                })
+            }
+
+            // Send the actual test request
+            return sendTestRequest(variables, refreshToken, refreshTokenUrl)
+        },
+        [dispatch, nodeInEdition.id, sendTestRequest],
+    )
+
     return (
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition}>
@@ -613,7 +635,7 @@ export default function HttpRequestEditor({
                         setIsTestRequestModalOpen(false)
                     }}
                     isLoading={isTestRequestLoading}
-                    sendTestRequest={sendTestRequest}
+                    sendTestRequest={sendTestRequestWithPersistence}
                     onReset={() => {
                         dispatch({
                             type: 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT',
@@ -627,6 +649,10 @@ export default function HttpRequestEditor({
                         (variable): variable is WorkflowVariable =>
                             variable != null,
                     )}
+                    initialValues={nodeInEdition.data.testRequestInputs}
+                    initialRefreshToken={
+                        nodeInEdition.data.testRequestRefreshToken
+                    }
                     onChangeVariable={handleChangeVariable}
                     onDeleteVariable={handleDeleteVariable}
                     onAddVariable={handleAddVariable}
@@ -641,7 +667,7 @@ export default function HttpRequestEditor({
                         nodeId={nodeInEdition.id}
                         variablesInChildren={variablesInUse}
                         isLoading={isTestRequestLoading}
-                        sendTestRequest={sendTestRequest}
+                        sendTestRequest={sendTestRequestWithPersistence}
                         variables={nodeInEdition.data.variables}
                         result={nodeInEdition.data.testRequestResult}
                         onChangeVariable={handleChangeVariable}

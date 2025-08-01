@@ -122,6 +122,12 @@ export type VisualBuilderHttpRequestAction =
           httpRequestNodeId: string
       }
     | {
+          type: 'SET_HTTP_REQUEST_TEST_REQUEST_INPUTS'
+          httpRequestNodeId: string
+          inputs: Record<string, string>
+          refreshToken?: string
+      }
+    | {
           type: 'ADD_HTTP_REQUEST_OUTPUT'
           httpRequestNodeId: string
           variableId: string
@@ -161,6 +167,7 @@ const visualBuilderHttpRequestActionTypes: ActionTypes = {
     DELETE_HTTP_REQUEST_VARIABLE: true,
     SET_HTTP_REQUEST_TEST_REQUEST_RESULT: true,
     RESET_HTTP_REQUEST_TEST_REQUEST_RESULT: true,
+    SET_HTTP_REQUEST_TEST_REQUEST_INPUTS: true,
     ADD_HTTP_REQUEST_OUTPUT: true,
     SET_HTTP_REQUEST_OUTPUT: true,
     DELETE_HTTP_REQUEST_OUTPUT: true,
@@ -451,6 +458,20 @@ export function httpRequestReducer(
                     node.data.testRequestResult = action.result
                 }
             })
+        case 'SET_HTTP_REQUEST_TEST_REQUEST_INPUTS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request',
+                )
+                if (node) {
+                    node.data.testRequestInputs = action.inputs
+                    if (action.refreshToken !== undefined) {
+                        node.data.testRequestRefreshToken = action.refreshToken
+                    }
+                }
+            })
         case 'RESET_HTTP_REQUEST_TEST_REQUEST_RESULT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
@@ -460,6 +481,7 @@ export function httpRequestReducer(
                 )
                 if (node) {
                     delete node.data.testRequestResult
+                    // Don't delete the inputs - we want to preserve them for retesting
                 }
             })
         case 'ADD_HTTP_REQUEST_OUTPUT':
