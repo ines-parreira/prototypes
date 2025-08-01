@@ -51,6 +51,7 @@ export enum FeatureFlagKey {
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
+    BillingPreventSubscriptionAnyPlan = 'linear.CRMGROW-1414.prevent-user-subscribing-to-any-plan',
     BotUserEdition = 'bot-user-edition',
     CustomBusinessHours = 'business-hours-by-integration',
     CanExceedMaxAgentCapacity = 'linear.task_SUPXP-3147.disable-exceeding-max-agent-capacity-option',

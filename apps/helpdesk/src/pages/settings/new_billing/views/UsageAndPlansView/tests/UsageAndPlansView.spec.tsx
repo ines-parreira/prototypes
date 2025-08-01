@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,6 +5,8 @@ import { fromJS } from 'immutable'
 import * as uiKit from '@gorgias/merchant-ui-kit'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { shopifyIntegration } from 'fixtures/integrations'
 import {
@@ -39,6 +39,9 @@ import {
 } from 'pages/settings/new_billing/fixtures'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.Mock
 
 // Mock ui-kit as an ES module to enable spying
 jest.mock('@gorgias/merchant-ui-kit', () => {
@@ -144,6 +147,7 @@ describe('UsageAndPlansView', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             mockedUseAiAgentOnboardingNotification,
         )
+        mockUseFlag.mockImplementation(() => false)
         mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
             storeConfiguration: undefined,
@@ -223,6 +227,25 @@ describe('UsageAndPlansView', () => {
             'to',
             '/app/settings/billing/payment/frequency',
         )
+    })
+
+    it('should render not with product cards if subscribing is disabled for the user', () => {
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.BillingPreventSubscriptionAnyPlan
+                ? true
+                : false,
+        )
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+                helpdeskBanner={helpdeskBanner}
+                convertBanner={convertBanner}
+            />,
+            store,
+        )
+        expect(ProductCardMock).toHaveBeenCalledTimes(0)
     })
 
     it('should render with scheduled cancellation including Helpdesk and Convert products', () => {

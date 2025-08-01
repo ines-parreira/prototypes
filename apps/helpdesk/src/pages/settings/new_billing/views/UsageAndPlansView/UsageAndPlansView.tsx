@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import classNames from 'classnames'
 import moment from 'moment'
@@ -7,6 +7,8 @@ import { Link, useHistory } from 'react-router-dom'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { AlertBannerTypes } from 'AlertBanners'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'
@@ -120,6 +122,10 @@ const UsageAndPlansView = ({
 
     const hasCreditCard = useAppSelector(getHasCreditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
+
+    const subscripingDisabledForUser: boolean = !!useFlag(
+        FeatureFlagKey.BillingPreventSubscriptionAnyPlan,
+    )
 
     const disabledTooltip = isTrialingSubscription
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
@@ -326,56 +332,62 @@ const UsageAndPlansView = ({
             {isCurrentSubscriptionCanceled ? null : (
                 <BillingScheduledDowngrades />
             )}
-            <div className={css.productsGridContainer}>
-                <ProductCard
-                    type={ProductType.Helpdesk}
-                    plan={currentHelpdeskPlan}
-                    usage={currentUsage?.helpdesk}
-                    banner={helpdeskBanner}
-                    isDisabled={
-                        isSubscribedToHelpdeskStarter ||
-                        (!currentHelpdeskPlan && !!scheduledToCancelAt)
-                    }
-                />
-                <ProductCard
-                    type={ProductType.Automation}
-                    plan={currentAutomatePlan}
-                    usage={currentUsage?.automation}
-                    isDisabled={!currentAutomatePlan && !!scheduledToCancelAt}
-                />
-                <ProductCard
-                    type={ProductType.Voice}
-                    plan={currentVoicePlan}
-                    usage={currentUsage?.voice}
-                    banner={voiceBanner}
-                    isDisabled={
-                        (!currentVoicePlan && !!scheduledToCancelAt) ||
-                        isTrialingSubscription
-                    }
-                    disabledTooltip={disabledTooltip}
-                />
-                <ProductCard
-                    type={ProductType.SMS}
-                    plan={currentSmsPlan}
-                    usage={currentUsage?.sms}
-                    banner={smsBanner}
-                    isDisabled={
-                        (!currentSmsPlan && !!scheduledToCancelAt) ||
-                        isTrialingSubscription
-                    }
-                    disabledTooltip={disabledTooltip}
-                />
-                <ProductCard
-                    type={ProductType.Convert}
-                    plan={currentConvertPlan}
-                    usage={currentUsage?.convert}
-                    banner={convertBanner}
-                    isDisabled={!currentConvertPlan && !!scheduledToCancelAt}
-                    autoUpgradeEnabled={Boolean(
-                        convertStatus && convertStatus.auto_upgrade_enabled,
-                    )}
-                />
-            </div>
+            {subscripingDisabledForUser ? null : (
+                <div className={css.productsGridContainer}>
+                    <ProductCard
+                        type={ProductType.Helpdesk}
+                        plan={currentHelpdeskPlan}
+                        usage={currentUsage?.helpdesk}
+                        banner={helpdeskBanner}
+                        isDisabled={
+                            isSubscribedToHelpdeskStarter ||
+                            (!currentHelpdeskPlan && !!scheduledToCancelAt)
+                        }
+                    />
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={currentAutomatePlan}
+                        usage={currentUsage?.automation}
+                        isDisabled={
+                            !currentAutomatePlan && !!scheduledToCancelAt
+                        }
+                    />
+                    <ProductCard
+                        type={ProductType.Voice}
+                        plan={currentVoicePlan}
+                        usage={currentUsage?.voice}
+                        banner={voiceBanner}
+                        isDisabled={
+                            (!currentVoicePlan && !!scheduledToCancelAt) ||
+                            isTrialingSubscription
+                        }
+                        disabledTooltip={disabledTooltip}
+                    />
+                    <ProductCard
+                        type={ProductType.SMS}
+                        plan={currentSmsPlan}
+                        usage={currentUsage?.sms}
+                        banner={smsBanner}
+                        isDisabled={
+                            (!currentSmsPlan && !!scheduledToCancelAt) ||
+                            isTrialingSubscription
+                        }
+                        disabledTooltip={disabledTooltip}
+                    />
+                    <ProductCard
+                        type={ProductType.Convert}
+                        plan={currentConvertPlan}
+                        usage={currentUsage?.convert}
+                        banner={convertBanner}
+                        isDisabled={
+                            !currentConvertPlan && !!scheduledToCancelAt
+                        }
+                        autoUpgradeEnabled={Boolean(
+                            convertStatus && convertStatus.auto_upgrade_enabled,
+                        )}
+                    />
+                </div>
+            )}
             <div className={css.unsubscribe}>
                 If you have any questions, please{' '}
                 <span
