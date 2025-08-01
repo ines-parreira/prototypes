@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -44,7 +44,6 @@ import {
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)

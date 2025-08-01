@@ -1,7 +1,6 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
-import { assumeMock } from 'utils/testing'
 
 import { IngestionLogStatus } from '../../AiAgentScrapedDomainContent/constant'
 import { useGetStoreDomainIngestionLog } from '../useGetStoreDomainIngestionLog'

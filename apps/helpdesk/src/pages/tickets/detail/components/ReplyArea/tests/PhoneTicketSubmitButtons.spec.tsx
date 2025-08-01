@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
@@ -10,7 +11,6 @@ import thunk from 'redux-thunk'
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import { RootState, StoreDispatch } from 'state/types'
 import { isDeviceReady } from 'utils/device'
-import { assumeMock } from 'utils/testing'
 
 import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
 

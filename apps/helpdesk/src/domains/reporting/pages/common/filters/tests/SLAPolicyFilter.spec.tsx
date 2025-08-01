@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 
 import { SLAPolicy, useListSlaPolicies } from '@gorgias/helpdesk-queries'
@@ -32,7 +30,7 @@ import {
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('@gorgias/helpdesk-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)

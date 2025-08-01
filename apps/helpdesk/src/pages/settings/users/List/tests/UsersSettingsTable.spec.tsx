@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { ListUsersParams } from '@gorgias/helpdesk-queries'
@@ -12,7 +13,6 @@ import { UserSortableProperties } from 'models/user/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import { assumeMock } from 'utils/testing'
 
 import { UsersSettingsItem } from '../UsersSettingsItem'
 import { UsersSettingsTable } from '../UsersSettingsTable'

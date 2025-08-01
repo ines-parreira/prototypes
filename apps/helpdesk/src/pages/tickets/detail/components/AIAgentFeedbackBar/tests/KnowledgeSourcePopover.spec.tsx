@@ -1,8 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { assumeMock } from 'utils/testing'
 
 import KnowledgeSourcePopover from '../KnowledgeSourcePopover'
 

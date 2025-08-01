@@ -1,7 +1,7 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
-import { assumeMock } from 'utils/testing'
 
 import InTicketSuggestionContainer from '../InTicketSuggestionContainer'
 

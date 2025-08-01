@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -7,7 +8,6 @@ import { Router } from 'react-router-dom'
 
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
-import { assumeMock } from 'utils/testing'
 
 import { useShoppingAssistantTrialFlow } from '../hooks/useShoppingAssistantTrialFlow'
 import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssistantTrial'

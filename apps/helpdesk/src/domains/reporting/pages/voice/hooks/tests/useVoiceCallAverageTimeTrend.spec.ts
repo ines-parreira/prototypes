@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
 import { fetchMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
@@ -14,7 +15,6 @@ import {
     formatReportingQueryDate,
     getPreviousPeriod,
 } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 const fetchMetricTrendMock = assumeMock(fetchMetricTrend)

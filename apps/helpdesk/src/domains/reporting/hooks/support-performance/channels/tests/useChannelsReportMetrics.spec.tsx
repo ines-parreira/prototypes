@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
@@ -23,7 +21,7 @@ import { saveReport } from 'domains/reporting/services/channelsReportingService'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { channels } from 'fixtures/channels'
 import { RootState } from 'state/types'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useSortedChannels')
 

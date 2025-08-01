@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -7,7 +8,6 @@ import { AutomateOverviewDownloadDataButton } from 'domains/reporting/pages/auto
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import { useAutomateOverviewReportData } from 'domains/reporting/services/automateOverviewReportingService'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)

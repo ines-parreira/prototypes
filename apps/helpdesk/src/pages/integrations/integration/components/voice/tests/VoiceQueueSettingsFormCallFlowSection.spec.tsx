@@ -1,10 +1,10 @@
+import { assumeMock } from '@repo/testing'
 import { render, RenderResult, screen } from '@testing-library/react'
 
 import { VoiceQueueTargetScope } from '@gorgias/helpdesk-queries'
 
 import { FormField, useFormContext } from 'core/forms'
 import * as forms from 'core/forms'
-import { assumeMock } from 'utils/testing'
 
 import VoiceQueueSettingsFormCallFlowSection from '../VoiceQueueSettingsFormCallFlowSection'
 

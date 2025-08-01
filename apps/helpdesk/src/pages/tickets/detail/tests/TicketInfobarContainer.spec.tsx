@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -26,7 +26,7 @@ import {
 } from 'state/ui/ticketAIAgentFeedback'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { fetchWidgets, selectContext } from 'state/widgets/actions'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import {
     AI_FEEDBACK_TAB,

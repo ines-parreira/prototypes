@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Emoji } from 'emoji-mart'
-
-import { assumeMock } from 'utils/testing'
 
 import TeamDropdownItem from '../TeamDropdownItem'
 

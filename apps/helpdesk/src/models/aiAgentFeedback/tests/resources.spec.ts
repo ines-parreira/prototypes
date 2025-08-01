@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { InternalAxiosRequestConfig } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -8,7 +9,6 @@ import {
     submitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/resources'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
-import { assumeMock } from 'utils/testing'
 
 import { ReportIssueOption } from '../constants'
 import { DeleteMessageFeedback, SubmitMessageFeedback } from '../types'

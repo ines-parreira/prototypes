@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
@@ -14,7 +15,6 @@ import {
 } from 'models/billing/types'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import { assumeMock } from 'utils/testing'
 
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import UpcomingInvoiceCard from '../UpcomingInvoiceCard'

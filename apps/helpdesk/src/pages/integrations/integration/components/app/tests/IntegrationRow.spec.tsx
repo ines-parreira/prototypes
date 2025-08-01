@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,7 +12,6 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { getReconnectUrl } from 'pages/integrations/integration/components/app/helpers'
 import IntegrationRow from 'pages/integrations/integration/components/app/IntegrationRow'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('../helpers')
 const getReconnectUrlMock = assumeMock(getReconnectUrl)

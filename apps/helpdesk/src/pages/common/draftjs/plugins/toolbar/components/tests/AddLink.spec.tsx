@@ -1,5 +1,6 @@
 import React, { ComponentProps, MouseEvent } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { EditorState } from 'draft-js'
@@ -13,7 +14,6 @@ import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaig
 import { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
 import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
 import * as editorUtils from 'utils/editor'
-import { assumeMock } from 'utils/testing'
 
 import ToolbarProvider from '../../ToolbarProvider'
 import { AddLinkContainer } from '../AddLink'

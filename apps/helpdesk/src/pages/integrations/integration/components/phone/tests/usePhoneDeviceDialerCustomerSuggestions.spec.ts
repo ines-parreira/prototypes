@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useSearch } from '@gorgias/helpdesk-queries'
 
 import * as searchTypes from 'models/search/types'
-import { assumeMock } from 'utils/testing'
 
 import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
 

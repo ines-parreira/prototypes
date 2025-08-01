@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import { tags } from 'fixtures/tag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Row from 'pages/settings/tags/Row'
 import { cancel, edit, remove, save, select } from 'state/tags/actions'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

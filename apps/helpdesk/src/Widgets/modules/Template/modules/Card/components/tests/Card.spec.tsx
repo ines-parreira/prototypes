@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -20,7 +21,6 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 

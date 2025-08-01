@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -5,7 +6,6 @@ import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { generateToneOfVoice } from 'models/aiAgent/resources/tone-of-voice'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import { useGenerateToneOfVoice } from '../useGenerateToneOfVoice'
 

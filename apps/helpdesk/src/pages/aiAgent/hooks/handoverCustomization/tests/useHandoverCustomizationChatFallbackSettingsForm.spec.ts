@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { Language } from 'constants/languages'
@@ -10,7 +10,6 @@ import {
     mapFromFormValuesToMultiLanguageText,
     mapFromMultiLanguageTextToFormValues,
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
-import { assumeMock } from 'utils/testing'
 
 import { useHandoverCustomizationChatFallbackSettingsForm } from '../useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from '../useHandoverCustomizationChatLanguageTextsConfiguration'

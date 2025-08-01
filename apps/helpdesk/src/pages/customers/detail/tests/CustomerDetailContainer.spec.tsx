@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { createBrowserHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,7 @@ import useFlag from 'core/flags/hooks/useFlag'
 import { customer } from 'fixtures/customer'
 import { RootState, StoreDispatch } from 'state/types'
 import Timeline from 'timeline/Timeline'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { CustomerDetailContainer } from '../CustomerDetailContainer'
 

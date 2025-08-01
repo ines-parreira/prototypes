@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
     act,
@@ -36,7 +37,7 @@ import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { ABGroupView } from '../ABGroupPage'
 

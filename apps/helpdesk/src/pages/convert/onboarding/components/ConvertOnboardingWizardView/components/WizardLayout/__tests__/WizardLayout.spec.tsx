@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, flushPromises } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -19,7 +20,6 @@ import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import { OnboardingWizardSteps } from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, flushPromises } from 'utils/testing'
 
 import WizardLayout from '../WizardLayout'
 

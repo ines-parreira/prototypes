@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -9,7 +10,6 @@ import AppDetail from 'pages/integrations/integration/components/app/App'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import IntegrationsStore from 'pages/integrations/Store'
 import MyIntegrations from 'pages/integrations/Store/Mine'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Integrations } from '../Integrations'

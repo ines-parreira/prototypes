@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { flushPromises } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
@@ -8,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 import { phoneNumbers } from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
 import { RootState, StoreDispatch } from 'state/types'
-import { flushPromises } from 'utils/testing'
 
 import PhoneNumberListContainer from '../PhoneNumbersListContainer'
 

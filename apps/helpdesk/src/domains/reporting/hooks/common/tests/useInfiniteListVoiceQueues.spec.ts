@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import {
     InfiniteQueryObserverSuccessResult,
     useInfiniteQuery,
@@ -8,7 +8,6 @@ import { listVoiceQueues } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@tanstack/react-query')
 const useInfiniteQueryMock = assumeMock(useInfiniteQuery)

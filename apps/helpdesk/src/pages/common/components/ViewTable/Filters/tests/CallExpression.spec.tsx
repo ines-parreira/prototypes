@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { CallExpression as ESCallExpression, LogicalExpression } from 'estree'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import { view as viewFixture } from 'fixtures/views'
 import useQAScoreFilters from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'
 import Left from 'pages/common/components/ViewTable/Filters/Left'
 import Right from 'pages/common/components/ViewTable/Filters/Right'
-import { assumeMock } from 'utils/testing'
 
 import { CallExpression } from '../CallExpression'
 import useCustomFieldsFilters from '../hooks/useCustomFieldsFilters'

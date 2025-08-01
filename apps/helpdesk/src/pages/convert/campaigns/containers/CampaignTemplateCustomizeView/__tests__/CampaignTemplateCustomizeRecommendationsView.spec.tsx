@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -17,7 +18,6 @@ import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampai
 import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import { CART_ABANDONMENT } from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { assumeMock } from 'utils/testing'
 
 import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
 

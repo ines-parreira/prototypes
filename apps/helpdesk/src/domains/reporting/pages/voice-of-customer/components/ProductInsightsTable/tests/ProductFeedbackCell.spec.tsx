@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
@@ -9,7 +10,6 @@ import { useTopIntentPerProduct } from 'domains/reporting/hooks/voice-of-custome
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProductFeedbackCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductFeedbackCell'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

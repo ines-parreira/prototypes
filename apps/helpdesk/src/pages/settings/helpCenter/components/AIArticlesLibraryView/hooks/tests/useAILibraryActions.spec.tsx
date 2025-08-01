@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
@@ -10,7 +10,6 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import useAILibraryActions from '../useAILibraryActions'
 

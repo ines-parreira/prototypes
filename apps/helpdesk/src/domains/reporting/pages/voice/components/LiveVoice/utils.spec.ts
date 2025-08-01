@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
 import {
@@ -26,7 +27,6 @@ import {
 import { OrderDirection } from 'models/api/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { getMoment } from 'utils/date'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/date')
 

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -24,7 +25,7 @@ import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacFo
 import { initialState } from 'state/billing/reducers'
 import { getHasAutomate } from 'state/billing/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import AiAgentConfigurationContainer from '../AiAgentConfigurationContainer'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'

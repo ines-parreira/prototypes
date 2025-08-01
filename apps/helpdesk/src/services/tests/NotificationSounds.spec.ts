@@ -1,4 +1,4 @@
-import { flushPromises } from 'utils/testing'
+import { flushPromises } from '@repo/testing'
 
 import NotificationSounds, { sounds } from '../NotificationSounds'
 

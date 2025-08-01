@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { AxiosResponse } from 'axios'
 
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
@@ -34,7 +34,6 @@ import {
     ReportingResponse,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { getDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
@@ -18,7 +18,6 @@ import {
 } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(

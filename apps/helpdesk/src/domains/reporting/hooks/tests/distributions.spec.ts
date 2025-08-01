@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment/moment'
 
@@ -27,7 +27,6 @@ import {
     getPreviousPeriod,
 } from 'domains/reporting/utils/reporting'
 import { humanizeChannel } from 'state/ticket/utils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

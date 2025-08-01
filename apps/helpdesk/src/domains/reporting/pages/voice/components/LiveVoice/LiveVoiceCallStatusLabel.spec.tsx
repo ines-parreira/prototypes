@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
@@ -11,7 +12,6 @@ import {
     isLiveInboundVoiceCallAnswered,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 

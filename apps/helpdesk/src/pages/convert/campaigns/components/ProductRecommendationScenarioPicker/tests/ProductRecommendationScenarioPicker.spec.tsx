@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
 import { AttachmentEnum } from 'common/types'
@@ -7,7 +8,6 @@ import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCamp
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import { assumeMock } from 'utils/testing'
 
 import ProductRecommendationScenarioPicker from '../ProductRecommendationScenarioPicker'
 

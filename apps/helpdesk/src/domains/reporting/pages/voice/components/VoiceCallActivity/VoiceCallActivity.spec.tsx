@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
@@ -9,7 +10,6 @@ import VoiceCallActivity from 'domains/reporting/pages/voice/components/VoiceCal
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/voiceCall/utils')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')

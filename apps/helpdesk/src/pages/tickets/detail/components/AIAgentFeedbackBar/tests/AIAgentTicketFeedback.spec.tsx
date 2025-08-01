@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +12,6 @@ import { TicketMessage } from 'models/ticket/types'
 import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import AIAgentTicketFeedback from '../AIAgentTicketFeedback'
 import { TicketEventEnum } from '../types'

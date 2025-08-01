@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useCollectionsFromShopifyIntegration } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import CollectionSelector from '../CollectionSelector'
 

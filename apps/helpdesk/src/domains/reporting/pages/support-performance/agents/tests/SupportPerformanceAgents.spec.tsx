@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
@@ -34,7 +35,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.unmock('react-router-dom')
 

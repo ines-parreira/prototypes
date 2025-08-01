@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -13,7 +13,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import { SLAFormValues } from '../useFormValues'
 import useSubmitPolicy from '../useSubmitPolicy'

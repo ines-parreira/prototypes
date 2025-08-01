@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import useCount from 'common/notifications/hooks/useCount'
-import { assumeMock } from 'utils/testing'
 
 import { GlobalNavigationNotificationBadge } from '../GlobalNavigationNotificationBadge'
 

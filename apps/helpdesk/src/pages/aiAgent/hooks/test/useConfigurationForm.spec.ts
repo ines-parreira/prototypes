@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -14,7 +14,6 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { StoreState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { ToneOfVoice } from '../../constants'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'

@@ -1,5 +1,6 @@
-import React, { ComponentProps, useState as mockUseState } from 'react'
+import { ComponentProps, useState as mockUseState } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -23,7 +24,7 @@ import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'
 import { startEditionMode, stopEditionMode } from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore()
 

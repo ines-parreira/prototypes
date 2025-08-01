@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import {
     fetchAllAutomatedInteractions,
@@ -32,7 +32,6 @@ import { automationDatasetQueryFactory } from 'domains/reporting/models/queryFac
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { getVoiceQueue, updateVoiceQueue } from '@gorgias/helpdesk-client'
@@ -5,7 +6,6 @@ import { getVoiceQueue, updateVoiceQueue } from '@gorgias/helpdesk-client'
 import { voiceQueue } from 'fixtures/voiceQueue'
 import history from 'pages/history'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueEditPage from '../VoiceQueueEditPage'

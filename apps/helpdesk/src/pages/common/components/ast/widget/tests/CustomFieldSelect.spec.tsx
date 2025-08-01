@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -8,7 +9,6 @@ import {
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import { assumeMock } from 'utils/testing'
 
 import CustomFieldSelect from '../CustomFieldSelect'
 

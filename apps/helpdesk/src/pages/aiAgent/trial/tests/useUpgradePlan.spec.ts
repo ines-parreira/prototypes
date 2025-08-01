@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useMutation } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -7,7 +7,6 @@ import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useUpgradePlan } from '../hooks/useUpgradePlan'
 

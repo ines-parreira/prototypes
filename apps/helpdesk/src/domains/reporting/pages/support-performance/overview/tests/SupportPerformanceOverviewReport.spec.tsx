@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -37,7 +38,6 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

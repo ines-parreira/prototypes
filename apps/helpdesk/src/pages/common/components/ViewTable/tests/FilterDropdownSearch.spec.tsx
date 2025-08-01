@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { flushPromises } from '@repo/testing'
 import { act, fireEvent, render } from '@testing-library/react'
 import { fromJS, List } from 'immutable'
 
@@ -7,7 +8,6 @@ import { getTicketViewField } from 'config/views'
 import { ViewField } from 'models/view/types'
 import Search from 'pages/common/components/Search'
 import { fieldEnumSearch } from 'state/views/actions'
-import { flushPromises } from 'utils/testing'
 
 import FilterDropdownSearch from '../FilterDropdownSearch'
 

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import {
@@ -5,7 +6,6 @@ import {
     VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
-import { assumeMock } from 'utils/testing'
 
 import TicketVoiceCallOutboundStatus from '../TicketVoiceCallOutboundStatus'
 

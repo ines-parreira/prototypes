@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment'
@@ -7,7 +8,6 @@ import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSales
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import {
     TrialEndedModal,

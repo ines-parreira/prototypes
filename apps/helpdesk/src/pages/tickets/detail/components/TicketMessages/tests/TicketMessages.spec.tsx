@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -18,7 +19,6 @@ import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 's
 import { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock } from 'utils/testing'
 
 import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
 import {

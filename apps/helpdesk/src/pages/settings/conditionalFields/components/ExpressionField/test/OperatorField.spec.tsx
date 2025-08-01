@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { ExpressionOperator } from '@gorgias/helpdesk-queries'
@@ -11,7 +12,6 @@ import {
     EXPRESSION_OPERATORS_BY_UI_DATA_TYPE,
     EXPRESSION_OPERATORS_LABELS,
 } from 'pages/settings/conditionalFields/constants'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { OperatorField } from '../OperatorField'
 

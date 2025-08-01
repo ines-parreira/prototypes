@@ -1,10 +1,10 @@
+import { assumeMock, flushPromises } from '@repo/testing'
 import { ContentState, EditorState, SelectionState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
 
 import { Plugin, PluginMethods } from 'pages/common/draftjs/plugins/types'
 import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock, flushPromises } from 'utils/testing'
 
 import client from '../client'
 import createPredictionPlugin, { clearCache } from '../index'

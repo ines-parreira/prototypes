@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -8,7 +7,7 @@ import { useGetRevenueShareChart } from 'domains/reporting/pages/convert/hooks/s
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)

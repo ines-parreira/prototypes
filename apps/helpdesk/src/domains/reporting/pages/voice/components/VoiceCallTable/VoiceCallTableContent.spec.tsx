@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -15,7 +16,6 @@ import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceC
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallList')
 

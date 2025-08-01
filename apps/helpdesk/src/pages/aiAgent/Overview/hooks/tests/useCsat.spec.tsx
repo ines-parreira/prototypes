@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -11,7 +11,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { RootState } from 'state/types'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)

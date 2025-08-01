@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import { IntegrationType } from 'models/integration/constants'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { useAIArticlePublishedPreviewUrl } from '../../hooks/useAIArticlePublishedPreviewUrl'
 import { useAIArticleRecommendationItems } from '../../hooks/useAIArticleRecommendationItems'

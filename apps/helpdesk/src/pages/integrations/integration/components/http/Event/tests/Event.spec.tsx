@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 
@@ -8,7 +9,6 @@ import { ContentType, HttpMethod } from 'models/api/types'
 import { useGetHTTPEvent } from 'models/integration/queries/http'
 import { HTTPIntegrationEvent } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import Events from '../Event'
 

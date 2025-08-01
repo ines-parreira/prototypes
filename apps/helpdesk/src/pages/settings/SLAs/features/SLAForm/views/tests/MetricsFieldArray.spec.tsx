@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useController, useFieldArray, useFormContext } from 'core/forms'
-import { assumeMock } from 'utils/testing'
 
 import MetricsFieldArray from '../MetricsFieldArray'
 

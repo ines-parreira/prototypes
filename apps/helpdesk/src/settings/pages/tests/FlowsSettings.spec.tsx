@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import { useStoreSelector } from 'settings/automate'
 import { getHasAutomate } from 'state/billing/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { BASE_PATH, FlowsSettings } from '../FlowsSettings'
 

@@ -1,11 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import { TagsReportDownloadDataButton } from 'domains/reporting/pages/ticket-insights/tags/TagsReportDownloadDataButton'
 import { useDownloadTagsReportData } from 'domains/reporting/services/tagsReportingService'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/services/tagsReportingService')
 const useDownloadTagsReportDataMock = assumeMock(useDownloadTagsReportData)

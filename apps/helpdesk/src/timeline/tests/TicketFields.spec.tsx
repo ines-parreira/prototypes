@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
@@ -14,7 +15,6 @@ import {
 import useCallbackRef from 'hooks/useCallbackRef'
 import useElementSize from 'hooks/useElementSize'
 import useId from 'hooks/useId'
-import { assumeMock } from 'utils/testing'
 
 import TicketFields from '../TicketFields'
 

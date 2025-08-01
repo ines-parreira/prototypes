@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { TicketStatus } from 'business/types/ticket'
@@ -7,7 +8,6 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { assumeMock } from 'utils/testing'
 
 import useAutoQA from '../../hooks/useAutoQA'
 import AutoQA from '../AutoQA'

@@ -1,5 +1,6 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import { createMemoryHistory } from 'history'
@@ -17,7 +18,7 @@ import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import TicketList from 'pages/tickets/list/TicketList'
 import { fetchTags } from 'state/tags/actions'
 import { updateSelectedItemsIds } from 'state/views/actions'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('decorate-component-with-props')
 const decorateComponentWithPropsMock = assumeMock(decorateComponentWithProps)

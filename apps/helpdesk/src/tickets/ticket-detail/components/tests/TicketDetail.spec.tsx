@@ -1,8 +1,7 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import type { Ticket, TicketCompact } from '@gorgias/helpdesk-queries'
-
-import { assumeMock } from 'utils/testing'
 
 import { useTicket } from '../../hooks/useTicket'
 import { TicketDetail } from '../TicketDetail'

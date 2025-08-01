@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useProductInsightsTableSetting } from 'domains/reporting/hooks/useProductInsightsTableConfigSetting'
 import { useTableConfigSetting } from 'domains/reporting/hooks/useTableConfigSetting'
@@ -8,7 +8,6 @@ import {
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { submitProductInsightsTableConfigView } from 'state/currentAccount/actions'
 import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useTableConfigSetting')
 const useTableConfigSettingMock = assumeMock(useTableConfigSetting)

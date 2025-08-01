@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { CardTemplate } from 'models/widget/types'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import ActionButtons from '../ActionButtons/ActionButtons'
 import CustomActions from '../index'

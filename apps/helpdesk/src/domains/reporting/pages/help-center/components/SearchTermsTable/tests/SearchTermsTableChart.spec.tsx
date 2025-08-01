@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,7 +9,6 @@ import thunk from 'redux-thunk'
 import { SearchTermsTable } from 'domains/reporting/pages/help-center/components/SearchTermsTable/SearchTermsTable'
 import { SearchTermsTableChart } from 'domains/reporting/pages/help-center/components/SearchTermsTable/SearchTermsTableChart'
 import { useSelectedHelpCenter } from 'domains/reporting/pages/help-center/hooks/useSelectedHelpCenter'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/help-center/hooks/useSelectedHelpCenter')
 const useSelectedHelpCenterMock = assumeMock(useSelectedHelpCenter)

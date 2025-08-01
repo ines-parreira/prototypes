@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
@@ -12,7 +13,6 @@ import ScoredSurveysChart from 'domains/reporting/pages/quality-management/satis
 import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys',

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from 'models/integration/constants'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { initialState } from 'state/infobarActions/shopify/createOrder/reducers'
-import { assumeMock } from 'utils/testing'
 
 import { ShopifyContext } from '../../contexts/ShopifyContext'
 import { getShopifyResourceIds } from '../../helpers/getShopifyResourceIds'

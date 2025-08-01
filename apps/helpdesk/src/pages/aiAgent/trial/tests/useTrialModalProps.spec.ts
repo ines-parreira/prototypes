@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -21,7 +21,6 @@ import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/billing/queries')
 jest.mock('models/billing/utils', () => ({

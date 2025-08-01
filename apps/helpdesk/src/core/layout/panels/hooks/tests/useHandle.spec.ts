@@ -1,7 +1,5 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-
-import { assumeMock } from 'utils/testing'
 
 import type { ContextValue } from '../../Context'
 import type { HandleState } from '../../types'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -21,7 +22,7 @@ import {
     ProductInsightsPage,
 } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')

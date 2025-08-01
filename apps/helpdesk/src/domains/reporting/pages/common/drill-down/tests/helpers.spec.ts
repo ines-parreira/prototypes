@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -98,7 +99,6 @@ import {
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts',

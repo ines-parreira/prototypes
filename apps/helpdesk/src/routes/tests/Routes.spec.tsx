@@ -1,5 +1,6 @@
 import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
@@ -30,7 +31,7 @@ import Routes from 'routes/Routes'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('common/segment')

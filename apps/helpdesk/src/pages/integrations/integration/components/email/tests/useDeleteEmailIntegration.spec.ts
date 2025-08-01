@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
@@ -9,7 +9,6 @@ import history from 'pages/history'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
 

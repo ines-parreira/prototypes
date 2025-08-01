@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -8,7 +9,6 @@ import { mockListBusinessHoursHandler } from '@gorgias/helpdesk-mocks'
 
 import { Form } from 'core/forms'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import ListCustomBusinessHours from '../ListCustomBusinessHours'
 import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'

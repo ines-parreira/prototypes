@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
@@ -33,7 +33,6 @@ import { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice
 import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
 import { createCsv, saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const fetchTagsTicketCountTimeSeriesMock = assumeMock(

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { MemoryRouter } from 'react-router-dom'
@@ -13,7 +14,6 @@ import {
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { assumeMock } from 'utils/testing'
 
 import {
     BodyCellWrapper,

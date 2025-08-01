@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import {
     fireEvent,
     queryByDisplayValue,
@@ -6,7 +7,6 @@ import {
 } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock } from 'utils/testing'
 
 import { Props, TicketTagsFormComponent } from '../TicketTagsFormComponent'
 

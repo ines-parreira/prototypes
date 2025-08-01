@@ -1,9 +1,8 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { HelpCenter } from 'models/helpCenter/types'
-import { assumeMock } from 'utils/testing'
 
 import useSelfServiceHelpCenterChannels, {
     SelfServiceHelpCenterChannel,

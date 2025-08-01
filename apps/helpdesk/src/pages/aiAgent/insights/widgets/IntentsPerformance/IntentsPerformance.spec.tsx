@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -8,7 +9,6 @@ import { OverviewMetric } from 'domains/reporting/pages/support-performance/over
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { assumeMock } from 'utils/testing'
 
 import { IntentsPerformance } from './IntentsPerformance'
 

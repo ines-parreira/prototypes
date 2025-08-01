@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import { Tag, TicketTag } from '@gorgias/helpdesk-types'
 import useElementSize from 'hooks/useElementSize'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import AddTagsAction from '../AddTagsAction'
 

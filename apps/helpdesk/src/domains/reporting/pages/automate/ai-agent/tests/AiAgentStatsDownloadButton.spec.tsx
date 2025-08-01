@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -10,7 +11,6 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentReportMetrics')
 const useAIAgentReportMetricsMock = assumeMock(useAIAgentReportMetrics)

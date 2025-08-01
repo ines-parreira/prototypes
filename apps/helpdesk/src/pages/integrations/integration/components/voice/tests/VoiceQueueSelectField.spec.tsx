@@ -1,9 +1,9 @@
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import CreateNewQueueModal from '../CreateNewQueueModal'

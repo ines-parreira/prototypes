@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import PromptModal from 'pages/common/components/PromptModal'
-import { assumeMock } from 'utils/testing'
 
 import EmailIntegrationOnboardingButtons from '../CustomerOnboarding/EmailIntegrationOnboardingButtons'
 import EmailIntegrationOnboardingDomainVerification from '../CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'

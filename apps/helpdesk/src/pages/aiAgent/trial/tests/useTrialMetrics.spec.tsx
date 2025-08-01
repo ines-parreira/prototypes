@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -12,7 +12,6 @@ import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { assumeMock } from 'utils/testing'
 
 import { useTrialMetrics } from '../hooks/useTrialMetrics'
 

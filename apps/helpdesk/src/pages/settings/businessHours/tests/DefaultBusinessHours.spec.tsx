@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -15,7 +16,7 @@ import {
 
 import { useAppNode } from 'appNode'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import DefaultBusinessHours from '../DefaultBusinessHours'
 

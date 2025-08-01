@@ -1,3 +1,5 @@
+import { assumeMock } from '@repo/testing'
+
 import {
     VoiceCallDirection,
     VoiceCallTerminationStatus,
@@ -9,7 +11,7 @@ import {
     getOutboundDisplayStatus,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import SpotlightCallRow from '../SpotlightCallRow'
 

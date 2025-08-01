@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import VoiceQueueSummary from '../VoiceQueueSummary'
 

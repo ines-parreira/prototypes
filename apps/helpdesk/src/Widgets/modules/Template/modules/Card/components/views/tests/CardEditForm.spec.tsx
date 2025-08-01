@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import FileField from 'pages/common/forms/FileField'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CardEditForm, * as CardEditExports from '../CardEditForm'
 

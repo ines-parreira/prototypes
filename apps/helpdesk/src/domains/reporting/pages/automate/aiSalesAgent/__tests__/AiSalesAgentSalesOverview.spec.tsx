@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -22,7 +23,6 @@ import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSales
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)

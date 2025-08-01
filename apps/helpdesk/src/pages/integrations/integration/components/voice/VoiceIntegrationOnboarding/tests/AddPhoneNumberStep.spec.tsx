@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
@@ -7,7 +8,6 @@ import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import { assumeMock } from 'utils/testing'
 
 import AddPhoneNumberStep from '../AddPhoneNumberStep'
 

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useChannelsSortingQuery } from 'domains/reporting/hooks/support-performance/useChannelsSortingQuery'
@@ -5,7 +6,7 @@ import { ChannelsHeaderCellContent } from 'domains/reporting/pages/support-perfo
 import { ChannelsTableLabels } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useChannelsSortingQuery')
 const useChannelsSortingQueryMock = assumeMock(useChannelsSortingQuery)

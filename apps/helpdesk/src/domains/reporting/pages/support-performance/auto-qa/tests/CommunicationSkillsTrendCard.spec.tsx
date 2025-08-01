@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useCommunicationSkillsTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsTrend'
@@ -13,7 +14,7 @@ import { CommunicationSkillsTrendCard } from 'domains/reporting/pages/support-pe
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsTrend',

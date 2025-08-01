@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -8,7 +6,6 @@ import {
     getCurrentUser,
     isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
-import { assumeMock } from 'utils/testing'
 
 import UserItem from '../UserItem'
 

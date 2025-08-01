@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -21,7 +22,7 @@ import {
 } from 'fixtures/productPrices'
 import { getHasAutomate } from 'state/billing/selectors'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,

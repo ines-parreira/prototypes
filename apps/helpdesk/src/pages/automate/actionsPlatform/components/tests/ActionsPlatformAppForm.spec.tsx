@@ -1,10 +1,11 @@
 import React from 'react'
 
+import { flushPromises } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
 import { IntegrationType } from 'models/integration/constants'
-import { flushPromises, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { App } from '../../types'
 import ActionsPlatformAppForm from '../ActionsPlatformAppForm'

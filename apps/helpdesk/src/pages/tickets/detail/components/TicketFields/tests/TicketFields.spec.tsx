@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -25,7 +26,6 @@ import {
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import client from 'models/api/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import TicketFields from '../TicketFields'
 

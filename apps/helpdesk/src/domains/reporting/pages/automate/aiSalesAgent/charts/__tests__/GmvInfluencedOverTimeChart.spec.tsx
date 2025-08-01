@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { TooltipItem } from 'chart.js'
 import { fromJS } from 'immutable'
@@ -17,7 +18,6 @@ import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 jest.mock(

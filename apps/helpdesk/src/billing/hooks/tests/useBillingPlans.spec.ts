@@ -1,8 +1,6 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { mockBillingState, mockCurrentPlans } from '@gorgias/helpdesk-mocks'
-
-import { assumeMock } from 'utils/testing'
 
 import { useBillingPlans } from '../useBillingPlans'
 import { ResponseBillingState, useBillingState } from '../useBillingState'

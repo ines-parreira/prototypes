@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -22,7 +23,6 @@ import { ProductType } from 'models/billing/types'
 import { cancelHelpdeskAutoRenewal } from 'state/currentAccount/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CancellationReasons from '../CancellationReasons'
 import CancellationSummary from '../CancellationSummary'

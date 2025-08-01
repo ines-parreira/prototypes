@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
 
@@ -9,7 +10,6 @@ import { useDownloadOverViewData } from 'domains/reporting/hooks/support-perform
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import { DownloadOverviewData } from 'domains/reporting/pages/support-performance/overview/DownloadOverviewData'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>

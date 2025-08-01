@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { RootNodeProvider } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'
-import { assumeMock } from 'utils/testing'
 
 import UIKitRootNodeProvider from '../UIKitRootNodeProvider'
 

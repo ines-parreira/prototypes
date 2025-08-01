@@ -83,8 +83,8 @@ export const useEarlyAccessModalState = ({
     // The Early Access plan is not able to return the price_id, we uses the plan_id instead
     const priceIdsAndPlanIdsWithEarlyAccessPlanAdded = [
         ...priceIdsWithoutAutomationOne!,
-        earlyAccessAutomatePlanQuery.data?.plan_id!,
-    ].filter(Boolean)
+        earlyAccessAutomatePlanQuery.data?.plan_id,
+    ].filter(Boolean) as string[]
 
     const { isLoading: isSubscriptionUpdating, handleSubscriptionUpdate } =
         useUpdateSubscription({

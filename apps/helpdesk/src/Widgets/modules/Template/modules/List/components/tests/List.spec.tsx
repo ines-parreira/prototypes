@@ -1,11 +1,11 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import * as ticketFixtures from 'fixtures/ticket'
 import * as widgetsFixtures from 'fixtures/widgets'
 import { CardTemplate, ListTemplate, Source } from 'models/widget/types'
-import { assumeMock } from 'utils/testing'
 
 import List from '../List'
 import UIList from '../views/List'

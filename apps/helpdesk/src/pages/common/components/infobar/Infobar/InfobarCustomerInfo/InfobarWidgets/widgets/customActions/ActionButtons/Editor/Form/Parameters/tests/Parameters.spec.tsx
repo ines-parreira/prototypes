@@ -1,7 +1,6 @@
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import Parameter from '../Parameter'
 import Parameters from '../Parameters'

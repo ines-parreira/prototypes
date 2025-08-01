@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceQueue } from '@gorgias/helpdesk-queries'
@@ -22,7 +22,7 @@ import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/common/useVoiceQueueSearch')
 const useVoiceQueueSearchMock = assumeMock(useVoiceQueueSearch)

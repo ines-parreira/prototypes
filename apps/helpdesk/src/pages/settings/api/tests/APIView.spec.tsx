@@ -1,10 +1,8 @@
 import React, { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import copy from 'copy-to-clipboard'
-
-import { assumeMock } from 'utils/testing'
 
 import { APIViewContainer } from '../APIView'
 

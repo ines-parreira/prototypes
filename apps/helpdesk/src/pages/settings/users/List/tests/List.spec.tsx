@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
@@ -21,7 +22,6 @@ import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import UserList from '..'
 

@@ -1,7 +1,6 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,7 +9,7 @@ import thunk from 'redux-thunk'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { getStoreConfigurationFormValuesFixture } from '../../fixtures/onboardingWizard.fixture'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'

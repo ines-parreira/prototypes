@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
@@ -9,7 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useViewId from 'hooks/useViewId'
 import type { View } from 'models/view/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import TicketNavbarViewLink from '../TicketNavbarViewLink'
 

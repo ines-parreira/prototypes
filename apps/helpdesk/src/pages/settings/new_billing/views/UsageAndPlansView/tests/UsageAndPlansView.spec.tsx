@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -38,7 +39,6 @@ import {
 } from 'pages/settings/new_billing/fixtures'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 // Mock ui-kit as an ES module to enable spying
 jest.mock('@gorgias/merchant-ui-kit', () => {

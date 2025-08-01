@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -17,7 +18,6 @@ import { channels as mockChannels } from 'fixtures/channels'
 import { IntegrationType } from 'models/integration/types'
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
 import * as channelsService from 'services/channels'
-import { assumeMock } from 'utils/testing'
 
 import DatetimeLabel from '../DatetimeLabel'
 import * as labels from '../labels'

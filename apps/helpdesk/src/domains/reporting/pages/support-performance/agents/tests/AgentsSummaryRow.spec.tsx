@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -14,7 +15,6 @@ import {
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/support-performance/agents/AgentsTableConfig',

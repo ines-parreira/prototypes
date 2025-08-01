@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useRestrictedReportsConfig } from 'domains/reporting/hooks/dashboards/useRestrictedReportsConfig'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -8,7 +8,6 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

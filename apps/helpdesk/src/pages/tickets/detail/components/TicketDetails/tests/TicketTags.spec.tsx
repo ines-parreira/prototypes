@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 import { getWrappedElementCount } from 'common/utils'
 import { agents } from 'fixtures/agents'
 import useElementSize from 'hooks/useElementSize'
-import { assumeMock } from 'utils/testing'
 
 import TicketTags from '../TicketTags'
 

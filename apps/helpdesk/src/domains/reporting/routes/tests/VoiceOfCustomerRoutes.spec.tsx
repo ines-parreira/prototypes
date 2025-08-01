@@ -1,5 +1,6 @@
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
 import { Route, Switch } from 'react-router-dom'
@@ -10,7 +11,7 @@ import { VoiceOfCustomerNavbarContainer } from 'domains/reporting/pages/voice-of
 import { ProductInsightsPage } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
 import { VoiceOfCustomerRoutes } from 'domains/reporting/routes/VoiceOfCustomerRoutes'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer',

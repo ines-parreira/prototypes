@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -20,7 +21,6 @@ import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { UIActions } from 'state/ui/ticketAIAgentFeedback/types'
-import { assumeMock } from 'utils/testing'
 
 import { AiAgentReasoning, parseReasoningResources } from '../AiAgentReasoning'
 

@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -32,7 +33,6 @@ import {
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

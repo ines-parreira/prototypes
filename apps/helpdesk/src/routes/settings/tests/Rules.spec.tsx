@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import { AGENT_ROLE } from 'config/user'
 import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
 import RulesLibrary from 'pages/settings/rules/RulesLibrary'
 import RulesView from 'pages/settings/rules/RulesList'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Rules } from '../Rules'

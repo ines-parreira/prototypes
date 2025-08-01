@@ -1,5 +1,6 @@
+import { assumeMock } from '@repo/testing'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import { assumeMock } from 'utils/testing'
 
 import { handleConvertProductRemoved } from '../handleConvertProductRemoved'
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -9,7 +10,6 @@ import useSearch from 'hooks/useSearch'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { assumeMock } from 'utils/testing'
 
 import ConvertCampaignsListPlaceholder from '../ConvertCampaignsListPlaceholder'
 

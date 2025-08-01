@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import {
     QueryClient,
     QueryClientProvider,
@@ -19,7 +20,6 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AverageScorePerDimensionTrendChart } from 'domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries',

@@ -1,5 +1,6 @@
 import { ComponentProps, Fragment, ReactElement, ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -18,7 +19,7 @@ import useSortOrder, {
 } from 'ticket-list-view/hooks/useSortOrder'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import { TicketPartial } from 'ticket-list-view/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import Ticket from '../Ticket'
 import TicketListView, { listInfoProps } from '../TicketListView'

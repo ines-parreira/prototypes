@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -27,7 +28,6 @@ import { tags } from 'fixtures/tag'
 import { teams } from 'fixtures/teams'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/usePerformanceTips')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

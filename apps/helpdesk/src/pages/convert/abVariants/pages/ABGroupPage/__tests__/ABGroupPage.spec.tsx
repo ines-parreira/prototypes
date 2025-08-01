@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,7 +11,7 @@ import {
 } from 'models/convert/campaign/queries'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import ABGroupPage from '../ABGroupPage'
 

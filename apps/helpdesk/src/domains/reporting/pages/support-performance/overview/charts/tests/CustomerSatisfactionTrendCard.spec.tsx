@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
@@ -10,7 +11,7 @@ import { STATS_TIPS_VISIBILITY_KEY } from 'domains/reporting/pages/support-perfo
 import { account } from 'fixtures/account'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/support-performance/components/ActivateCustomerSatisfactionSurveyTip',

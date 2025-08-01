@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -10,7 +11,6 @@ import {
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import StoreDisplayName from 'pages/common/components/StoreDisplayName'
-import { assumeMock } from 'utils/testing'
 
 import BusinessHoursDisplay from '../BusinessHoursDisplay'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'

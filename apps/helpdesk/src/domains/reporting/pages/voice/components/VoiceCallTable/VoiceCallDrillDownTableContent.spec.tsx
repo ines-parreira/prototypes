@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
@@ -8,7 +9,6 @@ import { getVoiceDrillDownColumns } from 'domains/reporting/pages/voice/componen
 import VoiceCallDrillDownTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent',

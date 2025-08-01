@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
@@ -18,7 +19,6 @@ import {
     useInsertShoppingAssistantEventElements,
 } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import { getQueryData } from 'state/queries/selectors'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

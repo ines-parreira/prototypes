@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
@@ -18,7 +18,6 @@ import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresCon
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)

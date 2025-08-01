@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { useBackToConvert } from 'pages/convert/onboarding/hooks/useBackToConvert'
-import { assumeMock } from 'utils/testing'
 
 import BackToConvertButton from '../BackToConvertButton'
 

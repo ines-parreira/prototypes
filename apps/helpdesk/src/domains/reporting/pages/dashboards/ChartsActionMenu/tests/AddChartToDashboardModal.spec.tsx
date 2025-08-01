@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
@@ -11,7 +12,6 @@ import {
     getModalTitle,
 } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddChartToDashboardModal'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { assumeMock } from 'utils/testing'
 
 const chartId = OverviewChart.MedianResolutionTimeTrendCard
 const chartName = 'Median Resolution Time Trend Card'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -12,7 +13,6 @@ import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import { useDeleteDiscountOffer } from 'models/convert/discountOffer/queries'
 import { deleteAttachment } from 'state/newMessage/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { DeleteUniqueDiscountOfferModal } from '../DeleteUniqueDiscountOfferModal'
 

@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
@@ -16,7 +16,6 @@ import {
     useAverageOrderValueTrend,
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useAverageOrderValueTrend'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 const timezone = 'UTC'
 

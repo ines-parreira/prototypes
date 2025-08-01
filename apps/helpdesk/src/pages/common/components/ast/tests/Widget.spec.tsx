@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import { useFlag } from 'core/flags'
 import _schemas from 'fixtures/openapi.json'
 import { humanizeChannel } from 'state/ticket/utils'
 import { getLanguageDisplayName } from 'utils'
-import { assumeMock } from 'utils/testing'
 
 import Widget from '../Widget'
 import _astCodeContains from './fixtures/astCodeContains.json'

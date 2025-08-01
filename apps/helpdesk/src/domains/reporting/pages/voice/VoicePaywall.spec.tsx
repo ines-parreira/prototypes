@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import VoicePaywall from 'domains/reporting/pages/voice/VoicePaywall'
 import { getIntegrationConfig } from 'state/integrations/helpers'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('state/integrations/helpers')
 jest.mock(

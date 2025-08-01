@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
 import useId from 'hooks/useId'
-import { assumeMock } from 'utils/testing'
 
 import useHandle from '../../hooks/useHandle'
 import Handle from '../Handle'

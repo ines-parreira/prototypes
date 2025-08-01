@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 
@@ -10,7 +10,6 @@ import {
     updateSettings,
 } from 'models/convert/settings/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
     useConvertApi: jest.fn(() => ({

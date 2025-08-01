@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -7,7 +8,6 @@ import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import AgentDetail from 'pages/settings/users/Detail'
 import AgentList from 'pages/settings/users/List'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Users } from '../Users'

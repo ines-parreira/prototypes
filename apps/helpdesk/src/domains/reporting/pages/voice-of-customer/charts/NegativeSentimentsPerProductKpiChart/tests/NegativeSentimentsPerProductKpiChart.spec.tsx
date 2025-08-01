@@ -1,3 +1,5 @@
+import { assumeMock } from '@repo/testing'
+
 import { NegativeSentimentsPerProductKpi } from 'domains/reporting/pages/voice-of-customer/charts/NegativeSentimentsPerProductKpiChart/NegativeSentimentsPerProductKpi'
 import { NegativeSentimentsPerProductKpiChart } from 'domains/reporting/pages/voice-of-customer/charts/NegativeSentimentsPerProductKpiChart/NegativeSentimentsPerProductKpiChart'
 import {
@@ -6,7 +8,7 @@ import {
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',

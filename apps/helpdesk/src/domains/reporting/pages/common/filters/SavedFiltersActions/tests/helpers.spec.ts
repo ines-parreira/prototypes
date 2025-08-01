@@ -1,3 +1,5 @@
+import { assumeMock } from '@repo/testing'
+
 import {
     FilterComponentKey,
     FilterKey,
@@ -12,7 +14,6 @@ import {
     isFilterFilled,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/helpers'
 import { isTeamLead } from 'utils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)

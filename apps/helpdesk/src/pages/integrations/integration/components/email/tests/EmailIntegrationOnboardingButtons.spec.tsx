@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -12,7 +13,6 @@ import {
     useEmailOnboarding,
     UseEmailOnboardingHookResult,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
-import { assumeMock } from 'utils/testing'
 
 const FormContext = ({ children }: { children: React.ReactNode }) => {
     const methods = useForm<{ test: string }>()

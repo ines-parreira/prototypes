@@ -1,8 +1,7 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { SelectField } from '@gorgias/merchant-ui-kit'
-
-import { assumeMock } from 'utils/testing'
 
 import SelectDropdownField from '../SelectDropdownField'
 

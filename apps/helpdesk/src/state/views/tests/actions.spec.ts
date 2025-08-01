@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
@@ -45,7 +46,6 @@ import * as viewsSelectors from 'state/views/selectors'
 import { ViewNavDirection } from 'state/views/types'
 import { getAST } from 'utils'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

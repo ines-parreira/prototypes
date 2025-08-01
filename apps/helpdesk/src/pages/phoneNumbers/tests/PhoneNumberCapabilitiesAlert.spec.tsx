@@ -1,8 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import * as capabilitiesHook from 'hooks/integrations/phone/usePhoneNumberCapabilities'
 import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
-import { assumeMock } from 'utils/testing'
 
 import PhoneNumberCapabilitiesAlert from '../PhoneNumberCapabilitiesAlert'
 import {

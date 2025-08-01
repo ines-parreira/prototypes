@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import {
@@ -8,7 +6,6 @@ import {
     NotificationCenterEventTypes,
     SegmentEvent,
 } from 'common/segment'
-import { assumeMock } from 'utils/testing'
 
 import useCount from '../../hooks/useCount'
 import Button from '../Button'

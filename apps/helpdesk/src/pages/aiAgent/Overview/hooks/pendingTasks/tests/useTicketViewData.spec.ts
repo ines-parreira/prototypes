@@ -1,8 +1,7 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useGetAccountConfiguration } from 'models/aiAgent/queries'
 import { useGetViewTicketUpdates } from 'models/view/queries'
-import { assumeMock } from 'utils/testing'
 
 import { useTicketViewData } from '../useTicketViewData'
 

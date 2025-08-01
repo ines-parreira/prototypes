@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 
 import LiveVoiceAgentsSection from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/merchant-ui-kit', () => ({
     Skeleton: () => <div>Skeleton</div>,

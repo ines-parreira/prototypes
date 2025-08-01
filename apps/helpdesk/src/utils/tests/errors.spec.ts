@@ -1,3 +1,9 @@
+import {
+    assumeMock,
+    mockDevelopmentEnvironment,
+    mockProductionEnvironment,
+    mockStagingEnvironment,
+} from '@repo/testing'
 import { captureException, init, setTag, setUser } from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 import { ScopeContext } from '@sentry/types'
@@ -18,12 +24,6 @@ import {
     SERVER_VERSION_TAG,
     TRACE_SAMPLE_RATE,
 } from 'utils/errors'
-import {
-    assumeMock,
-    mockDevelopmentEnvironment,
-    mockProductionEnvironment,
-    mockStagingEnvironment,
-} from 'utils/testing'
 
 jest.mock('@sentry/react')
 

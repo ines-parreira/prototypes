@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { useRouteMatch } from 'react-router-dom'
@@ -9,7 +10,6 @@ import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
-import { assumeMock } from 'utils/testing'
 
 import { MacrosSettingsItem } from '../MacrosSettingsItem'
 

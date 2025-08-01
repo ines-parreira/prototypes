@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import {
     fetchSatisfiedOrBreachedTicketsTimeSeries,
@@ -11,7 +11,6 @@ import {
 import { satisfiedOrBreachedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)

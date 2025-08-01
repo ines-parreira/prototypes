@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -25,7 +26,7 @@ import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),

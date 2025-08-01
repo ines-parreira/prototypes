@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -11,7 +12,6 @@ import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import { useTransformToneOfVoiceConversations } from '../useTransformToneOfVoiceConversations'
 

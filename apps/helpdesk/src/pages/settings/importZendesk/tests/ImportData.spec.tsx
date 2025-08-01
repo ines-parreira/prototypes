@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +6,7 @@ import { Provider } from 'react-redux'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { RootState } from 'state/types'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import ImportZendesk from '../ImportZendesk'
 

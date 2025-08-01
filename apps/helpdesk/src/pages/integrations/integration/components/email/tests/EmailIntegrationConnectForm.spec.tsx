@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
@@ -10,7 +11,6 @@ import {
     useEmailOnboarding,
     UseEmailOnboardingHookResult,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/history', () => ({
     push: jest.fn(),

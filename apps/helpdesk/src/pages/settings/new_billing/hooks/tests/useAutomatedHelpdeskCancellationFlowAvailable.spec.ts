@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import {
@@ -8,7 +8,6 @@ import {
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 
-import { assumeMock } from '../../../../../utils/testing'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
 
 jest.mock('launchdarkly-react-client-sdk')

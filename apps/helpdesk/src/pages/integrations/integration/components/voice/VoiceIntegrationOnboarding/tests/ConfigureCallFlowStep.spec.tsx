@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { PhoneFunction } from '@gorgias/helpdesk-queries'
@@ -7,7 +8,6 @@ import { PhoneFunction } from '@gorgias/helpdesk-queries'
 import { FormField, FormSubmitButton, useFormContext } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import { assumeMock } from 'utils/testing'
 
 import ConfigureRoutingBehaviorStep from '../ConfigureRoutingBehaviorStep'
 

@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import BusinessHoursPage from '../BusinessHoursPage'
 import { BUSINESS_HOURS_BASE_URL } from '../constants'

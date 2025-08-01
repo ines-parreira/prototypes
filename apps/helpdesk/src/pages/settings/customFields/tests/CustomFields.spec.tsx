@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Link, useParams } from 'react-router-dom'
 
@@ -18,7 +18,6 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 import useDebouncedValue from 'hooks/useDebouncedValue'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CustomFields from '../CustomFields'
 

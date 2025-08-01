@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Provider } from 'react-redux'
@@ -14,7 +14,6 @@ import {
 import { ApiListResponseCursorPagination } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/tag/resources')
 const fetchTagsMock = assumeMock(fetchTags)

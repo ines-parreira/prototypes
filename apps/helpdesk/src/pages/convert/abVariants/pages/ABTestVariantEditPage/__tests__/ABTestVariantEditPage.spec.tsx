@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -17,7 +17,6 @@ import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useG
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock } from 'utils/testing'
 
 import ABTestVariantEditPage from '../ABTestVariantEditPage'
 

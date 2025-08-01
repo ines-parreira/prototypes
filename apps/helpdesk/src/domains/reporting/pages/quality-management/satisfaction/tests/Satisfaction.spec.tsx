@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
@@ -31,7 +32,7 @@ import {
 } from 'domains/reporting/state/ui/stats/qualityManagementSlice'
 import { billingState } from 'fixtures/billing'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const componentMock = () => <div />
 

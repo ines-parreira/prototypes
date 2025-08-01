@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,7 +18,6 @@ import {
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/charts/BarChart/BarChart')
 const BarChartMock = assumeMock(BarChart)

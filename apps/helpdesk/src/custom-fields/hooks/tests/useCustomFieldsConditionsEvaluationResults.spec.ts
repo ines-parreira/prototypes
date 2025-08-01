@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import {
     ExpressionFieldSource,
@@ -9,7 +9,6 @@ import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { assumeMock } from 'utils/testing'
 
 import { useCustomFieldsConditionsEvaluationResults } from '../useCustomFieldsConditionsEvaluationResults'
 

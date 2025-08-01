@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { Cadence } from 'models/billing/types'
-import { assumeMock } from 'utils/testing'
 
 import SummaryBody from '../SummaryBody'
 import SummaryLineItem from '../SummaryLineItem'

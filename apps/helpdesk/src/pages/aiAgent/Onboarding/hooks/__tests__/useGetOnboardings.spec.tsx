@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -6,7 +7,6 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import { useGetOnboardings } from '../useGetOnboardings'
 

@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
 import { SelectField } from '@gorgias/merchant-ui-kit'
-
-import { assumeMock } from 'utils/testing'
 
 import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
 import SupportContentLearnMore from '../SupportContentLearnMore'

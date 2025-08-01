@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
@@ -14,7 +14,6 @@ import { filterLiveCallsByStatus } from 'domains/reporting/pages/voice/component
 import * as constants from 'domains/reporting/pages/voice/constants/liveVoice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 jest.mock('domains/reporting/hooks/useSummaryMetric')

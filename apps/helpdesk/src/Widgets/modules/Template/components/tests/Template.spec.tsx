@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { shopifyWidget } from 'fixtures/widgets'
@@ -12,7 +13,6 @@ import {
     WrapperTemplate,
 } from 'models/widget/types'
 import { EditionContext } from 'providers/infobar/EditionContext'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import Card, {
     CardCustomization,

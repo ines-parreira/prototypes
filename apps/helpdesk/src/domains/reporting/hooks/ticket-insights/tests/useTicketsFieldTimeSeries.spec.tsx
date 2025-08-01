@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useTicketsFieldTimeSeries } from 'domains/reporting/hooks/ticket-insights/useTicketsFieldTimeSeries'
 import { useCustomFieldsTimeSeries } from 'domains/reporting/hooks/useCustomFieldsTimeSeries'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useCustomFieldsTimeSeries')
 const useCustomFieldsTrendMock = assumeMock(useCustomFieldsTimeSeries)

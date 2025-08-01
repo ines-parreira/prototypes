@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -7,7 +7,6 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { useFetchAiAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useCheckStoreAlreadyConfigured } from '../useCheckStoreAlreadyConfigured'
 

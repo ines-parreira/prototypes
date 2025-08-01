@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -6,7 +6,6 @@ import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheck
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),

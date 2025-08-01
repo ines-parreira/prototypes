@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
 import { FormField } from 'core/forms'
 import { RECORDING_NOTIFICATION_MAX_DURATION } from 'models/integration/constants'
-import { assumeMock } from 'utils/testing'
 
 import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
 

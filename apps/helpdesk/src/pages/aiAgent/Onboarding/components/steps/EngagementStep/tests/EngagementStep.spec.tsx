@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -20,7 +21,7 @@ import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnb
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { EngagementStep } from '../EngagementStep'
 

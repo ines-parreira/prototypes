@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -19,7 +18,7 @@ import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import TrackOrderFlowViewContainer from '../TrackOrderFlowViewContainer'
 import { useTrackOrderFlowViewContext } from '../TrackOrderFlowViewContext'

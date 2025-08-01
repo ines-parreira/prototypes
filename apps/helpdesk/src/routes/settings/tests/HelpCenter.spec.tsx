@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenter
 import { MigrationApiClientProvider } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { assumeMock } from 'utils/testing'
 
 import { HelpCenter } from '../HelpCenter'
 import { renderAppSettings } from '../helpers/settingsRenderer'

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, List } from 'immutable'
 import { Provider } from 'react-redux'
@@ -5,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
-import { assumeMock } from 'utils/testing'
 
 import PrioritySelect from '../PrioritySelect'
 

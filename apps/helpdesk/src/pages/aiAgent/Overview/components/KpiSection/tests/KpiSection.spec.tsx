@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { createMemoryHistory, History } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -13,7 +13,6 @@ import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { KpiSection } from '../KpiSection'
 

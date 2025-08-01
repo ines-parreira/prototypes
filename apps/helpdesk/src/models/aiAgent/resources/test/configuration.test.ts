@@ -1,7 +1,7 @@
+import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
-import { assumeMock } from 'utils/testing'
 
 import {
     apiClient,

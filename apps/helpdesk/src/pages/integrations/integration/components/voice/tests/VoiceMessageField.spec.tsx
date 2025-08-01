@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -14,7 +15,6 @@ import { Account } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import VoiceMessageField from '../VoiceMessageField'
 

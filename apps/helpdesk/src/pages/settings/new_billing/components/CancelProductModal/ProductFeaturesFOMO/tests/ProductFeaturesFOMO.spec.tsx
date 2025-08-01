@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-
-import { assumeMock } from 'utils/testing'
 
 import { HELPDESK_CANCELLATION_SCENARIO } from '../../scenarios'
 import Feature from '../../UI/Feature'

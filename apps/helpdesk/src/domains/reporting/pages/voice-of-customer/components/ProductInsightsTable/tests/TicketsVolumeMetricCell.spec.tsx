@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -7,7 +8,6 @@ import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { TicketsVolumeMetricCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/TicketsVolumeMetricCell'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

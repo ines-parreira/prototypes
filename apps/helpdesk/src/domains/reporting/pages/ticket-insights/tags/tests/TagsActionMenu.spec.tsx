@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
@@ -19,7 +20,6 @@ import {
     TagsActionMenu,
 } from 'domains/reporting/pages/ticket-insights/tags/TagsActionMenu'
 import { useDownloadTagsReportData } from 'domains/reporting/services/tagsReportingService'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)

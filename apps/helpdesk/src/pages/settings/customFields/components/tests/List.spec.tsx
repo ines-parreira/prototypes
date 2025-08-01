@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { ticketInputFieldDefinition } from 'fixtures/customField'
-import { assumeMock } from 'utils/testing'
 
 import List from '../List'
 import Row from '../Row'

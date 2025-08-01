@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
@@ -27,7 +27,7 @@ import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constan
 import { getChannels, toChannel } from 'services/channels'
 import { RootState } from 'state/types'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockedChannels = channels
 const clearFilterIcon = 'close'

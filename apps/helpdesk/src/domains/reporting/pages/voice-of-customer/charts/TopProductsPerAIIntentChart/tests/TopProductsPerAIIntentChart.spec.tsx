@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'domains/reporting/pages/common/components/NoDataAvailable'
@@ -7,7 +8,6 @@ import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
     useGetCustomTicketsFieldsDefinitionData,
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',

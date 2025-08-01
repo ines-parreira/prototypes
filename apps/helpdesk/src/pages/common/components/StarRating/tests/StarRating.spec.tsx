@@ -1,9 +1,8 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 import ReactStar from 'react-rating-stars-component'
-
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { DEFAULT_SIZE, STAR_COLORS } from '../constants'
 import StartRating from '../StarRating'

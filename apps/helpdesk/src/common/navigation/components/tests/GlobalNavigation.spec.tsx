@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -15,7 +16,6 @@ import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({ getCurrentUser: jest.fn() }))
 const getCurrentUserMock = assumeMock(getCurrentUser)

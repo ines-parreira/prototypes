@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import {
@@ -15,7 +15,6 @@ import { scoredSurveysQueryFactory } from 'domains/reporting/models/queryFactori
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(

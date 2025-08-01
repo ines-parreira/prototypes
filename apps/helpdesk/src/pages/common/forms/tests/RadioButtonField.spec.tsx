@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-
-import { assumeMock } from 'utils/testing'
 
 import RadioButtonField from '../RadioButtonField'
 import RadioFieldSet from '../RadioFieldSet'

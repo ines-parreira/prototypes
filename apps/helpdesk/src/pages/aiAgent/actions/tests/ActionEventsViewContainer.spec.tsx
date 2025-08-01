@@ -1,8 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -32,7 +31,7 @@ import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { Paths } from 'rest_api/workflows_api/client.generated'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionEventsViewContainer from '../ActionEventsViewContainer'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'

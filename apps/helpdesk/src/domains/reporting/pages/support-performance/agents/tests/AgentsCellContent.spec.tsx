@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { User } from 'config/types/user'
@@ -18,7 +19,7 @@ import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',

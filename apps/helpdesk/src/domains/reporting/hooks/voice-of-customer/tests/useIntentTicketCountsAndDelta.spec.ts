@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -13,7 +13,6 @@ import {
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { TopIntentsColumns } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

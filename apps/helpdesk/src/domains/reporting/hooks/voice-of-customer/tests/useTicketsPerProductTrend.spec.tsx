@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useTicketCountPerProductWithEnrichment } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import { useTicketsPerProductTrend } from 'domains/reporting/hooks/voice-of-customer/useTicketsPerProductTrend'
@@ -9,7 +9,6 @@ import {
     TICKET_COUNT_FIELD,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/voice-of-customer/metricsPerProduct')
 const useTicketCountPerProductWithEnrichmentMock = assumeMock(

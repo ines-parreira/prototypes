@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import { ADMIN_ROLE } from 'config/user'
 import ImportZendesk from 'pages/settings/importZendesk/ImportZendesk'
 import ImportZendeskCreate from 'pages/settings/importZendesk/zendesk/ImportZendeskCreate'
 import ImportZendeskDetail from 'pages/settings/importZendesk/zendesk/ImportZendeskDetail'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { ImportZendeskRoute } from '../ImportZendeskRoute'

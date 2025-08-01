@@ -1,8 +1,7 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const useCanUseAiSalesAgentMock = assumeMock(useCanUseAiSalesAgent)

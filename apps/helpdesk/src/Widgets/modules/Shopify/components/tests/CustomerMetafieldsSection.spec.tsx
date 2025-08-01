@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { useFlag } from 'core/flags'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import { assumeMock } from 'utils/testing'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 
 import CustomerMetafieldsSection from '../CustomerMetafieldsSection'

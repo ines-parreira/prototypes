@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import {
@@ -10,7 +11,6 @@ import {
     voicePlan0,
 } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
-import { assumeMock } from 'utils/testing'
 
 import { HELPDESK_CANCELLATION_SCENARIO } from '../../scenarios'
 import SummaryBody from '../../UI/SummaryBody'

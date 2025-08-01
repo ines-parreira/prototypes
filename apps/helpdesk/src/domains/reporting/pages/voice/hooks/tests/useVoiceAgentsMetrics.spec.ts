@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -15,7 +15,6 @@ import {
 import { useVoiceAgentsMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsMetrics'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)

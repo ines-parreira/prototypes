@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
@@ -6,7 +7,6 @@ import { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import EditQueueModal from '../EditQueueModal'
 

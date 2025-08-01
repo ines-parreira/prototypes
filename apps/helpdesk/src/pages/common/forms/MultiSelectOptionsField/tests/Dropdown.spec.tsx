@@ -1,9 +1,8 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { UncontrolledDropdown } from 'reactstrap'
-
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import Dropdown from '../Dropdown'
 import Input from '../Input'

@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
@@ -7,7 +7,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import { notify } from 'state/notifications/actions'
-import { assumeMock } from 'utils/testing'
 
 import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
 import { useSelfServiceConfigurationUpdate } from '../useSelfServiceConfigurationUpdate'

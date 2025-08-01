@@ -1,10 +1,10 @@
+import { assumeMock, flushPromises } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { submitCustomer } from 'state/customers/actions'
-import { assumeMock, flushPromises } from 'utils/testing'
 
 import CustomerNote from '../CustomerNote'
 

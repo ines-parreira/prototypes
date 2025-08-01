@@ -4,6 +4,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { assumeMock } from '@repo/testing'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
@@ -14,7 +15,7 @@ import VoiceCallFilter from 'domains/reporting/pages/voice/components/VoiceCallF
 import { VoiceCallTable } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable'
 import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter',

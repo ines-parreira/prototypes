@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import Skeleton from 'react-loading-skeleton'
 
 import { NO_DATA_AVAILABLE_COMPONENT_TITLE } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import { TableFallbackDisplay } from 'domains/reporting/pages/ticket-insights/components/TableFallbackDisplay'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('react-loading-skeleton')
 const SkeletonMock = assumeMock(Skeleton)

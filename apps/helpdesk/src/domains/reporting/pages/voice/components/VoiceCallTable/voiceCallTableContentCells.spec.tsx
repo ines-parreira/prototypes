@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
@@ -13,7 +14,6 @@ import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel',

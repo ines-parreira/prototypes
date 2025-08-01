@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useSentimentsCustomFieldsTimeSeries } from 'domains/reporting/hooks/useCustomFieldsTimeSeries'
@@ -13,7 +14,6 @@ import {
     ProductInsightsChartConfig,
 } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsChartConfig'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useCustomFieldsTimeSeries')
 const useSentimentsCustomFieldsTimeSeriesMock = assumeMock(

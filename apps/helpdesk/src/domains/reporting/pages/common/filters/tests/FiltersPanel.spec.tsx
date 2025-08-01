@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { within } from '@testing-library/dom'
 import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -65,7 +65,7 @@ import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/ut
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getHasAutomate } from 'state/billing/selectors'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockedLocales = [
     { name: 'English', code: 'en-US' },

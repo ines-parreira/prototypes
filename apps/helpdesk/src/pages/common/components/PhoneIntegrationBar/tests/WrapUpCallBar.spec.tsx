@@ -1,8 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { VoiceCall } from 'models/voiceCall/types'
-import { assumeMock } from 'utils/testing'
 
 import useWrapUpTime from '../useWrapUpTime'
 import WrapUpCallBar from '../WrapUpCallBar'

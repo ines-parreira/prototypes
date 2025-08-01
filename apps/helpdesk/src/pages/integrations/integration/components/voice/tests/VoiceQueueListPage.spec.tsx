@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 import { voiceQueue } from 'fixtures/voiceQueue'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -17,7 +18,6 @@ import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import { isTeamLead } from 'utils'
-import { assumeMock } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')

@@ -1,9 +1,8 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS, List } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getTicketState } from 'state/ticket/selectors'
-import { assumeMock } from 'utils/testing'
 
 import { useTimelinePanel } from '../useTimelinePanel'
 import { useTrackTimelineToggle } from '../useTrackTimelineToggle'

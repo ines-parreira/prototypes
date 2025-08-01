@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
 import _noop from 'lodash/noop'
@@ -7,7 +8,6 @@ import _noop from 'lodash/noop'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import { FieldSearchResult } from 'state/views/types'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { FilterMultiSelectField } from '../FilterMultiSelectField'
 

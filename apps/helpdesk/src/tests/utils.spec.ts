@@ -1,3 +1,4 @@
+import { mockProductionEnvironment } from '@repo/testing'
 import * as esprima from 'esprima'
 import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
@@ -23,7 +24,6 @@ import { assertUnreachable, getCode } from 'utils'
 import { getDateAndTimeFormat } from 'utils/datetime'
 import * as envUtils from 'utils/environment'
 import { isDevelopment, isProduction, isStaging } from 'utils/environment'
-import { mockProductionEnvironment } from 'utils/testing'
 
 jest.mock('common/utils')
 jest.mock('utils/environment')

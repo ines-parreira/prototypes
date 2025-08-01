@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-
-import { assumeMock } from 'utils/testing'
 
 import useHelpCenterArticleTree from '../../hooks/useHelpCenterArticleTree'
 import ArticleSelectPreview from '../ArticleSelectPreview'

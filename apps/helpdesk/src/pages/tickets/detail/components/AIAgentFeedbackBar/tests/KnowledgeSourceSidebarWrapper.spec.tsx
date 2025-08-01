@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,7 +12,6 @@ import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeed
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
-import { assumeMock } from 'utils/testing'
 
 import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
 import KnowledgeSourceSidebarWrapper from '../KnowledgeSourceSidebarWrapper'

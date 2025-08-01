@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { ContentState } from 'draft-js'
 
@@ -7,7 +8,7 @@ import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPop
 import createLink from 'pages/common/draftjs/plugins/toolbar/decorators/link'
 import { DecoratorComponentProps } from 'pages/common/draftjs/plugins/types'
 import { convertFromHTML } from 'utils/editor'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/components/LinkPopover')
 const LinkPopoverMock = assumeMock(LinkPopover)

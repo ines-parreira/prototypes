@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import { StoreManagementPage } from 'pages/settings/storeManagement'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { StoreManagement } from '../StoreManagement'

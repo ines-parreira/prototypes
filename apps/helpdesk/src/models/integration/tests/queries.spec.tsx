@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -24,7 +24,6 @@ import { fetchShopifyCollections } from 'models/integration/resources/shopify'
 import { ShopifyCollectionResponse } from 'models/integration/types'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/integration/resources/shopify', () => ({
     fetchShopifyCollections: jest.fn(),

@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
@@ -10,7 +9,7 @@ import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/
 import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { RootState } from 'state/types'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations',

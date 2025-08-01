@@ -1,7 +1,5 @@
-import { renderHook } from '@repo/testing'
+import { mockRequestAnimationFrame, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-
-import { mockRequestAnimationFrame } from 'utils/testing'
 
 import useRafState from '../useRafState'
 

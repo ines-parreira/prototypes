@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { hasRole } from 'utils'
-import { assumeMock } from 'utils/testing'
 
 import MultiLevelSelect from '../MultiLevelSelect'
 

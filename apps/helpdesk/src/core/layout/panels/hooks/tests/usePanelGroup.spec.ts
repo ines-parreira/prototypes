@@ -1,6 +1,4 @@
-import { renderHook } from '@repo/testing'
-
-import { assumeMock } from 'utils/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import type { ContextValue } from '../../Context'
 import usePanelGroup from '../usePanelGroup'

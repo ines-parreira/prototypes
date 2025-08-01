@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
@@ -9,7 +9,6 @@ import {
     IntentCardProps,
 } from 'domains/reporting/pages/common/components/IntentCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/TrendBadge/TrendBadge')
 const TrendBadgeMock = assumeMock(TrendBadge)

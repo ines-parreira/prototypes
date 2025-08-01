@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
@@ -9,7 +10,6 @@ import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import { CustomField } from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import ConfirmCustomFieldRequirementTypeChangeModal from '../ConfirmCustomFieldRequirementTypeChangeModal'
 

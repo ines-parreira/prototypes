@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSen
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { RootState } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
-import { assumeMock } from 'utils/testing'
 
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import { PREVIEW_HEIGHT } from '../../RuleSuggestion/SuggestionBody'

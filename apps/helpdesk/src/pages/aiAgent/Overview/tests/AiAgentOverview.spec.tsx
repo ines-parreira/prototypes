@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -25,7 +26,6 @@ import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { AiAgentOverview } from '../AiAgentOverview'
 import { AiAgentOverviewRootStateFixture } from './AiAgentOverviewRootState.fixture'

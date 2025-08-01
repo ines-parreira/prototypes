@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { AddressElement, useElements } from '@stripe/react-stripe-js'
 import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Form } from 'core/forms'
 import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import { StripeAddressFields } from 'pages/settings/new_billing/components/StripeAddressFields/StripeAddressFields'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@stripe/react-stripe-js')
 

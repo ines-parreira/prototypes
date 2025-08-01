@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -8,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import ChangePasswordContainer from '../ChangePassword'
 import PasswordAnd2FA from '../PasswordAnd2FA'

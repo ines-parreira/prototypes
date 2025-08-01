@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -15,7 +16,6 @@ import {
     TicketFieldsActionMenu,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketFieldsActionMenu'
 import { useCustomFieldsReportData } from 'domains/reporting/services/ticketFieldsReportingService'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/ticket-insights/useTicketTimeReference')
 const useTicketTimeReferenceMock = assumeMock(useTicketTimeReference)

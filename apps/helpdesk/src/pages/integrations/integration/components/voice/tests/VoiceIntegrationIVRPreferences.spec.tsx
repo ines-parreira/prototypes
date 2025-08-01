@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, RenderResult, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { PhoneIntegration } from 'models/integration/types'
 import VoiceIntegrationIVRPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
-import { assumeMock } from 'utils/testing'
 
 import { getDefaultValues, useFormSubmit } from '../useVoiceSettingsForm'
 

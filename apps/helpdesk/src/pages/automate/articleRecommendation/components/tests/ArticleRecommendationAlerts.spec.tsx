@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { assumeMock } from 'utils/testing'
 
 import {
     ConnectedChannelsInfoAlert,

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 
 import {
@@ -11,7 +12,6 @@ import {
 } from 'domains/reporting/models/types'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/errors')
 const reportErrorMock = assumeMock(reportError)

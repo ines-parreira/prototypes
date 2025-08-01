@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { fetchWidgets, selectContext } from 'state/widgets/actions'
-import { assumeMock } from 'utils/testing'
 
 import { Infobar } from '../../../common/components/infobar/Infobar/Infobar'
 import { CustomerInfobarContainer } from '../CustomerInfobarContainer'

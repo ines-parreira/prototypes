@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -28,7 +29,7 @@ import { RootState } from 'state/types'
 import configureStore from 'store/configureStore.prod'
 import { InitialRootState } from 'types'
 import { getSortByName } from 'utils/getSortByName'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

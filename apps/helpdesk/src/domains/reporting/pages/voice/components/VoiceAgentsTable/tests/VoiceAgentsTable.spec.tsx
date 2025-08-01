@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -15,7 +15,7 @@ import {
     pageSet,
 } from 'domains/reporting/state/ui/stats/voiceAgentsPerformanceSlice'
 import { agents } from 'fixtures/agents'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell',

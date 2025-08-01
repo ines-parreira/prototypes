@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -12,7 +11,7 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
 import HelpCenterStartView from '../HelpCenterStartView'

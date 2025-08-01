@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
@@ -18,7 +19,6 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 import { RoleLabel } from 'pages/common/utils/labels'
 import { AI_AGENT_CLIENT_ID } from 'state/agents/constants'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
-import { assumeMock } from 'utils/testing'
 
 import { UsersSettingsItem } from '../UsersSettingsItem'
 

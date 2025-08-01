@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { SegmentEvent } from 'common/segment'
@@ -8,7 +9,6 @@ import {
     ReportIssueLabels,
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
-import { assumeMock } from 'utils/testing'
 
 import FeedbackReportIssue from '../FeedbackReportIssue'
 

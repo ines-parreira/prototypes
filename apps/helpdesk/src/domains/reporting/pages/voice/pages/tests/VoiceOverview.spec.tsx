@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -52,7 +53,6 @@ import { user } from 'fixtures/users'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',

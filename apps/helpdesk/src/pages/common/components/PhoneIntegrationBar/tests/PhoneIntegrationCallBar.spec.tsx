@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { Call, Device } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -13,7 +12,7 @@ import {
     mockIncomingCall,
     mockOutgoingCall,
 } from 'tests/twilioMocks'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import PhoneIntegrationCallBar from '../PhoneIntegrationCallBar'
 

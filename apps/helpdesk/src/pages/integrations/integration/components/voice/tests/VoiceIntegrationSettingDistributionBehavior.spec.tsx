@@ -1,6 +1,7 @@
+import { assumeMock } from '@repo/testing'
+
 import { FormField, useFormContext } from 'core/forms'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import VoiceIntegrationSettingDistributionBehavior from '../VoiceIntegrationSettingDistributionBehavior'
 

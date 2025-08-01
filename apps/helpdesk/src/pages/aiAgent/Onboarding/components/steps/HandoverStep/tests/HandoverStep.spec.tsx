@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -24,7 +25,7 @@ import { useStandaloneIntegrationUpsert } from 'pages/standalone/hooks/useStanda
 import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 import { notify } from 'state/notifications/actions'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 const mockDispatch = jest.fn()

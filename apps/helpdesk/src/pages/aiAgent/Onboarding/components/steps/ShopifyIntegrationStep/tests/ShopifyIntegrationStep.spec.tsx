@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -13,6 +11,8 @@ import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 
 import '@testing-library/jest-dom/extend-expect'
+
+import { assumeMock } from '@repo/testing'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreIntegration } from 'models/integration/types'
@@ -30,7 +30,7 @@ import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 // Mock the useShopifyIntegrations hook
 jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')

@@ -1,12 +1,13 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { PhoneIntegration } from 'models/integration/types'
 import { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
 import * as PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'

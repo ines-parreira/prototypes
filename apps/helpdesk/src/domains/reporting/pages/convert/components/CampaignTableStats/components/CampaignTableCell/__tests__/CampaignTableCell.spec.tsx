@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -17,7 +18,6 @@ import {
     InferredCampaignStatus,
 } from 'models/convert/campaign/types'
 import { GorgiasChatIntegration } from 'models/integration/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()

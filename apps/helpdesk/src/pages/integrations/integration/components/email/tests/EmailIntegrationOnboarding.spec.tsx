@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -28,7 +29,6 @@ import {
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/history', () => ({
     push: jest.fn(),

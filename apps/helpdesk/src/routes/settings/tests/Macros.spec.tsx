@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Redirect, Route, useRouteMatch } from 'react-router-dom'
 
@@ -7,7 +8,6 @@ import { PageSection } from 'config/pages'
 import { AGENT_ROLE } from 'config/user'
 import MacrosSettingsContent from 'pages/settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from 'pages/settings/macros/MacrosSettingsForm'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Macros } from '../Macros'

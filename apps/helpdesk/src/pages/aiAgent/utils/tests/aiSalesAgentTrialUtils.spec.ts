@@ -1,3 +1,5 @@
+import { assumeMock } from '@repo/testing'
+
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -6,7 +8,6 @@ import {
     isAccountPartOfCanduTrial,
     TrialState,
 } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/aiAgent/resources/configuration')
 

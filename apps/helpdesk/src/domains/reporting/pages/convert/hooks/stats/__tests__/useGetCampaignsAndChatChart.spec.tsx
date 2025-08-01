@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment/moment'
 
@@ -13,7 +13,6 @@ import { useGetCampaignsAndChatChart } from 'domains/reporting/pages/convert/hoo
 import { useTicketsPerformanceChart } from 'domains/reporting/pages/convert/hooks/stats/useGetTicketsPerformanceChart'
 import { getDataFromResult } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 import { CampaignGraphData } from 'domains/reporting/pages/convert/services/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

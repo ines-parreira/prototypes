@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import {
     fetchClosedTicketsTrend,
@@ -11,7 +11,6 @@ import {
     useOneTouchTicketsPercentageMetricTrend,
 } from 'domains/reporting/hooks/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/metricTrends')
 const useOneTicketsTrendMock = assumeMock(useOneTouchTicketsTrend)

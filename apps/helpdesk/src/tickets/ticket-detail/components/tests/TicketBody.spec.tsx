@@ -1,9 +1,8 @@
+import { getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Virtuoso } from 'react-virtuoso'
 
 import type { TicketSummary as TicketSummaryType } from '@gorgias/helpdesk-types'
-
-import { getLastMockCall } from 'utils/testing'
 
 import type { TicketElement as TicketElementType } from '../../types'
 import { AI_SUMMARY_KEY, TicketBody } from '../TicketBody'

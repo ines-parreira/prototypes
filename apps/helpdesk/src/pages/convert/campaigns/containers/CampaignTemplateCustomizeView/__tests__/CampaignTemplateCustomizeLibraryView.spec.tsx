@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -20,7 +21,6 @@ import { LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS } from 'pages/convert/campaign
 import { SCHEDULE_LIMITED_TIME_OFFER } from 'pages/convert/campaigns/templates/library/scheduledLimitedTimeOffer'
 import { SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD } from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { assumeMock } from 'utils/testing'
 
 import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
 

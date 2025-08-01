@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
@@ -18,7 +19,6 @@ import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import BillingProcessView from '../BillingProcessView'

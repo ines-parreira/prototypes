@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -21,7 +22,7 @@ import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
-import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion

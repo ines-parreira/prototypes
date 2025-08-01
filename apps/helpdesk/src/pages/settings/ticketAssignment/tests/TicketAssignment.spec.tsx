@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import _keyBy from 'lodash/keyBy'
@@ -23,7 +24,6 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import TicketAssignment from '../TicketAssignment'
 

@@ -1,9 +1,8 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { EditorState, RichUtils } from 'draft-js'
-
-import { assumeMock } from 'utils/testing'
 
 import InlineStyle from '../InlineStyle'
 

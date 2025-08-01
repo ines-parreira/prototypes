@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useTicketsFieldTimeSeries } from 'domains/reporting/hooks/ticket-insights/useTicketsFieldTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { TicketInsightsFieldTrend } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',

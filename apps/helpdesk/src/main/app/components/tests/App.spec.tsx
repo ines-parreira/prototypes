@@ -1,10 +1,11 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
 import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { useSetBanners } from '../../hooks/useSetBanners'
 import App from '../App'

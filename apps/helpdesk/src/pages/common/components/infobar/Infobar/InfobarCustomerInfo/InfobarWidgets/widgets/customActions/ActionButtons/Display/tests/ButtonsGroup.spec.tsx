@@ -1,10 +1,10 @@
+import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { useComputeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
 import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
-import { assumeMock } from 'utils/testing'
 
 import { Button } from '../Button'
 import ButtonsGroup from '../ButtonsGroup'

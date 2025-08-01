@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { DownloadTicketFieldsDataButton } from 'domains/reporting/pages/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import { useCustomFieldsReportData } from 'domains/reporting/services/ticketFieldsReportingService'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/services/ticketFieldsReportingService')
 const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)

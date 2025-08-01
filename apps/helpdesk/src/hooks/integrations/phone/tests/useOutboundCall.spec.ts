@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { TwilioSocketEventType } from 'business/twilio'
@@ -8,7 +8,6 @@ import {
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { assumeMock } from 'utils/testing'
 
 import { connectCall } from '../api'
 import { useOutboundCall } from '../useOutboundCall'

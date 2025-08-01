@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { notify as updateNotification } from 'reapop'
@@ -14,7 +14,6 @@ import { view } from 'fixtures/views'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import useBulkAction from '../useBulkAction'
 import useCancelJob from '../useCancelJob'

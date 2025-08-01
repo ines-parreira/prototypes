@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
 import {
@@ -18,7 +19,6 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingQuery } from 'domains/reporting/models/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall')

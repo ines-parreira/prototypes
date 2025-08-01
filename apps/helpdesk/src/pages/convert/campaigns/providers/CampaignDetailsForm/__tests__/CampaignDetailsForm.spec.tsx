@@ -1,3 +1,4 @@
+import { assumeMock, flushPromises } from '@repo/testing'
 import {
     act,
     fireEvent,
@@ -32,7 +33,6 @@ import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock, flushPromises } from 'utils/testing'
 
 import { Campaign } from '../../../types/Campaign'
 import { CampaignDetailsForm } from '../CampaignDetailsForm'

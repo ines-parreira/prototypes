@@ -1,13 +1,13 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import NoSearchTable from 'domains/reporting/pages/help-center/components/NoSearchTable/NoSearchTable'
 import { useNoSearchResultsMetrics } from 'domains/reporting/pages/help-center/hooks/useNoSearchResultsMetrics'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/help-center/hooks/useNoSearchResultsMetrics',

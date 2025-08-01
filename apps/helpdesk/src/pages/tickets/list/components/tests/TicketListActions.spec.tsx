@@ -1,5 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import {
     fireEvent,
     render,
@@ -27,7 +28,7 @@ import {
     updateSelectedItemsIds,
 } from 'state/views/actions'
 import { TagDropdownMenu } from 'tags'
-import { assumeMock, makeExecuteKeyboardAction } from 'utils/testing'
+import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import { TicketListActions } from '../TicketListActions'
 

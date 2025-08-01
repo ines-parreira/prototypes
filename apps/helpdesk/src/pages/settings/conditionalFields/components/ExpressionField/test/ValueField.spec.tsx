@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { SelectField } from '@gorgias/merchant-ui-kit'
@@ -14,7 +15,6 @@ import {
 } from 'fixtures/customField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { CustomDropdownInput } from '../CustomDropdownInput'
 import { ValueField } from '../ValueField'

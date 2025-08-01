@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, flushPromises, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -38,12 +38,7 @@ import { triggerTicketFieldsErrors } from 'state/ticket/actions'
 import * as ticketUtils from 'state/ticket/utils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import * as customFieldsUtils from 'utils/customFields'
-import {
-    assumeMock,
-    flushPromises,
-    makeExecuteKeyboardAction,
-    renderWithRouter,
-} from 'utils/testing'
+import { makeExecuteKeyboardAction, renderWithRouter } from 'utils/testing'
 
 import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'

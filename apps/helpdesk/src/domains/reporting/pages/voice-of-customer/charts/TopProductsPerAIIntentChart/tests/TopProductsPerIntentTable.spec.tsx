@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
 import { logEvent } from 'common/segment'
@@ -18,7 +18,6 @@ import { TopProductsPerIntentTable } from 'domains/reporting/pages/voice-of-cust
 import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { useNotify } from 'hooks/useNotify'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

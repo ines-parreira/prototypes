@@ -1,9 +1,7 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useListJobs } from '@gorgias/helpdesk-queries'
 import { JobStatus } from '@gorgias/helpdesk-types'
-
-import { assumeMock } from 'utils/testing'
 
 import { useRunningJobs } from '../useRunningJobs'
 

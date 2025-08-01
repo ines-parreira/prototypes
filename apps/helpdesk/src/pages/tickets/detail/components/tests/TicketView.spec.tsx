@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,7 +9,7 @@ import { useFlag } from 'core/flags'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
-import { assumeMock, getLastMockCall, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import TicketView, { TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
 

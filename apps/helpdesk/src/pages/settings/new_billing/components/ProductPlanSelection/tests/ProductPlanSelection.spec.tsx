@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -14,7 +15,6 @@ import {
 } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
 import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
-import { assumeMock } from 'utils/testing'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
 import CancelProductModal from '../../CancelProductModal/CancelProductModal'

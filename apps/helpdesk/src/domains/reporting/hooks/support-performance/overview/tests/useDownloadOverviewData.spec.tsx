@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -32,7 +32,6 @@ import {
 } from 'domains/reporting/services/supportPerformanceReportingService'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file')
 jest.mock('domains/reporting/services/supportPerformanceReportingService')

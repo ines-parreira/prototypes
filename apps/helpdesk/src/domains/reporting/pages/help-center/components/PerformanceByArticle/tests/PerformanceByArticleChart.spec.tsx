@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import { PerformanceByArticle } from 'domains/reporting/pages/help-center/components/PerformanceByArticle/PerformanceByArticle'
 import { PerformanceByArticleChart } from 'domains/reporting/pages/help-center/components/PerformanceByArticle/PerformanceByArticleChart'
 import { useSelectedHelpCenter } from 'domains/reporting/pages/help-center/hooks/useSelectedHelpCenter'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/help-center/hooks/useSelectedHelpCenter')
 const useSelectedHelpCenterMock = assumeMock(useSelectedHelpCenter)

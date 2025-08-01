@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
@@ -9,7 +9,6 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { isProductExcludedFromAiAgent } from '../hooks/usePaginatedProductIntegration'
 import { useSelectedProductAndDetail } from '../hooks/useSelectedProductAndDetail'

@@ -1,5 +1,6 @@
+import { mockProductionEnvironment } from '@repo/testing'
+
 import { user } from 'fixtures/users'
-import { mockProductionEnvironment } from 'utils/testing'
 
 import { identifyUser, logEventWithSampling } from '../segment'
 import { SegmentEvent } from '../types'

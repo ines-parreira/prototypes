@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
 import {
     loadStripe,
@@ -14,7 +15,6 @@ import { UserRole } from 'config/types/user'
 import client from 'models/api/resources'
 import { PaymentMethodType } from 'state/billing/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import MissingBillingInformationRow from '../MissingBillingInformationRow'
 

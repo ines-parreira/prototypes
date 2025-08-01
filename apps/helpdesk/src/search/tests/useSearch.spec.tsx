@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -12,7 +12,6 @@ import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import useSearch from '../useSearch'
 

@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { User, UserRole } from 'config/types/user'
-import { assumeMock } from 'utils/testing'
 
 import { DeleteModal } from '../DeleteModal'
 import { Footer } from '../Footer'

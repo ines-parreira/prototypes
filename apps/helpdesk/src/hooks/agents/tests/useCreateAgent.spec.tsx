@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
 import { agents } from 'fixtures/agents'
@@ -10,7 +10,6 @@ import {
 import { CREATE_AGENT_SUCCESS } from 'state/agents/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { handleError } from '../errorHandler'
 import { useCreateAgent } from '../useCreateAgent'

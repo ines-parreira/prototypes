@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { useElements, useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -6,7 +7,6 @@ import client from 'models/api/resources'
 import * as queries from 'models/billing/queries'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import * as errorUtils from 'utils/errors'
-import { assumeMock } from 'utils/testing'
 
 import { useConfirmStripeSetupIntent } from '../useConfirmStripeSetupIntent'
 

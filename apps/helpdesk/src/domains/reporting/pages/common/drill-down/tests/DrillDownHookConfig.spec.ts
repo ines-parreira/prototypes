@@ -1,3 +1,5 @@
+import { assumeMock } from '@repo/testing'
+
 import {
     defaultEnrichmentFields,
     useDrillDownData,
@@ -28,7 +30,6 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useDrillDownData')
 

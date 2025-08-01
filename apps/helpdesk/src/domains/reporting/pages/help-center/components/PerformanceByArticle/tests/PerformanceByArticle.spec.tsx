@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +11,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { TableCellType } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { PerformanceByArticle } from 'domains/reporting/pages/help-center/components/PerformanceByArticle/PerformanceByArticle'
 import { usePerformanceByArticleMetrics } from 'domains/reporting/pages/help-center/hooks/usePerformanceByArticleMetrics'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/help-center/hooks/usePerformanceByArticleMetrics',

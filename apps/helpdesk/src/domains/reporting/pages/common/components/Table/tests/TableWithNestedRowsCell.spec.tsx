@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 
+import { triggerWidthResize } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import {
@@ -8,7 +9,6 @@ import {
     MOBILE_EXPAND_COLUMN_WIDTH,
     TableWithNestedRowsCell,
 } from 'domains/reporting/pages/common/components/Table/TableWithNestedRowsCell'
-import { triggerWidthResize } from 'utils/testing'
 
 const renderCell = (cellComponent: ReactElement) =>
     render(

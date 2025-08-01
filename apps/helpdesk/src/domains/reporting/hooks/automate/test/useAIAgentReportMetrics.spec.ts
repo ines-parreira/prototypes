@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import { OrderDirection } from '@gorgias/helpdesk-queries'
@@ -36,7 +36,6 @@ import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import useAppSelector from 'hooks/useAppSelector'
 import { createCsv } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 const timeSeriesMock = [
     [

@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -17,7 +16,7 @@ import { campaign, campaignVariant } from 'fixtures/campaign'
 import { integrationsState } from 'fixtures/integrations'
 import { CampaignPreview } from 'models/convert/campaign/types'
 import { GorgiasChatIntegration } from 'models/integration/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const chatIntegration = {
     type: 'gorgias_chat',

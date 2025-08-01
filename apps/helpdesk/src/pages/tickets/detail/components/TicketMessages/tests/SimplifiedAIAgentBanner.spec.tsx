@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import {
 import { TicketMessage } from 'models/ticket/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
-import { assumeMock } from 'utils/testing'
 
 import SimplifiedAIAgentBanner from '../SimplifiedAIAgentBanner'
 

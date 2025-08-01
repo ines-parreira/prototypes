@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
 import { useAverageScoreTrend } from 'domains/reporting/hooks/quality-management/satisfaction/useAverageScoreTrend'
@@ -14,7 +12,7 @@ import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useSatisfactionScoreTrend',

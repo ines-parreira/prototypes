@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

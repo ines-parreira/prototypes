@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
@@ -11,7 +12,6 @@ import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
 import { useDeleteMacro } from 'hooks/macros'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { TicketMacros } from '../TicketMacros'
 

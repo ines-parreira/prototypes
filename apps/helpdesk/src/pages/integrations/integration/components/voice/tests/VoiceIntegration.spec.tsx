@@ -1,7 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceIntegration from '../VoiceIntegration'

@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import { PublicSourcesItem } from '../PublicSourcesItem'
 import { SourceItem } from '../types'

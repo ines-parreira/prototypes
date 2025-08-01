@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -9,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getEmailIntegrations } from 'state/integrations/selectors'
 import { isAdmin } from 'utils'
-import { assumeMock } from 'utils/testing'
 
 import { useEmailDomainVerificationBanner } from '../useEmailDomainVerificationBanner'
 

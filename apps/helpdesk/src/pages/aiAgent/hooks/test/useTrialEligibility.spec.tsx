@@ -1,11 +1,10 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import * as aiSalesAgentTrialUtils from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
-import { assumeMock } from 'utils/testing'
 
 import {
     useTrialEligibility,

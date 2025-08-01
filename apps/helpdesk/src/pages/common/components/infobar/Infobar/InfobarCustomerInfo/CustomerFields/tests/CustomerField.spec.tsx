@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
@@ -8,7 +8,6 @@ import {
     customerInputFieldDefinition,
     customerNumberFieldDefinition,
 } from 'fixtures/customField'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CustomerField from '../CustomerField'
 

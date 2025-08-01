@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import Shoutout, {
@@ -9,7 +9,6 @@ import Shoutout, {
 } from 'domains/reporting/pages/common/components/Shoutout/Shoutout'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { personNames } from 'fixtures/personNames'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',

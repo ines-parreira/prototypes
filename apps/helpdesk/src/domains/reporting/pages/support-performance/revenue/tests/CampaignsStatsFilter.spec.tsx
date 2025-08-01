@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import { integrationsState } from 'fixtures/integrations'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

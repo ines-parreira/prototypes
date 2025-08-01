@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 
@@ -6,7 +6,6 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { campaign, campaignId } from 'fixtures/campaign'
 import { channelConnectionId } from 'fixtures/channelConnection'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import * as queries from '../queries'
 import * as resources from '../resources'

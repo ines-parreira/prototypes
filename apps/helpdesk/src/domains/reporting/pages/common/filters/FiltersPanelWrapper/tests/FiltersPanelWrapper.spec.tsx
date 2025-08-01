@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -11,7 +10,7 @@ import {
     filterKeysMock,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/tests/helpers.spec'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import { OptionalFilter } from '../../FiltersPanel'
 

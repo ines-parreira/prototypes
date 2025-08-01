@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { agents } from 'fixtures/agents'
 import { handleError } from 'hooks/agents/errorHandler'
 import { useGetAgent } from 'models/agents/queries'
 import { StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { useGetAgentWithEffects } from '../useGetAgentWithEffect'
 

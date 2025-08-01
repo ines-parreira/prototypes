@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -9,7 +10,6 @@ import {
     SpotlightContextType,
 } from 'providers/ui/SpotlightContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/common/components/Spotlight/SpotlightModal.tsx', () => ({
     __esModule: true,

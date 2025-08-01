@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -18,7 +19,6 @@ import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResource
 import history from 'pages/history'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import AiAgentExternalSourceArticlesView from '../AiAgentExternalSourceArticlesView'
 

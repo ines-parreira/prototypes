@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -16,7 +17,6 @@ import { ProductTableBodyCell } from 'domains/reporting/pages/voice-of-customer/
 import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig',

@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
-import { assumeMock } from 'utils/testing'
 
 import SetCustomFieldAction from '../SetCustomFieldValueAction'
 

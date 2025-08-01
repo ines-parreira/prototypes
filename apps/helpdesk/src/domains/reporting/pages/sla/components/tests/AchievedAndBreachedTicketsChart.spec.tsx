@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -19,7 +19,6 @@ import {
     HINT,
 } from 'domains/reporting/pages/sla/components/AchievedAndBreachedTicketsChart'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

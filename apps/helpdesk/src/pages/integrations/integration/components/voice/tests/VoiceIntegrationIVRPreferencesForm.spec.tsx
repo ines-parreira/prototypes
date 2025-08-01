@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import {
     act,
     fireEvent,
@@ -13,7 +14,6 @@ import { Form } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
 import VoiceIntegrationIVRPreferencesForm from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferencesForm'
-import { assumeMock } from 'utils/testing'
 
 import {
     useDeletePhoneIntegration,

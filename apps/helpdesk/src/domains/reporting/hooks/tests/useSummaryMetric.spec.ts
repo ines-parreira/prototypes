@@ -1,9 +1,8 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, getLastMockCall, renderHook } from '@repo/testing'
 
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { usePostReporting } from 'domains/reporting/models/queries'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

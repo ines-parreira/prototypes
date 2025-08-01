@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -24,7 +24,6 @@ import {
 import { fetchIntegrations } from 'state/integrations/actions'
 import { UPDATE_INTEGRATION_ERROR } from 'state/integrations/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { DEFAULT_TRANSCRIBE_PREFERENCES } from '../constants'
 import {

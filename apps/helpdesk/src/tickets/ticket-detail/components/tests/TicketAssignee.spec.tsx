@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Emoji } from 'emoji-mart'
 
@@ -5,7 +6,6 @@ import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import { useFlag } from 'core/flags'
-import { assumeMock } from 'utils/testing'
 
 import { TicketAssignee } from '../TicketAssignee'
 

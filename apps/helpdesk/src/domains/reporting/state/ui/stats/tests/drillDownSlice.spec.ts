@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act } from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -28,7 +29,6 @@ import {
 import { createJob } from 'models/job/resources'
 import { Job, JobType } from 'models/job/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/job/resources')
 const createJobMock = assumeMock(createJob)

@@ -1,8 +1,8 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -17,7 +17,7 @@ import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import {
     AiAgentChannel,

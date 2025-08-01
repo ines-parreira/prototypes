@@ -1,11 +1,10 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { User, UserRole } from 'config/types/user'
 import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
-import { assumeMock } from 'utils/testing'
 
 import { OwnershipModal } from '../OwnershipModal'
 import { Statuses } from '../Statuses'

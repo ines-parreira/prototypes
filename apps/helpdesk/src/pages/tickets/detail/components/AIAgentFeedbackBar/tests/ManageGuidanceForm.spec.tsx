@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -13,7 +14,6 @@ import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentF
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { onApiError } from 'state/utils'
-import { assumeMock } from 'utils/testing'
 
 import { useKnowledgeSourceSideBar } from '../hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { ManageGuidanceForm } from '../ManageGuidanceForm'

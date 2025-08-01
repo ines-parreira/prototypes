@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AutoQADownloadDataButton } from 'domains/reporting/pages/support-performance/auto-qa/AutoQADownloadDataButton'
 import { useAutoQAReportData } from 'domains/reporting/services/autoQAReportingService'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/services/autoQAReportingService')
 const useAutoQAReportDataMock = assumeMock(useAutoQAReportData)

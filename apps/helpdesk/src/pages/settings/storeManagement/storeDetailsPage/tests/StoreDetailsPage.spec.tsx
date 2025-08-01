@@ -1,12 +1,13 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import { StoreManagementProvider } from '../../StoreManagementProvider'
 import ChannelsTab from '../Channels/ChannelsTab'

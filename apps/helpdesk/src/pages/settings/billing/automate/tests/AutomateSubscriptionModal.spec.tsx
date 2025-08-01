@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -9,7 +10,6 @@ import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import AutomateSubscriptionModal from '../AutomateSubscriptionModal'
 

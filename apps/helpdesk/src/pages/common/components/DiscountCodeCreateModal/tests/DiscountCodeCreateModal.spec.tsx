@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -17,7 +17,6 @@ import {
     useProductsFromShopifyIntegration,
 } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import DiscountCodeCreateModal from '../DiscountCodeCreateModal'
 import { setupValidModalParameters } from '../utils'

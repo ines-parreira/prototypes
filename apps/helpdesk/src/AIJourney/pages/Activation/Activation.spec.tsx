@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -11,7 +12,7 @@ import { appQueryClient } from 'api/queryClient'
 import { shopifyProductResult } from 'fixtures/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListProducts } from 'models/integration/queries'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { Activation } from './Activation'
 

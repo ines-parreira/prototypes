@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import {
     AddressElement,
     PaymentElement,
@@ -31,7 +32,6 @@ import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSet
 import type { BillingContactDetailResponse } from 'state/billing/types'
 import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@stripe/react-stripe-js')
 

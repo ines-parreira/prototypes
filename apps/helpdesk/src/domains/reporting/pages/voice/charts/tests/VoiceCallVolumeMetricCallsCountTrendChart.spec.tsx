@@ -8,6 +8,8 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { assumeMock } from '@repo/testing'
+
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
@@ -17,7 +19,6 @@ import VoiceCallVolumeMetricEmpty from 'domains/reporting/pages/voice/components
 import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import { agents } from 'fixtures/agents'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallCountTrend')
 const useVoiceCallCountTrendMock = assumeMock(useVoiceCallCountTrend)

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { cleanup, render } from '@testing-library/react'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -9,7 +10,6 @@ import {
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import LiveVoiceFilters from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters'
 import * as statsSelectors from 'domains/reporting/state/stats/selectors'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper')
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')

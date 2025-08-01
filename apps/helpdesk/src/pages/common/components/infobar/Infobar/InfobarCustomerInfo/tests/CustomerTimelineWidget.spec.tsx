@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
@@ -12,7 +13,6 @@ import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
 import { useTimelineData } from 'timeline/hooks/useTimelineData'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
-import { assumeMock } from 'utils/testing'
 
 import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
 

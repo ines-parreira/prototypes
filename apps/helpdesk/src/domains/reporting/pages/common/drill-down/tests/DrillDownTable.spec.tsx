@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -51,7 +51,6 @@ import {
 import { campaign, campaignId } from 'fixtures/campaign'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 

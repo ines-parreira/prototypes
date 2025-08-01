@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
@@ -12,7 +13,6 @@ import {
     AgentStatusCategory,
     groupAgentsByStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/realtime')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => ({

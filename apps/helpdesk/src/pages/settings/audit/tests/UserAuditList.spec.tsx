@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { flushPromises } from '@repo/testing'
 import {
     act,
     fireEvent,
@@ -25,7 +26,6 @@ import { fetchEvents } from 'models/event/resources'
 import { Event } from 'models/event/types'
 import { AuditLogEventsState } from 'state/entities/auditLogEvents/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { flushPromises } from 'utils/testing'
 
 import UserAuditList from '../UserAuditList'
 

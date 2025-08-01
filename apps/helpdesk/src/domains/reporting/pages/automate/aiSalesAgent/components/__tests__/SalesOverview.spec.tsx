@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -19,7 +20,7 @@ import { user } from 'fixtures/users'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')

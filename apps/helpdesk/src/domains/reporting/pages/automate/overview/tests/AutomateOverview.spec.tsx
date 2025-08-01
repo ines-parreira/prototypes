@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -50,7 +50,6 @@ import { AUTOMATION_RATE_FIXED_STATS } from 'pages/automate/automate-metrics/con
 import { AccountFeature, AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 

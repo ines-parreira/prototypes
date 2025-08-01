@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -7,7 +8,6 @@ import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import NewBilling from 'pages/settings/new_billing/views/BillingStartView'
-import { assumeMock } from 'utils/testing'
 
 import { Billing } from '../Billing'
 import { renderAppSettings } from '../helpers/settingsRenderer'

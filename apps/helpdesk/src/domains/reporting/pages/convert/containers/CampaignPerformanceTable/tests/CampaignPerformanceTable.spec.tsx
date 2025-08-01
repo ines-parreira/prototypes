@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 import routerDom, { useParams } from 'react-router-dom'
 
@@ -16,7 +17,7 @@ import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)

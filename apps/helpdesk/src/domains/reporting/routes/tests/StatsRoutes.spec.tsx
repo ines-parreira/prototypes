@@ -1,5 +1,6 @@
 import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
 import { fromJS, Map } from 'immutable'
@@ -54,7 +55,6 @@ import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/use
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { STATS_ROUTES } from 'routes/constants'
 import { initialState } from 'state/billing/reducers'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logPageMock = assumeMock(logPageChange)

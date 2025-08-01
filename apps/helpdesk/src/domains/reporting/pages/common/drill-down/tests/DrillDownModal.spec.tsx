@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -29,7 +30,6 @@ import {
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownTable')
 const DrillDownTableMock = assumeMock(DrillDownTable)

@@ -1,10 +1,10 @@
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { updateVoiceQueue } from '@gorgias/helpdesk-client'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import VoiceQueueStatusToggle from '../VoiceQueueStatusToggle'
 

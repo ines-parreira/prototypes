@@ -1,10 +1,10 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import ReactPlayer from 'react-player'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { parseHtml } from 'utils/html'
-import { assumeMock } from 'utils/testing'
 
 import { processContent } from '../../helpers/processContent'
 import { MessageContent } from '../MessageContent'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -11,7 +12,6 @@ import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()

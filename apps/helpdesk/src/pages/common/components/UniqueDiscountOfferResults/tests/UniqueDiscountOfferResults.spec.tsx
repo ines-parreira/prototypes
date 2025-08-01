@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -22,7 +22,6 @@ import {
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
 

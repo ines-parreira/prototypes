@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -19,7 +20,6 @@ import { GeneralSettingsView } from 'pages/convert/settings/components/GeneralSe
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/convert/settings/queries')
 jest.mock('state/notifications/actions')

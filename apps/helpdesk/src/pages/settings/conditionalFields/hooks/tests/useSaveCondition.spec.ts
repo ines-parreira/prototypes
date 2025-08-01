@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
@@ -10,7 +10,6 @@ import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
-import { assumeMock } from 'utils/testing'
 
 import useSaveCondition from '../useSaveCondition'
 import useUpdateCustomFieldCondition from '../useUpdateCustomFieldCondition'

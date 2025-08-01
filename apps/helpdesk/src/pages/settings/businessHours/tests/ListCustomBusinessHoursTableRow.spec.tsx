@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
@@ -8,7 +9,6 @@ import { Form } from 'core/forms'
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import { IntegrationType } from 'models/integration/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import LinkedIntegrationsList from '../LinkedIntegrationsList'
 import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'

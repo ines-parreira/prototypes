@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -15,7 +15,6 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { useUpdateCustomFieldArchiveStatus } from '../useUpdateCustomFieldArchiveStatus'
 

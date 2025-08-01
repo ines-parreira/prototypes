@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
@@ -8,7 +8,6 @@ import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/sho
 import { HELP_CENTER_EMBED_FORM_TEXTS } from 'pages/settings/helpCenter/constants'
 import { useCreatePageEmbedment } from 'pages/settings/helpCenter/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { MODAL_LABELS } from '../constants'
 import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'

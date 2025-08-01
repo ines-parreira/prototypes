@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useInviteAgent as usePureInviteAgent } from 'models/agents/queries'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { handleError } from '../errorHandler'
 import { useInviteAgent } from '../useInviteAgent'

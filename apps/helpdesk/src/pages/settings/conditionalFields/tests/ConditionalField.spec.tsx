@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Link, useParams } from 'react-router-dom'
 
@@ -7,7 +8,6 @@ import { useGetCustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 import ConditionForm from '../components/ConditionForm'
 import ConditionalField from '../ConditionalField'

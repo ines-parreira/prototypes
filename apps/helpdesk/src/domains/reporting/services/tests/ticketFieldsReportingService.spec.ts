@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -27,7 +27,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import * as files from 'utils/file'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(

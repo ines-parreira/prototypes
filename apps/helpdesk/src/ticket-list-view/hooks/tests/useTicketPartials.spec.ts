@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
-import { assumeMock } from 'utils/testing'
 
 import TicketUpdatesManager from '../../TicketUpdatesManager'
 import { TicketPartial } from '../../types'

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
@@ -14,7 +15,7 @@ import {
     setSidePanelActiveTab,
     SidePanelTab,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice-of-customer/components/ProductHeader')
 const ProductHeaderMock = assumeMock(ProductHeader)

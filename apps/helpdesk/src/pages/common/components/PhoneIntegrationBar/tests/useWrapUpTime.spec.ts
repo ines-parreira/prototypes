@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
@@ -12,7 +13,6 @@ import { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import useWrapUpTime from '../useWrapUpTime'
 

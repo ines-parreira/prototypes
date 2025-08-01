@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import {
@@ -13,7 +14,6 @@ import {
     TemplateConfiguration,
 } from 'pages/aiAgent/actions/types'
 import { Components } from 'rest_api/workflows_api/client.generated'
-import { assumeMock } from 'utils/testing'
 
 import FailedWorkflowMessage from '../AiAgentFailedWorkflowMessage'
 

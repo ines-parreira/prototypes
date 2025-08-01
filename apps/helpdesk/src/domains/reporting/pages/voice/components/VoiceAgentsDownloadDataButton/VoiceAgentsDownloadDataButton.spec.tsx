@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -7,7 +8,6 @@ import { VoiceAgentsDownloadDataButton } from 'domains/reporting/pages/voice/com
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/voice/constants/voiceAgents'
 import { useVoiceAgentsReportData } from 'domains/reporting/services/voiceAgentsReportingService'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/services/voiceAgentsReportingService')
 const useVoiceAgentsReportDataMock = assumeMock(useVoiceAgentsReportData)

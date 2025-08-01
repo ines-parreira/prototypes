@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
@@ -19,7 +20,6 @@ import AverageSurveyScoreDonutChart from 'domains/reporting/pages/quality-manage
 import { SatisfactionAverageSurveyScoreMetric } from 'domains/reporting/state/ui/stats/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

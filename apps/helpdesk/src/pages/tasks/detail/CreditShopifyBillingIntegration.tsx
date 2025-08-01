@@ -23,7 +23,9 @@ const CreditShopifyBillingIntegration = () => {
     const [description, setDescription] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const isFormValid =
-        typeof creditAmount !== undefined && creditAmount! > 0 && !!description
+        typeof creditAmount !== 'undefined' &&
+        creditAmount! > 0 &&
+        !!description
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault()

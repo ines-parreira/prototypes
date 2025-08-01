@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Router } from 'react-router-dom'
@@ -8,7 +8,6 @@ import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/ai
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)

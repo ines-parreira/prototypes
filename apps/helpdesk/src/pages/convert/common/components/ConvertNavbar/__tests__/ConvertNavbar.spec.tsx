@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -21,7 +21,6 @@ import { useGetOnboardingStatusMap } from 'pages/convert/channelConnections/hook
 import useContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { ConvertNavbar } from '../ConvertNavbar'

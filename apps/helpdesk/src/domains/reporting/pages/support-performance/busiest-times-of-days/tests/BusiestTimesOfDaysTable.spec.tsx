@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,7 +17,6 @@ import {
     get24Hours,
     hourFromHourIndex,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')

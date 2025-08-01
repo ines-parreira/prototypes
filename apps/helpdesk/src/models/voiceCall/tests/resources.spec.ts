@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -6,7 +7,6 @@ import { SearchVoiceCalls200 } from '@gorgias/helpdesk-types'
 
 import { voiceCall } from 'fixtures/voiceCalls'
 import client from 'models/api/resources'
-import { assumeMock } from 'utils/testing'
 
 import {
     listVoiceCallEvents,

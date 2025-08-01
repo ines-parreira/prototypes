@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useProductsTicketCountsPerIntentWithEnrichment } from 'domains/reporting/hooks/voice-of-customer/metricsPerProductAndIntent'
@@ -11,7 +11,6 @@ import {
 } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock(

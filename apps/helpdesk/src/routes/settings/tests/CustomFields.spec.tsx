@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Redirect, Route, useRouteMatch } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 import { CustomFields } from '../CustomFields'
 import { renderAppSettings } from '../helpers/settingsRenderer'

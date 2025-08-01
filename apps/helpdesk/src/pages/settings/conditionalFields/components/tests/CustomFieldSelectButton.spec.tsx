@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { RequirementType } from '@gorgias/helpdesk-types'
@@ -12,7 +13,6 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import CustomFieldSelectButton from '../CustomFieldSelectButton'
 

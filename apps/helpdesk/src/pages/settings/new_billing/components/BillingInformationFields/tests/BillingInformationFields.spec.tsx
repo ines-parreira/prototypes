@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { AddressElement } from '@stripe/react-stripe-js'
 import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import { Form } from 'core/forms'
 import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import { VATCountries } from 'state/billing/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@stripe/react-stripe-js')
 

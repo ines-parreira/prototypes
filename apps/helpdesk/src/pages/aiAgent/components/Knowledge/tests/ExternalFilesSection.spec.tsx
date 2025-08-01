@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import { Components } from 'rest_api/help_center_api/client.generated'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { renderWithStoreAndQueryClientAndRouter } from '../../../../../tests/renderWithStoreAndQueryClientAndRouter'
 import { ExternalFilesSection } from '../ExternalFilesSection'

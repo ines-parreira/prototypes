@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
-
-import { assumeMock } from 'utils/testing'
 
 import { getDomainFromEmailAddress } from '../../helpers'
 import DomainVerificationProvider from '../DomainVerificationProvider'

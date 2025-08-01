@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import { ADMIN_ROLE } from 'config/user'
 import PhoneNumberCreateContainer from 'pages/phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from 'pages/phoneNumbers/PhoneNumberDetailContainer'
 import PhoneNumbersListContainer from 'pages/phoneNumbers/PhoneNumbersListContainer'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { PhoneNumbers } from '../PhoneNumbers'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { DRILL_DOWN_PER_PAGE } from 'domains/reporting/hooks/useDrillDownData'
@@ -14,7 +15,6 @@ import {
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownDownloadButton')
 const DrillDownDownloadButtonMock = assumeMock(DrillDownDownloadButton)

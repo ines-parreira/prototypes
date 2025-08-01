@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
@@ -60,7 +60,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 const initialState = {
     ui: {

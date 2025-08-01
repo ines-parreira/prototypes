@@ -1,10 +1,11 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import history from 'pages/history'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { GuidanceSection } from '../GuidanceSection'
 

@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import * as segment from 'common/segment'
 import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'
 import { ChannelConnection } from 'models/convert/channelConnection/types'
-import { assumeMock } from 'utils/testing'
 
 import { useUtm } from '../useUtm'
 

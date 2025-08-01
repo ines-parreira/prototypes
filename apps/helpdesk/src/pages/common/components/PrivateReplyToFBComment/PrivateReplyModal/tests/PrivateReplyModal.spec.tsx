@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { flushPromises } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -11,7 +12,6 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import client from 'models/api/resources'
 import * as infobarActions from 'state/infobar/actions'
 import { SET_INVALID_CUSTOM_FIELDS_TO_ERRORED } from 'state/ticket/constants'
-import { flushPromises } from 'utils/testing'
 
 import PrivateReplyModal from '../PrivateReplyModal'
 

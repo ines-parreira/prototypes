@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -21,7 +22,6 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { AiAgentNavbar } from '../AiAgentNavbar'
 

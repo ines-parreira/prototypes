@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'
 
 import { isGorgiasApiError } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 import { useTicketSummary } from '../useTicketSummary'
 

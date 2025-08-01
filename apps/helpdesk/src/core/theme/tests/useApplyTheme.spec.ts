@@ -1,8 +1,6 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
-
-import { assumeMock } from 'utils/testing'
 
 import type { Theme } from '../types'
 import useApplyTheme from '../useApplyTheme'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, createContextConsumer } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import configureMockStore from 'redux-mock-store'
 import { account } from 'fixtures/account'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, createContextConsumer } from 'utils/testing'
 
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
 import { useStoreConfiguration } from '../../hooks/useStoreConfiguration'

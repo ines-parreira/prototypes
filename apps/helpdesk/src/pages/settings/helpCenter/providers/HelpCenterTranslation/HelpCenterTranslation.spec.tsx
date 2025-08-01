@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { flushPromises, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -18,7 +18,6 @@ import { initialState as articlesState } from 'state/entities/helpCenter/article
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter'
-import { flushPromises } from 'utils/testing'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,

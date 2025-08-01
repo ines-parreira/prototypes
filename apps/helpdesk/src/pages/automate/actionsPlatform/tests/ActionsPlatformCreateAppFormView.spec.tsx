@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { flushPromises } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -8,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { RootState, StoreDispatch } from 'state/types'
-import { flushPromises, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformCreateAppFormView from '../ActionsPlatformCreateAppFormView'
 import useApps from '../hooks/useApps'

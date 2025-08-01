@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
 import { AutomateStatsMeasureLabelMap } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
@@ -10,7 +11,6 @@ import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file', () => ({
     createCsv: (value: string) => `${value}-csv`,

@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
@@ -25,7 +26,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',

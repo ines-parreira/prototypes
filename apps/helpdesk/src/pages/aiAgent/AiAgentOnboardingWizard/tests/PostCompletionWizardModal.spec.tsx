@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import { assumeMock } from 'utils/testing'
 
 import { WIZARD_POST_COMPLETION_STATE } from '../../constants'
 import PostCompletionWizardModal from '../PostCompletionWizardModal'

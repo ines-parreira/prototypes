@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -12,7 +13,6 @@ import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { user } from 'fixtures/users'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

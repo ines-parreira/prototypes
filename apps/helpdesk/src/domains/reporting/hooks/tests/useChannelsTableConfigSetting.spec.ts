@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
 import { useTableConfigSetting } from 'domains/reporting/hooks/useTableConfigSetting'
@@ -8,7 +8,6 @@ import {
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { submitChannelsTableConfigView } from 'state/currentAccount/actions'
 import { getChannelsTableConfigSettingsJS } from 'state/currentAccount/selectors'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useTableConfigSetting')
 const useTableConfigSettingMock = assumeMock(useTableConfigSetting)

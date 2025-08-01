@@ -1,8 +1,8 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -27,7 +27,7 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import {
     ARTICLE_INGESTION_LOGS_STATUS,

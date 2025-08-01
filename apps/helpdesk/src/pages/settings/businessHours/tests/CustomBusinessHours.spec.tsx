@@ -1,7 +1,6 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
-
-import { assumeMock } from 'utils/testing'
 
 import AddCustomBusinessHoursModal from '../AddCustomBusinessHoursModal'
 import CustomBusinessHours from '../CustomBusinessHours'

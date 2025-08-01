@@ -1,5 +1,8 @@
-import React from 'react'
-
+import {
+    assumeMock,
+    mockRequestAnimationFrame,
+    triggerWidthResize,
+} from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { forEach } from 'lodash'
 import { Provider } from 'react-redux'
@@ -23,12 +26,7 @@ import {
     getValueMode,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
-import {
-    assumeMock,
-    mockRequestAnimationFrame,
-    mockStore,
-    triggerWidthResize,
-} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 const rafControl = mockRequestAnimationFrame()
 

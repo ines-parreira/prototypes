@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { flushPromises } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -20,7 +21,6 @@ import { CampaignDetailsFormContext } from 'pages/convert/campaigns/providers/Ca
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import * as integrationHelpers from 'state/integrations/helpers'
 import { RootState, StoreDispatch } from 'state/types'
-import { flushPromises } from 'utils/testing'
 
 import { AddContactCaptureFormProps } from '../../ContactCaptureForm/AddContactCaptureForm'
 import { CampaignMessage } from '../CampaignMessage'

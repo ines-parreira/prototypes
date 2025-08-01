@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import {
@@ -10,7 +11,7 @@ import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/ty
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)

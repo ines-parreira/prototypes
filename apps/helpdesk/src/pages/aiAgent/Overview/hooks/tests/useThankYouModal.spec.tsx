@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { assumeMock } from 'utils/testing'
 
 import { useThankYouModal } from '../useThankYouModal'
 

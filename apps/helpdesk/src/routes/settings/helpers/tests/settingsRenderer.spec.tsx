@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { PageSection } from 'config/pages'
@@ -9,7 +10,6 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 import { AccountFeature } from 'state/currentAccount/types'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../settingsRenderer'
 

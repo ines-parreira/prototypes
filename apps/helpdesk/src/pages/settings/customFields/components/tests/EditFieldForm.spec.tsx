@@ -1,10 +1,10 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import { ticketNumberFieldDefinition } from 'fixtures/customField'
 import history from 'pages/history'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 import EditFieldForm from '../EditFieldForm'
 import FieldForm from '../FieldForm'

@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
@@ -13,7 +13,6 @@ import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResource
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { PublicSourcesSection } from '../PublicSourcesSection'
 import { SourceItem } from '../types'

@@ -1,5 +1,6 @@
 import React, { ComponentProps, PropsWithChildren } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -20,7 +21,6 @@ import {
     SERVICE_LEVEL_OPTIONAL_FILTERS,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

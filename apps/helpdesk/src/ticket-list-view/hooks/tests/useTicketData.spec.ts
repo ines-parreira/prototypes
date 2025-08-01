@@ -1,8 +1,6 @@
-import { renderHook } from '@repo/testing'
+import { flushPromises, renderHook } from '@repo/testing'
 import * as ReactQuery from '@tanstack/react-query'
 import { act } from '@testing-library/react'
-
-import { flushPromises } from 'utils/testing'
 
 import useTicketData from '../useTicketData'
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -16,7 +17,6 @@ import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { getViewsState } from 'state/views/selectors'
-import { assumeMock } from 'utils/testing'
 
 import useGoToNextTicket from '../../TicketNavigation/hooks/useGoToNextTicket'
 import AIAgentSimplifiedFeedback from '../AIAgentSimplifiedFeedback'

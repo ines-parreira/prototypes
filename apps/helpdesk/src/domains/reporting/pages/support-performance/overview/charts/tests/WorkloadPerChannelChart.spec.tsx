@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -27,7 +27,6 @@ import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/charts/GaugeChart')
 const gaugeChartMock = assumeMock(GaugeChart)

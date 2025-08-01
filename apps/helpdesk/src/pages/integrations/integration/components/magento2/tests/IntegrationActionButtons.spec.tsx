@@ -1,12 +1,13 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { IntegrationActionButtons } from 'pages/integrations/integration/components/magento2/IntegrationActionButtons'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { deleteIntegration } from 'state/integrations/actions'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

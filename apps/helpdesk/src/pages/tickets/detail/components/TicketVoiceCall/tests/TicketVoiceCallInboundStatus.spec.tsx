@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { getVoiceQueue, PhoneRingingBehaviour } from '@gorgias/helpdesk-client'
@@ -8,7 +9,6 @@ import {
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
 

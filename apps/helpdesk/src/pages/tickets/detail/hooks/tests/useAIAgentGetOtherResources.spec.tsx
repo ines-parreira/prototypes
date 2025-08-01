@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
@@ -8,7 +9,6 @@ import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
-import { assumeMock } from 'utils/testing'
 
 import * as useAIAgentGetOtherResources from '../useAIAgentGetOtherResources'
 

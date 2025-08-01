@@ -5,11 +5,11 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { convertBundle } from 'fixtures/convertBundle'
 import { useListBundles } from 'models/convert/bundle/queries'
-import { assumeMock } from 'utils/testing'
 
 import GorgiasChatIntegrationManualInstallationCard from '../../GorgiasChatIntegrationManualInstallationCard'
 

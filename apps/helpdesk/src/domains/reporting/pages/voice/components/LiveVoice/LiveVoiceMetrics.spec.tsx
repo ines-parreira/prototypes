@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Moment } from 'moment'
@@ -13,7 +14,6 @@ import useLiveVoiceMetricCards from 'domains/reporting/pages/voice/components/Li
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
-import { assumeMock } from 'utils/testing'
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof LiveVoiceMetrics>> = {

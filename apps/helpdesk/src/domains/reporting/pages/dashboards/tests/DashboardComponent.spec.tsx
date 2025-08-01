@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
@@ -9,7 +10,6 @@ import {
     ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

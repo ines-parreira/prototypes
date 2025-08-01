@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
+
 import {
     useProductsFromShopifyIntegration,
     useShopifyTags,
@@ -11,7 +13,6 @@ import { useIntegrationContext } from 'pages/convert/campaigns/containers/Integr
 import { useTriggers } from 'pages/convert/campaigns/containers/TriggersProvider'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/convert/campaigns/containers/TriggersProvider')
 const useTriggersMock = assumeMock(useTriggers)

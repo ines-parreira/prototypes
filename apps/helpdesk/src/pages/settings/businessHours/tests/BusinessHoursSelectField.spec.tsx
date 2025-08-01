@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -14,7 +15,6 @@ import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import BusinessHoursSelectField from '../BusinessHoursSelectField'
 

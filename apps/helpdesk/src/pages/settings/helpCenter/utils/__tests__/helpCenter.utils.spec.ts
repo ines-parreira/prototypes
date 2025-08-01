@@ -1,10 +1,10 @@
+import { assumeMock } from '@repo/testing'
 import copy from 'copy-to-clipboard'
 
 import { ShopifyIntegration, StoreIntegration } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
-import { assumeMock } from 'utils/testing'
 
 import { getSingleArticleEnglish } from '../../fixtures/getArticlesResponse.fixture'
 import { getSingleCustomDomainResponseFixture } from '../../fixtures/getCustomDomainsResponse.fixture'

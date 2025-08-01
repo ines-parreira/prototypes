@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -12,7 +13,6 @@ import { EmailDomain } from '@gorgias/helpdesk-queries'
 import { UserRole } from 'config/types/user'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import * as helpers from '../../helpers'
 import RecordsTable from '../components/RecordsTable'

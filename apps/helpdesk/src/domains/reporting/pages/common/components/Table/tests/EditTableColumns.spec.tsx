@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
 import { fromJS } from 'immutable'
@@ -45,7 +46,6 @@ import {
 } from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)

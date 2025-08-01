@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -46,7 +47,6 @@ import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',

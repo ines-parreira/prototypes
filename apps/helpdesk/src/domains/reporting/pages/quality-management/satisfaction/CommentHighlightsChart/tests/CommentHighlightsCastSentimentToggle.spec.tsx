@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import CommentHighlightsToggle, {
@@ -10,7 +11,7 @@ import { toggleCommentHighlightsCsatSentiment } from 'domains/reporting/state/ui
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)

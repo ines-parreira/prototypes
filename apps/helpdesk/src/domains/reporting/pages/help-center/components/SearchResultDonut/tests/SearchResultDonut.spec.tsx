@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
@@ -9,7 +10,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import SearchResultDonut from 'domains/reporting/pages/help-center/components/SearchResultDonut/SearchResultDonut'
 import { useSearchResultRange } from 'domains/reporting/pages/help-center/hooks/useSearchResultRange'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/help-center/hooks/useSearchResultRange',

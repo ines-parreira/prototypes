@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
@@ -10,7 +11,6 @@ import * as utils from 'domains/reporting/pages/common/utils'
 import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/BigNumberMetric')
 jest.mock('domains/reporting/pages/common/components/MetricCard')

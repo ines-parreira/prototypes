@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 import { useParams } from 'react-router-dom'
 
@@ -28,7 +28,6 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 const timezone = 'UTC'
 

@@ -1,6 +1,8 @@
-import React from 'react'
-
-import { userEvent } from '@repo/testing'
+import {
+    mockRequestAnimationFrame,
+    triggerWidthResize,
+    userEvent,
+} from '@repo/testing'
 import { act, render, screen, waitFor, within } from '@testing-library/react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -10,7 +12,6 @@ import {
     TableBodyRowExpandable,
     WithChildren,
 } from 'pages/common/components/table/TableBodyRowExpandable'
-import { mockRequestAnimationFrame, triggerWidthResize } from 'utils/testing'
 
 type Data = {
     label: string

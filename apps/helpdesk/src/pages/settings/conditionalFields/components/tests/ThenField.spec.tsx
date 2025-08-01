@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { RequirementType } from '@gorgias/helpdesk-queries'
@@ -14,7 +15,6 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import ThenField from '../ThenField'
 

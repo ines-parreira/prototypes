@@ -1,3 +1,5 @@
+import { assumeMock } from '@repo/testing'
+
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import { TopAIIntentsForProductOverTimeGraph } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsForProductOverTimeChart/TopAIIntentsForProductOverTimeGraph'
 import { TopAIIntentsForProductOverTimeChart } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsForProductOverTimeChart/TopAIIntentsOverTimeForProductChart'
@@ -11,7 +13,7 @@ import {
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/ChartCard')
 const ChartCardMock = assumeMock(ChartCard)

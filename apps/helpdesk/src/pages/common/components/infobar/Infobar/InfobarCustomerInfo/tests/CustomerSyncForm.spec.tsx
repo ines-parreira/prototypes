@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -17,7 +18,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import CustomerSyncForm from '../CustomerSyncForm/CustomerSyncForm'
 

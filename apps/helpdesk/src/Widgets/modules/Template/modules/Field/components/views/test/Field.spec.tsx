@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { LEAF_TYPES } from 'models/widget/constants'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { FieldEditFormData } from '../../../types'
 import Field, { DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT } from '../Field'

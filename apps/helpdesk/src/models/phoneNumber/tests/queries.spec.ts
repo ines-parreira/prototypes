@@ -1,7 +1,5 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useQuery } from '@tanstack/react-query'
-
-import { assumeMock } from 'utils/testing'
 
 import { phoneNumberKeys, usePhoneNumberCapabilitiesMap } from '../queries'
 import { fetchPhoneCapabilities } from '../resources'

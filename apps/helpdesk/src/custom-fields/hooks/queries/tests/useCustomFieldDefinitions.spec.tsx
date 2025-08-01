@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import {
     HttpResponse,
@@ -11,7 +11,6 @@ import {
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
-import { assumeMock } from 'utils/testing'
 
 import {
     STALE_TIME_MS,

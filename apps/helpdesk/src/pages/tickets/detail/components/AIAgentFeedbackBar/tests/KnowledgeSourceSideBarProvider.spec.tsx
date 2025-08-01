@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,7 +12,6 @@ import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAg
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { useKnowledgeSourceSideBar } from '../hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from '../KnowledgeSourceSideBarProvider'

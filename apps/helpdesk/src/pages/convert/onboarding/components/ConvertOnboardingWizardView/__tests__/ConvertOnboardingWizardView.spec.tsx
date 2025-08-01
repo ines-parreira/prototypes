@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -27,7 +28,6 @@ import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hoo
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
 

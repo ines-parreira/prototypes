@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
@@ -11,7 +12,6 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
-import { assumeMock } from 'utils/testing'
 
 import EditFieldForm from '../components/EditFieldForm'
 

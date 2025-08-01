@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock } from 'utils/testing'
 
 import ImpersonationBanner from '../ImpersonationBanner'
 

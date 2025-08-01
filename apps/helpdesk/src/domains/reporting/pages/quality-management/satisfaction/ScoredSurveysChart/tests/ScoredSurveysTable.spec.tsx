@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
@@ -7,7 +8,6 @@ import { Skeleton } from '@gorgias/merchant-ui-kit'
 import { ScoredSurveyDataKey } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     const actual = jest.requireActual('@gorgias/merchant-ui-kit')

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
@@ -10,7 +11,6 @@ import { HelpCenter } from 'models/helpCenter/types'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { helpCentersFetched } from 'state/entities/helpCenter/helpCenters'
-import { assumeMock } from 'utils/testing'
 
 import SelfServiceHelpCentersProvider from '../SelfServiceHelpCentersProvider'
 

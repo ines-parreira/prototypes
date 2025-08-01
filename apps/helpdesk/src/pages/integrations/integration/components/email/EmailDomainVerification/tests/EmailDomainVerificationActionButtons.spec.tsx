@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
-
-import { assumeMock } from 'utils/testing'
 
 import useDeleteEmailIntegration from '../../useDeleteEmailIntegration'
 import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'

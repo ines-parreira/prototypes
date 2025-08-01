@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,7 +12,6 @@ import { JobType } from '@gorgias/helpdesk-queries'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { useBulkAction } from 'jobs'
-import { assumeMock } from 'utils/testing'
 
 import AssignUser from '../AssignUser'
 import BulkActions from '../BulkActions'

@@ -1,5 +1,6 @@
 import React, { ComponentType } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { DomainEvent } from '@gorgias/events'
@@ -19,7 +20,6 @@ import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/re
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('@gorgias/helpdesk-queries')

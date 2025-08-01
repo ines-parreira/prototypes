@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import {
     useAIAgentResourcePerTicket,
@@ -28,7 +28,6 @@ import {
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

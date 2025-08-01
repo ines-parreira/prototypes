@@ -124,7 +124,7 @@ export const getHandoverConfigurationFormDataFragment = (
     }
 }
 
-export const hasAnyChangeInFormValues = <T extends Object>(
+export const hasAnyChangeInFormValues = <T extends object>(
     currentValues: T,
     originalValues: Partial<T>,
 ) => {

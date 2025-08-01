@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { logEvent } from 'common/segment'
 import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
 import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { assumeMock } from 'utils/testing'
 
 import { AICopyAssistant } from '../AICopyAssistant'
 

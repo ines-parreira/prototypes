@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _keyBy from 'lodash/keyBy'
@@ -40,7 +40,6 @@ import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)

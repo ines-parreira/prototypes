@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +12,7 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'
 import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'

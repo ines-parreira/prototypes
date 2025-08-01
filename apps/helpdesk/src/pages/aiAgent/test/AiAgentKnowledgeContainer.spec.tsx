@@ -1,8 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -38,7 +37,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import {
     useStoreActivations,

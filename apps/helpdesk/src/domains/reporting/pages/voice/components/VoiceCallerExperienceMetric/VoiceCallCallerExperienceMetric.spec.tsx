@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -15,7 +14,7 @@ import {
 import { useVoiceCallAverageTimeTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend'
 import { VoiceMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend')
 const mockUseVoiceCallAverageTimeTrend = assumeMock(

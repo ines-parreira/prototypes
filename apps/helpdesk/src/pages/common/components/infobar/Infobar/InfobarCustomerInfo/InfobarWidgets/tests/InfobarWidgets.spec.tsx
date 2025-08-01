@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -18,7 +19,6 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { assumeMock } from 'utils/testing'
 import Widget from 'Widgets/modules/Widget'
 
 import InfobarWidgets from '../InfobarWidgets'

@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,7 +16,6 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { formatTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import { periodAndAggregationWindowToReportingGranularity } from 'domains/reporting/utils/reporting'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const mockedUseTicketsClosedTimeSeries = assumeMock(useTicketsClosedTimeSeries)

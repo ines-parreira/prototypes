@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import colorTokens from '@gorgias/design-tokens/tokens/colors'
@@ -10,7 +11,6 @@ import DonutChart, {
     DONUT_TOOLTIP_TARGET,
 } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
-import { assumeMock } from 'utils/testing'
 
 const mockDoughnutProps = jest.fn()
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -17,7 +18,6 @@ import {
 } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { agents } from 'fixtures/agents'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/support-performance/agents/AgentsEditColumns.tsx',

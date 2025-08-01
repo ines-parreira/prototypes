@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -10,7 +10,6 @@ import {
 } from 'models/helpCenter/queries'
 import { POLLING_INTERVAL } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { reportError } from 'utils/errors'
-import { assumeMock } from 'utils/testing'
 
 import { useGetStoreDomainIngestionLog } from '../useGetStoreDomainIngestionLog'
 

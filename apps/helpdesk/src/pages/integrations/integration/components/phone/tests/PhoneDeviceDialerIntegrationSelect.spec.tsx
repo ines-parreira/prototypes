@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { PhoneIntegration } from 'models/integration/types'
-import { assumeMock } from 'utils/testing'
 
 import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 import usePhoneNumbers from '../usePhoneNumbers'

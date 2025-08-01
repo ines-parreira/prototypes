@@ -1,5 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
@@ -7,7 +8,6 @@ import moment from 'moment'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 
 import { getStringFromData, getValueFromData } from '../fieldDataMappers'

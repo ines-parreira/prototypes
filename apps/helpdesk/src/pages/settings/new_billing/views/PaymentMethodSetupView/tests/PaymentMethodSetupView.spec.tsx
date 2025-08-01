@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { loadStripe, type Stripe } from '@stripe/stripe-js'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -17,7 +18,6 @@ import {
 import * as useSetupIntentModule from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import { PaymentMethodSetupView } from '../PaymentMethodSetupView'
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
@@ -9,7 +10,6 @@ import {
     OverviewMetricConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/TrendCard')
 const TrendCardMock = assumeMock(TrendCard)

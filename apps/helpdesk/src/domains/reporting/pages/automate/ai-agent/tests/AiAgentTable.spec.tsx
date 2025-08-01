@@ -1,4 +1,4 @@
-import React from 'react'
+import { assumeMock } from '@repo/testing'
 
 import { User, UserRole } from 'config/types/user'
 import { useAIAgentUser } from 'domains/reporting/hooks/automate/useAIAgentUserId'
@@ -10,7 +10,7 @@ import { AgentsTable } from 'domains/reporting/pages/support-performance/agents/
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { agents } from 'fixtures/agents'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/support-performance/agents/AgentsTable')
 const AgentsTableMock = assumeMock(AgentsTable)

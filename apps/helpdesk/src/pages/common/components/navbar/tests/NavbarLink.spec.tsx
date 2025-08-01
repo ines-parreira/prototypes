@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { useRouteMatch } from 'react-router-dom'
 
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import { STATS_ROUTES } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     NavLink: ({ children, ...props }: { children: React.ReactNode }) => (

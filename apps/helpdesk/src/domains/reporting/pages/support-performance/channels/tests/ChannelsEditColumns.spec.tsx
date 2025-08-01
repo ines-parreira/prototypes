@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
@@ -12,7 +13,6 @@ import {
     LeadColumn,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { getChannelsTableConfigSettingsJS } from 'state/currentAccount/selectors'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/components/Table/EditTableColumns')
 const EditTableColumnsMock = assumeMock(EditTableColumns)

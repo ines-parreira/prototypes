@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { updateAccountOwner } from 'state/currentAccount/actions'
-import { assumeMock } from 'utils/testing'
 
 import { OwnershipModal } from '../OwnershipModal'
 

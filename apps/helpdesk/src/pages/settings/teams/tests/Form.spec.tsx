@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
 import { useDeleteTeam, useFetchTeam, useUpdateTeam } from 'teams/queries'
-import { assumeMock } from 'utils/testing'
 
 import { Form } from '../Form'
 

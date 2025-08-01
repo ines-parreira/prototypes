@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetStoreDomainIngestionLog } from 'pages/aiAgent/hooks/useGetStoreDomainIngestionLog'
 import { useIngestionLogMutation } from 'pages/aiAgent/hooks/useIngestionLogMutation'
 import history from 'pages/history'
-import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { ScrapeStoreDomainSection } from '../ScrapeStoreDomainSection'
 

@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { HelpCenter } from 'models/helpCenter/types'
 import { ShopifyIntegration } from 'models/integration/types'
 import { NonEmptyArray } from 'types'
-import { assumeMock } from 'utils/testing'
 
 import { useFirstStoreAndHelpCenterWithTopQuestions } from '../useFirstStoreAndHelpCenterWithTopQuestions'
 import { useTopQuestionsFilters } from '../useTopQuestionsFilters'

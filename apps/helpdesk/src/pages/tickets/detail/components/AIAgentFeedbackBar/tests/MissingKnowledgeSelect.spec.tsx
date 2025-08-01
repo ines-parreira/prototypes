@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
@@ -7,7 +8,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import { assumeMock } from 'utils/testing'
 
 import MissingKnowledgeSelect, { KnowledgeTag } from '../MissingKnowledgeSelect'
 import {

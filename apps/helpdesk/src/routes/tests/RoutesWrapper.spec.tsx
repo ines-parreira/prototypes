@@ -1,8 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { StaticRouter } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
-import { assumeMock } from 'utils/testing'
 
 import RoutesWrapper from '../RoutesWrapper'
 

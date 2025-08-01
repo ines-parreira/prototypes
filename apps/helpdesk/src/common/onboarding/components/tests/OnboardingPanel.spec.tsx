@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { Panels } from 'core/layout/panels'
-import { assumeMock } from 'utils/testing'
 
 import useIsOnboardingHidden from '../../hooks/useIsOnboardingHidden'
 import { OnboardingPanel } from '../OnboardingPanel'

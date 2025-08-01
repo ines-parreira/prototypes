@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import copy from 'copy-to-clipboard'
 
 import { notify } from 'state/notifications/actions'
-import { assumeMock } from 'utils/testing'
 
 import BaseEmailIntegrationInputField from '../BaseEmailIntegrationInputField'
 

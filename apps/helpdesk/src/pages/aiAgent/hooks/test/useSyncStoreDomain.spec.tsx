@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -19,7 +19,6 @@ import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixt
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { useGetStoreDomainIngestionLog } from '../useGetStoreDomainIngestionLog'
 import { useIngestionLogMutation } from '../useIngestionLogMutation'

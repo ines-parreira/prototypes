@@ -1,8 +1,7 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
-
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import WrapperEditActions, { FormData } from '../WrapperEditActions'
 import WrapperEditForm from '../WrapperEditForm'

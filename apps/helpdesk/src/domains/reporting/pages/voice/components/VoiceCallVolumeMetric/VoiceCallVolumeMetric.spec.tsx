@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import {
@@ -8,7 +9,6 @@ import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/Voic
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallCountTrend')
 const mockUseVoiceCallCountTrend = assumeMock(useVoiceCallCountTrend)

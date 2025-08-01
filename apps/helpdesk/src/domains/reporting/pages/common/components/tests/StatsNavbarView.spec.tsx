@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -22,7 +23,7 @@ import {
 import { IntegrationType } from 'models/integration/constants'
 import { STATS_ROUTES } from 'routes/constants'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

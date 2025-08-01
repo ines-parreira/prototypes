@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import {
     createNotificationMessage,
@@ -7,7 +7,6 @@ import {
 } from 'domains/reporting/hooks/ticket-insights/useNotifyOnTimeReferenceChange'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import { useNotify } from 'hooks/useNotify'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useNotify')
 const useNotifyMock = assumeMock(useNotify)

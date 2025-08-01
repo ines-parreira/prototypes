@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
@@ -6,7 +7,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
-import { assumeMock } from 'utils/testing'
 
 import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
 

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import {
     cleanup,
     fireEvent,
@@ -17,7 +18,6 @@ import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDe
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import { isDesktopDevice, isDeviceReady } from 'utils/device'
 import * as platform from 'utils/platform'
-import { assumeMock } from 'utils/testing'
 
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { products } from 'fixtures/productPrices'
@@ -8,7 +9,6 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState } from 'state/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import { useSteps } from '../useSteps'
 

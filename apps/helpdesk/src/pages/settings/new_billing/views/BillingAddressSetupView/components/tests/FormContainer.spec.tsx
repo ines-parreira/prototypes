@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { AddressElement, useElements } from '@stripe/react-stripe-js'
 import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -9,7 +10,6 @@ import client from 'models/api/resources'
 import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { FormContainer } from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@stripe/stripe-js')
 jest.mock('@stripe/react-stripe-js')

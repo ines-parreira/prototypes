@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
@@ -13,7 +14,6 @@ import CommentHighlightCsatSentimentToggle from 'domains/reporting/pages/quality
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useCommentHighlights',

@@ -1,7 +1,6 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import { assumeMock } from 'utils/testing'
 
 import { useTimelinePanel } from '../useTimelinePanel'
 

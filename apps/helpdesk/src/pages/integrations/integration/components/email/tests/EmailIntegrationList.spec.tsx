@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -15,7 +16,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import history from 'pages/history'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailIntegrationList from '../EmailIntegrationList'
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'

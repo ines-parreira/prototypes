@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
 import { useDeleteMacro as useDeleteMacroPrimitive } from '@gorgias/helpdesk-queries'
@@ -6,7 +6,6 @@ import { useDeleteMacro as useDeleteMacroPrimitive } from '@gorgias/helpdesk-que
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useDeleteMacro } from '../useDeleteMacro'
 

@@ -1,8 +1,7 @@
 import React, { ComponentProps } from 'react'
 
+import { flushPromises } from '@repo/testing'
 import { render } from '@testing-library/react'
-
-import { flushPromises } from 'utils/testing'
 
 import TabNavigator from '../TabNavigator'
 

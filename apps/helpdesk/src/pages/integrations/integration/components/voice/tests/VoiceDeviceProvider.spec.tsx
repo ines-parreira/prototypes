@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 import { Device } from '@twilio/voice-sdk'
 import { Provider } from 'react-redux'
@@ -10,7 +10,6 @@ import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { connectDevice, disconnectDevice } from 'hooks/integrations/phone/utils'
 import useHasPhone from 'hooks/useHasPhone'
 import { isDesktopDevice } from 'utils/device'
-import { assumeMock } from 'utils/testing'
 
 import { VoiceDeviceContextState } from '../VoiceDeviceContext'
 import VoiceDeviceProvider from '../VoiceDeviceProvider'

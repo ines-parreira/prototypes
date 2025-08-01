@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
@@ -7,7 +8,6 @@ import {
     REMOVE_AS_DEFAULT_FILTER_TOOLTIP,
     SET_AS_DEFAULT_FILTER_TOOLTIP,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

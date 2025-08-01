@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -17,7 +18,6 @@ import { user } from 'fixtures/users'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { ConvertLimitBanner } from '../ConvertLimitBanner'
 

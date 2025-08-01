@@ -1,6 +1,7 @@
+import { assumeMock } from '@repo/testing'
+
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
 import { linkifyHtml, linkifyString, sanitizeHtmlDefault } from 'utils/html'
-import { assumeMock } from 'utils/testing'
 
 import { processContent } from '../processContent'
 

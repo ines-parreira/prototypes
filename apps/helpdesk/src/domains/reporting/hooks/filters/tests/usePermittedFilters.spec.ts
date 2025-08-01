@@ -1,10 +1,10 @@
+import { assumeMock } from '@repo/testing'
 import { renderHook } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 import { usePermittedFilters } from 'domains/reporting/hooks/filters/usePermittedFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('core/flags')
 

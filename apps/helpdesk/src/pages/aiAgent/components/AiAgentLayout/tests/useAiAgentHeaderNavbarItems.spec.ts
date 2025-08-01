@@ -1,9 +1,8 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useRouteMatch } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { assumeMock } from 'utils/testing'
 
 import { useAiAgentHeaderNavbarItems } from '../useAiAgentHeaderNavbarItems'
 

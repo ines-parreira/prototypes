@@ -1,5 +1,6 @@
+import { assumeMock } from '@repo/testing'
+
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import { assumeMock } from 'utils/testing'
 
 import { getNumberOrUndefined } from '../getNumberOrUndefined'
 

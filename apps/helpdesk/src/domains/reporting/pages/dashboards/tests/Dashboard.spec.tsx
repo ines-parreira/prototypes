@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { useGetAnalyticsCustomReport } from '@gorgias/helpdesk-queries'
@@ -23,7 +24,7 @@ import { updateChartPosition } from 'domains/reporting/pages/dashboards/utils'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 jest.mock('react-router-dom', () => ({

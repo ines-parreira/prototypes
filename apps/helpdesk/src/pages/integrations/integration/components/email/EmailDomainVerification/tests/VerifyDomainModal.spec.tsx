@@ -1,9 +1,8 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import VerifyDomainModal from '../VerifyDomainModal'
 

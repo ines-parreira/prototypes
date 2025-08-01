@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/dom'
 import { fromJS } from 'immutable'
 
@@ -13,7 +14,7 @@ import {
     useGetCustomTicketsFieldsDefinitionData,
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsEditColumns',

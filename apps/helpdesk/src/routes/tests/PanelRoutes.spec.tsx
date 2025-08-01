@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -12,7 +13,6 @@ import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import PanelRoutes from '../PanelRoutes'
 

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -13,7 +14,6 @@ import {
 } from 'models/customer/resources'
 import { Customer } from 'models/customer/types'
 import { CustomerWithHighlightsResponse } from 'models/search/types'
-import { assumeMock } from 'utils/testing'
 
 const mockedServer = new MockAdapter(client)
 

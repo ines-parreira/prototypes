@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fromJS, List, Map } from 'immutable'
 
 import { TicketVia } from 'business/types/ticket'
@@ -10,7 +11,6 @@ import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants
 import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
 import { RootState } from 'state/types'
 import { CUSTOMER_EXTERNAL_DATA_KEY } from 'state/widgets/constants'
-import { assumeMock } from 'utils/testing'
 
 import { initialState } from '../reducers'
 import * as selectors from '../selectors'

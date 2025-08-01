@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
@@ -10,7 +11,6 @@ import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CustomFieldInput from '../CustomFieldInput'
 

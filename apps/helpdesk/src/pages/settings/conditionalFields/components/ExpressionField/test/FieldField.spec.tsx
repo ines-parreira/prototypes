@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { SelectField } from '@gorgias/merchant-ui-kit'
@@ -12,7 +13,6 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 import { EXPRESSION_OPERATORS_BY_UI_DATA_TYPE } from 'pages/settings/conditionalFields/constants'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { FieldField } from '../FieldField'
 

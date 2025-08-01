@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
@@ -15,7 +16,6 @@ import {
 } from 'state/infobar/constants'
 import { initialState } from 'state/infobar/reducers'
 import { StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { isCurrentlyOnTicket } from '../../../utils'
 

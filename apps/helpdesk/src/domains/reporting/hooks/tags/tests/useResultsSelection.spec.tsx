@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -7,7 +7,6 @@ import {
     useTagResultsSelection,
 } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

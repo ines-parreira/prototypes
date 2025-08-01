@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -29,7 +28,7 @@ import { agents } from 'fixtures/agents'
 import { user } from 'fixtures/users'
 import { useRunningJobs } from 'jobs'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

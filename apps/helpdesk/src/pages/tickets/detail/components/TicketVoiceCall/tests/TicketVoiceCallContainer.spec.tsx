@@ -1,12 +1,12 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
-import { assumeMock } from 'utils/testing'
 
 import TicketVoiceCallContainer from '../TicketVoiceCallContainer'
 

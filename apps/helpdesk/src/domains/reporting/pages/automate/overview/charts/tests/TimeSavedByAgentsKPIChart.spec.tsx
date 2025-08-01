@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
@@ -8,7 +9,6 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { TimeSavedByAgentsKPIChart } from 'domains/reporting/pages/automate/overview/charts/TimeSavedByAgentsKPIChart'
 import { TimeSavedByAgentsMetric } from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/automate/automate-metrics/TimeSavedByAgentsMetric')
 const TimeSavedByAgentsMetricMock = assumeMock(TimeSavedByAgentsMetric)

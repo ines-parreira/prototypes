@@ -1,8 +1,7 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useGetChatIntegrationIdsForStore } from 'hooks/chat/useGetChatIntegrationIdsForStore'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)

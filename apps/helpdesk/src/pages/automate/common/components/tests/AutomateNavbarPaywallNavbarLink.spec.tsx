@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
-import { assumeMock } from 'utils/testing'
 
 import AutomateNavbarPaywallNavbarLink from '../AutomateNavbarPaywallNavbarLink'
 

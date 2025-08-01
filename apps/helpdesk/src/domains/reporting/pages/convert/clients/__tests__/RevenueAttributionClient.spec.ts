@@ -1,9 +1,10 @@
+import { assumeMock } from '@repo/testing'
+
 import { TicketChannel } from 'business/types/ticket'
 import { REVENUE_PER_DAY } from 'domains/reporting/config/stats'
 import { fetchStat } from 'domains/reporting/models/stat/resources'
 import { getTicketsPerformanceData } from 'domains/reporting/pages/convert/clients/RevenueAttributionClient'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/models/stat/resources')
 const fetchStatMock = assumeMock(fetchStat)

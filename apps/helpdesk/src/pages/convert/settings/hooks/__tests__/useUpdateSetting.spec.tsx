@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -10,7 +10,6 @@ import {
     useUpdateSetting as usePureUpdateSetting,
 } from 'models/convert/settings/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import { useUpdateSetting } from '../useUpdateSetting'
 

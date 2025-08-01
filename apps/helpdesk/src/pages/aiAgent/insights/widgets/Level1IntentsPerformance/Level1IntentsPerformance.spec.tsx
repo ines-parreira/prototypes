@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useAIAgentMetrics } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
@@ -8,7 +9,6 @@ import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGet
 import useAppSelector from 'hooks/useAppSelector'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
 import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance',

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
@@ -9,7 +10,6 @@ import {
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import history from 'pages/history'
-import { assumeMock } from 'utils/testing'
 
 import SyncIngestionDomainBanner from '../SyncIngestionDomainBanner'
 

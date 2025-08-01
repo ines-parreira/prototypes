@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CampaignRevenueKPIChart } from 'domains/reporting/pages/convert/charts/CampaignRevenueKPIChart'
 import { useCampaignTotalStats } from 'domains/reporting/pages/convert/hooks/useCampaignTotalStats'
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignTotalStats')
 const useCampaignTotalStatsMock = assumeMock(useCampaignTotalStats)

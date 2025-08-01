@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 import { DragSourceMonitor, DropTargetMonitor, useDragLayer } from 'react-dnd'
 
@@ -20,7 +20,6 @@ import {
     DashboardChild,
     DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
-import { assumeMock } from 'utils/testing'
 
 const dummyRect = {
     x: 0,

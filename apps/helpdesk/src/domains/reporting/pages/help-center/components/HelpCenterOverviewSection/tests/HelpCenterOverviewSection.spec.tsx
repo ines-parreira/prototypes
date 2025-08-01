@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,7 +10,6 @@ import { ArticleViewsTrendCard } from 'domains/reporting/pages/help-center/compo
 import HelpCenterOverviewSection from 'domains/reporting/pages/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
 import { SearchesTrendCard } from 'domains/reporting/pages/help-center/components/SearchesTrendCard/SearchesTrendCard'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

@@ -1,10 +1,11 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { VoiceOfCustomerNavbarView } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarView'
 import { PRODUCT_INSIGHTS_PAGE_TITLE } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
-import { assumeMock, renderWithRouterAndDnD } from 'utils/testing'
+import { renderWithRouterAndDnD } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)

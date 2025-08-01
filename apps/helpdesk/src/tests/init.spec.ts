@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { initApp } from 'init'
 
@@ -8,7 +9,6 @@ import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import * as envUtils from 'utils/environment'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser } from 'utils/hotjar'
-import { assumeMock } from 'utils/testing'
 
 type fromJSType = typeof fromJS
 

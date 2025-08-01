@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { AutomateTrendMetrics } from 'domains/reporting/hooks/automate/types'
@@ -9,7 +10,6 @@ import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AutomatedInteractionsMetricCard } from 'domains/reporting/pages/automate/ai-agent/AutomatedInteractionsMetricCard'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/automate/useAutomationDataset')
 const useAutomateMetricsTrendMock = assumeMock(useAutomateMetricsTrend)

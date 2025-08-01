@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -10,7 +10,7 @@ import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSales
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { isTrialing } from 'state/currentAccount/selectors'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)

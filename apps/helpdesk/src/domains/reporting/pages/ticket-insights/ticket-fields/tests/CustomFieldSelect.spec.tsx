@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -18,7 +18,6 @@ import {
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

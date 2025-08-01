@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -17,7 +18,6 @@ import {
 } from 'domains/reporting/pages/constants'
 import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>

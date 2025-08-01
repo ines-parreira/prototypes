@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -11,7 +11,6 @@ import {
     useSatisfactionReportData,
 } from 'domains/reporting/services/satisfactionReportingService'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/services/satisfactionReportingService')
 const useSatisfactionReportDataMock = assumeMock(useSatisfactionReportData)

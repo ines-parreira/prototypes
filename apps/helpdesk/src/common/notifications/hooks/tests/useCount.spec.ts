@@ -1,8 +1,6 @@
 import type { FeedStoreState } from '@knocklabs/client'
 import { useKnockFeed } from '@knocklabs/react'
-import { renderHook } from '@repo/testing'
-
-import { assumeMock } from 'utils/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import useCount from '../useCount'
 

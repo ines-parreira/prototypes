@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 
 import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
@@ -11,7 +12,6 @@ import {
 import useInterval from 'hooks/useInterval'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 import AgentCard from 'pages/common/components/AgentCard/AgentCard'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useInterval')
 jest.mock('pages/common/components/AgentCard/AgentCard')

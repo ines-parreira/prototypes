@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Redirect, Route, useRouteMatch } from 'react-router-dom'
 
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
-import { assumeMock } from 'utils/testing'
 
 import { Convert } from '../Convert'
 

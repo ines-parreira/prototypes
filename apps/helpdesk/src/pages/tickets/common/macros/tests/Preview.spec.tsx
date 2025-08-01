@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -20,7 +21,6 @@ import {
     setTextAction,
     snoozeTicketAction,
 } from 'fixtures/macro'
-import { assumeMock } from 'utils/testing'
 
 import Preview, { CustomFieldName } from '../Preview'
 

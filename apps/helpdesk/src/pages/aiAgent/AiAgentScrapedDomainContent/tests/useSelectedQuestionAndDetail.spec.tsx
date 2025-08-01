@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -10,7 +10,6 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useSelectedQuestionAndDetail } from '../hooks/useSelectedQuestionAndDetail'
 

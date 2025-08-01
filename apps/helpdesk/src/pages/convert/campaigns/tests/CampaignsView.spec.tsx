@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
@@ -26,7 +27,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import { CONVERT_ROUTE_PARAM_NAME } from '../../common/constants'
 import { useGetOrCreateChannelConnection } from '../../common/hooks/useGetOrCreateChannelConnection'

@@ -1,9 +1,8 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useListChannelConnections } from 'models/convert/channelConnection/queries'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import { assumeMock } from 'utils/testing'
 
 import { useGetOnboardingStatusMap } from '../useGetOnboardingStatusMap'
 

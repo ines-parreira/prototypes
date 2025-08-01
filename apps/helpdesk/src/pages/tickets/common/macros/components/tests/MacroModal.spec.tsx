@@ -1,5 +1,6 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
@@ -19,7 +20,6 @@ import { MacroActionName } from 'models/macroAction/types'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { createJob as createTicketJob } from 'state/tickets/actions'
 import { createJob as createViewJob } from 'state/views/actions'
-import { assumeMock } from 'utils/testing'
 
 import MacroEdit from '../MacroEdit'
 import MacroModal from '../MacroModal'

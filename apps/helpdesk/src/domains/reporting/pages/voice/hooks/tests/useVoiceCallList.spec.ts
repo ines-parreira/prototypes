@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
@@ -22,7 +22,6 @@ import { VoiceCallStatListItem } from 'domains/reporting/pages/voice/models/type
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

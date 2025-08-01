@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import {
     fireEvent,
     screen,
@@ -29,7 +30,7 @@ import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)

@@ -1,10 +1,10 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
-import { assumeMock } from 'utils/testing'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 import Template from 'Widgets/modules/Template'
 import Widget from 'Widgets/modules/Widget'

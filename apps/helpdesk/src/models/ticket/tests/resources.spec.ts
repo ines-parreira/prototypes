@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import axios from 'axios'
 
 import { searchTickets as apiSearchTickets } from '@gorgias/helpdesk-client'
@@ -9,7 +10,6 @@ import {
     searchTicketsWithHighlights,
 } from 'models/ticket/resources'
 import { Ticket } from 'models/ticket/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/helpdesk-client')
 const searchTicketsMock = assumeMock(apiSearchTickets)

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useHistory } from 'react-router-dom'
 
@@ -16,7 +17,6 @@ import { DashboardInput } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { useNotify } from 'hooks/useNotify'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),

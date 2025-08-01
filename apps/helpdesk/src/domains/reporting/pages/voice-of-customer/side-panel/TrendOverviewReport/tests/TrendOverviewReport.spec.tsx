@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
@@ -17,7 +18,7 @@ import {
     SidePanelTab,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',

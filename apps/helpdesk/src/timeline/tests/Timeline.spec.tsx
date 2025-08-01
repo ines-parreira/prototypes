@@ -1,3 +1,4 @@
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { TicketCompact } from '@gorgias/helpdesk-queries'
@@ -5,7 +6,6 @@ import { TicketCompact } from '@gorgias/helpdesk-queries'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { useModalShortcuts } from 'timeline/ticket-modal/hooks/useModalShortcuts'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { useTimelineData } from '../hooks/useTimelineData'
 import { RangeFilter } from '../RangeFilter'

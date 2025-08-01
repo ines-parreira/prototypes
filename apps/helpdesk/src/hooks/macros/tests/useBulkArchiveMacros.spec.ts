@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
 import { useBulkArchiveMacros as useBulkArchiveMacrosPrimitive } from '@gorgias/helpdesk-queries'
@@ -7,7 +7,6 @@ import { macros } from 'fixtures/macro'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useBulkArchiveMacros } from '../useBulkArchiveMacros'
 

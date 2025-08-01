@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { AGENT_ROLE } from 'config/user'
 import { SLAForm, SLAList, SLATemplateList } from 'pages/settings/SLAs'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { SLA } from '../SLA'

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -16,7 +17,6 @@ import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding/hooks/useGetAv
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
 import { useGetRepeatRate } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRate'
 import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])()
 

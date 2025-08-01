@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, render } from '@testing-library/react'
 import moment from 'moment/moment'
@@ -18,7 +19,6 @@ import {
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallList')
 const useVoiceCallListMock = assumeMock(useVoiceCallList)

@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { advancedMonthlyHelpdeskPlan } from 'fixtures/productPrices'
 import { CouponSummary, ProductType } from 'models/billing/types'
 import { getPlanDescription } from 'models/billing/utils'
-import { assumeMock } from 'utils/testing'
 
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import ProductCardForCoupon from '../ProductCardForCoupon'

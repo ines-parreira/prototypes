@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { CoreScaleOptions, Scale } from 'chart.js'
@@ -12,7 +13,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import ArticleViewsGraph, {
     renderXTickLabel,
 } from 'domains/reporting/pages/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/help-center/useArticleViewTimeSeries',

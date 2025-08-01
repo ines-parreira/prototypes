@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { TicketChannel } from 'business/types/ticket'
 import {
@@ -58,7 +58,6 @@ import {
     ReportingGranularity,
 } from 'domains/reporting/models/types'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)

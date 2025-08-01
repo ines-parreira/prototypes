@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, flushPromises } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -16,7 +17,6 @@ import { shopifyIntegration } from 'fixtures/integrations'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { saveZippedFiles } from 'utils/file'
-import { assumeMock, flushPromises } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()

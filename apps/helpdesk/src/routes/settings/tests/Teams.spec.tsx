@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import { ADMIN_ROLE } from 'config/user'
 import { Form } from 'pages/settings/teams/Form'
 import TeamsList from 'pages/settings/teams/List'
 import List from 'pages/settings/teams/members/List'
-import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Teams } from '../Teams'

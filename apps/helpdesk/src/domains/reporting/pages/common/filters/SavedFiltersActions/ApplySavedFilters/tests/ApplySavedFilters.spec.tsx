@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -11,7 +12,7 @@ import ApplySavedFilers, {
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import { initialiseSavedFilterDraft } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const savedFilters: SavedFilter[] = [
     { id: 1, name: 'Temp Filter 1', filter_group: [] },

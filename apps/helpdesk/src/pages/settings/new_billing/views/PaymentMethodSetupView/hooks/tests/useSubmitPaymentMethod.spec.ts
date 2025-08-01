@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 
@@ -6,7 +7,6 @@ import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { reportError } from 'utils/errors'
-import { assumeMock } from 'utils/testing'
 
 import { useSubmitPaymentMethod } from '../useSubmitPaymentMethod'
 

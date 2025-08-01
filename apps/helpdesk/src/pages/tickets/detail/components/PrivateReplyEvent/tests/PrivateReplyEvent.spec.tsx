@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,7 +9,6 @@ import thunk from 'redux-thunk'
 
 import { AgentLabel } from 'pages/common/utils/labels'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import {
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,

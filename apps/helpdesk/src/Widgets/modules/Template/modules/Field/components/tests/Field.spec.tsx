@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import CopyButton from 'components/CopyButton/CopyButton'
@@ -11,7 +12,6 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import Field from '../Field'
 import UIField from '../views'

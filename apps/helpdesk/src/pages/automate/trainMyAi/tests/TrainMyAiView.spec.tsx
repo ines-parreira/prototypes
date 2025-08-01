@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -32,7 +33,6 @@ import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSett
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock } from 'utils/testing'
 
 import { ARTICLE_RECOMMENDATION } from '../../common/components/constants'
 import TrainMyAiView from '../TrainMyAiView'

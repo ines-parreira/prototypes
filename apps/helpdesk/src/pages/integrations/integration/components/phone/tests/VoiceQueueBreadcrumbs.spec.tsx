@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { getVoiceQueue } from '@gorgias/helpdesk-client'
@@ -7,7 +8,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'
 

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
@@ -12,7 +13,6 @@ import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
-import { assumeMock } from 'utils/testing'
 
 import MainNavigation, { ActiveContent } from '../MainNavigation'
 

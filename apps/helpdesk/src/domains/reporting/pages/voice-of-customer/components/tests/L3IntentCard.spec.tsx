@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -8,7 +9,6 @@ import { IntentCard } from 'domains/reporting/pages/common/components/IntentCard
 import { useOpenDrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { L3IntentCard } from 'domains/reporting/pages/voice-of-customer/components/L3IntentCard'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/utils/reporting')
 const getPreviousPeriodMock = assumeMock(getPreviousPeriod)

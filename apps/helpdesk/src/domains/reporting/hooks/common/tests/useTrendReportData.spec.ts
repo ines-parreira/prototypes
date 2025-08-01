@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -42,7 +42,6 @@ import {
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/metricTrends')
 const fetchOpenTicketsTrendMock = assumeMock(fetchOpenTicketsTrend)

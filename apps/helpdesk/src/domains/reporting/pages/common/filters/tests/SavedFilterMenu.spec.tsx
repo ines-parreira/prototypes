@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -7,7 +6,7 @@ import { UserRole } from 'config/types/user'
 import { SavedFilterMenu } from 'domains/reporting/pages/common/filters/SavedFilterMenu'
 import { agents } from 'fixtures/agents'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({ getCurrentUser: jest.fn() }))
 const getCurrentUserMock = assumeMock(getCurrentUser)

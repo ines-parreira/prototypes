@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,7 +13,6 @@ import { setCurrentSubscription } from 'state/currentAccount/actions'
 import * as selectors from 'state/currentAccount/selectors'
 import * as actions from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useStartSubscription } from '../useStartSubscription'
 

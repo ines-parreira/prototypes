@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -12,7 +13,6 @@ import { EmailIntegration } from 'models/integration/types'
 import { submitSetting } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import EmailIntegrationAddressField from '../EmailIntegrationAddressField'
 

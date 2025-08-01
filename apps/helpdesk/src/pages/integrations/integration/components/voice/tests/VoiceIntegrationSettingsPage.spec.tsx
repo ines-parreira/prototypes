@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 
@@ -12,7 +13,7 @@ import { integrationsState } from 'fixtures/integrations'
 import history from 'pages/history'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceIntegrationSettingsPage from '../VoiceIntegrationSettingsPage'

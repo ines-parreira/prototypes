@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
@@ -12,7 +13,6 @@ import * as notificationActions from 'state/notifications/actions'
 import { AlertNotification } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock } from 'utils/testing'
 
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 import * as phoneNumberUtils from '../utils'

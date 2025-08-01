@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useTagsDistribution } from 'domains/reporting/hooks/support-performance/useTagsDistribution'
@@ -11,7 +12,7 @@ import { TopUsedTagsChart } from 'domains/reporting/pages/ticket-insights/tags/T
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useTagsDistribution')
 const useTagsDistributionMock = assumeMock(useTagsDistribution)

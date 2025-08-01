@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,7 @@ import { UserRole } from 'config/types/user'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { IntegrationType } from 'models/integration/constants'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
-import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -22,7 +23,7 @@ import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCre
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getHasAutomate } from 'state/billing/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import AiAgentMainViewContainer from '../AiAgentMainViewContainer'
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'

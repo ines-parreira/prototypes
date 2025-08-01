@@ -6,11 +6,12 @@ import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
+
 import { Form, FormField, FormSubmitButton } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
-import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import { DEFAULT_EXPRESSION_RULE } from '../../constants'
 import useSaveCondition from '../../hooks/useSaveCondition'

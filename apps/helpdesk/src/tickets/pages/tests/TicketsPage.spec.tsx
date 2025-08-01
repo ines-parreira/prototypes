@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,7 @@ import { Panels } from 'core/layout/panels'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import { TicketsPage } from '../TicketsPage'
 

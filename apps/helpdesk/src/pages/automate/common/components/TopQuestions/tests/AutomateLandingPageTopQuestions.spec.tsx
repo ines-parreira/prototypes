@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegration } from 'models/integration/types'
-import { assumeMock } from 'utils/testing'
 
 import { AutomateLandingPageTopQuestions } from '../AutomateLandingPageTopQuestions'
 import { useHasEmailToStoreConnection } from '../useHasEmailToStoreConnection'

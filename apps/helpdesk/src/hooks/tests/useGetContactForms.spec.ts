@@ -1,9 +1,8 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { UseInfiniteQueryResult } from '@tanstack/react-query'
 
 import { useGetContactFromIntegrationIdsForStore } from 'hooks/contacForm/useGetContactForms'
 import { useGetContactFormList } from 'pages/settings/contactForm/queries'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/settings/contactForm/queries', () => ({
     useGetContactFormList: jest.fn(),

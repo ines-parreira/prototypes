@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -26,7 +26,7 @@ import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const customFieldId = 123
 const filterName = 'Some Custom Field Name'

@@ -1,8 +1,8 @@
 import { ComponentProps, useContext } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { assumeMock } from 'utils/testing'
 import Template, { CustomizationContext } from 'Widgets/modules/Template'
 
 import SmileWidget, { customization } from '../Smile'

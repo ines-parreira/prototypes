@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { campaignWithABGroup } from 'fixtures/abGroup'
@@ -8,7 +9,7 @@ import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampai
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import ABTestSettingPage from '../ABTestSettingsPage'
 

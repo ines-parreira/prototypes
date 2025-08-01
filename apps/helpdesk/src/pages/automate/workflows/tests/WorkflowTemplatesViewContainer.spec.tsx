@@ -1,11 +1,10 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import WorkflowTemplatesView from '../WorkflowTemplatesView'
 import WorkflowTemplatesViewContainer from '../WorkflowTemplatesViewContainer'

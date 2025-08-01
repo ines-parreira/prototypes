@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -12,7 +11,7 @@ import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/comp
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors')
 jest.mock('state/currentAccount/selectors')

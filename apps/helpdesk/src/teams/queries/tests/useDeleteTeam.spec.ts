@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 
 import { useDeleteTeam as useDeleteTeamPrimitive } from '@gorgias/helpdesk-queries'
@@ -6,7 +6,6 @@ import { useDeleteTeam as useDeleteTeamPrimitive } from '@gorgias/helpdesk-queri
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useDeleteTeam } from '../useDeleteTeam'
 

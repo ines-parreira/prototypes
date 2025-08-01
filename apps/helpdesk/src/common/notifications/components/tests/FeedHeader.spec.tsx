@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { FilterStatus } from '@knocklabs/react'
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import {
@@ -8,7 +9,6 @@ import {
     NotificationCenterEventTypes,
     SegmentEvent,
 } from 'common/segment'
-import { assumeMock } from 'utils/testing'
 
 import useCount from '../../hooks/useCount'
 import FeedHeader from '../FeedHeader'

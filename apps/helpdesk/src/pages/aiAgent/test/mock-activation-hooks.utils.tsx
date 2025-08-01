@@ -1,4 +1,4 @@
-import { assumeMock } from 'utils/testing'
+import { assumeMock } from '@repo/testing'
 
 import { useActivation } from '../Activation/hooks/useActivation'
 

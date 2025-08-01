@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useSavedFilterById } from 'domains/reporting/hooks/filters/useSavedFilterById'
 import { useSyncPinnedFilter } from 'domains/reporting/hooks/filters/useSyncPinnedFilter'
 import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/filters/useSavedFilterById')
 jest.mock('domains/reporting/hooks/filters/useSyncPinnedFilter')

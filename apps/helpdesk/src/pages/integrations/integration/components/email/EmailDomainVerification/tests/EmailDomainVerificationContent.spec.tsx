@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
-import { assumeMock } from 'utils/testing'
 
 import { isBaseEmailAddress } from '../../helpers'
 import RecordsTable from '../components/RecordsTable'

@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { ExpressionOperator } from '@gorgias/helpdesk-queries'
 
 import { FormField, useWatch } from 'core/forms'
 import { CustomField } from 'custom-fields/types'
-import { assumeMock } from 'utils/testing'
 
 import { ExpressionRow } from '../ExpressionRow'
 import { FieldField } from '../FieldField'

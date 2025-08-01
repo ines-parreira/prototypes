@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment-timezone'
 
@@ -7,7 +8,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProductHeader } from 'domains/reporting/pages/voice-of-customer/components/ProductHeader'
 import { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { SHORT_DATE_WITH_YEAR_US, SHORT_DATE_WITH_YEAR_WORLD } from 'utils/date'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

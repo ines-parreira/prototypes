@@ -1,3 +1,5 @@
+import { assumeMock } from '@repo/testing'
+
 import { useProductsTicketCountsPerIntentDistribution } from 'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
 import {
     TicketCustomFieldsDimension,
@@ -12,7 +14,6 @@ import {
     formatProductsPerIntentsTableData,
     getColumnsSortingValue,
 } from 'domains/reporting/pages/voice-of-customer/product-insights/helpers'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution',

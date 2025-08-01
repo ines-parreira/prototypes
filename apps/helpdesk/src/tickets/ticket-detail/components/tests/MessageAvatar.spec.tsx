@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
@@ -6,7 +7,6 @@ import { Avatar } from '@gorgias/merchant-ui-kit'
 import { useFlag } from 'core/flags'
 import * as predicates from 'models/ticket/predicates'
 import { getAvatar } from 'pages/common/components/Avatar/utils'
-import { assumeMock } from 'utils/testing'
 
 import { AVATAR_SIZE, MessageAvatar } from '../MessageAvatar'
 

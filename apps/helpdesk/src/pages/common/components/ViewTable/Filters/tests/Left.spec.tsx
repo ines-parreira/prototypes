@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -7,7 +8,6 @@ import { view } from 'fixtures/views'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 import Left from 'pages/common/components/ViewTable/Filters/Left'
 import QAScoreSelect from 'pages/common/components/ViewTable/Filters/QAScoreSelect'
-import { assumeMock } from 'utils/testing'
 
 import { QaScoreDimensions } from '../utils/qaScoreDimensions'
 

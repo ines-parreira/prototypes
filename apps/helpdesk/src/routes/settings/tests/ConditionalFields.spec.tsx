@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -6,7 +7,6 @@ import { ADMIN_ROLE } from 'config/user'
 import ConditionalField from 'pages/settings/conditionalFields/ConditionalField'
 import ConditionalFieldsComponent from 'pages/settings/conditionalFields/ConditionalFields'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 import { ConditionalFields } from '../ConditionalFields'
 import { renderAppSettings } from '../helpers/settingsRenderer'

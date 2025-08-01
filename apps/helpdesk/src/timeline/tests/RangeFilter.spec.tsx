@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
@@ -7,7 +8,6 @@ import {
     getDateAndTimeFormatter,
     getTimezone,
 } from 'state/currentUser/selectors'
-import { assumeMock } from 'utils/testing'
 
 import { END_OF_TODAY_DATE, MIN_RANGE_DATE } from '../constants'
 import { getRangeLabel } from '../helpers/rangeFilter'

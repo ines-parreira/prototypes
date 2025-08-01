@@ -1,10 +1,8 @@
 // sort-imports-ignore
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
-import React from 'react'
-
 import { render, screen, waitFor } from '@testing-library/react'
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
@@ -27,7 +25,6 @@ import {
     SpotlightModalContent,
 } from 'pages/common/components/Spotlight/SpotlightModalContent'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 

@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
 import { useAccuracyPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useAccuracyPerAgent'
@@ -27,7 +25,7 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { getSortedAutoQAAgents } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
 import { agents } from 'fixtures/agents'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsPerAgent',

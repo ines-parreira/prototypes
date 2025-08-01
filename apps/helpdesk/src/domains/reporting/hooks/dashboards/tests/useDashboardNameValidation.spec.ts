@@ -1,9 +1,8 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useListAnalyticsCustomReports } from '@gorgias/helpdesk-queries'
 
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/helpdesk-queries')
 const useListAnalyticsCustomReportsMock = assumeMock(

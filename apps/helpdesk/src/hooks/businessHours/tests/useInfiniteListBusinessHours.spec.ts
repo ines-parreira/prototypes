@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import {
     InfiniteQueryObserverSuccessResult,
     useInfiniteQuery,
@@ -6,8 +6,6 @@ import {
 
 import { listBusinessHours } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
-
-import { assumeMock } from 'utils/testing'
 
 import { useInfiniteListBusinessHours } from '../useInfiniteListBusinessHours'
 

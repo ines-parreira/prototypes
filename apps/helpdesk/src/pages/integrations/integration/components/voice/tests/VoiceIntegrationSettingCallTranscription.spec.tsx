@@ -1,7 +1,7 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { FormField } from 'core/forms'
-import { assumeMock } from 'utils/testing'
 
 import VoiceIntegrationSettingCallTranscription from '../VoiceIntegrationSettingCallTranscription'
 

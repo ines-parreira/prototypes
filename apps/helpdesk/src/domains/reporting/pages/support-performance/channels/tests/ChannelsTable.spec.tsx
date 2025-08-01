@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock, triggerWidthResize } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import { useSortedChannelsWithData } from 'domains/reporting/hooks/support-performance/useSortedChannelsWithData'
@@ -11,7 +12,7 @@ import {
     MOBILE_CHANNEL_COLUMN_WIDTH,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { channels as mockChannels } from 'fixtures/channels'
-import { assumeMock, renderWithStore, triggerWidthResize } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/useSortedChannelsWithData',

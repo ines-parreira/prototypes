@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { AttachmentEnum } from 'common/types'
@@ -24,7 +24,6 @@ import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
 import { pickNRandomShopifyProducts } from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
 import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 import { transformCampaignAttachmentsToDetails } from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('models/integration/queries')
 const useListProductsMock = assumeMock(useListProducts)

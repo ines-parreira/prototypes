@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -16,7 +16,6 @@ import {
     getCurrentAccountState,
     isTrialing as getIsTrialing,
 } from 'state/currentAccount/selectors'
-import { assumeMock } from 'utils/testing'
 
 import {
     atLeastOneStoreHasActiveTrialOnSpecificStores,

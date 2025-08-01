@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import {
@@ -21,7 +21,6 @@ import {
     useGetTableStat,
 } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { getDataFromResult } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

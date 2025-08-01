@@ -1,9 +1,9 @@
-import React from 'react'
+import { assumeMock } from '@repo/testing'
 
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import VoiceStatsNavbarItem from 'domains/reporting/pages/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
@@ -11,7 +12,6 @@ import {
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AutomatedInteractionsPerFeatureGraphChart } from 'domains/reporting/pages/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -40,7 +40,6 @@ import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
 import { createCsv } from 'utils/file'
-import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore()
 jest.mock('domains/reporting/hooks/common/useTableReportData')

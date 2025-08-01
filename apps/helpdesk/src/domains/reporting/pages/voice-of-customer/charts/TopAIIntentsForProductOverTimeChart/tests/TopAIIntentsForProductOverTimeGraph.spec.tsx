@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import {
@@ -9,7 +10,6 @@ import LineChart from 'domains/reporting/pages/common/components/charts/LineChar
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import { LINES_COLORS } from 'domains/reporting/pages/constants'
 import { TopAIIntentsForProductOverTimeGraph } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsForProductOverTimeChart/TopAIIntentsForProductOverTimeGraph'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/voice-of-customer/useAIIntentsTimeSeries')
 const useAIIntentsForProductTimeSeriesMock = assumeMock(

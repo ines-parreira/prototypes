@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -9,7 +10,6 @@ import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { assumeMock } from 'utils/testing'
 
 import { useCreateOnboarding } from '../useCreateOnboarding'
 

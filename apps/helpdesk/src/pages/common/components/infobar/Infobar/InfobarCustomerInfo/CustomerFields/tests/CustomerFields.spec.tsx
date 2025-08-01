@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import {
@@ -10,7 +11,6 @@ import { useCustomerFieldValues } from 'custom-fields/hooks/queries/useCustomerF
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { customerInputFieldDefinition } from 'fixtures/customField'
-import { assumeMock } from 'utils/testing'
 
 import CustomerField from '../CustomerField'
 import CustomerFields from '../CustomerFields'

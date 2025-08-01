@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,7 +12,6 @@ import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
 import { LeafTemplate } from 'models/widget/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import { assumeMock } from 'utils/testing'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 

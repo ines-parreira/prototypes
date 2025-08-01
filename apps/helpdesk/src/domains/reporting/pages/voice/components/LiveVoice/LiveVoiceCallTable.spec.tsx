@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 
 import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
@@ -15,7 +16,6 @@ import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/componen
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import { assumeMock } from 'utils/testing'
 
 const renderComponent = () => {
     return render(<LiveVoiceCallTable voiceCalls={[]} isLoading={false} />)

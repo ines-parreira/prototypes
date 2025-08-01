@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
@@ -21,7 +22,6 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 import { Billing } from '../Billing'
 import { Channels } from '../Channels'

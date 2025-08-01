@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { Customer } from 'models/customer/types'
 import { Ticket } from 'models/ticket/types'
@@ -12,7 +12,6 @@ import {
 } from 'providers/infobar/IntegrationContext'
 import { getActiveCustomer } from 'state/customers/selectors'
 import { getTicket } from 'state/ticket/selectors'
-import { assumeMock } from 'utils/testing'
 
 import { useTemplateContext } from '../useTemplateContext'
 

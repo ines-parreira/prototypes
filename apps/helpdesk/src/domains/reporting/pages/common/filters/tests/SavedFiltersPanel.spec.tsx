@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { within } from '@testing-library/dom'
 import { screen, waitFor } from '@testing-library/react'
@@ -60,7 +60,7 @@ import {
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 jest.mock('domains/reporting/pages/common/filters/FiltersPanel')

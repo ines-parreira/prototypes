@@ -1,4 +1,4 @@
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen, waitFor, within } from '@testing-library/react'
 
 import { useDownloadDashboardData } from 'domains/reporting/hooks/dashboards/useDownloadDashboardData'
@@ -15,7 +15,6 @@ import {
     DashboardChildType,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
-import { assumeMock } from 'utils/testing'
 
 const mockPush = jest.fn()
 function getBaseURL() {

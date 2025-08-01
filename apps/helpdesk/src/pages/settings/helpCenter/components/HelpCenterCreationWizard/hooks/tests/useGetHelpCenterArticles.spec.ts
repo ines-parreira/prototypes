@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { chain } from 'lodash'
 
@@ -17,7 +17,6 @@ import {
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'
 import { StoreState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import { findArticleByKey } from '../../HelpCenterCreationWizardUtils'
 import { useGetHelpCenterArticles } from '../useGetHelpCenterArticles'

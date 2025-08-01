@@ -1,6 +1,7 @@
 import React from 'react'
 import type { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -20,7 +21,6 @@ import { user } from 'fixtures/users'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { RootState } from 'state/types'
-import { assumeMock } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import AutomateNavbar from '../AutomateNavbar'

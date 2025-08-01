@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import * as chartjs from 'chart.js'
 
@@ -12,7 +13,6 @@ import BarChart, {
 } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
 import { ticketsCreatedDataItem } from 'fixtures/chart'
-import { assumeMock } from 'utils/testing'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',

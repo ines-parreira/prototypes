@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { AccordionValues } from 'components/Accordion/utils/types'
@@ -8,7 +8,6 @@ import {
 } from 'domains/reporting/pages/voice-of-customer/constants'
 import { useVoiceOfCustomerSections } from 'domains/reporting/pages/voice-of-customer/useVoiceOfCustomerSections'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useLocalStorage')
 const useLocalStorageMock = assumeMock(useLocalStorage<AccordionValues>)

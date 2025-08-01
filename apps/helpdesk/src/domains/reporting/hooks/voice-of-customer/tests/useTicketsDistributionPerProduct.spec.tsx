@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -18,7 +18,7 @@ import {
     TICKET_COUNT_FIELD,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { OrderDirection } from 'models/api/types'
-import { assumeMock, mockStore } from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/voice-of-customer/useTicketsPerProductTrend')
 const useTicketsPerProductTrendMock = assumeMock(useTicketsPerProductTrend)

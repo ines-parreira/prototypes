@@ -1,6 +1,7 @@
 import React from 'react'
 import type { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import type { Location } from 'history'
 import type { LDClient } from 'launchdarkly-js-client-sdk'
@@ -10,7 +11,6 @@ import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
 import type { GorgiasInitialState } from 'types'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock } from 'utils/testing'
 
 import history from '../history'
 import Root from '../Root'

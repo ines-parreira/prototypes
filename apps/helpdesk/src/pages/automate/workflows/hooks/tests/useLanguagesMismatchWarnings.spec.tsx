@@ -1,10 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import { ChannelLanguage } from 'pages/automate/common/types'
-import { assumeMock } from 'utils/testing'
 
 import useLanguagesMismatchWarnings from '../useLanguagesMismatchWarnings'
 

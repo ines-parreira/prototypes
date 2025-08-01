@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import type { TicketSummary as TicketSummaryType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
-import { assumeMock } from 'utils/testing'
 
 import { TicketSummary } from '../TicketSummary'
 

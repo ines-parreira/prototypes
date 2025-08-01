@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
@@ -28,7 +29,6 @@ import { AccountSetting, AccountSettingType } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 type MockedRootState = {
     currentAccount: Map<any, any>

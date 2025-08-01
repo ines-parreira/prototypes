@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { useMainNavigationItems } from 'common/navigation/hooks/useMainNavigationItems'
@@ -7,7 +7,6 @@ import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { BASE_STATS_PATH } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 

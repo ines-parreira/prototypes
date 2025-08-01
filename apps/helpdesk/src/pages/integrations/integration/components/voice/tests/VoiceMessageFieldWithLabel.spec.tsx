@@ -1,7 +1,7 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceMessageType } from 'models/integration/types'
-import { assumeMock } from 'utils/testing'
 
 import VoiceMessageField from '../VoiceMessageField'
 import VoiceMessageFieldWithLabel from '../VoiceMessageFieldWithLabel'

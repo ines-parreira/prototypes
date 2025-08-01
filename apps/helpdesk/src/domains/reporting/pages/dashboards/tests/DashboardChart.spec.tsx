@@ -1,4 +1,4 @@
-import React from 'react'
+import { assumeMock } from '@repo/testing'
 
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { DashboardChart } from 'domains/reporting/pages/dashboards/DashboardChart'
@@ -11,7 +11,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { assumeMock, renderWithDnD } from 'utils/testing'
+import { renderWithDnD } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
     __esModule: true,

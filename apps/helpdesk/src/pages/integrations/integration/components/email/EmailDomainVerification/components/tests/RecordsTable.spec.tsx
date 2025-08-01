@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { EmailDomain } from '@gorgias/helpdesk-queries'
-
-import { assumeMock } from 'utils/testing'
 
 import * as helpers from '../../../helpers'
 import RecordDiffStatus from '../RecordDiffStatus'

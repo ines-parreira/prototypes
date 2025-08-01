@@ -1,9 +1,9 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import { assumeMock } from 'utils/testing'
 
 import KnowledgeSourceFeedback from '../KnowledgeSourceFeedback'
 import { KnowledgeResource } from '../types'

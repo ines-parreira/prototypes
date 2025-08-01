@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route } from 'react-router-dom'
 
@@ -14,7 +15,6 @@ import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormC
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { assumeMock } from 'utils/testing'
 
 import { ContactForm } from '../ContactForm'
 import { renderAppSettings } from '../helpers/settingsRenderer'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
 import {
     loadStripe,
@@ -11,7 +12,6 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { assumeMock } from 'utils/testing'
 
 import { BillingAddressSetupView } from '../BillingAddressSetupView'
 

@@ -1,8 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
-import { assumeMock } from 'utils/testing'
 
 import { VoiceIntegrationOnboardingStep } from '../constants'
 import VoiceIntegrationOnboardingUnsavedChangesPrompt from '../VoiceIntegrationOnboardingUnsavedChangesPrompt'

@@ -1,9 +1,8 @@
 import { Dispatch } from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { BannerActions } from 'AlertBanners/Context/types'
-import { assumeMock } from 'utils/testing'
 
 import { BannerActionTypes, useBannersDispatchContext } from '../../Context'
 import { useDismissedStorage } from '../../Storage'

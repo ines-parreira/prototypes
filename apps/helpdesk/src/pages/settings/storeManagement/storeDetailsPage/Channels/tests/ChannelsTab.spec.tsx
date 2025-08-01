@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import { mockStoresWithAssignedChannels } from '../../../fixtures'
 import { StoreManagementProvider } from '../../../StoreManagementProvider'

@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -12,7 +13,6 @@ import { JobType } from '@gorgias/helpdesk-queries'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { TagDropdownMenu } from 'tags'
-import { assumeMock } from 'utils/testing'
 
 import ApplyMacro from '../ApplyMacro'
 import MoreActions from '../MoreActions'

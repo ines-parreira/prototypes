@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -8,7 +8,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useStoresRequiringScriptTagMigration from 'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
-import { assumeMock } from 'utils/testing'
 
 import { useScriptTagMigrationBanner } from '../useScriptTagMigrationBanner'
 

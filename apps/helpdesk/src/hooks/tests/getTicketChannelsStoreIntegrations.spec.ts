@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 
 import { useGetAiAgentIntegrations } from 'hooks/aiAgent/useGetAiAgentIntegrations'
 import { useGetChatIntegrationIdsForStore } from 'hooks/chat/useGetChatIntegrationIdsForStore'
@@ -9,7 +9,6 @@ import {
 } from 'hooks/email/useGetEmail'
 import { useGetHelpCentersIntegrationIdsForStore } from 'hooks/helpCenter/useGetStoreHelpCenters'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/aiAgent/useGetAiAgentIntegrations')
 jest.mock('hooks/chat/useGetChatIntegrationIdsForStore')

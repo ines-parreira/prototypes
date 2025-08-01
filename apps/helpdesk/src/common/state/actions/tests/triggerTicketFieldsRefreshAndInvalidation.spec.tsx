@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Map } from 'immutable'
@@ -26,7 +27,6 @@ import TicketFields from 'pages/tickets/detail/components/TicketFields/TicketFie
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import { initialState as ticketState } from 'state/ticket/reducers'
 import { StoreDispatch } from 'state/types'
-import { assumeMock } from 'utils/testing'
 
 import triggerTicketFieldsRefreshAndInvalidation from '../triggerTicketFieldsRefreshAndInvalidation'
 

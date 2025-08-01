@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import { assumeMock } from 'utils/testing'
 
 import ToggleInputField from '../ToggleInputField'
 

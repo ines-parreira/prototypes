@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useProductInsightsTableSetting } from 'domains/reporting/hooks/useProductInsightsTableConfigSetting'
@@ -25,7 +25,6 @@ import {
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/common/components/Paginations')
 const NumberedPaginationMock = assumeMock(NumberedPagination)

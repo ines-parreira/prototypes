@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -10,7 +11,6 @@ import {
     getIsPreferencesLoading,
     getPreferences,
 } from 'state/currentUser/selectors'
-import { assumeMock } from 'utils/testing'
 
 import AvailabilityToggle from '../AvailabilityToggle'
 

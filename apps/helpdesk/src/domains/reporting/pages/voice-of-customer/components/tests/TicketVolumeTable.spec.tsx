@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -16,7 +17,7 @@ import {
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { opposite } from 'models/api/types'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart')
 const LoadingTableMock = assumeMock(LoadingTable)

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -9,7 +10,6 @@ import {
     BannerNotification,
     NotificationStyle,
 } from 'state/notifications/types'
-import { assumeMock } from 'utils/testing'
 
 import { useBannersContext } from '../../Context'
 import { useBannerCarousel } from '../../hooks/useBannerCarousel'

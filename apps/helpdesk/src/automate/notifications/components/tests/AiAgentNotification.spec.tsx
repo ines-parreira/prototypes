@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
@@ -13,7 +14,6 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { getLDClient } from 'utils/launchDarkly'
-import { assumeMock } from 'utils/testing'
 
 import AiAgentNotification from '../AiAgentNotification'
 

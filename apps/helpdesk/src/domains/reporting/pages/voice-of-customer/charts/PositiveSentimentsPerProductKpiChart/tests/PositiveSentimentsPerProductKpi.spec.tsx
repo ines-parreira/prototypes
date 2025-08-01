@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -7,7 +8,6 @@ import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down
 import { PositiveSentimentsPerProductKpi } from 'domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpi'
 import { getDrillDownMetricData } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/voice-of-customer/useSentimentPerProduct')
 const usePositiveSentimentsPerProductMetricTrendMock = assumeMock(

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -8,7 +9,6 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import client from 'models/api/resources'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { reportError } from 'utils/errors'
-import { assumeMock } from 'utils/testing'
 
 import { useSubmitPaymentMethodWithBillingContact } from '../useSubmitPaymentMethodWithBillingContact'
 

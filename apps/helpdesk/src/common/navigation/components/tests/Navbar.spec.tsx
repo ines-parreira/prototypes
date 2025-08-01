@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { ActiveContent } from 'common/navigation'
@@ -9,7 +10,6 @@ import {
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import useAppSelector from 'hooks/useAppSelector'
-import { assumeMock } from 'utils/testing'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from '../../hooks/useShowGlobalNavFeatureFlag'
 import Navbar from '../Navbar'

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
-
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -14,7 +13,7 @@ import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan
 import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import * as selectors from 'state/currentAccount/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import {
     ISubscriptionSummaryProps,

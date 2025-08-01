@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -22,7 +23,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import history from 'pages/history'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { assumeMock, renderWithRouter } from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import AiAgentScrapedDomainProductsContainer from '../AiAgentScrapedDomainProductsContainer'
 import { IngestionLogStatus } from '../constant'

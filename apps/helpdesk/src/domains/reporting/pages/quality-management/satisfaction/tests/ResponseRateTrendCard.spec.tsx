@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useResponseRateTrend } from 'domains/reporting/hooks/quality-management/satisfaction/useResponseRateTrend'
@@ -13,7 +14,7 @@ import { SatisfactionMetricConfig } from 'domains/reporting/pages/quality-manage
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { SatisfactionMetric } from 'domains/reporting/state/ui/stats/types'
 import { RootState } from 'state/types'
-import { assumeMock, renderWithStore } from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useResponseRateTrend',
