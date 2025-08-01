@@ -14,6 +14,7 @@ import {
     transformVisualBuilderGraphIntoWfConfiguration,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
@@ -94,22 +95,41 @@ const ActionsPlatformEditStepView = ({ template }: Props) => {
                     [],
                 ) as ActionTemplate
 
-            await editActionTemplate([
-                {
-                    internal_id: visualBuilderGraphDirty.internal_id,
-                },
-                configurationDirty,
-            ])
+            try {
+                await editActionTemplate([
+                    {
+                        internal_id: visualBuilderGraphDirty.internal_id,
+                    },
+                    configurationDirty,
+                ])
 
-            dispatch({
-                type: 'RESET_GRAPH',
-                graph: computeNodesPositions(
-                    transformWorkflowConfigurationIntoVisualBuilderGraph(
-                        configurationDirty,
-                        true,
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: computeNodesPositions(
+                        transformWorkflowConfigurationIntoVisualBuilderGraph(
+                            configurationDirty,
+                            true,
+                        ),
                     ),
-                ),
-            })
+                })
+            } catch (error) {
+                // Check if this is a server validation error we can parse
+                const graphWithServerErrors = mapServerErrorsToGraph(
+                    error,
+                    visualBuilderGraphDirty,
+                )
+
+                if (graphWithServerErrors) {
+                    // Set the server errors on the graph to display them to the user
+                    dispatch({
+                        type: 'RESET_GRAPH',
+                        graph: graphWithServerErrors,
+                    })
+                }
+
+                // Re-throw for any other error handling
+                throw error
+            }
         },
         [
             visualBuilderGraphDirty,

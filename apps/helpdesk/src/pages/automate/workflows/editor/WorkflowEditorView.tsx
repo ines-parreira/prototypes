@@ -16,6 +16,7 @@ import {
     useSelfServiceStoreIntegrationContext,
     withSelfServiceStoreIntegrationContext,
 } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
 import PageHeader from 'pages/common/components/PageHeader'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -273,12 +274,26 @@ function WorkflowEditorViewWrapped({
                     storeIntegrationId,
                 )
             }
-        } catch {
-            notifyMerchant({
-                message:
-                    'An error happened trying to save the flow, please try again or contact support',
-                status: NotificationStatus.Error,
-            })
+        } catch (error) {
+            // Check if this is a server validation error by parsing it directly
+            const graphWithServerErrors = mapServerErrorsToGraph(
+                error,
+                workflowEditorContext.visualBuilderGraph,
+            )
+
+            if (graphWithServerErrors) {
+                notifyMerchant({
+                    message:
+                        'Please fix the validation errors below and try again',
+                    status: NotificationStatus.Error,
+                })
+            } else {
+                notifyMerchant({
+                    message:
+                        'An error happened trying to save the flow, please try again or contact support',
+                    status: NotificationStatus.Error,
+                })
+            }
             return
         }
 

@@ -31,6 +31,7 @@ import {
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
@@ -200,19 +201,49 @@ const CreateActionView = () => {
             return Promise.reject()
         }
 
-        await createAction([
-            {
-                internal_id: visualBuilderGraphDirty.internal_id,
-                store_name: shopName,
-                store_type: shopType,
-            },
-            transformVisualBuilderGraphIntoWfConfiguration(
+        try {
+            await createAction([
+                {
+                    internal_id: visualBuilderGraphDirty.internal_id,
+                    store_name: shopName,
+                    store_type: shopType,
+                },
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    visualBuilderGraphDirty,
+                    false,
+                    steps,
+                    availableIntegrations,
+                ) as StoreWorkflowsConfiguration,
+            ])
+        } catch (error) {
+            // Check if this is a server validation error we can parse
+            const graphWithServerErrors = mapServerErrorsToGraph(
+                error,
                 visualBuilderGraphDirty,
-                false,
-                steps,
-                availableIntegrations,
-            ) as StoreWorkflowsConfiguration,
-        ])
+            )
+
+            if (graphWithServerErrors) {
+                // Set the server errors on the graph to display them to the user
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: graphWithServerErrors,
+                })
+
+                void appDispatch(
+                    notify({
+                        showDismissButton: true,
+                        status: NotificationStatus.Error,
+                        message:
+                            'Please fix the validation errors below and try again',
+                    }),
+                )
+
+                return Promise.reject()
+            }
+
+            // Re-throw for generic error handling
+            throw error
+        }
 
         onActionCreated({
             createdHow: configurationFromTemplate.current

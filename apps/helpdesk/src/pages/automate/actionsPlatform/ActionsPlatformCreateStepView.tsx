@@ -136,20 +136,44 @@ const ActionsPlatformCreateStepView = () => {
                 return
             }
 
-            await createActionTemplate([
-                {
-                    internal_id: visualBuilderGraphDirty.internal_id,
-                },
-                transformVisualBuilderGraphIntoWfConfiguration(
-                    visualBuilderGraphDirty,
-                    isDraft,
-                    [],
-                ) as ActionTemplate,
-            ])
+            try {
+                await createActionTemplate([
+                    {
+                        internal_id: visualBuilderGraphDirty.internal_id,
+                    },
+                    transformVisualBuilderGraphIntoWfConfiguration(
+                        visualBuilderGraphDirty,
+                        isDraft,
+                        [],
+                    ) as ActionTemplate,
+                ])
 
-            history.push(
-                `/app/ai-agent/actions-platform/steps/edit/${visualBuilderGraphDirty.id}`,
-            )
+                history.push(
+                    `/app/ai-agent/actions-platform/steps/edit/${visualBuilderGraphDirty.id}`,
+                )
+            } catch (error) {
+                // Check if this is a server validation error we can parse
+                const { mapServerErrorsToGraph } = await import(
+                    'pages/automate/workflows/utils/serverValidationErrors'
+                )
+                const graphWithServerErrors = mapServerErrorsToGraph(
+                    error,
+                    visualBuilderGraphDirty,
+                )
+
+                if (graphWithServerErrors) {
+                    // Set the server errors on the graph to display them to the user
+                    dispatch({
+                        type: 'RESET_GRAPH',
+                        graph: graphWithServerErrors,
+                    })
+
+                    return
+                }
+
+                // Re-throw for any other error handling
+                throw error
+            }
         },
         [
             visualBuilderGraphDirty,

@@ -46,6 +46,7 @@ import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
+import { mapServerErrorsToGraph } from '../utils/serverValidationErrors'
 import useTouchWorkflowGraph from './useTouchWorkflowGraph'
 import useUntouchWorkflowGraph from './useUntouchWorkflowGraph'
 import useValidateWorkflowGraph from './useValidateWorkflowGraph'
@@ -443,28 +444,45 @@ export function useWorkflowEditor(
 
             let configuration: WorkflowConfiguration
 
-            // why saving order differ depending on isNew?
-            // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
-            if (isNew) {
-                const updatedConfiguration = (await upsertWorkflowConfiguration(
-                    [
-                        visualBuilderGraphDirty.internal_id,
-                        configurationUpsertDto,
-                    ],
-                )) as { data: WorkflowConfiguration }
+            try {
+                // why saving order differ depending on isNew?
+                // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
+                if (isNew) {
+                    const updatedConfiguration =
+                        (await upsertWorkflowConfiguration([
+                            visualBuilderGraphDirty.internal_id,
+                            configurationUpsertDto,
+                        ])) as { data: WorkflowConfiguration }
 
-                await saveTranslations(visualBuilderGraphDirty)
-                configuration = updatedConfiguration.data
-            } else {
-                await saveTranslations(visualBuilderGraphDirty)
-                const updatedConfiguration = (await upsertWorkflowConfiguration(
-                    [
-                        visualBuilderGraphDirty.internal_id,
-                        configurationUpsertDto,
-                    ],
-                )) as { data: WorkflowConfiguration }
+                    await saveTranslations(visualBuilderGraphDirty)
+                    configuration = updatedConfiguration.data
+                } else {
+                    await saveTranslations(visualBuilderGraphDirty)
+                    const updatedConfiguration =
+                        (await upsertWorkflowConfiguration([
+                            visualBuilderGraphDirty.internal_id,
+                            configurationUpsertDto,
+                        ])) as { data: WorkflowConfiguration }
 
-                configuration = updatedConfiguration.data
+                    configuration = updatedConfiguration.data
+                }
+            } catch (error) {
+                // Check if this is a server validation error we can parse
+                const graphWithServerErrors = mapServerErrorsToGraph(
+                    error,
+                    visualBuilderGraphDirty,
+                )
+
+                if (graphWithServerErrors) {
+                    // Set the server errors on the graph to display them to the user
+                    dispatch({
+                        type: 'RESET_GRAPH',
+                        graph: graphWithServerErrors,
+                    })
+                }
+
+                // Re-throw the error so the calling code can handle it
+                throw error
             }
 
             const updatedConfiguration = {

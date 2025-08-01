@@ -17,6 +17,7 @@ import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
@@ -124,18 +125,37 @@ const ActionsPlatformCreateUseCaseTemplateView = () => {
             return
         }
 
-        await createActionTemplate([
-            {
-                internal_id: visualBuilderGraphDirty.internal_id,
-            },
-            transformVisualBuilderGraphIntoWfConfiguration(
-                visualBuilderGraphDirty,
-                false,
-                steps,
-            ) as ActionTemplate,
-        ])
+        try {
+            await createActionTemplate([
+                {
+                    internal_id: visualBuilderGraphDirty.internal_id,
+                },
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    visualBuilderGraphDirty,
+                    false,
+                    steps,
+                ) as ActionTemplate,
+            ])
 
-        history.push('/app/ai-agent/actions-platform/use-cases')
+            history.push('/app/ai-agent/actions-platform/use-cases')
+        } catch (error) {
+            // Check if this is a server validation error we can parse
+            const graphWithServerErrors = mapServerErrorsToGraph(
+                error,
+                visualBuilderGraphDirty,
+            )
+
+            if (graphWithServerErrors) {
+                // Set the server errors on the graph to display them to the user
+                dispatch({
+                    type: 'RESET_GRAPH',
+                    graph: graphWithServerErrors,
+                })
+            }
+
+            // Re-throw for any other error handling
+            throw error
+        }
     }, [
         visualBuilderGraphDirty,
         createActionTemplate,

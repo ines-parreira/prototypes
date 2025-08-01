@@ -28,7 +28,13 @@ import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegr
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {
+    transformWorkflowConfigurationIntoVisualBuilderGraph,
+    WorkflowConfigurationBuilder,
+} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
@@ -48,6 +54,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useThreeplIntegrations')
 jest.mock('core/flags')
+jest.mock('pages/automate/workflows/utils/serverValidationErrors')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
@@ -69,6 +76,7 @@ const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
 )
+const mockServerValidationErrors = jest.mocked(serverValidationErrors)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('state/integrations/selectors', () => ({
@@ -190,6 +198,11 @@ describe('<EditActionView />', () => {
         } as unknown as ReturnType<
             typeof useFindAllGuidancesKnowledgeResources
         >)
+
+        // Default mock for server validation errors - can be overridden in individual tests
+        mockServerValidationErrors.mapServerErrorsToGraph = jest
+            .fn()
+            .mockReturnValue(null)
     })
 
     it('should render edit action page', () => {
@@ -562,5 +575,180 @@ describe('<EditActionView />', () => {
             ),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Save changes')).toBeInTheDocument()
+    })
+
+    it('should handle server validation errors during save', async () => {
+        // This integration test executes the actual error handling code path
+        // to ensure server validation errors are properly mapped and displayed
+
+        const serverValidationError = {
+            response: {
+                status: 400,
+                data: {
+                    message: [
+                        'steps.0.settings.template: output "{{age}}" not closed, line:5, col:1',
+                    ],
+                },
+            },
+        }
+
+        const mockEditAction = jest
+            .fn()
+            .mockRejectedValue(serverValidationError)
+        const mockAppDispatch = jest.fn()
+        const mockVisualBuilderDispatch = jest.fn()
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: mockEditAction,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        mockUseAppDispatch.mockReturnValue(mockAppDispatch)
+
+        // Create a proper visual builder graph for this test
+        const visualBuilderGraph = computeNodesPositions(
+            transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
+                configuration,
+                false,
+            ),
+        )
+
+        // Spy on the visual builder reducer for this specific test
+        const useVisualBuilderGraphReducerSpy = jest
+            .spyOn(
+                require('pages/automate/workflows/hooks/useVisualBuilderGraphReducer'),
+                'useVisualBuilderGraphReducer',
+            )
+            .mockReturnValue([visualBuilderGraph, mockVisualBuilderDispatch])
+
+        // Mock that server errors were successfully mapped to graph - use visual builder graph structure
+        const graphWithMappedErrors = {
+            ...visualBuilderGraph,
+            nodes: visualBuilderGraph.nodes.map((node, index) =>
+                index === 0
+                    ? {
+                          ...node,
+                          data: {
+                              ...node.data,
+                              errors: {
+                                  template:
+                                      'output "{{age}}" not closed, line:5, col:1',
+                              },
+                          },
+                      }
+                    : node,
+            ),
+        }
+        mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(
+            graphWithMappedErrors as any,
+        )
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <EditActionView configuration={configuration} />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+            },
+        )
+
+        // Trigger the save action that will cause error handling
+        await act(async () => {
+            fireEvent.click(screen.getByText('Save changes'))
+        })
+
+        // Verify mapServerErrorsToGraph was called (line 189)
+        expect(
+            mockServerValidationErrors.mapServerErrorsToGraph,
+        ).toHaveBeenCalledWith(
+            serverValidationError,
+            visualBuilderGraph, // visualBuilderGraphDirty
+        )
+
+        // Verify that the graph was updated with server errors (line 196)
+        expect(mockVisualBuilderDispatch).toHaveBeenCalledWith({
+            type: 'RESET_GRAPH',
+            graph: graphWithMappedErrors,
+        })
+
+        // Verify notification was dispatched (line 201)
+        expect(mockAppDispatch).toHaveBeenCalledWith(
+            notify({
+                showDismissButton: true,
+                status: NotificationStatus.Error,
+                message: 'Please fix the validation errors below and try again',
+            }),
+        )
+
+        // Verify editAction was called but failed
+        expect(mockEditAction).toHaveBeenCalled()
+
+        // The handleSave function should return Promise.reject() (line 210)
+        // which prevents navigation and keeps the user on the form
+
+        // Clean up the spy
+        useVisualBuilderGraphReducerSpy.mockRestore()
+    })
+
+    it('should handle generic server errors during save', async () => {
+        // This integration test executes the actual error handling code path
+        // to ensure generic errors are properly re-thrown
+
+        const genericError = new Error('Network error')
+
+        const mockEditAction = jest.fn().mockRejectedValue(genericError)
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: mockEditAction,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        // Mock that this is NOT a validation error (returns null)
+        mockServerValidationErrors.mapServerErrorsToGraph.mockReturnValue(null)
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <EditActionView configuration={configuration} />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+            },
+        )
+
+        // Mock console.error to avoid noise in test output
+        const originalConsoleError = console.error
+        console.error = jest.fn()
+
+        try {
+            // Trigger the save action that will cause error handling
+            await act(async () => {
+                fireEvent.click(screen.getByText('Save changes'))
+            })
+
+            // Verify mapServerErrorsToGraph was called (line 189)
+            expect(
+                mockServerValidationErrors.mapServerErrorsToGraph,
+            ).toHaveBeenCalledWith(
+                genericError,
+                expect.any(Object), // visualBuilderGraphDirty
+            )
+
+            // Verify editAction was called
+            expect(mockEditAction).toHaveBeenCalled()
+
+            // The error should be re-thrown (line 214) since mapServerErrorsToGraph returned null
+            // This allows the useUpsertAction hook's onError to handle it with default behavior
+        } finally {
+            // Restore console.error
+            console.error = originalConsoleError
+        }
     })
 })
