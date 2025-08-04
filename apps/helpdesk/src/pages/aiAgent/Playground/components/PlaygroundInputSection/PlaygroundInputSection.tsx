@@ -192,7 +192,7 @@ export const PlaygroundInputSection = ({
 
     const { onTestMessageSent } = usePlaygroundTracking({ shopName })
 
-    const handleSendMessage = () => {
+    const handleSendMessage = useCallback(() => {
         onSendMessage()
         setHasMessageBeenSent(true)
 
@@ -203,9 +203,41 @@ export const PlaygroundInputSection = ({
                     ? senderSelectedOption
                     : channelAvailability,
         })
-    }
+    }, [
+        onSendMessage,
+        onTestMessageSent,
+        channel,
+        senderSelectedOption,
+        channelAvailability,
+    ])
 
     const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
+
+    // Handle keyboard shortcut for sending message (Cmd/Ctrl + Enter)
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            // Check if the event originated from within the PlaygroundEditor
+            const target = event.target as HTMLElement
+            const isFromPlaygroundEditor =
+                target.closest('.fr-element') !== null
+
+            if (
+                isFromPlaygroundEditor &&
+                (event.metaKey || event.ctrlKey) &&
+                event.key === 'Enter' &&
+                !isDisabled &&
+                !isMessageSending
+            ) {
+                event.preventDefault()
+                handleSendMessage()
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [isDisabled, isMessageSending, handleSendMessage])
 
     return (
         <div className={css.container}>
@@ -286,6 +318,7 @@ export const PlaygroundInputSection = ({
                 </Button>
                 <Button
                     intent="secondary"
+                    leadingIcon="refresh"
                     onClick={() => {
                         onNewConversation()
                         setHasMessageBeenSent(false)
