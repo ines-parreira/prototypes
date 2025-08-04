@@ -63,19 +63,21 @@ export const HandoverHelpdeskDropdown: React.FC<Props> = ({
                         ref={floatingRef}
                     >
                         <DropdownBody>
-                            {integrationsArray.map(([key, value]) => (
-                                <DropdownItem
-                                    key={key}
-                                    option={{
-                                        label: value.label,
-                                        value: key,
-                                    }}
-                                    onClick={(value) => {
-                                        onClick(value, context)
-                                    }}
-                                    ref={null}
-                                />
-                            ))}
+                            {integrationsArray
+                                .filter(([, value]) => value.active)
+                                .map(([key, value]) => (
+                                    <DropdownItem
+                                        key={key}
+                                        option={{
+                                            label: value.label,
+                                            value: key,
+                                        }}
+                                        onClick={(value) => {
+                                            onClick(value, context)
+                                        }}
+                                        ref={null}
+                                    />
+                                ))}
                         </DropdownBody>
                     </Dropdown>
                 )}

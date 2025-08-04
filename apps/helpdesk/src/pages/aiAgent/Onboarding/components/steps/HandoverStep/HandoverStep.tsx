@@ -46,7 +46,7 @@ const HandoverCard: FC<{
     value: string
     onChange: (value: string) => void
     isSelected?: boolean
-    badgeType?: 'success' | 'warning' | 'error'
+    badgeType?: 'blue'
     badgeContent?: string
     children?: React.ReactNode
 }> = ({
@@ -72,7 +72,7 @@ const HandoverCard: FC<{
                     onChange={onChange}
                 ></RadioButton>
                 {badgeType && badgeContent && (
-                    <Badge type="success">{badgeContent}</Badge>
+                    <Badge type={badgeType}>{badgeContent}</Badge>
                 )}
             </div>
             {children}
@@ -247,8 +247,6 @@ export const HandoverStep: FC<StepProps> = ({
                         value="email"
                         isSelected={handoverMethod === 'email'}
                         onChange={(value) => setValue('handoverMethod', value)}
-                        badgeType="success"
-                        badgeContent="Recommended"
                     >
                         {handoverMethod === 'email' && (
                             <HandoverEmailFields
@@ -282,6 +280,8 @@ export const HandoverStep: FC<StepProps> = ({
                         value="webhook"
                         isSelected={handoverMethod === 'webhook'}
                         onChange={(value) => setValue('handoverMethod', value)}
+                        badgeType="blue"
+                        badgeContent="Recommended"
                     >
                         {handoverMethod === 'webhook' && (
                             <HandoverWebhookFields

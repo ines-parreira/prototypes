@@ -389,13 +389,13 @@ describe('HandoverStep', () => {
         fireEvent.click(screen.getByText('arrow_drop_down'))
 
         await waitFor(() => {
-            expect(screen.getByText('Intercom')).toBeInTheDocument()
+            expect(screen.getAllByText('Zendesk')[0]).toBeInTheDocument()
         })
 
-        fireEvent.click(screen.getByText('Intercom'))
+        fireEvent.click(screen.getAllByText('Zendesk')[1])
 
         waitFor(() => {
-            expect(screen.getByText('Intercom')).toBeInTheDocument()
+            expect(screen.getAllByText('Zendesk')[0]).toBeInTheDocument()
         })
     })
 

@@ -181,12 +181,7 @@ export const HandoverConfigurationDrawer: React.FC<
                         caption={
                             'Conversations that need human intervention will be sent to this email address'
                         }
-                        label={
-                            <span className={css.labelWithBadge}>
-                                <span>Email</span>
-                                <Badge type="blue">Recommended</Badge>
-                            </span>
-                        }
+                        label="Email"
                         isSelected={handoverMethod === HandoverMethods.EMAIL}
                         onClick={() =>
                             setValue('handoverMethod', HandoverMethods.EMAIL)
@@ -216,7 +211,12 @@ export const HandoverConfigurationDrawer: React.FC<
                     <RadioButton
                         value={HandoverMethods.WEBHOOK}
                         caption="Conversations that need human intervention will use this webhook to send handover conversations to the tool of your choice."
-                        label="Webhook"
+                        label={
+                            <span className={css.labelWithBadge}>
+                                <span>Webhook</span>
+                                <Badge type="blue">Recommended</Badge>
+                            </span>
+                        }
                         isSelected={handoverMethod === HandoverMethods.WEBHOOK}
                         onClick={() =>
                             setValue('handoverMethod', HandoverMethods.WEBHOOK)

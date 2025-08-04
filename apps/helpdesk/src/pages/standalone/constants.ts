@@ -25,6 +25,7 @@ export const INTEGRATIONS_MAPPING: HelpdeskIntegration = {
             },
         },
         label: 'Zendesk',
+        active: true,
     },
     intercom: {
         schema: JSON.stringify(intercomSchema),
@@ -41,6 +42,7 @@ export const INTEGRATIONS_MAPPING: HelpdeskIntegration = {
             },
         },
         label: 'Intercom',
+        active: false,
     },
 }
 

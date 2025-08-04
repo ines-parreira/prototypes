@@ -13,6 +13,7 @@ export type HelpdeskIntegrationProperties = {
     schema: string
     requiredFields: Record<string, HelpdeskIntegrationRequiredFields>
     label: string
+    active: boolean
 }
 
 export type HelpdeskIntegration = Record<

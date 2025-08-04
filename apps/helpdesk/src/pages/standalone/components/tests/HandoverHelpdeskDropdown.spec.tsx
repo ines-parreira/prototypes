@@ -47,11 +47,13 @@ describe('HandoverHelpdeskDropdown', () => {
         // Wait for the dropdown to open
         await waitFor(() => {
             // Check if all helpdesk options are rendered
-            Object.values(INTEGRATIONS_MAPPING).forEach((integration) => {
-                // Use getAllByText since Zendesk appears twice (in dropdown and in list)
-                const elements = screen.getAllByText(integration.label)
-                expect(elements.length).toBeGreaterThan(0)
-            })
+            Object.values(INTEGRATIONS_MAPPING)
+                .filter((integration) => integration.active)
+                .forEach((integration) => {
+                    // Use getAllByText since Zendesk appears twice (in dropdown and in list)
+                    const elements = screen.getAllByText(integration.label)
+                    expect(elements.length).toBeGreaterThan(0)
+                })
         })
     })
 
@@ -68,12 +70,12 @@ describe('HandoverHelpdeskDropdown', () => {
 
         // Click on a helpdesk option
         await waitFor(() => {
-            fireEvent.click(screen.getByText('Intercom'))
+            fireEvent.click(screen.getAllByText('Zendesk')[1])
         })
 
         // Check if onClick was called with the correct value and context
         expect(mockOnClick).toHaveBeenCalledWith(
-            HelpdeskIntegrationOptions.INTERCOM,
+            HelpdeskIntegrationOptions.ZENDESK,
             expect.any(Object),
         )
     })

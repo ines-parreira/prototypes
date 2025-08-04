@@ -356,13 +356,13 @@ describe('<HandoverConfigurationDrawer />', () => {
         fireEvent.click(screen.getByText('arrow_drop_down'))
 
         await waitFor(() => {
-            expect(screen.getByText('Intercom')).toBeInTheDocument()
+            expect(screen.getAllByText('Zendesk')[0]).toBeInTheDocument()
         })
 
-        fireEvent.click(screen.getByText('Intercom'))
+        fireEvent.click(screen.getAllByText('Zendesk')[0])
 
         waitFor(() => {
-            expect(screen.getByText('Intercom')).toBeInTheDocument()
+            expect(screen.getByText('Zendesk')).toBeInTheDocument()
         })
     })
 
