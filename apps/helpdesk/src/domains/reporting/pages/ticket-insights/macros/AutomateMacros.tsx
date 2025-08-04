@@ -55,7 +55,7 @@ export default function AutomateMacros() {
             description="Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
             It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
             to help reduce your support inquiries."
-            helpUrl="https://docs.gorgias.com/statistics/statistics#macros"
+            helpUrl="https://docs.gorgias.com/en-US/ticket-insights-statistics-406733#macros"
             titleExtra={
                 pageStatsFilters && (
                     <>
