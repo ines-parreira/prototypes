@@ -77,7 +77,7 @@ export default function AddCustomBusinessHoursModal({
                         <FormSectionCard>
                             <SectionHeader
                                 title="Let customers know when your team is available."
-                                description="Create a custom schedule to define the days and hours your team is online. These hours can be used to control rules, chat and voice availability, and auto-responses. You can assign this schedule to specific integrations and override it with holiday hours when needed."
+                                description="Create a custom schedule to define the days and hours your team is online. These hours can be assigned to specific integrations and can be used to control rules, chat and voice availability, and auto-responses."
                             />
                         </FormSectionCard>
                         <FormSectionCard>
