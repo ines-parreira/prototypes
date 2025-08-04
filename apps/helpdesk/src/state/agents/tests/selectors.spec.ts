@@ -383,4 +383,104 @@ describe('agents selectors', () => {
             ).toEqual([])
         })
     })
+
+    describe('getAccountAdmins', () => {
+        const adminAgent1 = {
+            id: 100,
+            role: { name: UserRole.Admin },
+            email: 'admin1@example.com',
+        }
+        const adminAgent2 = {
+            id: 101,
+            role: { name: UserRole.Admin },
+            email: 'admin2@example.com',
+        }
+        const regularAgent = {
+            id: 102,
+            role: { name: UserRole.Agent },
+            email: 'agent@example.com',
+        }
+
+        it('should return only admin agents from the state', () => {
+            const stateWithAdmins = {
+                ...state,
+                agents: fromJS({
+                    all: [
+                        adminAgent1,
+                        adminAgent2,
+                        regularAgent,
+                        automationBotAgent,
+                    ],
+                }),
+            } as RootState
+
+            const result = selectors.getAccountAdmins(stateWithAdmins)
+
+            expect(result.size).toBe(2)
+            expect(result.get(0)?.getIn(['role', 'name'])).toBe(UserRole.Admin)
+            expect(result.get(1)?.getIn(['role', 'name'])).toBe(UserRole.Admin)
+        })
+
+        it('should return empty list when no admin agents in the state', () => {
+            const stateWithoutAdmins = {
+                ...state,
+                agents: fromJS({
+                    all: [regularAgent, automationBotAgent],
+                }),
+            } as RootState
+
+            const result = selectors.getAccountAdmins(stateWithoutAdmins)
+
+            expect(result.size).toBe(0)
+        })
+
+        it('should return empty list when agents list is empty', () => {
+            const emptyState = {
+                ...state,
+                agents: fromJS({
+                    all: [],
+                }),
+            } as RootState
+
+            const result = selectors.getAccountAdmins(emptyState)
+
+            expect(result.size).toBe(0)
+        })
+    })
+
+    describe('getAccountAdminsJS', () => {
+        const adminAgent1 = {
+            id: 100,
+            role: { name: UserRole.Admin },
+            email: 'admin1@example.com',
+            name: 'Admin One',
+        }
+        const adminAgent2 = {
+            id: 101,
+            role: { name: UserRole.Admin },
+            email: 'admin2@example.com',
+            name: 'Admin Two',
+        }
+
+        it('should return admin agents as plain JS array', () => {
+            const stateWithAdmins = {
+                ...state,
+                agents: fromJS({
+                    all: [adminAgent1, adminAgent2],
+                }),
+            } as RootState
+
+            const result = selectors.getAccountAdminsJS(stateWithAdmins)
+
+            expect(Array.isArray(result)).toBe(true)
+            expect(result).toHaveLength(2)
+        })
+
+        it('should return empty array when no admin agents', () => {
+            const result = selectors.getAccountAdminsJS({} as RootState)
+
+            expect(Array.isArray(result)).toBe(true)
+            expect(result).toHaveLength(0)
+        })
+    })
 })

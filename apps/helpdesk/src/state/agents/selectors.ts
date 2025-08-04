@@ -70,6 +70,18 @@ export const getHumanAndAutomationBotAgentsJS = makeGetPlainJS<User[]>(
     getHumanAndAutomationBotAgents,
 )
 
+export const getAccountAdmins = createImmutableSelector(
+    getHumanAgents,
+    (agents) => {
+        return (agents || fromJS([])).filter(
+            (agent: Map<any, any>) =>
+                agent.getIn(['role', 'name'], '') === UserRole.Admin,
+        ) as List<any>
+    },
+)
+
+export const getAccountAdminsJS = makeGetPlainJS<User[]>(getAccountAdmins)
+
 export const getLabelledHumanAndBotAgents = createSelector(
     getHumanAndAutomationBotAgents,
     (agents) =>
