@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useId } from '@repo/hooks'
+
 import { Badge, Banner } from '@gorgias/merchant-ui-kit'
 
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
@@ -8,7 +10,6 @@ import logoShopify from 'assets/img/integrations/shopify.svg'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import { useFlag } from 'core/flags'
-import useId from 'hooks/useId'
 import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
