@@ -1,9 +1,11 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import LD from 'launchdarkly-react-client-sdk'
 import { useHistory, useLocation } from 'react-router-dom'
 
 // Import mocked modules
 import { logEvent } from 'common/segment/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
@@ -153,6 +155,10 @@ describe('TrialManageWorkflow', () => {
         )
         // Default to no early access plan
         mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null })
+        // Default to shopping assistant during trial enabled
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ShoppingAssistantDuringTrial]: false,
+        }))
 
         // Mock components to render test content
         ;(TrialAlertBanner as jest.Mock).mockImplementation((props: any) => (
@@ -807,7 +813,7 @@ describe('TrialManageWorkflow', () => {
         })
     })
 
-    describe('TrialOptOutModal', () => {
+    describe('TrialOptOutModal (flag disabled - old modal)', () => {
         beforeEach(() => {
             ;(useShoppingAssistantTrialFlow as jest.Mock).mockReturnValue({
                 openManageTrialModal: mockOpenManageTrialModal,
@@ -1013,6 +1019,169 @@ describe('TrialManageWorkflow', () => {
             ).not.toBeInTheDocument()
 
             // Check that URL is updated with showOptOutFeedback parameter
+            expect(mockPush).toHaveBeenCalledWith({
+                pathname: '/test-path',
+                search: 'showOptOutFeedback=true',
+            })
+        })
+    })
+
+    describe('TrialOptOutModal (flag enabled - new modal)', () => {
+        beforeEach(() => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.ShoppingAssistantDuringTrial]: true,
+            }))
+            ;(useShoppingAssistantTrialFlow as jest.Mock).mockReturnValue({
+                openManageTrialModal: mockOpenManageTrialModal,
+                isManageTrialModalOpen: true,
+                closeManageTrialModal: mockCloseManageTrialModal,
+            })
+        })
+
+        it('renders new TrialOptOutModal when opt out is clicked', async () => {
+            const user = userEvent.setup()
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const optOutButton = screen.getByText('Opt Out')
+            await user.click(optOutButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Opt out of upgrade?'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('calls optOutPlan and logs event when Opt Out is confirmed with new modal', async () => {
+            const user = userEvent.setup()
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const optOutButton = screen.getByText('Opt Out')
+            await user.click(optOutButton)
+
+            const confirmOptOutButton = screen.getByRole('button', {
+                name: 'Opt Out Anyway',
+            })
+            await user.click(confirmOptOutButton)
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/trial-opt-out-modal-clicked',
+                {
+                    CTA: 'Confirm',
+                },
+            )
+            expect(mockOptOutMutate).toHaveBeenCalledWith([], {
+                onSuccess: expect.any(Function),
+            })
+        })
+
+        it('logs event when Request Trial Extension is clicked', async () => {
+            const user = userEvent.setup()
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const optOutButton = screen.getByText('Opt Out')
+            await user.click(optOutButton)
+
+            const requestTrialButton = screen.getByRole('button', {
+                name: 'Request Trial Extension',
+            })
+            await user.click(requestTrialButton)
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/trial-opt-out-modal-clicked',
+                {
+                    CTA: 'Dismiss',
+                },
+            )
+        })
+
+        it('logs event when modal is closed with new modal', async () => {
+            const user = userEvent.setup()
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const optOutButton = screen.getByText('Opt Out')
+            await user.click(optOutButton)
+
+            const closeButton = screen
+                .getAllByRole('button')
+                .find(
+                    (button) =>
+                        button.querySelector('.material-icons')?.textContent ===
+                        'close',
+                )
+            if (closeButton) {
+                await user.click(closeButton)
+            }
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/trial-opt-out-modal-clicked',
+                {
+                    CTA: 'Close',
+                },
+            )
+        })
+
+        it('displays new modal content with enhanced features list', async () => {
+            const user = userEvent.setup()
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const optOutButton = screen.getByText('Opt Out')
+            await user.click(optOutButton)
+
+            expect(screen.getByText('Opt out of upgrade?')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /You won't be automatically upgraded when your trial ends, and you'll keep full access to Shopping Assistant until then/,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Request Trial Extension'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Opt Out Anyway')).toBeInTheDocument()
+        })
+
+        it('updates URL with showOptOutFeedback parameter after new modal is closed', async () => {
+            const user = userEvent.setup()
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const optOutButton = screen.getByText('Opt Out')
+            await user.click(optOutButton)
+
+            const requestTrialButton = screen.getByRole('button', {
+                name: 'Request Trial Extension',
+            })
+            await user.click(requestTrialButton)
+
             expect(mockPush).toHaveBeenCalledWith({
                 pathname: '/test-path',
                 search: 'showOptOutFeedback=true',

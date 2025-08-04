@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { StoreConfiguration } from 'models/aiAgent/types'
@@ -23,6 +25,7 @@ import {
     TrialEndingTomorrowModal,
 } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
+import TrialOptOutModal from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -48,6 +51,9 @@ export const TrialManageWorkflow = ({
     const history = useHistory()
     const location = useLocation()
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
+
+    const isShoppingAssistantDuringTrialEnabled =
+        useFlags()[FeatureFlagKey.ShoppingAssistantDuringTrial]
 
     const { hasCurrentStoreTrialStarted, hasCurrentStoreTrialExpired } =
         useShoppingAssistantTrialAccess(storeConfiguration.storeName)
@@ -151,8 +157,14 @@ export const TrialManageWorkflow = ({
                 />
             )}
 
-            {isOptOutModalOpen && (
-                <TrialOptOutModal onClose={onCloseOptOutModal} />
+            {!isShoppingAssistantDuringTrialEnabled && isOptOutModalOpen && (
+                <TrialOptOutModalOld onClose={onCloseOptOutModal} />
+            )}
+            {isShoppingAssistantDuringTrialEnabled && (
+                <TrialOptOutModal
+                    isOpen={isOptOutModalOpen}
+                    onClose={onCloseOptOutModal}
+                />
             )}
 
             <TrialEndingTomorrowModal storeConfiguration={storeConfiguration} />
@@ -162,7 +174,7 @@ export const TrialManageWorkflow = ({
     )
 }
 
-export const TrialOptOutModal = ({ onClose }: { onClose: () => void }) => {
+export const TrialOptOutModalOld = ({ onClose }: { onClose: () => void }) => {
     const optOutMutation = useOptOutSalesTrialUpgradeMutation()
 
     const onOptOutClick = () => {

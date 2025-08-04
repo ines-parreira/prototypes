@@ -150,6 +150,8 @@ export enum FeatureFlagKey {
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
     ShopifyCustomerTimeline = 'linear.project_add-shopify-to-customer-timeline',
+    /** https://app.launchdarkly.com/projects/default/flags/linear.project_post-ga-shopping-assistant-trial-improvement.during_trial/targeting?env=test&env=production&selected-env=test */
+    ShoppingAssistantDuringTrial = 'linear.project_post-ga-shopping-assistant-trial-improvement.during_trial',
     /** @deprecated https://app.launchdarkly.com/projects/default/flags/linear.project_shopping-assistant-trial-revamp/targeting?env=production&selected-env=production */
     ShoppingAssistantTrialRevamp = 'linear.project_shopping-assistant-trial-revamp',
     /** https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */

@@ -1,0 +1,38 @@
+@import (reference) '~css/typography';
+
+:local {
+    .modalContent {
+        border-radius: var(--layout-spacing-xs);
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-m);
+    }
+
+    .header,
+    .body,
+    .footer {
+        padding: 0;
+        border: none;
+    }
+
+    .header {
+        .heading-section-semibold();
+    }
+
+    .body {
+        .body-regular();
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+        margin-top: var(--layout-spacing-s);
+    }
+
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xs);
+        background-color: var(--neutral-grey-0);
+    }
+}
