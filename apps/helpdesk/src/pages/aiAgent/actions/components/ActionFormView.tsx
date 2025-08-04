@@ -237,16 +237,22 @@ const ActionFormView = ({
                             <Accordion.ItemContent>
                                 {references[visualBuilderGraph.id].map(
                                     (reference) => (
-                                        <a
+                                        <div
                                             key={reference.id}
-                                            href={routes.guidanceArticleEdit(
-                                                parseInt(reference.sourceId),
-                                            )}
-                                            target="_blank"
-                                            rel="noreferrer"
+                                            className={css.reference}
                                         >
-                                            {reference.title}
-                                        </a>
+                                            <a
+                                                href={routes.guidanceArticleEdit(
+                                                    parseInt(
+                                                        reference.sourceId,
+                                                    ),
+                                                )}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                {reference.title}
+                                            </a>
+                                        </div>
                                     ),
                                 )}
                             </Accordion.ItemContent>

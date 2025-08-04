@@ -12,7 +12,10 @@ jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceContext', () => {
     return {
         useGuidanceReferenceContext: () => ({
             canBeDeleted: () => true,
-            references: {},
+            references: {
+                [visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture.id]:
+                    [{ id: 1, title: 'Guidance 1', sourceId: '1' }],
+            },
         }),
     }
 })
@@ -612,5 +615,37 @@ describe('<ActionFormView />', () => {
                 screen.queryByText('Disable confirmation requirement?'),
             ).not.toBeInTheDocument()
         })
+    })
+
+    it('should display guidances using this action', async () => {
+        const user = userEvent.setup()
+        const mockDispatch = jest.fn()
+
+        renderWithQueryClientProvider(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph:
+                        visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+                    initialVisualBuilderGraph:
+                        visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: () => [],
+                    isNew: false,
+                }}
+            >
+                <ActionFormView onEditSteps={jest.fn()} steps={[]} />
+            </VisualBuilderContext.Provider>,
+        )
+
+        act(() => {
+            user.click(screen.getByText('Action is referenced in 1 Guidance'))
+        })
+
+        await waitFor(() =>
+            expect(screen.getByText('Guidance 1')).toBeInTheDocument(),
+        )
     })
 })

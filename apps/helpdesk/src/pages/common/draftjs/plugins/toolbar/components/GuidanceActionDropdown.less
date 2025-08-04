@@ -3,6 +3,12 @@
 :local {
     .icon {
         margin-right: 4px;
+
+        &:hover {
+            cursor: pointer !important;
+            border: none;
+            box-shadow: none !important; /* rich-field.less forces a box-shadow on hover which we don’t want here */
+        }
     }
 
     .tooltipDisabled {
