@@ -10,6 +10,7 @@ const config: Config = {
         uuid: 'uuid',
         'react-markdown': '<rootDir>/tests/__mocks__/react-markdown.ts',
         'rehype-raw': '<rootDir>/tests/__mocks__/rehype-raw.ts',
+        tabbable: '<rootDir>/tests/__mocks__/tabbable.js',
     },
     setupFiles: ['jest-launchdarkly-mock', 'construct-style-sheets-polyfill'],
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
