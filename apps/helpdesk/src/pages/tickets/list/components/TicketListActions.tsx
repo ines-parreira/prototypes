@@ -649,10 +649,10 @@ export const TicketListActions = ({
                                         value: 'undelete',
                                     }}
                                     onClick={bulkUnTrash}
+                                    shouldCloseOnSelect
                                 >
                                     Undelete
                                 </DropdownItemInternal>
-                                ,
                                 <DropdownItemInternal
                                     option={{
                                         label: 'Delete forever',
@@ -660,10 +660,10 @@ export const TicketListActions = ({
                                     }}
                                     className="text-danger"
                                     onClick={toggleDeleteConfirmation}
+                                    shouldCloseOnSelect
                                 >
                                     Delete forever
                                 </DropdownItemInternal>
-                                ,
                             </>
                         ) : (
                             <DropdownItemInternal

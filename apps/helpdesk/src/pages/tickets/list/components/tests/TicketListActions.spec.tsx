@@ -558,6 +558,50 @@ describe('TicketListActions component', () => {
         expect(screen.queryByText(/Are you sure you want to delete/)).toBe(null)
     })
 
+    it('should delete forever tickets', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'Peter Parker',
+                        role: { id: 1, name: UserRole.Agent },
+                    }),
+                    views: fromJS({
+                        active: {
+                            id: 888,
+                            filters: 'isNotEmpty(ticket.trashed_datetime)',
+                        },
+                    }),
+                })}
+            >
+                <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
+            </Provider>,
+        )
+
+        await user.click(screen.getByText('More'))
+        await user.click(screen.getByText('Delete forever'))
+
+        await waitFor(() => {
+            expect(screen.getByText('Are you sure?')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /Are you sure you want to delete 1 ticket forever\?/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByText('Confirm'))
+        expect(mockedCreateJobTicket).toHaveBeenCalledWith(
+            fromJS([1]),
+            JobType.DeleteTicket,
+            {},
+        )
+    })
+
     describe('search functionality', () => {
         it('should filter teams when searching', async () => {
             const user = userEvent.setup()
