@@ -2,6 +2,7 @@ import { ChangeEvent, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
+import { isValidPhoneNumber } from 'AIJourney/utils'
 import playIcon from 'assets/img/ai-journey/play.svg'
 
 import css from './InputAction.less'
@@ -34,6 +35,8 @@ export const InputAction = ({
     const inputRef = useRef<HTMLInputElement>(null)
 
     const placeholder = '(___) ___-____'
+
+    const isValid = isValidPhoneNumber(value)
 
     const formatPhoneNumber = (value: string) => {
         const digits = value.replace(/\D/g, '')
@@ -91,12 +94,12 @@ export const InputAction = ({
 
     const actionClass = classNames(css.action, {
         [css['action--sending']]: isSending,
-        [css['action--disabled']]: !Boolean(value),
+        [css['action--disabled']]: !isValid,
     })
 
     const actionDecoratorClass = classNames(css.actionDecorator, {
         [css['actionDecorator--sending']]: isSending,
-        [css['actionDecorator--disabled']]: !Boolean(value),
+        [css['actionDecorator--disabled']]: !isValid,
     })
 
     return (
@@ -119,7 +122,7 @@ export const InputAction = ({
             <button
                 className={actionClass}
                 onClick={handleActionClick}
-                disabled={!value || isSending}
+                disabled={!isValid || isSending}
             >
                 {isSending ? 'Sending SMS...' : 'Send test SMS'}
                 <div className={actionDecoratorClass}>

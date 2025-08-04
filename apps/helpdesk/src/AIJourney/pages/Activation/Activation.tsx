@@ -3,10 +3,13 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
 import { Button } from 'AIJourney/components/Button/Button'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneys, useTestSms } from 'AIJourney/queries'
+import { isValidPhoneNumber } from 'AIJourney/utils'
 import { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useListProducts } from 'models/integration/queries'
@@ -24,11 +27,11 @@ export const Activation = () => {
     const dispatch = useAppDispatch()
 
     const [isVisible, setIsVisible] = useState(true)
-
     const [selectedProduct, setSelectedProduct] = useState({} as Product)
     const [testSmsNumber, setTestSmsNumber] = useState('')
 
-    const { currentIntegration } = useIntegrations(shopName)
+    const { currentIntegration, isLoading: isLoadingIntegrations } =
+        useIntegrations(shopName)
 
     const testSms = useTestSms()
 
@@ -36,20 +39,22 @@ export const Activation = () => {
         return currentIntegration?.id
     }, [currentIntegration])
 
-    const { data: merchantAiJourneys } = useJourneys(integrationId, {
-        enabled: !!integrationId,
-    })
+    const { data: merchantAiJourneys, isLoading: isLoadingJourneys } =
+        useJourneys(integrationId, {
+            enabled: !!integrationId,
+        })
 
     const abandonedCartJourney = merchantAiJourneys?.find(
         (journey) => journey.type === 'cart_abandoned',
     )
 
-    const { data: integrationItems } = useListProducts(
-        currentIntegration?.id ?? 0,
-        !!currentIntegration?.id,
-        { limit: 5 },
-        { refetchOnWindowFocus: false, refetchOnMount: true },
-    )
+    const { data: integrationItems, isLoading: isLoadingProductsList } =
+        useListProducts(
+            currentIntegration?.id ?? 0,
+            !!currentIntegration?.id,
+            { limit: 5 },
+            { refetchOnWindowFocus: false, refetchOnMount: true },
+        )
 
     const products = useMemo(() => {
         const data = integrationItems?.pages?.reduce(
@@ -132,7 +137,16 @@ export const Activation = () => {
         }
     }
 
-    const shouldDisableButton = !selectedProduct || !testSmsNumber
+    const isNumberValid = isValidPhoneNumber(testSmsNumber)
+
+    const shouldDisableButton = !selectedProduct || !isNumberValid
+
+    const isLoading =
+        isLoadingIntegrations || isLoadingProductsList || isLoadingJourneys
+
+    if (isLoading) {
+        return <LoadingSpinner />
+    }
 
     return (
         <motion.div

@@ -24,8 +24,10 @@ import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { billingState } from 'fixtures/billing'
+import { shopifyProductResult } from 'fixtures/shopify'
 import { user } from 'fixtures/users'
 import useAllIntegrations from 'hooks/useAllIntegrations'
+import { useListProducts } from 'models/integration/queries'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import Routes from 'routes/Routes'
 import { initialState } from 'state/billing/reducers'
@@ -169,6 +171,25 @@ jest.mock('@gorgias/helpdesk-client', () => ({
         },
     }),
 }))
+
+jest.mock('AIJourney/queries', () => ({
+    ...jest.requireActual('AIJourney/queries'),
+    useJourneys: jest.fn(),
+    useCreateNewJourney: jest.fn(),
+    useJourneyConfiguration: jest.fn(),
+    useUpdateJourney: jest.fn(),
+    useSmsIntegrations: jest.fn(),
+    useTestSms: jest.fn(),
+}))
+
+jest.mock('models/integration/queries')
+const useListProductsMock = assumeMock(useListProducts)
+
+const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
+const mockUseJourneyConfiguration = require('AIJourney/queries')
+    .useJourneyConfiguration as jest.Mock
+// const mockUseIntegrations = require('AIJourney/providers')
+//     .useIntegrations as jest.Mock
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
@@ -809,6 +830,42 @@ describe('<Routes/>', () => {
                 console.log('AXIOS REQUEST:', config)
                 return Promise.reject(new Error('Mocked network error'))
             })
+
+            // mockUseIntegrations.mockImplementation(() => ({
+            //     integrations: [{ id: 1, name: 'shopify-store' }],
+            //     isLoading: false,
+            // }))
+
+            mockUseJourneyConfiguration.mockImplementation(() => ({
+                data: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 'sms-1',
+                },
+                isError: false,
+                isLoading: false,
+            }))
+
+            mockUseJourneys.mockImplementation(() => ({
+                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
+                isError: false,
+                isLoading: false,
+            }))
+
+            useListProductsMock.mockReturnValue({
+                data: {
+                    pages: [
+                        {
+                            data: {
+                                data: shopifyProductResult(),
+                            },
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
         })
         const queryClient = new QueryClient()
         it('should redirect to /app when feature flag is disabled', () => {
@@ -822,9 +879,11 @@ describe('<Routes/>', () => {
 
             render(
                 <QueryClientProvider client={queryClient}>
-                    <Router history={history}>
-                        <Routes />
-                    </Router>
+                    <Provider store={mockStore}>
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </Provider>
                 </QueryClientProvider>,
             )
 
@@ -893,15 +952,17 @@ describe('<Routes/>', () => {
 
             render(
                 <QueryClientProvider client={queryClient}>
-                    <Router history={history}>
-                        <Routes />
-                    </Router>
+                    <Provider store={mockStore}>
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </Provider>
                 </QueryClientProvider>,
             )
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/ai-journey/shopify-store',
+                    '/app/ai-journey/shopify-store/performance',
                 )
             })
         })
@@ -914,13 +975,14 @@ describe('<Routes/>', () => {
 
             render(
                 <QueryClientProvider client={queryClient}>
-                    <Router history={history}>
-                        <Routes />
-                    </Router>
+                    <Provider store={mockStore}>
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </Provider>
                 </QueryClientProvider>,
             )
 
-            screen.debug()
             await waitFor(() => {
                 expect(
                     screen.getByText('AI Journey Performance'),

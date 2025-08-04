@@ -18,3 +18,10 @@ export const isZero = (value: string): boolean => {
     const numeric = parseFloat(value.replace(/^[+-]/, '').replace('%', ''))
     return numeric === 0
 }
+
+export const isValidPhoneNumber = (value?: string): boolean => {
+    if (!value) return false
+
+    const digits = value.replace(/\D/g, '')
+    return digits.length === 10 && !value.includes('_')
+}
