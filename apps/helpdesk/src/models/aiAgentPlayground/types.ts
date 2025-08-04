@@ -137,6 +137,7 @@ export type PlaygroundTextMessage = BaseMessage & {
     agentSkill?: AgentSkill
     content: string
     attachments?: AiAgentAttachment[]
+    executionId?: string
 }
 
 export type PlaygroundPromptMessage = BaseMessage & {

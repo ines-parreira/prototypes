@@ -1,0 +1,116 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .knowledgeSourcesWrapper {
+        .caption-regular;
+        border-radius: var(--border-radius-xl, 8px);
+        background: var(--neutral-grey-0);
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+
+        background-image:
+            linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0)),
+            linear-gradient(
+                315deg,
+                var(--neutral-grey-3),
+                var(--accessory-magenta-2),
+                var(--main-primary-1)
+            );
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        border: 1px solid transparent;
+        padding: var(--layout-spacing-m);
+        margin-top: var(--layout-spacing-s);
+    }
+
+    .header {
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .headerLine {
+        display: block;
+        margin-bottom: var(--layout-spacing-s);
+    }
+
+    .headerLineSecond {
+        display: block;
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .sourcesList {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .sourceItem {
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.2s ease;
+    }
+
+    .sourceLink {
+        display: inline-flex;
+        align-items: center;
+        color: #4a4a5a;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        gap: var(--layout-spacing-xxs);
+        width: 100%;
+
+        > span:first-child {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .openInNewTabIcon {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            font-size: 16px;
+            margin-left: auto;
+        }
+
+        &.hasLink:hover {
+            cursor: pointer;
+            text-decoration: underline;
+
+            .openInNewTabIcon {
+                opacity: 1;
+                color: var(--main-primary, #5c6ac4);
+            }
+        }
+
+        &.deleted {
+            opacity: 0.6;
+            cursor: not-allowed;
+
+            &:hover {
+                opacity: 0.6;
+                text-decoration: none;
+            }
+
+            .openInNewTabIcon {
+                opacity: 0;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--neutral-grey-2);
+        }
+    }
+
+    .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .footer {
+        margin-top: var(--layout-spacing-xs);
+        color: var(--neutral-grey-5);
+        font-size: 10px;
+    }
+}

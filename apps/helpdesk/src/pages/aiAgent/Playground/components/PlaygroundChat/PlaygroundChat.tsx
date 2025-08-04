@@ -12,7 +12,10 @@ import {
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
+import {
+    MessageType,
+    PlaygroundPromptType,
+} from 'models/aiAgentPlayground/types'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
@@ -24,6 +27,7 @@ import {
     mapPlaygroundFormValuesToMessage,
     mapPlaygroundPromptToMessage,
 } from '../../utils/playground-messages.utils'
+import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
 import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
 import { PlaygroundInputSection } from '../PlaygroundInputSection/PlaygroundInputSection'
 import PlaygroundMessageComponent, {
@@ -48,6 +52,7 @@ export const PlaygroundChat = ({
     currentUserFirstName,
 }: Props) => {
     const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
+    const isNewDesignEnabled = useFlag(FeatureFlagKey.PlaygroundNewDesign)
 
     const messageContainerRef = useRef<HTMLDivElement>(null)
     const [channel, setChannel] = useState<PlaygroundChannels>(
@@ -55,6 +60,7 @@ export const PlaygroundChat = ({
     )
     const [channelAvailability, setChannelAvailability] =
         useState<PlaygroundChannelAvailability>('online')
+    const feedbackPollingStopRef = useRef<(() => void) | null>(null)
 
     const {
         messages,
@@ -111,6 +117,10 @@ export const PlaygroundChat = ({
     const handleNewConversation = useCallback(() => {
         onNewConversation()
         clearForm()
+        // Stop feedback polling if it's active
+        if (feedbackPollingStopRef.current) {
+            feedbackPollingStopRef.current()
+        }
     }, [onNewConversation, clearForm])
 
     const onPromptMessage = (prompt: PlaygroundPromptType) => {
@@ -254,14 +264,51 @@ export const PlaygroundChat = ({
                     {messages.length === 0 ? (
                         <PlaygroundInitialContent />
                     ) : (
-                        messages.map((message, index) => (
-                            <PlaygroundMessageComponent
-                                message={message}
-                                key={index}
-                                channel={channel}
-                                withAnimation
-                            />
-                        ))
+                        messages.map((message, index) =>
+                            message.type === MessageType.INTERNAL_NOTE &&
+                            isNewDesignEnabled ? null : (
+                                <div key={index}>
+                                    <PlaygroundMessageComponent
+                                        message={message}
+                                        key={index}
+                                        channel={channel}
+                                        withAnimation
+                                    >
+                                        {message.type === MessageType.MESSAGE &&
+                                            message.executionId &&
+                                            isNewDesignEnabled && (
+                                                <KnowledgeSourcesWrapper
+                                                    executionId={
+                                                        message.executionId
+                                                    }
+                                                    storeConfiguration={
+                                                        storeData
+                                                    }
+                                                    onFeedbackPollingStop={(
+                                                        stopFn,
+                                                    ) => {
+                                                        feedbackPollingStopRef.current =
+                                                            stopFn
+                                                    }}
+                                                    // we get the outcome from the ticket event message
+                                                    outcome={(() => {
+                                                        const ticketEventMessage =
+                                                            messages.find(
+                                                                (m) =>
+                                                                    m.type ===
+                                                                    MessageType.TICKET_EVENT,
+                                                            )
+                                                        return ticketEventMessage?.type ===
+                                                            MessageType.TICKET_EVENT
+                                                            ? ticketEventMessage.outcome
+                                                            : undefined
+                                                    })()}
+                                                />
+                                            )}
+                                    </PlaygroundMessageComponent>
+                                </div>
+                            ),
+                        )
                     )}
                 </div>
             </div>

@@ -184,6 +184,7 @@ export const handleAiAgentTestSessionLog = (log: TestSessionLog) => {
                     ? AgentSkill.SALES
                     : AgentSkill.SUPPORT,
                 createdDatetime: log.createdDatetime,
+                executionId: log.aiAgentExecutionId,
             }
         case TestSessionLogType.AI_AGENT_EXECUTION_FINISHED:
             return {

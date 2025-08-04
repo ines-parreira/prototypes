@@ -17,7 +17,7 @@ const ticketOutcomeToIcon: { [key in TicketOutcome]: string } = {
     [TicketOutcome.WAIT]: timer,
 }
 
-const ticketOutcomeToLabel: { [key in TicketOutcome]: string } = {
+export const ticketOutcomeToLabel: { [key in TicketOutcome]: string } = {
     [TicketOutcome.CLOSE]: 'Closed',
     [TicketOutcome.HANDOVER]: 'Handed over',
     [TicketOutcome.WAIT]: 'Snoozed',

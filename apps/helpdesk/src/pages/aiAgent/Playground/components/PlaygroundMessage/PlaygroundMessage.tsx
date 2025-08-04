@@ -28,12 +28,14 @@ type Props = {
     withAnimation?: boolean
     message: PlaygroundMessageType
     channel: PlaygroundChannels
+    children?: ReactNode
 }
 
 const PlaygroundMessage = ({
     withAnimation = false,
     message,
     channel,
+    children,
 }: Props) => {
     const isAiAgentSender = message.sender === AI_AGENT_SENDER
     const messageType = message.type
@@ -122,6 +124,7 @@ const PlaygroundMessage = ({
                             />
                         </div>
                     )}
+                    {children}
                 </MessageContainer>
             )
         default:
@@ -180,6 +183,8 @@ const MessageContainer = ({
             className={classnames(css.messageContainer, {
                 [css.internalNoteContainer]: type === MessageType.INTERNAL_NOTE,
                 [css.messageAnimation]: withAnimation,
+                [css.messageContainerHover]:
+                    !!isAiAgentSender && type === MessageType.MESSAGE,
             })}
             role={role}
         >

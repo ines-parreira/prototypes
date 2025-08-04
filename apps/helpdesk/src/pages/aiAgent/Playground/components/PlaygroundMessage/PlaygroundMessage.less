@@ -7,6 +7,12 @@
         }
     }
 
+    .messageContainerHover {
+        &:hover {
+            background-color: #fef9ff;
+        }
+    }
+
     .messageContainer {
         width: 100%;
         display: flex;
@@ -133,6 +139,14 @@
         }
         to {
             opacity: 1;
+        }
+    }
+}
+
+.dark :local {
+    .messageContainerHover {
+        &:hover {
+            background-color: #312c33;
         }
     }
 }

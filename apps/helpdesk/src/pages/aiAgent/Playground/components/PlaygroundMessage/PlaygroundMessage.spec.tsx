@@ -160,6 +160,43 @@ describe('PlaygroundMessage', () => {
         expect(screen.queryByText('SUPPORT')).not.toBeInTheDocument()
         expect(screen.queryByText('SALES')).not.toBeInTheDocument()
     })
+
+    it('should render children when provided', () => {
+        const childContent = 'This is a child component'
+        renderComponent({
+            message: playgroundMessageFixture,
+            children: <div data-testid="child-component">{childContent}</div>,
+        })
+
+        expect(screen.getByTestId('child-component')).toBeInTheDocument()
+        expect(screen.getByText(childContent)).toBeInTheDocument()
+    })
+
+    it('should add hover class for AI agent messages', () => {
+        const { container } = renderComponent({
+            message: {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                type: MessageType.MESSAGE,
+            },
+        })
+
+        const messageContainer = container.querySelector('.messageContainer')
+        expect(messageContainer).toHaveClass('messageContainerHover')
+    })
+
+    it('should not add hover class for non-AI agent messages', () => {
+        const { container } = renderComponent({
+            message: {
+                ...playgroundMessageFixture,
+                sender: 'customer',
+                type: MessageType.MESSAGE,
+            },
+        })
+
+        const messageContainer = container.querySelector('.messageContainer')
+        expect(messageContainer).not.toHaveClass('messageContainerHover')
+    })
 })
 
 describe('PlaygroundGenericErrorMessage ', () => {

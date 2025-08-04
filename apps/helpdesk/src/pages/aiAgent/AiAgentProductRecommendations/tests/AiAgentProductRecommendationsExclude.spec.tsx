@@ -160,6 +160,7 @@ const renderComponent = (
     } = options
 
     const rules: GetProductRecommendationRules = {
+        promoted: [],
         excluded: [
             {
                 type: 'product',

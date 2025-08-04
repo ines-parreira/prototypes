@@ -508,6 +508,7 @@ describe('playground-handler.utils', () => {
                 content: 'Reply message',
                 agentSkill: AgentSkill.SUPPORT,
                 createdDatetime: testDatetime,
+                executionId: 'exec-123',
             })
         })
 
@@ -537,6 +538,7 @@ describe('playground-handler.utils', () => {
                 content: 'Sales reply message',
                 agentSkill: AgentSkill.SALES,
                 createdDatetime: testDatetime,
+                executionId: 'exec-123',
             })
         })
 

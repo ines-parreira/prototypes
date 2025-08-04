@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash'
 import {
     client,
     FeedbackExecutionsItemFeedbackItem,
+    FeedbackExecutionsItemResourcesItemFeedback,
     FeedbackUpsertRequest,
     FindFeedbackParams,
     FindFeedbackResult,
@@ -152,12 +153,16 @@ export const optimisticallyUpdateFeedback =
                                     )
                             }
                         } else {
-                            suggestedExecution.feedback.push(newFeedback)
+                            suggestedExecution.feedback.push(
+                                newFeedback as FeedbackExecutionsItemFeedbackItem,
+                            )
                         }
                         optimisticallyUpdatedFeedback = true
                     }
                     if (!optimisticallyUpdatedFeedback) {
-                        newData.data.executions[0]?.feedback.push(newFeedback)
+                        newData.data.executions[0]?.feedback.push(
+                            newFeedback as FeedbackExecutionsItemFeedbackItem,
+                        )
                     }
                     break
                 }
@@ -188,7 +193,8 @@ export const optimisticallyUpdateFeedback =
                         if (resource.feedback) {
                             resource.feedback.feedbackValue = item.feedbackValue
                         } else {
-                            resource.feedback = newFeedback
+                            resource.feedback =
+                                newFeedback as FeedbackExecutionsItemResourcesItemFeedback
                         }
                     }
                     break
