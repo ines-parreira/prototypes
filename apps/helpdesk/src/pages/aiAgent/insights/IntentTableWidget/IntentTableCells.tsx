@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
@@ -16,7 +17,6 @@ import {
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
 import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import useId from 'hooks/useId'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { BadgeWithTiers } from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
 import {

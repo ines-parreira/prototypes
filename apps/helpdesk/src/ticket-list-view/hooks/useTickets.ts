@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { useDebouncedValue, useElementSize, usePrevious } from '@repo/hooks'
+
 import { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
-import useDebouncedValue from 'hooks/useDebouncedValue'
-import useElementSize from 'hooks/useElementSize'
-import usePrevious from 'hooks/usePrevious'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
 import type { OnToggleUnreadFn } from 'tickets/dtp'

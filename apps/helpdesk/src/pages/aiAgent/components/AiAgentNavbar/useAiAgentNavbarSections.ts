@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { useRouteMatch } from 'react-router-dom'
 
 import { AccordionValues } from 'components/Accordion/utils/types'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { IntegrationType } from 'models/integration/types'
 import {
     AI_AGENT_MAX_EXPANDED_SECTIONS_BY_DEFAULT,

@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
+
 import closeIcon from 'assets/img/icons/close.svg'
-import useLocalStorage from 'hooks/useLocalStorage'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import css from './ConvertCampaignsNewHomeInfobar.less'

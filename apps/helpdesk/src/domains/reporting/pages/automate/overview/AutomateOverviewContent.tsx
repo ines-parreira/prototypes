@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
@@ -23,7 +24,6 @@ import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSec
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { PAGE_TITLE_AUTOMATE_PAYWALL } from 'domains/reporting/pages/self-service/constants'
-import useLocalStorage from 'hooks/useLocalStorage'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 

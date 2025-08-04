@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import isEqual from 'lodash/isEqual'
 
 import { useNotify } from 'hooks/useNotify'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,

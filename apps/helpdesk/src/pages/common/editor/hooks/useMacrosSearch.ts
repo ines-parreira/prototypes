@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 
+import { useDebouncedValue } from '@repo/hooks'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
@@ -9,7 +10,6 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useDebouncedValue from 'hooks/useDebouncedValue'
 import { fetchMacros } from 'models/macro/resources'
 import { Filters } from 'models/macro/types'
 import { Ticket } from 'models/ticket/types'

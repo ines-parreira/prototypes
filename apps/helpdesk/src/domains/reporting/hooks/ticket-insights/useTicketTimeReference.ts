@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
-import useLocalStorage from 'hooks/useLocalStorage'
 
 export enum Entity {
     Tag = 'tags',

@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
 
+import { useCallbackRef } from '@repo/hooks'
+
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-import useCallbackRef from 'hooks/useCallbackRef'
 import AutomateLandingPageDashboardV2 from 'pages/automate/common/components/AutomateLandingPageDashboardV2'
 import { last28DaysStatsFilters } from 'pages/automate/common/utils/last28DaysStatsFilters'
 

@@ -9,9 +9,8 @@ import React, {
     useRef,
 } from 'react'
 
+import { useKey } from '@repo/hooks'
 import classnames from 'classnames'
-
-import useKey from 'hooks/useKey'
 
 import css from './DropdownHeader.less'
 

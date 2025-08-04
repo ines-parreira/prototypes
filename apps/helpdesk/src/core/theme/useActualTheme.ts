@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { THEME_NAME } from '@gorgias/design-tokens'
+import { useLocalStorage } from '@repo/hooks'
 
-import useLocalStorage from 'hooks/useLocalStorage'
+import { THEME_NAME } from '@gorgias/design-tokens'
 
 import type { HelpdeskThemeName } from './types'
 

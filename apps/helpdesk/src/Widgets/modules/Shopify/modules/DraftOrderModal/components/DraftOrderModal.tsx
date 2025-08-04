@@ -1,5 +1,6 @@
-import React, { useCallback, useContext, useMemo, useRef } from 'react'
+import { useCallback, useContext, useMemo, useRef } from 'react'
 
+import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -9,8 +10,6 @@ import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { Product, Variant } from 'constants/integrations/types/shopify'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import {
     IntegrationDataItem,
     IntegrationType,

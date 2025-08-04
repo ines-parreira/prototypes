@@ -1,3 +1,4 @@
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
@@ -6,7 +7,6 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import useId from 'hooks/useId'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import { getCurrentUser } from 'state/currentUser/selectors'
 

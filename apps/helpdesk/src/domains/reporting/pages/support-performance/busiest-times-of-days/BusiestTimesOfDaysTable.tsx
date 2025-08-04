@@ -1,5 +1,6 @@
 import React, { UIEventHandler, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
@@ -18,7 +19,6 @@ import {
     getWorkingHoursInTimeZone,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
 import useAppSelector from 'hooks/useAppSelector'
-import useMeasure from 'hooks/useMeasure'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

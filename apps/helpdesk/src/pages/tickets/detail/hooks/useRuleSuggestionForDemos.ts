@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { getCurrentHelpdeskPlan, getHasAutomate } from 'state/billing/selectors'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getInTicketSuggestionSettings } from 'state/currentAccount/selectors'

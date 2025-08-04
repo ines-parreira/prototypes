@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -12,7 +13,6 @@ import {
     SidePanelProduct,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useId from 'hooks/useId'
 
 type Props = {
     children: React.ReactNode

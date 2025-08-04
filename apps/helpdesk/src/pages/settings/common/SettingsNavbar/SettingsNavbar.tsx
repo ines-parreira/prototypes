@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
+
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import cssNavbar from 'assets/css/navbar.less'
@@ -11,7 +13,6 @@ import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {

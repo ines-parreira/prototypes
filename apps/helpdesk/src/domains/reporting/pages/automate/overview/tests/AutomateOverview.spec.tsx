@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -57,7 +57,10 @@ jest.useFakeTimers().setSystemTime(new Date('2022-02-02'))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('hooks/useId', () => () => 'abc')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'abc'),
+}))
 
 jest.mock('react-chartjs-2', () => ({
     Line: () => null,

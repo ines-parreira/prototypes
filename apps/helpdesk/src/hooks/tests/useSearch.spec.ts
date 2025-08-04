@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { useLocation } from 'react-router-dom'
 
-import useSearch from '../useSearch'
+import { useSearch } from '../useSearch'
 
 jest.mock('react-router')
 ;(useLocation as jest.MockedFunction<typeof useLocation>).mockReturnValue({

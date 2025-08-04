@@ -1,4 +1,5 @@
-import useCopyToClipboard from 'hooks/useCopyToClipboard'
+import { useCopyToClipboard } from '@repo/hooks'
+
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.less'
 

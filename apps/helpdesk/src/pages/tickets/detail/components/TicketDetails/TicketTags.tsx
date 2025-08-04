@@ -1,5 +1,6 @@
 import { ComponentProps, Fragment, useEffect, useMemo, useState } from 'react'
 
+import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
@@ -7,8 +8,6 @@ import { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
 import { Badge, BadgeIcon, Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { getWrappedElementCount } from 'common/utils'
-import useCallbackRef from 'hooks/useCallbackRef'
-import useElementSize from 'hooks/useElementSize'
 import TicketTag from 'pages/common/components/TicketTag'
 
 import TagDropdown from './TagDropdown'

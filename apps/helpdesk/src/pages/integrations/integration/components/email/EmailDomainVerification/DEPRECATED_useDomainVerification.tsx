@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useInterval, useLocalStorage } from '@repo/hooks'
+
 import {
     EmailDomain,
     useDeleteEmailIntegrationDomain,
@@ -8,8 +10,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useInterval from 'hooks/useInterval'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

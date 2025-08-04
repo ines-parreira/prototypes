@@ -1,9 +1,8 @@
 import React, { ReactNode, useMemo, useRef, useState } from 'react'
 
+import { usePrevious } from '@repo/hooks'
 import classnames from 'classnames'
 import { Transition } from 'react-transition-group'
-
-import usePrevious from 'hooks/usePrevious'
 
 import css from './Collapse.less'
 

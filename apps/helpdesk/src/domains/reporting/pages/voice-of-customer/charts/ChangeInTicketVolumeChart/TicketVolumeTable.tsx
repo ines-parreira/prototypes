@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { useWidthBasedOnScreen } from '@repo/hooks'
+
 import { useTicketsPerProductDistribution } from 'domains/reporting/hooks/voice-of-customer/useTicketsDistributionPerProduct'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import {
@@ -25,7 +27,6 @@ import {
 import { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import { opposite } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

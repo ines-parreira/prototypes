@@ -8,12 +8,12 @@ import React, {
     useState,
 } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import logoShopify from 'assets/img/integrations/shopify.svg'
-import useId from 'hooks/useId'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
 import { parseGuidanceVariable } from './utils'

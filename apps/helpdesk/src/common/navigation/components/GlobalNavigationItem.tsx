@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { useId } from '@repo/hooks'
 import cn from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -7,7 +8,6 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 import navbarCss from 'assets/css/navbar.less'
 import css from 'common/navigation/components/GlobalNavigationItem.less'
 import { TooltipDelay, type TooltipDelayValue } from 'core/ui/tooltip.utils'
-import useId from 'hooks/useId'
 import type { PolymorphicProps } from 'types'
 
 export type GlobalNavigationItemTooltipTrigger = 'hover'[]

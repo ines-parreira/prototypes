@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import history from 'pages/history'

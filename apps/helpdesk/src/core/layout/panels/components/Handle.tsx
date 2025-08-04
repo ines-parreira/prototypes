@@ -1,6 +1,5 @@
+import { useId } from '@repo/hooks'
 import cn from 'classnames'
-
-import useId from 'hooks/useId'
 
 import useHandle from '../hooks/useHandle'
 

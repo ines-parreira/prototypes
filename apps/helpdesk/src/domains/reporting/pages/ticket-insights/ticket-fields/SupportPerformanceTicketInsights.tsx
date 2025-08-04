@@ -1,3 +1,4 @@
+import { useGridSize } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -18,7 +19,6 @@ import {
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
-import { useGridSize } from 'hooks/useGridSize'
 
 export function SupportPerformanceTicketInsights() {
     const featureFlags = useFlags()

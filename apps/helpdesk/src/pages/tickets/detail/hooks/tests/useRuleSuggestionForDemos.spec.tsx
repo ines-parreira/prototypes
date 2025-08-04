@@ -1,5 +1,4 @@
-import React from 'react'
-
+import * as hooksImports from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
@@ -15,7 +14,6 @@ import {
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import { AccountSettingType } from 'state/currentAccount/types'
 
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
@@ -36,8 +34,8 @@ const store = {
 }
 
 const useLocalStorageSpy = jest.spyOn(
-    useLocalStorageImports,
-    'default',
+    hooksImports,
+    'useLocalStorage',
 ) as jest.Mock
 
 const ticketId = 1

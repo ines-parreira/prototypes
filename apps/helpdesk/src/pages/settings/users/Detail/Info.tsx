@@ -1,7 +1,8 @@
+import { useDebouncedValue } from '@repo/hooks'
+
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useInviteAgent } from 'hooks/agents/useInviteAgent'
-import useDebouncedValue from 'hooks/useDebouncedValue'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 

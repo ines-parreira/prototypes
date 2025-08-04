@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { fetchRule } from 'models/rule/resources'
 import { Meta as MetaType, Source } from 'models/ticket/types'
 import StarRating from 'pages/common/components/StarRating'

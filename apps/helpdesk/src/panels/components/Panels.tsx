@@ -1,9 +1,7 @@
-import React, { Children, cloneElement, Fragment, ReactElement } from 'react'
+import { Children, cloneElement, Fragment, ReactElement } from 'react'
 
+import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
-
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import { usePanels, useScreenSize } from '../hooks'
 import type { Config } from '../types'

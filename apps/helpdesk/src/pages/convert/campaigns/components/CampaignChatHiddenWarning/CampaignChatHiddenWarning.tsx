@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 
+import { useDismissFlag } from '@repo/hooks'
 import { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useDismissFlag } from 'hooks/useDismissFlag'
 import { IntegrationType } from 'models/integration/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'

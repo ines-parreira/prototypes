@@ -1,3 +1,4 @@
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
@@ -9,7 +10,6 @@ import {
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
-import useLocalStorage from 'hooks/useLocalStorage'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -17,7 +17,10 @@ const logEventMock = assumeMock(logEvent)
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('hooks/useLocalStorage')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 const useLocalStorageMock = assumeMock(useLocalStorage)
 
 describe('useTicketTimeReference', () => {

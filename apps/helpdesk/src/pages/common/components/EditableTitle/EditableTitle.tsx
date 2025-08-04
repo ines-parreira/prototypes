@@ -9,9 +9,9 @@ import React, {
     useState,
 } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 
-import useEffectOnce from 'hooks/useEffectOnce'
 import css from 'pages/common/components/EditableTitle/EditableTitle.less'
 import TextInput from 'pages/common/forms/input/TextInput'
 

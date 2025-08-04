@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
@@ -12,7 +14,6 @@ import {
     ServiceLevelAgreementsChart,
     ServiceLevelAgreementsReportConfig,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
-import { useGridSize } from 'hooks/useGridSize'
 
 const OVERVIEW_SECTION_LABEL = 'Overview'
 

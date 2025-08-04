@@ -1,4 +1,5 @@
-import useEffectOnce from 'hooks/useEffectOnce'
+import { useEffectOnce } from '@repo/hooks'
+
 import {
     registerAppActivityTrackerHooks,
     unregisterAppActivityTrackerHooks,

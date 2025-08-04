@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
+
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { useCheckHelpCenterWithSubdomainExists } from 'models/helpCenter/queries'
 import {
     HelpCenter,

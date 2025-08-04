@@ -1,3 +1,5 @@
+import { useWidthBasedOnScreen } from '@repo/hooks'
+
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTagsDistribution } from 'domains/reporting/hooks/support-performance/useTagsDistribution'
@@ -26,7 +28,6 @@ import {
 } from 'domains/reporting/pages/ticket-insights/tags/TagsMetricConfig'
 import css from 'domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart.less'
 import { TagsMetric } from 'domains/reporting/state/ui/stats/types'
-import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import useLocalStorage from 'hooks/useLocalStorage'
 import EmailIntegrationOnboardingButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
 import {
     EmailIntegrationOnboardingStep,
@@ -27,7 +27,10 @@ const renderComponent = (props = {}) =>
 jest.mock(
     'pages/integrations/integration/components/email/hooks/useEmailOnboarding',
 )
-jest.mock('hooks/useLocalStorage')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 jest.mock(
     'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationButtons',
     () => () => <div>OnboardingDomainVerificationButtons</div>,

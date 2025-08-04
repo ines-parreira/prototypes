@@ -1,5 +1,6 @@
 import { KeyboardEvent } from 'react'
 
+import { useLocalStorageWithExpiry } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
@@ -7,7 +8,6 @@ import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
 import { voiceCall } from 'fixtures/voiceCalls'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
 import { ViewType } from 'models/view/types'
@@ -36,7 +36,10 @@ jest.mock('hooks/useSearchRankScenario', () => ({
     }),
 }))
 
-jest.mock('hooks/useLocalStorageWithExpiry')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorageWithExpiry: jest.fn(),
+}))
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = useAppSelector as jest.Mock
 

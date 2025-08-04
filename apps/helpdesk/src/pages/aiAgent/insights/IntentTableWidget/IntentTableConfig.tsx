@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { usePrevious } from '@repo/hooks'
+
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
@@ -13,7 +15,6 @@ import {
 } from 'domains/reporting/state/ui/stats/insightsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import usePrevious from 'hooks/usePrevious'
 import { opposite, OrderDirection } from 'models/api/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {

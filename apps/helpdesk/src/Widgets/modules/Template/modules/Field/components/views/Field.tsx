@@ -1,10 +1,10 @@
 import React, { ReactNode, SyntheticEvent, useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import cs from 'classnames'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
-import useId from 'hooks/useId'
 import { LeafType } from 'models/widget/types'
 
 import { FieldEditFormData, HiddenFields } from '../../types'

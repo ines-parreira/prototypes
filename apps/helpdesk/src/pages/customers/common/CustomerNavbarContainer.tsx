@@ -5,9 +5,9 @@ import { useParams } from 'react-router-dom'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import { UserSettingType } from 'config/types/user'
+import { useSearch } from 'hooks/useSearch'
 import { ViewType } from 'models/view/types'
 
-import useSearch from '../../../hooks/useSearch'
 import { RootState } from '../../../state/types'
 import { fetchViews } from '../../../state/views/actions'
 import { CustomersNavbarView } from './components/CustomersNavbarView'

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -17,7 +18,6 @@ import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'
 import { DateAndTimeFormatting } from 'constants/datetime'
-import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { ZendeskIntegration } from 'models/integration/types'

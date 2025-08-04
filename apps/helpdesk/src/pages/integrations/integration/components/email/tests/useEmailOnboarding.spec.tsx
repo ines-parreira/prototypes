@@ -1,3 +1,4 @@
+import * as hooksImports from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -18,7 +19,6 @@ import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import * as localStorage from 'hooks/useLocalStorage'
 import socketManager from 'services/socketManager'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
@@ -81,7 +81,7 @@ const render = (options?: UseEmailOnboardingHookOptions, path?: string) => {
 }
 
 const mockIsRequested = (isRequested: boolean) => {
-    jest.spyOn(localStorage, 'default').mockReturnValueOnce([
+    jest.spyOn(hooksImports, 'useLocalStorage').mockReturnValueOnce([
         isRequested ? new Date() : undefined,
         jest.fn(),
         jest.fn(),
@@ -862,7 +862,7 @@ describe('useEmailOnboarding()', () => {
             } as EmailIntegration
 
             const setValue = jest.fn()
-            const localStorageSpy = jest.spyOn(localStorage, 'default')
+            const localStorageSpy = jest.spyOn(hooksImports, 'useLocalStorage')
             localStorageSpy.mockReturnValueOnce([false, setValue, jest.fn()])
 
             const { result } = renderHook(() =>

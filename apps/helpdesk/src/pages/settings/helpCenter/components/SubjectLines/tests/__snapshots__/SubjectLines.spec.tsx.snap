@@ -20,13 +20,13 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
     >
       <label
         class="ui-label-label-3864 label"
-        for="checkbox-4"
+        for="checkbox-1"
       >
         <input
           checked=""
           class="input"
-          id="checkbox-4"
-          name="checkbox-4"
+          id="checkbox-1"
+          name="checkbox-1"
           type="checkbox"
         />
         Allow custom input using “Other”
@@ -55,8 +55,8 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
-            id="input-text-5"
-            name="input-text-5"
+            id="input-text-2"
+            name="input-text-2"
             type="text"
             value="Option 1"
           />
@@ -86,8 +86,8 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
-            id="input-text-6"
-            name="input-text-6"
+            id="input-text-3"
+            name="input-text-3"
             type="text"
             value="Option 2"
           />
@@ -117,8 +117,8 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
-            id="input-text-7"
-            name="input-text-7"
+            id="input-text-4"
+            name="input-text-4"
             type="text"
             value="Option 3"
           />

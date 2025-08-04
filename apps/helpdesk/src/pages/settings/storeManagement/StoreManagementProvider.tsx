@@ -7,7 +7,8 @@ import {
     useState,
 } from 'react'
 
-import useSafeContext from 'hooks/useSafeContext'
+import { useSafeContext } from '@repo/hooks'
+
 import { Integration } from 'models/integration/types'
 
 import useStoresWithMaps from './hooks/useStoresWithMaps'

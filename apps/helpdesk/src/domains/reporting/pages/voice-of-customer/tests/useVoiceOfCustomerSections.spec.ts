@@ -1,3 +1,4 @@
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
@@ -7,9 +8,11 @@ import {
     VoiceOfCustomerViewSections,
 } from 'domains/reporting/pages/voice-of-customer/constants'
 import { useVoiceOfCustomerSections } from 'domains/reporting/pages/voice-of-customer/useVoiceOfCustomerSections'
-import useLocalStorage from 'hooks/useLocalStorage'
 
-jest.mock('hooks/useLocalStorage')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 const useLocalStorageMock = assumeMock(useLocalStorage<AccordionValues>)
 
 describe('useVoiceOfCustomerSections', () => {

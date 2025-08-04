@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { SCREEN_SIZE, useKey, useScreenSize } from '@repo/hooks'
 import classnames from 'classnames'
 import ReactDOM from 'react-dom'
 
-import useKey from 'hooks/useKey'
-import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import Loader from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
 

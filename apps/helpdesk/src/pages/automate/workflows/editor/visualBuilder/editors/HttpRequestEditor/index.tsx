@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
 
 import { Label, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useId from 'hooks/useId'
 import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'

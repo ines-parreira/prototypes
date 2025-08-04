@@ -1,7 +1,8 @@
+import { useEffectOnce } from '@repo/hooks'
+
 import { identifyUser } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import userActivityManager from 'services/userActivityManager'
 import { handle2FAEnforced } from 'state/currentUser/actions'
 import { fetchVisibleViewsCounts } from 'state/views/actions'

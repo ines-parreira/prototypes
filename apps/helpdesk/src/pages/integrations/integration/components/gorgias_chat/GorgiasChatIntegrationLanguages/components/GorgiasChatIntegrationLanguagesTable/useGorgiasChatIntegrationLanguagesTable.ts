@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -12,7 +13,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
 import { updateOrCreateIntegration } from 'state/integrations/actions'

@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import flatMap from 'lodash/flatMap'
 
@@ -33,7 +34,6 @@ import {
     DropdownOption,
     FilterOptionGroup,
 } from 'domains/reporting/pages/types'
-import useEffectOnce from 'hooks/useEffectOnce'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

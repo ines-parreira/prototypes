@@ -1,10 +1,12 @@
+import { useCopyToClipboard } from '@repo/hooks'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-
-import useCopyToClipboard from 'hooks/useCopyToClipboard'
 
 import { CopyableTextField } from '../CopyableTextField'
 
-jest.mock('hooks/useCopyToClipboard', () => jest.fn())
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useCopyToClipboard: jest.fn(),
+}))
 const copyToClipboard = jest.fn()
 const useCopyToClipboardMock = useCopyToClipboard as jest.Mock
 

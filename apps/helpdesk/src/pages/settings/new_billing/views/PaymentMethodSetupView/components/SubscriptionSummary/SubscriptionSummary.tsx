@@ -1,3 +1,4 @@
+import { useSessionStorage } from '@repo/hooks'
 import {
     FieldValues,
     SubmitHandler,
@@ -6,7 +7,6 @@ import {
 } from 'react-hook-form'
 
 import useAppSelector from 'hooks/useAppSelector'
-import useSessionStorage from 'hooks/useSessionStorage'
 import { ProductType } from 'models/billing/types'
 import Card from 'pages/settings/new_billing/components/Card'
 import { FormSubmitButtonError } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButtonError'

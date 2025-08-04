@@ -10,7 +10,10 @@ import { renderWithStore } from 'utils/testing'
 
 import BusinessHoursScheduleDisplay from '../BusinessHoursScheduleDisplay'
 
-jest.mock('hooks/useId', () => () => 'test-id')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'test-id'),
+}))
 jest.mock('pages/common/hooks/useTextOverflow')
 
 const useTextOverflowMock = assumeMock(useTextOverflow)

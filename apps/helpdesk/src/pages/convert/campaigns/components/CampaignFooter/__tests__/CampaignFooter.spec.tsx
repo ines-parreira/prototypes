@@ -1,17 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
-
+import * as hooksUtils from '@repo/hooks'
 import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
-import * as useDismissFlag from 'hooks/useDismissFlag'
-import * as useLocalStorage from 'hooks/useLocalStorage'
-
 import { CampaignFooter } from '../CampaignFooter'
 
-jest.mock('hooks/useDismissFlag')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useDismissFlag: jest.fn(),
+    useLocalStorage: jest.fn().mockReturnValue([false, jest.fn()]),
+}))
 
-const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
+const useLocalStorageSpy = jest.spyOn(
+    hooksUtils,
+    'useLocalStorage',
+) as jest.Mock
 
 describe('<CampaignFooter />', () => {
     const onVariantCreateMock = jest.fn()
@@ -30,7 +33,7 @@ describe('<CampaignFooter />', () => {
     }
 
     beforeAll(() => {
-        jest.spyOn(useDismissFlag, 'useDismissFlag').mockImplementation(
+        jest.spyOn(hooksUtils, 'useDismissFlag').mockImplementation(
             () =>
                 ({
                     isDismissed: false,
@@ -120,7 +123,7 @@ describe('<CampaignFooter />', () => {
 
     describe('Campaign update, user can create A/B Test', () => {
         beforeEach(() => {
-            jest.spyOn(useDismissFlag, 'useDismissFlag').mockImplementation(
+            jest.spyOn(hooksUtils, 'useDismissFlag').mockImplementation(
                 () =>
                     ({
                         isDismissed: false,
@@ -238,7 +241,7 @@ describe('<CampaignFooter />', () => {
         })
 
         it('creates a/b test when modal is dismissed', () => {
-            jest.spyOn(useDismissFlag, 'useDismissFlag').mockImplementation(
+            jest.spyOn(hooksUtils, 'useDismissFlag').mockImplementation(
                 () =>
                     ({
                         isDismissed: true,

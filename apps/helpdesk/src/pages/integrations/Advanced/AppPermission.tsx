@@ -1,7 +1,8 @@
+import { useId } from '@repo/hooks'
+
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { AppOAuthPermission } from 'config/oauthPermissions'
-import useId from 'hooks/useId'
 
 import css from './AppPermission.less'
 

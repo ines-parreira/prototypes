@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { Period } from 'domains/reporting/models/stat/types'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
@@ -9,7 +11,6 @@ import { TrendOverviewChart } from 'domains/reporting/pages/voice-of-customer/si
 import css from 'domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/TrendOverviewReport.less'
 import { TrendOverviewReportConfig } from 'domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/TrendOverviewReportConfig'
 import { formatDateRange } from 'domains/reporting/pages/voice-of-customer/utils'
-import { useGridSize } from 'hooks/useGridSize'
 
 const FEEDBACK_TRENDS_SECTION_LABEL = 'Feedback trends'
 const FEEDBACK_TRENDS_SECTION_TOOLTIP =

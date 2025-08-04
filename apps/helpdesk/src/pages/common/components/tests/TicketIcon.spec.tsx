@@ -1,12 +1,13 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 
 import TicketIcon, { NullTicketIcon } from '../TicketIcon'
 
-jest.mock('hooks/useId', () => () => 'test')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'test'),
+}))
 
 describe('<TicketIcon />', () => {
     const props = {

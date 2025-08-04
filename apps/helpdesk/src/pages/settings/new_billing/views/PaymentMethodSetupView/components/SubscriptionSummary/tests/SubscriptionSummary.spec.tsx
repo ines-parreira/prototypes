@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import { useSessionStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { Form } from 'core/forms'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
-import useSessionStorage from 'hooks/useSessionStorage'
 import { Cadence, ProductType } from 'models/billing/types'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
 import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
@@ -21,7 +21,10 @@ import {
 } from '../SubscriptionSummary'
 
 jest.mock('hooks/useAppSelector', () => (selector: () => any) => selector())
-jest.mock('hooks/useSessionStorage')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useSessionStorage: jest.fn(),
+}))
 jest.mock('pages/settings/new_billing/hooks/useBillingPlan')
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(() => jest.fn()),

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import useSessionStorage from 'hooks/useSessionStorage'
+import { useSessionStorage } from '@repo/hooks'
 
 export const BACK_TO_CONVERT_ONBOARDING_KEY = 'convert:onboarding:backToConvert'
 export const BACK_TO_CONVERT_HOME = 'home'

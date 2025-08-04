@@ -1,11 +1,11 @@
 import React, { ReactNode, useCallback, useMemo } from 'react'
 
+import { useDismissFlag } from '@repo/hooks'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { useDismissFlag } from 'hooks/useDismissFlag'
 import { useModalManager } from 'hooks/useModalManager'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'

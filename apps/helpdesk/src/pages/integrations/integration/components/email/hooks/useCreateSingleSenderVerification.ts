@@ -1,7 +1,7 @@
+import { useAsyncFn } from '@repo/hooks'
 import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { createVerification } from 'models/singleSenderVerification/resources'
 import { SenderInformation } from 'models/singleSenderVerification/types'
 import { setVerification } from 'state/entities/singleSenderVerification/actions'

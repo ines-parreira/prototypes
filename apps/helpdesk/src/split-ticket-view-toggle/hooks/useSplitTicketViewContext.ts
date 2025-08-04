@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import useLocalStorage from 'hooks/useLocalStorage'
+import { useLocalStorage } from '@repo/hooks'
 
 import { TicketIds } from '../Context'
 

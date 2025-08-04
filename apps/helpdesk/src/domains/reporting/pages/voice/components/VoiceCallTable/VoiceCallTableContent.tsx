@@ -1,5 +1,6 @@
 import React, { UIEventHandler, useMemo, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
@@ -18,7 +19,6 @@ import {
 import VoiceQueueProvider from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
-import useMeasure from 'hooks/useMeasure'
 import { OrderDirection } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

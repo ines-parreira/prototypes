@@ -1,10 +1,10 @@
+import { useLocalStorage } from '@repo/hooks'
 import { useParams } from 'react-router'
 
 import { Banner, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import useLocalStorage from 'hooks/useLocalStorage'
 import {
     getGuidanceArticleLimit,
     getGuidanceArticleLimitWarning,

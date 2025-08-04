@@ -8,6 +8,7 @@ import {
     useState,
 } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
@@ -32,7 +33,6 @@ import {
 } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { isGorgiasApiError } from 'models/api/types'
 import { MacroDraft } from 'models/macro/types'

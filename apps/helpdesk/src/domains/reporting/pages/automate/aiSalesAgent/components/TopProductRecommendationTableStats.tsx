@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
+
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import {
@@ -20,7 +22,6 @@ import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDat
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { formatNumber } from 'domains/reporting/pages/common/utils'
 import { AiSalesAgentMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import useMeasure from 'hooks/useMeasure'
 import { opposite, OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

@@ -1,7 +1,8 @@
 import { useCallback } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import useLocalStorage from 'hooks/useLocalStorage'
 
 export enum TagSelection {
     includeTags = 'include_tags',

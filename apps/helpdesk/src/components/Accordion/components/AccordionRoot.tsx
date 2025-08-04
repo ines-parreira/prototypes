@@ -1,9 +1,8 @@
 import { forwardRef, useCallback, useMemo, useState } from 'react'
 import type { ComponentPropsWithoutRef } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
-
-import useId from 'hooks/useId'
 
 import { AccordionRootContext } from '../contexts/accordion-root-context'
 import type {

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { useId } from '@repo/hooks'
 
-import useId from 'hooks/useId'
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './MigrationQuickSummary.less'
 

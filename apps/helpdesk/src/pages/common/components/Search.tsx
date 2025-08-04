@@ -9,9 +9,9 @@ import React, {
     useState,
 } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 

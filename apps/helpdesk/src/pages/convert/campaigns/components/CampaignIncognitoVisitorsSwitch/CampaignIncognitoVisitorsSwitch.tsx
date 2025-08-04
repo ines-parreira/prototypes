@@ -1,11 +1,11 @@
 import { createRef, FC, useMemo, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
 import _intersection from 'lodash/intersection'
 
 import { ToggleField } from '@gorgias/merchant-ui-kit'
 
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { CONVERT_SHOPIFY_TRIGGERS } from 'pages/convert/campaigns/constants/triggers'
 import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'

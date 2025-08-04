@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -8,7 +9,6 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { EmailContactInfoDto } from 'models/helpCenter/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

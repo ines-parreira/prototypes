@@ -1,5 +1,6 @@
 import { PropsWithChildren, useCallback } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -16,7 +17,6 @@ import {
     setMetricData,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useId from 'hooks/useId'
 
 export const TRIGGER_ID = 'drill-down'
 

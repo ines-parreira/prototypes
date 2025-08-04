@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -21,7 +22,6 @@ import {
     LanguageUI,
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import IconButton from 'pages/common/components/button/IconButton'

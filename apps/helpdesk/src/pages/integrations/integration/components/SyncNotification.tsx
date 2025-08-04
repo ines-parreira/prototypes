@@ -1,4 +1,5 @@
-import useLocalStorage from 'hooks/useLocalStorage'
+import { useLocalStorage } from '@repo/hooks'
+
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 

@@ -1,6 +1,7 @@
+import { useLocalStorage } from '@repo/hooks'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { reportError } from 'utils/errors'

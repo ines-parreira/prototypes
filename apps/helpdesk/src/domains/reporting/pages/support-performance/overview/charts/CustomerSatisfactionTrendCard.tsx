@@ -1,3 +1,5 @@
+import { useLocalStorage } from '@repo/hooks'
+
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
 import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { ActivateCustomerSatisfactionSurveyTip } from 'domains/reporting/pages/support-performance/components/ActivateCustomerSatisfactionSurveyTip'
@@ -9,7 +11,6 @@ import {
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { MetricName } from 'domains/reporting/services/constants'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import {
     currentAccountHasFeature,
     getSurveysSettingsJS,

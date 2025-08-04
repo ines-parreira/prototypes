@@ -1,10 +1,10 @@
+import { useLocalStorageWithExpiry } from '@repo/hooks'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { integrationsStateWithShopify } from 'fixtures/integrations'
-import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import { IntegrationType } from 'models/integration/constants'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
@@ -13,9 +13,9 @@ import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { PendingTasksSectionConnected } from '../PendingTasksSectionConnected'
 
-jest.mock('hooks/useLocalStorageWithExpiry', () => ({
-    __esModule: true,
-    default: jest.fn(),
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorageWithExpiry: jest.fn(),
 }))
 
 jest.mock(

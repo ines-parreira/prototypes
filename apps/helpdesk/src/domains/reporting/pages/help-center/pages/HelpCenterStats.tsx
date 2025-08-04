@@ -1,3 +1,5 @@
+import { useEffectOnce } from '@repo/hooks'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenterReport } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReport'
 import { HelpCenterReportConfig } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
@@ -6,7 +8,6 @@ import HelpCenterStatsLoading from 'domains/reporting/pages/help-center/componen
 import { useSelectedHelpCenter } from 'domains/reporting/pages/help-center/hooks/useSelectedHelpCenter'
 import { isHelpCenterStatsFiltersValid } from 'domains/reporting/pages/help-center/types'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isNotEmptyArray } from 'utils'

@@ -1,4 +1,4 @@
-import React, {
+import {
     ForwardedRef,
     forwardRef,
     HTMLProps,
@@ -11,10 +11,8 @@ import React, {
     useState,
 } from 'react'
 
+import { useEffectOnce, usePrevious } from '@repo/hooks'
 import classnames from 'classnames'
-
-import useEffectOnce from 'hooks/useEffectOnce'
-import usePrevious from 'hooks/usePrevious'
 
 import { DropdownContext } from './Dropdown'
 

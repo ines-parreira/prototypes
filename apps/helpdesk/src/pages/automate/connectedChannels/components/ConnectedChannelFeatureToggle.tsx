@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 
-import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { useId } from '@repo/hooks'
 
-import useId from 'hooks/useId'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './ConnectedChannelFeatureToggle.less'
 

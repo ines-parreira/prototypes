@@ -1,5 +1,6 @@
 import React, { UIEventHandler, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -31,7 +32,6 @@ import {
 } from 'domains/reporting/state/ui/stats/voiceAgentsPerformanceSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useMeasure from 'hooks/useMeasure'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'

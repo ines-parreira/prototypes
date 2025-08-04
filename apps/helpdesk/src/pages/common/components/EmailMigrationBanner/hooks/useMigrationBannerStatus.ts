@@ -1,7 +1,7 @@
+import { useAsyncFn } from '@repo/hooks'
 import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { fetchEmailMigrationBannerStatus } from 'models/integration/resources/email'
 import { SET_EMAIL_PROVIDER_MIGRATION_BANNER_STATUS } from 'state/integrations/constants'
 import { notify } from 'state/notifications/actions'

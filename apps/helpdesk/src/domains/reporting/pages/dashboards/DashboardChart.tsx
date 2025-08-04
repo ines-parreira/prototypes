@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
@@ -12,7 +14,6 @@ import {
     DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
-import { useGridSize } from 'hooks/useGridSize'
 
 export type DashboardChartProps = {
     findChartIndex: FindChartIndex

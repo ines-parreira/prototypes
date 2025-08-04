@@ -18,7 +18,6 @@ import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useElementSize from 'hooks/useElementSize'
 import shortcutManager from 'services/shortcutManager'
 import * as notificationsActions from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -30,10 +29,10 @@ import Snooze from '../Snooze'
 import TicketHeader from '../TicketHeader'
 import useIsTicketNavigationAvailable from '../TicketNavigation/hooks/useIsTicketNavigationAvailable'
 
-jest.mock('hooks/useElementSize', () => jest.fn())
-
-const useElementSizeMock = useElementSize as jest.Mock
-useElementSizeMock.mockReturnValue([0, 160])
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useElementSize: jest.fn().mockImplementation(() => [0, 160]),
+}))
 
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee',

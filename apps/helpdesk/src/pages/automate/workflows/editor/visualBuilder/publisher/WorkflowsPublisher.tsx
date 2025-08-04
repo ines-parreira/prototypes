@@ -1,7 +1,7 @@
+import { useKey } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import useKey from 'hooks/useKey'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'

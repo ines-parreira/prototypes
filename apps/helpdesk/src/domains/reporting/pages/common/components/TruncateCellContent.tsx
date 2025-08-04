@@ -1,11 +1,11 @@
 import React, { useLayoutEffect, useRef, useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'domains/reporting/pages/common/components/TruncateCellContent.less'
-import useId from 'hooks/useId'
 
 type Props = {
     content: string | React.ReactNode

@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react'
 
+import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { useRouteMatch } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { ShopType } from 'models/selfServiceConfiguration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'

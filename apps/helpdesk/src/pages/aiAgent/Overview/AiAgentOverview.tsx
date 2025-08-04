@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'

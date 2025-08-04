@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
+import { useTitle } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { useRouteMatch } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useTitle from 'hooks/useTitle'
 import { EntityType } from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'

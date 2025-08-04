@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -17,7 +15,7 @@ import {
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'

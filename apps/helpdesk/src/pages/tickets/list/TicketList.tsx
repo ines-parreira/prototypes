@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useTitle } from '@repo/hooks'
 import classnames from 'classnames'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import { List, Map } from 'immutable'
@@ -17,7 +18,6 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { SearchRankSource } from 'hooks/useSearchRankScenario'
-import useTitle from 'hooks/useTitle'
 import { EntityType } from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'

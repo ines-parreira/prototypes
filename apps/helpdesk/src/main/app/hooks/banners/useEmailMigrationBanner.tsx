@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { BannerCategories, useBanners } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { EmailMigrationStatus } from 'models/integration/types'
 import { computeEmailMigrationStatusBanner } from 'pages/common/components/EmailMigrationBanner/helpers'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'

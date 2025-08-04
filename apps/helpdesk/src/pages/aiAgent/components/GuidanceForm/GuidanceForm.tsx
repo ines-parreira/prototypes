@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
 
 import { ToggleField } from '@gorgias/merchant-ui-kit'
@@ -9,7 +10,6 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'

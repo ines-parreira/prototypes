@@ -1,7 +1,7 @@
-import React, { Dispatch, SetStateAction, useMemo, useRef } from 'react'
+import { Dispatch, SetStateAction, useMemo, useRef } from 'react'
 
-import useEffectOnce from 'hooks/useEffectOnce'
-import useKey from 'hooks/useKey'
+import { useEffectOnce, useKey } from '@repo/hooks'
+
 import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,

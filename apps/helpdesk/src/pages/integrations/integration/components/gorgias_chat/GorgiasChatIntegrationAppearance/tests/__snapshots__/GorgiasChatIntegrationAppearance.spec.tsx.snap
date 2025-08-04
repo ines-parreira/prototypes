@@ -402,7 +402,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-1"
                           type="button"
                         >
                           <span
@@ -445,7 +445,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-2"
                           type="button"
                         >
                           <span
@@ -473,12 +473,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-3"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-3"
+                      name="checkbox-3"
                       type="checkbox"
                     />
                     <span
@@ -1668,7 +1668,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-10"
                           type="button"
                         >
                           <span
@@ -1711,7 +1711,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-11"
                           type="button"
                         >
                           <span
@@ -1739,12 +1739,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-12"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-12"
+                      name="checkbox-12"
                       type="checkbox"
                     />
                     <span
@@ -3168,7 +3168,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-4"
                           type="button"
                         >
                           <span
@@ -3211,7 +3211,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-5"
                           type="button"
                         >
                           <span
@@ -3239,12 +3239,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-6"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-6"
+                      name="checkbox-6"
                       type="checkbox"
                     />
                     <span
@@ -4638,7 +4638,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-16"
                           type="button"
                         >
                           <span
@@ -4681,7 +4681,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-17"
                           type="button"
                         >
                           <span
@@ -4709,12 +4709,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-18"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-18"
+                      name="checkbox-18"
                       type="checkbox"
                     />
                     <span
@@ -6108,7 +6108,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-28"
                           type="button"
                         >
                           <span
@@ -6151,7 +6151,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-29"
                           type="button"
                         >
                           <span
@@ -6179,12 +6179,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-30"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-30"
+                      name="checkbox-30"
                       type="checkbox"
                     />
                     <span
@@ -7578,7 +7578,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-22"
                           type="button"
                         >
                           <span
@@ -7621,7 +7621,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-23"
                           type="button"
                         >
                           <span
@@ -7649,12 +7649,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-24"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-24"
+                      name="checkbox-24"
                       type="checkbox"
                     />
                     <span
@@ -9150,7 +9150,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-43"
                           type="button"
                         >
                           <span
@@ -9193,7 +9193,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-44"
                           type="button"
                         >
                           <span
@@ -9221,12 +9221,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-45"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-45"
+                      name="checkbox-45"
                       type="checkbox"
                     />
                     <span
@@ -10416,7 +10416,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-46"
                           type="button"
                         >
                           <span
@@ -10459,7 +10459,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-47"
                           type="button"
                         >
                           <span
@@ -10487,12 +10487,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-48"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-48"
+                      name="checkbox-48"
                       type="checkbox"
                     />
                     <span
@@ -11849,7 +11849,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-52"
                           type="button"
                         >
                           <span
@@ -11892,7 +11892,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-53"
                           type="button"
                         >
                           <span
@@ -13523,7 +13523,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-34"
                           type="button"
                         >
                           <span
@@ -13566,7 +13566,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-35"
                           type="button"
                         >
                           <span
@@ -13594,12 +13594,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-36"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-36"
+                      name="checkbox-36"
                       type="checkbox"
                     />
                     <span
@@ -14789,7 +14789,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           aria-label="color-picker-button_main_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_main_color"
-                          id="color-picker-42"
+                          id="color-picker-37"
                           type="button"
                         >
                           <span
@@ -14832,7 +14832,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           aria-label="color-picker-button_conversation_color"
                           class="wrapper button fill secondary medium"
                           data-testid="color-picker-button_conversation_color"
-                          id="color-picker-42"
+                          id="color-picker-38"
                           type="button"
                         >
                           <span
@@ -14860,12 +14860,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="ui-label-label-3864 label"
-                    for="checkbox-42"
+                    for="checkbox-39"
                   >
                     <input
                       class="input"
-                      id="checkbox-42"
-                      name="checkbox-42"
+                      id="checkbox-39"
+                      name="checkbox-39"
                       type="checkbox"
                     />
                     <span

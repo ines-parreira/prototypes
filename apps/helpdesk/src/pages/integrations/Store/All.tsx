@@ -1,9 +1,10 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
+
+import { useTitle } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
-import useTitle from 'hooks/useTitle'
+import { useSearch } from 'hooks/useSearch'
 import { AutomatePlan, HelpdeskPlan } from 'models/billing/types'
 import { fetchApps } from 'models/integration/resources'
 import {

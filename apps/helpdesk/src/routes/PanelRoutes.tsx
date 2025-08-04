@@ -1,3 +1,4 @@
+import { useWindowSize } from '@repo/hooks'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { OnboardingPanel } from 'common/onboarding'
@@ -7,7 +8,6 @@ import { Handle, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'
 import { ContentPanels } from 'core/ui'
 import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
-import useWindowSize from 'hooks/useWindowSize'
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
 import { TicketsPage } from 'tickets/pages'

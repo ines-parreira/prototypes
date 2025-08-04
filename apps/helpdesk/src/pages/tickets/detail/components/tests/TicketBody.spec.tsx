@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { voiceCall } from 'fixtures/voiceCalls'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'

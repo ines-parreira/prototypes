@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
@@ -11,7 +13,6 @@ import {
     SatisfactionChart,
     SatisfactionReportConfig,
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
-import { useGridSize } from 'hooks/useGridSize'
 
 export default function SatisfactionReport() {
     const getGridCellSize = useGridSize()

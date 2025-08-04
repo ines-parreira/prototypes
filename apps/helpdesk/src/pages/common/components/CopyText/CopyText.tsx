@@ -1,7 +1,6 @@
+import { useCopyToClipboard } from '@repo/hooks'
 import classNames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
-
-import useCopyToClipboard from 'hooks/useCopyToClipboard'
 
 import IconButton from '../button/IconButton'
 import { selectText } from './utils'

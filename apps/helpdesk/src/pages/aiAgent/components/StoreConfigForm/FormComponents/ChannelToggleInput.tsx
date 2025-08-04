@@ -1,8 +1,8 @@
+import { useLocalStorage } from '@repo/hooks'
 import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import useLocalStorage from 'hooks/useLocalStorage'
 import {
     BannerText,
     SettingsBannerType,

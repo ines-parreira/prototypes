@@ -1,10 +1,13 @@
+import { useWindowSize } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
-import useWindowSize from 'hooks/useWindowSize'
 
-jest.mock('hooks/useWindowSize')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useWindowSize: jest.fn(),
+}))
 const mockUseWindowSize = useWindowSize as jest.Mock
 
 describe('useIsMobileResolution', () => {

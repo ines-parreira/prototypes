@@ -1,10 +1,11 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import SortOrderDropdown from '../SortOrderDropdown'
 
-jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'mocked'),
+}))
 
 describe('<SortingDropdown />', () => {
     it('should display a dropdown with its current value', () => {

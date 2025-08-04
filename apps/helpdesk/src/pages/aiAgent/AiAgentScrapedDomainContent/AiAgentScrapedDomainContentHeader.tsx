@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 
+import { useId } from '@repo/hooks'
+
 import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
 
 import { HeaderType, IngestionLogStatus } from './constant'

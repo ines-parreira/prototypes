@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useDebouncedValue } from '@repo/hooks'
 import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -8,7 +9,6 @@ import { Link } from 'react-router-dom'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import useDebouncedValue from 'hooks/useDebouncedValue'
 import useUpdateCustomFieldConditions from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { DndProvider } from 'utils/wrappers/DndProvider'
@@ -37,7 +37,10 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 jest.mock(
     'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions',
 )
-jest.mock('hooks/useDebouncedValue')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useDebouncedValue: jest.fn(),
+}))
 
 const useDebouncedValueMock = assumeMock(useDebouncedValue)
 const mockedLogEvent = assumeMock(logEvent)

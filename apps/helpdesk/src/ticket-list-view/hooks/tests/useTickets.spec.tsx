@@ -2,7 +2,6 @@ import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
-import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
 import type { TicketPartial } from '../../types'
@@ -24,8 +23,10 @@ const useTicketPartialsMock = useTicketPartials as jest.Mock
 jest.mock('../useViewTickets')
 const mockUseViewTickets = useViewTickets as jest.Mock
 
-jest.mock('hooks/useElementSize', () => jest.fn())
-const useElementSizeMock = useElementSize as jest.Mock
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useElementSize: jest.fn().mockImplementation(() => [0, 160]),
+}))
 
 jest.mock('../useScrollOffset', () => jest.fn())
 const useScrollOffsetMock = useScrollOffset as jest.Mock
@@ -55,7 +56,7 @@ describe('useTickets', () => {
             setLatest: jest.fn(),
             partials,
         })
-        useElementSizeMock.mockReturnValue([0, 160])
+
         useScrollOffsetMock.mockReturnValue([0])
         mockUseSplitTicketView.mockReturnValue({
             setPrevNextTicketIds: mockSetPrevNextTicketIds,

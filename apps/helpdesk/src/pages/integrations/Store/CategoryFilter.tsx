@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { Category } from 'models/integration/types/app'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

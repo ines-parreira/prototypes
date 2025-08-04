@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import useDebouncedValue from 'hooks/useDebouncedValue'
-import usePrevious from 'hooks/usePrevious'
+import { useDebouncedValue, usePrevious } from '@repo/hooks'
+
 import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'
@@ -10,7 +10,10 @@ import Modal from 'pages/common/components/modal/Modal'
 
 import LinkPopover from '../LinkPopover'
 
-jest.mock('hooks/useId', () => () => 1)
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 1),
+}))
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

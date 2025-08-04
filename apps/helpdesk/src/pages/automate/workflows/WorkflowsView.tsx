@@ -1,5 +1,6 @@
 import React, { createElement, useMemo } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
@@ -17,7 +18,6 @@ import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE } from 'config/user'
-import useEffectOnce from 'hooks/useEffectOnce'
 import PageHeader from 'pages/common/components/PageHeader'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'

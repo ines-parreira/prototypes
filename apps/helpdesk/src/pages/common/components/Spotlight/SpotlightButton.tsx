@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 
+import { useId } from '@repo/hooks'
+
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
 import { logEvent, SegmentEvent } from 'common/segment'
-import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'

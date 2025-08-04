@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import useEffectOnce from 'hooks/useEffectOnce'
+import { useEffectOnce } from '@repo/hooks'
 
 export type BannerElement = HTMLElement & { originalDisplay?: string }
 

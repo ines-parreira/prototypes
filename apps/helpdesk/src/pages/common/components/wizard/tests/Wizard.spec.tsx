@@ -1,8 +1,7 @@
 import React, { useContext } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { render } from '@testing-library/react'
-
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import Wizard, { WizardContext } from '../Wizard'
 

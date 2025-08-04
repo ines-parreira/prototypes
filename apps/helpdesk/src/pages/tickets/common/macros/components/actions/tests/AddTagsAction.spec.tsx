@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { useElementSize } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
-import useElementSize from 'hooks/useElementSize'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { RootState, StoreDispatch } from 'state/types'
 
@@ -17,7 +15,10 @@ import AddTagsAction from '../AddTagsAction'
 jest.mock('pages/tickets/detail/components/TicketDetails/TicketTags')
 const mockedTicketTags = assumeMock(TicketTags)
 
-jest.mock('hooks/useElementSize', () => jest.fn())
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useElementSize: jest.fn(),
+}))
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TagDropdown',
     () => () => 'TagDropdownMock',

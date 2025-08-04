@@ -1,0 +1,8 @@
+{
+    "extends": "@repo/tsconfigs/tsconfig.common.json",
+    "compilerOptions": {
+        "baseUrl": "."
+    },
+    "include": ["src/**/*", "jest.config.ts"],
+    "exclude": ["node_modules"]
+}

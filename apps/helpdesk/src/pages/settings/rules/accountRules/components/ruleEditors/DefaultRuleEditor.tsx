@@ -9,6 +9,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 import esprima from 'esprima'
 import { List, Map } from 'immutable'
@@ -19,7 +20,6 @@ import { FormGroup, Label } from 'reactstrap'
 import { fromAST } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { createRule } from 'models/rule/resources'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

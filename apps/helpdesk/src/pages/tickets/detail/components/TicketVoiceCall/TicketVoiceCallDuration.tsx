@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
+import { useInterval } from '@repo/hooks'
+
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
-import useInterval from 'hooks/useInterval'
 import { VoiceCall } from 'models/voiceCall/types'
 import {
     getFormattedDurationEndedCall,

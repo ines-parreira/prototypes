@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { List, Map } from 'immutable'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -8,7 +9,6 @@ import { useFlag } from 'core/flags'
 import IconLink from 'core/ui/components/IconLink'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { isEnterprise } from 'models/billing/utils'
 import { EmailDomain, IntegrationType } from 'models/integration/types'
 import { useListStoreMappings } from 'models/storeMapping/queries'

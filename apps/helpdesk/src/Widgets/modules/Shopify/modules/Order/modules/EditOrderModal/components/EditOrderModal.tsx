@@ -1,5 +1,6 @@
-import React, { useCallback, useContext, useMemo, useRef } from 'react'
+import { useCallback, useContext, useMemo, useRef } from 'react'
 
+import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -8,8 +9,6 @@ import { Button } from 'reactstrap'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'

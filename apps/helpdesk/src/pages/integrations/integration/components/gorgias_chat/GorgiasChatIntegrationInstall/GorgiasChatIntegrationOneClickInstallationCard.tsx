@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'

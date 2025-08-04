@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
-import useEffectOnce from 'hooks/useEffectOnce'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'

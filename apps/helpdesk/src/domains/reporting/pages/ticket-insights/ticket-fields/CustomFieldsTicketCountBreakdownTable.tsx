@@ -1,5 +1,6 @@
 import React, { UIEventHandler, useEffect, useMemo, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
@@ -20,7 +21,6 @@ import {
     TicketInsightsOrder,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useMeasure from 'hooks/useMeasure'
 import { opposite } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

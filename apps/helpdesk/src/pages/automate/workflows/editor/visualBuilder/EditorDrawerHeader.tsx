@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import useId from 'hooks/useId'
 import { Drawer } from 'pages/common/components/Drawer'
 
 import css from './NodeEditorDrawer.less'

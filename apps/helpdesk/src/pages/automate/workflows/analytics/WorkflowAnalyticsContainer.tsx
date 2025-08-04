@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 import React, { useCallback } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
@@ -9,7 +10,6 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'

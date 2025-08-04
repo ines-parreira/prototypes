@@ -1,10 +1,10 @@
 import { ReactNode, RefObject } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './WorkflowItem.less'

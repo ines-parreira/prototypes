@@ -1,3 +1,4 @@
+import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -5,7 +6,6 @@ import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { IntegrationType } from 'models/integration/types'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Loader from 'pages/common/components/Loader/Loader'

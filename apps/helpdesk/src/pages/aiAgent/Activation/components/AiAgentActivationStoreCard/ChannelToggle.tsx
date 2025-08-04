@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
 
+import { useId } from '@repo/hooks'
+
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import useId from 'hooks/useId'
 import css from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard.less'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'

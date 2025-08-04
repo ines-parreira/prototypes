@@ -1,8 +1,7 @@
 import React, { ReactNode, useMemo } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
-
-import useId from 'hooks/useId'
 
 import { useAccordionContext } from './AccordionContext'
 import AccordionItemContext, {

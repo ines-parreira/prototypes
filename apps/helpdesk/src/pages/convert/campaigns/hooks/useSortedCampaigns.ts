@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { opposite, OrderDirection } from 'models/api/types'
 import history from 'pages/history'
 

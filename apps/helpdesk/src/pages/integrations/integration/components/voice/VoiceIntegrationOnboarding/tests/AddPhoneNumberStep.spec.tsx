@@ -6,7 +6,7 @@ import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 
 import AddPhoneNumberStep from '../AddPhoneNumberStep'

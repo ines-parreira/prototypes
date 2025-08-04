@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react'
 
+import { useId } from '@repo/hooks'
+
 import {
     BusinessHours,
     BusinessHoursConfig,
@@ -10,7 +12,6 @@ import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'
-import useId from 'hooks/useId'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

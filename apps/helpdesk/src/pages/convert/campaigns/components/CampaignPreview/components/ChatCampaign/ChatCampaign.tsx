@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 import ReactPlayer from 'react-player'
 
-import useMeasure from 'hooks/useMeasure'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,

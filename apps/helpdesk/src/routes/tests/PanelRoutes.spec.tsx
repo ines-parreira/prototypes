@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useWindowSize } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -10,7 +11,6 @@ import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
-import useWindowSize from 'hooks/useWindowSize'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -26,7 +26,10 @@ jest.mock('hooks/useIsMobileResolution', () => ({
     useIsMobileResolution: jest.fn(),
 }))
 const useIsMobileResolutionMock = assumeMock(useIsMobileResolution)
-jest.mock('hooks/useWindowSize', () => jest.fn())
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useWindowSize: jest.fn(),
+}))
 const useWindowSizeMock = assumeMock(useWindowSize)
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
 const useNavBarMock = assumeMock(useNavBar)

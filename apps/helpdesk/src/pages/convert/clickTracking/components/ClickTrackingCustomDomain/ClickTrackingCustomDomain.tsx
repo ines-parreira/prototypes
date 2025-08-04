@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { AxiosError } from 'axios'
 import classNames from 'classnames'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { CustomDomain as CustomDomainEntity } from 'models/clickTracking/types'
 import Button from 'pages/common/components/button/Button'
 import { ConnectionStatus } from 'pages/common/components/ConnectionStatus'

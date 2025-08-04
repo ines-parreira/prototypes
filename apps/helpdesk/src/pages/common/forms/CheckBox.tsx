@@ -8,11 +8,10 @@ import React, {
     useRef,
 } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Label } from '@gorgias/merchant-ui-kit'
-
-import useId from 'hooks/useId'
 
 import Caption from './Caption/Caption'
 

@@ -1,18 +1,21 @@
 import React from 'react'
 
+import * as dismissHook from '@repo/hooks'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import * as dismissHook from 'hooks/useDismissFlag'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationsHelpers from 'state/integrations/helpers'
 import { RootState, StoreDispatch } from 'state/types'
 
 import { CampaignChatHiddenWarning } from '../CampaignChatHiddenWarning'
 
-jest.mock('hooks/useDismissFlag')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useDismissFlag: jest.fn(),
+}))
 jest.mock('state/integrations/helpers')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

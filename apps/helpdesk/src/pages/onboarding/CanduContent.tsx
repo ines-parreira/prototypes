@@ -1,5 +1,6 @@
+import { useCallbackRef } from '@repo/hooks'
+
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-import useCallbackRef from 'hooks/useCallbackRef'
 
 import PageHeader from '../common/components/PageHeader'
 

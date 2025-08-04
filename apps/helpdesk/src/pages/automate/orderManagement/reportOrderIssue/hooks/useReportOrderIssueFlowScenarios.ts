@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { useHistory } from 'react-router-dom'
 
-import useAsyncFn from 'hooks/useAsyncFn'
 import { IntegrationType } from 'models/integration/constants'
 import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'

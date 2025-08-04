@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { useSearchParam } from 'hooks/useSearchParam'
 import {
     AiAgentOnboardingWizardStep,

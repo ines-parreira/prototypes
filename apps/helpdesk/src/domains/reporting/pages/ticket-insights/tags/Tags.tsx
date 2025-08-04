@@ -1,3 +1,4 @@
+import { useGridSize } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -15,7 +16,6 @@ import {
     TicketInsightsTagsReportConfig,
 } from 'domains/reporting/pages/ticket-insights/tags/TagsReportConfig'
 import { TagsReportDownloadDataButton } from 'domains/reporting/pages/ticket-insights/tags/TagsReportDownloadDataButton'
-import { useGridSize } from 'hooks/useGridSize'
 
 export function Tags() {
     const featureFlags = useFlags()

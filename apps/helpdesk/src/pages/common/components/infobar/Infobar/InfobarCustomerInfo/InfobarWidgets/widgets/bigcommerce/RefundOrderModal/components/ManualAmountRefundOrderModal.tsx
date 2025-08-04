@@ -1,8 +1,8 @@
 import React, { Dispatch, useEffect, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {
     BigCommerceRefundableItemType,
     BigCommerceRefundItemsPayload,

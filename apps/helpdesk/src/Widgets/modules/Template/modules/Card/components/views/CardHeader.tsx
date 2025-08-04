@@ -5,11 +5,11 @@ import React, {
     useState,
 } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
-import useId from 'hooks/useId'
 import {
     EXPAND_TARGET_MARKER,
     TARGET_CLOSED_MARKER,

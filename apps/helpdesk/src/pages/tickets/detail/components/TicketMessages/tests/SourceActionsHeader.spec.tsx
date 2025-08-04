@@ -1,12 +1,11 @@
 import { ReactElement } from 'react'
 
+import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useDebouncedValue from 'hooks/useDebouncedValue'
-import useElementSize from 'hooks/useElementSize'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
 import { Source, TicketMessage } from 'models/ticket/types'
 import * as infobarActions from 'state/infobar/actions'
@@ -15,8 +14,11 @@ import SourceActionsHeader from '../SourceActionsHeader'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('hooks/useDebouncedValue', () => jest.fn())
-jest.mock('hooks/useElementSize', () => jest.fn())
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useDebouncedValue: jest.fn(),
+    useElementSize: jest.fn(),
+}))
 jest.mock('models/ticket/predicates', () => ({
     isTicketMessageDeleted: jest.fn(),
 }))

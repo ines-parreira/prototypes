@@ -1,9 +1,9 @@
 import React, { CSSProperties, useEffect, useMemo } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { Collapse } from 'reactstrap'
 
-import useMeasure from 'hooks/useMeasure'
 import { MacroAction } from 'models/macroAction/types'
 import { TicketMessage } from 'models/ticket/types'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'

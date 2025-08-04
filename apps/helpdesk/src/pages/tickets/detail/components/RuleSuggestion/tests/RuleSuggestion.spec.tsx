@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { useMeasure } from '@repo/hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -15,8 +14,6 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { emptyManagedRule, emptyRule } from 'fixtures/rule'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
-import useElementSize from 'hooks/useElementSize'
-import useMeasure from 'hooks/useMeasure'
 import { sendTicketMessage } from 'state/newMessage/actions'
 import { emailTicket } from 'state/ticket/tests/fixtures'
 
@@ -25,20 +22,14 @@ import RuleSuggestion, {
     isSuggestionEmpty,
 } from '../RuleSuggestion'
 
-jest.mock('hooks/useElementSize', () => jest.fn())
-
-const useElementSizeMock = useElementSize as jest.Mock
-useElementSizeMock.mockReturnValue([0, 160])
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useElementSize: jest.fn().mockImplementation(() => [0, 160]),
+    useMeasure: jest.fn().mockImplementation(() => [undefined, 0]),
+}))
 
 jest.mock('state/newMessage/actions.ts')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-
-jest.mock('hooks/useMeasure', () => {
-    return {
-        __esModule: true,
-        default: jest.fn().mockImplementation(() => [undefined, 0]),
-    }
-})
 
 const useFlagsMock = useFlags as jest.Mock
 

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useInterval } from '@repo/hooks'
 import moment from 'moment'
 
 import {
@@ -7,7 +8,6 @@ import {
     useGetAgentWrapUpCallStatus,
 } from '@gorgias/helpdesk-queries'
 
-import useInterval from 'hooks/useInterval'
 import { useNotify } from 'hooks/useNotify'
 import { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'

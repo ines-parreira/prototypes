@@ -1,6 +1,5 @@
+import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
-
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { CustomerEngagementSettings } from './components/CustomerEngagementSettings/CustomerEngagementSettings'

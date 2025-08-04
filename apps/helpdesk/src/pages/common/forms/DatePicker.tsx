@@ -7,11 +7,11 @@ import React, {
     useState,
 } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import moment, { Moment } from 'moment-timezone'
 import { Tooltip } from 'reactstrap'
 
 import { useTheme } from 'core/theme'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import {
     type BaseDateRangePicker,
     DateRangePicker,

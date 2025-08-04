@@ -1,3 +1,4 @@
+import { useInterval } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 
@@ -9,11 +10,13 @@ import {
     isAgentBusy,
     mapBusyAgentStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import useInterval from 'hooks/useInterval'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 
-jest.mock('hooks/useInterval')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useInterval: jest.fn(),
+}))
 jest.mock('pages/common/components/AgentCard/AgentCard')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils.ts')
 jest.mock('models/voiceCall/utils')

@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import client from 'models/api/resources'
 import {
     Bundle,

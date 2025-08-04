@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { useLocalStorage, useTitle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
 import logoRecharge from 'assets/img/integrations/recharge.svg'
@@ -7,8 +8,6 @@ import logoShopify from 'assets/img/integrations/shopify.svg'
 import logoYotpo from 'assets/img/integrations/yotpo.png'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
-import useTitle from 'hooks/useTitle'
 import { IntegrationType } from 'models/integration/constants'
 import { fetchInstalledApps } from 'models/integration/resources'
 import { AppListItem } from 'models/integration/types'

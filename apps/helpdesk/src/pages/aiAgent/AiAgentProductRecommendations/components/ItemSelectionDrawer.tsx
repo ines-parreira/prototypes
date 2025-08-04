@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
+
 import {
     Button,
     CheckBoxField,
@@ -7,7 +9,6 @@ import {
     LoadingSpinner,
 } from '@gorgias/merchant-ui-kit'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { Drawer } from 'pages/common/components/Drawer'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 

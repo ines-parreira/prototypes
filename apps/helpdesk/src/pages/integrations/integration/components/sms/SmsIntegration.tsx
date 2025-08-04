@@ -1,7 +1,7 @@
 import { Route, Switch, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { IntegrationType, isSmsIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'

@@ -8,6 +8,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { List } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
@@ -23,7 +24,6 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { Tag } from 'models/aiAgent/types'
 import { HelpCenter } from 'models/helpCenter/types'

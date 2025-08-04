@@ -8,12 +8,11 @@ import React, {
     useState,
 } from 'react'
 
+import { useDebouncedValue, useThrottledValue } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
 
 import { WorkflowStepMetricsMap } from 'domains/reporting/hooks/automate/utils'
-import useDebouncedValue from 'hooks/useDebouncedValue'
-import useThrottledValue from 'hooks/useThrottledValue'
 import { IntegrationType } from 'models/integration/constants'
 import {
     useGetWorkflowConfiguration,

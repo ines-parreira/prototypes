@@ -1,9 +1,9 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import client from 'models/api/resources'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'

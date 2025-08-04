@@ -1,13 +1,13 @@
 /* istanbul ignore file */
 import React, { useCallback, useMemo } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'

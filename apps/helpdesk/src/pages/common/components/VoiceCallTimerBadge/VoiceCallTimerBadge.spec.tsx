@@ -1,15 +1,16 @@
-import React from 'react'
-
+import { useInterval } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 
-import useInterval from 'hooks/useInterval'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 
 import VoiceCallTimerBadge from './VoiceCallTimerBadge'
 
 jest.mock('models/voiceCall/utils')
-jest.mock('hooks/useInterval')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useInterval: jest.fn(),
+}))
 
 const getFormattedDurationOngoingCallMock = assumeMock(
     getFormattedDurationOngoingCall,

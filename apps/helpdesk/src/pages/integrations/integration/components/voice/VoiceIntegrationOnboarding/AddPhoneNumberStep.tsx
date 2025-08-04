@@ -8,7 +8,7 @@ import type { SelectFieldRawOption } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'

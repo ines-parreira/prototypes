@@ -1,5 +1,6 @@
-import React, { memo, useEffect, useMemo, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 
+import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
@@ -12,8 +13,6 @@ import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/
 import { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useCallbackRef from 'hooks/useCallbackRef'
-import useElementSize from 'hooks/useElementSize'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { setHasAttemptedToCloseTicket } from 'state/ticket/actions'

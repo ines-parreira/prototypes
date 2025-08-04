@@ -1,5 +1,6 @@
 import React, { FunctionComponent, UIEventHandler, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { User } from 'config/types/user'
@@ -36,7 +37,6 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useMeasure from 'hooks/useMeasure'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

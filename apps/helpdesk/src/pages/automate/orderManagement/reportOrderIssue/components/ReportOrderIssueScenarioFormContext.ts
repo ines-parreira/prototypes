@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect } from 'react'
 
+import { usePrevious } from '@repo/hooks'
 import _noop from 'lodash/noop'
 
-import usePrevious from 'hooks/usePrevious'
 import { StoreIntegration } from 'models/integration/types'
 
 export type ReportOrderIssueScenarioFormContextType = {

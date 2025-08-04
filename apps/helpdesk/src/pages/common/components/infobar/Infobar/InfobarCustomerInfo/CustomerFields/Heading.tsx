@@ -1,3 +1,4 @@
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
@@ -5,7 +6,6 @@ import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import useAppSelector from 'hooks/useAppSelector'
-import useId from 'hooks/useId'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'

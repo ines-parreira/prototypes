@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
+
 import { GORGIAS_CHAT_LIVE_CHAT_OFFLINE } from 'config/integrations/gorgias_chat'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import {
     getAvailableChats,
     getFirstAvailableChat,

@@ -1,5 +1,6 @@
+import { useAsyncFn } from '@repo/hooks'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { updateSubscription } from 'state/currentAccount/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

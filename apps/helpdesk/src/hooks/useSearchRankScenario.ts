@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useUnmount } from '@repo/hooks'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import useUnmount from 'hooks/useUnmount'
 import { SearchEngine } from 'models/search/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 

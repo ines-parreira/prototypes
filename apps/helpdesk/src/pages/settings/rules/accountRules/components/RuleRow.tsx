@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
@@ -16,7 +17,6 @@ import { useAppNode } from 'appNode'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { createRule, deactivateRule, deleteRule } from 'models/rule/resources'

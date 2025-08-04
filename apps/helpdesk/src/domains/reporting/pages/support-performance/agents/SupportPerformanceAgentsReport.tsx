@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
@@ -12,7 +14,6 @@ import {
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
 } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import { useGridSize } from 'hooks/useGridSize'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
 

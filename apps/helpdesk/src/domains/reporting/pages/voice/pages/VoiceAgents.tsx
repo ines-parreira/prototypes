@@ -1,3 +1,4 @@
+import { useGridSize } from '@repo/hooks'
 import moment from 'moment'
 
 import { PaywallConfig, paywallConfigs } from 'config/paywalls'
@@ -16,7 +17,6 @@ import {
     VoiceAgentsReportConfig,
 } from 'domains/reporting/pages/voice/pages/VoiceAgentsReportConfig'
 import VoicePaywall from 'domains/reporting/pages/voice/VoicePaywall'
-import { useGridSize } from 'hooks/useGridSize'
 import { ProductType } from 'models/billing/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import { AccountFeature } from 'state/currentAccount/types'

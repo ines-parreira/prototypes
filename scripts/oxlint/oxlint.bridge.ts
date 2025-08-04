@@ -141,6 +141,7 @@ const outDirs = [
     'configs/jest',
     'core/hooks',
     'utils/testing',
+    'utils/types',
 ]
 
 const outPaths = outDirs.map((dir) =>

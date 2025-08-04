@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import useLocalStorage from 'hooks/useLocalStorage'
+import { useLocalStorage } from '@repo/hooks'
 
 import { PAGE_NAME } from '../constant'
 

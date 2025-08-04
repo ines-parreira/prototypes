@@ -193,7 +193,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
 
       - name: 'Test ${{ matrix.project }}'
-        run: pnpm --filter=${{ matrix.project }} test --coverage
+        run: pnpm --filter=${{ matrix.project }} test:ci:cover
 
       - name: Create sanitized flag name
         id: sanitize

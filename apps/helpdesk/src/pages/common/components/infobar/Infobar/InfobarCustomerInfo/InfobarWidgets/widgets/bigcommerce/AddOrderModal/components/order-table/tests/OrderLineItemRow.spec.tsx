@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -36,7 +36,10 @@ jest.mock('../../../utils', () => ({
     useCanViewBigCommerceCreateOrderModifiers: jest.fn(() => true),
 }))
 
-jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'mocked'),
+}))
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 

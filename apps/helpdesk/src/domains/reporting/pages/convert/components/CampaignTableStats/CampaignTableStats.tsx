@@ -1,5 +1,6 @@
 import React, { UIEventHandler, useCallback, useMemo, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
 import css from 'domains/reporting/pages/convert/components/CampaignTableStats/CampaignTableStats.less'
@@ -12,7 +13,6 @@ import { CampaignTableColumn } from 'domains/reporting/pages/convert/types/Campa
 import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { getDataFromTableCell } from 'domains/reporting/pages/convert/utils/getDataFromTableCell'
-import useMeasure from 'hooks/useMeasure'
 import { opposite, OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

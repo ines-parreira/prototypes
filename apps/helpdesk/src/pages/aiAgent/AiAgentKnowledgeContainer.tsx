@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
@@ -11,7 +12,6 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { PAGE_NAME } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'

@@ -1,12 +1,11 @@
 import React, { HTMLAttributes, useEffect, useState } from 'react'
 
+import { useKey } from '@repo/hooks'
 import classNames from 'classnames'
 import ReactDOM from 'react-dom'
 import { Container } from 'reactstrap'
 
 import { IconButton, ShortcutKey, Tooltip } from '@gorgias/merchant-ui-kit'
-
-import useKey from 'hooks/useKey'
 
 import Loader from '../Loader/Loader'
 

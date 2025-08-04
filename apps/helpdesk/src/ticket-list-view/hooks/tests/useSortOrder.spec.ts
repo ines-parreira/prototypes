@@ -1,13 +1,15 @@
+import { useLocalStorage } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
-import useLocalStorage from 'hooks/useLocalStorage'
-
 import useSortOrder from '../useSortOrder'
 
-jest.mock('hooks/useLocalStorage', () => jest.fn())
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 const useLocalStorageMock = useLocalStorage as jest.Mock
 
 describe('useSortOrder', () => {

@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
 import { Banner, Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
-
-import useLocalStorage from 'hooks/useLocalStorage'
 
 type SyncNotificationProps = {
     platform: string

@@ -1,6 +1,5 @@
+import { useEffectOnce } from '@repo/hooks'
 import { produce } from 'immer'
-
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import { BannerCategory } from '../../types'
 import { STORAGE_CLEAR_TIMEOUT } from '../constants'

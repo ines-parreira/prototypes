@@ -1,8 +1,9 @@
 import { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
+
 import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import { User } from 'config/types/user'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import Button from 'pages/common/components/button/Button'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'

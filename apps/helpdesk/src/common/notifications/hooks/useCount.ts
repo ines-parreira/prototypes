@@ -1,6 +1,5 @@
 import { useKnockFeed } from '@knocklabs/react'
-
-import useEffectOnce from 'hooks/useEffectOnce'
+import { useEffectOnce } from '@repo/hooks'
 
 export default function useCount() {
     const { feedClient, useFeedStore } = useKnockFeed()

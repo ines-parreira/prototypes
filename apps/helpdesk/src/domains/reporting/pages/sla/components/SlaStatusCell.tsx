@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
 
+import { useId } from '@repo/hooks'
+
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
@@ -8,7 +10,6 @@ import {
 } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 import { SlaStatusLabel } from 'domains/reporting/services/constants'
-import useId from 'hooks/useId'
 
 export type SLAPolicyStatus = {
     [TicketSLADimension.SlaPolicyMetricName]: string

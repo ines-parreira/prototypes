@@ -1,5 +1,6 @@
 import React, { ChangeEvent, memo, useCallback, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap'
@@ -10,7 +11,6 @@ import {
 } from 'business/shopify/lineItem'
 import { formatPrice } from 'business/shopify/number'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 

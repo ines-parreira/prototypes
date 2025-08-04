@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createDragDropManager } from 'dnd-core'
@@ -14,7 +15,6 @@ import { CompatRouter } from 'react-router-dom-v5-compat'
 import { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { Main } from 'main/app'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'

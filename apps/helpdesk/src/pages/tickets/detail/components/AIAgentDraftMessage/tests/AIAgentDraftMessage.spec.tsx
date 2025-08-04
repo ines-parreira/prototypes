@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { useMeasure } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import useMeasure from 'hooks/useMeasure'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { message } from 'models/ticket/tests/mocks'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
@@ -41,7 +39,10 @@ jest.mock('state/ui/ticketAIAgentFeedback', () => ({
 }))
 
 jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')
-jest.mock('hooks/useMeasure')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useMeasure: jest.fn(),
+}))
 
 const useAIAgentSendFeedbackMock = assumeMock(useAIAgentSendFeedback)
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)

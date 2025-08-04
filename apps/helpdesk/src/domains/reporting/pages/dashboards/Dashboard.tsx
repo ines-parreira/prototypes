@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper, {
@@ -22,7 +24,6 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useFiltersFromDashboard'
 import { updateChartPosition } from 'domains/reporting/pages/dashboards/utils'
-import { useGridSize } from 'hooks/useGridSize'
 
 export type DashboardProps = {
     dashboard: DashboardSchema

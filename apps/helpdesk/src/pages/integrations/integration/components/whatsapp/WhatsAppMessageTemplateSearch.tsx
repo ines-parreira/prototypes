@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'

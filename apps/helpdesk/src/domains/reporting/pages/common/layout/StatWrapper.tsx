@@ -6,6 +6,7 @@ import React, {
     useMemo,
 } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import axios, { AxiosError, CancelToken } from 'axios'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
@@ -24,7 +25,6 @@ import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIc
 import css from 'domains/reporting/pages/common/layout/StatWrapper.less'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

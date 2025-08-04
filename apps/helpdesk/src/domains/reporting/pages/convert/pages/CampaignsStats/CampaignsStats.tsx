@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useGridSize } from '@repo/hooks'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { isEmpty } from 'lodash'
@@ -18,7 +19,6 @@ import { RevenueStatsContent } from 'domains/reporting/pages/convert/containers/
 import { useShopifyIntegrations } from 'domains/reporting/pages/convert/hooks/useShopifyIntegrations'
 import css from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignsStats.less'
 import { CampaignStatsFilters } from 'domains/reporting/pages/convert/providers/CampaignStatsFilters'
-import { useGridSize } from 'hooks/useGridSize'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'

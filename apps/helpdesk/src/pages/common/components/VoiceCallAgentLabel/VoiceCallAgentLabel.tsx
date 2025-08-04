@@ -1,9 +1,9 @@
+import { useId } from '@repo/hooks'
 import axios from 'axios'
 import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import { AgentLabel } from 'pages/common/utils/labels'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import { useAgentDetails } from 'pages/tickets/detail/components/TicketVoiceCall/hooks'

@@ -1,8 +1,6 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 

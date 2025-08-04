@@ -1,10 +1,10 @@
 import React, { Dispatch, useRef, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { OrderStatusList } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

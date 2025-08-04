@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Nav, Navbar } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { createRule, deleteRule, updateRule } from 'models/rule/resources'
 import { ErrorsCollector } from 'pages/common/components/ast/Errors'

@@ -1,5 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
+import * as hooksImports from '@repo/hooks'
 import {
     cleanup,
     fireEvent,
@@ -14,7 +15,6 @@ import {
     migrationOutboundVerificationUnverifiedDomain,
     migrationOutboundVerificationVerifiedDomain,
 } from 'fixtures/emailMigration'
-import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import {
     EmailMigrationOutboundVerification,
     OutboundVerificationType,
@@ -26,8 +26,8 @@ import MigrationDomainList from '../EmailMigration/MigrationDomainList'
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
 const useLocalStorageSpy = jest.spyOn(
-    useLocalStorageImports,
-    'default',
+    hooksImports,
+    'useLocalStorage',
 ) as jest.Mock
 
 jest.mock(

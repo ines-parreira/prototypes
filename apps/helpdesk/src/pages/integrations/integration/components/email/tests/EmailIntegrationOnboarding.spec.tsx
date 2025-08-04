@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -15,7 +16,6 @@ import { EmailIntegration } from '@gorgias/helpdesk-queries'
 import { FeatureFlagKey } from 'config/featureFlags'
 import * as billingFixtures from 'fixtures/billing'
 import { customHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
-import useLocalStorage from 'hooks/useLocalStorage'
 import history from 'pages/history'
 import EmailIntegrationOnboarding from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding'
 import EmailIntegrationOnboardingDomainVerification from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
@@ -51,7 +51,10 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification',
 )
-jest.mock('hooks/useLocalStorage')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 
 const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()

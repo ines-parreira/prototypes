@@ -1,8 +1,8 @@
 import React, { MouseEvent, useCallback, useMemo, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { Map } from 'immutable'
 
-import useLocalStorage from 'hooks/useLocalStorage'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'

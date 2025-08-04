@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import _noop from 'lodash/noop'
 import moment from 'moment'
 
@@ -10,7 +11,6 @@ import { getPageStatsFilters } from 'domains/reporting/state/stats/selectors'
 import { setStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import BackToActionFormButton from './BackToActionFormButton'
 

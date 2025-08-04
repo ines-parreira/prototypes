@@ -1,13 +1,16 @@
+import * as hooksImports from '@repo/hooks'
 import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import * as useLocalStorage from 'hooks/useLocalStorage'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 import { CampaignToolsCell } from '../CampaignToolsCell'
 
-const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
+const useLocalStorageSpy = jest.spyOn(
+    hooksImports,
+    'useLocalStorage',
+) as jest.Mock
 
 describe('<CampaignToolsCell />', () => {
     const onClickDelete = jest.fn()

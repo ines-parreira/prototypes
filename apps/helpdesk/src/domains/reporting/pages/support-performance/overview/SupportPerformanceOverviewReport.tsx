@@ -1,3 +1,5 @@
+import { useGridSize, useLocalStorage } from '@repo/hooks'
+
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
@@ -15,8 +17,6 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { useGridSize } from 'hooks/useGridSize'
-import useLocalStorage from 'hooks/useLocalStorage'
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 
 const WORKLOAD_SECTION_KPI_GRID_CELL_SIZE = 3

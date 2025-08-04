@@ -1,4 +1,5 @@
-import useEffectOnce from 'hooks/useEffectOnce'
+import { useEffectOnce } from '@repo/hooks'
+
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import WhatsAppMessageTemplateSearch from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateSearch'

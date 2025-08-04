@@ -12,11 +12,11 @@ import React, {
     useRef,
 } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 import _isFunction from 'lodash/isFunction'
 import _isString from 'lodash/isString'
 
-import useEffectOnce from 'hooks/useEffectOnce'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import css from 'pages/common/components/dropdown/DropdownItem.less'
 import CheckBox from 'pages/common/forms/CheckBox'

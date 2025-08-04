@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
@@ -6,7 +8,6 @@ import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSec
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { ProductInsightsChart } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsChartConfig'
 import { ProductInsightsPlaceholderReportConfig } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsReportConfig'
-import { useGridSize } from 'hooks/useGridSize'
 
 export const ProductInsightsReport = () => {
     const getGridCellSize = useGridSize()

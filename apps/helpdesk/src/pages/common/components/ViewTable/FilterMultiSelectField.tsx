@@ -1,9 +1,9 @@
 import React, { ComponentType, useCallback, useMemo } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import useEffectOnce from 'hooks/useEffectOnce'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import withCancellableRequest, {

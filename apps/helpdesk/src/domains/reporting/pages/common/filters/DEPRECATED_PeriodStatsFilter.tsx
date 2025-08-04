@@ -1,5 +1,6 @@
 import React, { ComponentProps, useCallback } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
 
@@ -10,7 +11,6 @@ import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
 const MAX_SPAN = 90

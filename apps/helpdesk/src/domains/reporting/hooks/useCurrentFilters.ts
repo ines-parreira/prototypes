@@ -1,3 +1,4 @@
+import { useSessionStorage } from '@repo/hooks'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
 
@@ -13,7 +14,6 @@ import {
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useSessionStorage from 'hooks/useSessionStorage'
 
 export const CURRENT_FILTERS = 'current-filters'
 

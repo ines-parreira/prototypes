@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
+
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { isEnterprise } from 'models/billing/utils'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'

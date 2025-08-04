@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -23,9 +21,10 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
     )),
 }))
 
-jest.mock('hooks/useId', () => {
-    return jest.fn().mockReturnValue('mock-id')
-})
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'mock-id'),
+}))
 
 describe('GuidanceVariableTag', () => {
     const mockGuidanceVariables = [

@@ -1,8 +1,8 @@
 import React, { ComponentProps } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { useId } from '@repo/hooks'
 
-import useId from 'hooks/useId'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 type TooltipProps = ComponentProps<typeof Tooltip>
 

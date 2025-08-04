@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import type { ComponentType, RefObject } from 'react'
 
 import { Placement } from '@floating-ui/react'
+import { useDimensions } from '@repo/hooks'
 import classNames from 'classnames'
 import _xor from 'lodash/xor'
 import { Link } from 'react-router-dom'
@@ -21,7 +22,6 @@ import {
     CustomFieldValue,
 } from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
-import useDimensions from 'hooks/useDimensions'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

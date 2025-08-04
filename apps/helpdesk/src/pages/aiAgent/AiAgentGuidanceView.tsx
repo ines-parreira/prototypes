@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
+import { useDebouncedValue } from '@repo/hooks'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useDebouncedValue from 'hooks/useDebouncedValue'
 import { isGorgiasApiError } from 'models/api/types'
 import { LocaleCode } from 'models/helpCenter/types'
 import { StoreIntegration } from 'models/integration/types'

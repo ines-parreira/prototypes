@@ -1,3 +1,4 @@
+import { useGridSize } from '@repo/hooks'
 import moment from 'moment/moment'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -17,7 +18,6 @@ import {
 import PartialDataAlert from 'domains/reporting/pages/help-center/components/PartialDataAlert/PartialDataAlert'
 import UnpublishedHelpCenterAlert from 'domains/reporting/pages/help-center/components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 import { useSelectedHelpCenter } from 'domains/reporting/pages/help-center/hooks/useSelectedHelpCenter'
-import { useGridSize } from 'hooks/useGridSize'
 import { useHasAccessToAILibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 

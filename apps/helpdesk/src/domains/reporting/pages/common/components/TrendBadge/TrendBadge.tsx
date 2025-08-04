@@ -1,3 +1,4 @@
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
@@ -10,7 +11,6 @@ import {
     formatMetricValue,
     MetricTrendFormat,
 } from 'domains/reporting/pages/common/utils'
-import useId from 'hooks/useId'
 
 const getTooltipText = (prevValue: string, period: string) => (
     <>

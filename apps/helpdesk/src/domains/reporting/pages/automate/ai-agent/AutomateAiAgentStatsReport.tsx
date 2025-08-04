@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+import { useEffectOnce, useGridSize } from '@repo/hooks'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -26,8 +28,6 @@ import {
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
-import { useGridSize } from 'hooks/useGridSize'
 import { isAiAgentCustomField } from 'pages/aiAgent/util'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 

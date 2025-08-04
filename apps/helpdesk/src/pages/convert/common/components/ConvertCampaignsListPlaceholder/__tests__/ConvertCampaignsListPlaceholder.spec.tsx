@@ -1,12 +1,10 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { campaign } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'

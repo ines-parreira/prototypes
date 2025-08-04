@@ -1,7 +1,7 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import {
     WhatsAppMigrationContextProvider,
     WhatsAppMigrationStep,

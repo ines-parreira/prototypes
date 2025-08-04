@@ -1,12 +1,12 @@
+import { useEffectOnce } from '@repo/hooks'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
 import {
     useGetWorkflowConfiguration,
@@ -29,9 +29,12 @@ import {
 import WorkflowEditorView from '../WorkflowEditorView'
 
 jest.mock('hooks/useAppSelector')
-jest.mock('hooks/useEffectOnce')
-jest.mock('hooks/useGetDateAndTimeFormat')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useEffectOnce: jest.fn(),
+}))
 jest.mock('hooks/useSearch')
+jest.mock('hooks/useGetDateAndTimeFormat')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('pages/automate/common/hooks/useSelfServiceConfigurationUpdate')
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration', () => ({

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { useDebouncedCallback } from '@repo/hooks'
+
 import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
-import useDebouncedCallback from 'hooks/useDebouncedCallback'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 
 import { AiAgentBadInteractionReason } from '../types'

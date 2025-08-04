@@ -22,7 +22,7 @@ import { voiceCall } from 'fixtures/voiceCalls'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
-import useSelectedIndex from 'hooks/useSelectedIndex'
+import { useSelectedIndex } from '@repo/hooks'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { SearchEngine } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
@@ -147,17 +147,25 @@ jest.mock(
         },
 )
 
-jest.mock('hooks/useSelectedIndex')
-const mockUseSelectedIndex = assumeMock(useSelectedIndex)
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useSelectedIndex: jest.fn(),
+    useLocalStorageWithExpiry: jest.fn().mockImplementation(() => {
+        const {
+            useState,
+        }: { useState: (value: unknown) => [string, (value: string) => void] } =
+            jest.requireActual('react')
+        const [state, setState] = useState('')
+        return {
+            state,
+            setState,
+            remove: jest.fn(),
+            refreshTimestamp: jest.fn(),
+        }
+    }),
+}))
 
-jest.mock('hooks/useLocalStorageWithExpiry', () => () => {
-    const {
-        useState,
-    }: { useState: (value: unknown) => [string, (value: string) => void] } =
-        jest.requireActual('react')
-    const [state, setState] = useState('')
-    return { state, setState, remove: jest.fn(), refreshTimestamp: jest.fn() }
-})
+const mockUseSelectedIndex = assumeMock(useSelectedIndex)
 
 const mockCurrentAccountHasProduct = jest.spyOn(
     billingSelectors,

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useLocalStorage from 'hooks/useLocalStorage'
 import { ShopifyIntegration } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'

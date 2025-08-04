@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
+import { useInterval } from '@repo/hooks'
+
 import { Badge } from '@gorgias/merchant-ui-kit'
 
-import useInterval from 'hooks/useInterval'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 
 import css from './VoiceCallTimerBadge.less'

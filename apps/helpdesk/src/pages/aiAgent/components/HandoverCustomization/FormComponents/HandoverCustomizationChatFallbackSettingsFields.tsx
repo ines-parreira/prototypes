@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
@@ -11,7 +12,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
 import { Label } from 'gorgias-design-system/Input/Label'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import * as ReactRouterDom from 'react-router-dom'
 
@@ -38,7 +36,10 @@ jest.mock('pages/common/hooks/useReorderDnD', () => {
         DragItemRequired: {},
     }
 })
-jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'mocked'),
+}))
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
 describe('ReportOrderIssueScenarioItem component', () => {
     const item = {

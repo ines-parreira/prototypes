@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useDeepEffect } from '@repo/hooks'
 import _debounce from 'lodash/debounce'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
-import useDeepEffect from 'hooks/useDeepEffect'
 import { TicketPartial } from 'ticket-list-view/types'
 
 export const DEBOUNCED_VIEW_TICKETS_DELAY = 1000

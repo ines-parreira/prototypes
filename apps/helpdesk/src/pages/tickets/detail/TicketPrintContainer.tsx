@@ -1,10 +1,8 @@
+import { useEffectOnce, useTitle, useUpdateEffect } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useTitle from 'hooks/useTitle'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import Loader from 'pages/common/components/Loader/Loader'
 import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
 import { fetchTicket } from 'state/ticket/actions'

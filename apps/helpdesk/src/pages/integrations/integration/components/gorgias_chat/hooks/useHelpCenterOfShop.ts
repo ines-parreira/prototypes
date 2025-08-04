@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import useAsyncFn from 'hooks/useAsyncFn'
+import { useAsyncFn } from '@repo/hooks'
+
 import { HelpCenter } from 'models/helpCenter/types'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'

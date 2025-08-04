@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Route, Switch, useParams } from 'react-router-dom'
 
@@ -7,7 +8,6 @@ import { Label } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
-import useEffectOnce from 'hooks/useEffectOnce'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'

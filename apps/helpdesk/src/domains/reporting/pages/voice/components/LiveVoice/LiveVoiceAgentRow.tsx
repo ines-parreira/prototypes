@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { useInterval } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
@@ -11,7 +12,6 @@ import {
     isAgentBusy,
     mapBusyAgentStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import useInterval from 'hooks/useInterval'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

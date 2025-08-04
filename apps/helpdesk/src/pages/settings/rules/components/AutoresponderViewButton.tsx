@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { createTag, fetchTags } from 'models/tag/resources'
 import { TagDraft } from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'

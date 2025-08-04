@@ -1,3 +1,5 @@
+import { useSessionStorage } from '@repo/hooks'
+
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -7,7 +9,6 @@ import {
     MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import useSessionStorage from 'hooks/useSessionStorage'
 
 type Args = {
     isPercentageEnabled: boolean

@@ -1,3 +1,5 @@
+import { useEffectOnce } from '@repo/hooks'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     paywallConfigs as defaultPaywallConfigs,
@@ -9,7 +11,6 @@ import {
     PAGE_TITLE_OVERVIEW,
 } from 'domains/reporting/pages/self-service/constants'
 import SelfServiceStatsPagePaywallCustomCta from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
-import useEffectOnce from 'hooks/useEffectOnce'
 import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrations'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'

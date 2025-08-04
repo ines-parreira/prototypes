@@ -8,11 +8,11 @@ import React, {
     useState,
 } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import {
     extractVariablesFromText,
     parseWorkflowVariable,

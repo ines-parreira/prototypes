@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import {
     DropdownItem,
     DropdownMenu,
@@ -12,7 +13,6 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 import down from 'assets/img/icons/rating-down.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up.svg'
-import useId from 'hooks/useId'
 import { Rating } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'

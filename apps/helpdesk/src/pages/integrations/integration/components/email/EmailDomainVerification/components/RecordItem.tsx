@@ -1,8 +1,8 @@
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 
-import useId from 'hooks/useId'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 

@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 
 import { getWrappedElementCount } from 'common/utils'
 import { agents } from 'fixtures/agents'
-import useElementSize from 'hooks/useElementSize'
 
 import TicketTags from '../TicketTags'
 
@@ -17,10 +16,11 @@ const mockStore = configureMockStore([thunk])
 
 jest.mock('common/utils/getWrappedElementCount', () => jest.fn())
 jest.mock('lodash/uniqueId', () => () => '42')
-jest.mock('hooks/useElementSize')
-
-const useElementSizeMock = useElementSize as jest.Mock
-useElementSizeMock.mockReturnValue([160, 100])
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useElementSize: jest.fn().mockImplementation(() => [160, 100]),
+    useId: jest.fn().mockImplementation(() => '42'),
+}))
 
 const getWrappedElementCountMock = assumeMock(getWrappedElementCount)
 

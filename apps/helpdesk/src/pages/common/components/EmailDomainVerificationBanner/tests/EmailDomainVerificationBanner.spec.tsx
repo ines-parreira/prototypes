@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,14 +8,16 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { IntegrationType } from 'models/integration/constants'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 
-jest.mock('hooks/useLocalStorage')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 const useLocalStorageMock = assumeMock(useLocalStorage)
 
 describe('EmailDomainVerificationBanner', () => {

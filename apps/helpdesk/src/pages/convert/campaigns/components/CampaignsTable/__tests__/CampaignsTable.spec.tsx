@@ -1,10 +1,10 @@
+import * as hooksImports from '@repo/hooks'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { campaignWithABGroup } from 'fixtures/abGroup'
 import { campaign } from 'fixtures/campaign'
-import * as useLocalStorage from 'hooks/useLocalStorage'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { ACTIVE_CAMPAIGNS_LIMIT } from 'pages/convert/campaigns/constants/lightCampaigns'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
@@ -16,8 +16,12 @@ import { CampaignTriggerType } from '../../../types/enums/CampaignTriggerType.en
 import { createTrigger } from '../../../utils/createTrigger'
 import { CampaignsTable } from '../CampaignsTable'
 
+const useLocalStorageSpy = jest.spyOn(
+    hooksImports,
+    'useLocalStorage',
+) as jest.Mock
+
 jest.mock('hooks/useSearch')
-const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
 
 const CAMPAIGNS_COUNT = 19
 const ACTIVE_CAMPAIGNS_COUNT = ACTIVE_CAMPAIGNS_LIMIT + 1

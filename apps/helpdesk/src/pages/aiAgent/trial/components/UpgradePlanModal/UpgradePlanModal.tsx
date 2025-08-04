@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import useEffectOnce from 'hooks/useEffectOnce'
 import {
     ModalBodyWrapper,
     ModalHeaderWrapper,

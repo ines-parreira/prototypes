@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useCallback, useRef } from 'react'
 
+import { useNow } from '@repo/hooks'
 import { Call } from '@twilio/voice-sdk'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -9,7 +10,6 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { declineCall } from 'hooks/integrations/phone/api'
-import { useNow } from 'hooks/useNow'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'

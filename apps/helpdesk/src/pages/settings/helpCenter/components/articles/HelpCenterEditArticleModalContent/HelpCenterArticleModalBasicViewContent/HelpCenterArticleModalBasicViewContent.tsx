@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
+
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import {
     Article,
     isArticleWithExistingTranslation,

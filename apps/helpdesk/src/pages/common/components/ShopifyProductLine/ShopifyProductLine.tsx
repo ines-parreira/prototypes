@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
@@ -10,7 +11,6 @@ import {
 } from 'constants/integration'
 import { Product, Variant } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { IntegrationType } from 'models/integration/constants'
 import {
     IntegrationDataItem,

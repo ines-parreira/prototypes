@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
 
+import { useGridSize } from '@repo/hooks'
+
 import { SegmentEvent } from 'common/segment'
 import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { Period } from 'domains/reporting/models/stat/types'
@@ -17,7 +19,6 @@ import {
 import { TooltipData } from 'domains/reporting/pages/types'
 import { getBadgeTooltipForPreviousPeriod } from 'domains/reporting/pages/utils'
 import { AIInsightsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import { useGridSize } from 'hooks/useGridSize'
 
 import css from './IntentPerformance.less'
 

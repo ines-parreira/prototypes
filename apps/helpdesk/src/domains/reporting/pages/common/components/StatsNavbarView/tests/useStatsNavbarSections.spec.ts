@@ -1,10 +1,13 @@
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { AccordionValues } from 'components/Accordion/utils/types'
 import { useStatsNavbarSections } from 'domains/reporting/pages/common/components/StatsNavbarView/useStatsNavbarSections'
-import useLocalStorage from 'hooks/useLocalStorage'
 
-jest.mock('hooks/useLocalStorage')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 const useLocalStorageMock =
     assumeMock<typeof useLocalStorage<AccordionValues>>(useLocalStorage)
 

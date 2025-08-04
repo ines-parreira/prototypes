@@ -1,3 +1,4 @@
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
@@ -7,7 +8,6 @@ import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useFlag } from 'core/flags'
-import useId from 'hooks/useId'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
 import { Meta, SourceAddress, Source as SourceType } from 'models/ticket/types'
 import SourceIcon from 'pages/common/components/SourceIcon'

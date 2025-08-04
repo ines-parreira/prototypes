@@ -1,3 +1,4 @@
+import { useInterval } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
@@ -7,7 +8,6 @@ import {
     getAgentWrapUpCallStatus,
 } from '@gorgias/helpdesk-client'
 
-import useInterval from 'hooks/useInterval'
 import { useNotify } from 'hooks/useNotify'
 import { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
@@ -22,7 +22,10 @@ jest.mock('services/socketManager', () => ({
     registerReceivedEvents: jest.fn(),
     unregisterReceivedEvents: jest.fn(),
 }))
-jest.mock('hooks/useInterval')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useInterval: jest.fn(),
+}))
 
 const FIXED_DATE = '2023-01-01T12:05:00Z'
 const FIXED_TIMESTAMP = new Date(FIXED_DATE).getTime()

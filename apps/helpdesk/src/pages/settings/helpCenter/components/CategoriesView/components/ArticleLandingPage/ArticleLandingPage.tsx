@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import { Container } from 'reactstrap'
 
@@ -9,7 +10,6 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { ArticleTemplate } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
 import Button from 'pages/common/components/button/Button'

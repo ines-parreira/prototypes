@@ -1,6 +1,7 @@
+import { useId } from '@repo/hooks'
+
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 
 export type ActionButtonVariant = 'danger' | 'neutral'

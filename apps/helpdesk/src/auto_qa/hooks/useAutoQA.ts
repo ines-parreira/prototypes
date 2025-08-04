@@ -1,13 +1,13 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
+
 import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/helpdesk-queries'
-
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import {
     dimensionOrderOfManualDimensions,

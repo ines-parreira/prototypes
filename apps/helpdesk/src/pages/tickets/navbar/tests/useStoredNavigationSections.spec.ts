@@ -13,31 +13,33 @@ const mockStorage: Record<string, any> = {}
 let mockSetCollapsedFirstLevelView = jest.fn()
 let mockSetCollapsedSections = jest.fn()
 
-jest.mock('hooks/useLocalStorage', () => ({
-    __esModule: true,
-    default: jest.fn().mockImplementation((key: string, initialValue: any) => {
-        if (!(key in mockStorage)) {
-            mockStorage[key] = initialValue
-        }
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest
+        .fn()
+        .mockImplementation((key: string, initialValue: any) => {
+            if (!(key in mockStorage)) {
+                mockStorage[key] = initialValue
+            }
 
-        if (key === 'collapsed-first-level-view') {
-            mockSetCollapsedFirstLevelView = jest.fn((value) => {
+            if (key === 'collapsed-first-level-view') {
+                mockSetCollapsedFirstLevelView = jest.fn((value) => {
+                    mockStorage[key] = value
+                })
+                return [mockStorage[key], mockSetCollapsedFirstLevelView]
+            }
+            if (key === 'collapsed-view-sections') {
+                mockSetCollapsedSections = jest.fn((value) => {
+                    mockStorage[key] = value
+                })
+                return [mockStorage[key], mockSetCollapsedSections]
+            }
+            // Default mock return for other keys if any
+            const setState = jest.fn((value) => {
                 mockStorage[key] = value
             })
-            return [mockStorage[key], mockSetCollapsedFirstLevelView]
-        }
-        if (key === 'collapsed-view-sections') {
-            mockSetCollapsedSections = jest.fn((value) => {
-                mockStorage[key] = value
-            })
-            return [mockStorage[key], mockSetCollapsedSections]
-        }
-        // Default mock return for other keys if any
-        const setState = jest.fn((value) => {
-            mockStorage[key] = value
-        })
-        return [mockStorage[key], setState]
-    }),
+            return [mockStorage[key], setState]
+        }),
 }))
 
 describe('useStoredNavigationSections', () => {
@@ -68,11 +70,12 @@ describe('useStoredNavigationSections', () => {
         expect(result.current.navigationValues).toEqual(
             initialViewCategoryValues,
         )
-        expect(require('hooks/useLocalStorage').default).toHaveBeenCalledWith(
+        const { useLocalStorage } = jest.requireMock('@repo/hooks')
+        expect(useLocalStorage).toHaveBeenCalledWith(
             'collapsed-first-level-view',
             initialViewCategoryValues,
         )
-        expect(require('hooks/useLocalStorage').default).toHaveBeenCalledWith(
+        expect(useLocalStorage).toHaveBeenCalledWith(
             'collapsed-view-sections',
             [],
         )

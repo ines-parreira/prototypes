@@ -8,10 +8,11 @@ import React, {
     useState,
 } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import {
     HelpCenter,

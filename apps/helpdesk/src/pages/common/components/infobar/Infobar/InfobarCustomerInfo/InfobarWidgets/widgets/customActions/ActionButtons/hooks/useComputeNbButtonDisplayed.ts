@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import { useDebouncedEffect } from '@repo/hooks'
+
 import { Source } from 'models/widget/types'
 import { computeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/computeNbButtonDisplayed'
 import { NB_MIN_BUTTON_DISPLAYED } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'

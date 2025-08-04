@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
@@ -27,7 +28,6 @@ import {
 } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { Integration } from 'models/integration/types'
 import { RootState } from 'state/types'
 

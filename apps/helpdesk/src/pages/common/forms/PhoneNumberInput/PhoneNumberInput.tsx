@@ -11,6 +11,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import {
     CountryCode,
@@ -23,7 +24,6 @@ import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { countries } from 'config/countries'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'

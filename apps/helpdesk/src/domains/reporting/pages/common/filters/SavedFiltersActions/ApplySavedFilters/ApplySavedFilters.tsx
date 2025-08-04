@@ -1,5 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 
+import { useToggle } from '@repo/hooks'
+
 import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -19,7 +21,6 @@ import {
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useToggle } from 'hooks/useToggle'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

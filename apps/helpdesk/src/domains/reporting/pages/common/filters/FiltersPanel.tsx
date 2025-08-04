@@ -8,6 +8,7 @@ import React, {
     useState,
 } from 'react'
 
+import { usePrevious } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
 import { connect } from 'react-redux'
 
@@ -41,7 +42,6 @@ import {
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getCleanStatsFiltersWithLogicalOperators } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-import usePrevious from 'hooks/usePrevious'
 import { getHasAutomate } from 'state/billing/selectors'
 import { RootState } from 'state/types'
 

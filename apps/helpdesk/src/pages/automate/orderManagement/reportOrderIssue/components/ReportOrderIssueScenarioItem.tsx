@@ -1,11 +1,11 @@
 import React, { RefObject } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import {
     DragItemRequired,

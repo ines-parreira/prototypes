@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import React, { useMemo, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import { produce } from 'immer'
 import moment, { Moment } from 'moment-timezone'
 
@@ -9,7 +10,6 @@ import { Label } from '@gorgias/merchant-ui-kit'
 import { Caption } from 'gorgias-design-system/Input/Caption'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import CampaignCustomSchedule from 'pages/convert/campaigns//components/CampaignCustomSchedule'

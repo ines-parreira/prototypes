@@ -1,5 +1,6 @@
 import React, { UIEventHandler, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { useSortedChannelsWithData } from 'domains/reporting/hooks/support-performance/useSortedChannelsWithData'
@@ -11,7 +12,6 @@ import {
     ChannelColumnConfig,
     getColumnWidth,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
-import useMeasure from 'hooks/useMeasure'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'

@@ -1,3 +1,4 @@
+import * as debounceHook from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
@@ -6,7 +7,6 @@ import { waitFor } from '@testing-library/react'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { ticket as defaultTicket } from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import * as debounceHook from 'hooks/useDebouncedValue'
 
 import useMacrosSearch from '../useMacrosSearch'
 
@@ -91,7 +91,7 @@ describe('useMacrosSearch', () => {
 
     it('should log an event if a search is executed due to changing parameters', async () => {
         const useDebouncedValueSpy = jest
-            .spyOn(debounceHook, 'default')
+            .spyOn(debounceHook, 'useDebouncedValue')
             .mockImplementation((value) => value)
 
         const { rerender } = renderHook((options) => useMacrosSearch(options), {

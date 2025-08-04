@@ -1,9 +1,9 @@
 import React, { MouseEvent, PropsWithChildren } from 'react'
 
+import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import classNames from 'classnames'
 
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
-import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 export const EXPAND_COLUMN_WIDTH = 24

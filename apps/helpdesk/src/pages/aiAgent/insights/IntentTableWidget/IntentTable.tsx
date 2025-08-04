@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useEffectOnce, useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 import { isEqual } from 'lodash'
 import { useParams } from 'react-router-dom'
@@ -24,8 +25,6 @@ import {
 } from 'domains/reporting/state/ui/stats/insightsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useMeasure from 'hooks/useMeasure'
 import {
     Intent,
     IntentTableColumn,

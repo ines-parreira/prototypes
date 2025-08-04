@@ -11,7 +11,8 @@
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true",
-        "test": "jest"
+        "test": "jest",
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=2 --testTimeout=10000 --silent --forceExit"
     },
     "peerDependencies": {
         "@testing-library/dom": "catalog:testing-library",

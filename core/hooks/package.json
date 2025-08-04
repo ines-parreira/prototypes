@@ -11,12 +11,15 @@
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
         "test": "jest",
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=2 --testTimeout=10000 --silent --forceExit",
         "test:update": "jest -u",
         "test:watch": "jest --watch",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "copy-to-clipboard": "catalog:copy-to-clipboard",
         "lodash": "catalog:lodash",
+        "qs": "catalog:qs",
         "react": "catalog:react",
         "react-dom": "catalog:react"
     },
@@ -24,6 +27,7 @@
         "@jest/expect": "catalog:jest",
         "@repo/jest-config": "workspace:*",
         "@repo/testing": "workspace:*",
+        "@repo/types": "workspace:*",
         "@repo/tsconfigs": "workspace:*",
         "@swc/core": "catalog:jest",
         "@swc/jest": "catalog:jest",
@@ -35,6 +39,7 @@
         "@types/jest": "catalog:jest",
         "@types/jsdom": "catalog:jest",
         "@types/lodash": "catalog:lodash",
+        "@types/qs": "catalog:qs",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@types/testing-library__jest-dom": "catalog:jest",

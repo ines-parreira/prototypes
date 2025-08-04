@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
+import { useSelectedIndex } from '@repo/hooks'
 import classnames from 'classnames'
 import { List } from 'immutable'
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
-import useSearch from 'hooks/useSearch'
-import useSelectedIndex from 'hooks/useSelectedIndex'
+import { useSearch } from 'hooks/useSearch'
 import { TicketElement, TicketMessage } from 'models/ticket/types'
 import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 

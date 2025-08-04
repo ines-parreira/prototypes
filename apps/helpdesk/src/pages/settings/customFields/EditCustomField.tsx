@@ -1,3 +1,4 @@
+import { useTitle } from '@repo/hooks'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
@@ -11,7 +12,6 @@ import {
     CustomFieldObjectTypes,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
-import useTitle from 'hooks/useTitle'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'

@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom'
 
 import outOfRecoveryCodesImage from 'assets/img/auth/out-of-recovery-codes.svg'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

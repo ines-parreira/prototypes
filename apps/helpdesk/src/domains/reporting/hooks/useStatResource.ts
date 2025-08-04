@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import axios, { AxiosError, CancelToken } from 'axios'
 import _isEqual from 'lodash/isEqual'
 
@@ -13,7 +14,6 @@ import { StatsState as StatsUIState } from 'domains/reporting/state/ui/stats/red
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { statFetched } from 'state/entities/stats/actions'
 import { StatsState } from 'state/entities/stats/types'
 import { notify } from 'state/notifications/actions'

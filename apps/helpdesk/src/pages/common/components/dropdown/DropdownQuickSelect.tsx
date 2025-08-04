@@ -10,9 +10,9 @@ import React, {
     useRef,
 } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 
-import useEffectOnce from 'hooks/useEffectOnce'
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import { DropdownContext } from './Dropdown'

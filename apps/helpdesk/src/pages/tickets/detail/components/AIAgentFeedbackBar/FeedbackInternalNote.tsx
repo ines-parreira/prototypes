@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
+
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import TextArea from 'gorgias-design-system/Input/TextArea'
 import useAppSelector from 'hooks/useAppSelector'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'

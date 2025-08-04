@@ -42,7 +42,10 @@ jest.mock('react-dnd-html5-backend', () => ({
     getEmptyImage: jest.fn(() => ({})),
 }))
 
-jest.mock('hooks/useId', () => () => 'mock-id')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'mock-id'),
+}))
 
 jest.mock('domains/reporting/pages/common/layout/DashboardGrid', () => 'div')
 jest.mock(

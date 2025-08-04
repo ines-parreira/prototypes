@@ -1,9 +1,10 @@
 import { memo, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
+import { useTimeout } from '@repo/hooks'
+
 import { Popover } from 'components/Popover'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { useTimeout } from 'hooks/useTimeout'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'

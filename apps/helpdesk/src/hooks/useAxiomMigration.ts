@@ -1,9 +1,10 @@
 /* istanbul ignore file */
 import { useCallback, useMemo } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import useLocalStorage from 'hooks/useLocalStorage'
 
 export function useAxiomMigration() {
     const hasFlag = useFlag(FeatureFlagKey.AxiomMigration)

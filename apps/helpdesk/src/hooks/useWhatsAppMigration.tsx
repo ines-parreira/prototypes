@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
 
+import { useDebouncedEffect, useLocalStorage } from '@repo/hooks'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { get, isEmpty, isString, noop } from 'lodash'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useSearch from 'hooks/useSearch'
 import {
     getMigrationProgress,
     registerNumber,
@@ -22,8 +22,7 @@ import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import useDebouncedEffect from './useDebouncedEffect'
-import useLocalStorage from './useLocalStorage'
+import { useSearch } from './useSearch'
 
 type Target = {
     phone_number: string

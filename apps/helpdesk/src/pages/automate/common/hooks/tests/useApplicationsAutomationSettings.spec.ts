@@ -1,9 +1,9 @@
+import { useAsyncFn } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { useGetChatsApplicationAutomationSettings } from 'models/automation/queries'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
 import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
@@ -21,8 +21,9 @@ jest.mock('models/chatApplicationAutomationSettings/resources')
 jest.mock('state/entities/chatsApplicationAutomationSettings/selectors')
 jest.mock('models/automation/queries')
 jest.mock('state/notifications/actions')
-jest.mock('hooks/useAsyncFn', () => {
-    return jest
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useAsyncFn: jest
         .fn()
         .mockImplementation(
             (fn, deps: any, initialState: any = { loading: false }) => {
@@ -41,8 +42,9 @@ jest.mock('hooks/useAsyncFn', () => {
                     },
                 ] as never
             },
-        )
-})
+        ),
+}))
+
 describe('useApplicationsAutomationSettings', () => {
     let dispatch: jest.Mock
 

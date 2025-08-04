@@ -1,7 +1,7 @@
+import { useAsyncFn } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { Draft, produce } from 'immer'
 
-import useAsyncFn from 'hooks/useAsyncFn'
 import {
     selfServiceConfigurationKeys,
     useUpdateSelfServiceConfiguration,

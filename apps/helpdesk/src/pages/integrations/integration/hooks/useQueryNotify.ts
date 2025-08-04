@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

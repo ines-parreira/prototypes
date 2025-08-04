@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import useAsyncFn from 'hooks/useAsyncFn'
 import { fetchRule } from 'models/rule/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'

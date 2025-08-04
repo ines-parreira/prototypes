@@ -1,9 +1,9 @@
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketStatus } from 'business/types/ticket'
-import useId from 'hooks/useId'
 import type { ChannelLike } from 'models/channel/types'
 import SourceIcon, {
     AI_AGENT_ICON,

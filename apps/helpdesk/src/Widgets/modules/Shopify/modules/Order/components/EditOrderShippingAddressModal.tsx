@@ -1,4 +1,4 @@
-import React, {
+import {
     FormEvent,
     MouseEvent,
     useCallback,
@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 
+import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -25,8 +26,6 @@ import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { states } from 'fixtures/states'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'

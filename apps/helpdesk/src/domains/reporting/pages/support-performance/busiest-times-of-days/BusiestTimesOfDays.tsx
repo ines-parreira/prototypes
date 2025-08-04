@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import {
     FilterComponentKey,
@@ -18,7 +20,6 @@ import {
 import { getMetricQuery } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
 import { getSelectedMetric } from 'domains/reporting/state/ui/stats/busiestTimesSlice'
 import useAppSelector from 'hooks/useAppSelector'
-import { useGridSize } from 'hooks/useGridSize'
 
 export const BusiestTimesOfDays = () => {
     const getGridCellSize = useGridSize()

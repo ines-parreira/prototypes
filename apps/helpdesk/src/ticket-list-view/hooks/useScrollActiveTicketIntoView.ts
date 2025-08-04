@@ -1,9 +1,7 @@
 import { MutableRefObject, useCallback, useEffect, useMemo } from 'react'
 
+import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { VirtuosoHandle } from 'react-virtuoso'
-
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import { TicketCompact } from '../types'
 

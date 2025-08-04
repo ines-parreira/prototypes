@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
 import { Campaign } from '../../types/Campaign'

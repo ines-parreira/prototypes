@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { useTimeout } from '@repo/hooks'
 import cn from 'classnames'
 
 import { Badge, LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { useTimeout } from 'hooks/useTimeout'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { formatDatetime } from 'utils'

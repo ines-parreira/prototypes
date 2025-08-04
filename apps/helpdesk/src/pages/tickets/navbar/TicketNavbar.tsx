@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import _debounce from 'lodash/debounce'
 import { DropTargetMonitor } from 'react-dnd'
 import { connect, ConnectedProps } from 'react-redux'
@@ -15,8 +16,7 @@ import {
     UserViewsOrderingSettingData,
 } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import { createAccountSetting, updateAccountSetting } from 'models/account'
 import {
     createSection,

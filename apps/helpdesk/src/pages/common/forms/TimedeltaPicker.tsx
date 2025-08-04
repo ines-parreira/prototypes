@@ -1,5 +1,6 @@
 import React, { ComponentProps, useEffect, useMemo, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import {
     DropdownItem,
     DropdownMenu,
@@ -12,7 +13,6 @@ import {
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
     TIMEDELTA_OPERATOR_DEFAULT_VALUE,
 } from 'config'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import Button from 'pages/common/components/button/Button'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'

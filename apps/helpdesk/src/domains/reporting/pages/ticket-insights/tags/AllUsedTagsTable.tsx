@@ -1,5 +1,6 @@
 import { UIEventHandler, useEffect, useMemo, useState } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Tag } from '@gorgias/helpdesk-queries'
@@ -31,7 +32,6 @@ import {
 } from 'domains/reporting/pages/utils'
 import { TagsMetric, ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
-import useMeasure from 'hooks/useMeasure'
 import { opposite, OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render } from '@testing-library/react'
 
 import CopyText from '../CopyText'
@@ -10,12 +8,10 @@ jest.mock('../utils', () => ({
 }))
 
 const mockedCopyToClipboard = jest.fn()
-jest.mock('hooks/useCopyToClipboard', () => {
-    return {
-        __esModule: true,
-        default: () => [null, mockedCopyToClipboard],
-    }
-})
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useCopyToClipboard: jest.fn(() => [null, mockedCopyToClipboard]),
+}))
 
 describe('<Copytext />', () => {
     it('copies and selects text to clipboard', () => {

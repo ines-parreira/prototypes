@@ -1,3 +1,5 @@
+import { useGridSize } from '@repo/hooks'
+
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import {
@@ -5,7 +7,6 @@ import {
     CampaignsPerformanceReportConfig,
 } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
-import { useGridSize } from 'hooks/useGridSize'
 
 const CampaignPerformanceCharts = () => {
     const getGridCellSize = useGridSize()

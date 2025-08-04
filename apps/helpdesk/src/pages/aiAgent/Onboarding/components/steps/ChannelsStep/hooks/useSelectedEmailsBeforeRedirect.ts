@@ -1,4 +1,4 @@
-import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
+import { useLocalStorageWithExpiry } from '@repo/hooks'
 
 const selectedEmailsBeforeRedirectKey = 'selected-emails-before-redirect'
 

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { useModalManager } from 'hooks/useModalManager'
 import {
     Category,

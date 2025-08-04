@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { useEffectOnce, useKey } from '@repo/hooks'
 import classNames from 'classnames'
 import _throttle from 'lodash/throttle'
 import { useParams } from 'react-router-dom'
@@ -10,8 +11,6 @@ import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { GORGIAS_CHAT_SSP_TEXTS } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useKey from 'hooks/useKey'
 import { useGetInstallationSnippet } from 'models/integration/queries'
 import SelfServicePreviewChannelSelect from 'pages/automate/common/components/preview/SelfServicePreviewChannelSelect'
 import useSelfServiceChatChannels, {

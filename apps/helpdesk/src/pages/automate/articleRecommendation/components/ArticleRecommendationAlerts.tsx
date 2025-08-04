@@ -1,6 +1,6 @@
+import { useLocalStorage } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
-import useLocalStorage from 'hooks/useLocalStorage'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 

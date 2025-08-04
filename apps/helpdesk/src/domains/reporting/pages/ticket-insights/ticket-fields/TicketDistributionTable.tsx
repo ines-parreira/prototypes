@@ -1,3 +1,4 @@
+import { useWidthBasedOnScreen } from '@repo/hooks'
 import Skeleton from 'react-loading-skeleton'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
@@ -28,7 +29,6 @@ import {
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { TicketFieldsMetric } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
-import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

@@ -1,8 +1,8 @@
 import React, { ComponentProps, FC, useState } from 'react'
 
+import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/common/components/table/TableBodyRowExpandable.less'

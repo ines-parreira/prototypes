@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
+import { usePrevious } from '@repo/hooks'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router-dom'
@@ -9,7 +10,6 @@ import { useLimitations } from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Event, useModalManager } from 'hooks/useModalManager'
-import usePrevious from 'hooks/usePrevious'
 import { useSearchParam } from 'hooks/useSearchParam'
 import {
     Article,

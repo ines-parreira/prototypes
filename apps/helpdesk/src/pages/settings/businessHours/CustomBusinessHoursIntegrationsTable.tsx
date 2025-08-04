@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 
+import { useDebouncedValue } from '@repo/hooks'
 import cn from 'classnames'
 
 import {
@@ -15,7 +16,6 @@ import {
 } from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
-import useDebouncedValue from 'hooks/useDebouncedValue'
 import { OrderDirection } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
 import ChannelFilter from 'pages/common/components/ChannelFilter/ChannelFilter'

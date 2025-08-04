@@ -17,7 +17,8 @@ const mockUseEditionManager = jest.fn()
 const mockUseCurrentHelpCenter = jest.fn()
 const mockUseSupportedLocales = jest.fn()
 
-jest.mock('hooks/useScreenSize', () => ({
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
     useScreenSize: () => mockUseScreenSize(),
     SCREEN_SIZE: { SMALL: 'small' },
 }))

@@ -1,18 +1,17 @@
-import React from 'react'
-
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
 import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
 
 import { AIAgentFeedbackReasonSection } from '../AIAgentTicketLevelFeedback/AIAgentFeedbackReasonSection'
 import { AiAgentBadInteractionReason } from '../types'
 
-jest.mock('hooks/useDebouncedCallback', () => {
-    return jest.fn((callback) => {
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useDebouncedCallback: jest.fn((callback) => {
         return callback
-    })
-})
+    }),
+}))
 
 jest.mock('custom-fields/components/MultiLevelSelect', () => {
     return function MockMultiLevelSelect({

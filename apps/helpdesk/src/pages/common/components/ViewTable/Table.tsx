@@ -6,12 +6,12 @@ import React, {
     useState,
 } from 'react'
 
+import { usePrevious } from '@repo/hooks'
 import cn from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import usePrevious from 'hooks/usePrevious'
 import { EntityType } from 'models/view/types'
 import BlankState from 'pages/common/components/BlankState/BlankState'
 import Loader from 'pages/common/components/Loader/Loader'

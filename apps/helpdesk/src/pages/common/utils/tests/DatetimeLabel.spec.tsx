@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -21,7 +19,10 @@ jest.mock('state/integrations/selectors', () => ({
     getIntegrationChannel: () => () => mockChannels[0],
 }))
 
-jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => 'mocked'),
+}))
 
 describe('<DatetimeLabel/>', () => {
     describe('render()', () => {

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 
-import useEffectOnce from 'hooks/useEffectOnce'
-import useLocalStorage from 'hooks/useLocalStorage'
-import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
+import {
+    useEffectOnce,
+    useLocalStorage,
+    useLocalStorageWithExpiry,
+} from '@repo/hooks'
+
 import { IntegrationType } from 'models/integration/types'
 
 export const LOCAL_STORAGE_KEY = 'aiagent_onboarding_integration_redirection'

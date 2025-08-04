@@ -703,12 +703,12 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   >
                     <label
                       class="ui-label-label-3864 label"
-                      for="checkbox-abc"
+                      for="checkbox-undefined"
                     >
                       <input
                         class="input"
-                        id="checkbox-abc"
-                        name="checkbox-abc"
+                        id="checkbox-undefined"
+                        name="checkbox-undefined"
                         type="checkbox"
                       />
                       Autoresponders (deprecated)
@@ -1472,12 +1472,12 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         >
                           <label
                             class="ui-label-label-3864 label"
-                            for="checkbox-abc"
+                            for="checkbox-undefined"
                           >
                             <input
                               class="input"
-                              id="checkbox-abc"
-                              name="checkbox-abc"
+                              id="checkbox-undefined"
+                              name="checkbox-undefined"
                               type="checkbox"
                             />
                             Others
@@ -2357,12 +2357,12 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       >
                         <label
                           class="ui-label-label-3864 label"
-                          for="checkbox-abc"
+                          for="checkbox-undefined"
                         >
                           <input
                             class="input"
-                            id="checkbox-abc"
-                            name="checkbox-abc"
+                            id="checkbox-undefined"
+                            name="checkbox-undefined"
                             type="checkbox"
                           />
                           Others
@@ -3179,12 +3179,12 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         >
                           <label
                             class="ui-label-label-3864 label"
-                            for="checkbox-abc"
+                            for="checkbox-undefined"
                           >
                             <input
                               class="input"
-                              id="checkbox-abc"
-                              name="checkbox-abc"
+                              id="checkbox-undefined"
+                              name="checkbox-undefined"
                               type="checkbox"
                             />
                             Others
@@ -4064,12 +4064,12 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       >
                         <label
                           class="ui-label-label-3864 label"
-                          for="checkbox-abc"
+                          for="checkbox-undefined"
                         >
                           <input
                             class="input"
-                            id="checkbox-abc"
-                            name="checkbox-abc"
+                            id="checkbox-undefined"
+                            name="checkbox-undefined"
                             type="checkbox"
                           />
                           Others
@@ -4886,12 +4886,12 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         >
                           <label
                             class="ui-label-label-3864 label"
-                            for="checkbox-abc"
+                            for="checkbox-undefined"
                           >
                             <input
                               class="input"
-                              id="checkbox-abc"
-                              name="checkbox-abc"
+                              id="checkbox-undefined"
+                              name="checkbox-undefined"
                               type="checkbox"
                             />
                             Others
@@ -5771,12 +5771,12 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       >
                         <label
                           class="ui-label-label-3864 label"
-                          for="checkbox-abc"
+                          for="checkbox-undefined"
                         >
                           <input
                             class="input"
-                            id="checkbox-abc"
-                            name="checkbox-abc"
+                            id="checkbox-undefined"
+                            name="checkbox-undefined"
                             type="checkbox"
                           />
                           Others
@@ -7337,12 +7337,12 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   >
                     <label
                       class="ui-label-label-3864 label"
-                      for="checkbox-abc"
+                      for="checkbox-undefined"
                     >
                       <input
                         class="input"
-                        id="checkbox-abc"
-                        name="checkbox-abc"
+                        id="checkbox-undefined"
+                        name="checkbox-undefined"
                         type="checkbox"
                       />
                       Quick Responses (deprecated)
@@ -8102,12 +8102,12 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   >
                     <label
                       class="ui-label-label-3864 label"
-                      for="checkbox-abc"
+                      for="checkbox-undefined"
                     >
                       <input
                         class="input"
-                        id="checkbox-abc"
-                        name="checkbox-abc"
+                        id="checkbox-undefined"
+                        name="checkbox-undefined"
                         type="checkbox"
                       />
                       Others
@@ -8867,12 +8867,12 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   >
                     <label
                       class="ui-label-label-3864 label"
-                      for="checkbox-abc"
+                      for="checkbox-undefined"
                     >
                       <input
                         class="input"
-                        id="checkbox-abc"
-                        name="checkbox-abc"
+                        id="checkbox-undefined"
+                        name="checkbox-undefined"
                         type="checkbox"
                       />
                       Others

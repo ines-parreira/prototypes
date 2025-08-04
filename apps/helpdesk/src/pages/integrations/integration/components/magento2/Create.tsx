@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import settingsCss from 'pages/settings/settings.less'
 

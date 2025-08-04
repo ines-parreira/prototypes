@@ -7,8 +7,8 @@ exports[`<TextInput /> should render a disabled input 1`] = `
   <input
     class="input"
     disabled=""
-    id="input-text-42"
-    name="input-text-42"
+    id="input-text-2"
+    name="input-text-2"
     type="text"
     value=""
   />
@@ -21,8 +21,8 @@ exports[`<TextInput /> should render a required input 1`] = `
 >
   <input
     class="input"
-    id="input-text-42"
-    name="input-text-42"
+    id="input-text-3"
+    name="input-text-3"
     required=""
     type="text"
     value=""
@@ -36,8 +36,8 @@ exports[`<TextInput /> should render an enabled input 1`] = `
 >
   <input
     class="input"
-    id="input-text-42"
-    name="input-text-42"
+    id="input-text-1"
+    name="input-text-1"
     type="text"
     value=""
   />
@@ -50,8 +50,8 @@ exports[`<TextInput /> should render an input with error state 1`] = `
 >
   <input
     class="input"
-    id="input-text-42"
-    name="input-text-42"
+    id="input-text-5"
+    name="input-text-5"
     type="text"
     value=""
   />
@@ -64,8 +64,8 @@ exports[`<TextInput /> should render with a custom className for the input 1`] =
 >
   <input
     class="input custom-class-for-input"
-    id="input-text-42"
-    name="input-text-42"
+    id="input-text-4"
+    name="input-text-4"
     type="text"
     value=""
   />

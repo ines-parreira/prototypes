@@ -1,5 +1,4 @@
-import React from 'react'
-
+import * as hooksImports from '@repo/hooks'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, waitFor } from '@testing-library/react'
@@ -10,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { abGroup, campaignWithABGroup } from 'fixtures/abGroup'
-import * as useDismissFlag from 'hooks/useDismissFlag'
 import { useStartABGroup } from 'pages/convert/abVariants/hooks/useStartABGroup'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { RootState, StoreDispatch } from 'state/types'
@@ -18,7 +16,10 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ABGroupContainer from '../ABGroupContainer'
 
-jest.mock('hooks/useDismissFlag')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useDismissFlag: jest.fn(),
+}))
 
 jest.mock('pages/convert/abVariants/hooks/useStartABGroup')
 const useStartABGroupMock = assumeMock(useStartABGroup)
@@ -58,7 +59,7 @@ describe('ABGroupContainer', () => {
             hash: '',
         })
 
-        jest.spyOn(useDismissFlag, 'useDismissFlag').mockReturnValue({
+        jest.spyOn(hooksImports, 'useDismissFlag').mockReturnValue({
             isDismissed: false,
             dismiss: jest.fn(),
         })
@@ -131,7 +132,7 @@ describe('ABGroupContainer', () => {
     })
 
     it('users click `Start Test` button but modal has been dismissed', async () => {
-        jest.spyOn(useDismissFlag, 'useDismissFlag').mockReturnValue({
+        jest.spyOn(hooksImports, 'useDismissFlag').mockReturnValue({
             isDismissed: true,
             dismiss: jest.fn(),
         })

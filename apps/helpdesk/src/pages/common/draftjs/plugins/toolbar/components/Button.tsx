@@ -1,10 +1,10 @@
 import React, { ForwardedRef, forwardRef, MouseEvent } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './Button.less'

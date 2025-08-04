@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useDebouncedEffect } from '@repo/hooks'
 import { QueryKey, useQueryClient } from '@tanstack/react-query'
 import cn from 'classnames'
 
@@ -19,7 +20,6 @@ import {
 import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
 import { getCurrentUserState } from 'state/currentUser/selectors'
 import useListTags from 'tags/useListTags'

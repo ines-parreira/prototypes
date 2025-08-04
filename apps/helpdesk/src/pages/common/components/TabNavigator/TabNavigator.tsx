@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
-
-import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import css from './TabNavigator.less'
 

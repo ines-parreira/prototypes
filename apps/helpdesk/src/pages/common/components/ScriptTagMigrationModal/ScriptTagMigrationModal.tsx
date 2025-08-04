@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useLocation } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import useLocalStorage from 'hooks/useLocalStorage'
 import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'

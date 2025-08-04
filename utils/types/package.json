@@ -1,0 +1,23 @@
+{
+    "name": "@repo/types",
+    "version": "1.0.0",
+    "description": "Non domain specific types for the monorepo",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {},
+    "devDependencies": {
+        "@repo/tsconfigs": "workspace:*",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "typescript": "catalog:typescript"
+    }
+}

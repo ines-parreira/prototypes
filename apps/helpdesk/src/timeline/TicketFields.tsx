@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useCallbackRef, useElementSize, useId } from '@repo/hooks'
 import cn from 'classnames'
 
 import {
@@ -14,9 +15,6 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { CustomFieldValue } from 'custom-fields/types'
-import useCallbackRef from 'hooks/useCallbackRef'
-import useElementSize from 'hooks/useElementSize'
-import useId from 'hooks/useId'
 
 import css from './TicketFields.less'
 

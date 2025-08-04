@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -15,7 +13,7 @@ import { billingState } from 'fixtures/billing'
 import { campaign } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'
 import { entitiesInitialState } from 'fixtures/entities'
-import useSearch from 'hooks/useSearch'
+import { useSearch } from 'hooks/useSearch'
 import {
     useCreateCampaign,
     useDeleteCampaign,

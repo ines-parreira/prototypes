@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useDebouncedValue } from '@repo/hooks'
 import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Link, useParams } from 'react-router-dom'
@@ -17,7 +18,6 @@ import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
-import useDebouncedValue from 'hooks/useDebouncedValue'
 
 import CustomFields from '../CustomFields'
 
@@ -43,7 +43,10 @@ jest.mock(
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinitions')
-jest.mock('hooks/useDebouncedValue')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useDebouncedValue: jest.fn(),
+}))
 jest.mock('../components/List', () =>
     jest.fn(() => {
         return <div data-testid="custom-fields-list"></div>

@@ -1,14 +1,11 @@
-import React from 'react'
-
+import * as hooksImports from '@repo/hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
-
-import * as useLocalStorageNewHome from 'hooks/useLocalStorage'
 
 import ConvertCampaignsNewHomeInfobar from '../ConvertCampaignsNewHomeInfobar'
 
 const useLocalStorageSpy = jest.spyOn(
-    useLocalStorageNewHome,
-    'default',
+    hooksImports,
+    'useLocalStorage',
 ) as jest.Mock
 
 describe('<ConvertCampaignsNewHomeInfobar/>', () => {

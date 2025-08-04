@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef } from 'react'
 
+import { usePrevious } from '@repo/hooks'
 import { matchPath, useHistory, useLocation } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
-import usePrevious from 'hooks/usePrevious'
 import { ViewType } from 'models/view/types'
 import { getActiveView } from 'state/views/selectors'
 import { isStrictTicketPath } from 'utils'

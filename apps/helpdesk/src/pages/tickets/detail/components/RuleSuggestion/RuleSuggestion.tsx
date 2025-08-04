@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import { Tooltip } from 'reactstrap'
@@ -15,7 +16,6 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import {
     MacroAction,
     MacroActionName,

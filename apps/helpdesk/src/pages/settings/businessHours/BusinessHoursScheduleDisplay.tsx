@@ -1,10 +1,10 @@
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 import { Box, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
-import useId from 'hooks/useId'
 import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'
 
 import css from './BusinessHoursScheduleDisplay.less'

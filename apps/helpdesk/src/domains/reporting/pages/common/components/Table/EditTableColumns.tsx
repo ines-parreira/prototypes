@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { useDeepEffect } from '@repo/hooks'
 import classNames from 'classnames'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { Selector } from 'reselect'
@@ -21,7 +22,6 @@ import {
     TableViewItem,
 } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
-import useDeepEffect from 'hooks/useDeepEffect'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { AccountSettingTableConfig } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'

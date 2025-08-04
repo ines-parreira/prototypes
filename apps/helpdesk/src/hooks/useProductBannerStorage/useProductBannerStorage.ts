@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import useLocalStorage from 'hooks/useLocalStorage'
+import { useLocalStorage } from '@repo/hooks'
 
 import { PRODUCT_BANNER_KEY } from './constants'
 import { ProductBannerItem } from './types/ProductBannerItem'

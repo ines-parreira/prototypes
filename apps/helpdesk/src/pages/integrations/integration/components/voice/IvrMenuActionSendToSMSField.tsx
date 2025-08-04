@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
+import { useId } from '@repo/hooks'
+
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useId from 'hooks/useId'
 import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     DEFAULT_IVR_DEFLECTION_SMS_CONTENT,

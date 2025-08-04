@@ -7,13 +7,13 @@ import React, {
     useState,
 } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import actionsIcon from 'assets/img/icons/guidance-actions.svg'
-import useId from 'hooks/useId'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'

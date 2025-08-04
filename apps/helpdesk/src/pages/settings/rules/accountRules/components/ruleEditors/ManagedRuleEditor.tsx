@@ -9,6 +9,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useMeasure } from '@repo/hooks'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment'
@@ -17,7 +18,6 @@ import { Label } from 'reactstrap'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import useMeasure from 'hooks/useMeasure'
 import { activateRule } from 'models/rule/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'

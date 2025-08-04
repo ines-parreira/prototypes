@@ -1,3 +1,4 @@
+import { useCallbackRef, useElementSize, useId } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
@@ -12,9 +13,6 @@ import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
-import useCallbackRef from 'hooks/useCallbackRef'
-import useElementSize from 'hooks/useElementSize'
-import useId from 'hooks/useId'
 
 import TicketFields from '../TicketFields'
 
@@ -23,9 +21,13 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     useListCustomFields: jest.fn(),
 }))
 jest.mock('common/utils/getWrappedElementCount')
-jest.mock('hooks/useCallbackRef')
-jest.mock('hooks/useElementSize')
-jest.mock('hooks/useId')
+
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useCallbackRef: jest.fn(() => [null, jest.fn()]),
+    useElementSize: jest.fn(),
+    useId: jest.fn(),
+}))
 
 const defaultProps = {
     fieldValues: {

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { fromJS } from 'immutable'
 
 import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { AircallIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'

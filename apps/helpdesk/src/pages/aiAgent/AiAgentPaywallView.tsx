@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import cn from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -10,7 +11,6 @@ import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.png'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useTheme } from 'core/theme'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { usePaywallConfig } from 'pages/aiAgent/hooks/usePaywallConfig'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import LinkButton from 'pages/common/components/button/LinkButton'

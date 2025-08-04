@@ -1,7 +1,6 @@
 import { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
-import useLocalStorage from 'hooks/useLocalStorage'
-import { useTimeout } from 'hooks/useTimeout'
+import { useLocalStorage, useTimeout } from '@repo/hooks'
 
 import { NavBarContext, NavBarDisplayMode } from '../hooks/useNavBar/context'
 

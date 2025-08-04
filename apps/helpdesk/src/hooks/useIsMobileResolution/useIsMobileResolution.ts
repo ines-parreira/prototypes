@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import useDebouncedValue from '../useDebouncedValue'
-import useWindowSize from '../useWindowSize'
+import { useDebouncedValue, useWindowSize } from '@repo/hooks'
+
 import { MOBILE_BREAKPOINT, UPDATE_DEBOUNCE_TIME } from './constants'
 
 export default function useIsMobileResolution() {

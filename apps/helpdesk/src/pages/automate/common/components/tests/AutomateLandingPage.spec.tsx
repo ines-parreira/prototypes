@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -12,7 +10,10 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import AutomateLandingPage from '../AutomateLandingPage'
 
-jest.mock('hooks/useCallbackRef', () => jest.fn(() => [null, jest.fn()]))
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useCallbackRef: jest.fn(() => [null, jest.fn()]),
+}))
 jest.mock('hooks/candu/useInjectStyleToCandu', () => jest.fn())
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     __esModule: true,

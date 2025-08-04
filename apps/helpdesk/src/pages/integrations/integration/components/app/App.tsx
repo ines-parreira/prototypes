@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { useEffectOnce, useTitle } from '@repo/hooks'
 import { isEmpty } from 'lodash'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
@@ -11,9 +12,7 @@ import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useSearch from 'hooks/useSearch'
-import useTitle from 'hooks/useTitle'
+import { useSearch } from 'hooks/useSearch'
 import { disconnectApp, fetchApp } from 'models/integration/resources'
 import {
     AppDetail as AppDetailType,

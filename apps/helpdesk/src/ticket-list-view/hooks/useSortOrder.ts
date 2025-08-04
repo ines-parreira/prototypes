@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
+
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import useLocalStorage from 'hooks/useLocalStorage'
 
 export const sortOrderOptions = (isPriorityUsageEnabled?: boolean) =>
     [

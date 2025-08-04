@@ -1,30 +1,27 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
-
-import useId from 'hooks/useId'
 
 import useHandle from '../../hooks/useHandle'
 import Handle from '../Handle'
 
 import css from '../Handle.less'
 
-jest.mock('hooks/useId', () => jest.fn())
-const useIdMock = assumeMock(useId)
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useId: jest.fn().mockImplementation(() => '123'),
+}))
 
 jest.mock('../../hooks/useHandle', () => jest.fn())
 const useHandleMock = assumeMock(useHandle)
 
 describe('Handle', () => {
     beforeEach(() => {
-        useIdMock.mockReturnValue('123')
         useHandleMock.mockReturnValue({})
     })
 
     it('should call onResizeStart when the handle is pressed', () => {
         const onResizeStart = jest.fn()
-        useIdMock.mockReturnValue('123')
+
         useHandleMock.mockReturnValue({ onResizeStart })
 
         const { container } = render(<Handle />)

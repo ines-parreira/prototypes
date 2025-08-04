@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
@@ -23,7 +24,6 @@ import {
 } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { JobParams, JobType } from 'models/job/types'
 import { Filters } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'

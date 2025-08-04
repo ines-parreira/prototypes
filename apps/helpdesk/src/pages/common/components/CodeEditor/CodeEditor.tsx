@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 
 import ReactACE from './WithACEEditor/ReactACE'

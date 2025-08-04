@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 
+import { useId } from '@repo/hooks'
 import cn from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -7,7 +8,6 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { TooltipDelay } from 'core/ui/tooltip.utils'
-import useId from 'hooks/useId'
 
 import useSplitTicketView from '../hooks/useSplitTicketView'
 import useIsToggleEnabled from './useIsToggleEnabled'

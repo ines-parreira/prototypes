@@ -1,6 +1,7 @@
+import { useId } from '@repo/hooks'
+
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
 import Status, { StatusType } from 'pages/common/components/Status/Status'
 

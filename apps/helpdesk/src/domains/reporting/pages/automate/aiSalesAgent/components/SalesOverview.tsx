@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { useGridSize } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -28,7 +29,6 @@ import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/sta
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useGridSize } from 'hooks/useGridSize'
 import { useStoreIntegrationById } from 'pages/aiAgent/hooks/useStoreIntegrationById'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 

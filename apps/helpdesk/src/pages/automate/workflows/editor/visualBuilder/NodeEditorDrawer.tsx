@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
+import { useKey, usePrevious } from '@repo/hooks'
 import classNames from 'classnames'
 import _camelCase from 'lodash/camelCase'
 
-import useKey from 'hooks/useKey'
-import usePrevious from 'hooks/usePrevious'
 import { TranslationsPreviewProvider } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'

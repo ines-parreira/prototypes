@@ -6,11 +6,10 @@ import React, {
     useCallback,
 } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Label, LoadingSpinner } from '@gorgias/merchant-ui-kit'
-
-import useId from 'hooks/useId'
 
 import Caption from './Caption/Caption'
 

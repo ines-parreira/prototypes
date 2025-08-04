@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { useAsyncFn } from '@repo/hooks'
 import { fromJS, Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import Button from 'pages/common/components/button/Button'

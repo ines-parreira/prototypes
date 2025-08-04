@@ -1,5 +1,6 @@
 import React, { forwardRef, isValidElement, useRef } from 'react'
 
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 import {
     DragSourceMonitor,
@@ -21,7 +22,6 @@ import {
     DashboardChild,
     DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
-import useId from 'hooks/useId'
 import IconInput from 'pages/common/forms/input/IconInput'
 
 export const createDragItem = ({

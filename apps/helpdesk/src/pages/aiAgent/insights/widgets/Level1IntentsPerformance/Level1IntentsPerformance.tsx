@@ -1,3 +1,4 @@
+import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
 import { logEvent } from 'common/segment/segment'
@@ -10,7 +11,6 @@ import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state
 import { AIInsightsMetric } from 'domains/reporting/state/ui/stats/types'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'

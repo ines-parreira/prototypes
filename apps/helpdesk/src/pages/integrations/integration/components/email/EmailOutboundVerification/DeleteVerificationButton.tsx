@@ -1,7 +1,7 @@
+import { useAsyncFn } from '@repo/hooks'
 import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import { deleteVerification } from 'models/singleSenderVerification/resources'
 import { SenderVerification } from 'models/singleSenderVerification/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

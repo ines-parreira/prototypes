@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 
-import useLocalStorage from 'hooks/useLocalStorage'
+import { useLocalStorage } from '@repo/hooks'
 
 import { BannerCategory } from '../../types'
 import { DISMISSED_BANNER_STORAGE_KEY } from '../constants'

@@ -1,8 +1,9 @@
 import { ComponentProps, createContext, forwardRef, ReactNode } from 'react'
 
+import { useId } from '@repo/hooks'
+
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import TextInput from './TextInput'

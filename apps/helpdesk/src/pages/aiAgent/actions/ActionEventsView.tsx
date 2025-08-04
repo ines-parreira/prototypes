@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 
+import { useKey } from '@repo/hooks'
 import classnames from 'classnames'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import useKey from 'hooks/useKey'
 import {
     useGetConfigurationExecution,
     useGetConfigurationExecutionLogs,

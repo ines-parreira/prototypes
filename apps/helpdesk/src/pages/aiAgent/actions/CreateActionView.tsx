@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import _noop from 'lodash/noop'
 import { Prompt, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
@@ -7,7 +8,6 @@ import { ulid } from 'ulidx'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
