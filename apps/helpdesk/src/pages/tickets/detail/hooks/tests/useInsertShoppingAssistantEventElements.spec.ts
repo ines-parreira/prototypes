@@ -27,6 +27,7 @@ describe('useInsertShoppingAssistantEventElements', () => {
             { id: 789, order_number: 1001 },
             { id: 790, order_number: 1002 },
         ],
+        createdAt: '2021-01-01T00:00:00.000Z',
     }
 
     const createMockMessage = (
@@ -169,6 +170,7 @@ describe('useInsertShoppingAssistantEventElements', () => {
             customers: [],
             shopifyIntegrations: [],
             orders: [],
+            createdAt: '2021-01-01T00:00:00.000Z',
         })
 
         const { result } = renderHook(() =>

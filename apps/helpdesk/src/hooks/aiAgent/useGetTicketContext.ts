@@ -67,5 +67,6 @@ export const useGetTicketContext = () => {
         ticketId: ticket?.id as number | undefined,
         orders,
         shopifyIntegrations: customerShopifyIntegrations,
+        createdAt: ticket?.created_datetime,
     }
 }

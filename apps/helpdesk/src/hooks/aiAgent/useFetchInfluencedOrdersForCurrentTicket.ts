@@ -42,15 +42,11 @@ const getOrdersCreatedAt = (
             const createdAt = o.created_at
                 ? new Date(o.created_at).getTime()
                 : undefined
-            const updatedAt = o.updated_at
-                ? new Date(o.updated_at).getTime()
-                : undefined
 
-            return [createdAt, updatedAt]
+            return createdAt
         })
-        .reduce((acc, [createdAt, updatedAt]) => {
+        .reduce((acc, createdAt) => {
             if (createdAt !== undefined) acc.push(createdAt)
-            if (updatedAt !== undefined) acc.push(updatedAt)
             return acc
         }, [] as number[])
         .filter((x): x is number => x !== undefined && !isNaN(x))
@@ -66,9 +62,15 @@ const getStartAndEndDate = (
     const allCreatedAt = getOrdersCreatedAt(ticketContext)
 
     if (!allCreatedAt) return { start: undefined, end: undefined }
+    if (!ticketContext.createdAt) {
+        return { start: undefined, end: undefined }
+    }
     if (!allCreatedAt.length) return { start: undefined, end: undefined }
 
-    const periodStart = new Date(Math.min(...allCreatedAt))
+    const firstOrder = Math.min(...allCreatedAt)
+    const periodStart = new Date(
+        Math.max(new Date(ticketContext.createdAt).getTime(), firstOrder),
+    )
     // Set to the start of the day in UTC
     // This ensures that the period starts at 00:00:00 UTC
     // It's similar solution to what we have when set filters in stats section
@@ -79,5 +81,10 @@ const getStartAndEndDate = (
     // It's similar solution to what we have when set filters in stats section
     // to the end of the day
     periodEnd.setUTCHours(23, 59, 59, 999)
+
+    if (periodStart.getTime() > periodEnd.getTime()) {
+        return { start: undefined, end: undefined }
+    }
+
     return { start: periodStart.toISOString(), end: periodEnd.toISOString() }
 }

@@ -40,6 +40,7 @@ export enum AiSalesAgentOrdersFilterMember {
     OrderId = 'AiSalesAgentOrders.orderId',
     Channel = 'AiSalesAgentOrders.channel',
     IsInfluenced = 'AiSalesAgentOrders.isInfluenced',
+    TicketId = 'AiSalesAgentOrders.ticketId',
 }
 
 export type AiSalesAgentOrdersTimeDimension =
