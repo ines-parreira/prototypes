@@ -5,6 +5,8 @@ import Skeleton from 'react-loading-skeleton'
 
 import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ContentType,
@@ -21,6 +23,7 @@ import IconInput from 'pages/common/forms/input/IconInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import {
     CONTENT_TYPE,
     IngestedResourceStatus,
@@ -32,6 +35,7 @@ import ScrapedDomainHeader from './ScrapedDomainHeader'
 import css from './ScrapedDomainContentView.less'
 
 type Props<T> = {
+    shopName: string
     isLoading: boolean
     contents: T[]
     onSelect: (id: number) => void
@@ -93,12 +97,38 @@ const ColumnIsNotUsedByAiAgent = ({ id }: { id: number }) => (
     </BodyCell>
 )
 
-const getPageDescription = (pageType: string) => {
+const getPageDescription = ({
+    pageType,
+    isActionDrivenAiAgentNavigationEnabled,
+    productsRoute,
+}: {
+    pageType: string
+    isActionDrivenAiAgentNavigationEnabled: boolean
+    productsRoute: string
+}) => {
     switch (pageType) {
         case CONTENT_TYPE.QUESTION:
-            return 'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
+            return isActionDrivenAiAgentNavigationEnabled ? (
+                <>
+                    AI Agent automatically generates questions and answers from
+                    your website content as knowledge. It also syncs product
+                    details to the{' '}
+                    <a
+                        href={productsRoute}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Products
+                    </a>{' '}
+                    page to answer product-related questions.
+                </>
+            ) : (
+                'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
+            )
         case CONTENT_TYPE.PRODUCT:
-            return 'AI Agent uses product details from your Shopify app and store website.'
+            return isActionDrivenAiAgentNavigationEnabled
+                ? 'View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website.'
+                : 'AI Agent uses product details from your Shopify app and store website.'
         case CONTENT_TYPE.FILE_QUESTION:
             return 'AI Agent generates questions and answers from the document to use when responding to customers.'
         case CONTENT_TYPE.URL_QUESTION:
@@ -135,6 +165,7 @@ const LoadingState = ({
 )
 
 function ScrapedDomainContentView<T extends ContentType>({
+    shopName,
     isLoading,
     contents,
     onSelect,
@@ -151,7 +182,15 @@ function ScrapedDomainContentView<T extends ContentType>({
     setIsAllEnabled,
 }: Props<T>) {
     const dispatch = useAppDispatch()
-    const description = getPageDescription(pageType)
+    const { routes } = useAiAgentNavigation({ shopName })
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
+    const description = getPageDescription({
+        pageType,
+        isActionDrivenAiAgentNavigationEnabled,
+        productsRoute: routes.products,
+    })
 
     const [questionStatusMap, setQuestionStatusMap] = useState<
         Record<number, string>

@@ -1,10 +1,13 @@
+import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
-import { KNOWLEDGE } from '../constants'
+import { KNOWLEDGE, PRODUCTS } from '../constants'
 import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
 import AiAgentScrapedDomainProductsView from './AiAgentScrapedDomainProductsView'
 
@@ -21,11 +24,19 @@ const AiAgentScrapedDomainProductsContainer = () => {
         shopName,
     })
 
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
+
     return (
         <AiAgentLayout
-            className={css.container}
+            className={classNames(css.container, {
+                [css.noPadding]: isActionDrivenAiAgentNavigationEnabled,
+            })}
             shopName={shopName}
-            title={KNOWLEDGE}
+            title={
+                isActionDrivenAiAgentNavigationEnabled ? PRODUCTS : KNOWLEDGE
+            }
         >
             {helpCenter && (
                 <AiAgentScrapedDomainProductsView

@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import { useFlag } from 'core/flags'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import history from 'pages/history'
 
@@ -36,6 +38,9 @@ const AiAgentScrapedDomainProductsView = ({
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
 
     const {
         storeDomain,
@@ -66,9 +71,18 @@ const AiAgentScrapedDomainProductsView = ({
     }, [syncIsPending, setSyncStoreDomainStatus])
 
     const handleOnSelect = (id: number) =>
-        history.push(routes.productsContentDetail(id))
+        history.push(
+            isActionDrivenAiAgentNavigationEnabled
+                ? routes.productsDetail(id)
+                : routes.productsContentDetail(id),
+        )
 
-    const handleOnClose = () => history.push(routes.productsContent)
+    const handleOnClose = () =>
+        history.push(
+            isActionDrivenAiAgentNavigationEnabled
+                ? routes.products
+                : routes.productsContent,
+        )
 
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
@@ -109,6 +123,38 @@ const AiAgentScrapedDomainProductsView = ({
         }
     }, [productId, selectedProduct])
 
+    const children = (
+        <>
+            <ScrapedDomainContentView<ProductWithAiAgentStatus>
+                shopName={shopName}
+                searchValue={searchTerm}
+                onSearch={setSearchTerm}
+                isLoading={isDataLoading || isSyncPending}
+                contents={paginatedProducts}
+                pageType={CONTENT_TYPE.PRODUCT}
+                onSelect={handleOnSelect}
+                hasNextItems={hasNextPage}
+                hasPrevItems={hasPrevPage}
+                fetchNextItems={fetchNext}
+                fetchPrevItems={fetchPrev}
+            />
+            <ScrapedDomainSelectedContent
+                shopName={shopName}
+                latestSync={storeDomainIngestionLog?.latest_sync}
+                selectedContent={selectedProduct}
+                contentType={CONTENT_TYPE.PRODUCT}
+                isOpened={isOpened}
+                isLoading={syncIsPending || isFetchingProductAndDetail}
+                onClose={handleOnClose}
+                detail={productDetail}
+            />
+        </>
+    )
+
+    if (isActionDrivenAiAgentNavigationEnabled) {
+        return children
+    }
+
     return (
         <AiAgentScrapedDomainContentLayout
             shopName={shopName}
@@ -124,26 +170,7 @@ const AiAgentScrapedDomainProductsView = ({
             title="Store website"
             pageType={HeaderType.Domain}
         >
-            <ScrapedDomainContentView<ProductWithAiAgentStatus>
-                searchValue={searchTerm}
-                onSearch={setSearchTerm}
-                isLoading={isDataLoading || isSyncPending}
-                contents={paginatedProducts}
-                pageType={CONTENT_TYPE.PRODUCT}
-                onSelect={handleOnSelect}
-                hasNextItems={hasNextPage}
-                hasPrevItems={hasPrevPage}
-                fetchNextItems={fetchNext}
-                fetchPrevItems={fetchPrev}
-            />
-            <ScrapedDomainSelectedContent
-                selectedContent={selectedProduct}
-                contentType={CONTENT_TYPE.PRODUCT}
-                isOpened={isOpened}
-                isLoading={syncIsPending || isFetchingProductAndDetail}
-                onClose={handleOnClose}
-                detail={productDetail}
-            />
+            {children}
         </AiAgentScrapedDomainContentLayout>
     )
 }

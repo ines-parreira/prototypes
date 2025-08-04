@@ -32,10 +32,6 @@
         gap: var(--layout-spacing-l);
     }
 
-    .icon {
-        margin-right: var(--layout-spacing-xs);
-    }
-
     .badgeIcon {
         font-size: 12px !important;
         color: var(--neutral-grey-6);
@@ -46,5 +42,29 @@
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xs);
+    }
+
+    .productHeaderContainer {
+        display: flex;
+        align-items: start;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .productHeaderTitle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .productHeader {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .latestSync {
+        .caption-regular();
+        color: var(--neutral-grey-5);
     }
 }

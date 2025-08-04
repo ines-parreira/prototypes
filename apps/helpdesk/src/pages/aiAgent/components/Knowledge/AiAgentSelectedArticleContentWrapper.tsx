@@ -11,6 +11,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
+    shopName: string
     isOpened: boolean
     handleOnClose: () => void
     article: BaseArticle | null
@@ -23,6 +24,7 @@ type Props = {
 }
 
 const AiAgentSelectedArticleContentWrapper = ({
+    shopName,
     isOpened,
     handleOnClose,
     article,
@@ -53,6 +55,7 @@ const AiAgentSelectedArticleContentWrapper = ({
 
     return (
         <ScrapedDomainSelectedContent
+            shopName={shopName}
             isOpened={isOpened}
             onClose={handleOnClose}
             selectedContent={article}

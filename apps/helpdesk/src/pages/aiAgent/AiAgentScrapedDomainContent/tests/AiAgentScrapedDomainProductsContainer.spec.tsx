@@ -12,6 +12,7 @@ import thunk from 'redux-thunk'
 import { toImmutable } from 'common/utils'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import { useFlag } from 'core/flags'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
@@ -74,6 +75,9 @@ jest.mock('models/integration/queries', () => ({
 const mockUseGetProductsByIdsFromIntegration = assumeMock(
     useGetProductsByIdsFromIntegration,
 )
+
+jest.mock('core/flags')
+const mockUseFlag = assumeMock(useFlag)
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
@@ -162,13 +166,16 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
         })
+        mockUseFlag.mockImplementation(() => {
+            return false
+        })
         mockUseGetProductsByIdsFromIntegration.mockReturnValue({
             data: [],
         } as unknown as UseQueryResult<ProductWithAiAgentStatus[]>)
         mockIsProductExcludedFromAiAgent.mockReturnValue(false)
     })
 
-    it('should render the component', () => {
+    it('should render the component as Products tab in Knowledge section', () => {
         renderComponent()
 
         expect(screen.getAllByText('Knowledge')[0]).toBeInTheDocument()
@@ -180,6 +187,29 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         expect(
             screen.getByText(
                 'AI Agent uses product details from your Shopify app and store website.',
+            ),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Product')).toBeInTheDocument()
+    })
+
+    it('should render the component as a separate Products page when ActionDrivenAiAgentNavigation feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
+            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
+                ? true
+                : false
+        })
+
+        renderComponent()
+
+        expect(screen.queryByText('Knowledge')).not.toBeInTheDocument()
+        expect(screen.queryByText('Back to Sources')).not.toBeInTheDocument()
+        expect(screen.queryByText('Store website')).not.toBeInTheDocument()
+        expect(screen.queryByText('Sync')).not.toBeInTheDocument()
+        expect(screen.queryByText('Questions')).not.toBeInTheDocument()
+        expect(screen.getByText('Products')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website.',
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Product')).toBeInTheDocument()
@@ -354,6 +384,39 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         expect(history.push).toHaveBeenCalledWith(
             '/app/ai-agent/shopify/test-shop/knowledge/sources/products-content',
+        )
+    })
+
+    it('should redirect to Products page path without id when hide side panel button is clicked and ActionDrivenAiAgentNavigation feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
+            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
+                ? true
+                : false
+        })
+
+        mockUseGetProductsByIdsFromIntegration.mockReturnValue({
+            data: [
+                {
+                    id: 1,
+                    title: 'Duo Baguette Birthstone Ring',
+                },
+            ],
+        } as unknown as UseQueryResult<ProductWithAiAgentStatus[]>)
+
+        renderComponent('1')
+
+        expect(screen.getByText('Product details')).toBeInTheDocument()
+        expect(screen.getByText('Shopify app')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'This information syncs automatically from your Shopify product catalog.',
+            ),
+        ).toBeInTheDocument()
+        const hideIcon = screen.getByAltText('hide-view-icon')
+        fireEvent.click(hideIcon)
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/test-shop/products',
         )
     })
 })

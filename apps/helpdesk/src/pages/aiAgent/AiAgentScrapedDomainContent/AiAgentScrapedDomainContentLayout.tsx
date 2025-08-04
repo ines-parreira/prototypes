@@ -2,6 +2,8 @@ import { NavLink } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     HeaderType,
     PAGE_NAME,
@@ -48,6 +50,9 @@ const AiAgentScrapedDomainContentLayout = ({
     pageType,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
 
     const headerNavbarItems = [
         {
@@ -93,15 +98,16 @@ const AiAgentScrapedDomainContentLayout = ({
                     storeDomain={storeDomain}
                 />
                 <div>
-                    {pageType === HeaderType.Domain && (
-                        <SecondaryNavbar>
-                            {headerNavbarItems.map(({ route, title }) => (
-                                <NavLink key={route} to={route}>
-                                    {title}
-                                </NavLink>
-                            ))}
-                        </SecondaryNavbar>
-                    )}
+                    {!isActionDrivenAiAgentNavigationEnabled &&
+                        pageType === HeaderType.Domain && (
+                            <SecondaryNavbar>
+                                {headerNavbarItems.map(({ route, title }) => (
+                                    <NavLink key={route} to={route}>
+                                        {title}
+                                    </NavLink>
+                                ))}
+                            </SecondaryNavbar>
+                        )}
 
                     {children}
                 </div>

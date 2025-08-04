@@ -370,6 +370,7 @@ const AiAgentExternalSourceArticlesView = ({
             }
         >
             <ScrapedDomainContentView<BaseArticle>
+                shopName={shopName}
                 contents={articles}
                 pageType={pageType}
                 isLoading={isLoading}
@@ -378,6 +379,7 @@ const AiAgentExternalSourceArticlesView = ({
                 onUpdateStatus={onChangeVisibility}
             />
             <AiAgentSelectedArticleContentWrapper
+                shopName={shopName}
                 isOpened={!!selectedArticle}
                 handleOnClose={handleOnClose}
                 article={selectedArticle}

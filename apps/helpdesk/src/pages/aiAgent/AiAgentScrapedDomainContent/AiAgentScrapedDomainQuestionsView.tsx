@@ -150,6 +150,7 @@ const AiAgentScrapedDomainQuestionsView = ({
             pageType={HeaderType.Domain}
         >
             <ScrapedDomainContentView<IngestedResourceWithArticleId>
+                shopName={shopName}
                 searchValue={searchTerm}
                 onSearch={setSearchTerm}
                 isLoading={isDataLoading || isSyncPending}
@@ -166,6 +167,7 @@ const AiAgentScrapedDomainQuestionsView = ({
                 setIsAllEnabled={setIsAllQuestionsEnabled}
             />
             <ScrapedDomainSelectedContent
+                shopName={shopName}
                 selectedContent={selectedQuestion}
                 contentType={CONTENT_TYPE.QUESTION}
                 isOpened={isOpened}

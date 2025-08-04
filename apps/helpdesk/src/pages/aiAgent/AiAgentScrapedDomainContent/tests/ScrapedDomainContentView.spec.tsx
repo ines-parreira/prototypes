@@ -1,4 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainContentView from '../ScrapedDomainContentView'
@@ -6,6 +10,10 @@ import ScrapedDomainContentView from '../ScrapedDomainContentView'
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 jest.mock('state/notifications/actions')
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = assumeMock(useFlag)
 
 const mockOnSelect = jest.fn()
 const mockOnFetchNextItems = jest.fn()
@@ -66,6 +74,12 @@ const setup = (propsOverride = {}) => {
 }
 
 describe('ScrapedDomainContentView', () => {
+    beforeEach(() => {
+        mockUseFlag.mockImplementation(() => {
+            return false
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -138,11 +152,41 @@ describe('ScrapedDomainContentView', () => {
         ).toBeInTheDocument()
     })
 
+    it('renders correct description for QUESTION pageType when ActionDrivenAiAgentNavigation feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
+            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
+                ? true
+                : false
+        })
+
+        setup({ pageType: CONTENT_TYPE.QUESTION })
+        expect(
+            screen.getByText(
+                /AI Agent automatically generates questions and answers from your website content as knowledge\. It also syncs product details to the/i,
+            ),
+        ).toBeInTheDocument()
+    })
+
     it('renders correct description for PRODUCT pageType', () => {
         setup({ pageType: CONTENT_TYPE.PRODUCT })
         expect(
             screen.getByText(
                 /AI Agent uses product details from your Shopify app and store website\./i,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders correct description for PRODUCT pageType when ActionDrivenAiAgentNavigation feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
+            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
+                ? true
+                : false
+        })
+
+        setup({ pageType: CONTENT_TYPE.PRODUCT })
+        expect(
+            screen.getByText(
+                /View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website\./i,
             ),
         ).toBeInTheDocument()
     })

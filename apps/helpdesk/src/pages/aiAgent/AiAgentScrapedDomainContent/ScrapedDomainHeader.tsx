@@ -3,7 +3,7 @@ import Search from 'pages/common/components/Search'
 import css from './ScrapedDomainHeader.less'
 
 type Props = {
-    description: string
+    description: string | React.ReactNode
     searchValue: string
     onSearch: ((value: string) => void) | undefined
 }

@@ -7,6 +7,7 @@ import {
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
@@ -364,6 +365,9 @@ export const getResourceMetadata = (
         ? getAiAgentNavigationRoutes(shopName, flags)
         : undefined
 
+    const isActionDrivenAiAgentNavigationEnabled =
+        flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
+
     const idAsNumber = parseInt(id)
 
     if (!resourceData) {
@@ -493,7 +497,9 @@ export const getResourceMetadata = (
                 ? {
                       title: title ?? '',
                       content: title ?? '',
-                      url: aiAgentRoutes?.productsContentDetail(idAsNumber),
+                      url: isActionDrivenAiAgentNavigationEnabled
+                          ? aiAgentRoutes?.productsDetail(idAsNumber)
+                          : aiAgentRoutes?.productsContentDetail(idAsNumber),
                   }
                 : getEmptyMetadata()
         }

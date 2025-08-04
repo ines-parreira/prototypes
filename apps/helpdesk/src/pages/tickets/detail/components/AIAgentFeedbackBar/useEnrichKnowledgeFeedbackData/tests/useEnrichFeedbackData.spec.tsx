@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import {
     useGetMultipleFileIngestionSnippets,
@@ -17,6 +17,7 @@ import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArti
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { getLDClient } from 'utils/launchDarkly'
 
 import {
     useEnrichFeedbackData,
@@ -72,6 +73,14 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         productsContentDetail: (id: number) =>
             `/app/ai-agent/shopify/test-store/knowledge/sources/products-content/${id}`,
     })),
+}))
+
+jest.mock('utils/launchDarkly', () => ({
+    getLDClient: jest.fn(),
+}))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
 }))
 
 const queryClient = new QueryClient({
@@ -139,8 +148,10 @@ describe('useGetResourceData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        mockFlags({
-            'ai-shopping-assistant-enabled': false,
+        ;(getLDClient as jest.Mock).mockReturnValue({
+            allFlags: jest.fn().mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
+            }),
         })
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -482,12 +493,16 @@ describe('useEnrichFeedbackData', () => {
             {children}
         </QueryClientProvider>
     )
+    const mockFlags = {
+        [FeatureFlagKey.FeedbackSurfaceProductsUsedByAiAgent]: false,
+        [FeatureFlagKey.ActionDrivenAiAgentNavigation]: false,
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        mockFlags({
-            'linear.project_surface-products-used-by-ai-agent-on-ai-feedback-tab': false,
+        ;(getLDClient as jest.Mock).mockReturnValue({
+            allFlags: jest.fn().mockReturnValue(mockFlags),
         })
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -822,10 +837,6 @@ describe('useEnrichFeedbackData', () => {
         })
 
         it('should return enriched data from feedback executions without products when feature flag disabled, with products when enabled', () => {
-            mockFlags({
-                'linear.project_surface-products-used-by-ai-agent-on-ai-feedback-tab': false,
-            })
-
             const { result: resultWithoutProducts } = renderHook(
                 () =>
                     useEnrichFeedbackData({
@@ -874,9 +885,11 @@ describe('useEnrichFeedbackData', () => {
                 resultWithoutProducts.current?.enrichedData.freeForm?.feedback
                     .feedbackType,
             ).toBe('TICKET_FREEFORM')
-
-            mockFlags({
-                'linear.project_surface-products-used-by-ai-agent-on-ai-feedback-tab': true,
+            ;(getLDClient as jest.Mock).mockReturnValue({
+                allFlags: jest.fn().mockReturnValue({
+                    ...mockFlags,
+                    [FeatureFlagKey.FeedbackSurfaceProductsUsedByAiAgent]: true,
+                }),
             })
 
             const mockProducts = [{ id: 10 }, { id: 11 }]

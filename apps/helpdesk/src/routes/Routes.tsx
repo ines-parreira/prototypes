@@ -622,24 +622,56 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         </AiAgentErrorBoundary>
                     )}
                     {isActionDrivenAiAgentNavigationEnabled && (
-                        <AiAgentErrorBoundary
-                            section="ai-agent-intents"
-                            team={SentryTeam.CONVAI_KNOWLEDGE}
-                        >
-                            <Route
-                                path={`${path}/intents`}
-                                exact
-                                component={OptimizeContainer}
-                            />
-                            {location.pathname.includes('/optimize') && (
-                                <Redirect
-                                    to={location.pathname.replace(
-                                        '/optimize',
-                                        '/intents',
-                                    )}
+                        <>
+                            <AiAgentErrorBoundary
+                                section="ai-agent-intents"
+                                team={SentryTeam.CONVAI_KNOWLEDGE}
+                            >
+                                <Route
+                                    path={`${path}/intents`}
+                                    exact
+                                    component={OptimizeContainer}
                                 />
-                            )}
-                        </AiAgentErrorBoundary>
+                                {location.pathname.includes('/optimize') && (
+                                    <Redirect
+                                        to={location.pathname.replace(
+                                            '/optimize',
+                                            '/intents',
+                                        )}
+                                    />
+                                )}
+                            </AiAgentErrorBoundary>
+                            <AiAgentErrorBoundary
+                                section="ai-agent-products"
+                                team={SentryTeam.CONVAI_KNOWLEDGE}
+                            >
+                                <Switch>
+                                    <Route
+                                        path={`${path}/products`}
+                                        exact
+                                        component={
+                                            AiAgentScrapedDomainProductsContainer
+                                        }
+                                    />
+                                    <Route
+                                        path={`${path}/products/:productId`}
+                                        component={
+                                            AiAgentScrapedDomainProductsContainer
+                                        }
+                                    />
+                                </Switch>
+                                {location.pathname.includes(
+                                    '/knowledge/sources/products-content',
+                                ) && (
+                                    <Redirect
+                                        to={location.pathname.replace(
+                                            '/knowledge/sources/products-content',
+                                            '/products',
+                                        )}
+                                    />
+                                )}
+                            </AiAgentErrorBoundary>
+                        </>
                     )}
                     <AiAgentErrorBoundary section="ai-agent-guidance">
                         <Route

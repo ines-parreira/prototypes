@@ -5,15 +5,20 @@ import { Badge, Banner } from '@gorgias/merchant-ui-kit'
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import { useFlag } from 'core/flags'
+import useId from 'hooks/useId'
 import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import { AlertType } from 'pages/common/components/Alert/Alert'
+import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import {
     CONTENT_TYPE,
     IngestedResourceStatus,
@@ -28,6 +33,7 @@ import {
     IngestedProduct,
     IngestedResourceWithArticleId,
 } from './types'
+import { getFormattedSyncDate, getFormattedSyncDatetime } from './utils'
 
 import css from './ScrapedDomainSelectedContent.less'
 
@@ -56,6 +62,8 @@ type UrlQuestionProps = {
 }
 
 type SharedProps = {
+    shopName: string
+    latestSync?: string | null
     isOpened: boolean
     isLoading: boolean
     onClose: () => void
@@ -76,33 +84,62 @@ type Props = (
 const SelectedProductView = ({
     product,
     detail,
+    storeWebsiteContentRoute,
+    latestSync,
 }: {
     product: ProductWithAiAgentStatus
     detail: IngestedProduct
+    storeWebsiteContentRoute: string
+    latestSync?: string | null
 }) => {
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
+
+    const id = useId()
+    const syncDateId = `syncDate-${id}`
+    const syncDateString = getFormattedSyncDate(latestSync)
+    const syncDateTimeString = getFormattedSyncDatetime(latestSync)
+
     return (
         <div className={css.contentContainer}>
-            <Banner variant="inline" icon type={AlertType.Info}>
-                Inaccurate information? To edit product information, update it
-                directly in Shopify or on your store website and re-sync in
-                Gorgias.
-            </Banner>
+            {!isActionDrivenAiAgentNavigationEnabled && (
+                <Banner variant="inline" icon type={AlertType.Info}>
+                    Inaccurate information? To edit product information, update
+                    it directly in Shopify or on your store website and re-sync
+                    in Gorgias.
+                </Banner>
+            )}
 
             <div className={css.productContainer}>
                 <Accordion defaultExpandedItem="store-integration">
                     {product && (
                         <AccordionItem id="store-integration">
                             <AccordionHeader>
-                                <img
-                                    src={logoShopify}
-                                    alt="shopify logo"
-                                    className={css.icon}
-                                    width={20}
-                                    height={20}
-                                />
-                                <span className="body-semibold">
-                                    From your Shopify app
-                                </span>
+                                <div className={css.productHeaderContainer}>
+                                    <img
+                                        src={logoShopify}
+                                        alt="shopify logo"
+                                        width={20}
+                                        height={20}
+                                    />
+                                    {isActionDrivenAiAgentNavigationEnabled ? (
+                                        <div className={css.productHeader}>
+                                            <span className="body-semibold">
+                                                Shopify app
+                                            </span>
+                                            <span className="body-regular">
+                                                This information syncs
+                                                automatically from your Shopify
+                                                product catalog.
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <span className="body-semibold">
+                                            From your Shopify app
+                                        </span>
+                                    )}
+                                </div>
                             </AccordionHeader>
                             <AccordionBody>
                                 <IntegrationProductView product={product} />
@@ -112,16 +149,56 @@ const SelectedProductView = ({
                     {detail && (
                         <AccordionItem id="store-domain">
                             <AccordionHeader>
-                                <img
-                                    src={languageIcon}
-                                    alt="language icon"
-                                    className={css.icon}
-                                    width={20}
-                                    height={20}
-                                />
-                                <span className="body-semibold">
-                                    From your store website
-                                </span>
+                                <div className={css.productHeaderContainer}>
+                                    <img
+                                        src={languageIcon}
+                                        alt="language icon"
+                                        width={20}
+                                        height={20}
+                                    />
+                                    {isActionDrivenAiAgentNavigationEnabled ? (
+                                        <div className={css.productHeader}>
+                                            <div
+                                                className={
+                                                    css.productHeaderTitle
+                                                }
+                                            >
+                                                <span className="body-semibold">
+                                                    Store website
+                                                </span>
+                                                {latestSync && (
+                                                    <ItemWithTooltip
+                                                        id={syncDateId}
+                                                        item={`Last synced ${syncDateString}`}
+                                                        tooltip={
+                                                            syncDateTimeString
+                                                        }
+                                                        className={
+                                                            css.latestSync
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                            <span className="body-regular">
+                                                To update this information, edit
+                                                your website and{' '}
+                                                <a
+                                                    href={
+                                                        storeWebsiteContentRoute
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    re-sync in Gorgias.
+                                                </a>
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <span className="body-semibold">
+                                            From your store website
+                                        </span>
+                                    )}
+                                </div>
                             </AccordionHeader>
                             <AccordionBody>
                                 <IngestionProductView product={detail} />
@@ -135,6 +212,8 @@ const SelectedProductView = ({
 }
 
 const ScrapedDomainSelectedContent = ({
+    shopName,
+    latestSync,
     selectedContent,
     contentType,
     isOpened,
@@ -143,6 +222,7 @@ const ScrapedDomainSelectedContent = ({
     detail,
     onUpdateStatus,
 }: Props) => {
+    const { routes } = useAiAgentNavigation({ shopName })
     const titleForQuestion = 'Question details'
     const titleForProduct = 'Product details'
 
@@ -163,6 +243,8 @@ const ScrapedDomainSelectedContent = ({
         <SelectedProductView
             product={selectedContent as ProductWithAiAgentStatus}
             detail={detail as IngestedProduct}
+            storeWebsiteContentRoute={routes.questionsContent}
+            latestSync={latestSync}
         />
     )
 

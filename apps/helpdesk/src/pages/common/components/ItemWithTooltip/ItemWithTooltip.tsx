@@ -5,11 +5,18 @@ type Props = {
     item: string
     tooltip: string | null
     placement?: TooltipProps['placement']
+    className?: string
 }
 
-const ItemWithTooltip = ({ id, item, tooltip, placement }: Props) => {
+const ItemWithTooltip = ({
+    id,
+    item,
+    tooltip,
+    placement,
+    className,
+}: Props) => {
     return (
-        <div>
+        <div className={className}>
             <div id={id}>{item}</div>
             <Tooltip target={id} placement={placement}>
                 {tooltip}

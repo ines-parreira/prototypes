@@ -116,6 +116,9 @@ export const getAiAgentNavigationRoutes = (
             `${basePath}/optimize/${intentId}`,
         intents: `${basePath}/intents`,
         intentsWithId: (intentId: string) => `${basePath}/intents/${intentId}`,
+        products: `${basePath}/products`,
+        productsDetail: (productId: number) =>
+            `${basePath}/products/${productId}`,
     }
 }
 
