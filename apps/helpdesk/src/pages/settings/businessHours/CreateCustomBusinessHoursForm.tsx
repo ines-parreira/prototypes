@@ -1,3 +1,4 @@
+import { BusinessHoursCreate } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursCreate } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
@@ -14,7 +15,7 @@ import {
 
 type Props = {
     children: React.ReactNode
-    onSubmit: (values: BusinessHoursCreateFormValues) => void
+    onSubmit: (values: BusinessHoursCreate) => void
 }
 
 export default function CreateCustomBusinessHoursForm({
@@ -33,10 +34,15 @@ export default function CreateCustomBusinessHoursForm({
         return { ...errors, ...customValidationErrors }
     }
 
+    const handleSubmit = (values: BusinessHoursCreateFormValues) => {
+        const payload = getCreateCustomBusinessHoursPayloadFromValues(values)
+        onSubmit(payload)
+    }
+
     return (
         <>
             <Form<BusinessHoursCreateFormValues>
-                onValidSubmit={onSubmit}
+                onValidSubmit={handleSubmit}
                 defaultValues={getCreateBusinessHoursFormDefaultValues(
                     defaultTimezone,
                 )}

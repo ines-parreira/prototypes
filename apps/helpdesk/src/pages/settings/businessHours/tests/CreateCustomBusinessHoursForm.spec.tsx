@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
@@ -96,5 +96,42 @@ describe('CreateCustomBusinessHoursForm', () => {
 
         // form is not submitted because the overrideConfirmation is not true
         expect(onSubmit).not.toHaveBeenCalled()
+    })
+
+    it('should remove overrideConfirmation from the payload when submitting', async () => {
+        const user = userEvent.setup()
+
+        renderComponent(
+            <div>
+                <FormField
+                    name="overrideConfirmation"
+                    label="Override confirmation"
+                />
+                <FormField name="name" label="Name" />
+                <button type="submit">Submit</button>
+            </div>,
+            {
+                integrationsToOverride: [],
+            },
+        )
+
+        await act(async () => {
+            await user.type(screen.getByLabelText('Name'), 'Test')
+            await user.click(screen.getByLabelText('Override confirmation'))
+        })
+
+        await act(async () => {
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+        })
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalled()
+        })
+
+        expect(onSubmit).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                overrideConfirmation: expect.any,
+            }),
+        )
     })
 })
