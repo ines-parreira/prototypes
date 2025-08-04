@@ -1,9 +1,9 @@
 import {
     SatisfactionSurvey,
     Tag,
-    TicketMessageAuthCustomerIdentityProperty,
+    TicketMessageAuthCustomerIdentity,
+    TicketPriority,
 } from '@gorgias/helpdesk-queries'
-import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import {
     TicketChannel,
@@ -134,7 +134,7 @@ export type TicketMessage = {
     }
     isMessage: boolean
     intents?: TicketMessageIntent[]
-    auth_customer_identity: TicketMessageAuthCustomerIdentityProperty
+    auth_customer_identity: TicketMessageAuthCustomerIdentity | null
 }
 
 export type TicketMessageIntent = {

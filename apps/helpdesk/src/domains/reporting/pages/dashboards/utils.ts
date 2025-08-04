@@ -8,11 +8,9 @@ import {
 } from '@gorgias/helpdesk-queries'
 import {
     AnalyticsCustomReportChartSchemaType,
-    AnalyticsCustomReportChildrenItem,
     AnalyticsCustomReportRowSchemaType,
     AnalyticsCustomReportSectionSchemaType,
     CreateAnalyticsCustomReportBody,
-    CreateAnalyticsCustomReportBodyChildrenItem,
 } from '@gorgias/helpdesk-types'
 import { validateAnalyticsCustomReport } from '@gorgias/helpdesk-validators'
 
@@ -58,7 +56,10 @@ const fromApiSection = (
 })
 
 export const dashboardChartChildFromApi = (
-    child: AnalyticsCustomReportChildrenItem,
+    child:
+        | AnalyticsCustomReportSectionSchema
+        | AnalyticsCustomReportRowSchema
+        | AnalyticsCustomReportChartSchema,
 ): DashboardChartSchema | null => {
     switch (child.type) {
         case 'chart':
@@ -69,7 +70,10 @@ export const dashboardChartChildFromApi = (
 }
 
 export const dashboardSectionChildFromApi = (
-    child: AnalyticsCustomReportChildrenItem,
+    child:
+        | AnalyticsCustomReportSectionSchema
+        | AnalyticsCustomReportRowSchema
+        | AnalyticsCustomReportChartSchema,
 ): DashboardRowSchema | DashboardChartSchema | null => {
     switch (child.type) {
         case 'row':
@@ -82,7 +86,10 @@ export const dashboardSectionChildFromApi = (
 }
 
 export const dashboardChildFromApi = (
-    child: AnalyticsCustomReportChildrenItem,
+    child:
+        | AnalyticsCustomReportSectionSchema
+        | AnalyticsCustomReportRowSchema
+        | AnalyticsCustomReportChartSchema,
 ): DashboardChild | null => {
     switch (child.type) {
         case DashboardChildType.Section:
@@ -198,7 +205,11 @@ export const getGroupChartsIntoRows = (charts: string[]): DashboardChild[] => {
 
 const createChildrenWithMetadata = (
     children: DashboardChild[],
-): CreateAnalyticsCustomReportBodyChildrenItem[] => {
+): (
+    | AnalyticsCustomReportSectionSchema
+    | AnalyticsCustomReportRowSchema
+    | AnalyticsCustomReportChartSchema
+)[] => {
     return children.map((child) => {
         switch (child.type) {
             case DashboardChildType.Chart:
@@ -266,7 +277,11 @@ export const getChildrenOfTypeChart = (report: DashboardSchema) => {
 export const getChildrenIds = (
     children:
         | DashboardChild[]
-        | AnalyticsCustomReportChildrenItem[]
+        | (
+              | AnalyticsCustomReportSectionSchema
+              | AnalyticsCustomReportRowSchema
+              | AnalyticsCustomReportChartSchema
+          )[]
         | undefined,
 ): string[] => {
     return children

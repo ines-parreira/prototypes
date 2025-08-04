@@ -1,6 +1,6 @@
-import React, { forwardRef, ReactNode } from 'react'
+import { forwardRef, ReactNode } from 'react'
 
-import { CustomFieldConditionExpressionValues } from '@gorgias/helpdesk-queries'
+import { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
@@ -19,8 +19,8 @@ import { CustomDropdownInput } from './CustomDropdownInput'
 
 type ValueFieldProps = {
     pickedDefinition?: CustomField
-    value: CustomFieldConditionExpressionValues
-    onChange: (value: CustomFieldConditionExpressionValues) => void
+    value: CustomFieldConditionExpression['values']
+    onChange: (value: CustomFieldConditionExpression['values']) => void
     isDisabled: boolean
     index: number
     error?: string

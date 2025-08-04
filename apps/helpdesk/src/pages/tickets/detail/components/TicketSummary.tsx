@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { TicketSummaryProperty } from '@gorgias/helpdesk-types'
+import { TicketSummary } from '@gorgias/helpdesk-types'
 import { Badge, Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -13,7 +13,7 @@ import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
 import { formatDatetime } from 'utils'
 
 type TicketSummaryProps = {
-    summary?: TicketSummaryProperty
+    summary?: TicketSummary | null
     ticketId: number
     isPopup?: boolean
 }

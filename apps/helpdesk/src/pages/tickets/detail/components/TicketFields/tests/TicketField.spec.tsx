@@ -6,8 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import {
     CustomField,
-    CustomFieldDefinition,
-    CustomFieldManagedTypeProperty,
+    ManagedCustomerFieldType,
     ManagedTicketFieldType,
 } from '@gorgias/helpdesk-types'
 
@@ -24,7 +23,7 @@ import TicketField from '../TicketField'
 
 const mockStore = configureMockStore()
 
-function getValueForDataType(dataType: CustomFieldDefinition['data_type']) {
+function getValueForDataType(dataType: CustomField['definition']['data_type']) {
     switch (dataType) {
         case 'text':
             return 'some value'
@@ -82,14 +81,14 @@ describe('<TicketField />', () => {
             ...ticketInputFieldDefinition,
             definition: {
                 ...ticketInputFieldDefinition.definition,
-                data_type: 'number' as CustomFieldDefinition['data_type'],
+                data_type: 'number' as CustomField['definition']['data_type'],
             },
         },
         {
             ...ticketDropdownFieldDefinition,
             definition: {
                 ...ticketDropdownFieldDefinition.definition,
-                data_type: 'number' as CustomFieldDefinition['data_type'],
+                data_type: 'number' as CustomField['definition']['data_type'],
             },
         },
     ])('should render coming soon for unsupported fields', (customField) => {
@@ -128,8 +127,10 @@ describe('<TicketField />', () => {
                 definition: {
                     ...ticketInputFieldDefinition.definition,
                 },
-                managed_type:
-                    'contact_reason' as CustomFieldManagedTypeProperty,
+                managed_type: 'contact_reason' as
+                    | ManagedTicketFieldType
+                    | ManagedCustomerFieldType
+                    | null,
             },
             false,
         ],
@@ -139,7 +140,10 @@ describe('<TicketField />', () => {
                 definition: {
                     ...ticketInputFieldDefinition.definition,
                 },
-                managed_type: 'ai_intent' as CustomFieldManagedTypeProperty,
+                managed_type: 'ai_intent' as
+                    | ManagedTicketFieldType
+                    | ManagedCustomerFieldType
+                    | null,
             },
             true,
         ],

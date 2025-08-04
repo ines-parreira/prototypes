@@ -1,8 +1,10 @@
 import {
     CreateVoiceQueue,
     PhoneIntegration,
+    PhoneIntegrationSettingsNoneVoiceMessage,
+    PhoneIntegrationSettingsTextToSpeechVoiceMessage,
+    PhoneIntegrationSettingsVoiceRecordingVoiceMessage,
     PhoneRingingBehaviour,
-    UpdatePhoneIntegrationSettingsRecordingNotification,
     UpdateVoiceQueue,
     VoiceMessageType,
     VoiceQueue,
@@ -53,7 +55,11 @@ export const isValueInRange = (
  */
 export const getVoiceMessagePayload = (
     voice_message: VoiceMessage,
-): Maybe<UpdatePhoneIntegrationSettingsRecordingNotification> => {
+): Maybe<
+    | PhoneIntegrationSettingsNoneVoiceMessage
+    | PhoneIntegrationSettingsTextToSpeechVoiceMessage
+    | PhoneIntegrationSettingsVoiceRecordingVoiceMessage
+> => {
     switch (voice_message.voice_message_type) {
         case VoiceMessageType.None:
             return { voice_message_type: VoiceMessageType.None }

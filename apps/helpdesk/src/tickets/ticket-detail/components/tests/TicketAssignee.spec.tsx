@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Emoji } from 'emoji-mart'
 
-import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/helpdesk-types'
+import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import { useFlag } from 'core/flags'
@@ -32,9 +32,9 @@ describe('TicketAssignee', () => {
         meta: {
             profile_picture_url: 'https://example.com/avatar.jpg',
         },
-    } as TicketAssigneeUser
+    } as TicketUser
 
-    const mockAssignedTeam: TicketAssigneeTeam = {
+    const mockAssignedTeam: TicketTeam = {
         id: 1,
         name: 'Support Team',
         decoration: {
@@ -83,7 +83,7 @@ describe('TicketAssignee', () => {
         const agentWithoutName = {
             ...mockAssignedAgent,
             name: '',
-        } as TicketAssigneeUser
+        } as TicketUser
 
         render(
             <TicketAssignee
@@ -122,7 +122,7 @@ describe('TicketAssignee', () => {
     })
 
     it('renders avatar when team has no emoji', () => {
-        const teamWithoutEmoji: TicketAssigneeTeam = {
+        const teamWithoutEmoji: TicketTeam = {
             ...mockAssignedTeam,
             decoration: {
                 emoji: '',

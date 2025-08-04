@@ -104,7 +104,13 @@ const date = '2021-01-24T17:30:00.000Z'
 
 describe('<MacroModal />', () => {
     const macros = [
-        { id: 1, name: 'Pizza Pepperoni', relevance_rank: 1, actions: [] },
+        {
+            id: 1,
+            name: 'Pizza Pepperoni',
+            relevance_rank: 1,
+            actions: [],
+            language: 'en',
+        },
         { id: 2, name: 'Pizza Capricciosa', actions: [] },
         {
             id: 3,
@@ -288,7 +294,7 @@ describe('<MacroModal />', () => {
 
         expect(mockMutateUpdate).toHaveBeenCalledWith(
             {
-                data: { ...props.currentMacro, language: null },
+                data: props.currentMacro,
                 id: props.currentMacro.id,
             },
             { onSettled: expect.any(Function) },

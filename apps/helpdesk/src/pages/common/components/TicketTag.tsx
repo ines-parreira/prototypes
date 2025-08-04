@@ -1,13 +1,13 @@
 import { ComponentProps } from 'react'
 
-import { TicketTagDecorationProperty } from '@gorgias/helpdesk-types'
+import { UpdateTicketTag } from '@gorgias/helpdesk-types'
 
 import { Tag } from 'components/Tag/Tag'
 import { isValidColor } from 'utils/colors'
 
 type Props = {
     className?: string
-    decoration?: TicketTagDecorationProperty
+    decoration?: UpdateTicketTag['decoration'] | null
     text: string
     title?: string
 } & ComponentProps<typeof Tag>

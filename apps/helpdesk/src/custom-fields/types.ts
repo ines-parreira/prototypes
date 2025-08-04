@@ -1,8 +1,8 @@
 import {
     CustomField as ApiCustomField,
-    CustomFieldDefinition as ApiCustomFieldDefinition,
-    CustomFieldManagedTypeProperty,
     ExpressionFieldType,
+    ManagedCustomerFieldType,
+    ManagedTicketFieldType,
 } from '@gorgias/helpdesk-types'
 
 import {
@@ -59,7 +59,10 @@ export type CustomFieldAIManagedType =
 export type CustomFieldSystemReadOnlyManagedType =
     (typeof SYSTEM_READ_ONLY_MANAGED_TYPES)[keyof typeof SYSTEM_READ_ONLY_MANAGED_TYPES]
 
-export type CustomFieldManagedType = CustomFieldManagedTypeProperty
+export type CustomFieldManagedType =
+    | ManagedTicketFieldType
+    | ManagedCustomerFieldType
+    | null
 
 export function isCustomFieldAIManagedType(
     managedType: string | null,
@@ -130,7 +133,7 @@ export type CustomFieldConditionsEvaluationResults = Record<
 >
 
 export type ExhaustiveUIDataType =
-    `${ApiCustomFieldDefinition['input_settings']['input_type']}_${ApiCustomFieldDefinition['data_type']}`
+    `${ApiCustomField['definition']['input_settings']['input_type']}_${ApiCustomField['definition']['data_type']}`
 
 export type SupportedUIDataType =
     (typeof SUPPORTED_UI_DATA_TYPES)[keyof typeof SUPPORTED_UI_DATA_TYPES]

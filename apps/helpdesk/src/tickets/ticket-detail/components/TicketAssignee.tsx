@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { Emoji } from 'emoji-mart'
 
-import { TicketAssigneeTeam, TicketAssigneeUser } from '@gorgias/helpdesk-types'
+import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -14,8 +14,8 @@ export function TicketAssignee({
     assignedAgent,
     assignedTeam,
 }: {
-    assignedAgent: TicketAssigneeUser
-    assignedTeam: TicketAssigneeTeam
+    assignedAgent: TicketUser | null
+    assignedTeam: TicketTeam | null
 }) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const name =

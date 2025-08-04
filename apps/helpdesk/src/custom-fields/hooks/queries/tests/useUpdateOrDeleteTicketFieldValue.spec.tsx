@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import {
     queryKeys,
-    TicketCustomFieldValueField,
+    TicketCustomFieldValue,
     useDeleteTicketCustomField,
     useUpdateTicketCustomField,
 } from '@gorgias/helpdesk-queries'
@@ -174,10 +174,10 @@ describe('useUpdateOrDeleteTicketFieldValue', () => {
         rerender({})
         useUpdateTicketCustomFieldMock.mock.calls[1][0]?.mutation?.onSuccess!(
             axiosSuccessResponse({
-                field: ticketDropdownFieldDefinition as TicketCustomFieldValueField,
+                field: ticketDropdownFieldDefinition,
                 value: undefined,
                 prediction: null,
-            }),
+            } as TicketCustomFieldValue),
             {
                 id: dataToMutate.fieldId,
                 ticketId: dataToMutate.ticketId,

@@ -1,4 +1,4 @@
-import { TicketChannel } from '@gorgias/helpdesk-queries'
+import { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
 
 export type Metric = {
     name: string
@@ -13,7 +13,7 @@ export type SLAPolicy = {
     description: string
     business_hours: boolean
     criteria: {
-        channels: TicketChannel[]
+        channels: (LegacyChannelSlug | string)[]
     }
     metrics: Metric[]
 }

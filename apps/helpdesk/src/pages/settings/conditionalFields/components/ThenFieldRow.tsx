@@ -1,5 +1,4 @@
-import { CustomFieldDefinition } from '@gorgias/helpdesk-queries'
-import { ExpressionFieldType } from '@gorgias/helpdesk-types'
+import { CustomField, ExpressionFieldType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -10,7 +9,7 @@ import CheckBoxField from 'pages/common/forms/CheckBoxField'
 
 import css from './ThenFieldRow.less'
 
-function definitionToString(definition: CustomFieldDefinition): string {
+function definitionToString(definition: CustomField['definition']): string {
     if (definition.data_type === 'boolean') {
         return 'Yes/No'
     }

@@ -7,7 +7,6 @@ import {
     AnalyticsCustomReportRowSchemaChildrenItemType,
     AnalyticsCustomReportRowSchemaType,
     AnalyticsCustomReportSectionSchema,
-    AnalyticsCustomReportSectionSchemaChildrenItem,
     AnalyticsCustomReportSectionSchemaType,
     AnalyticsCustomReportType,
 } from '@gorgias/helpdesk-types'
@@ -165,7 +164,7 @@ describe('dashboardFromApi', () => {
     it.skip('should ignore unknown types', () => {
         const unknownElement = {
             type: 'unknown',
-        } as unknown as AnalyticsCustomReportSectionSchemaChildrenItem
+        } as unknown as AnalyticsCustomReportChartSchema
         const apiReportWithChildren = {
             ...apiReportWithoutChildren,
             children: [

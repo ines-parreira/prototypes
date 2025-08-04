@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
-    TicketSummaryProperty,
+    TicketSummary,
     useGenerateTicketSummary,
 } from '@gorgias/helpdesk-queries'
 
@@ -18,10 +18,10 @@ export const useTicketSummary = ({
     generateOnMountIfMissing = false,
 }: {
     ticketId: number
-    initialSummary?: TicketSummaryProperty
+    initialSummary?: TicketSummary | null
     generateOnMountIfMissing?: boolean
 }) => {
-    const [summary, setSummary] = useState<TicketSummaryProperty | undefined>(
+    const [summary, setSummary] = useState<TicketSummary | null | undefined>(
         () => initialSummary,
     )
 

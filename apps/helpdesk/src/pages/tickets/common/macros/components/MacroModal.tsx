@@ -11,12 +11,7 @@ import { fromJS, List, Map } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import { Col, Container, Row } from 'reactstrap'
 
-import {
-    Language,
-    Macro,
-    MacroAction,
-    UpdateMacroBodyLanguage,
-} from '@gorgias/helpdesk-queries'
+import { Language, Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { DEFAULT_ACTIONS } from 'config'
@@ -238,9 +233,7 @@ const MacroModal = ({
             ...currentMacro,
             actions: filterActions(actions),
             name,
-            language: (language === ''
-                ? null
-                : language) as UpdateMacroBodyLanguage,
+            language: language === '' ? null : (language as Language),
         }
 
         updateMacro(
