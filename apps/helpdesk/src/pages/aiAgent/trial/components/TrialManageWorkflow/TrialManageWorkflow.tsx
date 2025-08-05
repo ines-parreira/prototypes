@@ -130,7 +130,7 @@ export const TrialManageWorkflow = ({
             {isManageTrialModalOpen && (
                 <TrialManageModal
                     {...trialModalProps.manageTrialModal}
-                    title="Manage your Shopping Assistant trial"
+                    title="Manage Shopping Assistant trial"
                     onClose={closeManageTrialModal}
                     primaryAction={
                         earlyAccessPlan

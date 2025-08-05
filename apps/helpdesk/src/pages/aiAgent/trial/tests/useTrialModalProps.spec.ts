@@ -1395,6 +1395,175 @@ describe('useTrialModalProps', () => {
         })
     })
 
+    describe('useTrialEndedModal description', () => {
+        const HIGH_GMV_RATE = 0.06
+        const GMV_INFLUENCED = '$250'
+
+        beforeEach(() => {
+            mockUseBillingState.mockReturnValue({
+                data: {
+                    current_plans: {
+                        automate: { amount: 5000, currency: 'USD' },
+                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
+                    },
+                },
+            } as any)
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: { amount: 9900 },
+            } as any)
+        })
+
+        describe('when gmvInfluencedRate > 0.05', () => {
+            it('should return personalized message with GMV amount', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: GMV_INFLUENCED,
+                    gmvInfluencedRate: HIGH_GMV_RATE,
+                    isLoading: false,
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(result.current.manageTrialModal.description).toBe(
+                    'Shopping Assistant drove $250 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                )
+            })
+
+            it('should handle different GMV amounts in personalized message', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$1,500',
+                    gmvInfluencedRate: 0.08,
+                    isLoading: false,
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(result.current.manageTrialModal.description).toBe(
+                    'Shopping Assistant drove $1,500 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                )
+            })
+        })
+
+        describe('when gmvInfluencedRate <= 0.05', () => {
+            it('should return generic message for rates slightly below threshold', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: GMV_INFLUENCED,
+                    gmvInfluencedRate: 0.05,
+                    isLoading: false,
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(result.current.manageTrialModal.description).toBe(
+                    'Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                )
+            })
+        })
+    })
+
+    describe('useTrialEndedModal secondaryDescription', () => {
+        const HIGHER_GMV_RATE = 0.06
+        const LOWER_GMV_RATE = 0.03
+
+        beforeEach(() => {
+            mockUseBillingState.mockReturnValue({
+                data: {
+                    current_plans: {
+                        automate: { amount: 5000, currency: 'USD' }, // $50
+                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
+                    },
+                },
+            } as any)
+        })
+
+        describe('when gmvInfluencedRate > 0.05', () => {
+            beforeEach(() => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: HIGHER_GMV_RATE,
+                    isLoading: false,
+                })
+            })
+
+            it('should show increase message when difference > 0', () => {
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: { amount: 9900 }, // $99 > $50
+                } as any)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(
+                    result.current.manageTrialModal.secondaryDescription,
+                ).toBe('After your trial, your plan will increase by $49.')
+            })
+
+            it('should show same price message when difference <= 0', () => {
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: { amount: 5000 }, // $50 = $50
+                } as any)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(
+                    result.current.manageTrialModal.secondaryDescription,
+                ).toBe(
+                    'The price of your plan remains the same after the upgrade.',
+                )
+            })
+        })
+
+        describe('when gmvInfluencedRate <= 0.05', () => {
+            beforeEach(() => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: LOWER_GMV_RATE,
+                    isLoading: false,
+                })
+            })
+
+            it('should show typical results with increase message when difference > 0', () => {
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: { amount: 9900 }, // $99 > $50
+                } as any)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(
+                    result.current.manageTrialModal.secondaryDescription,
+                ).toBe(
+                    'Typical results achieved by merchants. After upgrading, your plan will increase by $49.',
+                )
+            })
+
+            it('should show typical results with same price message when difference <= 0', () => {
+                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                    data: { amount: 5000 }, // $50 = $50
+                } as any)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(
+                    result.current.manageTrialModal.secondaryDescription,
+                ).toBe(
+                    'Typical results achieved by merchants. The price of your plan remains the same after the upgrade.',
+                )
+            })
+        })
+    })
+
     describe('edge cases', () => {
         it('should handle undefined early access plan data', () => {
             mockUseBillingState.mockReturnValue({

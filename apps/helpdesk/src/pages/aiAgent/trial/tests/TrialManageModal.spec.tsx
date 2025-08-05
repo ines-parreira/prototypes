@@ -50,7 +50,7 @@ describe('TrialManageModal', () => {
     it('calls onClose when modal close is triggered', async () => {
         const user = userEvent.setup()
         render(<TrialManageModal {...defaultProps} />)
-        const closeButton = screen.getByRole('button', { name: /close/i })
+        const closeButton = screen.getByText('close')
         await user.click(closeButton)
         expect(defaultProps.onClose).toHaveBeenCalled()
     })

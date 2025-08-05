@@ -4,12 +4,10 @@ import classNames from 'classnames'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import {
-    ModalBodyWrapper,
-    ModalFooterWrapper,
-    ModalHeaderWrapper,
-    ModalWrapper,
-} from 'pages/aiAgent/trial/components/ModalWrapper'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './TrialManageModal.less'
 
@@ -25,7 +23,7 @@ export type TrialManageModalProps = {
     description: ReactNode | string
     secondaryDescription?: ReactNode | string
     advantages: string[]
-    onClose?: () => void
+    onClose: () => void
     primaryAction?: Action
     secondaryAction?: Action
 }
@@ -40,16 +38,14 @@ export const TrialManageModal = ({
     onClose,
 }: TrialManageModalProps) => {
     return (
-        <ModalWrapper
+        <Modal
             isOpen
-            size="lg"
-            toggle={onClose}
-            fade
-            centered
-            contentClassName={css.modal}
+            size="large"
+            onClose={onClose}
+            classNameContent={css.modal}
         >
-            <ModalHeaderWrapper toggle={onClose}>{title}</ModalHeaderWrapper>
-            <ModalBodyWrapper>
+            <ModalHeader title={title} className={css.header} />
+            <ModalBody className={css.body}>
                 <div className={css.modalBody}>
                     <div className={css.leftSide}>
                         <div className={css.description}>{description}</div>
@@ -83,9 +79,9 @@ export const TrialManageModal = ({
                         )}
                     </div>
                 </div>
-            </ModalBodyWrapper>
+            </ModalBody>
             {(primaryAction || secondaryAction) && (
-                <ModalFooterWrapper>
+                <ModalFooter className={css.footer}>
                     {secondaryAction && (
                         <Button
                             onClick={secondaryAction.onClick}
@@ -117,8 +113,8 @@ export const TrialManageModal = ({
                             {primaryAction.label}
                         </Button>
                     )}
-                </ModalFooterWrapper>
+                </ModalFooter>
             )}
-        </ModalWrapper>
+        </Modal>
     )
 }

@@ -6,6 +6,30 @@
         min-width: 800px;
         border-radius: 12px;
         border: none;
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-m);
+    }
+
+    .header,
+    .body,
+    .footer {
+        padding: 0;
+        border: none;
+    }
+
+    .header {
+        .heading-section-semibold();
+        margin-bottom: var(--layout-spacing-m);
+    }
+
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xs);
+        background-color: var(--neutral-grey-0);
     }
 
     .modalBody {
@@ -15,17 +39,17 @@
 
     .leftSide {
         width: 55%;
-        padding: var(--layout-spacing-m) 40px var(--layout-spacing-m)
-            var(--layout-spacing-m);
+        gap: var(--layout-spacing-s);
+        margin-right: 40px;
     }
 
     .rightSide {
         width: 45%;
-        padding: var(--layout-spacing-m);
+        padding: var(--layout-spacing-m) 0 var(--layout-spacing-m)
+            var(--layout-spacing-m);
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-s);
-        align-items: center;
     }
 
     .advantages {
@@ -35,15 +59,38 @@
         flex-direction: column;
         gap: var(--layout-spacing-xs);
         padding: var(--layout-spacing-m) var(--layout-spacing-s);
-
         border-radius: var(--Border-radius-XL, 12px);
-        border: 1px solid transparent;
-        background:
-            linear-gradient(90deg, #fff4e6 0%, #f9eaff 60%, #ffe3fa 100%)
-                padding-box,
-            linear-gradient(90deg, #ff9a57, #a084e1, #fc8ae9) border-box;
-        background-clip: padding-box, border-box;
+
+        position: relative;
+        background: linear-gradient(
+            315deg,
+            rgba(160, 132, 225, 0.1) 20.19%,
+            rgba(252, 138, 233, 0.1) 50%,
+            rgba(255, 154, 87, 0.1) 80%
+        );
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(
+                315deg,
+                #a084e1 20.19%,
+                #fc8ae9 50%,
+                #ff9a57 80%
+            );
+            border-radius: inherit;
+            mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+        }
     }
 
     .advantagesCenter {
@@ -85,7 +132,7 @@
     .description {
         display: flex;
         height: 100%;
-        align-items: center;
+        margin-top: var(--layout-spacing-s);
 
         font-size: 16px;
         font-weight: 400;
@@ -97,14 +144,6 @@
         font-weight: 400;
         line-height: 16px;
         color: var(--neutral-grey-5);
-        text-align: center;
-    }
-}
-
-body.dark {
-    :local {
-        .advantageValue {
-            color: var(--neutral-grey-1);
-        }
+        text-align: end;
     }
 }

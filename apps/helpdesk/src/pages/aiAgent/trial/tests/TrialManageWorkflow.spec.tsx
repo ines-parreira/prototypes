@@ -450,7 +450,7 @@ describe('TrialManageWorkflow', () => {
             )
 
             expect(
-                screen.getByText('Manage your Shopping Assistant trial'),
+                screen.getByText('Manage Shopping Assistant trial'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
@@ -582,7 +582,7 @@ describe('TrialManageWorkflow', () => {
         )
 
         const call = (TrialManageModal as jest.Mock).mock.calls[0]
-        expect(call[0].title).toBe('Manage your Shopping Assistant trial')
+        expect(call[0].title).toBe('Manage Shopping Assistant trial')
         expect(call[0].description).toBe(
             'Shopping Assistant boosted your GMV by +$25 during the trial. Keep the momentum going and turn even more visitors into buyers.',
         )

@@ -367,10 +367,10 @@ const useTrialEndedModal = (
     const difference = earlyAccessPlanPrice - currentPlanAmount
 
     const description = useMemo(() => {
-        if (gmvInfluencedRate > 0.01) {
-            return `Shopping Assistant boosted your GMV by +${gmvInfluenced} during the trial. Keep the momentum going and turn even more visitors into buyers.`
+        if (gmvInfluencedRate > 0.05) {
+            return `Shopping Assistant drove ${gmvInfluenced} uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.`
         }
-        return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.`
+        return 'Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.'
     }, [gmvInfluenced, gmvInfluencedRate])
 
     const advantages = useMemo(() => {
@@ -386,8 +386,11 @@ const useTrialEndedModal = (
 
     const secondaryDescription = useMemo(() => {
         const increaseAmount = formatAmount(difference, currency)
-        if (gmvInfluencedRate > 0.01) {
-            return `After your trial, your plan will increase by ${increaseAmount}.`
+        if (gmvInfluencedRate > 0.05) {
+            if (difference > 0) {
+                return `After your trial, your plan will increase by ${increaseAmount}.`
+            }
+            return 'The price of your plan remains the same after the upgrade.'
         }
         if (difference > 0) {
             return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}.`
