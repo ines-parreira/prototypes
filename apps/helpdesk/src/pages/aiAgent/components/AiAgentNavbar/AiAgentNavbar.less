@@ -3,4 +3,46 @@
         margin-top: var(--layout-spacing-s);
         padding: 0 var(--layout-spacing-xs);
     }
+    .promoCardSection {
+        padding: var(--layout-spacing-xs);
+        margin-top: auto;
+    }
+    .promoCard {
+        width: 100%;
+    }
+    .videoThumbnail {
+        min-height: 109px;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        img {
+            width: 148px;
+            height: 124px;
+            position: absolute;
+            bottom: -24px;
+        }
+    }
+    .videoModalCTA {
+        position: absolute;
+        top: 86px;
+
+        padding: 2px 8px;
+        width: 192px;
+        height: 40px;
+
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 600;
+        font-feature-settings:
+            'ss01' on,
+            'cv10' on;
+        font-variant-numeric: lining-nums tabular-nums;
+    }
+    .descriptionIcon {
+        margin-right: var(--layout-spacing-xxs);
+    }
 }

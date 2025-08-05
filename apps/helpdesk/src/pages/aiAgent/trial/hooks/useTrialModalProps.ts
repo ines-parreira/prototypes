@@ -30,6 +30,11 @@ export const EXTERNAL_URLS = {
     BOOK_DEMO: 'https://www.gorgias.com/demo/customers/automate',
     SHOPPING_ASSISTANT_INFO:
         'https://www.gorgias.com/ai-agent/shopping-assistant',
+    // Shopping Assistant trial specific URLs with sidebar UTM parameters
+    SHOPPING_ASSISTANT_TRIAL_LEARN_MORE:
+        'https://www.gorgias.com/ai-agent/shopping-assistant?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
+    SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO:
+        'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
 } as const
 
 export type TrialModalProps = {

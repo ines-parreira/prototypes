@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 
@@ -11,6 +13,7 @@ import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
+import { ShoppingAssistantPromoCard } from '../ShoppingAssistant/ShoppingAssistantPromoCard'
 import { AiAgentNavbarSectionBlock } from './AiAgentNavbarSectionBlock'
 import { useAiAgentNavbarSections } from './useAiAgentNavbarSections'
 import { getSectionKeyFromStoreIntegration } from './utils'
@@ -78,6 +81,7 @@ export const AiAgentNavbar = () => {
                     )
                 })}
             </Navigation.Root>
+            <ShoppingAssistantPromoCard className={css.promoCard} />
         </Navbar>
     )
 }
