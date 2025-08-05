@@ -128,9 +128,10 @@ describe('useShoppingAssistantPromoCard', () => {
         mockUseShoppingAssistantTrialAccess.mockReturnValue(baseTrialAccess)
         mockUseTrialEnding.mockReturnValue({
             remainingDays: 7,
+            remainingDaysFloat: 7.0,
             trialEndDatetime: '2024-01-15T00:00:00.000Z',
             trialTerminationDatetime: undefined,
-            forceHideModal: true,
+            optedOutDatetime: undefined,
         })
         mockUseTrialMetrics.mockReturnValue({
             gmvInfluenced: '$1,250',
@@ -806,9 +807,10 @@ describe('useShoppingAssistantPromoCard', () => {
             it('should show 100% progress when 14 days remaining', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 14,
+                    remainingDaysFloat: 14.0,
                     trialEndDatetime: '2024-01-28T00:00:00.000Z',
                     trialTerminationDatetime: undefined,
-                    forceHideModal: true,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHook(() =>
@@ -823,9 +825,10 @@ describe('useShoppingAssistantPromoCard', () => {
             it('should show 50% progress when 7 days remaining', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 7,
+                    remainingDaysFloat: 7.0,
                     trialEndDatetime: '2024-01-21T00:00:00.000Z',
                     trialTerminationDatetime: undefined,
-                    forceHideModal: true,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHook(() =>
@@ -839,9 +842,10 @@ describe('useShoppingAssistantPromoCard', () => {
             it('should show 7% progress when 1 day remaining', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 1,
+                    remainingDaysFloat: 1.0,
                     trialEndDatetime: '2024-01-15T00:00:00.000Z',
                     trialTerminationDatetime: undefined,
-                    forceHideModal: true,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHook(() =>
@@ -855,9 +859,10 @@ describe('useShoppingAssistantPromoCard', () => {
             it('should show 0% progress when 0 days remaining', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 0,
+                    remainingDaysFloat: 0.0,
                     trialEndDatetime: '2024-01-14T00:00:00.000Z',
                     trialTerminationDatetime: undefined,
-                    forceHideModal: true,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHook(() =>
@@ -922,10 +927,11 @@ describe('useShoppingAssistantPromoCard', () => {
         describe('Edge cases and boundary conditions', () => {
             it('should handle progress percentage bounds correctly', () => {
                 mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 15, // More than trial duration
+                    remainingDays: 15,
+                    remainingDaysFloat: 15.0, // More than trial duration
                     trialEndDatetime: '2024-01-29T00:00:00.000Z',
                     trialTerminationDatetime: undefined,
-                    forceHideModal: true,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHook(() =>
@@ -947,9 +953,10 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 7,
+                    remainingDaysFloat: 7.0,
                     trialEndDatetime: '2024-01-21T00:00:00.000Z',
                     trialTerminationDatetime: undefined,
-                    forceHideModal: true,
+                    optedOutDatetime: undefined,
                 })
             })
 
@@ -1064,9 +1071,10 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 5,
+                    remainingDaysFloat: 5.0,
                     trialEndDatetime: '2024-01-19T00:00:00.000Z',
                     trialTerminationDatetime: undefined,
-                    forceHideModal: true,
+                    optedOutDatetime: undefined,
                 })
             })
 
