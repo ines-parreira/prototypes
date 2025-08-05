@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import AiSalesAgentOverviewDownloadButton from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
 import css from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview.less'
@@ -26,6 +28,7 @@ import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSales
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 const AiSalesAgentSalesOverview = () => {
@@ -36,15 +39,25 @@ const AiSalesAgentSalesOverview = () => {
     const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
     const legacyShouldDisplayPaywall =
         !useCanUseAiSalesAgent() && !atLeastOneStoreHasActiveTrial
-    const shouldDisplayPaywall =
-        milestone === 'milestone-1'
-            ? hasAnyTrialActive
-            : legacyShouldDisplayPaywall
 
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
     const { storeActivations } = useStoreActivations()
+
+    const isAiSalesAlphaDemoUser = useFlag(
+        FeatureFlagKey.AiSalesAgentBypassPlanCheck,
+        false,
+    )
+
+    const shouldDisplayPaywall =
+        milestone === 'milestone-1'
+            ? !hasAnyTrialActive &&
+              !hasNewAutomatePlan &&
+              !isAiSalesAlphaDemoUser
+            : legacyShouldDisplayPaywall
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 

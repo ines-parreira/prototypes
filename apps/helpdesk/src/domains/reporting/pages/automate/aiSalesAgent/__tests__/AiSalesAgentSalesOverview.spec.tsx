@@ -11,12 +11,14 @@ import AiSalesAgentSalesOverview from 'domains/reporting/pages/automate/aiSalesA
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
+import { products } from 'fixtures/productPrices'
 import { user } from 'fixtures/users'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
+import { ProductType } from 'models/billing/types'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
@@ -196,7 +198,7 @@ const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
 const mockUseFlags = useFlags as jest.Mock
 
 describe('AiSalesAgentSalesOverview', () => {
-    const state = {
+    const baseState = {
         stats: {
             filters: {
                 period: {
@@ -213,13 +215,18 @@ describe('AiSalesAgentSalesOverview', () => {
         billing: fromJS(billingState),
         integrations: fromJS(integrationsState),
         currentUser: fromJS(user),
-        currentAccount: fromJS({ domain: 'test-account' }),
+        currentAccount: fromJS({
+            domain: 'test-account',
+            current_subscription: {
+                products: {},
+            },
+        }),
     } as RootState
 
-    const renderComponent = () => {
+    const renderComponent = (customState = baseState) => {
         return renderWithStoreAndQueryClientAndRouter(
             <AiSalesAgentSalesOverview />,
-            state,
+            customState,
         )
     }
 
@@ -412,6 +419,169 @@ describe('AiSalesAgentSalesOverview', () => {
             expect(
                 screen.getByText('Start 14-Day Trial At No Additional Cost'),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('Paywall display logic with milestone-1 and new automate plan', () => {
+        beforeEach(() => {
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+        })
+
+        it('should not show paywall when user has new automate plan (generation >= 6) even without trial', () => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
+            })
+
+            // Create state with a new automate plan
+            // We need to update the products fixture to include a plan with generation 6
+            const productsWithNewAutomatePlan = products.map((product) => {
+                if (product.type === ProductType.Automation) {
+                    return {
+                        ...product,
+                        prices: product.prices.map((plan, index) =>
+                            index === 0 ? { ...plan, generation: 6 } : plan,
+                        ),
+                    }
+                }
+                return product
+            })
+
+            const stateWithNewAutomatePlan = {
+                ...baseState,
+                billing: fromJS({
+                    ...billingState,
+                    products: productsWithNewAutomatePlan,
+                }),
+                currentAccount: fromJS({
+                    domain: 'test-account',
+                    current_subscription: {
+                        products: {
+                            // Use the price_id from the first automation plan in our fixture
+                            prod_automation: 'price_1LJBjXI9qXomtXqSSX34F3we',
+                        },
+                    },
+                }),
+            } as RootState
+
+            renderComponent(stateWithNewAutomatePlan)
+
+            expect(
+                screen.queryByText('ai-agent-paywall'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show paywall when user has old automate plan (generation < 6) and no trial', () => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
+            })
+
+            // Create state with an old automate plan
+            const productsWithOldAutomatePlan = products.map((product) => {
+                if (product.type === ProductType.Automation) {
+                    return {
+                        ...product,
+                        prices: product.prices.map((plan, index) =>
+                            index === 0 ? { ...plan, generation: 5 } : plan,
+                        ),
+                    }
+                }
+                return product
+            })
+
+            const stateWithOldAutomatePlan = {
+                ...baseState,
+                billing: fromJS({
+                    ...billingState,
+                    products: productsWithOldAutomatePlan,
+                }),
+                currentAccount: fromJS({
+                    domain: 'test-account',
+                    current_subscription: {
+                        products: {
+                            // Use the price_id from the first automation plan in our fixture
+                            prod_automation: 'price_1LJBjXI9qXomtXqSSX34F3we',
+                        },
+                    },
+                }),
+            } as RootState
+
+            renderComponent(stateWithOldAutomatePlan)
+
+            expect(screen.getByText('ai-agent-paywall')).toBeInTheDocument()
+        })
+
+        it('should show paywall when user has no automate plan and no trial', () => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('ai-agent-paywall')).toBeInTheDocument()
+        })
+
+        it('should not show paywall when user has active trial regardless of automate plan', () => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasCurrentStoreTrialStarted: true,
+                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: true,
+                hasAnyTrialActive: true,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('ai-agent-paywall'),
+            ).not.toBeInTheDocument()
         })
     })
 })
