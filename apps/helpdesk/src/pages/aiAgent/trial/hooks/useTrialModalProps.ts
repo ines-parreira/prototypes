@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { SegmentEvent } from 'common/segment'
 import { logEvent } from 'common/segment/segment'
@@ -55,9 +55,13 @@ export type TrialModalProps = {
         TrialAlertBannerProps,
         'title' | 'description' | 'primaryAction' | 'secondaryAction'
     >
-    manageTrialModal: Pick<
+    trialEndingModal: Pick<
         TrialManageModalProps,
-        'description' | 'advantages' | 'secondaryDescription'
+        'title' | 'description' | 'advantages' | 'secondaryDescription'
+    >
+    trialEndedModal: Pick<
+        TrialManageModalProps,
+        'title' | 'description' | 'advantages' | 'secondaryDescription'
     >
 }
 
@@ -277,7 +281,7 @@ const useTrialStartedBanner = (
     }, [canBookDemo, earlyAccessPlan, handleUpgradePlan, isUpgradePlanLoading])
 
     const description = useMemo(() => {
-        if (gmvInfluencedRate > 0.01) {
+        if (gmvInfluencedRate > 0.005) {
             return `So far, it's influenced ${gmvInfluenced} of GMV for your store.`
         }
         return `Increase conversion by +50% by setting up your sales strategy and customer engagement tactics.`
@@ -358,7 +362,7 @@ const useTrialAlertBanner = ({
 
 const useTrialEndedModal = (
     trialMetrics: TrialMetrics,
-): TrialModalProps['manageTrialModal'] => {
+): TrialModalProps['trialEndedModal'] => {
     const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
     const earlyAccessPlanPrice =
@@ -371,15 +375,21 @@ const useTrialEndedModal = (
 
     const difference = earlyAccessPlanPrice - currentPlanAmount
 
+    const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
+
     const description = useMemo(() => {
-        if (gmvInfluencedRate > 0.05) {
-            return `Shopping Assistant drove ${gmvInfluenced} uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.`
+        if (gmvInfluencedRate > 0.005) {
+            return React.createElement('span', {}, [
+                'Shopping Assistant drove ',
+                React.createElement('strong', { key: 'gmv' }, gmvInfluenced),
+                ' uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
+            ])
         }
         return 'Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.'
     }, [gmvInfluenced, gmvInfluencedRate])
 
     const advantages = useMemo(() => {
-        if (gmvInfluencedRate > 0.01) {
+        if (hasSignificantGmvImpact) {
             return [`${gmvInfluenced} GMV uplift`]
         }
         return [
@@ -387,11 +397,11 @@ const useTrialEndedModal = (
             '62% conversion rate',
             '1.5% revenue',
         ]
-    }, [gmvInfluenced, gmvInfluencedRate])
+    }, [gmvInfluenced, hasSignificantGmvImpact])
 
     const secondaryDescription = useMemo(() => {
         const increaseAmount = formatAmount(difference, currency)
-        if (gmvInfluencedRate > 0.05) {
+        if (gmvInfluencedRate > 0.005) {
             if (difference > 0) {
                 return `After your trial, your plan will increase by ${increaseAmount}.`
             }
@@ -401,11 +411,83 @@ const useTrialEndedModal = (
             return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}.`
         }
         return `Typical results achieved by merchants. The price of your plan remains the same after the upgrade.`
-    }, [gmvInfluencedRate, difference, currency])
+    }, [difference, currency, gmvInfluencedRate])
 
     return useMemo(
         () => ({
-            title: 'Your trial has ended — and it made an impact.',
+            title: hasSignificantGmvImpact
+                ? 'Your trial has ended — and it made an impact.'
+                : 'Your trial ended — but it’s just the beginning.',
+            description,
+            secondaryDescription,
+            advantages,
+        }),
+        [
+            hasSignificantGmvImpact,
+            description,
+            secondaryDescription,
+            advantages,
+        ],
+    )
+}
+
+const useTrialEndingModal = (
+    trialMetrics: TrialMetrics,
+): TrialModalProps['trialEndingModal'] => {
+    const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
+    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
+    const earlyAccessPlanPrice =
+        (earlyAccessAutomatePlanQuery?.data?.amount ?? 0) / 100
+    const billingState = useBillingState()
+    const currentPlan = billingState?.data?.current_plans?.automate
+
+    const currentPlanAmount = (currentPlan?.amount ?? 0) / 100
+    const currency = currentPlan?.currency ?? 'USD'
+
+    const difference = earlyAccessPlanPrice - currentPlanAmount
+    const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
+    const hasPriceIncrease = difference > 0
+    const increaseAmount = formatAmount(difference, currency)
+
+    const description = useMemo(() => {
+        if (hasSignificantGmvImpact) {
+            return React.createElement('span', {}, [
+                'Shopping Assistant drove ',
+                React.createElement('strong', { key: 'gmv' }, gmvInfluenced),
+                " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
+            ])
+        }
+        return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`
+    }, [gmvInfluenced, hasSignificantGmvImpact])
+
+    const advantages = useMemo(() => {
+        if (hasSignificantGmvImpact) {
+            return [`${gmvInfluenced} GMV uplift`]
+        }
+        return [
+            '10% average order value',
+            '62% conversion rate',
+            '1.5% revenue',
+        ]
+    }, [gmvInfluenced, hasSignificantGmvImpact])
+
+    const secondaryDescription = useMemo(() => {
+        if (hasSignificantGmvImpact) {
+            const priceMessage = hasPriceIncrease
+                ? `your plan will increase by ${increaseAmount}`
+                : 'the price of your plan remains the same'
+            return `With the upgrade, ${priceMessage}.`
+        }
+
+        const priceMessage = hasPriceIncrease
+            ? `After upgrading, your plan will increase by ${increaseAmount}`
+            : 'The price of your plan remains the same after the upgrade'
+        return `Typical results achieved by merchants. ${priceMessage}.`
+    }, [hasSignificantGmvImpact, hasPriceIncrease, increaseAmount])
+
+    return useMemo(
+        () => ({
+            title: 'Shopping Assistant trial ends tomorrow',
             description,
             secondaryDescription,
             advantages,
@@ -435,7 +517,8 @@ export const useTrialModalProps = ({
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })
-    const manageTrialModal = useTrialEndedModal(trialMetrics)
+    const trialEndingModal = useTrialEndingModal(trialMetrics)
+    const trialEndedModal = useTrialEndedModal(trialMetrics)
 
     return useMemo(
         () => ({
@@ -444,7 +527,8 @@ export const useTrialModalProps = ({
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,
-            manageTrialModal,
+            trialEndingModal,
+            trialEndedModal,
         }),
         [
             upgradePlanModal,
@@ -452,7 +536,8 @@ export const useTrialModalProps = ({
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,
-            manageTrialModal,
+            trialEndingModal,
+            trialEndedModal,
         ],
     )
 }

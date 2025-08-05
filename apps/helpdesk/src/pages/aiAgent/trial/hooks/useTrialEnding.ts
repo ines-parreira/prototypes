@@ -4,9 +4,10 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 
 const EMPTY_TRIAL_ENDING = {
     remainingDays: 0,
+    remainingDaysFloat: 0,
     trialEndDatetime: undefined,
     trialTerminationDatetime: undefined,
-    forceHideModal: true,
+    optedOutDatetime: undefined,
 }
 
 export const useTrialEnding = (storeName: string) => {
@@ -25,16 +26,16 @@ export const useTrialEnding = (storeName: string) => {
         storeActivation.configuration.sales?.trial.startDatetime
     const trialEndDatetime =
         storeActivation.configuration.sales?.trial.endDatetime
+    const optedOutDatetime =
+        storeActivation.configuration.sales?.trial.account.optOutDatetime
 
     if (!trialStartDatetime || !trialEndDatetime) {
         return EMPTY_TRIAL_ENDING
     }
 
     const trialEndDate = moment(trialEndDatetime)
-    const remainingDays = Math.max(
-        0,
-        Math.round(trialEndDate.diff(now, 'days', true)),
-    )
+    const remainingDaysFloat = trialEndDate.diff(now, 'days', true)
+    const remainingDays = Math.max(0, Math.round(remainingDaysFloat))
 
     const trialTerminationDatetime =
         storeActivation.configuration.sales?.trial.account
@@ -42,10 +43,9 @@ export const useTrialEnding = (storeName: string) => {
 
     return {
         remainingDays,
+        remainingDaysFloat,
         trialEndDatetime: trialEndDate.toISOString(),
         trialTerminationDatetime,
-        // TODO: remove this once we have done a proper release
-        // Ticket: https://linear.app/gorgias/issue/AIORC-4791/reactivate-the-trial-ending-trial-ended-modal-after-release
-        forceHideModal: true,
+        optedOutDatetime,
     }
 }

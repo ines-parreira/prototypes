@@ -4,7 +4,7 @@
         "source.fixAll.oxc": "explicit",
         "source.fixAll.stylelint": "explicit"
     },
-    "jest.jestCommandLine": "npm run jest --",
+    "jest.jestCommandLine": "pnpm test:helpdesk",
     "oxc.enable": true,
     "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -117,9 +117,10 @@ describe('useTrialModalProps', () => {
 
         mockUseTrialEnding.mockReturnValue({
             remainingDays: 14,
+            remainingDaysFloat: 14.0,
             trialEndDatetime: getTrialEndTime(14),
             trialTerminationDatetime: null,
-            forceHideModal: false,
+            optedOutDatetime: undefined,
         })
 
         mockUseShoppingAssistantTrialAccess.mockReturnValue({
@@ -428,9 +429,10 @@ describe('useTrialModalProps', () => {
 
             mockUseTrialEnding.mockReturnValue({
                 remainingDays: 7,
+                remainingDaysFloat: 7.0,
                 trialEndDatetime: getTrialEndTime(7),
                 trialTerminationDatetime: null,
-                forceHideModal: false,
+                optedOutDatetime: undefined,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -483,9 +485,10 @@ describe('useTrialModalProps', () => {
 
             mockUseTrialEnding.mockReturnValue({
                 remainingDays: 3,
+                remainingDaysFloat: 3.0,
                 trialEndDatetime: getTrialEndTime(3),
                 trialTerminationDatetime: null,
-                forceHideModal: false,
+                optedOutDatetime: undefined,
             })
 
             rerender()
@@ -529,9 +532,10 @@ describe('useTrialModalProps', () => {
 
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 0,
+                    remainingDaysFloat: 0.0,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -552,9 +556,10 @@ describe('useTrialModalProps', () => {
 
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: -1,
+                    remainingDaysFloat: -1.0,
                     trialEndDatetime: getTrialEndTime(-1),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -575,9 +580,10 @@ describe('useTrialModalProps', () => {
 
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 1,
+                    remainingDaysFloat: 1.0,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -591,11 +597,31 @@ describe('useTrialModalProps', () => {
 
             it('should display "ends in X days" when remainingDays is greater than 1', () => {
                 const testCases = [
-                    { remainingDays: 2, expected: 'ends in 2 days' },
-                    { remainingDays: 5, expected: 'ends in 5 days' },
-                    { remainingDays: 10, expected: 'ends in 10 days' },
-                    { remainingDays: 14, expected: 'ends in 14 days' },
-                    { remainingDays: 30, expected: 'ends in 30 days' },
+                    {
+                        remainingDays: 2,
+                        remainingDaysFloat: 2.0,
+                        expected: 'ends in 2 days',
+                    },
+                    {
+                        remainingDays: 5,
+                        remainingDaysFloat: 5.0,
+                        expected: 'ends in 5 days',
+                    },
+                    {
+                        remainingDays: 10,
+                        remainingDaysFloat: 10.0,
+                        expected: 'ends in 10 days',
+                    },
+                    {
+                        remainingDays: 14,
+                        remainingDaysFloat: 14.0,
+                        expected: 'ends in 14 days',
+                    },
+                    {
+                        remainingDays: 30,
+                        remainingDaysFloat: 30.0,
+                        expected: 'ends in 30 days',
+                    },
                 ]
 
                 testCases.forEach(({ remainingDays, expected }) => {
@@ -607,9 +633,10 @@ describe('useTrialModalProps', () => {
 
                     mockUseTrialEnding.mockReturnValue({
                         remainingDays,
+                        remainingDaysFloat: remainingDays,
                         trialEndDatetime: getTrialEndTime(remainingDays),
                         trialTerminationDatetime: null,
-                        forceHideModal: false,
+                        optedOutDatetime: undefined,
                     })
 
                     const { result } = renderHookWithRouter(() =>
@@ -631,9 +658,10 @@ describe('useTrialModalProps', () => {
 
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 365,
+                    remainingDaysFloat: 365.0,
                     trialEndDatetime: getTrialEndTime(365),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -654,9 +682,10 @@ describe('useTrialModalProps', () => {
 
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 5,
+                    remainingDaysFloat: 5.0,
                     trialEndDatetime: getTrialEndTime(5),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
 
                 const { result, rerender } = renderHookWithRouter(() =>
@@ -677,9 +706,10 @@ describe('useTrialModalProps', () => {
 
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 1,
+                    remainingDaysFloat: 1.0,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
                 rerender()
 
@@ -696,9 +726,10 @@ describe('useTrialModalProps', () => {
 
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 0,
+                    remainingDaysFloat: 0.0,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
                 rerender()
 
@@ -725,9 +756,10 @@ describe('useTrialModalProps', () => {
                 })
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 7,
+                    remainingDaysFloat: 7.0,
                     trialEndDatetime: getTrialEndTime(7),
                     trialTerminationDatetime: null,
-                    forceHideModal: false,
+                    optedOutDatetime: undefined,
                 })
             })
 
@@ -1262,8 +1294,8 @@ describe('useTrialModalProps', () => {
             expect(result.current.trialActivatedModal).toEqual(
                 firstResult.trialActivatedModal,
             )
-            expect(result.current.manageTrialModal).toEqual(
-                firstResult.manageTrialModal,
+            expect(result.current.trialEndingModal).toEqual(
+                firstResult.trialEndingModal,
             )
         })
 
@@ -1413,7 +1445,7 @@ describe('useTrialModalProps', () => {
             } as any)
         })
 
-        describe('when gmvInfluencedRate > 0.05', () => {
+        describe('when gmvInfluencedRate > 0.005', () => {
             it('should return personalized message with GMV amount', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: GMV_INFLUENCED,
@@ -1425,8 +1457,22 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({}),
                 )
 
-                expect(result.current.manageTrialModal.description).toBe(
-                    'Shopping Assistant drove $250 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                expect(result.current.trialEndingModal.description).toEqual(
+                    expect.objectContaining({
+                        type: 'span',
+                        props: expect.objectContaining({
+                            children: expect.arrayContaining([
+                                'Shopping Assistant drove ',
+                                expect.objectContaining({
+                                    type: 'strong',
+                                    props: expect.objectContaining({
+                                        children: '$250',
+                                    }),
+                                }),
+                                " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
+                            ]),
+                        }),
+                    }),
                 )
             })
 
@@ -1441,17 +1487,31 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({}),
                 )
 
-                expect(result.current.manageTrialModal.description).toBe(
-                    'Shopping Assistant drove $1,500 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                expect(result.current.trialEndingModal.description).toEqual(
+                    expect.objectContaining({
+                        type: 'span',
+                        props: expect.objectContaining({
+                            children: expect.arrayContaining([
+                                'Shopping Assistant drove ',
+                                expect.objectContaining({
+                                    type: 'strong',
+                                    props: expect.objectContaining({
+                                        children: '$1,500',
+                                    }),
+                                }),
+                                " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
+                            ]),
+                        }),
+                    }),
                 )
             })
         })
 
-        describe('when gmvInfluencedRate <= 0.05', () => {
+        describe('when gmvInfluencedRate <= 0.005', () => {
             it('should return generic message for rates slightly below threshold', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: GMV_INFLUENCED,
-                    gmvInfluencedRate: 0.05,
+                    gmvInfluencedRate: 0.003,
                     isLoading: false,
                 })
 
@@ -1459,16 +1519,16 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({}),
                 )
 
-                expect(result.current.manageTrialModal.description).toBe(
-                    'Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                expect(result.current.trialEndingModal.description).toBe(
+                    "Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
                 )
             })
         })
     })
 
     describe('useTrialEndedModal secondaryDescription', () => {
-        const HIGHER_GMV_RATE = 0.06
-        const LOWER_GMV_RATE = 0.03
+        const HIGHER_GMV_RATE = 0.008
+        const LOWER_GMV_RATE = 0.003
 
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
@@ -1481,7 +1541,7 @@ describe('useTrialModalProps', () => {
             } as any)
         })
 
-        describe('when gmvInfluencedRate > 0.05', () => {
+        describe('when gmvInfluencedRate > 0.005', () => {
             beforeEach(() => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -1500,8 +1560,8 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(
-                    result.current.manageTrialModal.secondaryDescription,
-                ).toBe('After your trial, your plan will increase by $49.')
+                    result.current.trialEndingModal.secondaryDescription,
+                ).toBe('With the upgrade, your plan will increase by $49.')
             })
 
             it('should show same price message when difference <= 0', () => {
@@ -1514,14 +1574,14 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(
-                    result.current.manageTrialModal.secondaryDescription,
+                    result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
-                    'The price of your plan remains the same after the upgrade.',
+                    'With the upgrade, the price of your plan remains the same.',
                 )
             })
         })
 
-        describe('when gmvInfluencedRate <= 0.05', () => {
+        describe('when gmvInfluencedRate <= 0.005', () => {
             beforeEach(() => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$25',
@@ -1540,7 +1600,7 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(
-                    result.current.manageTrialModal.secondaryDescription,
+                    result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
                     'Typical results achieved by merchants. After upgrading, your plan will increase by $49.',
                 )
@@ -1556,7 +1616,7 @@ describe('useTrialModalProps', () => {
                 )
 
                 expect(
-                    result.current.manageTrialModal.secondaryDescription,
+                    result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
                     'Typical results achieved by merchants. The price of your plan remains the same after the upgrade.',
                 )

@@ -9,10 +9,8 @@ import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import {
-    TrialEndedModal,
-    TrialEndingTomorrowModal,
-} from '../components/TrialEndingModal/TrialEndingModal'
+import { TrialEndedModal } from '../components/TrialEndedModal/TrialEndedModal'
+import { TrialEndingTomorrowModal } from '../components/TrialEndingModal/TrialEndingModal'
 
 // Mock the hooks
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
@@ -158,6 +156,26 @@ const mockTrialModalProps = {
         advantages: ['Advantage 1', 'Advantage 2'],
         secondaryDescription: 'Secondary description',
     },
+    trialEndingModal: {
+        title: 'Shopping Assistant trial ends tomorrow',
+        description: 'Trial ending description',
+        advantages: [
+            '10% average order value',
+            '62% conversion rate',
+            '1.5% revenue',
+        ],
+        secondaryDescription: 'Typical results achieved by merchants.',
+    },
+    trialEndedModal: {
+        title: 'Your trial has ended — and it made an impact.',
+        description: 'Trial ended description',
+        advantages: [
+            '10% average order value',
+            '62% conversion rate',
+            '1.5% revenue',
+        ],
+        secondaryDescription: 'Typical results achieved by merchants.',
+    },
 }
 
 describe('TrialEndedModal', () => {
@@ -182,8 +200,9 @@ describe('TrialEndedModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
+            remainingDaysFloat: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: '2023-11-14T00:00:00.000Z', // Has opted out
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -200,8 +219,9 @@ describe('TrialEndedModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-17T00:00:00.000Z', // Future date
             remainingDays: 1,
+            remainingDaysFloat: 1,
             trialEndDatetime: '2023-11-17T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: '2023-11-16T00:00:00.000Z',
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -217,8 +237,9 @@ describe('TrialEndedModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
+            remainingDaysFloat: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -228,14 +249,13 @@ describe('TrialEndedModal', () => {
         expect(container.firstChild).toBeNull()
     })
 
-    it('should not render modal when revamp milestone is not enabled', () => {
-        mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-
+    it('should not render modal when user has not opted out', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
+            remainingDaysFloat: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: undefined, // No opt out
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -251,8 +271,9 @@ describe('TrialEndedModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
+            remainingDaysFloat: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -274,8 +295,9 @@ describe('TrialEndedModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
+            remainingDaysFloat: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -297,8 +319,9 @@ describe('TrialEndedModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
+            remainingDaysFloat: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -326,8 +349,9 @@ describe('TrialEndingTomorrowModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
+            remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: undefined,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -346,8 +370,9 @@ describe('TrialEndingTomorrowModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-17T00:00:00.000Z',
             remainingDays: 2,
+            remainingDaysFloat: 2,
             trialEndDatetime: '2023-11-17T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: undefined,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -370,8 +395,9 @@ describe('TrialEndingTomorrowModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
+            remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: undefined,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
@@ -389,8 +415,9 @@ describe('TrialEndingTomorrowModal', () => {
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
+            remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: undefined,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -408,14 +435,15 @@ describe('TrialEndingTomorrowModal', () => {
         )
     })
 
-    it('should call empty function when primary action is clicked', async () => {
+    it('should dismiss modal when primary action (Dismiss) is clicked', async () => {
         const user = userEvent.setup()
 
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
+            remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            forceHideModal: false,
+            optedOutDatetime: undefined,
         })
 
         renderWithStoreAndQueryClientProvider(
@@ -424,10 +452,12 @@ describe('TrialEndingTomorrowModal', () => {
             />,
         )
 
-        const primaryButton = screen.getByText('Upgrade to Reactivate')
+        const primaryButton = screen.getByText('Dismiss')
         await user.click(primaryButton)
 
-        // Should not crash (empty function)
-        expect(primaryButton).toBeInTheDocument()
+        expect(localStorageMock.setItem).toHaveBeenCalledWith(
+            'ai-agent-trial-ending-tomorrow-dismissed',
+            'true',
+        )
     })
 })

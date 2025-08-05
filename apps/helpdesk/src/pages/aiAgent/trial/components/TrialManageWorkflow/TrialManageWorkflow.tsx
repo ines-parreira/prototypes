@@ -20,10 +20,8 @@ import {
     ModalWrapper,
 } from 'pages/aiAgent/trial/components/ModalWrapper'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
-import {
-    TrialEndedModal,
-    TrialEndingTomorrowModal,
-} from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
+import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal'
+import { TrialEndingTomorrowModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import TrialOptOutModal from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
@@ -129,7 +127,7 @@ export const TrialManageWorkflow = ({
 
             {isManageTrialModalOpen && (
                 <TrialManageModal
-                    {...trialModalProps.manageTrialModal}
+                    {...trialModalProps.trialEndingModal}
                     title="Manage Shopping Assistant trial"
                     onClose={closeManageTrialModal}
                     primaryAction={

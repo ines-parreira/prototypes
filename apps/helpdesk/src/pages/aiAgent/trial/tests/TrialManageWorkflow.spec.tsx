@@ -140,12 +140,12 @@ describe('TrialManageWorkflow', () => {
                         onClick: jest.fn(),
                     },
                 },
-                manageTrialModal: {
+                trialEndingModal: {
                     description:
-                        'Shopping Assistant boosted your GMV by +$25 during the trial. Keep the momentum going and turn even more visitors into buyers.',
-                    advantages: ['$25 GMV uplift'],
+                        "Shopping Assistant drove $250 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
+                    advantages: ['$250 GMV uplift'],
                     secondaryDescription:
-                        'After your trial, your plan will increase by $50.',
+                        'With the upgrade, your plan will increase by $49.',
                 },
                 upgradePlanModal: {},
             }
@@ -454,7 +454,7 @@ describe('TrialManageWorkflow', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    /Shopping Assistant boosted your GMV by \+\$25 during the trial/,
+                    /Shopping Assistant drove \$250 uplift in GMV/,
                 ),
             ).toBeInTheDocument()
         })
@@ -469,7 +469,7 @@ describe('TrialManageWorkflow', () => {
 
             expect(TrialManageModal).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    advantages: ['$25 GMV uplift'],
+                    advantages: ['$250 GMV uplift'],
                 }),
                 expect.anything(),
             )
@@ -584,9 +584,9 @@ describe('TrialManageWorkflow', () => {
         const call = (TrialManageModal as jest.Mock).mock.calls[0]
         expect(call[0].title).toBe('Manage Shopping Assistant trial')
         expect(call[0].description).toBe(
-            'Shopping Assistant boosted your GMV by +$25 during the trial. Keep the momentum going and turn even more visitors into buyers.',
+            "Shopping Assistant drove $250 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
         )
-        expect(call[0].advantages).toEqual(['$25 GMV uplift'])
+        expect(call[0].advantages).toEqual(['$250 GMV uplift'])
         expect(call[0].onClose).toBe(mockCloseManageTrialModal)
         expect(call[0].primaryAction).toBeUndefined()
         expect(call[0].secondaryAction.label).toBe('Opt Out')
