@@ -5,7 +5,7 @@
         .body-semibold();
         height: 32px;
         padding: 2px 12px;
-        color: var(--navigation-text-item);
+        color: var(--navigation-text-item); // legacy
         border-radius: 8px;
         outline: none;
         background-color: transparent;
@@ -27,5 +27,11 @@
         &:focus {
             outline: var(--navigation-selected) 1px solid;
         }
+    }
+}
+
+.axiom :local {
+    .trigger {
+        color: var(--content-neutral-default);
     }
 }

@@ -10,8 +10,8 @@
         width: 48px;
         height: 100%;
         padding: var(--layout-spacing-xs);
-        background: var(--navigation-background);
-        color: var(--navigation-text-item);
+        background: var(--navigation-background); // legacy
+        color: var(--navigation-text-item); // legacy
     }
 
     .section {
@@ -29,6 +29,17 @@
 
     .separator {
         margin: 0;
-        border-color: var(--navigation-border);
+        border-color: var(--navigation-border); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-bg);
+        color: var(--content-neutral-default);
+    }
+
+    .separator {
+        border-color: var(--border-neutral-default);
     }
 }

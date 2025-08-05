@@ -276,8 +276,8 @@ importers:
         specifier: 0.1.14
         version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.4.3
+        version: 0.4.3
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -2728,8 +2728,8 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.4.0':
-    resolution: {integrity: sha512-A3tcHQZl83/P6kAbMc+zmBopdP73EzOi5wXiaLXt+YoF1xnZ898lqeWcp2i+sew0H3fZmTBFOn44UIScEPbHSQ==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.4.0/e9cbe8f8888ef50ec87bb19263cc43dbebca45b6}
+  '@gorgias/axiom@0.4.3':
+    resolution: {integrity: sha512-YZtqkBhshgW8mGSQtJmLbniKGbMMuDtgdt4M1MFCNATbSgReA3PlcXAvmAe12nFt3VY6hFRjrOyaNK3J52CW5Q==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.4.3/3ab411b3473c11b1c473b246c3e98fcef70661c9}
 
   '@gorgias/branding-assets@0.2.1':
     resolution: {integrity: sha512-NxxSjkJ5xguwXqYpQwEuxoz1eEnJLMlfzRbTTk+cbQxucGyazUsterz0mdTXru2d/yd6iUnPAvZ1Q45s/mjJWg==, tarball: https://npm.pkg.github.com/download/@gorgias/branding-assets/0.2.1/78d49790593f16706d120f57cb71e8362e9080a3}
@@ -13349,7 +13349,7 @@ snapshots:
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.4.0': {}
+  '@gorgias/axiom@0.4.3': {}
 
   '@gorgias/branding-assets@0.2.1': {}
 

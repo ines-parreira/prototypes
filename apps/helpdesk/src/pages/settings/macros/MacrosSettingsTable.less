@@ -1,11 +1,11 @@
 :local {
     .tableHead {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         top: 0;
         z-index: 1;
 
         tr:nth-child(2) {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
 
         .headerCellProperty {
@@ -29,5 +29,15 @@
 
     .checkboxAllInput.checkboxAllInput {
         margin-right: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .tableHead {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    tr:nth-child(2) {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

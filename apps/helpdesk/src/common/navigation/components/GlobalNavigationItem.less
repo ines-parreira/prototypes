@@ -13,14 +13,14 @@
         border-radius: 8px;
         background-color: transparent;
         font-size: 24px;
-        color: var(--navigation-text-item);
+        color: var(--navigation-text-item); // legacy
         transition:
             background-color 0.2s ease-out,
             color 0.2s ease-out;
 
         &:hover {
             background: var(--navigation-background-accent);
-            color: var(--navigation-title-item);
+            color: var(--navigation-title-item); // legacy
             box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
         }
 
@@ -40,5 +40,15 @@
         color: var(--navigation-title-item);
         border: 1px solid transparent;
         box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-default);
+
+        &:hover {
+            color: var(--content-neutral-default);
+        }
     }
 }

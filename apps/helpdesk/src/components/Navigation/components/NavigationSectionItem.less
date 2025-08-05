@@ -6,7 +6,7 @@
         width: 100%;
         height: 28px;
         padding: 4px 12px;
-        color: var(--navigation-text-item);
+        color: var(--navigation-text-item); // legacy
         border-radius: 8px;
         border: 1px solid transparent;
         text-overflow: ellipsis;
@@ -54,5 +54,11 @@
             margin-left: var(--layout-spacing-xs);
             width: calc(100% - var(--layout-spacing-xs));
         }
+    }
+}
+
+.axiom :local {
+    .item {
+        color: var(--content-neutral-default);
     }
 }

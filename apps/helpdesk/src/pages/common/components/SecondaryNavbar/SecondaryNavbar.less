@@ -2,8 +2,8 @@
     // The `:global(.navbar)` is to target explicitly the navbar component from reactstrap
     // This will force this style to overwrite the one from Bootstrap
     :global(.navbar).navbar {
-        background-color: var(--neutral-grey-0);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         height: 52px;
         justify-content: normal;
         padding: 0 16px 0 9px;
@@ -26,5 +26,12 @@
         border-bottom: 2px solid var(--main-primary);
         color: var(--neutral-grey-6);
         padding: 16px 0 14px 0;
+    }
+}
+
+.axiom :local {
+    :global(.navbar).navbar {
+        background-color: var(--elevation-neutral-default);
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

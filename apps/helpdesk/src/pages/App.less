@@ -24,7 +24,7 @@
         flex: 1;
         overflow: auto;
         padding: 0;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .main-content {
@@ -81,4 +81,17 @@
                 48px 53px 28px 0px #00000003;
         }
     }
+}
+
+.axiom :local {
+    .content {
+        background: var(--elevation-neutral-default) !important;
+    }
+}
+
+//
+// fix scrollbar issue in dev mode, caused by React Query Devtools
+
+.ReactQueryDevtoolsPanel {
+    transform: none !important;
 }
