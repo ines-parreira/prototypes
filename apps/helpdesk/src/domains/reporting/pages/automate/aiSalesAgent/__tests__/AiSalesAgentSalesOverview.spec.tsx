@@ -422,9 +422,59 @@ describe('AiSalesAgentSalesOverview', () => {
         })
     })
 
-    describe('Paywall display logic with milestone-1 and new automate plan', () => {
+    describe('Paywall display logic with milestone-1 and isAiSalesAlphaDemoUser', () => {
         beforeEach(() => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+        })
+
+        it('should not show paywall when isAiSalesAlphaDemoUser is true regardless of other conditions', () => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+            mockUseFlag.mockReturnValue(true) // isAiSalesAlphaDemoUser = true
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('ai-agent-paywall'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show paywall when isAiSalesAlphaDemoUser is false and other conditions are not met', () => {
+            mockUseCanUseAiSalesAgent.mockReturnValue(false)
+            mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
+            mockUseFlag.mockReturnValue(false) // isAiSalesAlphaDemoUser = false
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                hasAnyTrialActive: false,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('ai-agent-paywall')).toBeInTheDocument()
         })
 
         it('should not show paywall when user has new automate plan (generation >= 6) even without trial', () => {
