@@ -44,12 +44,15 @@ export const useTableImport = () => {
     }
 
     return {
-        fetchNextItems,
-        fetchPrevItems,
-        handleSortToggle,
-        hasNextItems,
-        hasPrevItems,
-        importList,
-        sortOrder,
+        tableProps: {
+            fetchNextItems,
+            fetchPrevItems,
+            handleSortToggle,
+            hasNextItems,
+            hasPrevItems,
+            importList,
+            sortOrder,
+            isLoading: false,
+        },
     }
 }

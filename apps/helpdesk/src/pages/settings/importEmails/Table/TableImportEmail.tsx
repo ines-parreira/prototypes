@@ -1,25 +1,53 @@
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import { ImportItem } from '../types'
 import { COLUMN_WIDTHS } from './constants'
+import EmptyState from './EmptyState'
 import { TableRow } from './TableRow'
-import { useTableImport } from './useTableImport'
 
 import css from '../ImportEmail.less'
 
-const TableImportEmail = () => {
-    const {
-        fetchNextItems,
-        fetchPrevItems,
-        handleSortToggle,
-        hasNextItems,
-        hasPrevItems,
-        importList,
-        sortOrder,
-    } = useTableImport()
+type TableImportEmailProps = {
+    onOpenCreateImportModal: () => void
+    isLoading: boolean
+    importList: ImportItem[]
+    hasNextItems: boolean
+    hasPrevItems: boolean
+    fetchNextItems: () => void
+    fetchPrevItems: () => void
+    handleSortToggle: () => void
+    sortOrder: OrderDirection
+}
+
+const TableImportEmail = ({
+    onOpenCreateImportModal,
+    isLoading,
+    importList,
+    hasNextItems,
+    hasPrevItems,
+    fetchNextItems,
+    fetchPrevItems,
+    handleSortToggle,
+    sortOrder,
+}: TableImportEmailProps) => {
+    if (isLoading) {
+        return (
+            <div className={css.emptyStateWrapper}>
+                <LoadingSpinner />
+            </div>
+        )
+    }
+
+    if (!isLoading && importList.length === 0) {
+        return <EmptyState onOpenCreateImportModal={onOpenCreateImportModal} />
+    }
 
     return (
         <>

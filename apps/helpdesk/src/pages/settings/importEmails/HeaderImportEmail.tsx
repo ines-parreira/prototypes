@@ -7,15 +7,21 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import css from '../settings.less'
 
+type HeaderImportEmailProps = {
+    onOpenCreateImportModal: () => void
+    showCta: boolean
+}
+
 const HeaderImportEmail = ({
     onOpenCreateImportModal,
-}: {
-    onOpenCreateImportModal: () => void
-}) => {
+    showCta,
+}: HeaderImportEmailProps) => {
     return (
         <>
             <PageHeader title="Email import">
-                <Button onClick={onOpenCreateImportModal}>Import</Button>
+                {showCta && (
+                    <Button onClick={onOpenCreateImportModal}>Import</Button>
+                )}
             </PageHeader>
             <div className={css.pageContainer}>
                 <div className={classnames('body-regular', css.contentWrapper)}>
