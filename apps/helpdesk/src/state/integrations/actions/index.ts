@@ -23,7 +23,6 @@ import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protecte
 import type { AplicationAgentsResponse } from 'rest_api/gorgias_chat_protected_api/types'
 import GorgiasApi from 'services/gorgiasApi'
 import { fetchAccountSettings } from 'state/currentAccount/actions'
-import * as currentAccountSelectors from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
 import * as constants from 'state/integrations/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
@@ -1033,17 +1032,12 @@ export function fetchChatIntegrationStatus(integrationId: number) {
             integrationSelectors.getIntegrationById(integrationId)(state)
 
         try {
-            const isBusinessHours = helpers.isAccountDuringBusinessHours(
-                currentAccountSelectors.getBusinessHoursSettings(state),
-            )
-
             const installationStatus = await getInstallationStatusAction(
                 integration.getIn(['meta', 'app_id']),
             )
 
             const chatStatus = helpers.computeChatIntegrationStatus(
                 integration,
-                isBusinessHours,
                 installationStatus,
             )
 

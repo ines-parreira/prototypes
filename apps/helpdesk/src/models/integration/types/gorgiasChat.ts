@@ -131,6 +131,7 @@ export enum GorgiasChatStatusEnum {
      * Assumed not-installed because the chat bundle-loader was not requested recently.
      */
     NOT_INSTALLED = 'not-installed',
+    INSTALLED = 'installed',
 }
 
 export enum GorgiasChatLauncherType {

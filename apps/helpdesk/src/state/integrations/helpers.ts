@@ -3,11 +3,6 @@ import _find from 'lodash/find'
 import moment from 'moment-timezone'
 
 import { INTEGRATION_TYPE_CONFIG, IntegrationConfig } from 'config'
-import {
-    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
-    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
-    GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
-} from 'config/integrations/gorgias_chat'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatStatusEnum,
@@ -187,12 +182,11 @@ const getShouldForceShowChatAsUninstalled = (chat: Map<any, any>): boolean => {
 }
 
 /**
- * Calculate chat live status using different chat settings
+ * Calculate chat integration status
  */
 
 export const computeChatIntegrationStatus = (
     chat: Map<any, any>,
-    isBusinessHours: boolean,
     installationStatus: InstallationStatus,
 ): GorgiasChatStatusEnum | null => {
     const shouldIgnoreInstalledStatus = getShouldIgnoreInstalledStatus(chat)
@@ -211,33 +205,8 @@ export const computeChatIntegrationStatus = (
         return GorgiasChatStatusEnum.HIDDEN
     }
 
-    const isHideOutsideBusinessHoursEnabled = !!chat.getIn(
-        ['meta', 'preferences', 'hide_outside_business_hours'],
-        false,
-    )
-
-    if (!isBusinessHours) {
-        if (isHideOutsideBusinessHoursEnabled) {
-            return GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS
-        }
-
-        return GorgiasChatStatusEnum.OFFLINE
-    }
-
-    const liveChatAvailability = chat.getIn(
-        ['meta', 'preferences', 'live_chat_availability'],
-        GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
-    )
-
-    switch (liveChatAvailability) {
-        case GORGIAS_CHAT_LIVE_CHAT_OFFLINE:
-            return GorgiasChatStatusEnum.OFFLINE
-        case GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS:
-            return GorgiasChatStatusEnum.ONLINE
-        default:
-            // for "auto" option, we need to fetch agents data from chat api
-            return null
-    }
+    // For other availability settings, the chat is installed
+    return GorgiasChatStatusEnum.INSTALLED
 }
 
 // prevents ecom settings page UI glitching out when for example API returns email integration response

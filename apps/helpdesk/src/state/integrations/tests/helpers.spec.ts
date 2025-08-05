@@ -44,13 +44,12 @@ describe('integrations helpers', () => {
             expect(
                 helpers.computeChatIntegrationStatus(
                     integrationState,
-                    true,
                     neutralInstallationStatus,
                 ),
             ).toEqual(GorgiasChatStatusEnum.HIDDEN)
         })
 
-        it('should return `hidden-outside-business-hours` status when setting is enabled and is outside business hours', () => {
+        it('should return `installed` when live chat is auto (regardless of hide_outside_business_hours setting)', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -65,13 +64,12 @@ describe('integrations helpers', () => {
             expect(
                 helpers.computeChatIntegrationStatus(
                     integrationState,
-                    false,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS)
+            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
         })
 
-        it('should return `offline` status when is outside business hours', () => {
+        it('should return `installed` when live chat is auto', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -86,13 +84,12 @@ describe('integrations helpers', () => {
             expect(
                 helpers.computeChatIntegrationStatus(
                     integrationState,
-                    false,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
+            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
         })
 
-        it('should return `offline` status when live chat is offline and is inside business hours', () => {
+        it('should return `installed` status when live chat is offline', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -106,13 +103,12 @@ describe('integrations helpers', () => {
             expect(
                 helpers.computeChatIntegrationStatus(
                     integrationState,
-                    true,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
+            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
         })
 
-        it('should return `online` status when live chat is always online and is inside business hours', () => {
+        it('should return `installed` status when live chat is always online during business hours', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -127,13 +123,12 @@ describe('integrations helpers', () => {
             expect(
                 helpers.computeChatIntegrationStatus(
                     integrationState,
-                    true,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.ONLINE)
+            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
         })
 
-        it('should return null when live chat is auto and is inside business hours', () => {
+        it('should return `installed` when live chat is auto', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -148,10 +143,9 @@ describe('integrations helpers', () => {
             expect(
                 helpers.computeChatIntegrationStatus(
                     integrationState,
-                    true,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(null)
+            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
         })
 
         it('should return `not-installed` status when installationStatus report uninstalled', () => {
@@ -167,7 +161,7 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true, {
+                helpers.computeChatIntegrationStatus(integrationState, {
                     ...neutralInstallationStatus,
                     installed: false,
                 }),
@@ -188,14 +182,14 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true, {
+                helpers.computeChatIntegrationStatus(integrationState, {
                     ...neutralInstallationStatus,
                     installed: false,
                 }),
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
 
-        it('should return `online` status when chat was removed via 1 click long time ago, but it is somehow installed now', () => {
+        it('should return `installed` status when chat was removed via 1 click long time ago, but it is somehow installed now', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -214,14 +208,14 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true, {
+                helpers.computeChatIntegrationStatus(integrationState, {
                     ...neutralInstallationStatus,
                     installed: true,
                 }),
-            ).toEqual(GorgiasChatStatusEnum.ONLINE)
+            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
         })
 
-        it('should return `online` status (despite having "installed": false) if chat was installed recently using 1 click installation', () => {
+        it('should return `installed` status (despite having "installed": false) if chat was installed recently using 1 click installation', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -236,11 +230,11 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true, {
+                helpers.computeChatIntegrationStatus(integrationState, {
                     ...neutralInstallationStatus,
                     installed: false,
                 }),
-            ).toEqual(GorgiasChatStatusEnum.ONLINE)
+            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
         })
 
         it('should return `not-installed` status when chat was removed recently', () => {
@@ -258,7 +252,7 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true, {
+                helpers.computeChatIntegrationStatus(integrationState, {
                     ...neutralInstallationStatus,
                     installed: true,
                 }),

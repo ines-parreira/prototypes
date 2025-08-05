@@ -331,9 +331,6 @@ describe('integrations actions', () => {
             const spyGetApplicationAgents = jest
                 .spyOn(chatClient, 'getApplicationAgents')
                 .mockResolvedValue(defaultApiResponse)
-            const spyIsAccountDuringBusinessHours = jest
-                .spyOn(helpers, 'isAccountDuringBusinessHours')
-                .mockImplementation(() => true)
             const spyGetInstallationStatusAction = jest
                 .spyOn(gorgiasChatActions, 'getInstallationStatus')
                 .mockReturnValue(Promise.resolve(neutralInstallationStatus))
@@ -343,14 +340,13 @@ describe('integrations actions', () => {
 
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
-            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
             expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
             expect(spyGetApplicationAgents).not.toHaveBeenCalled()
             expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('should set online status if there are agents available', async () => {
+        it('should set installed status if there are agents available', async () => {
             const spyGetApplicationAgents = jest
                 .spyOn(chatClient, 'getApplicationAgents')
                 .mockResolvedValue({
@@ -359,26 +355,22 @@ describe('integrations actions', () => {
                         hasAvailableAgents: true,
                     },
                 })
-            const spyIsAccountDuringBusinessHours = jest
-                .spyOn(helpers, 'isAccountDuringBusinessHours')
-                .mockImplementation(() => true)
             const spyGetInstallationStatusAction = jest
                 .spyOn(gorgiasChatActions, 'getInstallationStatus')
                 .mockReturnValue(Promise.resolve(neutralInstallationStatus))
             const spyComputeChatIntegrationStatus = jest
                 .spyOn(helpers, 'computeChatIntegrationStatus')
-                .mockImplementation(() => null)
+                .mockImplementation(() => GorgiasChatStatusEnum.INSTALLED)
 
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
-            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
             expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
-            expect(spyGetApplicationAgents).toHaveBeenCalled()
+            expect(spyGetApplicationAgents).not.toHaveBeenCalled()
             expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('should set offline status if there are no agents available', async () => {
+        it('should not check agent availability when status is already determined', async () => {
             const spyGetApplicationAgents = jest
                 .spyOn(chatClient, 'getApplicationAgents')
                 .mockResolvedValue({
@@ -387,55 +379,45 @@ describe('integrations actions', () => {
                         hasAvailableAgents: false,
                     },
                 })
-            const spyIsAccountDuringBusinessHours = jest
-                .spyOn(helpers, 'isAccountDuringBusinessHours')
-                .mockImplementation(() => true)
             const spyGetInstallationStatusAction = jest
                 .spyOn(gorgiasChatActions, 'getInstallationStatus')
                 .mockReturnValue(Promise.resolve(neutralInstallationStatus))
             const spyComputeChatIntegrationStatus = jest
                 .spyOn(helpers, 'computeChatIntegrationStatus')
-                .mockImplementation(() => null)
+                .mockImplementation(() => GorgiasChatStatusEnum.INSTALLED)
 
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
-            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
             expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
-            expect(spyGetApplicationAgents).toHaveBeenCalled()
+            expect(spyGetApplicationAgents).not.toHaveBeenCalled()
             expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('should handle error from api', async () => {
+        it('should not make API call when status is already determined', async () => {
             const spyGetApplicationAgents = jest
                 .spyOn(chatClient, 'getApplicationAgents')
                 .mockRejectedValue({
                     ...defaultApiResponse,
                     status: 400,
                 })
-            const spyIsAccountDuringBusinessHours = jest
-                .spyOn(helpers, 'isAccountDuringBusinessHours')
-                .mockImplementation(() => true)
             const spyGetInstallationStatusAction = jest
                 .spyOn(gorgiasChatActions, 'getInstallationStatus')
                 .mockReturnValue(Promise.resolve(neutralInstallationStatus))
             const spyComputeChatIntegrationStatus = jest
                 .spyOn(helpers, 'computeChatIntegrationStatus')
-                .mockImplementation(() => null)
+                .mockImplementation(() => GorgiasChatStatusEnum.INSTALLED)
 
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
-            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
             expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
-            expect(spyGetApplicationAgents).toHaveBeenCalled()
+            expect(spyGetApplicationAgents).not.toHaveBeenCalled()
             expect(store.getActions()).toEqual(
                 expect.arrayContaining([
                     expect.objectContaining({
-                        type: constants.FETCH_CHAT_STATUS_START,
-                    }),
-                    expect.objectContaining({
-                        type: constants.FETCH_CHAT_STATUS_ERROR,
+                        type: constants.FETCH_CHAT_STATUS_SUCCESS,
+                        chatStatus: GorgiasChatStatusEnum.INSTALLED,
                     }),
                 ]),
             )

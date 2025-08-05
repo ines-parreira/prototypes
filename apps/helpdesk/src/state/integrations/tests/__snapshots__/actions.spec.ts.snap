@@ -86,51 +86,30 @@ exports[`integrations actions fetch integrations 1`] = `
 ]
 `;
 
-exports[`integrations actions fetchChatIntegrationStatus action should handle error from api 1`] = `
+exports[`integrations actions fetchChatIntegrationStatus action should not check agent availability when status is already determined 1`] = `
 [
   {
-    "id": 1,
-    "type": "FETCH_CHAT_STATUS_START",
-  },
-  {
-    "error": {
-      "config": {
-        "headers": {},
-      },
-      "data": {},
-      "headers": {},
-      "status": 400,
-      "statusText": "OK",
-    },
-    "id": 1,
-    "reason": "Failed to fetch Status for Chat ID 1",
-    "type": "FETCH_CHAT_STATUS_ERROR",
-  },
-]
-`;
-
-exports[`integrations actions fetchChatIntegrationStatus action should set offline status if there are no agents available 1`] = `
-[
-  {
-    "id": 1,
-    "type": "FETCH_CHAT_STATUS_START",
-  },
-  {
-    "chatStatus": "offline",
+    "chatStatus": "installed",
     "id": 1,
     "type": "FETCH_CHAT_STATUS_SUCCESS",
   },
 ]
 `;
 
-exports[`integrations actions fetchChatIntegrationStatus action should set online status if there are agents available 1`] = `
+exports[`integrations actions fetchChatIntegrationStatus action should not make API call when status is already determined 1`] = `
 [
   {
+    "chatStatus": "installed",
     "id": 1,
-    "type": "FETCH_CHAT_STATUS_START",
+    "type": "FETCH_CHAT_STATUS_SUCCESS",
   },
+]
+`;
+
+exports[`integrations actions fetchChatIntegrationStatus action should set installed status if there are agents available 1`] = `
+[
   {
-    "chatStatus": "online",
+    "chatStatus": "installed",
     "id": 1,
     "type": "FETCH_CHAT_STATUS_SUCCESS",
   },

@@ -41,6 +41,7 @@ import { Tab } from '../../types'
 import css from './GorgiasChatIntegrationListRow.less'
 
 export const GorgiasChatIntegrationStatusFeedbackMapping = {
+    [GorgiasChatStatusEnum.INSTALLED]: 'Installed',
     [GorgiasChatStatusEnum.ONLINE]: 'Online',
     [GorgiasChatStatusEnum.OFFLINE]: 'Offline',
     [GorgiasChatStatusEnum.HIDDEN]: 'Hidden',
@@ -197,14 +198,17 @@ const GorgiasChatIntegrationListRow = ({
                                     chatStatus === GorgiasChatStatusEnum.ONLINE
                                         ? dotSuccess
                                         : chatStatus ===
-                                                GorgiasChatStatusEnum.HIDDEN ||
-                                            chatStatus ===
-                                                GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS
-                                          ? dotNeutral
+                                            GorgiasChatStatusEnum.INSTALLED
+                                          ? dotSuccess
                                           : chatStatus ===
-                                              GorgiasChatStatusEnum.OFFLINE
-                                            ? dotWarning
-                                            : dotErrorCross
+                                                  GorgiasChatStatusEnum.HIDDEN ||
+                                              chatStatus ===
+                                                  GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS
+                                            ? dotNeutral
+                                            : chatStatus ===
+                                                GorgiasChatStatusEnum.OFFLINE
+                                              ? dotWarning
+                                              : dotErrorCross
                                 }
                                 className={css.chatStatusDot}
                             />
