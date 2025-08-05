@@ -14,7 +14,7 @@
         "module": "esnext",
         "moduleResolution": "bundler",
         // ECMAScript
-        "lib": ["ES2022", "dom", "dom.iterable"],
+        "lib": ["ES2022", "dom", "dom.iterable", "WebWorker"],
         // Imports related
         "allowSyntheticDefaultImports": true,
         // Misc
