@@ -1,0 +1,192 @@
+@import (reference) '~css/typography';
+
+:local {
+    .modalContent {
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-l);
+    }
+
+    .body {
+        .body-regular;
+        padding: 0 !important;
+        border: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    .planDetailsContainer {
+        padding: var(--layout-spacing-m);
+        padding-bottom: 0;
+    }
+
+    .featureContainer {
+        background-color: var(--neutral-grey-1);
+        padding: var(--layout-spacing-m);
+    }
+
+    .planContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+        margin-bottom: var(--layout-spacing-xl);
+    }
+
+    .titleContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+        margin-bottom: var(--layout-spacing-xl);
+    }
+
+    .title {
+        .heading-page-semibold;
+        margin: 0;
+    }
+
+    .planHeader {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .trialPlan {
+        .body-semibold;
+    }
+
+    .trialPlanPrice {
+        margin-right: var(--layout-spacing-xxs);
+    }
+
+    .infoIcon {
+        color: var(--neutral-grey-5);
+    }
+
+    .actionsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .modalContent .body .primaryActionButton {
+        background-color: var(--neutral-grey-6) !important;
+        color: var(--neutral-grey-0) !important;
+        border-color: var(--neutral-grey-6) !important;
+    }
+
+    .termsContainer {
+        margin-bottom: var(--layout-spacing-m);
+    }
+
+    .checkboxField {
+        color: var(--neutral-grey-5);
+
+        > label {
+            align-items: flex-start !important;
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .checkboxFieldError {
+        color: var(--feedback-error-3);
+
+        > label {
+            align-items: flex-start !important;
+            color: var(--feedback-error-3);
+        }
+
+        input[type='checkbox'] {
+            border-color: var(--feedback-error-3) !important;
+        }
+    }
+
+    .checkboxLabel {
+        .caption-regular;
+    }
+
+    .termsLink {
+        color: var(--neutral-grey-5);
+        text-decoration-line: underline !important;
+        text-decoration-style: solid !important;
+        text-decoration-skip-ink: none !important;
+        text-decoration-thickness: auto !important;
+        text-underline-offset: auto !important;
+        text-underline-position: from-font !important;
+
+        &:hover {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .termsLinkError {
+        color: var(--feedback-error-3);
+        text-decoration-line: underline !important;
+        text-decoration-style: solid !important;
+        text-decoration-skip-ink: none !important;
+        text-decoration-thickness: auto !important;
+        text-underline-offset: auto !important;
+        text-underline-position: from-font !important;
+
+        &:hover {
+            color: var(--feedback-error-3);
+        }
+    }
+
+    .featureCard {
+        .body-regular;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: var(--layout-spacing-s) 0;
+    }
+
+    .featureTitle {
+        .body-semibold;
+        margin-bottom: var(--layout-spacing-xxs);
+    }
+
+    .iconContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .iconBackground {
+        width: 2px;
+        height: 66px;
+        margin-top: var(--layout-spacing-s);
+        border-radius: 100px;
+        background: var(--neutral-grey-3);
+    }
+
+    .featureCard:nth-of-type(2) {
+        padding: 0;
+    }
+
+    .featureCard:first-child .iconBackground {
+        background: linear-gradient(
+            180deg,
+            var(--feedback-success-4) 0%,
+            var(--neutral-grey-2) 82.95%
+        );
+    }
+
+    .featureCard:first-child .icon {
+        background: var(--feedback-success-4);
+        border: none;
+    }
+
+    .icon {
+        width: 30px;
+        height: 30px;
+        padding: 7px;
+        display: flex;
+        align-self: center;
+        border-radius: 15px;
+        border: 1px solid var(--neutral-grey-3);
+    }
+}
