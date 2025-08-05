@@ -71,6 +71,13 @@ export default function CustomBusinessHoursIntegrationsTable({
 
     const debouncedNameSearch = useDebouncedValue(nameSearch, 300)
 
+    const {
+        businessHoursId,
+        integrationsToOverride,
+        toggleIntegrationsToOverride,
+        resetIntegrationsToOverride,
+    } = useCustomBusinessHoursContext()
+
     const { data, isLoading, isError, refetch } =
         useListIntegrationsForBusinessHours({
             order_by,
@@ -78,13 +85,11 @@ export default function CustomBusinessHoursIntegrationsTable({
             name_search: debouncedNameSearch ? debouncedNameSearch : undefined,
             channels: channels ? channels : undefined,
             store_id: storeId ? storeId : undefined,
+            target_business_hours_id: businessHoursId
+                ? businessHoursId
+                : undefined,
         })
     const integrations = data?.data.data
-    const {
-        integrationsToOverride,
-        toggleIntegrationsToOverride,
-        resetIntegrationsToOverride,
-    } = useCustomBusinessHoursContext()
 
     const { watch, setValue } = useFormContext<
         BusinessHoursCreateFormValues | EditCustomBusinessHoursFormValues

@@ -558,4 +558,31 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             ),
         ).toBeInTheDocument()
     })
+
+    it('passes target_business_hours_id parameter when businessHoursId is provided in context', async () => {
+        const businessHoursId = 123
+        let receivedTargetBusinessHoursId: string | undefined
+
+        const queryHandler = mockListIntegrationsForBusinessHoursHandler(
+            async ({ request }) => {
+                const url = new URL(request.url)
+                receivedTargetBusinessHoursId =
+                    url.searchParams.get('target_business_hours_id') ??
+                    undefined
+                return HttpResponse.json(mockListResponse)
+            },
+        )
+
+        server.use(queryHandler.handler)
+
+        renderComponent(undefined, {
+            businessHoursId,
+        })
+
+        await waitFor(() => {
+            expect(receivedTargetBusinessHoursId).toBe(
+                businessHoursId.toString(),
+            )
+        })
+    })
 })
