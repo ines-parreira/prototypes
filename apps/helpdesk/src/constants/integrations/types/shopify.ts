@@ -355,6 +355,8 @@ export type Order = {
     taxes_included: boolean
     discount_applications: DiscountApplication[]
     refunds: Refund[]
+    created_at: string
+    updated_at: string
 }
 
 export type Image = {

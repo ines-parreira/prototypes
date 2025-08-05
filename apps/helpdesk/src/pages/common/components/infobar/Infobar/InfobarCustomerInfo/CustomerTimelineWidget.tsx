@@ -10,7 +10,7 @@ import history from 'pages/history'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
-import { useTimelineData } from 'timeline/hooks/useTimelineData'
+import { useTicketList } from 'timeline/hooks/useTicketList'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 
@@ -32,7 +32,7 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
         closeTimeline,
         shopperId: timelineShopperId,
     } = useTimelinePanel()
-    const { tickets, isLoading } = useTimelineData(shopperId)
+    const { tickets, isLoading } = useTicketList(shopperId)
 
     let isAnotherTimelineOpen = isOpen && timelineShopperId !== shopperId
 

@@ -1,13 +1,15 @@
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
+import * as timelineItem from 'timeline/helpers/timelineItem'
+
 import { filterTicketsByRange, getRangeLabel } from '../rangeFilter'
 
 describe('filterTicketsByRange', () => {
-    const tickets: TicketCompact[] = [
+    const tickets = [
         { created_datetime: '2023-01-01T00:00:00Z' } as TicketCompact,
         { created_datetime: '2023-06-01T00:00:00Z' } as TicketCompact,
         { created_datetime: '2023-12-31T23:59:59Z' } as TicketCompact,
-    ]
+    ].map((v) => timelineItem.fromTicket(v))
 
     it('should filter tickets within the specified range', () => {
         const range = {
@@ -16,7 +18,7 @@ describe('filterTicketsByRange', () => {
         }
         const result = filterTicketsByRange(tickets, range)
         expect(result).toHaveLength(2)
-        expect(result).toEqual([
+        expect(result.map(timelineItem.toTicket)).toEqual([
             { created_datetime: '2023-01-01T00:00:00Z' },
             { created_datetime: '2023-06-01T00:00:00Z' },
         ])
@@ -36,7 +38,7 @@ describe('filterTicketsByRange', () => {
         }
         const result = filterTicketsByRange(tickets, range)
         expect(result).toHaveLength(2)
-        expect(result).toEqual([
+        expect(result.map(timelineItem.toTicket)).toEqual([
             { created_datetime: '2023-06-01T00:00:00Z' },
             { created_datetime: '2023-12-31T23:59:59Z' },
         ])
@@ -49,7 +51,7 @@ describe('filterTicketsByRange', () => {
         }
         const result = filterTicketsByRange(tickets, range)
         expect(result).toHaveLength(2)
-        expect(result).toEqual([
+        expect(result.map(timelineItem.toTicket)).toEqual([
             { created_datetime: '2023-01-01T00:00:00Z' },
             { created_datetime: '2023-06-01T00:00:00Z' },
         ])

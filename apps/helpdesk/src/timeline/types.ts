@@ -1,6 +1,7 @@
 import { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
 
 import { Order } from 'constants/integrations/types/shopify'
+import { IntegrationType } from 'models/integration/constants'
 
 import { SORTABLE_KEY_TO_LABEL, SORTABLE_KEYS } from './constants'
 
@@ -40,3 +41,7 @@ export interface TimelineOrder extends TimelineItemBase {
 }
 
 export type TimelineItem = TimelineTicket | TimelineOrder
+
+export const SupportedOrderIntegration: IntegrationType[] = [
+    IntegrationType.Shopify,
+] as const

@@ -1,13 +1,12 @@
-import { TicketCompact } from '@gorgias/helpdesk-queries'
-
 import { DateTimeResultFormatType } from 'constants/datetime'
 import { formatDatetime } from 'utils'
 
-import { Range } from '../types'
+import { Range, TimelineItem } from '../types'
+import * as timelineItem from './timelineItem'
 
-export function filterTicketsByRange(tickets: TicketCompact[], range: Range) {
+export function filterTicketsByRange(tickets: TimelineItem[], range: Range) {
     return tickets.filter((ticket) => {
-        const ticketDate = new Date(ticket.created_datetime).getTime()
+        const ticketDate = timelineItem.getCreatedDate(ticket).getTime()
         return (
             ticketDate >= (range.start || 0) &&
             ticketDate <= (range.end || Date.now())

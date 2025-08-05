@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useMemo, useState } from 'react'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
@@ -30,15 +30,29 @@ export function Timeline({
 }: Props) {
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
 
-    const { tickets, isLoading } = useTimelineData(shopperId || undefined)
+    const { items, isLoading, enableOrdersInTimeline } = useTimelineData(
+        shopperId ?? undefined,
+    )
 
     const { rangeFilter, rangeFilteredTickets, setRangeFilter } =
-        useRangeFilter(tickets)
+        useRangeFilter(items)
+
+    // TODO: add status and sort for orders
     const { selectedStatus, statusFilteredTickets, toggleSelectedStatus } =
-        useStatusFilter(rangeFilteredTickets)
+        useStatusFilter(
+            enableOrdersInTimeline
+                ? []
+                : rangeFilteredTickets.map(timelineItem.toTicket),
+        )
     const { sortedTickets, sortOption, setSortOption } = useSort(
         statusFilteredTickets,
     )
+
+    const itemsList = useMemo(() => {
+        return enableOrdersInTimeline
+            ? items
+            : sortedTickets.map(timelineItem.fromTicket)
+    }, [enableOrdersInTimeline, items, sortedTickets])
 
     if (isLoading) {
         return (
@@ -53,7 +67,7 @@ export function Timeline({
         onLoaded?.()
     }
 
-    if (!isLoading && tickets.length === 0) {
+    if (!isLoading && items.length === 0) {
         return (
             <NoResults>This customer doesn’t have any tickets yet.</NoResults>
         )
@@ -68,14 +82,18 @@ export function Timeline({
                             range={rangeFilter}
                             setRangeFilter={setRangeFilter}
                         />
-                        <StatusFilter
-                            selectedStatus={selectedStatus}
-                            toggleSelectedStatus={toggleSelectedStatus}
-                        />
+                        {!enableOrdersInTimeline && (
+                            <StatusFilter
+                                selectedStatus={selectedStatus}
+                                toggleSelectedStatus={toggleSelectedStatus}
+                            />
+                        )}
                     </div>
-                    <Sort value={sortOption} onChange={setSortOption} />
+                    {!enableOrdersInTimeline && (
+                        <Sort value={sortOption} onChange={setSortOption} />
+                    )}
                 </div>
-                {tickets.length && sortedTickets.length === 0 ? (
+                {itemsList.length === 0 ? (
                     <NoResults>
                         <b>No matching tickets</b>
                         <br />
@@ -84,7 +102,7 @@ export function Timeline({
                 ) : (
                     <SortedTicketList
                         ticketId={ticketId}
-                        sortedItems={sortedTickets.map(timelineItem.fromTicket)}
+                        sortedItems={itemsList}
                         sortOption={sortOption}
                         containerRef={containerRef}
                     />

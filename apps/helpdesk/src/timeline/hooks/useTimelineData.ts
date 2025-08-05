@@ -1,33 +1,35 @@
-import { useMemo } from 'react'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
+import { Customer } from 'models/customer/types'
+import { getTicketCustomer } from 'state/ticket/selectors'
+import { extractOrders } from 'timeline/helpers/orders'
+import * as timelineItem from 'timeline/helpers/timelineItem'
+import { TimelineItem } from 'timeline/types'
 
-import { useListTickets } from '@gorgias/helpdesk-queries'
-
-import { TICKET_FETCH_STALE_TIME, TICKET_FETCHED_LIMIT } from '../constants'
+import { useTicketList } from './useTicketList'
 
 export function useTimelineData(shopperId?: number) {
-    const isEnabled = Number.isInteger(shopperId)
+    const ticketCustomer: Customer = useAppSelector(getTicketCustomer)?.toJS()
 
-    const { data, isLoading } = useListTickets(
-        {
-            trashed: false,
-            limit: TICKET_FETCHED_LIMIT,
-            customer_id: shopperId,
-        },
-        {
-            query: {
-                enabled: isEnabled,
-                staleTime: TICKET_FETCH_STALE_TIME,
-            },
-        },
+    const { tickets, isError, isLoading } = useTicketList(shopperId)
+
+    const enableOrdersInTimeline = useFlag(
+        FeatureFlagKey.ShopifyCustomerTimeline,
+        false,
     )
 
-    const tickets = data?.data.data
+    let items: TimelineItem[] = tickets.map((v) => timelineItem.fromTicket(v))
 
-    return useMemo(
-        () => ({
-            isLoading,
-            tickets: isEnabled ? tickets || [] : [],
-        }),
-        [isEnabled, isLoading, tickets],
-    )
+    if (enableOrdersInTimeline && ticketCustomer) {
+        const orders = extractOrders(ticketCustomer)
+        items = [...items, ...orders.map((v) => timelineItem.fromOrder(v))]
+    }
+
+    return {
+        items,
+        isLoading,
+        isError,
+        enableOrdersInTimeline,
+    }
 }

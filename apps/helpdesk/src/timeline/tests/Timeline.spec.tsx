@@ -5,9 +5,10 @@ import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
+import * as timelineItem from 'timeline/helpers/timelineItem'
+import { useTimelineData } from 'timeline/hooks/useTimelineData'
 import { useModalShortcuts } from 'timeline/ticket-modal/hooks/useModalShortcuts'
 
-import { useTimelineData } from '../hooks/useTimelineData'
 import { RangeFilter } from '../RangeFilter'
 import { TicketModal } from '../ticket-modal/components/TicketModal'
 import { useTicketModal } from '../ticket-modal/hooks/useTicketModal'
@@ -77,7 +78,11 @@ describe('<Timeline />', () => {
     } as TicketCompact
     const defaultTimelineReturnValue = {
         isLoading: false,
-        tickets: [ticket1, ticket2, ticket3],
+        isError: false,
+        items: [ticket1, ticket2, ticket3].map((v) =>
+            timelineItem.fromTicket(v),
+        ),
+        enableOrdersInTimeline: false,
     }
 
     beforeEach(() => {
@@ -154,7 +159,7 @@ describe('<Timeline />', () => {
         it('should say that they are no tickets yet', () => {
             useTimelineDataMock.mockReturnValue({
                 ...defaultTimelineReturnValue,
-                tickets: [],
+                items: [],
             })
 
             render(<Timeline shopperId={null} />)

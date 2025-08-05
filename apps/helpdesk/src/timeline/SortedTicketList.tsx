@@ -1,7 +1,5 @@
 import { RefObject, useMemo } from 'react'
 
-import { FeatureFlagKey } from '../config/featureFlags'
-import { useFlag } from '../core/flags'
 import DisplayedDate from './DisplayedDate'
 import * as timelineItem from './helpers/timelineItem'
 import { OrderTicketCard } from './order-ticket'
@@ -39,28 +37,20 @@ export function SortedTicketList({
               .find((item) => item.ticket.id === modal.ticketId)
         : undefined
 
-    const enableShopifyOrderInTimeline = useFlag(
-        FeatureFlagKey.ShopifyCustomerTimeline,
-        false,
-    )
-
     return (
         <>
             <ol className={css.list}>
                 {sortedItems.map((item) => {
                     switch (item.kind) {
                         case TimelineItemKind.Order: {
-                            if (enableShopifyOrderInTimeline) {
-                                return (
-                                    <li key={item.order.id}>
-                                        <OrderTicketCard
-                                            className={css.card}
-                                            order={item.order}
-                                        />
-                                    </li>
-                                )
-                            }
-                            return null
+                            return (
+                                <li key={item.order.id}>
+                                    <OrderTicketCard
+                                        className={css.card}
+                                        order={item.order}
+                                    />
+                                </li>
+                            )
                         }
                         case TimelineItemKind.Ticket: {
                             if (!item.ticket.channel) {

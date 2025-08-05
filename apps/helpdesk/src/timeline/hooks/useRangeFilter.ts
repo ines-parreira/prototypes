@@ -1,13 +1,11 @@
 import { useState } from 'react'
 
-import { TicketCompact } from '@gorgias/helpdesk-queries'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 
 import { filterTicketsByRange } from '../helpers/rangeFilter'
-import { Range } from '../types'
+import { Range, TimelineItem } from '../types'
 
-export function useRangeFilter(tickets: TicketCompact[]) {
+export function useRangeFilter(tickets: TimelineItem[]) {
     const [rangeFilter, setRangeFilter] = useState<Range>({
         start: null,
         end: null,
