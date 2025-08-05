@@ -1,4 +1,5 @@
 import { cloneDeep, merge } from 'lodash'
+import debounce from 'lodash/debounce'
 import moment from 'moment/moment'
 
 import {
@@ -87,6 +88,16 @@ export const addVoiceCallToLiveCallsQueryCache = (
     )
 }
 
+export const debouncedUpdateVoiceCallInLiveCallsQueryCache = debounce(
+    (
+        voiceCall: Partial<LiveCallQueueVoiceCall>,
+        params: ListLiveCallQueueVoiceCallsParams | undefined,
+    ) => {
+        updateVoiceCallInLiveCallsQueryCache(voiceCall, params)
+    },
+    250,
+)
+
 export const updateVoiceCallInLiveCallsQueryCache = (
     voiceCall: Partial<LiveCallQueueVoiceCall>,
     params: ListLiveCallQueueVoiceCallsParams | undefined,
@@ -120,6 +131,19 @@ export const updateVoiceCallInLiveCallsQueryCache = (
             return newData
         },
     )
+}
+
+export const updateVoiceCallInLiveCallsQueryCacheWithDebounce = (
+    voiceCall: Partial<LiveCallQueueVoiceCall>,
+    params: ListLiveCallQueueVoiceCallsParams | undefined,
+    shouldDebounce: boolean,
+) => {
+    if (shouldDebounce) {
+        debouncedUpdateVoiceCallInLiveCallsQueryCache(voiceCall, params)
+    } else {
+        // If debounce is not needed, update immediately
+        updateVoiceCallInLiveCallsQueryCache(voiceCall, params)
+    }
 }
 
 export const updateAgentAvailabilityInLiveAgentsQueryCache = (

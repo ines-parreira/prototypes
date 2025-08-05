@@ -4,7 +4,6 @@ import {
     useEffect,
     useMemo,
     useRef,
-    useState,
 } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -32,6 +31,7 @@ import {
     updateAgentAvailabilityInLiveAgentsQueryCache,
     updateAgentStatusInLiveAgentsQueryCache,
     updateVoiceCallInLiveCallsQueryCache,
+    updateVoiceCallInLiveCallsQueryCacheWithDebounce,
 } from 'domains/reporting/pages/voice/hooks/utils'
 
 const CHANNEL_NAME = 'stats.liveVoice'
@@ -40,9 +40,8 @@ export const useLiveVoiceUpdates = (
     params?: ListLiveCallQueueVoiceCallsParams,
 ) => {
     const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
-    const [voiceCallIdToSid, setVoiceCallIdToSid] = useState<
-        Record<number, string>
-    >({})
+    // Use ref instead of state to avoid race conditions
+    const voiceCallIdToSidRef = useRef<Record<number, string>>({})
     const processedEvents = useRef<Set<string>>(new Set())
     const timeouts: MutableRefObject<Record<string, NodeJS.Timeout>> = useRef(
         {},
@@ -93,14 +92,14 @@ export const useLiveVoiceUpdates = (
         }
 
         // keep track of all voice calls SIDs to map them to agent statuses
-        setVoiceCallIdToSid((prevState) => ({
-            ...prevState,
+        voiceCallIdToSidRef.current = {
+            ...voiceCallIdToSidRef.current,
             ...allVoiceCalls.reduce(
                 (acc, call) => ({ ...acc, [call.id]: call.external_id }),
                 {},
             ),
-        }))
-    }, [allVoiceCalls, setVoiceCallIdToSid])
+        }
+    }, [allVoiceCalls])
 
     useEffect(() => {
         // set up expiration timers for wrap-up statuses of the agents
@@ -157,10 +156,6 @@ export const useLiveVoiceUpdates = (
                 }
                 case '//helpdesk/phone.voice-call.inbound.received/1.0.0': {
                     const data = event.data
-                    setVoiceCallIdToSid((prev) => ({
-                        ...prev,
-                        [data.voice_call_id]: data.call_sid,
-                    }))
 
                     const voiceCall = {
                         id: data.voice_call_id,
@@ -180,6 +175,10 @@ export const useLiveVoiceUpdates = (
                         customer_id: data.customer_id,
                     }
                     addVoiceCallToLiveCallsQueryCache(voiceCall, params)
+                    voiceCallIdToSidRef.current = {
+                        ...voiceCallIdToSidRef.current,
+                        [data.voice_call_id]: data.call_sid,
+                    }
                     break
                 }
                 case '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.0': {
@@ -192,7 +191,7 @@ export const useLiveVoiceUpdates = (
                         params,
                     )
                     const voiceCallSid =
-                        voiceCallIdToSid[event.data.voice_call_id]
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
                     if (voiceCallSid) {
                         updateAgentStatusInLiveAgentsQueryCache(
                             event.data.user_id,
@@ -210,7 +209,7 @@ export const useLiveVoiceUpdates = (
                 case '//helpdesk/phone.voice-call.inbound.declined/1.0.0':
                 case '//helpdesk/phone.voice-call.inbound.unanswered/1.0.0': {
                     const voiceCallSid =
-                        voiceCallIdToSid[event.data.voice_call_id]
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
                     if (voiceCallSid) {
                         removeAgentStatusInLiveAgentsQueryCache(
                             event.data.user_id,
@@ -230,7 +229,7 @@ export const useLiveVoiceUpdates = (
                         params,
                     )
                     const voiceCallSid =
-                        voiceCallIdToSid[event.data.voice_call_id]
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
                     if (voiceCallSid) {
                         updateAgentStatusInLiveAgentsQueryCache(
                             event.data.user_id,
@@ -246,17 +245,18 @@ export const useLiveVoiceUpdates = (
                 }
                 case '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0':
                 case '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0': {
-                    updateVoiceCallInLiveCallsQueryCache(
+                    updateVoiceCallInLiveCallsQueryCacheWithDebounce(
                         {
                             id: event.data.voice_call_id,
                             ticket_id: event.data.ticket_id,
                         },
                         params,
+                        !voiceCallIdToSidRef.current[event.data.voice_call_id], // only debounce if the voice call is not already in live calls cache
                     )
                     break
                 }
                 case '//helpdesk/phone.voice-call.inbound.enqueued/1.1.0': {
-                    updateVoiceCallInLiveCallsQueryCache(
+                    updateVoiceCallInLiveCallsQueryCacheWithDebounce(
                         {
                             id: event.data.voice_call_id,
                             status: VoiceCallStatus.Queued,
@@ -264,6 +264,7 @@ export const useLiveVoiceUpdates = (
                             status_in_queue: event.data.status_in_queue,
                         },
                         params,
+                        !voiceCallIdToSidRef.current[event.data.voice_call_id],
                     )
                     break
                 }
@@ -271,14 +272,15 @@ export const useLiveVoiceUpdates = (
                 case '//helpdesk/phone.voice-call.outbound.ended/1.1.0':
                 case '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0': {
                     const voiceCallSid =
-                        voiceCallIdToSid[event.data.voice_call_id]
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
                     if (voiceCallSid) {
                         removeVoiceCallInLiveAgentsQueryCache(
                             voiceCallSid,
                             params,
                         )
-                        setVoiceCallIdToSid((prev) =>
-                            omit(prev, event.data.voice_call_id),
+                        voiceCallIdToSidRef.current = omit(
+                            voiceCallIdToSidRef.current,
+                            event.data.voice_call_id,
                         )
                     }
                     updateVoiceCallInLiveCallsQueryCache(
@@ -322,10 +324,6 @@ export const useLiveVoiceUpdates = (
                 }
                 case '//helpdesk/phone.voice-call.outbound.started/1.0.0': {
                     const data = event.data
-                    setVoiceCallIdToSid((prev) => ({
-                        ...prev,
-                        [data.voice_call_id]: data.call_sid,
-                    }))
 
                     const voiceCall = {
                         id: data.voice_call_id,
@@ -355,6 +353,10 @@ export const useLiveVoiceUpdates = (
                         },
                         params,
                     )
+                    voiceCallIdToSidRef.current = {
+                        ...voiceCallIdToSidRef.current,
+                        [data.voice_call_id]: data.call_sid,
+                    }
 
                     break
                 }
@@ -367,7 +369,7 @@ export const useLiveVoiceUpdates = (
                         params,
                     )
                     const voiceCallSid =
-                        voiceCallIdToSid[event.data.voice_call_id]
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
                     if (voiceCallSid) {
                         updateAgentStatusInLiveAgentsQueryCache(
                             event.data.user_id,
@@ -383,7 +385,7 @@ export const useLiveVoiceUpdates = (
                 }
             }
         },
-        [useLiveUpdates, voiceCallIdToSid, params],
+        [useLiveUpdates, params],
     )
 
     return {
