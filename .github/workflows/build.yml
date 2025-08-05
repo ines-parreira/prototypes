@@ -43,16 +43,12 @@ jobs:
         with:
           ref: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.cache-key }}
-          path: '**/node_modules'
-
-      - name: Install node
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
         with:
           node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Build
         env:

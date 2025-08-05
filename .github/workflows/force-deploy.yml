@@ -52,6 +52,7 @@ jobs:
       - workspace-vars
       - install-dependencies
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}

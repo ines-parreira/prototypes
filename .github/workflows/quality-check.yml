@@ -43,18 +43,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Restore cache
+      - name: Setup workspace
         if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.cache-key }}
-          path: '**/node_modules'
-
-      - name: Install node
-        if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        uses: ./.github/actions/setup-workspace
         with:
           node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Lint
         if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
@@ -70,18 +65,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Restore cache
+      - name: Setup workspace
         if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.cache-key }}
-          path: '**/node_modules'
-
-      - name: Install node
-        if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        uses: ./.github/actions/setup-workspace
         with:
           node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Format
         if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
@@ -97,18 +87,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Restore cache
+      - name: Setup workspace
         if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.cache-key }}
-          path: '**/node_modules'
-
-      - name: Install node
-        if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        uses: ./.github/actions/setup-workspace
         with:
           node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Typecheck
         if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
@@ -130,18 +115,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Restore cache
+      - name: Setup workspace
         if: inputs.helpdesk-affected == 'true'
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.cache-key }}
-          path: '**/node_modules'
-
-      - name: Install node
-        if: inputs.helpdesk-affected == 'true'
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+        uses: ./.github/actions/setup-workspace
         with:
           node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Run tests
         if: inputs.helpdesk-affected == 'true'
@@ -181,16 +161,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.cache-key }}
-          path: '**/node_modules'
-
-      - name: Install node
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
         with:
           node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: 'Test ${{ matrix.project }}'
         run: pnpm --filter=${{ matrix.project }} test:ci:cover

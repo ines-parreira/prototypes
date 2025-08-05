@@ -12,38 +12,13 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Check cache
-      uses: actions/cache@v4
-      id: cache
-      with:
-        key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-        path: '**/node_modules'
-    
     - name: Set cache key as environment variable
       shell: bash
-      run: echo "CACHE_KEY=node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_ENV
+      run: echo "CACHE_KEY=pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_ENV
 
-    - name: Install node
-      uses: gorgias/reusable-actions/.github/actions/setup-node@main
-      if: steps.cache.outputs.cache-hit != 'true'
+    - name: Setup workspace
+      uses: ./.github/actions/setup-workspace
       with:
         node-version: ${{ inputs.node-version }}
-
-    - name: Install node with pnpm cache
-      uses: actions/setup-node@v4
-      if: steps.cache.outputs.cache-hit != 'true'
-      with:
-        node-version: ${{ inputs.node-version }}
-        cache: pnpm
-
-    - name: Set GitHub Packages auth token
-      if: steps.cache.outputs.cache-hit != 'true'
-      shell: bash
-      run: |
-        echo '@gorgias:registry=https://npm.pkg.github.com/' >> .npmrc
-        echo '//npm.pkg.github.com/:_authToken=${{ inputs.npm-token }}' >> .npmrc
-
-    - name: Install dependencies
-      shell: bash
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: pnpm install
+        cache-key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+        npm-token: ${{ inputs.npm-token }}

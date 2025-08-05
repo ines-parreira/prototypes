@@ -141,6 +141,7 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -156,6 +157,7 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -202,6 +204,7 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -257,16 +260,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          key: ${{ needs.workspace-setup.outputs.cache-key }}
-          path: '**/node_modules'
-
-      - name: Install node
-        uses: gorgias/reusable-actions/.github/actions/setup-node@main
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
         with:
           node-version: ${{ needs.workspace-vars.outputs.node-version }}
+          cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Upload Chromatic
         run: pnpm platform:chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
