@@ -51,26 +51,32 @@ export const TrialManageModal = ({
                         <div className={css.description}>{description}</div>
                     </div>
                     <div className={css.rightSide}>
-                        <div
-                            className={classNames(css.advantages, {
-                                [css.advantagesCenter]: advantages.length === 1,
-                            })}
-                        >
-                            {advantages.map((advantage) => (
-                                <div key={advantage} className={css.advantage}>
-                                    <i
-                                        className={classNames(
-                                            'material-icons-round',
-                                            css.icon,
-                                        )}
+                        <div className={css.advantages}>
+                            <div
+                                className={classNames(css.advantagesInner, {
+                                    [css.advantagesCenter]:
+                                        advantages.length === 1,
+                                })}
+                            >
+                                {advantages.map((advantage) => (
+                                    <div
+                                        key={advantage}
+                                        className={css.advantage}
                                     >
-                                        arrow_upward
-                                    </i>
-                                    <div className={css.advantageValue}>
-                                        {advantage}
+                                        <i
+                                            className={classNames(
+                                                'material-icons-round',
+                                                css.icon,
+                                            )}
+                                        >
+                                            arrow_upward
+                                        </i>
+                                        <div className={css.advantageValue}>
+                                            {advantage}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                         {secondaryDescription && (
                             <div className={css.secondaryDescription}>

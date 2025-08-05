@@ -53,44 +53,33 @@
     }
 
     .advantages {
+        padding: 1px;
+        border-radius: 12px;
+        background: linear-gradient(
+            315deg,
+            #a084e1 20.19%,
+            #fc8ae9 50%,
+            #ff9a57 80%
+        );
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+    }
+
+    .advantagesInner {
         display: flex;
         width: 100%;
         justify-content: center;
         flex-direction: column;
         gap: var(--layout-spacing-xs);
         padding: var(--layout-spacing-m) var(--layout-spacing-s);
-        border-radius: var(--Border-radius-XL, 12px);
-
-        position: relative;
-        background: linear-gradient(
-            315deg,
-            rgba(160, 132, 225, 0.1) 20.19%,
-            rgba(252, 138, 233, 0.1) 50%,
-            rgba(255, 154, 87, 0.1) 80%
-        );
-        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
-
-        &::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            padding: 1px;
-            background: linear-gradient(
+        border-radius: 11px;
+        background:
+            linear-gradient(
                 315deg,
-                #a084e1 20.19%,
-                #fc8ae9 50%,
-                #ff9a57 80%
-            );
-            border-radius: inherit;
-            mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
-            mask-composite: xor;
-            -webkit-mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-        }
+                rgba(160, 132, 225, 0.1) 20.19%,
+                rgba(252, 138, 233, 0.1) 50%,
+                rgba(255, 154, 87, 0.1) 80%
+            ),
+            var(--neutral-grey-0);
     }
 
     .advantagesCenter {
