@@ -49,7 +49,9 @@ import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContain
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
+import { AiAgentProductRecommendations } from 'pages/aiAgent/AiAgentProductRecommendations/AiAgentProductRecommendations'
 import { AiAgentProductRecommendationsExclude } from 'pages/aiAgent/AiAgentProductRecommendations/AiAgentProductRecommendationsExclude'
+import { AiAgentProductRecommendationsPromote } from 'pages/aiAgent/AiAgentProductRecommendations/AiAgentProductRecommendationsPromote'
 import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
 import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
@@ -754,6 +756,22 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             section="ai-agent-product-recommendations"
                             team={SentryTeam.MARKETING}
                         >
+                            <Route
+                                path={`${path}/sales/product-recommendations`}
+                                exact
+                                component={SalesPaywallMiddleware(
+                                    AiAgentProductRecommendations,
+                                )}
+                            />
+
+                            <Route
+                                path={`${path}/sales/product-recommendations/promote`}
+                                exact
+                                component={SalesPaywallMiddleware(
+                                    AiAgentProductRecommendationsPromote,
+                                )}
+                            />
+
                             <Route
                                 path={`${path}/sales/product-recommendations/exclude`}
                                 exact

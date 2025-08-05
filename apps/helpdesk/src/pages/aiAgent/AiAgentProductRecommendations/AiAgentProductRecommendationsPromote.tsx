@@ -15,7 +15,7 @@ import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCar
 
 import css from './AiAgentProductRecommendations.less'
 
-export const AiAgentProductRecommendationsExclude = () => {
+export const AiAgentProductRecommendationsPromote = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
@@ -39,15 +39,15 @@ export const AiAgentProductRecommendationsExclude = () => {
         return <></>
     }
 
-    const excludedProductIds =
-        productRecommendationRules?.excluded.flatMap((rule) =>
+    const promotedProductIds =
+        productRecommendationRules?.promoted.flatMap((rule) =>
             rule.type === 'product'
                 ? rule.items.map((item) => item.target)
                 : [],
         ) || []
 
-    const excludedTags =
-        productRecommendationRules?.excluded.flatMap((rule) =>
+    const promotedTags =
+        productRecommendationRules?.promoted.flatMap((rule) =>
             rule.type === 'tag' ? rule.items.map((item) => item.target) : [],
         ) || []
 
@@ -58,7 +58,7 @@ export const AiAgentProductRecommendationsExclude = () => {
             integrationId: integrationId,
             data: {
                 gorgiasDomain,
-                recommendationAction: 'excluded',
+                recommendationAction: 'promoted',
                 rules,
             },
         })
@@ -70,9 +70,9 @@ export const AiAgentProductRecommendationsExclude = () => {
             className={css.container}
         >
             <ProductRecommendationRuleCard
-                type="exclude"
+                type="promote"
                 integrationId={integrationId}
-                productIds={excludedProductIds}
+                productIds={promotedProductIds}
                 isLoadingRules={isLoadingRules}
                 isFetchingRules={isFetchingRules}
                 isUpserting={isUpserting}
@@ -86,7 +86,7 @@ export const AiAgentProductRecommendationsExclude = () => {
                         },
                         {
                             type: 'tag',
-                            items: excludedTags.map((tag) => ({
+                            items: promotedTags.map((tag) => ({
                                 target: tag,
                             })),
                         },
@@ -95,9 +95,9 @@ export const AiAgentProductRecommendationsExclude = () => {
             />
 
             <TagRecommendationRuleCard
-                type="exclude"
+                type="promote"
                 integrationId={integrationId}
-                tags={excludedTags}
+                tags={promotedTags}
                 isLoadingRules={isLoadingRules}
                 isFetchingRules={isFetchingRules}
                 isUpserting={isUpserting}
@@ -105,7 +105,7 @@ export const AiAgentProductRecommendationsExclude = () => {
                     await handleUpsert([
                         {
                             type: 'product',
-                            items: excludedProductIds.map((productId) => ({
+                            items: promotedProductIds.map((productId) => ({
                                 target: productId,
                             })),
                         },

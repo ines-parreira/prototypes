@@ -141,9 +141,17 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
-    it('should return /sales/product-recommendations/exclude path', () => {
+    it('should return /sales/product-recommendations paths', () => {
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        expect(result.current.routes.productRecommendations).toEqual(
+            '/app/ai-agent/shopify/test/sales/product-recommendations',
+        )
+
+        expect(result.current.routes.productRecommendationsPromote).toEqual(
+            '/app/ai-agent/shopify/test/sales/product-recommendations/promote',
         )
 
         expect(result.current.routes.productRecommendationsExclude).toEqual(
@@ -375,7 +383,7 @@ describe('useAiAgentNavigation', () => {
             expect(salesItems).toEqual(
                 expect.arrayContaining([
                     {
-                        route: '/app/ai-agent/shopify/my-shop/sales/product-recommendations/exclude',
+                        route: '/app/ai-agent/shopify/my-shop/sales/product-recommendations',
                         title: PRODUCT_RECOMMENDATIONS,
                         exact: true,
                     },

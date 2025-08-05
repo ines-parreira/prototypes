@@ -7,6 +7,7 @@ import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const ProductRecommendationRuleCard = ({
+    type,
     integrationId,
     productIds,
     isLoadingRules,
@@ -14,6 +15,7 @@ export const ProductRecommendationRuleCard = ({
     isUpserting,
     onUpsert,
 }: {
+    type: 'promote' | 'exclude'
     integrationId: number
     productIds: string[]
     isLoadingRules: boolean
@@ -61,15 +63,28 @@ export const ProductRecommendationRuleCard = ({
         enabled: !!integrationId && isEnabled,
     })
 
+    const typeMap = {
+        promote: {
+            title: 'Promote products',
+            description: 'Choose products to prioritize in recommendations.',
+            badge: { label: 'Promoted', type: 'light-success' as const },
+        },
+        exclude: {
+            title: 'Exclude products',
+            description: 'Choose products to exclude from recommendations.',
+            badge: { label: 'Excluded', type: 'light-error' as const },
+        },
+    }
+
     return (
         <div>
             <RecommendationRuleCard
-                title="Exclude products"
-                description="Choose products to exclude from recommendations."
+                title={typeMap[type].title}
+                description={typeMap[type].description}
                 isLoading={isLoading || selectedProducts === undefined}
                 disableActions={isFetching || isUpserting}
                 hasImages={true}
-                badge={{ label: 'Excluded', type: 'light-error' }}
+                badge={typeMap[type].badge}
                 addButton={{
                     label: 'Add products',
                     onClick: () => setIsDrawerOpen(true),

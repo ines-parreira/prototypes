@@ -60,7 +60,9 @@ export const getAiAgentNavigationRoutes = (
         sales: `${basePath}/sales`,
         salesStrategy: `${basePath}/sales/strategy`,
         customerEngagement: `${basePath}/sales/customer-engagement`,
+        productRecommendations: `${basePath}/sales/product-recommendations`,
         productRecommendationsExclude: `${basePath}/sales/product-recommendations/exclude`,
+        productRecommendationsPromote: `${basePath}/sales/product-recommendations/promote`,
         analytics: `${basePath}/sales/analytics`,
         questionsContent: `${basePath}/knowledge/sources/questions-content`,
         productsContent: `${basePath}/knowledge/sources/products-content`,
@@ -240,7 +242,7 @@ const useNavigationItems = (
                               },
                               isAiShoppingAssistantEnabled &&
                                   isAiShoppingAssistantProductRecommendationsEnabled && {
-                                      route: routes.productRecommendationsExclude,
+                                      route: routes.productRecommendations,
                                       title: PRODUCT_RECOMMENDATIONS,
                                       exact: true,
                                   },

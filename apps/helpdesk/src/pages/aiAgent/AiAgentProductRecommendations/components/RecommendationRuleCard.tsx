@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
     Badge,
@@ -47,6 +47,14 @@ export const RecommendationRuleCard = ({
     onDelete: (id: string) => Promise<void>
 }) => {
     const [deletingItemId, setDeletingItemId] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (deletingItemId === null) return
+
+        if (!items.some((item) => item.id === deletingItemId)) {
+            setDeletingItemId(null)
+        }
+    }, [items, deletingItemId])
 
     return (
         <div className={css.card}>
@@ -122,7 +130,6 @@ export const RecommendationRuleCard = ({
                                     onClick={async () => {
                                         setDeletingItemId(item.id)
                                         await onDelete(item.id)
-                                        setDeletingItemId(null)
                                     }}
                                     aria-label={`Remove ${itemLabelSingular}`}
                                     icon="close"
