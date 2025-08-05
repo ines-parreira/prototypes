@@ -16,6 +16,9 @@ import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 import { useCanUseAiSalesAgent } from './useCanUseAiSalesAgent'
 
+export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
+export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+
 export type InfluencedOrdersParams = {
     accountId: number | string
     integrationIds: (number | string)[]
@@ -112,7 +115,10 @@ export const useFetchInfluencedOrders = ({
         InfluencedOrderData[]
     >([query], {
         enabled: isQueryEnabled,
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        // There is no need to refetch this data frequently
+        refetchOnWindowFocus: false,
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
         select: (response) =>
             response.data.data.map(serializeInfluencedOrderData),
     })
