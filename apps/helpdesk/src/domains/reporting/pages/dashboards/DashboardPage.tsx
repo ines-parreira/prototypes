@@ -21,6 +21,7 @@ import { Dashboard } from 'domains/reporting/pages/dashboards/Dashboard'
 import { DashboardActionButton } from 'domains/reporting/pages/dashboards/DashboardActionButton'
 import { DashboardName } from 'domains/reporting/pages/dashboards/DashboardName'
 import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
+import { NewDashboard } from 'domains/reporting/pages/dashboards/NewDashboard'
 import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -83,6 +84,11 @@ const DashboardPageContent = ({
     dashboard: DashboardSchema
     isPinnedFilterEnabled: boolean
 }) => {
+    const isDashboardResizeChartsEnabled = useFlag(
+        FeatureFlagKey.ReportingDashboardResizeCharts,
+        false,
+    )
+
     const currentUser = useAppSelector(getCurrentUser)
     const isCurrentUserTeamLead = isTeamLead(currentUser)
 
@@ -182,12 +188,19 @@ const DashboardPageContent = ({
             />
             <StatsPageContent>
                 {dashboard.children.length ? (
-                    <Dashboard
-                        dashboard={dashboard}
-                        pinnedFilter={dashboardPinnedFilter}
-                        onChartMove={handleMoveCharts}
-                        onChartMoveEnd={handleMoveChartsEnd}
-                    />
+                    isDashboardResizeChartsEnabled ? (
+                        <NewDashboard
+                            dashboard={dashboard}
+                            pinnedFilter={dashboardPinnedFilter}
+                        />
+                    ) : (
+                        <Dashboard
+                            dashboard={dashboard}
+                            pinnedFilter={dashboardPinnedFilter}
+                            onChartMove={handleMoveCharts}
+                            onChartMoveEnd={handleMoveChartsEnd}
+                        />
+                    )
                 ) : (
                     <CreateDashboard />
                 )}

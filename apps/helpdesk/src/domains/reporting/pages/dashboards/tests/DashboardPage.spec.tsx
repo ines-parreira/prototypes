@@ -9,6 +9,7 @@ import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
@@ -25,6 +26,7 @@ import {
     DASHBOARD_SCHEMA_ERROR,
     DashboardPage,
 } from 'domains/reporting/pages/dashboards/DashboardPage'
+import { NewDashboard } from 'domains/reporting/pages/dashboards/NewDashboard'
 import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
@@ -59,6 +61,9 @@ const DrillDownModalMock = assumeMock(DrillDownModal)
 
 jest.mock('domains/reporting/pages/dashboards/Dashboard')
 const DashboardMock = assumeMock(Dashboard)
+
+jest.mock('domains/reporting/pages/dashboards/NewDashboard')
+const NewDashboardMock = assumeMock(NewDashboard)
 
 jest.mock('domains/reporting/pages/dashboards/DashboardActionButton')
 const DashboardActionButtonMock = assumeMock(DashboardActionButton)
@@ -126,7 +131,14 @@ describe('DashboardPage', () => {
     const PIN_FILTER_BUTTON = 'pin filter'
 
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
+                return false
+            }
+            if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
+                return false
+            }
+        })
 
         mockUseParams.mockReturnValue({
             id: dashboardId,
@@ -151,6 +163,17 @@ describe('DashboardPage', () => {
                 </div>
             ),
         )
+
+        NewDashboardMock.mockImplementation(({ pinnedFilter }) => (
+            <div>
+                Dashboard Report with Resize & Drag&Drop
+                {pinnedFilter && (
+                    <button onClick={() => pinnedFilter.pin(123, 'filter')}>
+                        {PIN_FILTER_BUTTON}
+                    </button>
+                )}
+            </div>
+        ))
 
         DrillDownModalMock.mockReturnValue(<div />)
 
@@ -251,7 +274,14 @@ describe('DashboardPage', () => {
     })
 
     it('should wrap in PinnedFilterSyncProvider when analytics_filter_id is present', () => {
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
+                return true
+            }
+            if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
+                return false
+            }
+        })
         useDashboardByIdMock.mockReturnValue({
             data: { ...dashboard, analytics_filter_id: 1 },
             isLoading: false,
@@ -416,7 +446,14 @@ describe('DashboardPage', () => {
         const errorMessage = `${filterName} could not be set as default filter. Please try again.`
 
         beforeEach(() => {
-            useFlagMock.mockReturnValue(true)
+            useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+                if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
+                    return true
+                }
+                if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
+                    return false
+                }
+            })
             mockUpdateDashboardHandler = jest.fn()
             useDashboardActionsMock.mockReturnValue({
                 updateDashboardHandler: mockUpdateDashboardHandler,
@@ -559,7 +596,14 @@ describe('DashboardPage', () => {
         })
 
         it('should not pass pinnedFilter when feature flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
+            useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+                if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
+                    return false
+                }
+                if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
+                    return false
+                }
+            })
             const savedFilterId = 789
             useDashboardByIdMock.mockReturnValue({
                 data: { ...dashboard, analytics_filter_id: savedFilterId },
@@ -593,6 +637,27 @@ describe('DashboardPage', () => {
                 }),
                 expect.anything(),
             )
+        })
+    })
+
+    describe('New Dashboard Report functionality', () => {
+        beforeEach(() => {
+            useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+                if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
+                    return false
+                }
+                if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
+                    return true
+                }
+            })
+        })
+
+        it('should render the new dashboard report', () => {
+            renderWithStore(<DashboardPage />, defaultState)
+
+            expect(DashboardMock).not.toHaveBeenCalled()
+
+            expect(NewDashboardMock).toHaveBeenCalled()
         })
     })
 })

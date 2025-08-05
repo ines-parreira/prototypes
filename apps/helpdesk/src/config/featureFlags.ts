@@ -140,6 +140,7 @@ export enum FeatureFlagKey {
     ReportingSavedFiltersInDashboards = 'linear.project_reporting-saved-filters-in-dashboards',
     ReportingVoiceOfCustomer = 'reporting-voice-of-customer',
     ReportingMultiStoreFilter = 'reporting-multi-store-filter',
+    ReportingDashboardResizeCharts = 'reporting-dashboard-resize-charts',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
