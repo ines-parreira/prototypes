@@ -15,10 +15,16 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
             {children}
         </div>
     ),
+    Tooltip: ({ children, target }: any) => (
+        <div data-testid="tooltip" data-target={target?.current}>
+            {children}
+        </div>
+    ),
 }))
 
 jest.mock('../PriorityLabel.less', () => ({
     icon: 'icon-class',
+    badge: 'badge-class',
     low: 'low-class',
     normal: 'normal-class',
     high: 'high-class',
@@ -30,6 +36,7 @@ describe('PriorityLabel Component', () => {
         priority: TicketPriority
         className?: string
         displayLabel?: boolean
+        hasTooltip?: boolean
     }) => {
         return render(<PriorityLabel {...props} />)
     }
@@ -98,11 +105,59 @@ describe('PriorityLabel Component', () => {
             expect(badge).toHaveClass(customClass)
         })
 
-        it('renders without className when not provided', () => {
-            renderPriorityLabel({ priority: 'high' })
+        it('applies badge class when displayLabel is false', () => {
+            renderPriorityLabel({ priority: 'high', displayLabel: false })
 
             const badge = screen.getByTestId('badge')
-            expect(badge).not.toHaveClass('undefined')
+            expect(badge).toHaveClass('badge-class')
+        })
+
+        it('does not apply badge class when displayLabel is true', () => {
+            renderPriorityLabel({ priority: 'high', displayLabel: true })
+
+            const badge = screen.getByTestId('badge')
+            expect(badge).not.toHaveClass('badge-class')
+        })
+
+        it('combines custom className with badge class when displayLabel is false', () => {
+            const customClass = 'custom-priority-class'
+            renderPriorityLabel({
+                priority: 'high',
+                displayLabel: false,
+                className: customClass,
+            })
+
+            const badge = screen.getByTestId('badge')
+            expect(badge).toHaveClass('badge-class', customClass)
+        })
+    })
+
+    describe('tooltip functionality', () => {
+        it('does not render tooltip when hasTooltip is false (default)', () => {
+            renderPriorityLabel({ priority: 'high' })
+
+            expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+        })
+
+        it('does not render tooltip when hasTooltip is explicitly false', () => {
+            renderPriorityLabel({ priority: 'high', hasTooltip: false })
+
+            expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+        })
+
+        it('renders tooltip when hasTooltip is true', () => {
+            renderPriorityLabel({ priority: 'critical', hasTooltip: true })
+
+            const tooltip = screen.getByTestId('tooltip')
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent('Priority: Critical')
+        })
+
+        it('renders tooltip with correct capitalized priority text', () => {
+            renderPriorityLabel({ priority: 'high', hasTooltip: true })
+
+            const tooltip = screen.getByTestId('tooltip')
+            expect(tooltip).toHaveTextContent('Priority: High')
         })
     })
 
@@ -149,6 +204,17 @@ describe('PriorityLabel Component', () => {
             expect(badge).toBeInTheDocument()
             expect(icon).toBeInTheDocument()
             expect(text).toBeInTheDocument()
+        })
+
+        it('renders with tooltip for better accessibility when hasTooltip is true', () => {
+            renderPriorityLabel({ priority: 'high', hasTooltip: true })
+
+            const badge = screen.getByTestId('badge')
+            const tooltip = screen.getByTestId('tooltip')
+
+            expect(badge).toBeInTheDocument()
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent('Priority: High')
         })
     })
 })

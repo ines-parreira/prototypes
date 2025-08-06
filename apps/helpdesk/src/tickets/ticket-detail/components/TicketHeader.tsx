@@ -1,8 +1,11 @@
 import { ReactNode } from 'react'
 
-import type { Ticket, TicketCompact } from '@gorgias/helpdesk-queries'
+import { Ticket, TicketCompact, TicketPriority } from '@gorgias/helpdesk-types'
 
 import CopyButton from 'components/CopyButton/CopyButton'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import TicketFields from 'timeline/TicketFields'
 
@@ -18,6 +21,10 @@ type Props = {
 }
 
 export function TicketHeader({ ticket, additionalActions }: Props) {
+    const isPriorityUsageEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+    )
+
     return (
         <div className={css.container}>
             <header className={css.header}>
@@ -26,6 +33,13 @@ export function TicketHeader({ ticket, additionalActions }: Props) {
                     <div className={css.subjectInner}>
                         <h2 className={css.subject}>{ticket.subject}</h2>
                         <TicketStatus ticket={ticket} />
+                        {isPriorityUsageEnabled && (
+                            <PriorityLabel
+                                priority={ticket.priority as TicketPriority}
+                                displayLabel={false}
+                                hasTooltip
+                            />
+                        )}
                     </div>
                     <div className={css.ticketIdWrapper}>
                         <p className={css.ticketId}>ID: {ticket.id}</p>

@@ -1,7 +1,6 @@
 import { ComponentProps, MouseEvent, useCallback, useMemo, useRef } from 'react'
 
 import cn from 'classnames'
-import _capitalize from 'lodash/capitalize'
 import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { Components } from 'react-virtuoso'
@@ -63,7 +62,6 @@ export default function Ticket({
         false,
     )
     const hasTicketPriority = useFlag(FeatureFlagKey.TicketAllowPriorityUsage)
-    const priorityRef = useRef<HTMLDivElement | null>(null)
 
     const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
@@ -167,17 +165,11 @@ export default function Ticket({
                                         </Tooltip>
                                     </span>
                                     {hasTicketPriority && !!ticket.priority && (
-                                        <>
-                                            <PriorityLabel
-                                                ref={priorityRef}
-                                                className={css.priorityBadge}
-                                                priority={ticket.priority}
-                                                displayLabel={false}
-                                            />
-                                            <Tooltip target={priorityRef}>
-                                                {`Priority: ${_capitalize(ticket.priority)}`}
-                                            </Tooltip>
-                                        </>
+                                        <PriorityLabel
+                                            priority={ticket.priority}
+                                            displayLabel={false}
+                                            hasTooltip
+                                        />
                                     )}
                                     {!!datetime && (
                                         <span className={css.time}>

@@ -2,8 +2,11 @@ import type { ReactNode } from 'react'
 
 import cn from 'classnames'
 
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import { TicketCompact, TicketPriority } from '@gorgias/helpdesk-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import { SourceBadge } from 'tickets/ticket-detail/components/SourceBadge'
 import { TicketStatus } from 'tickets/ticket-detail/components/TicketStatus'
 
@@ -25,6 +28,10 @@ export default function TicketCard({
     displayedDate,
     className,
 }: Props) {
+    const isPriorityUsageEnabled = useFlag(
+        FeatureFlagKey.TicketAllowPriorityUsage,
+    )
+
     return (
         <div
             className={cn(css.card, className, {
@@ -37,8 +44,15 @@ export default function TicketCard({
                     <span className={css.title}>
                         <span className={css.subject}>{ticket.subject}</span>
                         <TicketStatus ticket={ticket} />
+                        {isPriorityUsageEnabled && (
+                            <PriorityLabel
+                                priority={ticket.priority as TicketPriority}
+                                displayLabel={false}
+                                hasTooltip
+                            />
+                        )}
                     </span>
-                    <span>{displayedDate}</span>
+                    <span className={css.date}>{displayedDate}</span>
                 </div>
                 <TicketFields
                     fieldValues={ticket.custom_fields}
