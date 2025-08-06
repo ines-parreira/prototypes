@@ -41,6 +41,9 @@ export const HandoverHelpdeskDropdown: React.FC<Props> = ({
     const integrationsArray = toPairs(INTEGRATIONS_MAPPING) as Array<
         [HelpdeskIntegrationOptions, HelpdeskIntegrationProperties]
     >
+    const activeIntegrations = integrationsArray.filter(
+        ([, value]) => value.active,
+    )
 
     return (
         <SelectInputBox
@@ -51,6 +54,7 @@ export const HandoverHelpdeskDropdown: React.FC<Props> = ({
             label={INTEGRATIONS_MAPPING[selectedThirdParty].label}
             hasError={hasError}
             error={error}
+            isDisabled={activeIntegrations.length <= 1}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (
@@ -63,21 +67,19 @@ export const HandoverHelpdeskDropdown: React.FC<Props> = ({
                         ref={floatingRef}
                     >
                         <DropdownBody>
-                            {integrationsArray
-                                .filter(([, value]) => value.active)
-                                .map(([key, value]) => (
-                                    <DropdownItem
-                                        key={key}
-                                        option={{
-                                            label: value.label,
-                                            value: key,
-                                        }}
-                                        onClick={(value) => {
-                                            onClick(value, context)
-                                        }}
-                                        ref={null}
-                                    />
-                                ))}
+                            {activeIntegrations.map(([key, value]) => (
+                                <DropdownItem
+                                    key={key}
+                                    option={{
+                                        label: value.label,
+                                        value: key,
+                                    }}
+                                    onClick={(value) => {
+                                        onClick(value, context)
+                                    }}
+                                    ref={null}
+                                />
+                            ))}
                         </DropdownBody>
                     </Dropdown>
                 )}

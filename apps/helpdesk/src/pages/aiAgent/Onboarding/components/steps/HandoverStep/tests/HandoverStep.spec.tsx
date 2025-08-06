@@ -392,7 +392,7 @@ describe('HandoverStep', () => {
             expect(screen.getAllByText('Zendesk')[0]).toBeInTheDocument()
         })
 
-        fireEvent.click(screen.getAllByText('Zendesk')[1])
+        fireEvent.click(screen.getAllByText('Zendesk')[0])
 
         waitFor(() => {
             expect(screen.getAllByText('Zendesk')[0]).toBeInTheDocument()
