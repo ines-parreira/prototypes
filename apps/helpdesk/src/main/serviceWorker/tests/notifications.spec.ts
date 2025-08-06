@@ -2,22 +2,19 @@ import { registerNotifications } from '../notifications'
 
 declare const self: ServiceWorkerGlobalScope
 
+jest.mock('../handleNotificationClick', () => ({
+    handleNotificationClick: jest.fn(),
+}))
+
+jest.mock('../handleNotificationMessage', () => ({
+    handleNotificationMessage: jest.fn(),
+}))
+
 describe('registerNotifictions', () => {
     let addEventListener: jest.SpyInstance
-    let matchAll: jest.Mock
-    let showNotification: jest.Mock
 
     beforeEach(() => {
         addEventListener = jest.spyOn(self, 'addEventListener')
-
-        matchAll = jest.fn()
-        matchAll.mockReturnValue([])
-        // @ts-expect-error
-        self.clients = { matchAll }
-
-        showNotification = jest.fn()
-        // @ts-expect-error
-        self.registration = { showNotification }
     })
 
     it('should register a message handler', () => {
@@ -31,24 +28,16 @@ describe('registerNotifictions', () => {
     it('should do nothing if the event is not a notification', () => {
         registerNotifications()
         const [[, cb]] = addEventListener.mock.calls
-        cb({})
+        const waitUntil = jest.fn()
+        cb({ waitUntil })
 
-        expect(showNotification).not.toHaveBeenCalled()
-    })
-
-    it('should do nothing if there are focused windows', () => {
-        matchAll.mockReturnValue([{ frameType: 'top-level', focused: true }])
-        registerNotifications()
-        const [[, cb]] = addEventListener.mock.calls
-        cb({ data: { type: 'notification.create' } })
-
-        expect(showNotification).not.toHaveBeenCalled()
+        expect(waitUntil).not.toHaveBeenCalled()
     })
 
     it('should send a notification', async () => {
-        matchAll.mockReturnValue([{ frameType: 'top-level', focused: false }])
         registerNotifications()
         const [[, cb]] = addEventListener.mock.calls
+        const waitUntil = jest.fn()
         await cb({
             data: {
                 type: 'notification.create',
@@ -58,12 +47,30 @@ describe('registerNotifictions', () => {
                     description: 'description',
                 },
             },
+            waitUntil,
         })
 
-        expect(showNotification).toHaveBeenCalledWith('title', {
-            body: 'description',
-            icon: '',
-            data: { id: 'n123' },
-        })
+        expect(waitUntil).toHaveBeenCalled()
+    })
+
+    it('should register a notificationclick handler', () => {
+        registerNotifications()
+        expect(addEventListener).toHaveBeenCalledWith(
+            'notificationclick',
+            expect.any(Function),
+        )
+    })
+
+    it('should handle notification clicks', () => {
+        registerNotifications()
+        const [, [, cb]] = addEventListener.mock.calls
+        const close = jest.fn()
+        const preventDefault = jest.fn()
+        const waitUntil = jest.fn()
+        cb({ notification: { close }, preventDefault, waitUntil })
+
+        expect(close).toHaveBeenCalled()
+        expect(preventDefault).toHaveBeenCalled()
+        expect(waitUntil).toHaveBeenCalled()
     })
 })

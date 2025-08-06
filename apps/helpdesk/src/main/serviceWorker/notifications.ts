@@ -1,3 +1,5 @@
+import { handleNotificationClick } from './handleNotificationClick'
+import { handleNotificationMessage } from './handleNotificationMessage'
 import { isNotificationData } from './helpers/isNotificationData'
 
 // The Trackstar library sets all properties on window to be a
@@ -9,22 +11,12 @@ export function registerNotifications() {
         const { data } = event
         if (!isNotificationData(data)) return
 
-        const clients = await self.clients.matchAll({
-            type: 'window',
-            includeUncontrolled: true,
-        })
+        event.waitUntil(handleNotificationMessage(data))
+    })
 
-        const shouldSend =
-            Array.from(clients).filter(
-                (c) => c.frameType === 'top-level' && c.focused,
-            ).length === 0
-        if (!shouldSend) return
-
-        const { description, id, title } = data.payload
-        await self.registration.showNotification(title, {
-            body: description,
-            icon: '',
-            data: { id },
-        })
+    self.addEventListener('notificationclick', (event) => {
+        event.notification.close()
+        event.preventDefault()
+        event.waitUntil(handleNotificationClick())
     })
 }
