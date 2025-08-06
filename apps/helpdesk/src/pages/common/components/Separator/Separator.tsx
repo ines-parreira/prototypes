@@ -8,6 +8,12 @@ interface SeparatorProps {
     className?: string
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Separator />` from @gorgias/merchant-ui-kit instead.
+ * @date 2025-08-06
+ * @type ui-kit-migration
+ */
 export function Separator({
     direction = 'horizontal',
     variant = 'solid',

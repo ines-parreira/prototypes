@@ -66,7 +66,7 @@ jobs:
             echo "On feature branch, using base commit: $NX_BASE_COMMIT"
           fi
           echo "NX_BASE_COMMIT=$NX_BASE_COMMIT" >> $GITHUB_ENV
-          
+
           # Check if @repo/helpdesk is affected
           HELPDESK_AFFECTED_JSON=$(npx nx show projects --affected --projects=@repo/helpdesk --json --base=$NX_BASE_COMMIT --head=HEAD)
           if echo "$HELPDESK_AFFECTED_JSON" | jq -e '. | length > 0' > /dev/null; then
@@ -76,10 +76,10 @@ jobs:
             echo "HELPDESK_AFFECTED=false" >> $GITHUB_ENV
             echo "@repo/helpdesk is not affected"
           fi
-          
+
           # Get other affected packages that have a test target, excluding helpdesk
           OTHER_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=test --exclude=@repo/helpdesk --json --base=$NX_BASE_COMMIT --head=HEAD)
-          
+
           # Check if there are any other affected packages
           if echo "$OTHER_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
             # Convert the JSON array to a format suitable for GitHub Actions matrix
@@ -95,12 +95,12 @@ jobs:
 
           # Get all packages with test target (excluding helpdesk)
           ALL_PACKAGES_JSON=$(npx nx show projects --with-target=test --exclude=@repo/helpdesk --json)
-          
+
           # Filter out the affected packages to get only unaffected ones
           if echo "$ALL_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
             # Remove affected packages from the complete list
             OTHER_UNAFFECTED_PACKAGES_JSON=$(echo "$ALL_PACKAGES_JSON" "$OTHER_AFFECTED_PACKAGES_JSON" | jq -s '.[0] - .[1]')
-            
+
             # Check if there are any unaffected packages
             if echo "$OTHER_UNAFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
               # Convert the JSON array to a format suitable for GitHub Actions matrix
@@ -251,7 +251,7 @@ jobs:
       - workspace-setup
       - quality-check
     runs-on: gh-actions-default-runner-set
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -272,6 +272,8 @@ jobs:
           workingDir: apps/helpdesk
           buildScriptName: "storybook:build"
           exitOnceUploaded: true
+          autoAcceptChanges: "main"
+          onlyChanged: true
           zip: true
 
   security-sast:

@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 43,
-    "totalUsages": 1170,
-    "reportGeneratedAt": "2025-08-06T12:12:54.449Z"
+    "totalEntries": 44,
+    "totalUsages": 1174,
+    "reportGeneratedAt": "2025-08-06T13:51:08.663Z"
   },
   "entries": [
     {
@@ -732,7 +732,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 533,
+          "usageCount": 532,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -903,7 +903,6 @@
               "apps/helpdesk/src/pages/common/components/ViewTable/AddFilterDropdown.tsx",
               "apps/helpdesk/src/pages/common/components/ViewTable/EmojiSelect/EmojiSelect.tsx",
               "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
-              "apps/helpdesk/src/pages/common/components/button/Button.stories.tsx",
               "apps/helpdesk/src/pages/common/components/button/ButtonIconLabel.stories.tsx",
               "apps/helpdesk/src/pages/common/components/button/ConfirmButton.tsx",
               "apps/helpdesk/src/pages/common/components/button/DropdownButton.tsx",
@@ -1533,7 +1532,7 @@
           ]
         },
         {
-          "usageCount": 33,
+          "usageCount": 32,
           "name": "Avatar",
           "nodeType": "FunctionDeclaration",
           "deprecationDate": "2025-04-08",
@@ -1552,7 +1551,6 @@
               "apps/helpdesk/src/pages/aiAgent/Playground/components/PlaygroundMessage/PlaygroundMessage.tsx",
               "apps/helpdesk/src/pages/common/components/AgentCard/AgentCard.spec.tsx",
               "apps/helpdesk/src/pages/common/components/AgentCard/AgentCard.tsx",
-              "apps/helpdesk/src/pages/common/components/Avatar/Avatar.stories.tsx",
               "apps/helpdesk/src/pages/common/components/Avatar/tests/Avatar.spec.tsx",
               "apps/helpdesk/src/pages/common/components/MergeTickets/BuildFinalTicket.tsx",
               "apps/helpdesk/src/pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard.tsx",
@@ -1583,7 +1581,7 @@
           ]
         },
         {
-          "usageCount": 23,
+          "usageCount": 22,
           "name": "ToggleInput",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2025-03-25",
@@ -1592,7 +1590,6 @@
           "usageUrls": {
             "named": [],
             "default": [
-              "apps/helpdesk/src/pages/common/forms/ToggleInput.stories.tsx",
               "apps/helpdesk/src/pages/common/forms/ToggleInputField.tsx",
               "apps/helpdesk/src/pages/common/forms/tests/ToggleInput.spec.tsx",
               "apps/helpdesk/src/pages/common/forms/tests/ToggleInputField.spec.tsx",
@@ -1701,6 +1698,26 @@
           "defaultImportNames": [
             "TabNavigator"
           ]
+        },
+        {
+          "usageCount": 7,
+          "name": "Separator",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2025-08-06",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "apps/helpdesk/src/pages/common/components/Separator/Separator.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel.tsx",
+              "apps/helpdesk/src/pages/aiAgent/AiAgentPaywallView.tsx",
+              "apps/helpdesk/src/pages/aiAgent/actions/components/HttpRequestLogsView.tsx",
+              "apps/helpdesk/src/pages/aiAgent/actions/components/SimplifiedStepBuilderSteps.tsx",
+              "apps/helpdesk/src/pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal.tsx",
+              "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
+              "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.tsx"
+            ],
+            "default": []
+          }
         },
         {
           "usageCount": 4,

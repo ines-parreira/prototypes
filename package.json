@@ -30,7 +30,6 @@
         "typecheck:helpdesk": "pnpm --filter @repo/helpdesk typecheck",
         "typecheck:all": "nx run-many --target=typecheck",
         "typecheck:affected": "nx affected --target=typecheck",
-        "platform:chromatic": "pnpm --filter @repo/helpdesk chromatic",
         "platform:deprecated-analysis": "pnpm static-analysis",
         "platform:check-node-engines": "tsx scripts/dependencies-management/dependencies-engines.ts",
         "platform:update:sdk": "scripts/update-sdk.sh",
