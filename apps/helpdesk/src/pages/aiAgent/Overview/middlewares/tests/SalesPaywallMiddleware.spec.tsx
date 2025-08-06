@@ -14,6 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import {
     useTrialEligibility,
     useTrialEligibilityForManualActivationFromFeatureFlag,
@@ -491,7 +492,7 @@ describe('SalesPaywallMiddleware', () => {
         expect(buttons).toHaveLength(2)
         expect(buttons[0]).toHaveTextContent('Upgrade Now')
         expect(buttons[1]).toHaveTextContent(
-            'Start 14-Day Trial At No Additional Cost',
+            `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
         )
     })
 
@@ -558,7 +559,7 @@ describe('SalesPaywallMiddleware', () => {
         expect(buttons).toHaveLength(2)
         expect(buttons[0]).toHaveTextContent('Upgrade Now')
         expect(buttons[1]).toHaveTextContent(
-            'Start 14-Day Trial At No Additional Cost',
+            `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
         )
     })
 
@@ -607,7 +608,7 @@ describe('SalesPaywallMiddleware', () => {
         const buttons = paywallView.querySelectorAll('button')
         expect(buttons).toHaveLength(1)
         expect(buttons[0]).toHaveTextContent(
-            'Start 14-Day Trial At No Additional Cost',
+            `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
         )
         expect(screen.queryByText('Upgrade Now')).not.toBeInTheDocument()
     })
@@ -693,7 +694,9 @@ describe('SalesPaywallMiddleware', () => {
 
             // The trial button should be present
             expect(
-                screen.getByText('Start 14-Day Trial At No Additional Cost'),
+                screen.getByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
             ).toBeInTheDocument()
         })
 
@@ -719,7 +722,9 @@ describe('SalesPaywallMiddleware', () => {
 
             // The trial button should NOT be present
             expect(
-                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+                screen.queryByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
             ).not.toBeInTheDocument()
         })
 
@@ -766,7 +771,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const trialButton = screen.getByText(
-                'Start 14-Day Trial At No Additional Cost',
+                `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
             fireEvent.click(trialButton)
 
@@ -802,7 +807,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const trialButton = screen.getByText(
-                'Start 14-Day Trial At No Additional Cost',
+                `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
             fireEvent.click(trialButton)
 
@@ -1090,7 +1095,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const trialButton = screen.getByText(
-                'Start 14-Day Trial At No Additional Cost',
+                `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
             fireEvent.click(trialButton)
 
@@ -1135,7 +1140,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const trialButton = screen.getByText(
-                'Start 14-Day Trial At No Additional Cost',
+                `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
             fireEvent.click(trialButton)
 
@@ -1333,7 +1338,9 @@ describe('SalesPaywallMiddleware', () => {
 
             expect(screen.getByText('Book a demo')).toBeInTheDocument()
             expect(
-                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+                screen.queryByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
             ).not.toBeInTheDocument()
         })
 
@@ -1402,7 +1409,9 @@ describe('SalesPaywallMiddleware', () => {
                 screen.getByText('How shopping Assistants boosts sales'),
             ).toBeInTheDocument()
             expect(
-                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+                screen.queryByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
             ).not.toBeInTheDocument()
         })
 
@@ -1478,7 +1487,9 @@ describe('SalesPaywallMiddleware', () => {
             // Should only show Upgrade Now button
             expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
             expect(
-                screen.queryByText('Start 14-Day Trial At No Additional Cost'),
+                screen.queryByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
             ).not.toBeInTheDocument()
             expect(screen.queryByText('Book a demo')).not.toBeInTheDocument()
             expect(
@@ -1731,7 +1742,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const trialButton = screen.getByText(
-                'Start 14-Day Trial At No Additional Cost',
+                `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
             fireEvent.click(trialButton)
 

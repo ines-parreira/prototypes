@@ -146,7 +146,7 @@ describe('getNotificationParams', () => {
             subtitle: '<b>Trial request</b> from <b>Test Agent</b>',
             excerpt:
                 'Test Agent has expressed interest in trying out the Shopping Assistant for 14 days at no additional cost.',
-            redirectTo: '/app/ai-agent/shopify/store_1/sales',
+            redirectTo: '/app/ai-agent/shopify/store_1/sales?from=notification',
         })
     })
 
@@ -170,7 +170,7 @@ describe('getNotificationParams', () => {
             subtitle: '<b>Trial request</b> from <b>Your team</b>',
             excerpt:
                 'Your team has expressed interest in trying out the Shopping Assistant for 14 days at no additional cost.',
-            redirectTo: '/app/ai-agent/shopify/store_1/sales',
+            redirectTo: '/app/ai-agent/shopify/store_1/sales?from=notification',
         })
     })
 

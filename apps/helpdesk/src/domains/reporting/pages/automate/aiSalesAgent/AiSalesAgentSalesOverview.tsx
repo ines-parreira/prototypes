@@ -24,6 +24,7 @@ import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActiv
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -138,7 +139,8 @@ const AiSalesAgentSalesOverview = () => {
                                 fillStyle="ghost"
                                 onClick={onStartTrialClicked}
                             >
-                                Start 14-Day Trial At No Additional Cost
+                                Try for {SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS}{' '}
+                                days
                             </Button>
                         )}
 

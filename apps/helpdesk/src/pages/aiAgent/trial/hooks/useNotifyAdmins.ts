@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useCreateAiShoppingAssistantTrialRequest } from '@gorgias/helpdesk-queries'
 
@@ -12,7 +12,10 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-export const useNotifyAdmins = (shopName: string, additionalNote?: string) => {
+export const useNotifyAdmins = (
+    shopName: string | undefined,
+    onSuccess?: () => void,
+) => {
     const dispatch = useAppDispatch()
     const accountAdmins = useAppSelector(getAccountAdminsJS)
     const currentUser = useAppSelector(getCurrentUser)
@@ -27,87 +30,63 @@ export const useNotifyAdmins = (shopName: string, additionalNote?: string) => {
     const { mutate: createAiShoppingAssistantTrialRequest } =
         useCreateAiShoppingAssistantTrialRequest()
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [isDisabled, setIsDisabled] = useState(false)
-
-    useEffect(() => {
+    const isDisabled = useMemo(() => {
         const existingUser =
             onboardingNotificationState?.trialRequestNotification?.find(
                 (request) => request.userId === currentUser.get('id'),
             )
 
-        if (
-            existingUser &&
-            isLessThan24HoursAgo(existingUser.receivedDatetime)
-        ) {
-            setIsDisabled(true)
-        } else {
-            setIsDisabled(false)
-        }
+        return !!(
+            existingUser && isLessThan24HoursAgo(existingUser.receivedDatetime)
+        )
     }, [currentUser, onboardingNotificationState])
 
-    const handleNotifyAdmins = useCallback(() => {
-        try {
-            handleOnTriggerTrialRequestNotification()
+    const handleNotifyAdmins = useCallback(
+        (additionalNote?: string) => {
+            if (!shopName) {
+                return
+            }
 
-            void createAiShoppingAssistantTrialRequest({
-                data: {
-                    account_id: currentAccountId,
-                    current_user_id: currentUser.get('id'),
-                    shop_name: shopName,
-                    additional_note: additionalNote,
-                },
-            })
+            try {
+                handleOnTriggerTrialRequestNotification()
 
-            void dispatch(
-                notify({
-                    message:
-                        'Your request to Shopping Assistant trial has been sent to all Gorgias admins.',
-                    status: NotificationStatus.Success,
-                }),
-            )
-            setIsOpen(false)
-            setIsDisabled(true)
-        } catch (error) {
-            console.error(error)
-        }
-    }, [
-        dispatch,
-        handleOnTriggerTrialRequestNotification,
-        currentAccountId,
-        currentUser,
-        shopName,
-        additionalNote,
-        createAiShoppingAssistantTrialRequest,
-    ])
+                void createAiShoppingAssistantTrialRequest({
+                    data: {
+                        account_id: currentAccountId,
+                        current_user_id: currentUser.get('id'),
+                        shop_name: shopName,
+                        additional_note: additionalNote,
+                    },
+                })
 
-    const handleModalOpen = useCallback(() => {
-        setIsOpen(true)
-    }, [])
+                onSuccess?.()
 
-    const handleModalClose = useCallback(() => {
-        setIsOpen(false)
-    }, [])
-
-    const modalContent = useMemo(
-        () => ({
-            title: 'Request your admin to activate Shopping Assistant trial',
-            subtitle:
-                'Your Gorgias admins will be notified of your request via both email and an in-app notification.',
-            primaryCTALabel: 'Notify Admins',
-            accountAdmins,
-            onPrimaryAction: handleNotifyAdmins,
-            onClose: handleModalClose,
-        }),
-        [accountAdmins, handleNotifyAdmins, handleModalClose],
+                void dispatch(
+                    notify({
+                        message:
+                            'Your request to Shopping Assistant trial has been sent to all Gorgias admins.',
+                        status: NotificationStatus.Success,
+                    }),
+                )
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        [
+            dispatch,
+            handleOnTriggerTrialRequestNotification,
+            currentAccountId,
+            currentUser,
+            shopName,
+            createAiShoppingAssistantTrialRequest,
+            onSuccess,
+        ],
     )
 
     return {
         isLoading: isLoadingOnboardingNotificationState,
-        isOpen,
         isDisabled,
-        modalContent,
-        handleModalOpen,
-        handleModalClose,
+        handleNotifyAdmins,
+        accountAdmins,
     }
 }

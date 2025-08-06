@@ -4,9 +4,6 @@ import classNames from 'classnames'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import check from 'assets/img/icons/check.svg'
-import notifications from 'assets/img/icons/notifications.svg'
-import star_border from 'assets/img/icons/star_border.svg'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -34,18 +31,18 @@ export type TrialTryModalProps = {
 
 const STATIC_FEATURES = [
     {
-        icon: check,
+        icon: 'check',
         title: 'Today',
         description:
             'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
     },
     {
-        icon: notifications,
+        icon: 'notifications_none',
         title: 'Day 7',
         description: "We'll remind you when you're halfway through your trial.",
     },
     {
-        icon: star_border,
+        icon: 'star_outline',
         title: 'Day 14',
         description:
             'Your new AI Agent plan kicks in automatically after the trial so you can keep growing revenue with shopping assistant, unless you cancel during your trial.',
@@ -66,7 +63,9 @@ const FeatureCard = ({
     <div className={css.featureCard}>
         <div className={css.iconContainer}>
             <div className={css.icon}>
-                <img src={icon} alt="feature icon" />
+                <i className="material-icons" aria-hidden="true">
+                    {icon}
+                </i>
             </div>
             {!isLast && <div className={css.iconBackground} />}
         </div>

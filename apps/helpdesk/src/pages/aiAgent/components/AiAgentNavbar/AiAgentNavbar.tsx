@@ -41,47 +41,55 @@ export const AiAgentNavbar = () => {
 
     return (
         <Navbar activeContent={ActiveContent.AiAgent} title="AI Agent">
-            <Navigation.Root
-                className={css.navigation}
-                value={sections}
-                onValueChange={handleNavigationStateChange}
-            >
-                <Navigation.SectionItem
-                    as={NavLink}
-                    to={aiAgentRoutes.overview}
-                    data-candu-id="ai-agent-navbar-overview"
-                >
-                    Overview
-                </Navigation.SectionItem>
-                {isActionsInternalPlatformEnabled && (
-                    <Navigation.SectionItem
-                        as={NavLink}
-                        to={aiAgentRoutes.actionsPlatform}
-                        data-candu-id="ai-agent-navbar-actions-platform"
+            <div className={css.container}>
+                <div className={css.scrollableContent}>
+                    <Navigation.Root
+                        className={css.navigation}
+                        value={sections}
+                        onValueChange={handleNavigationStateChange}
                     >
-                        Actions platform
-                    </Navigation.SectionItem>
-                )}
-                {storeIntegrations.map((storeIntegration, index) => {
-                    const shopType = storeIntegration.type
-                    const shopName =
-                        getShopNameFromStoreIntegration(storeIntegration)
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            to={aiAgentRoutes.overview}
+                            data-candu-id="ai-agent-navbar-overview"
+                        >
+                            Overview
+                        </Navigation.SectionItem>
+                        {isActionsInternalPlatformEnabled && (
+                            <Navigation.SectionItem
+                                as={NavLink}
+                                to={aiAgentRoutes.actionsPlatform}
+                                data-candu-id="ai-agent-navbar-actions-platform"
+                            >
+                                Actions platform
+                            </Navigation.SectionItem>
+                        )}
+                        {storeIntegrations.map((storeIntegration, index) => {
+                            const shopType = storeIntegration.type
+                            const shopName =
+                                getShopNameFromStoreIntegration(
+                                    storeIntegration,
+                                )
 
-                    return (
-                        <AiAgentNavbarSectionBlock
-                            key={`${shopType}:${shopName}`}
-                            name={storeIntegration.name}
-                            shopType={shopType}
-                            shopName={shopName}
-                            shopKey={getSectionKeyFromStoreIntegration(
-                                storeIntegration,
-                            )}
-                            index={index}
-                        />
-                    )
-                })}
-            </Navigation.Root>
-            <ShoppingAssistantPromoCard className={css.promoCard} />
+                            return (
+                                <AiAgentNavbarSectionBlock
+                                    key={`${shopType}:${shopName}`}
+                                    name={storeIntegration.name}
+                                    shopType={shopType}
+                                    shopName={shopName}
+                                    shopKey={getSectionKeyFromStoreIntegration(
+                                        storeIntegration,
+                                    )}
+                                    index={index}
+                                />
+                            )
+                        })}
+                    </Navigation.Root>
+                </div>
+                <div className={css.stickyPromoCard}>
+                    <ShoppingAssistantPromoCard className={css.promoCard} />
+                </div>
+            </div>
         </Navbar>
     )
 }

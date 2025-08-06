@@ -151,10 +151,46 @@ const mockTrialModalProps = {
             onClick: jest.fn(),
         },
     },
-    manageTrialModal: {
-        description: 'Test trial description',
-        advantages: ['Advantage 1', 'Advantage 2'],
-        secondaryDescription: 'Secondary description',
+    trialFinishSetupModal: {
+        title: 'Trial Finish Setup',
+        subtitle: 'Trial finish setup subtitle',
+        content: 'Trial finish setup content',
+        primaryAction: {
+            label: 'Primary Action',
+            onClick: jest.fn(),
+        },
+    },
+    newTrialUpgradePlanModal: {
+        title: 'New Trial Upgrade Plan',
+        subtitle: 'New trial upgrade plan subtitle',
+        currentPlan: {
+            title: 'Current Plan',
+            description: 'Current plan description',
+            price: '$100',
+            billingPeriod: 'month',
+            features: [{ label: 'Feature 1', isError: false }],
+            buttonText: 'Keep current plan',
+        },
+        newPlan: {
+            title: 'New Plan',
+            description: 'New plan description',
+            price: '$200',
+            billingPeriod: 'month',
+            features: [
+                { label: 'Feature 1', isError: false },
+                { label: 'Feature 2', isError: false },
+            ],
+            buttonText: 'Upgrade plan',
+        },
+        onClose: jest.fn(),
+        primaryAction: {
+            label: 'Primary Action',
+            onClick: jest.fn(),
+        },
+        secondaryAction: {
+            label: 'Secondary Action',
+            onClick: jest.fn(),
+        },
     },
     trialEndingModal: {
         title: 'Shopping Assistant trial ends tomorrow',
@@ -176,8 +212,15 @@ const mockTrialModalProps = {
         ],
         secondaryDescription: 'Typical results achieved by merchants.',
     },
+    trialRequestModal: {
+        title: 'Request your admin to activate Shopping Assistant trial',
+        subtitle:
+            'Your Gorgias admins will be notified of your request via both email and an in-app notification.',
+        primaryCTALabel: 'Notify Admins',
+        accountAdmins: [],
+        onPrimaryAction: jest.fn(),
+    },
 }
-
 describe('TrialEndedModal', () => {
     beforeEach(() => {
         jest.clearAllMocks()

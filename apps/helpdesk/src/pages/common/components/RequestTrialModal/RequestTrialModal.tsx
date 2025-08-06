@@ -68,8 +68,8 @@ const RequestTrialModal = ({
     const [note, setNote] = useState('')
 
     const { visibleAdmins, remainingAdmins, remainingCount } = useMemo(() => {
-        const visible = accountAdmins.slice(0, ADMINS_COUNT_TO_SHOW)
-        const remaining = accountAdmins.slice(ADMINS_COUNT_TO_SHOW)
+        const visible = accountAdmins?.slice(0, ADMINS_COUNT_TO_SHOW) || []
+        const remaining = accountAdmins?.slice(ADMINS_COUNT_TO_SHOW) || []
         return {
             visibleAdmins: visible,
             remainingAdmins: remaining,
@@ -78,7 +78,7 @@ const RequestTrialModal = ({
     }, [accountAdmins])
 
     const adminListContent = useMemo(() => {
-        if (accountAdmins.length === 0) return null
+        if (!accountAdmins || accountAdmins.length === 0) return null
 
         return (
             <div className={css.adminList}>
@@ -101,7 +101,7 @@ const RequestTrialModal = ({
                 )}
             </div>
         )
-    }, [visibleAdmins, remainingAdmins, remainingCount, accountAdmins.length])
+    }, [visibleAdmins, remainingAdmins, remainingCount, accountAdmins])
 
     return (
         <Modal

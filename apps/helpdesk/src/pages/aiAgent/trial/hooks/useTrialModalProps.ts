@@ -10,6 +10,7 @@ import {
 import { Cadence } from 'models/billing/types'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
@@ -23,8 +24,14 @@ import {
     useTrialMetrics,
 } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
+import { RequestTrialModalProps } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
+import { TrialFinishSetupModalProps } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import { TrialTryModalProps } from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
+
+import { useNotifyAdmins } from './useNotifyAdmins'
 
 export const EXTERNAL_URLS = {
     BOOK_DEMO: 'https://www.gorgias.com/demo/customers/automate',
@@ -62,6 +69,28 @@ export type TrialModalProps = {
     trialEndedModal: Pick<
         TrialManageModalProps,
         'title' | 'description' | 'advantages' | 'secondaryDescription'
+    >
+    trialFinishSetupModal: Pick<
+        TrialFinishSetupModalProps,
+        'title' | 'subtitle' | 'content' | 'primaryAction'
+    >
+    newTrialUpgradePlanModal: Pick<
+        TrialTryModalProps,
+        | 'title'
+        | 'subtitle'
+        | 'currentPlan'
+        | 'newPlan'
+        | 'primaryAction'
+        | 'secondaryAction'
+        | 'onClose'
+    >
+    trialRequestModal: Pick<
+        RequestTrialModalProps,
+        | 'title'
+        | 'subtitle'
+        | 'primaryCTALabel'
+        | 'accountAdmins'
+        | 'onPrimaryAction'
     >
 }
 
@@ -113,6 +142,7 @@ const createPlanModalData = (
     planDetails: PlanDetails,
     buttonTexts: { current: string; new: string },
     isTrial = false,
+    isMultiStore = false,
 ) => ({
     title,
     currentPlan: {
@@ -164,7 +194,9 @@ const createPlanModalData = (
             },
         ],
         buttonText: buttonTexts.new,
-        priceTooltipText: `Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a ${planDetails.helpdeskPlanTicketCost} helpdesk fee.`,
+        priceTooltipText: `Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a ${planDetails.helpdeskPlanTicketCost} helpdesk fee.${
+            isMultiStore ? ' Upgrade will apply to all stores.' : ''
+        }`,
     },
 })
 
@@ -189,14 +221,100 @@ const useTrialUpgradePlanModal =
         return useMemo(
             () =>
                 createPlanModalData(
-                    'Try the full power of AI Agent for 14 days at no additional cost',
+                    `Try the full power of AI Agent for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days at no additional cost`,
                     planDetails,
-                    { current: 'Keep current plan', new: 'Try for 14 days' },
+                    {
+                        current: 'Keep current plan',
+                        new: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                    },
                     true,
                 ),
             [planDetails],
         )
     }
+
+const useNewTrialUpgradePlanModal = (
+    storeName?: string,
+): TrialModalProps['newTrialUpgradePlanModal'] => {
+    const planDetails = usePlanDetails()
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { storeActivations } = useStoreActivations({ storeName })
+
+    const allShopifyIntegrations = useAppSelector(
+        getShopifyIntegrationsSortedByName,
+    )
+
+    const isMultiStore = allShopifyIntegrations.length > 1
+
+    const {
+        revampStartTrial,
+        onDismissTrialUpgradeModal,
+        closeTrialUpgradeModal,
+    } = useShoppingAssistantTrialFlow({
+        accountDomain,
+        storeActivations,
+    })
+    return useMemo(
+        () => ({
+            ...createPlanModalData(
+                'Unlock new AI Agent skills at no extra cost',
+                planDetails,
+                {
+                    current: 'Keep current plan',
+                    new: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                },
+                false,
+                isMultiStore,
+            ),
+            title: 'Unlock new AI Agent skills at no extra cost',
+            subtitle:
+                "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
+            primaryAction: {
+                label: 'Start trial now',
+                onClick: revampStartTrial,
+            },
+            secondaryAction: {
+                label: 'No, thanks',
+                onClick: onDismissTrialUpgradeModal,
+            },
+            onClose: closeTrialUpgradeModal,
+        }),
+        [
+            planDetails,
+            revampStartTrial,
+            onDismissTrialUpgradeModal,
+            closeTrialUpgradeModal,
+            isMultiStore,
+        ],
+    )
+}
+
+const useTrialFinishSetupModal = (
+    storeName?: string,
+): TrialModalProps['trialFinishSetupModal'] => {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { storeActivations } = useStoreActivations({ storeName })
+
+    const { closeTrialFinishSetupModal } = useShoppingAssistantTrialFlow({
+        accountDomain,
+        storeActivations,
+    })
+    return useMemo(
+        () => ({
+            title: 'Ready. Set. Grow. Your 14-days trial starts now.',
+            subtitle: "Let's unlock its full potential.",
+            content:
+                'Just two simple steps to increase conversions and make the most of your trial.',
+            primaryAction: {
+                label: 'Finish setup',
+                onClick: closeTrialFinishSetupModal,
+            },
+        }),
+        [closeTrialFinishSetupModal],
+    )
+}
 
 const useTrialActivatedModal = () => ({
     title: 'Trial activated',
@@ -338,7 +456,7 @@ const useTrialAlertBanner = ({
         }
 
         return {
-            label: 'Try for 14 days',
+            label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             onClick: () => {
                 onConfirmTrial?.()
                 logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
@@ -496,6 +614,33 @@ const useTrialEndingModal = (
     )
 }
 
+const useTrialRequestModal = (storeName?: string) => {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { storeActivations } = useStoreActivations({ storeName })
+
+    const { closeTrialRequestModal } = useShoppingAssistantTrialFlow({
+        accountDomain,
+        storeActivations,
+    })
+
+    const { handleNotifyAdmins, accountAdmins } = useNotifyAdmins(
+        storeName,
+        closeTrialRequestModal,
+    )
+    return useMemo(
+        () => ({
+            title: 'Request your admin to activate Shopping Assistant trial',
+            subtitle:
+                'Your Gorgias admins will be notified of your request via both email and an in-app notification.',
+            primaryCTALabel: 'Notify Admins',
+            accountAdmins,
+            onPrimaryAction: handleNotifyAdmins,
+        }),
+        [handleNotifyAdmins, accountAdmins],
+    )
+}
+
 export const useTrialModalProps = ({
     storeName,
     onConfirmTrial,
@@ -508,6 +653,8 @@ export const useTrialModalProps = ({
     const trialMetrics = useTrialMetrics()
     const upgradePlanModal = useUpgradePlanModal()
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
+    const newTrialUpgradePlanModal = useNewTrialUpgradePlanModal(storeName)
+    const trialFinishSetupModal = useTrialFinishSetupModal(storeName)
     const trialActivatedModal = useTrialActivatedModal()
     const trialStartedBanner = useTrialStartedBanner(
         trialMetrics,
@@ -519,6 +666,7 @@ export const useTrialModalProps = ({
     })
     const trialEndingModal = useTrialEndingModal(trialMetrics)
     const trialEndedModal = useTrialEndedModal(trialMetrics)
+    const trialRequestModal = useTrialRequestModal(storeName)
 
     return useMemo(
         () => ({
@@ -527,8 +675,11 @@ export const useTrialModalProps = ({
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,
+            trialFinishSetupModal,
+            newTrialUpgradePlanModal,
             trialEndingModal,
             trialEndedModal,
+            trialRequestModal,
         }),
         [
             upgradePlanModal,
@@ -536,8 +687,11 @@ export const useTrialModalProps = ({
             trialActivatedModal,
             trialStartedBanner,
             trialAlertBanner,
+            trialFinishSetupModal,
+            newTrialUpgradePlanModal,
             trialEndingModal,
             trialEndedModal,
+            trialRequestModal,
         ],
     )
 }

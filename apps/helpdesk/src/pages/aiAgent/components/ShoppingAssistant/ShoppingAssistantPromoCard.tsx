@@ -1,5 +1,10 @@
 import React from 'react'
 
+import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
+import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
+
 import {
     AdminDemo,
     AdminTrial,
@@ -7,10 +12,9 @@ import {
     LeadNotify,
     LeadTrialProgress,
 } from './components'
-import {
-    PromoCardVariant,
-    useShoppingAssistantPromoCard,
-} from './hooks/useShoppingAssistantPromoCard'
+import { useShoppingAssistantPromoCard } from './hooks/useShoppingAssistantPromoCard'
+import { PromoCardVariant } from './types/ShoppingAssistant'
+import { extractShopNameFromUrl } from './utils/extractShopNameFromUrl'
 
 interface ShoppingAssistantPromoCardProps {
     className?: string
@@ -23,7 +27,14 @@ interface ShoppingAssistantPromoCardProps {
 export const ShoppingAssistantPromoCard: React.FC<
     ShoppingAssistantPromoCardProps
 > = ({ className }) => {
-    const promoContent = useShoppingAssistantPromoCard()
+    const shopName = extractShopNameFromUrl(window.location.href)
+
+    const trialModalProps = useTrialModalProps({
+        storeName: shopName,
+    })
+
+    const { promoCardContent: promoContent, trialFlow } =
+        useShoppingAssistantPromoCard(shopName)
 
     if (!promoContent) {
         return null
@@ -50,7 +61,22 @@ export const ShoppingAssistantPromoCard: React.FC<
 
         case PromoCardVariant.AdminTrial:
             return (
-                <AdminTrial className={className} promoContent={promoContent} />
+                <>
+                    <TrialTryModal
+                        {...trialModalProps.newTrialUpgradePlanModal}
+                        isOpen={trialFlow.isTrialModalOpen}
+                    />
+
+                    <TrialFinishSetupModal
+                        {...trialModalProps.trialFinishSetupModal}
+                        isOpen={trialFlow.isTrialFinishSetupModalOpen}
+                        onClose={trialFlow.closeTrialFinishSetupModal}
+                    />
+                    <AdminTrial
+                        className={className}
+                        promoContent={promoContent}
+                    />
+                </>
             )
 
         case PromoCardVariant.AdminDemo:
@@ -60,7 +86,18 @@ export const ShoppingAssistantPromoCard: React.FC<
 
         case PromoCardVariant.LeadNotify:
             return (
-                <LeadNotify className={className} promoContent={promoContent} />
+                <>
+                    <RequestTrialModal
+                        {...trialModalProps.trialRequestModal}
+                        isOpen={trialFlow.isTrialRequestModalOpen}
+                        onClose={trialFlow.closeTrialRequestModal}
+                    />
+
+                    <LeadNotify
+                        className={className}
+                        promoContent={promoContent}
+                    />
+                </>
             )
 
         case PromoCardVariant.Hidden:

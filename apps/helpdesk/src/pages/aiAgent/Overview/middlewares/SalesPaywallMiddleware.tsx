@@ -19,10 +19,12 @@ import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { SALES } from 'pages/aiAgent/constants'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -32,6 +34,8 @@ import {
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
@@ -73,6 +77,8 @@ export const SalesPaywallMiddleware =
             hasAnyTrialOptedIn,
             canBookDemo,
             hasCurrentStoreTrialOptedOut,
+            canNotifyAdmin,
+            isLoading: isTrialAccessLoading,
         } = useShoppingAssistantTrialAccess(currentStore?.name)
 
         const currentStoreHasActiveTrial =
@@ -81,7 +87,6 @@ export const SalesPaywallMiddleware =
                 : atLeastOneStoreHasActiveTrialOnSpecificStores(
                       storeActivations,
                   )
-
         const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
         const currentAccount = useAppSelector(getCurrentAccountState)
         const currentUser = useAppSelector(getCurrentUser)
@@ -99,6 +104,8 @@ export const SalesPaywallMiddleware =
             useUpgradePlan()
 
         const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
+
+        const { isDisabled: isNotifyAdminDisabled } = useNotifyAdmins(shopName)
 
         const {
             canStartTrial: canStartTrialOriginal,
@@ -130,6 +137,9 @@ export const SalesPaywallMiddleware =
             isUpgradePlanModalOpen,
             onDismissTrialUpgradeModal,
             onDismissUpgradePlanModal,
+            isTrialFinishSetupModalOpen,
+            closeTrialFinishSetupModal,
+            openTrialRequestModal,
         } = useShoppingAssistantTrialFlow({
             accountDomain,
             storeActivations,
@@ -166,6 +176,9 @@ export const SalesPaywallMiddleware =
 
         const isAiSalesAlphaDemoUser =
             !!flags[FeatureFlagKey.AiSalesAgentBypassPlanCheck]
+
+        const ishoppingAssistantTrialImprovement =
+            useFlags()[FeatureFlagKey.ShoppingAssistantTrialImprovement]
 
         const showUpgradePaywall =
             !hasNewAutomatePlan &&
@@ -236,9 +249,14 @@ export const SalesPaywallMiddleware =
                     eventData={eventData}
                     canBookDemo={canBookDemo}
                     hasCurrentStoreTrialOptedOut={hasCurrentStoreTrialOptedOut}
+                    isTrialAccessLoading={isTrialAccessLoading!}
+                    canNotifyAdmin={canNotifyAdmin}
+                    isNotifyAdminDisabled={isNotifyAdminDisabled}
+                    onNotifyAdminClick={openTrialRequestModal}
                 />
 
-                {isTrialModalOpen && (
+                {/* TODO: [AIFLY-547] remove previous upgrade plan modal */}
+                {!ishoppingAssistantTrialImprovement && isTrialModalOpen && (
                     <UpgradePlanModal
                         {...trialModalProps.trialUpgradePlanModal}
                         onClose={closeTrialUpgradeModal}
@@ -247,6 +265,21 @@ export const SalesPaywallMiddleware =
                         isLoading={isTrialRevampLoading}
                         isTrial
                     />
+                )}
+
+                {ishoppingAssistantTrialImprovement && (
+                    <>
+                        <TrialTryModal
+                            {...trialModalProps.newTrialUpgradePlanModal}
+                            isOpen={isTrialModalOpen}
+                        />
+
+                        <TrialFinishSetupModal
+                            {...trialModalProps.trialFinishSetupModal}
+                            isOpen={isTrialFinishSetupModalOpen}
+                            onClose={closeTrialFinishSetupModal}
+                        />
+                    </>
                 )}
 
                 {isSuccessModalOpen && (
@@ -298,6 +331,10 @@ const PaywallWrapperComponent = ({
     eventData,
     canBookDemo,
     hasCurrentStoreTrialOptedOut,
+    isTrialAccessLoading,
+    canNotifyAdmin,
+    isNotifyAdminDisabled,
+    onNotifyAdminClick,
 }: {
     showUpgradePaywall: boolean
     showEarlyAccessModal: () => void
@@ -310,10 +347,29 @@ const PaywallWrapperComponent = ({
     eventData: Record<string, string>
     canBookDemo: boolean
     hasCurrentStoreTrialOptedOut: boolean
+    isTrialAccessLoading: boolean
+    canNotifyAdmin: boolean
+    isNotifyAdminDisabled: boolean
+    onNotifyAdminClick: () => void
 }) => {
     const flags = useFlags()
     const isAiShoppingAssistantEnabled =
         !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
+
+    const queryParams = new URLSearchParams(location.search)
+
+    const isFromEmailOrNotification =
+        queryParams.get('from') === 'email' ||
+        queryParams.get('from') === 'notification'
+
+    const shouldStartTrial =
+        !isTrialAccessLoading &&
+        isAiShoppingAssistantEnabled &&
+        showUpgradePaywall &&
+        displayTrialButton &&
+        !canBookDemo &&
+        !hasCurrentStoreTrialOptedOut &&
+        isFromEmailOrNotification
 
     useEffect(() => {
         if (
@@ -334,6 +390,13 @@ const PaywallWrapperComponent = ({
         eventData,
     ])
 
+    useEffect(() => {
+        if (shouldStartTrial) {
+            startTrial()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shouldStartTrial])
+
     const renderSecondaryActionButton = () => {
         if (canBookDemo) {
             return (
@@ -345,6 +408,23 @@ const PaywallWrapperComponent = ({
                     className={css.trialButton}
                 >
                     Book a demo
+                </Button>
+            )
+        }
+
+        if (canNotifyAdmin && !displayTrialButton && !displayUpgradeButton) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    onClick={() => {
+                        window.open(
+                            EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+                            '_blank',
+                        )
+                    }}
+                    className={css.trialButton}
+                >
+                    Learn more
                 </Button>
             )
         }
@@ -376,7 +456,7 @@ const PaywallWrapperComponent = ({
                 onClick={startTrial}
                 className={css.trialButton}
             >
-                Start 14-Day Trial At No Additional Cost
+                Try for {SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days
             </Button>
         )
     }
@@ -395,6 +475,23 @@ const PaywallWrapperComponent = ({
                                 className={css.upgradeButton}
                             >
                                 Upgrade Now
+                            </Button>
+                        )}
+                        {!displayUpgradeButton && canNotifyAdmin && (
+                            <Button
+                                size="medium"
+                                onClick={onNotifyAdminClick}
+                                className={
+                                    !isNotifyAdminDisabled
+                                        ? css.upgradeButton
+                                        : ''
+                                }
+                                leadingIcon="notifications_none"
+                                isDisabled={isNotifyAdminDisabled}
+                            >
+                                {isNotifyAdminDisabled
+                                    ? 'Admin notified'
+                                    : 'Notify admin'}
                             </Button>
                         )}
                         {renderSecondaryActionButton()}

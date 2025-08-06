@@ -156,6 +156,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
     })
@@ -179,6 +180,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
 
@@ -216,6 +218,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
 
@@ -240,6 +243,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
     })
@@ -281,6 +285,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
 
@@ -306,6 +311,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
 
@@ -330,6 +336,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
     })
@@ -369,6 +376,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
 
@@ -406,6 +414,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
     })
@@ -442,6 +451,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
     })
@@ -469,6 +479,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
     })
@@ -495,6 +506,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 hasCurrentStoreTrialExpired: false,
                 hasCurrentStoreTrialOptedOut: false,
                 hasCurrentStoreTrialStarted: false,
+                isLoading: false,
             })
         })
     })
@@ -590,6 +602,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     hasCurrentStoreTrialExpired: false,
                     hasCurrentStoreTrialOptedOut: false,
                     hasCurrentStoreTrialStarted: false,
+                    isLoading: false,
                 })
             })
 

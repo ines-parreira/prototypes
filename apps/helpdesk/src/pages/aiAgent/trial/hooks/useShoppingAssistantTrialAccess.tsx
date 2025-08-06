@@ -43,6 +43,8 @@ type ShoppingAssistantTrialAccess = {
     /** Whether at least one store has an active trial that hasn't opted out */
     hasAnyTrialOptedIn: boolean
     hasAnyTrialActive: boolean
+
+    isLoading?: boolean
 }
 
 /**
@@ -70,7 +72,7 @@ export const useShoppingAssistantTrialAccess = (
     // Get all store configurations to check trial history
     const { storeConfigurations } = useStoreConfigurations(accountDomain)
 
-    const { storeActivations } = useStoreActivations({
+    const { storeActivations, isFetchLoading } = useStoreActivations({
         storeName: currentStoreName,
     })
     const currentStore = currentStoreName
@@ -102,6 +104,8 @@ export const useShoppingAssistantTrialAccess = (
             hasAnyTrialOptedOut: false,
             hasAnyTrialOptedIn: false,
             hasAnyTrialActive: false,
+
+            isLoading: false,
         }
     }
 
@@ -166,9 +170,9 @@ export const useShoppingAssistantTrialAccess = (
                 isAiShoppingAssistantTrialMerchantsEnabled),
     )
 
-    // Pro+ Admins without feature flag can book a demo
+    // Pro+ Admins and Lead Agents without feature flag can book a demo
     const canBookDemo = Boolean(
-        isAdminUser &&
+        (isAdminUser || isTeamLeadUser) &&
             isOnProPlusPlan &&
             // Explicit check to false because the FF is undefined while loading
             isAiShoppingAssistantTrialMerchantsEnabled === false,
@@ -188,5 +192,7 @@ export const useShoppingAssistantTrialAccess = (
         hasAnyTrialOptedOut,
         hasAnyTrialOptedIn,
         hasAnyTrialActive,
+
+        isLoading: isFetchLoading,
     }
 }

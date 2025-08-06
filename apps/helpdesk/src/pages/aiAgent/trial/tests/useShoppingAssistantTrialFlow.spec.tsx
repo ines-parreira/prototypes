@@ -180,6 +180,30 @@ describe('useShoppingAssistantTrialFlow', () => {
                 'ShoppingAssistantSuccessModal',
             )
         })
+
+        it('should open trial finish setup modal when openTrialFinishSetupModal is called', () => {
+            mockModalManager.isOpen = jest.fn().mockReturnValue(true)
+
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.isTrialFinishSetupModalOpen).toBe(true)
+
+            // Open trial finish setup modal
+            act(() => {
+                result.current.openTrialFinishSetupModal()
+            })
+
+            expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialFinishSetupModal',
+            )
+        })
     })
 
     describe('startTrial functionality', () => {

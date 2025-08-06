@@ -1,15 +1,31 @@
 :local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .scrollableContent {
+        flex: 1;
+        overflow-y: auto;
+    }
+
     .navigation {
         margin-top: var(--layout-spacing-s);
         padding: 0 var(--layout-spacing-xs);
     }
-    .promoCardSection {
+
+    .stickyPromoCard {
+        position: sticky;
+        bottom: 0;
         padding: var(--layout-spacing-xs);
-        margin-top: auto;
+        background-color: var(--color-background-primary);
     }
+
     .promoCard {
         width: 100%;
     }
+
     .videoThumbnail {
         min-height: 109px;
         position: relative;
@@ -26,6 +42,7 @@
             bottom: -24px;
         }
     }
+
     .videoModalCTA {
         position: absolute;
         top: 86px;
@@ -42,6 +59,7 @@
             'cv10' on;
         font-variant-numeric: lining-nums tabular-nums;
     }
+
     .descriptionIcon {
         margin-right: var(--layout-spacing-xxs);
     }

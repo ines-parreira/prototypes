@@ -2,8 +2,6 @@ import React from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import bolt from 'assets/img/icons/bolt.svg'
-import check from 'assets/img/icons/check.svg'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
@@ -12,7 +10,7 @@ import css from './TrialFinishSetupModal.less'
 
 const STATIC_FEATURES = [
     {
-        icon: check,
+        icon: 'check',
         title: 'Shopping Assistant features are now live!',
         description:
             'All features are unlocked, so you can start seeing impact today.',
@@ -102,7 +100,9 @@ const FeatureCard = ({
     <div className={css.featureCard}>
         <div className={css.iconContainer}>
             <div className={css.icon}>
-                {icon && <img src={icon} alt="feature icon" />}
+                <i className="material-icons" aria-hidden="true">
+                    {icon}
+                </i>
             </div>
             {!isLast && <div className={css.iconBackground} />}
         </div>
@@ -111,7 +111,9 @@ const FeatureCard = ({
             <div className={css.featureDescription}>{description}</div>
             {benefit && (
                 <div className={css.featureBenefit}>
-                    <img src={bolt} alt="bolt icon" />
+                    <i className="material-icons" aria-hidden="true">
+                        bolt
+                    </i>
                     {benefit}
                 </div>
             )}

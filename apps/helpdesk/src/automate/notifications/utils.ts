@@ -88,7 +88,7 @@ export const getNotificationParams = (
                 title: 'New message',
                 subtitle: `<b>Trial request</b> from <b>${agentName}</b>`,
                 excerpt: `${agentName} has expressed interest in trying out the Shopping Assistant for 14 days at no additional cost.`,
-                redirectTo: `/app/ai-agent/shopify/${shopName}/sales`,
+                redirectTo: `/app/ai-agent/shopify/${shopName}/sales?from=notification`,
             }
         default:
             return null

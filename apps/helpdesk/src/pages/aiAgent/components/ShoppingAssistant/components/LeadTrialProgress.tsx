@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { PromoCard } from '../../../../common/components/PromoCard'
-import type { PromoCardContent } from '../hooks/useShoppingAssistantPromoCard'
+import { PromoCard } from 'pages/common/components/PromoCard'
+
+import { PromoCardContent } from '../types/ShoppingAssistant'
 import { GMVIcon, NotificationIcon } from './SharedIcons'
 
 import css from '../../AiAgentNavbar/AiAgentNavbar.less'

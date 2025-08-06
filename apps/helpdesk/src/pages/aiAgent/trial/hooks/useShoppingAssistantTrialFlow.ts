@@ -21,14 +21,20 @@ const TRIAL_UPGRADE_MODAL_NAME = 'ShoppingAssistantTrialUpgradeModal'
 const UPGRADE_MODAL_NAME = 'ShoppingAssistantUpgradeModal'
 const SUCCESS_MODAL_NAME = 'ShoppingAssistantSuccessModal'
 const MANAGE_TRIAL_MODAL_NAME = 'ShoppingAssistantManageTrialModal'
+const TRIAL_FINISH_SETUP_MODAL_NAME = 'ShoppingAssistantTrialFinishSetupModal'
+const TRIAL_REQUEST_MODAL_NAME = 'ShoppingAssistantTrialRequestModal'
 
-type UseShoppingAssistantTrialFlowReturn = {
+// TODO: [AIFLY-547] remove startTrial
+export type UseShoppingAssistantTrialFlowReturn = {
     startTrial: () => void
+    revampStartTrial: () => void
     isLoading: boolean
     isTrialModalOpen: boolean
+    isTrialFinishSetupModalOpen: boolean
     isSuccessModalOpen: boolean
     isManageTrialModalOpen: boolean
     isUpgradePlanModalOpen: boolean
+    isTrialRequestModalOpen: boolean
     closeTrialUpgradeModal: () => void
     onDismissTrialUpgradeModal: () => void
     onDismissUpgradePlanModal: () => void
@@ -39,6 +45,10 @@ type UseShoppingAssistantTrialFlowReturn = {
     openManageTrialModal: () => void
     openUpgradePlanModal: () => void
     closeUpgradePlanModal: () => void
+    closeTrialFinishSetupModal: () => void
+    openTrialFinishSetupModal: () => void
+    openTrialRequestModal: () => void
+    closeTrialRequestModal: () => void
 }
 
 export const useShoppingAssistantTrialFlow = ({
@@ -59,6 +69,17 @@ export const useShoppingAssistantTrialFlow = ({
     const manageTrialModal = useModalManager(MANAGE_TRIAL_MODAL_NAME, {
         autoDestroy: false,
     })
+    const trialFinishSetupModal = useModalManager(
+        TRIAL_FINISH_SETUP_MODAL_NAME,
+        {
+            autoDestroy: false,
+        },
+    )
+
+    const trialRequestModal = useModalManager(TRIAL_REQUEST_MODAL_NAME, {
+        autoDestroy: false,
+    })
+
     const history = useHistory()
 
     const shopName = useMemo(
@@ -92,6 +113,29 @@ export const useShoppingAssistantTrialFlow = ({
                     // Call optional callbacks
                     onUpgradeModalClose?.()
                     onSuccessModalOpen?.()
+                },
+            },
+        )
+    }
+
+    const revampStartTrial = () => {
+        logEvent(SegmentEvent.PricingModalClicked, {
+            type: 'trial_started',
+        })
+        triggerTrialMutation(
+            {
+                accountDomain,
+                storeActivations,
+            },
+            {
+                onSuccess: () => {
+                    // Close upgrade modal and open finish setup modal
+                    trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
+                    trialFinishSetupModal.openModal(
+                        TRIAL_FINISH_SETUP_MODAL_NAME,
+                    )
+
+                    onUpgradeModalClose?.()
                 },
             },
         )
@@ -153,8 +197,25 @@ export const useShoppingAssistantTrialFlow = ({
         }
     }
 
+    const closeTrialFinishSetupModal = () => {
+        trialFinishSetupModal.closeModal(TRIAL_FINISH_SETUP_MODAL_NAME)
+    }
+
+    const openTrialFinishSetupModal = () => {
+        trialFinishSetupModal.openModal(TRIAL_FINISH_SETUP_MODAL_NAME)
+    }
+
+    const openTrialRequestModal = () => {
+        trialRequestModal.openModal(TRIAL_REQUEST_MODAL_NAME)
+    }
+
+    const closeTrialRequestModal = () => {
+        trialRequestModal.closeModal(TRIAL_REQUEST_MODAL_NAME)
+    }
+
     return {
         startTrial,
+        revampStartTrial,
         isLoading,
         isUpgradePlanModalOpen: upgradeModal.isOpen(UPGRADE_MODAL_NAME),
         isTrialModalOpen: trialModal.isOpen(TRIAL_UPGRADE_MODAL_NAME),
@@ -172,5 +233,15 @@ export const useShoppingAssistantTrialFlow = ({
         openManageTrialModal,
         openUpgradePlanModal,
         closeUpgradePlanModal,
+        closeTrialFinishSetupModal,
+        openTrialFinishSetupModal,
+        isTrialFinishSetupModalOpen: trialFinishSetupModal.isOpen(
+            TRIAL_FINISH_SETUP_MODAL_NAME,
+        ),
+        isTrialRequestModalOpen: trialRequestModal.isOpen(
+            TRIAL_REQUEST_MODAL_NAME,
+        ),
+        openTrialRequestModal,
+        closeTrialRequestModal,
     }
 }

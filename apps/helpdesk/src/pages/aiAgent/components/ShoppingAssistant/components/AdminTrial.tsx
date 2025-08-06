@@ -1,9 +1,10 @@
 import React from 'react'
 
-import preTrialBannerThumbnail from '../../../../../assets/img/pre-trial-banner-thumbnail.png'
-import aiAgentPreviewVideo from '../../../../../assets/video/ai-agent-sales-video.mp4'
-import { PromoCard } from '../../../../common/components/PromoCard'
-import type { PromoCardContent } from '../hooks/useShoppingAssistantPromoCard'
+import preTrialBannerThumbnail from 'assets/img/pre-trial-banner-thumbnail.png'
+import aiAgentPreviewVideo from 'assets/video/ai-agent-sales-video.mp4'
+import { PromoCard } from 'pages/common/components/PromoCard'
+
+import { PromoCardContent } from '../types/ShoppingAssistant'
 import { NotificationIcon } from './SharedIcons'
 
 import css from '../../AiAgentNavbar/AiAgentNavbar.less'

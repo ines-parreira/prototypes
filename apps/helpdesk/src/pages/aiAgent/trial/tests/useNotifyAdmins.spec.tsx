@@ -64,6 +64,7 @@ const mockAccountAdmins = [
 const mockDispatch = jest.fn()
 const mockHandleOnTriggerTrialRequestNotification = jest.fn()
 const mockCreateAiShoppingAssistantTrialRequest = jest.fn()
+const mockOnSuccess = jest.fn()
 
 const mockIsLessThan24HoursAgo = assumeMock(isLessThan24HoursAgo)
 
@@ -93,36 +94,9 @@ describe('useNotifyAdmins', () => {
         const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
 
         expect(result.current.isLoading).toBe(false)
-        expect(result.current.isOpen).toBe(false)
         expect(result.current.isDisabled).toBe(false)
-        expect(result.current.modalContent).toEqual({
-            title: 'Request your admin to activate Shopping Assistant trial',
-            subtitle:
-                'Your Gorgias admins will be notified of your request via both email and an in-app notification.',
-            primaryCTALabel: 'Notify Admins',
-            accountAdmins: mockAccountAdmins,
-            onPrimaryAction: expect.any(Function),
-            onClose: expect.any(Function),
-        })
-    })
-
-    it('should return initial state correctly with additional note', () => {
-        const { result } = renderHook(() =>
-            useNotifyAdmins(SHOP_NAME, ADDITIONAL_NOTE),
-        )
-
-        expect(result.current.isLoading).toBe(false)
-        expect(result.current.isOpen).toBe(false)
-        expect(result.current.isDisabled).toBe(false)
-        expect(result.current.modalContent).toEqual({
-            title: 'Request your admin to activate Shopping Assistant trial',
-            subtitle:
-                'Your Gorgias admins will be notified of your request via both email and an in-app notification.',
-            primaryCTALabel: 'Notify Admins',
-            accountAdmins: mockAccountAdmins,
-            onPrimaryAction: expect.any(Function),
-            onClose: expect.any(Function),
-        })
+        expect(result.current.accountAdmins).toEqual(mockAccountAdmins)
+        expect(typeof result.current.handleNotifyAdmins).toBe('function')
     })
 
     it('should disable notifications if user has already requested within 24 hours', () => {
@@ -164,27 +138,13 @@ describe('useNotifyAdmins', () => {
         expect(result.current.isDisabled).toBe(false)
     })
 
-    it('should handle modal open and close', () => {
-        const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
-
-        act(() => {
-            result.current.handleModalOpen()
-        })
-        expect(result.current.isOpen).toBe(true)
-
-        act(() => {
-            result.current.handleModalClose()
-        })
-        expect(result.current.isOpen).toBe(false)
-    })
-
     it('should notify admins when handleNotifyAdmins is called', () => {
         mockNotify.mockReturnValue(mockDispatch)
 
         const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
 
         act(() => {
-            result.current.modalContent.onPrimaryAction()
+            result.current.handleNotifyAdmins()
         })
 
         expect(
@@ -204,18 +164,15 @@ describe('useNotifyAdmins', () => {
             status: NotificationStatus.Success,
         })
         expect(mockDispatch).toHaveBeenCalled()
-        expect(result.current.isOpen).toBe(false)
     })
 
     it('should notify admins with additional note when handleNotifyAdmins is called', () => {
         mockNotify.mockReturnValue(mockDispatch)
 
-        const { result } = renderHook(() =>
-            useNotifyAdmins(SHOP_NAME, ADDITIONAL_NOTE),
-        )
+        const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
 
         act(() => {
-            result.current.modalContent.onPrimaryAction()
+            result.current.handleNotifyAdmins(ADDITIONAL_NOTE)
         })
 
         expect(
@@ -235,6 +192,19 @@ describe('useNotifyAdmins', () => {
             status: NotificationStatus.Success,
         })
         expect(mockDispatch).toHaveBeenCalled()
-        expect(result.current.isOpen).toBe(false)
+    })
+
+    it('should call onSuccess callback when provided', () => {
+        mockNotify.mockReturnValue(mockDispatch)
+
+        const { result } = renderHook(() =>
+            useNotifyAdmins(SHOP_NAME, mockOnSuccess),
+        )
+
+        act(() => {
+            result.current.handleNotifyAdmins()
+        })
+
+        expect(mockOnSuccess).toHaveBeenCalledTimes(1)
     })
 })

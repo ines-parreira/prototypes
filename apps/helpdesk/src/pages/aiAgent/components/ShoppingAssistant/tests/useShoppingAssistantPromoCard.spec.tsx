@@ -1,20 +1,26 @@
 import { assumeMock } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useParams } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from '../../../../../common/segment'
-import { useFlag } from '../../../../../core/flags'
-import useAppSelector from '../../../../../hooks/useAppSelector'
-import { getCurrentAccountState } from '../../../../../state/currentAccount/selectors'
-import { getShopifyIntegrationsSortedByName } from '../../../../../state/integrations/selectors'
-import { storeActivationFixture } from '../../../Activation/hooks/storeActivation.fixture'
-import { useStoreActivations } from '../../../Activation/hooks/useStoreActivations'
-import { useShoppingAssistantTrialAccess } from '../../../trial/hooks/useShoppingAssistantTrialAccess'
-import { useShoppingAssistantTrialFlow } from '../../../trial/hooks/useShoppingAssistantTrialFlow'
-import { useTrialEnding } from '../../../trial/hooks/useTrialEnding'
-import { useTrialMetrics } from '../../../trial/hooks/useTrialMetrics'
-import { EXTERNAL_URLS } from '../../../trial/hooks/useTrialModalProps'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
+import { user } from 'fixtures/users'
+import useAppSelector from 'hooks/useAppSelector'
+import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
+import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
+
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { useShoppingAssistantPromoCard } from '../hooks/useShoppingAssistantPromoCard'
 
 // Mock dependencies
@@ -26,10 +32,6 @@ jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useParams: jest.fn(),
-}))
 
 const mockLogEvent = assumeMock(logEvent)
 const mockUseFlag = assumeMock(useFlag)
@@ -43,9 +45,31 @@ const mockUseShoppingAssistantTrialAccess = assumeMock(
 )
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseTrialMetrics = assumeMock(useTrialMetrics)
-const mockUseParams = assumeMock(useParams)
 
 describe('useShoppingAssistantPromoCard', () => {
+    let queryClient: QueryClient
+    const mockStore = configureMockStore()
+
+    const createWrapper = () => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        })
+
+        const store = mockStore({})
+
+        return ({ children }: { children: React.ReactNode }) => (
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    {children}
+                </QueryClientProvider>
+            </Provider>
+        )
+    }
+
     const mockAccount = fromJS({
         id: 123,
         domain: 'test-account',
@@ -70,6 +94,13 @@ describe('useShoppingAssistantPromoCard', () => {
         openManageTrialModal: jest.fn(),
         openUpgradePlanModal: jest.fn(),
         closeUpgradePlanModal: jest.fn(),
+        revampStartTrial: jest.fn(),
+        isTrialFinishSetupModalOpen: false,
+        closeTrialFinishSetupModal: jest.fn(),
+        openTrialFinishSetupModal: jest.fn(),
+        isTrialRequestModalOpen: false,
+        openTrialRequestModal: jest.fn(),
+        closeTrialRequestModal: jest.fn(),
     }
     const baseTrialAccess = {
         canSeeTrialCTA: false,
@@ -89,7 +120,12 @@ describe('useShoppingAssistantPromoCard', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseFlag.mockReturnValue(true)
-        mockUseParams.mockReturnValue({ shopName: 'test-shop' })
+        const mockDispatch = jest.fn()
+
+        jest.spyOn(require('hooks/useAppDispatch'), 'default').mockReturnValue(
+            mockDispatch,
+        )
+
         mockUseAppSelector.mockImplementation((selector: any) => {
             if (selector === getCurrentAccountState) {
                 return mockAccount
@@ -107,6 +143,9 @@ describe('useShoppingAssistantPromoCard', () => {
                         meta: { shop_name: 'second-shop' },
                     },
                 ]
+            }
+            if (selector === getCurrentUser) {
+                return fromJS(user)
             }
             return undefined
         })
@@ -144,9 +183,14 @@ describe('useShoppingAssistantPromoCard', () => {
         it('should return null when feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current).toBeNull()
+            expect(result.current?.promoCardContent).toBeNull()
         })
     })
 
@@ -161,9 +205,14 @@ describe('useShoppingAssistantPromoCard', () => {
                 hasAnyTrialStarted: false,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current).toBeNull()
+            expect(result.current?.promoCardContent).toBeNull()
         })
     })
 
@@ -177,10 +226,15 @@ describe('useShoppingAssistantPromoCard', () => {
             })
         })
 
-        it('should return admin-trial variant with correct content - Try for 14 days', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+        it('should return admin-trial variant with correct content - Try for X days', () => {
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current).toEqual({
+            expect(result.current?.promoCardContent).toEqual({
                 variant: 'admin-trial',
                 title: 'Unlock new AI Agent skills',
                 description: 'Go beyond automation and grow revenue by 1.5%.',
@@ -191,7 +245,7 @@ describe('useShoppingAssistantPromoCard', () => {
                 progressText: undefined,
                 showProgressBar: false,
                 primaryButton: {
-                    label: 'Try for 14 days',
+                    label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
                     onClick: expect.any(Function),
                     disabled: false,
                 },
@@ -202,7 +256,7 @@ describe('useShoppingAssistantPromoCard', () => {
                     disabled: false,
                 },
                 videoModalButton: {
-                    label: 'Try for 14 days',
+                    label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
                     onClick: expect.any(Function),
                     disabled: false,
                 },
@@ -210,25 +264,40 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should trigger trial flow when primary button is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.primaryButton.onClick?.()
+            result.current?.promoCardContent?.primaryButton.onClick?.()
 
-            expect(mockTrialFlow.onConfirmTrial).toHaveBeenCalledTimes(1)
+            expect(mockTrialFlow.openTrialUpgradeModal).toHaveBeenCalledTimes(1)
         })
 
         it('should trigger trial flow when video modal CTA is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.videoModalButton?.onClick?.()
+            result.current?.promoCardContent?.videoModalButton?.onClick?.()
 
-            expect(mockTrialFlow.onConfirmTrial).toHaveBeenCalledTimes(1)
+            expect(mockTrialFlow.openTrialUpgradeModal).toHaveBeenCalledTimes(1)
         })
 
         it('should log correct event when primary button is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.primaryButton.onClick?.()
+            result.current?.promoCardContent?.primaryButton.onClick?.()
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
@@ -236,10 +305,15 @@ describe('useShoppingAssistantPromoCard', () => {
             )
         })
 
-        it('should log correct event when video modal CTA  is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+        it('should log correct event when video modal CTA is clicked', () => {
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.videoModalButton?.onClick?.()
+            result.current?.promoCardContent?.videoModalButton?.onClick?.()
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
@@ -248,9 +322,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should log correct event when secondary button is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.secondaryButton?.onClick?.()
+            result.current?.promoCardContent?.secondaryButton?.onClick?.()
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
@@ -270,9 +349,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should return admin-demo variant with correct content - Book a Demo', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current).toEqual({
+            expect(result.current?.promoCardContent).toEqual({
                 variant: 'admin-demo',
                 title: 'Unlock new AI Agent skills',
                 description: 'Go beyond automation and grow revenue by 1.5%.',
@@ -299,9 +383,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should log correct event when demo button is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.primaryButton.onClick?.()
+            result.current?.promoCardContent?.primaryButton.onClick?.()
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
@@ -321,9 +410,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should return lead-notify variant with correct content and notification icon', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current).toEqual({
+            expect(result.current?.promoCardContent).toEqual({
                 variant: 'lead-notify',
                 title: 'Unlock new AI Agent skills',
                 description: 'Go beyond automation and grow revenue by 1.5%.',
@@ -349,9 +443,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should log correct event when notify admin button is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.primaryButton.onClick?.()
+            result.current?.promoCardContent?.primaryButton.onClick?.()
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
@@ -371,9 +470,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should return lead-notify variant with notify admin as primary and demo as secondary', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current).toEqual({
+            expect(result.current?.promoCardContent).toEqual({
                 variant: 'lead-notify',
                 title: 'Unlock new AI Agent skills',
                 description: 'Go beyond automation and grow revenue by 1.5%.',
@@ -399,9 +503,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should log correct event when primary notify admin button is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.primaryButton?.onClick?.()
+            result.current?.promoCardContent?.primaryButton?.onClick?.()
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
@@ -410,9 +519,14 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should log correct event when secondary demo button is clicked', () => {
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            result.current?.secondaryButton?.onClick?.()
+            result.current?.promoCardContent?.secondaryButton?.onClick?.()
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
@@ -430,23 +544,41 @@ describe('useShoppingAssistantPromoCard', () => {
                 hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.variant).toBe('admin-trial-progress')
-            expect(result.current?.title).toBe('Shopping Assistant trial')
+            expect(result.current?.promoCardContent?.variant).toBe(
+                'admin-trial-progress',
+            )
+            expect(result.current?.promoCardContent?.title).toBe(
+                'Shopping Assistant trial',
+            )
         })
 
         it('should prioritize trial progress over pre-trial access for lead', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canNotifyAdmin: true,
-                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.variant).toBe('lead-trial-progress')
-            expect(result.current?.title).toBe('Shopping Assistant trial')
+            expect(result.current?.promoCardContent?.variant).toBe(
+                'lead-trial-progress',
+            )
+            expect(result.current?.promoCardContent?.title).toBe(
+                'Shopping Assistant trial',
+            )
         })
 
         it('should show card when only hasAnyTrialStarted is true', () => {
@@ -455,13 +587,20 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: false,
                 canBookDemo: false,
                 canNotifyAdmin: false,
-                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current).not.toBeNull()
-            expect(result.current?.variant).toBe('lead-trial-progress')
+            expect(result.current?.promoCardContent).not.toBeNull()
+            expect(result.current?.promoCardContent?.variant).toBe(
+                'lead-trial-progress',
+            )
         })
 
         it('should show card when only hasCurrentStoreTrialStarted is true', () => {
@@ -473,10 +612,17 @@ describe('useShoppingAssistantPromoCard', () => {
                 hasCurrentStoreTrialStarted: true,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(result.current).not.toBeNull()
-            expect(result.current?.variant).toBe('lead-trial-progress')
+            expect(result.current?.promoCardContent?.variant).toBe(
+                'lead-trial-progress',
+            )
         })
     })
 
@@ -487,7 +633,9 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -501,7 +649,9 @@ describe('useShoppingAssistantPromoCard', () => {
                 canBookDemo: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -515,7 +665,9 @@ describe('useShoppingAssistantPromoCard', () => {
                 canNotifyAdmin: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -529,7 +681,9 @@ describe('useShoppingAssistantPromoCard', () => {
                 // All false - no access
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockLogEvent).not.toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -545,10 +699,19 @@ describe('useShoppingAssistantPromoCard', () => {
                 canNotifyAdmin: true,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.shouldShowNotificationIcon).toBe(true)
-            expect(result.current?.primaryButton.label).toBe('Notify admin')
+            expect(
+                result.current?.promoCardContent?.shouldShowNotificationIcon,
+            ).toBe(true)
+            expect(result.current?.promoCardContent?.primaryButton.label).toBe(
+                'Notify admin',
+            )
         })
 
         it('should not show notification icon when primary button does not contain "Notify"', () => {
@@ -557,10 +720,19 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.shouldShowNotificationIcon).toBe(false)
-            expect(result.current?.primaryButton.label).toBe('Try for 14 days')
+            expect(
+                result.current?.promoCardContent?.shouldShowNotificationIcon,
+            ).toBe(false)
+            expect(result.current?.promoCardContent?.primaryButton.label).toBe(
+                `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+            )
         })
     })
 
@@ -571,39 +743,27 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                 accountDomain: 'test-account',
                 storeActivations: mockStoreActivations,
-                onUpgradeModalClose: expect.any(Function),
-                onSuccessModalOpen: expect.any(Function),
-            })
-        })
-
-        it('should pass store name from useParams to useStoreActivations', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                ...baseTrialAccess,
-                canSeeTrialCTA: true,
-            })
-
-            renderHook(() => useShoppingAssistantPromoCard())
-
-            expect(mockUseStoreActivations).toHaveBeenCalledWith({
-                storeName: 'test-shop',
             })
         })
     })
 
     describe('Shop name fallback logic', () => {
         it('should use first shop from integrations list when shopName is undefined', () => {
-            mockUseParams.mockReturnValue({ shopName: undefined })
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: 'first-shop',
@@ -611,13 +771,9 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should use route shopName when provided', () => {
-            mockUseParams.mockReturnValue({ shopName: 'specific-shop' })
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                ...baseTrialAccess,
-                canSeeTrialCTA: true,
+            renderHook(() => useShoppingAssistantPromoCard('specific-shop'), {
+                wrapper: createWrapper(),
             })
-
-            renderHook(() => useShoppingAssistantPromoCard())
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: 'specific-shop',
@@ -625,13 +781,15 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should handle empty shopify integrations list gracefully', () => {
-            mockUseParams.mockReturnValue({ shopName: undefined })
             mockUseAppSelector.mockImplementation((selector: any) => {
                 if (selector === getCurrentAccountState) {
                     return mockAccount
                 }
                 if (selector === getShopifyIntegrationsSortedByName) {
                     return []
+                }
+                if (selector === getCurrentUser) {
+                    return fromJS(user)
                 }
                 return undefined
             })
@@ -640,7 +798,9 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: undefined,
@@ -648,7 +808,6 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should handle shopify integrations without meta.shop_name', () => {
-            mockUseParams.mockReturnValue({ shopName: undefined })
             mockUseAppSelector.mockImplementation((selector: any) => {
                 if (selector === getCurrentAccountState) {
                     return mockAccount
@@ -662,6 +821,9 @@ describe('useShoppingAssistantPromoCard', () => {
                         },
                     ]
                 }
+                if (selector === getCurrentUser) {
+                    return fromJS(user)
+                }
                 return undefined
             })
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
@@ -669,7 +831,9 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard())
+            renderHook(() => useShoppingAssistantPromoCard(), {
+                wrapper: createWrapper(),
+            })
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: undefined,
@@ -693,23 +857,39 @@ describe('useShoppingAssistantPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.description).toBe('$5,250 GMV influenced')
-            expect(result.current?.shouldShowDescriptionIcon).toBe(true)
+            expect(result.current?.promoCardContent?.description).toBe(
+                '$5,250 GMV influenced',
+            )
+            expect(
+                result.current?.promoCardContent?.shouldShowDescriptionIcon,
+            ).toBe(true)
         })
 
         it('should hide description when GMV rate is below threshold', () => {
             mockUseTrialMetrics.mockReturnValue({
                 gmvInfluenced: '$1,250',
-                gmvInfluencedRate: 0.025,
+                gmvInfluencedRate: 0.0025,
                 isLoading: false,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.description).toBe('')
-            expect(result.current?.shouldShowDescriptionIcon).toBe(false)
+            expect(result.current?.promoCardContent?.description).toBe('')
+            expect(
+                result.current?.promoCardContent?.shouldShowDescriptionIcon,
+            ).toBe(false)
         })
 
         it('should show "Upgrade now" button when GMV rate is above threshold', () => {
@@ -719,25 +899,41 @@ describe('useShoppingAssistantPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.primaryButton.label).toBe('Upgrade now')
-            expect(result.current?.primaryButton.disabled).toBe(false)
+            expect(result.current?.promoCardContent?.primaryButton.label).toBe(
+                'Upgrade now',
+            )
+            expect(
+                result.current?.promoCardContent?.primaryButton.disabled,
+            ).toBe(false)
         })
 
         it('should show "Set Up Sales Strategy" button when GMV rate is below threshold', () => {
             mockUseTrialMetrics.mockReturnValue({
                 gmvInfluenced: '$1,000',
-                gmvInfluencedRate: 0.02,
+                gmvInfluencedRate: 0.002,
                 isLoading: false,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.primaryButton.label).toBe(
+            expect(result.current?.promoCardContent?.primaryButton.label).toBe(
                 'Set Up Sales Strategy',
             )
-            expect(result.current?.primaryButton.disabled).toBe(false)
+            expect(
+                result.current?.promoCardContent?.primaryButton.disabled,
+            ).toBe(false)
         })
 
         it('should show empty description when metrics are loading and GMV should be shown', () => {
@@ -747,10 +943,17 @@ describe('useShoppingAssistantPromoCard', () => {
                 isLoading: true,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.description).toBe('')
-            expect(result.current?.shouldShowDescriptionIcon).toBe(true)
+            expect(result.current?.promoCardContent?.description).toBe('')
+            expect(
+                result.current?.promoCardContent?.shouldShowDescriptionIcon,
+            ).toBe(true)
         })
 
         it('should show GMV description when user has opted out', () => {
@@ -766,18 +969,29 @@ describe('useShoppingAssistantPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.description).toBe('$2,750 GMV influenced')
-            expect(result.current?.shouldShowDescriptionIcon).toBe(true)
-            expect(result.current?.primaryButton.label).toBe('Upgrade now')
+            expect(result.current?.promoCardContent?.description).toBe(
+                '$2,750 GMV influenced',
+            )
+            expect(
+                result.current?.promoCardContent?.shouldShowDescriptionIcon,
+            ).toBe(true)
+            expect(result.current?.promoCardContent?.primaryButton.label).toBe(
+                'Upgrade now',
+            )
         })
 
         it('should handle lead users with GMV above threshold by disabling/hiding buttons', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
-                hasAnyTrialStarted: true,
+                hasCurrentStoreTrialStarted: true,
             })
             mockUseTrialMetrics.mockReturnValue({
                 gmvInfluenced: '$7,250',
@@ -785,12 +999,25 @@ describe('useShoppingAssistantPromoCard', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(() => useShoppingAssistantPromoCard())
+            const { result } = renderHook(
+                () => useShoppingAssistantPromoCard(),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
-            expect(result.current?.variant).toBe('lead-trial-progress')
-            expect(result.current?.primaryButton.label).toBe('')
-            expect(result.current?.primaryButton.disabled).toBe(true)
-            expect(result.current?.description).toBe('$7,250 GMV influenced')
+            expect(result.current?.promoCardContent?.variant).toBe(
+                'lead-trial-progress',
+            )
+            expect(result.current?.promoCardContent?.primaryButton.label).toBe(
+                '',
+            )
+            expect(
+                result.current?.promoCardContent?.primaryButton.disabled,
+            ).toBe(true)
+            expect(result.current?.promoCardContent?.description).toBe(
+                '$7,250 GMV influenced',
+            )
         })
     })
 
@@ -813,13 +1040,22 @@ describe('useShoppingAssistantPromoCard', () => {
                     optedOutDatetime: undefined,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.showProgressBar).toBe(true)
-                expect(result.current?.progressPercentage).toBe(100)
-                expect(result.current?.progressText).toBe('14 days left')
+                expect(result.current?.promoCardContent?.showProgressBar).toBe(
+                    true,
+                )
+                expect(
+                    result.current?.promoCardContent?.progressPercentage,
+                ).toBe(100)
+                expect(result.current?.promoCardContent?.progressText).toBe(
+                    '14 days left',
+                )
             })
 
             it('should show 50% progress when 7 days remaining', () => {
@@ -831,12 +1067,19 @@ describe('useShoppingAssistantPromoCard', () => {
                     optedOutDatetime: undefined,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.progressPercentage).toBe(50)
-                expect(result.current?.progressText).toBe('7 days left')
+                expect(
+                    result.current?.promoCardContent?.progressPercentage,
+                ).toBe(50)
+                expect(result.current?.promoCardContent?.progressText).toBe(
+                    '7 days left',
+                )
             })
 
             it('should show 7% progress when 1 day remaining', () => {
@@ -848,12 +1091,19 @@ describe('useShoppingAssistantPromoCard', () => {
                     optedOutDatetime: undefined,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.progressPercentage).toBe(7)
-                expect(result.current?.progressText).toBe('1 day left')
+                expect(
+                    result.current?.promoCardContent?.progressPercentage,
+                ).toBe(7)
+                expect(result.current?.promoCardContent?.progressText).toBe(
+                    '1 day left',
+                )
             })
 
             it('should show 0% progress when 0 days remaining', () => {
@@ -865,12 +1115,19 @@ describe('useShoppingAssistantPromoCard', () => {
                     optedOutDatetime: undefined,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.progressPercentage).toBe(0)
-                expect(result.current?.progressText).toBe('Trial ends today')
+                expect(
+                    result.current?.promoCardContent?.progressPercentage,
+                ).toBe(0)
+                expect(result.current?.promoCardContent?.progressText).toBe(
+                    'Trial ends today',
+                )
             })
         })
 
@@ -882,27 +1139,41 @@ describe('useShoppingAssistantPromoCard', () => {
                     hasCurrentStoreTrialStarted: true,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.showProgressBar).toBe(true)
-                expect(result.current?.variant).toBe('admin-trial-progress')
+                expect(result.current?.promoCardContent?.showProgressBar).toBe(
+                    true,
+                )
+                expect(result.current?.promoCardContent?.variant).toBe(
+                    'admin-trial-progress',
+                )
             })
 
             it('should show progress bar during lead trial', () => {
                 mockUseShoppingAssistantTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: false,
-                    hasAnyTrialStarted: true,
+                    hasCurrentStoreTrialStarted: true,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.showProgressBar).toBe(true)
-                expect(result.current?.variant).toBe('lead-trial-progress')
+                expect(result.current?.promoCardContent?.showProgressBar).toBe(
+                    true,
+                )
+                expect(result.current?.promoCardContent?.variant).toBe(
+                    'lead-trial-progress',
+                )
             })
 
             it('should not show progress bar in pre-trial states', () => {
@@ -913,14 +1184,25 @@ describe('useShoppingAssistantPromoCard', () => {
                     hasAnyTrialStarted: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.showProgressBar).toBe(false)
-                expect(result.current?.progressPercentage).toBeUndefined()
-                expect(result.current?.progressText).toBeUndefined()
-                expect(result.current?.variant).toBe('admin-trial')
+                expect(result.current?.promoCardContent?.showProgressBar).toBe(
+                    false,
+                )
+                expect(
+                    result.current?.promoCardContent?.progressPercentage,
+                ).toBeUndefined()
+                expect(
+                    result.current?.promoCardContent?.progressText,
+                ).toBeUndefined()
+                expect(result.current?.promoCardContent?.variant).toBe(
+                    'admin-trial',
+                )
             })
         })
 
@@ -934,11 +1216,16 @@ describe('useShoppingAssistantPromoCard', () => {
                     optedOutDatetime: undefined,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.progressPercentage).toBe(100) // Max capped at 100
+                expect(
+                    result.current?.promoCardContent?.progressPercentage,
+                ).toBe(100) // Max capped at 100
             })
         })
     })
@@ -967,13 +1254,22 @@ describe('useShoppingAssistantPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.variant).toBe('admin-trial-progress')
-                expect(result.current?.primaryButton.label).toBe('Upgrade now')
-                expect(result.current?.primaryButton.disabled).toBe(false)
+                expect(result.current?.promoCardContent?.variant).toBe(
+                    'admin-trial-progress',
+                )
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('Upgrade now')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(false)
             })
 
             it('should show "Upgrade now" button when admin has opted out', () => {
@@ -989,29 +1285,41 @@ describe('useShoppingAssistantPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.primaryButton.label).toBe('Upgrade now')
-                expect(result.current?.primaryButton.disabled).toBe(false)
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('Upgrade now')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(false)
             })
 
             it('should show "Set Up Sales Strategy" button when GMV is below threshold and not opted out', () => {
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$1,000',
-                    gmvInfluencedRate: 0.02,
+                    gmvInfluencedRate: 0.002,
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.primaryButton.label).toBe(
-                    'Set Up Sales Strategy',
-                )
-                expect(result.current?.primaryButton.disabled).toBe(false)
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('Set Up Sales Strategy')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(false)
             })
 
             it('should disable "Upgrade now" button when metrics are loading', () => {
@@ -1021,12 +1329,19 @@ describe('useShoppingAssistantPromoCard', () => {
                     isLoading: true,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.primaryButton.label).toBe('Upgrade now')
-                expect(result.current?.primaryButton.disabled).toBe(true)
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('Upgrade now')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(true)
             })
 
             it('should show "Manage Trial" secondary button when not opted out', () => {
@@ -1036,14 +1351,19 @@ describe('useShoppingAssistantPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.secondaryButton?.label).toBe(
-                    'Manage Trial',
-                )
-                expect(result.current?.secondaryButton?.disabled).toBe(false)
+                expect(
+                    result.current?.promoCardContent?.secondaryButton?.label,
+                ).toBe('Manage Trial')
+                expect(
+                    result.current?.promoCardContent?.secondaryButton?.disabled,
+                ).toBe(false)
             })
 
             it('should hide secondary button when admin has opted out', () => {
@@ -1054,11 +1374,16 @@ describe('useShoppingAssistantPromoCard', () => {
                     hasCurrentStoreTrialOptedOut: true,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.secondaryButton).toBeUndefined()
+                expect(
+                    result.current?.promoCardContent?.secondaryButton,
+                ).toBeUndefined()
             })
         })
 
@@ -1079,44 +1404,67 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should show "Set Up Sales Strategy" button when GMV is below threshold', () => {
+                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                    ...baseTrialAccess,
+                    hasCurrentStoreTrialStarted: true,
+                })
+
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$1,200',
-                    gmvInfluencedRate: 0.03,
+                    gmvInfluencedRate: 0.003,
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.variant).toBe('lead-trial-progress')
-                expect(result.current?.primaryButton.label).toBe(
-                    'Set Up Sales Strategy',
+                expect(result.current?.promoCardContent?.variant).toBe(
+                    'lead-trial-progress',
                 )
-                expect(result.current?.primaryButton.disabled).toBe(false)
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('Set Up Sales Strategy')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(false)
             })
 
             it('should disable primary button when GMV is above threshold', () => {
+                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                    ...baseTrialAccess,
+                    hasCurrentStoreTrialStarted: true,
+                })
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$7,250',
                     gmvInfluencedRate: 0.82,
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.primaryButton.label).toBe('')
-                expect(result.current?.primaryButton.disabled).toBe(true)
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(true)
             })
 
             it('should disable primary button when lead has opted out', () => {
                 mockUseShoppingAssistantTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: false,
-                    hasAnyTrialStarted: true,
-                    hasAnyTrialOptedOut: true,
+                    hasCurrentStoreTrialStarted: true,
+                    hasCurrentStoreTrialOptedOut: true,
                 })
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$1,500',
@@ -1124,26 +1472,42 @@ describe('useShoppingAssistantPromoCard', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.primaryButton.label).toBe('')
-                expect(result.current?.primaryButton.disabled).toBe(true)
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(true)
             })
 
             it('should never show secondary button for lead trial progress', () => {
+                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                    ...baseTrialAccess,
+                    hasCurrentStoreTrialStarted: true,
+                })
                 mockUseTrialMetrics.mockReturnValue({
                     gmvInfluenced: '$1,200',
                     gmvInfluencedRate: 0.3,
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantPromoCard(),
+                const { result } = renderHook(
+                    () => useShoppingAssistantPromoCard(),
+                    {
+                        wrapper: createWrapper(),
+                    },
                 )
 
-                expect(result.current?.secondaryButton).toBeUndefined()
+                expect(
+                    result.current?.promoCardContent?.secondaryButton,
+                ).toBeUndefined()
             })
         })
     })

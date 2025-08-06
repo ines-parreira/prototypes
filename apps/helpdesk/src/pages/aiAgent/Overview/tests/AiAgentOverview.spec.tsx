@@ -21,6 +21,7 @@ import {
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
@@ -309,7 +310,11 @@ describe('AiAgentOverview', () => {
             expect(
                 queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeFalsy()
-            expect(queryByText('Try for 14 days')).toBeFalsy()
+            expect(
+                queryByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
+            ).toBeFalsy()
         })
 
         it('should render trial banner when canSeeTrialCTA is true', () => {
@@ -321,13 +326,17 @@ describe('AiAgentOverview', () => {
             expect(
                 queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeTruthy()
-            expect(queryByText('Try for 14 days')).toBeTruthy()
+            expect(
+                queryByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
+            ).toBeTruthy()
             expect(
                 queryByText('How AI Agent can 2x conversion rate'),
             ).toBeTruthy()
         })
 
-        it('should toggle isUpgradeTrialModalRevampOpen when Try for 14 days is clicked and closed', () => {
+        it('should toggle isUpgradeTrialModalRevampOpen when Try for X days is clicked and closed', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
             })
@@ -337,15 +346,19 @@ describe('AiAgentOverview', () => {
             // Modal should not be open initially
             expect(
                 queryByText(
-                    'Try the full power of AI Agent for 14 days at no additional cost',
+                    `Try the full power of AI Agent for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days at no additional cost`,
                 ),
             ).toBeFalsy()
 
             // Open the modal
-            fireEvent.click(getByText('Try for 14 days'))
+            fireEvent.click(
+                getByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
+            )
             expect(
                 queryByText(
-                    'Try the full power of AI Agent for 14 days at no additional cost',
+                    `Try the full power of AI Agent for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days at no additional cost`,
                 ),
             ).toBeTruthy()
 
@@ -353,7 +366,7 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getByText('Keep current plan'))
             expect(
                 queryByText(
-                    'Try the full power of AI Agent for 14 days at no additional cost',
+                    `Try the full power of AI Agent for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days at no additional cost`,
                 ),
             ).toBeFalsy()
         })
@@ -366,10 +379,14 @@ describe('AiAgentOverview', () => {
             const { getAllByText, queryByText } = renderComponent()
 
             // Open the modal
-            fireEvent.click(getAllByText('Try for 14 days')[0])
+            fireEvent.click(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            )
             expect(
                 queryByText(
-                    'Try the full power of AI Agent for 14 days at no additional cost',
+                    `Try the full power of AI Agent for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days at no additional cost`,
                 ),
             ).toBeTruthy()
 
@@ -386,7 +403,11 @@ describe('AiAgentOverview', () => {
             const { getAllByText, queryByText } = renderComponent()
 
             // Open the modal using the first "Try for 14 days" button (banner)
-            fireEvent.click(getAllByText('Try for 14 days')[0])
+            fireEvent.click(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            )
 
             // Check current plan details
             expect(queryByText('AI Agent')).toBeTruthy()
@@ -430,13 +451,21 @@ describe('AiAgentOverview', () => {
             const { getAllByText, getByText, queryByText } = renderComponent()
 
             // Verify both actions are available
-            expect(getAllByText('Try for 14 days')[0]).toBeTruthy()
+            expect(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            ).toBeTruthy()
             expect(
                 getByText('How AI Agent can 2x conversion rate'),
             ).toBeTruthy()
 
             // Test primary action multiple times
-            fireEvent.click(getAllByText('Try for 14 days')[0])
+            fireEvent.click(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            )
             expect(
                 queryByText(
                     'Try the full power of AI Agent for 14 days at no additional cost',
@@ -447,10 +476,14 @@ describe('AiAgentOverview', () => {
             fireEvent.click(getByText('Keep current plan'))
 
             // Open again
-            fireEvent.click(getAllByText('Try for 14 days')[0])
+            fireEvent.click(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            )
             expect(
                 queryByText(
-                    'Try the full power of AI Agent for 14 days at no additional cost',
+                    `Try the full power of AI Agent for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days at no additional cost`,
                 ),
             ).toBeTruthy()
         })
@@ -477,7 +510,11 @@ describe('AiAgentOverview', () => {
             const { getAllByText, queryByText } = renderComponent()
 
             // Open the modal
-            fireEvent.click(getAllByText('Try for 14 days')[0])
+            fireEvent.click(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            )
 
             // Check for new plan features instead of tooltip
             expect(
@@ -590,7 +627,11 @@ describe('AiAgentOverview', () => {
 
             // Open modal first - this test already assumes the component has rendered
             // and we're testing the transitions between modal states
-            fireEvent.click(getAllByText('Try for 14 days')[0])
+            fireEvent.click(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            )
             expect(
                 queryByText(
                     'Try the full power of AI Agent for 14 days at no additional cost',
@@ -606,10 +647,14 @@ describe('AiAgentOverview', () => {
             ).toBeFalsy()
 
             // Can open again after closing
-            fireEvent.click(getAllByText('Try for 14 days')[0])
+            fireEvent.click(
+                getAllByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                )[0],
+            )
             expect(
                 queryByText(
-                    'Try the full power of AI Agent for 14 days at no additional cost',
+                    `Try the full power of AI Agent for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days at no additional cost`,
                 ),
             ).toBeTruthy()
         })

@@ -98,6 +98,7 @@ export const AiAgentOverview = () => {
                 }
             />
 
+            {/* TODO: [AIFLY-547] remove banner */}
             {(canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted && (
                 <TrialAlertBanner {...trialModalProps.trialAlertBanner} />
             )}

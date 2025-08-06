@@ -21,6 +21,7 @@ import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { ProductType } from 'models/billing/types'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { RootState } from 'state/types'
@@ -417,7 +418,9 @@ describe('AiSalesAgentSalesOverview', () => {
             renderComponent()
 
             expect(
-                screen.getByText('Start 14-Day Trial At No Additional Cost'),
+                screen.getByText(
+                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                ),
             ).toBeInTheDocument()
         })
     })

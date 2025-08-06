@@ -1,20 +1,43 @@
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {
-    PromoCardVariant,
-    useShoppingAssistantPromoCard,
-} from '../hooks/useShoppingAssistantPromoCard'
-import type { PromoCardContent } from '../hooks/useShoppingAssistantPromoCard'
+import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
+import { useShoppingAssistantPromoCard } from '../hooks/useShoppingAssistantPromoCard'
 import { ShoppingAssistantPromoCard } from '../ShoppingAssistantPromoCard'
+import { PromoCardContent, PromoCardVariant } from '../types/ShoppingAssistant'
 
 jest.mock('../hooks/useShoppingAssistantPromoCard')
+jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 
 const mockUseShoppingAssistantPromoCard =
     useShoppingAssistantPromoCard as jest.MockedFunction<
         typeof useShoppingAssistantPromoCard
     >
+
+const mockUseTrialModalProps = useTrialModalProps as jest.MockedFunction<
+    typeof useTrialModalProps
+>
+
+const mockStore = configureMockStore()
+const queryClient = mockQueryClient()
+
+const renderComponent = (props?: any) => {
+    return render(
+        <Provider store={mockStore({})}>
+            <QueryClientProvider client={queryClient}>
+                <ShoppingAssistantPromoCard {...props} />
+            </QueryClientProvider>
+        </Provider>,
+    )
+}
 
 describe('ShoppingAssistantPromoCard', () => {
     const mockOnClick = jest.fn()
@@ -29,7 +52,7 @@ describe('ShoppingAssistantPromoCard', () => {
         showVideo: true,
         shouldShowNotificationIcon: false,
         primaryButton: {
-            label: 'Try for 14 days',
+            label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             onClick: mockOnClick,
         },
         secondaryButton: {
@@ -38,20 +61,81 @@ describe('ShoppingAssistantPromoCard', () => {
             onClick: mockSecondaryClick,
         },
         videoModalButton: {
-            label: 'Try for 14 days',
+            label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             onClick: mockVideoModalClick,
         },
     }
 
     beforeEach(() => {
         jest.resetAllMocks()
+
+        // Mock useTrialModalProps with minimal required properties
+        mockUseTrialModalProps.mockReturnValue({
+            trialUpgradePlanModal: {
+                title: 'Mock Trial Upgrade',
+                currentPlan: { name: 'Mock Current Plan', amount: '$100' },
+                newPlan: { name: 'Mock New Plan', amount: '$200' },
+            },
+            upgradePlanModal: {
+                title: 'Mock Upgrade Plan',
+                currentPlan: { name: 'Mock Current Plan', amount: '$100' },
+                newPlan: { name: 'Mock New Plan', amount: '$200' },
+            },
+            trialActivatedModal: {
+                title: 'Mock Trial Activated',
+            },
+            trialStartedBanner: {
+                title: 'Mock Trial Started',
+                description: 'Mock description',
+                primaryAction: { label: 'Mock Primary', onClick: jest.fn() },
+                secondaryAction: {
+                    label: 'Mock Secondary',
+                    onClick: jest.fn(),
+                },
+            },
+            trialAlertBanner: {
+                title: 'Mock Trial Alert',
+                description: 'Mock description',
+                primaryAction: { label: 'Mock Primary', onClick: jest.fn() },
+                secondaryAction: {
+                    label: 'Mock Secondary',
+                    onClick: jest.fn(),
+                },
+            },
+            manageTrialModal: {
+                description: 'Mock manage trial description',
+                advantages: [],
+                secondaryDescription: 'Mock secondary description',
+            },
+            trialFinishSetupModal: {
+                title: 'Mock Trial Finish Setup',
+                subtitle: 'Mock subtitle',
+                content: 'Mock content',
+                primaryAction: { label: 'Mock Primary', onClick: jest.fn() },
+            },
+            newTrialUpgradePlanModal: {
+                title: 'Mock New Trial Upgrade',
+                subtitle: 'Mock subtitle',
+                currentPlan: { name: 'Mock Current Plan', amount: '$100' },
+                newPlan: { name: 'Mock New Plan', amount: '$200' },
+                primaryAction: { label: 'Mock Primary', onClick: jest.fn() },
+                secondaryAction: {
+                    label: 'Mock Secondary',
+                    onClick: jest.fn(),
+                },
+                onClose: jest.fn(),
+            },
+        } as any)
     })
 
     describe('Null rendering', () => {
         it('should return null when hook returns null', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(null)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: null,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
 
-            const { container } = render(<ShoppingAssistantPromoCard />)
+            const { container } = renderComponent()
 
             expect(container.firstChild).toBeNull()
         })
@@ -80,10 +164,11 @@ describe('ShoppingAssistantPromoCard', () => {
         }
 
         it('should render trial progress content with progress bar', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                adminTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.getByText('Shopping Assistant Trial'),
@@ -93,10 +178,11 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render as collapsible card when in trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                adminTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             // Check for collapsible button which indicates it's a collapsible card
             const collapseButton = screen.getByLabelText('Collapse')
@@ -104,10 +190,11 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render upgrade and manage trial buttons', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                adminTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.getByRole('button', { name: /upgrade now/i }),
@@ -118,10 +205,11 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should not render video content during trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                adminTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.queryByAltText('Shopping Assistant Demo'),
@@ -149,10 +237,11 @@ describe('ShoppingAssistantPromoCard', () => {
         }
 
         it('should render trial progress content with progress bar but no CTAs', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                leadTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.getByText('Shopping Assistant Trial'),
@@ -162,10 +251,11 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render as collapsible card when in trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                leadTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             // Check for collapsible button which indicates it's a collapsible card
             const collapseButton = screen.getByLabelText('Collapse')
@@ -173,10 +263,11 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should not render any action buttons for lead users when no CTA available', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                leadTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             // Should not render primary/secondary buttons (excluding collapsible button)
             expect(
@@ -189,10 +280,11 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should not render video content during trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                leadTrialProgressContent,
-            )
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.queryByAltText('Shopping Assistant Demo'),
@@ -207,8 +299,11 @@ describe('ShoppingAssistantPromoCard', () => {
                 variant: PromoCardVariant.AdminTrial,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue(adminTrialContent)
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.getByText('Unlock new AI Agent skills'),
@@ -225,8 +320,11 @@ describe('ShoppingAssistantPromoCard', () => {
                 },
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue(adminDemoContent)
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminDemoContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.getByRole('link', { name: /book a demo/i }),
@@ -244,8 +342,11 @@ describe('ShoppingAssistantPromoCard', () => {
                 shouldShowNotificationIcon: true,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue(leadNotifyContent)
-            render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadNotifyContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
 
             expect(
                 screen.getByRole('button', { name: /notify admin/i }),
@@ -258,8 +359,11 @@ describe('ShoppingAssistantPromoCard', () => {
                 variant: PromoCardVariant.Hidden,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue(hiddenContent)
-            const { container } = render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: hiddenContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            const { container } = renderComponent()
 
             expect(container.firstChild).toBeNull()
         })
@@ -270,8 +374,11 @@ describe('ShoppingAssistantPromoCard', () => {
                 variant: 'unknown-variant' as PromoCardVariant,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue(unknownContent)
-            const { container } = render(<ShoppingAssistantPromoCard />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: unknownContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            const { container } = renderComponent()
 
             expect(container.firstChild).toBeNull()
         })
@@ -279,8 +386,13 @@ describe('ShoppingAssistantPromoCard', () => {
 
     describe('Props passing', () => {
         it('should pass className prop to child components', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue(basePromoContent)
-            render(<ShoppingAssistantPromoCard className="test-class" />)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: basePromoContent,
+                trialFlow: {
+                    isTrialModalOpen: false,
+                } as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent({ className: 'test-class' })
 
             // Verify className is passed to the rendered component
             const promoCard = screen
@@ -306,12 +418,11 @@ describe('ShoppingAssistantPromoCard', () => {
                 progressText: '5 days left',
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                adminTrialProgressContent,
-            )
-            render(
-                <ShoppingAssistantPromoCard className="admin-trial-progress" />,
-            )
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent({ className: 'admin-trial-progress' })
 
             // Verify all content from promoContent is rendered
             expect(
@@ -341,12 +452,11 @@ describe('ShoppingAssistantPromoCard', () => {
                 progressText: '8 days left',
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue(
-                leadTrialProgressContent,
-            )
-            render(
-                <ShoppingAssistantPromoCard className="lead-trial-progress" />,
-            )
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent({ className: 'lead-trial-progress' })
 
             // Verify all content from promoContent is rendered
             expect(
