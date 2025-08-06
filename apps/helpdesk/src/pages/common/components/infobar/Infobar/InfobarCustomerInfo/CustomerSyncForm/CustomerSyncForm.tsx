@@ -89,6 +89,7 @@ export default function CustomerSyncForm({
                 (store: Map<any, any>) => store.get('id') === formState.store,
             )
             ?.get('hasCustomerData')
+
         if (!isUpdate) {
             resetEmailState()
         }
@@ -126,6 +127,7 @@ export default function CustomerSyncForm({
                                   country_code: formState.countryCode,
                                   zip: formState.postalCode,
                                   province_code: formState.stateOrProvince,
+                                  phone: formState.defaultAddressPhone || null,
                               }
                             : undefined,
                     },
@@ -150,6 +152,7 @@ export default function CustomerSyncForm({
                                   country_code: formState.countryCode,
                                   zip: formState.postalCode,
                                   province_code: formState.stateOrProvince,
+                                  phone: formState.defaultAddressPhone || null,
                               }
                             : undefined,
                     },

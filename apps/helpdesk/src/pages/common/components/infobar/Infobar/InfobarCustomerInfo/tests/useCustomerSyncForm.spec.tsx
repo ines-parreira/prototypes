@@ -27,6 +27,7 @@ describe('useCustomerSyncForm', () => {
             city: '',
             postalCode: '',
             stateOrProvince: '',
+            defaultAddressPhone: '',
             deliveryAddressChecked: false,
         })
     })
@@ -62,6 +63,7 @@ describe('useCustomerSyncForm', () => {
             city: '',
             postalCode: '',
             stateOrProvince: '',
+            defaultAddressPhone: '',
             deliveryAddressChecked: false,
         })
     })

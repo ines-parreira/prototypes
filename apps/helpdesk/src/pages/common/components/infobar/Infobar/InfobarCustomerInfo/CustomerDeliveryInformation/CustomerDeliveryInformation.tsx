@@ -4,9 +4,10 @@ import { TextField } from '@gorgias/merchant-ui-kit'
 
 import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
 import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
-import ProvinceInput from 'pages/common/forms/ProvinceInput/ProvinceInput'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 import { FormState } from '../CustomerSyncForm/useCustomerSyncForm'
+import ProvinceInputNew from './ProvinceInputNew'
 
 import css from './CustomerDeliveryInformation.less'
 
@@ -28,6 +29,7 @@ export default function CustomerDeliveryInformation({
         (!formState.postalCode || formState.postalCode.length < 2)
     const hasStateOrProvinceError =
         performedValidation && !formState.stateOrProvince
+
     return (
         <>
             <CountryInput
@@ -78,19 +80,18 @@ export default function CustomerDeliveryInformation({
                 <TextField
                     name="city"
                     label="City"
-                    className={css.areaItem}
                     placeholder="New York City"
                     value={formState.city}
                     onChange={(city) => onChange({ city })}
                     error={hasCityError ? 'Please enter a city' : ''}
                 />
 
-                <ProvinceInput
+                <ProvinceInputNew
                     label="State"
                     name="stateOrProvince"
-                    className={css.areaItem}
+                    value={formState.stateOrProvince}
                     country={formState.country}
-                    onChange={(stateOrProvince) =>
+                    onChange={(stateOrProvince: string) =>
                         onChange({ stateOrProvince })
                     }
                     hasError={hasStateOrProvinceError}
@@ -101,13 +102,22 @@ export default function CustomerDeliveryInformation({
                 <TextField
                     name="zip"
                     label="ZIP/Postal code"
-                    className={css.areaItem}
                     placeholder="90210"
                     value={formState.postalCode}
                     onChange={(postalCode) => onChange({ postalCode })}
                     error={hasPostalCodeError ? 'Please enter a zip code' : ''}
                 />
             </div>
+            <PhoneNumberInput
+                name="defaultAddressPhone"
+                label="Phone number"
+                placeholder="000-000-0000"
+                className={css.inputField}
+                value={formState.defaultAddressPhone}
+                onChange={(defaultAddressPhone) =>
+                    onChange({ defaultAddressPhone })
+                }
+            />
         </>
     )
 }

@@ -1,9 +1,12 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Map } from 'immutable'
 import { CountryCode } from 'libphonenumber-js'
 
-import { getPhoneNumberFromActiveCustomer } from '../helpers'
+import {
+    getDefaultAddressInfoFromActiveCustomer,
+    getPhoneNumberFromActiveCustomer,
+} from '../helpers'
 
 const initialState: FormState = {
     store: NaN,
@@ -19,6 +22,7 @@ const initialState: FormState = {
     postalCode: '',
     stateOrProvince: '',
     deliveryAddressChecked: false,
+    defaultAddressPhone: '',
 }
 export type FormState = {
     store: number
@@ -34,6 +38,7 @@ export type FormState = {
     stateOrProvince: string
     postalCode: string
     deliveryAddressChecked: boolean
+    defaultAddressPhone: string
 }
 
 export const useCustomerSyncForm = (activeCustomer: Map<string, any>) => {
@@ -43,6 +48,20 @@ export const useCustomerSyncForm = (activeCustomer: Map<string, any>) => {
         email: activeCustomer.get('email'),
         phone: getPhoneNumberFromActiveCustomer(activeCustomer),
     })
+
+    useEffect(() => {
+        if (activeCustomer && formState.store) {
+            const defaultAddressInfo = getDefaultAddressInfoFromActiveCustomer(
+                activeCustomer,
+                formState.store,
+            )
+            setFormState((formState) => ({
+                ...formState,
+                ...defaultAddressInfo,
+            }))
+        }
+    }, [activeCustomer, formState.store])
+
     const onChange = (changes: Partial<FormState>) =>
         setFormState({ ...formState, ...changes })
 

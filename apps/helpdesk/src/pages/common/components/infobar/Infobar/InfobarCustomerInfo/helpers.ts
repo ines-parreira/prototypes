@@ -37,3 +37,25 @@ export function getPhoneNumberFromActiveCustomer(
         )
     return phoneIntegration?.get('address') || ''
 }
+
+export function getDefaultAddressInfoFromActiveCustomer(
+    activeCustomer: Map<any, any>,
+    storeIntegration: number,
+) {
+    const normalizedCustomer = activeCustomer.toJS()
+
+    const defaultAddress =
+        normalizedCustomer?.integrations?.[storeIntegration]?.customer
+            ?.default_address
+    return {
+        country: defaultAddress?.country ?? 'United States',
+        countryCode: defaultAddress?.country_code || 'US',
+        company: defaultAddress?.company || '',
+        address: defaultAddress?.address1 || '',
+        apartment: defaultAddress?.address2 || '',
+        city: defaultAddress?.city || '',
+        stateOrProvince: defaultAddress?.province || '',
+        postalCode: defaultAddress?.zip || '',
+        defaultAddressPhone: defaultAddress?.phone || '',
+    }
+}

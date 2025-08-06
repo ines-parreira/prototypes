@@ -1,11 +1,9 @@
 :local {
     .areaContainer {
-        display: flex;
+        display: grid;
         justify-content: space-between;
         gap: var(--layout-spacing-s);
-    }
-    .areaItem {
-        flex: 1;
+        grid-template-columns: repeat(3, 1fr);
     }
     .inputField {
         margin: 0 0 var(--layout-spacing-xs);
