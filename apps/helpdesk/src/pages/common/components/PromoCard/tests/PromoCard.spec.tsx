@@ -580,13 +580,14 @@ describe('PromoCard', () => {
                             alt="Test Video"
                             videoUrl={mockVideoUrl}
                         />
-                        <PromoCard.VideoModal videoUrl={mockVideoUrl}>
-                            <PromoCard.ActionButton
-                                label="Video End CTA"
-                                onClick={mockCtaClick}
-                                variant="primary"
-                            />
-                        </PromoCard.VideoModal>
+                        <PromoCard.VideoModal
+                            videoUrl={mockVideoUrl}
+                            ctaButton={{
+                                label: 'Video End CTA',
+                                onClick: mockCtaClick,
+                                variant: 'primary',
+                            }}
+                        />
                     </PromoCard.Media>
                 </PromoCard>,
             )
@@ -687,13 +688,14 @@ describe('PromoCard', () => {
                             alt="Test Video"
                             videoUrl={mockVideoUrl}
                         />
-                        <PromoCard.VideoModal videoUrl={mockVideoUrl}>
-                            <PromoCard.ActionButton
-                                label="Video End CTA"
-                                onClick={() => {}}
-                                variant="primary"
-                            />
-                        </PromoCard.VideoModal>
+                        <PromoCard.VideoModal
+                            videoUrl={mockVideoUrl}
+                            ctaButton={{
+                                label: 'Video End CTA',
+                                onClick: () => {},
+                                variant: 'primary',
+                            }}
+                        />
                     </PromoCard.Media>
                 </PromoCard>,
             )
@@ -751,6 +753,323 @@ describe('PromoCard', () => {
                         name: /close video modal/i,
                     }),
                 ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should auto-close modal when CTA button is clicked', async () => {
+            const mockCtaClick = jest.fn()
+
+            render(
+                <PromoCard>
+                    <PromoCard.Media>
+                        <PromoCard.VideoThumbnail
+                            poster={mockPoster}
+                            alt="Test Video"
+                            videoUrl={mockVideoUrl}
+                        />
+                        <PromoCard.VideoModal
+                            videoUrl={mockVideoUrl}
+                            ctaButton={{
+                                label: 'Auto Close CTA',
+                                onClick: mockCtaClick,
+                                variant: 'secondary',
+                            }}
+                        />
+                    </PromoCard.Media>
+                </PromoCard>,
+            )
+
+            // Open modal
+            const videoThumbnail = screen.getByRole('button', {
+                name: /test video/i,
+            })
+            await act(async () => {
+                await userEvent.click(videoThumbnail)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
+
+            // End video to show CTA
+            const video = screen.getByRole('dialog').querySelector('video')
+            act(() => {
+                fireEvent.ended(video!)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /auto close cta/i }),
+                ).toBeInTheDocument()
+            })
+
+            // Click CTA - should call onClick and close modal
+            const ctaButton = screen.getByRole('button', {
+                name: /auto close cta/i,
+            })
+            await act(async () => {
+                await userEvent.click(ctaButton)
+            })
+
+            expect(mockCtaClick).toHaveBeenCalledTimes(1)
+            await waitFor(() => {
+                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+            })
+        })
+
+        it('should render CTA button with all configuration options', async () => {
+            const mockIcon = () => <span data-testid="custom-icon">★</span>
+
+            render(
+                <PromoCard>
+                    <PromoCard.Media>
+                        <PromoCard.VideoThumbnail
+                            poster={mockPoster}
+                            alt="Test Video"
+                            videoUrl={mockVideoUrl}
+                        />
+                        <PromoCard.VideoModal
+                            videoUrl={mockVideoUrl}
+                            ctaButton={{
+                                label: 'Full Config CTA',
+                                onClick: jest.fn(),
+                                variant: 'primary',
+                                className: 'custom-cta-class',
+                                Icon: mockIcon,
+                                disabled: false,
+                            }}
+                        />
+                    </PromoCard.Media>
+                </PromoCard>,
+            )
+
+            // Open modal and end video
+            const videoThumbnail = screen.getByRole('button', {
+                name: /test video/i,
+            })
+            await act(async () => {
+                await userEvent.click(videoThumbnail)
+            })
+
+            const video = screen.getByRole('dialog').querySelector('video')
+            act(() => {
+                fireEvent.ended(video!)
+            })
+
+            await waitFor(() => {
+                const ctaButton = screen.getByRole('button', {
+                    name: /full config cta/i,
+                })
+                expect(ctaButton).toBeInTheDocument()
+                expect(ctaButton).toHaveClass('primary')
+                expect(ctaButton).toHaveClass('custom-cta-class')
+                expect(ctaButton).not.toBeDisabled()
+                expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
+            })
+        })
+
+        it('should render CTA button as external link when href is provided', async () => {
+            render(
+                <PromoCard>
+                    <PromoCard.Media>
+                        <PromoCard.VideoThumbnail
+                            poster={mockPoster}
+                            alt="Test Video"
+                            videoUrl={mockVideoUrl}
+                        />
+                        <PromoCard.VideoModal
+                            videoUrl={mockVideoUrl}
+                            ctaButton={{
+                                label: 'External Link CTA',
+                                href: 'https://example.com',
+                                target: '_blank',
+                                variant: 'ghost',
+                            }}
+                        />
+                    </PromoCard.Media>
+                </PromoCard>,
+            )
+
+            // Open modal and end video
+            const videoThumbnail = screen.getByRole('button', {
+                name: /test video/i,
+            })
+            await act(async () => {
+                await userEvent.click(videoThumbnail)
+            })
+
+            const video = screen.getByRole('dialog').querySelector('video')
+            act(() => {
+                fireEvent.ended(video!)
+            })
+
+            await waitFor(() => {
+                const ctaLink = screen.getByRole('link', {
+                    name: /external link cta/i,
+                })
+                expect(ctaLink).toBeInTheDocument()
+                expect(ctaLink).toHaveAttribute('href', 'https://example.com')
+                expect(ctaLink).toHaveAttribute('target', '_blank')
+                expect(ctaLink).toHaveClass('ghost')
+            })
+
+            // Click external link should still close modal
+            const ctaLink = screen.getByRole('link', {
+                name: /external link cta/i,
+            })
+            await act(async () => {
+                await userEvent.click(ctaLink)
+            })
+
+            await waitFor(() => {
+                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not show CTA when no ctaButton is provided', async () => {
+            render(
+                <PromoCard>
+                    <PromoCard.Media>
+                        <PromoCard.VideoThumbnail
+                            poster={mockPoster}
+                            alt="Test Video"
+                            videoUrl={mockVideoUrl}
+                        />
+                        <PromoCard.VideoModal videoUrl={mockVideoUrl} />
+                    </PromoCard.Media>
+                </PromoCard>,
+            )
+
+            // Open modal and end video
+            const videoThumbnail = screen.getByRole('button', {
+                name: /test video/i,
+            })
+            await act(async () => {
+                await userEvent.click(videoThumbnail)
+            })
+
+            const video = screen.getByRole('dialog').querySelector('video')
+            act(() => {
+                fireEvent.ended(video!)
+            })
+
+            // Only close button should be visible, no CTA
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /close video modal/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', { name: /cta/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should handle disabled CTA button correctly', async () => {
+            const mockCtaClick = jest.fn()
+
+            render(
+                <PromoCard>
+                    <PromoCard.Media>
+                        <PromoCard.VideoThumbnail
+                            poster={mockPoster}
+                            alt="Test Video"
+                            videoUrl={mockVideoUrl}
+                        />
+                        <PromoCard.VideoModal
+                            videoUrl={mockVideoUrl}
+                            ctaButton={{
+                                label: 'Disabled CTA',
+                                onClick: mockCtaClick,
+                                disabled: true,
+                            }}
+                        />
+                    </PromoCard.Media>
+                </PromoCard>,
+            )
+
+            // Open modal and end video
+            const videoThumbnail = screen.getByRole('button', {
+                name: /test video/i,
+            })
+            await act(async () => {
+                await userEvent.click(videoThumbnail)
+            })
+
+            const video = screen.getByRole('dialog').querySelector('video')
+            act(() => {
+                fireEvent.ended(video!)
+            })
+
+            await waitFor(() => {
+                const ctaButton = screen.getByRole('button', {
+                    name: /disabled cta/i,
+                })
+                expect(ctaButton).toBeDisabled()
+            })
+
+            // Try to click disabled button - should not trigger onClick or close modal
+            const ctaButton = screen.getByRole('button', {
+                name: /disabled cta/i,
+            })
+            await act(async () => {
+                await userEvent.click(ctaButton)
+            })
+
+            expect(mockCtaClick).not.toHaveBeenCalled()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+        })
+
+        it('should render CTA button as router link when to prop is provided', async () => {
+            render(
+                <MemoryRouter>
+                    <PromoCard>
+                        <PromoCard.Media>
+                            <PromoCard.VideoThumbnail
+                                poster={mockPoster}
+                                alt="Test Video"
+                                videoUrl={mockVideoUrl}
+                            />
+                            <PromoCard.VideoModal
+                                videoUrl={mockVideoUrl}
+                                ctaButton={{
+                                    label: 'Router Link CTA',
+                                    to: '/dashboard',
+                                    variant: 'secondary',
+                                }}
+                            />
+                        </PromoCard.Media>
+                    </PromoCard>
+                </MemoryRouter>,
+            )
+
+            // Open modal and end video
+            const videoThumbnail = screen.getByRole('button', {
+                name: /test video/i,
+            })
+            await act(async () => {
+                await userEvent.click(videoThumbnail)
+            })
+
+            const video = screen.getByRole('dialog').querySelector('video')
+            act(() => {
+                fireEvent.ended(video!)
+            })
+
+            await waitFor(() => {
+                const ctaLink = screen.getByText('Router Link CTA')
+                expect(ctaLink).toBeInTheDocument()
+                expect(ctaLink.tagName).toBe('A')
+                expect(ctaLink).toHaveClass('secondary')
+            })
+
+            // Click router link should still close modal
+            const ctaLink = screen.getByText('Router Link CTA')
+            await act(async () => {
+                await userEvent.click(ctaLink)
+            })
+
+            await waitFor(() => {
+                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
             })
         })
     })

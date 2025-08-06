@@ -46,24 +46,21 @@ export const AdminTrial: React.FC<AdminTrialProps> = ({
                             className={css.videoThumbnail}
                         />
 
-                        <PromoCard.VideoModal videoUrl={aiAgentPreviewVideo}>
-                            {videoModalButton && (
-                                <PromoCard.ActionButton
-                                    label={videoModalButton.label}
-                                    Icon={
-                                        shouldShowNotificationIcon
-                                            ? NotificationIcon
-                                            : undefined
-                                    }
-                                    href={videoModalButton.href}
-                                    target={videoModalButton.target}
-                                    onClick={videoModalButton.onClick}
-                                    variant="secondary"
-                                    className={css.videoModalCTA}
-                                    disabled={videoModalButton.disabled}
-                                />
-                            )}
-                        </PromoCard.VideoModal>
+                        <PromoCard.VideoModal
+                            videoUrl={aiAgentPreviewVideo}
+                            ctaButton={
+                                videoModalButton
+                                    ? {
+                                          ...videoModalButton,
+                                          Icon: shouldShowNotificationIcon
+                                              ? NotificationIcon
+                                              : undefined,
+                                          variant: 'secondary',
+                                          className: css.videoModalCTA,
+                                      }
+                                    : undefined
+                            }
+                        />
                     </PromoCard.Media>
                 )}
 

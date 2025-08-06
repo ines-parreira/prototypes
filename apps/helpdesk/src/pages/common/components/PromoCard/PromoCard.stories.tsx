@@ -147,21 +147,26 @@ export const VideoThumbnailWithVideoCallToAction: StoryFn = () => (
                     videoUrl={aiAgentPreviewVideo}
                     className="video-thumbnail"
                 />
-                <PromoCard.VideoModal videoUrl={aiAgentPreviewVideo}>
-                    <PromoCard.ActionButton
-                        label="Try for 14 days"
-                        onClick={() => console.log('Video CTA clicked')}
-                        variant="secondary"
-                        className="custom-video-end-cta"
-                    />
-                </PromoCard.VideoModal>
+                <PromoCard.VideoModal
+                    videoUrl={aiAgentPreviewVideo}
+                    ctaButton={{
+                        label: 'Try for 14 days',
+                        onClick: () =>
+                            console.log(
+                                'Video CTA clicked - modal will auto-close',
+                            ),
+                        variant: 'secondary',
+                        className: 'custom-video-end-cta',
+                    }}
+                />
             </PromoCard.Media>
             <PromoCard.Content>
                 <PromoCard.Header>
                     <PromoCard.Title>Shopping Assistant</PromoCard.Title>
                     <PromoCard.Description>
                         Watch the demo to see how our AI assistant can transform
-                        your customer experience
+                        your customer experience. The CTA button automatically
+                        closes the modal.
                     </PromoCard.Description>
                 </PromoCard.Header>
                 <PromoCard.Actions>
@@ -209,6 +214,116 @@ export const VideoThumbnailWithVideoCallToAction: StoryFn = () => (
             }
         `}</style>
     </>
+)
+
+export const VideoWithExternalLinkCTA: StoryFn = () => (
+    <>
+        <PromoCard>
+            <PromoCard.Media
+                style={{
+                    background:
+                        'linear-gradient(296deg, rgba(210, 155, 255, 0.10) 29.82%, rgba(235, 139, 76, 0.10) 63.34%)',
+                }}
+            >
+                <PromoCard.VideoThumbnail
+                    poster={preTrialBannerThumbnail}
+                    alt="Demo Video"
+                    videoUrl={aiAgentPreviewVideo}
+                    className="video-thumbnail"
+                />
+                <PromoCard.VideoModal
+                    videoUrl={aiAgentPreviewVideo}
+                    ctaButton={{
+                        label: 'Visit Our Website',
+                        href: 'https://gorgias.com',
+                        target: '_blank',
+                    }}
+                />
+            </PromoCard.Media>
+            <PromoCard.Content>
+                <PromoCard.Header>
+                    <PromoCard.Title>
+                        Video with External Link CTA
+                    </PromoCard.Title>
+                    <PromoCard.Description>
+                        The CTA at the end of the video is an external link.
+                    </PromoCard.Description>
+                </PromoCard.Header>
+            </PromoCard.Content>
+        </PromoCard>
+        <style>{`
+            .video-thumbnail {
+                min-height: 109px;
+                position: relative;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+            .video-thumbnail img {
+                width: 148px;
+                height: 124px;
+                position: absolute;
+                bottom: -24px;
+            }
+        `}</style>
+    </>
+)
+
+export const VideoWithInternalLinkCTA: StoryFn = () => (
+    <MemoryRouter>
+        <PromoCard>
+            <PromoCard.Media
+                style={{
+                    background:
+                        'linear-gradient(296deg, rgba(210, 155, 255, 0.10) 29.82%, rgba(235, 139, 76, 0.10) 63.34%)',
+                }}
+            >
+                <PromoCard.VideoThumbnail
+                    poster={preTrialBannerThumbnail}
+                    alt="Demo Video"
+                    videoUrl={aiAgentPreviewVideo}
+                    className="video-thumbnail"
+                />
+                <PromoCard.VideoModal
+                    videoUrl={aiAgentPreviewVideo}
+                    ctaButton={{
+                        label: 'Go to Settings',
+                        to: '/settings',
+                    }}
+                />
+            </PromoCard.Media>
+            <PromoCard.Content>
+                <PromoCard.Header>
+                    <PromoCard.Title>
+                        Video with Internal Link CTA
+                    </PromoCard.Title>
+                    <PromoCard.Description>
+                        The CTA at the end of the video is an internal router
+                        link.
+                    </PromoCard.Description>
+                </PromoCard.Header>
+            </PromoCard.Content>
+        </PromoCard>
+        <style>{`
+            .video-thumbnail {
+                min-height: 109px;
+                position: relative;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+            .video-thumbnail img {
+                width: 148px;
+                height: 124px;
+                position: absolute;
+                bottom: -24px;
+            }
+        `}</style>
+    </MemoryRouter>
 )
 
 export const ImageSingleCallToAction: StoryFn = () => (

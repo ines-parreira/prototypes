@@ -369,6 +369,7 @@ const ActionButton = ({
                 target={target}
                 rel={target === '_blank' ? 'noopener noreferrer' : undefined}
                 className={baseClassName}
+                onClick={onClick}
             >
                 {content}
             </a>
@@ -378,7 +379,7 @@ const ActionButton = ({
     // Internal router link
     if (to) {
         return (
-            <Link to={to} className={baseClassName}>
+            <Link to={to} className={baseClassName} onClick={onClick}>
                 {content}
             </Link>
         )
@@ -399,20 +400,20 @@ const ActionButton = ({
 
 interface VideoModalProps {
     videoUrl: string
-    children?: React.ReactNode // Content to display when video ends (e.g., ActionButton)
+    ctaButton?: {
+        label: string
+        onClick?: () => void
+        href?: string
+        to?: string
+        target?: string
+        variant?: 'primary' | 'secondary' | 'ghost'
+        disabled?: boolean
+        Icon?: React.ComponentType<{ className?: string }>
+        className?: string
+    }
 }
 
-/**
- * VideoModal displays a video in a modal overlay.
- * Any children passed to this component will be shown centered on the screen
- * when the video ends. Typically used with ActionButton for CTAs.
- *
- * @example
- * <VideoModal videoUrl="video.mp4">
- *   <ActionButton label="Start Trial" onClick={handleClick} />
- * </VideoModal>
- */
-const VideoModal = ({ videoUrl, children }: VideoModalProps) => {
+const VideoModal = ({ videoUrl, ctaButton }: VideoModalProps) => {
     const { showVideoModal, setShowVideoModal } = usePromoCardContext()
     const [showCTA, setShowCTA] = useState(false)
 
@@ -453,6 +454,15 @@ const VideoModal = ({ videoUrl, children }: VideoModalProps) => {
         }
     }
 
+    const handleClick = () => {
+        if (ctaButton && ctaButton.onClick) {
+            ctaButton.onClick()
+        }
+
+        // Always close the modal
+        handleCloseModal()
+    }
+
     return createPortal(
         <div
             className={css.videoModalContainer}
@@ -485,8 +495,20 @@ const VideoModal = ({ videoUrl, children }: VideoModalProps) => {
                     onEnded={handleVideoEnd}
                     onTimeUpdate={handleTimeUpdate}
                 />
-                {showCTA && children && (
-                    <div className={css.videoCTAOverlay}>{children}</div>
+                {showCTA && ctaButton && (
+                    <div className={css.videoCTAOverlay}>
+                        <ActionButton
+                            label={ctaButton.label}
+                            onClick={handleClick}
+                            href={ctaButton.href}
+                            to={ctaButton.to}
+                            target={ctaButton.target}
+                            variant={ctaButton.variant || 'secondary'}
+                            disabled={ctaButton.disabled}
+                            Icon={ctaButton.Icon}
+                            className={ctaButton.className}
+                        />
+                    </div>
                 )}
             </div>
         </div>,
