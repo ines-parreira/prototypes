@@ -325,7 +325,7 @@ export default function ShopifyProductLine({
 
                                     return (
                                         <ListGroupItem
-                                            key={result.id}
+                                            key={result.external_id}
                                             tag="button"
                                             id={'resultRow'.concat(
                                                 index.toString(),
