@@ -11,8 +11,9 @@ import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
-import { TrialEndingTomorrowModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
+import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
+import TrialOptOutModal from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
@@ -29,6 +30,7 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner')
 jest.mock('pages/aiAgent/trial/components/TrialManageModal/TrialManageModal')
 jest.mock('pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal')
+jest.mock('pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal')
 jest.mock('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
 jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
@@ -184,7 +186,54 @@ describe('TrialManageWorkflow', () => {
                 <button onClick={props.onClose}>Close</button>
             </div>
         ))
-        ;(TrialEndingTomorrowModal as jest.Mock).mockImplementation(() => null)
+        ;(TrialEndingModal as jest.Mock).mockImplementation(() => null)
+        ;(TrialOptOutModal as jest.Mock).mockImplementation((props: any) =>
+            props.isOpen ? (
+                <div data-testid="trial-opt-out-modal">
+                    <h2>Opt out of upgrade?</h2>
+                    <p>
+                        You won't be automatically upgraded when your trial
+                        ends, and you'll keep full access to Shopping Assistant
+                        until then.
+                    </p>
+                    <button
+                        onClick={() => {
+                            mockLogEvent(
+                                'ai-agent/trial-opt-out-modal-clicked',
+                                { CTA: 'Dismiss' },
+                            )
+                            props.onClose(false)
+                        }}
+                    >
+                        Request Trial Extension
+                    </button>
+                    <button
+                        onClick={() => {
+                            mockLogEvent(
+                                'ai-agent/trial-opt-out-modal-clicked',
+                                { CTA: 'Confirm' },
+                            )
+                            mockOptOutMutate([], {
+                                onSuccess: () => props.onClose(false),
+                            })
+                        }}
+                    >
+                        Opt Out Anyway
+                    </button>
+                    <button
+                        onClick={() => {
+                            mockLogEvent(
+                                'ai-agent/trial-opt-out-modal-clicked',
+                                { CTA: 'Close' },
+                            )
+                            props.onClose(false)
+                        }}
+                    >
+                        <span className="material-icons">close</span>
+                    </button>
+                </div>
+            ) : null,
+        )
         ;(UpgradePlanModal as jest.Mock).mockImplementation(() => null)
     })
 
@@ -1262,6 +1311,52 @@ describe('TrialManageWorkflow', () => {
                 pathname: '/test-path',
                 search: 'existingParam=value&anotherParam=test&showOptOutFeedback=true',
             })
+        })
+
+        it('does not update URL when trialRequestSent is true', async () => {
+            // Enable the feature flag to use the new modal
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.ShoppingAssistantDuringTrial]: true,
+            }))
+            ;(TrialOptOutModal as jest.Mock).mockImplementation((props: any) =>
+                props.isOpen ? (
+                    <div data-testid="trial-opt-out-modal">
+                        <h2>Opt out of upgrade?</h2>
+                        <button
+                            onClick={() => {
+                                mockLogEvent(
+                                    'ai-agent/trial-opt-out-modal-clicked',
+                                    { CTA: 'Trial Extension Requested' },
+                                )
+                                props.onClose(true) // trialRequestSent = true
+                            }}
+                        >
+                            Request Trial Extension
+                        </button>
+                    </div>
+                ) : null,
+            )
+
+            const user = userEvent.setup()
+            render(
+                <TrialManageWorkflow
+                    pageName="Strategy"
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const optOutButton = screen.getByText('Opt Out')
+            await act(async () => {
+                await user.click(optOutButton)
+            })
+
+            const requestExtensionButton = screen.getByText(
+                'Request Trial Extension',
+            )
+            await user.click(requestExtensionButton)
+
+            // Verify URL was NOT updated (mockPush should not be called)
+            expect(mockPush).not.toHaveBeenCalled()
         })
     })
 })

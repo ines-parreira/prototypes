@@ -428,6 +428,7 @@ export enum SegmentEvent {
     PricingModalClicked = 'ai-agent/pricing-modal-clicked',
     TrialBannerSettingsViewed = 'ai-agent/trial-banner-settings-viewed',
     TrialBannerSettingsClicked = 'ai-agent/trial-banner-settings-clicked',
+    TrialManageTrialExtensionRequestClicked = 'ai-agent/trial-manage-banner-trial-extension-requested',
     TrialOptOutModalClicked = 'ai-agent/trial-opt-out-modal-clicked',
     TrialSystemWideBannerCTAClicked = 'ai-agent/trial-system-wide-banner-cta-clicked',
     TrialSystemWideBannerViewed = 'ai-agent/trial-system-wide-banner-viewed',

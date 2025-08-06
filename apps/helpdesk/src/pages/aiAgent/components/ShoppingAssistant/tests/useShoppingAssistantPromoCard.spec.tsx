@@ -107,6 +107,7 @@ describe('useShoppingAssistantPromoCard', () => {
         isTrialRequestModalOpen: false,
         openTrialRequestModal: jest.fn(),
         closeTrialRequestModal: jest.fn(),
+        onRequestTrialExtension: jest.fn(),
     }
     const baseTrialAccess = {
         canSeeTrialCTA: false,

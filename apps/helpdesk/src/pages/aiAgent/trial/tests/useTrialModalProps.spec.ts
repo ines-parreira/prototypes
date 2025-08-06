@@ -66,6 +66,33 @@ const getTrialEndTime = (remainingDays: number): string => {
     return moment().add(remainingDays, 'days').toISOString()
 }
 
+const defaultMockUseShoppingAssistantTrialFlow = {
+    openManageTrialModal: jest.fn(),
+    openUpgradePlanModal: jest.fn(),
+    openTrialUpgradeModal: jest.fn(),
+    closeManageTrialModal: jest.fn(),
+    closeTrialUpgradeModal: jest.fn(),
+    closeUpgradePlanModal: jest.fn(),
+    closeSuccessModal: jest.fn(),
+    startTrial: jest.fn(),
+    onConfirmTrial: jest.fn(),
+    isLoading: false,
+    isTrialModalOpen: false,
+    isSuccessModalOpen: false,
+    isManageTrialModalOpen: false,
+    isUpgradePlanModalOpen: false,
+    onDismissTrialUpgradeModal: jest.fn(),
+    onDismissUpgradePlanModal: jest.fn(),
+    revampStartTrial: jest.fn(),
+    isTrialFinishSetupModalOpen: false,
+    closeTrialFinishSetupModal: jest.fn(),
+    openTrialFinishSetupModal: jest.fn(),
+    isTrialRequestModalOpen: false,
+    openTrialRequestModal: jest.fn(),
+    closeTrialRequestModal: jest.fn(),
+    onRequestTrialExtension: jest.fn(),
+}
+
 describe('useTrialModalProps', () => {
     function renderHookWithRouter<T>(
         callback: (...args: any[]) => T,
@@ -209,31 +236,9 @@ describe('useTrialModalProps', () => {
             activation: jest.fn(),
         })
 
-        mockUseShoppingAssistantTrialFlow.mockReturnValue({
-            openManageTrialModal: jest.fn(),
-            openUpgradePlanModal: jest.fn(),
-            openTrialUpgradeModal: jest.fn(),
-            closeManageTrialModal: jest.fn(),
-            closeTrialUpgradeModal: jest.fn(),
-            closeUpgradePlanModal: jest.fn(),
-            closeSuccessModal: jest.fn(),
-            startTrial: jest.fn(),
-            onConfirmTrial: jest.fn(),
-            isLoading: false,
-            isTrialModalOpen: false,
-            isSuccessModalOpen: false,
-            isManageTrialModalOpen: false,
-            isUpgradePlanModalOpen: false,
-            onDismissTrialUpgradeModal: jest.fn(),
-            onDismissUpgradePlanModal: jest.fn(),
-            revampStartTrial: jest.fn(),
-            isTrialFinishSetupModalOpen: false,
-            closeTrialFinishSetupModal: jest.fn(),
-            openTrialFinishSetupModal: jest.fn(),
-            isTrialRequestModalOpen: false,
-            openTrialRequestModal: jest.fn(),
-            closeTrialRequestModal: jest.fn(),
-        })
+        mockUseShoppingAssistantTrialFlow.mockReturnValue(
+            defaultMockUseShoppingAssistantTrialFlow,
+        )
     })
 
     describe('useTrialUpgradePlanModal', () => {
@@ -1048,29 +1053,8 @@ describe('useTrialModalProps', () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                openManageTrialModal: jest.fn(),
+                ...defaultMockUseShoppingAssistantTrialFlow,
                 openUpgradePlanModal: mockOpenUpgradePlanModal,
-                openTrialUpgradeModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                closeTrialUpgradeModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                startTrial: jest.fn(),
-                onConfirmTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                isManageTrialModalOpen: false,
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-                revampStartTrial: jest.fn(),
-                isTrialFinishSetupModalOpen: false,
-                closeTrialFinishSetupModal: jest.fn(),
-                openTrialFinishSetupModal: jest.fn(),
-                isTrialRequestModalOpen: false,
-                openTrialRequestModal: jest.fn(),
-                closeTrialRequestModal: jest.fn(),
             })
 
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
@@ -1102,29 +1086,8 @@ describe('useTrialModalProps', () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                openManageTrialModal: jest.fn(),
+                ...defaultMockUseShoppingAssistantTrialFlow,
                 openUpgradePlanModal: mockOpenUpgradePlanModal,
-                openTrialUpgradeModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                closeTrialUpgradeModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                startTrial: jest.fn(),
-                onConfirmTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                isManageTrialModalOpen: false,
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-                revampStartTrial: jest.fn(),
-                isTrialFinishSetupModalOpen: false,
-                closeTrialFinishSetupModal: jest.fn(),
-                openTrialFinishSetupModal: jest.fn(),
-                isTrialRequestModalOpen: false,
-                openTrialRequestModal: jest.fn(),
-                closeTrialRequestModal: jest.fn(),
             })
 
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
@@ -1164,31 +1127,9 @@ describe('useTrialModalProps', () => {
                 isError: false,
             })
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                openManageTrialModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                closeTrialUpgradeModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                startTrial: jest.fn(),
-                onConfirmTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                isManageTrialModalOpen: false,
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-                revampStartTrial: jest.fn(),
-                isTrialFinishSetupModalOpen: false,
-                closeTrialFinishSetupModal: jest.fn(),
-                openTrialFinishSetupModal: jest.fn(),
-                isTrialRequestModalOpen: false,
-                openTrialRequestModal: jest.fn(),
-                closeTrialRequestModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                defaultMockUseShoppingAssistantTrialFlow,
+            )
 
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 hasAnyTrialStarted: true,

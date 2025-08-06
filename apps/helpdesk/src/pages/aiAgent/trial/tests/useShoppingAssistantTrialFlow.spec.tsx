@@ -6,20 +6,44 @@ import { act, renderHook } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
+import { logEvent } from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
+import { useNotifyTrialExtensionSlackChannel } from '../hooks/useNotifyTrialExtensionSlackChannel'
 import { useShoppingAssistantTrialFlow } from '../hooks/useShoppingAssistantTrialFlow'
 import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssistantTrial'
 
 // Mock the useStartShoppingAssistantTrial hook
 jest.mock('../hooks/useStartShoppingAssistantTrial')
+jest.mock('../hooks/useNotifyTrialExtensionSlackChannel')
 jest.mock('hooks/useModalManager')
+jest.mock('common/segment')
+jest.mock('hooks/useAppDispatch')
+jest.mock('state/notifications/actions')
 
 const mockUseStartShoppingAssistantTrial = assumeMock(
     useStartShoppingAssistantTrial,
 )
 const mockUseModalManager = assumeMock(useModalManager)
+const mockUseNotifyTrialExtensionSlackChannel = assumeMock(
+    useNotifyTrialExtensionSlackChannel,
+)
+const mockLogEvent = assumeMock(logEvent)
+const mockNotify = assumeMock(notify)
+const mockUseAppDispatch = assumeMock(useAppDispatch)
+
+const mockDispatch = jest.fn()
+const mockNotifySlackChannel = jest.fn()
+
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn(),
+}))
 
 describe('useShoppingAssistantTrialFlow', () => {
     const mockAccountDomain = 'test-domain'
@@ -47,6 +71,12 @@ describe('useShoppingAssistantTrialFlow', () => {
             on: jest.fn(),
         }
         mockUseModalManager.mockReturnValue(mockModalManager)
+
+        mockUseNotifyTrialExtensionSlackChannel.mockReturnValue(
+            mockNotifySlackChannel,
+        )
+
+        mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         // Create a new QueryClient for each test
         queryClient = new QueryClient({
@@ -360,6 +390,74 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // Callback should be called once per closeUpgradeModal call
             expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(3)
+        })
+    })
+
+    describe('onRequestTrialExtension', () => {
+        it('should handle successful trial extension request', async () => {
+            mockNotifySlackChannel.mockResolvedValue(true)
+
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                    }),
+                { wrapper },
+            )
+
+            const success = await act(async () => {
+                return await result.current.onRequestTrialExtension()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/trial-manage-banner-trial-extension-requested',
+                {
+                    CTA: 'Request Trial Extension',
+                },
+            )
+            expect(mockNotifySlackChannel).toHaveBeenCalledTimes(1)
+            expect(mockDispatch).toHaveBeenCalledWith(
+                mockNotify({
+                    status: NotificationStatus.Success,
+                    message:
+                        "We've received your trial extension request! Our team will review it and get back to you within 2 days via email.",
+                }),
+            )
+            expect(success).toBe(true)
+        })
+
+        it('should handle failed trial extension request', async () => {
+            mockNotifySlackChannel.mockResolvedValue(false)
+
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                    }),
+                { wrapper },
+            )
+
+            const success = await act(async () => {
+                return await result.current.onRequestTrialExtension()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/trial-manage-banner-trial-extension-requested',
+                {
+                    CTA: 'Request Trial Extension',
+                },
+            )
+            expect(mockNotifySlackChannel).toHaveBeenCalledTimes(1)
+            expect(mockDispatch).toHaveBeenCalledWith(
+                mockNotify({
+                    status: NotificationStatus.Error,
+                    message:
+                        "We couldn't send your trial extension request. Please try again later or contact our billing team via chat or email.",
+                }),
+            )
+            expect(success).toBe(false)
         })
     })
 

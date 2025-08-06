@@ -21,7 +21,7 @@ import {
 } from 'pages/aiAgent/trial/components/ModalWrapper'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal'
-import { TrialEndingTomorrowModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
+import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import TrialOptOutModal from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
@@ -67,6 +67,7 @@ export const TrialManageWorkflow = ({
         isUpgradePlanModalOpen,
         openTrialUpgradeModal,
         closeUpgradePlanModal,
+        onRequestTrialExtension,
     } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
@@ -91,8 +92,12 @@ export const TrialManageWorkflow = ({
         storeName: storeConfiguration.storeName,
     })
 
-    const onCloseOptOutModal = () => {
+    const onCloseOptOutModal = (extendTrialRequestSent: boolean) => {
         setIsOptOutModalOpen(false)
+
+        if (extendTrialRequestSent) {
+            return
+        }
 
         // Add showOptOutFeedback=true to URL
         const newUrlParams = new URLSearchParams(location.search)
@@ -162,17 +167,22 @@ export const TrialManageWorkflow = ({
                 <TrialOptOutModal
                     isOpen={isOptOutModalOpen}
                     onClose={onCloseOptOutModal}
+                    onRequestTrialExtension={onRequestTrialExtension}
                 />
             )}
 
-            <TrialEndingTomorrowModal storeConfiguration={storeConfiguration} />
+            <TrialEndingModal storeConfiguration={storeConfiguration} />
 
             <TrialEndedModal storeConfiguration={storeConfiguration} />
         </>
     )
 }
 
-export const TrialOptOutModalOld = ({ onClose }: { onClose: () => void }) => {
+export const TrialOptOutModalOld = ({
+    onClose,
+}: {
+    onClose: (trialRequestSent: boolean) => void
+}) => {
     const optOutMutation = useOptOutSalesTrialUpgradeMutation()
 
     const onOptOutClick = () => {
@@ -181,7 +191,7 @@ export const TrialOptOutModalOld = ({ onClose }: { onClose: () => void }) => {
         })
         optOutMutation.mutate([], {
             onSuccess: () => {
-                onClose()
+                onClose(false)
             },
         })
     }
@@ -190,14 +200,14 @@ export const TrialOptOutModalOld = ({ onClose }: { onClose: () => void }) => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Dismiss',
         })
-        onClose()
+        onClose(false)
     }
 
     const onCloseModal = () => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Close',
         })
-        onClose()
+        onClose(false)
     }
 
     return (

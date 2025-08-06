@@ -3,11 +3,15 @@ import { useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useModalManager } from 'hooks/useModalManager'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
+import { useNotifyTrialExtensionSlackChannel } from './useNotifyTrialExtensionSlackChannel'
 import { useStartShoppingAssistantTrial } from './useStartShoppingAssistantTrial'
 
 type UseShoppingAssistantTrialFlowProps = {
@@ -23,6 +27,11 @@ const SUCCESS_MODAL_NAME = 'ShoppingAssistantSuccessModal'
 const MANAGE_TRIAL_MODAL_NAME = 'ShoppingAssistantManageTrialModal'
 const TRIAL_FINISH_SETUP_MODAL_NAME = 'ShoppingAssistantTrialFinishSetupModal'
 const TRIAL_REQUEST_MODAL_NAME = 'ShoppingAssistantTrialRequestModal'
+
+const NOTIFY_SUCCESS_MESSAGE =
+    "We've received your trial extension request! Our team will review it and get back to you within 2 days via email."
+const NOTIFY_ERROR_MESSAGE =
+    "We couldn't send your trial extension request. Please try again later or contact our billing team via chat or email."
 
 // TODO: [AIFLY-547] remove startTrial
 export type UseShoppingAssistantTrialFlowReturn = {
@@ -49,6 +58,7 @@ export type UseShoppingAssistantTrialFlowReturn = {
     openTrialFinishSetupModal: () => void
     openTrialRequestModal: () => void
     closeTrialRequestModal: () => void
+    onRequestTrialExtension: () => Promise<boolean>
 }
 
 export const useShoppingAssistantTrialFlow = ({
@@ -80,7 +90,9 @@ export const useShoppingAssistantTrialFlow = ({
         autoDestroy: false,
     })
 
+    const dispatch = useAppDispatch()
     const history = useHistory()
+    const notifySlackChannel = useNotifyTrialExtensionSlackChannel()
 
     const shopName = useMemo(
         () => getShopNameFromStoreActivations(storeActivations),
@@ -216,6 +228,31 @@ export const useShoppingAssistantTrialFlow = ({
         trialRequestModal.closeModal(TRIAL_REQUEST_MODAL_NAME)
     }
 
+    const onRequestTrialExtension = (): Promise<boolean> => {
+        logEvent(SegmentEvent.TrialManageTrialExtensionRequestClicked, {
+            CTA: 'Request Trial Extension',
+        })
+        return notifySlackChannel().then((isSent) => {
+            if (isSent) {
+                dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: NOTIFY_SUCCESS_MESSAGE,
+                    }),
+                )
+                return true
+            }
+
+            dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: NOTIFY_ERROR_MESSAGE,
+                }),
+            )
+            return false
+        })
+    }
+
     return {
         startTrial,
         revampStartTrial,
@@ -246,5 +283,6 @@ export const useShoppingAssistantTrialFlow = ({
         ),
         openTrialRequestModal,
         closeTrialRequestModal,
+        onRequestTrialExtension,
     }
 }

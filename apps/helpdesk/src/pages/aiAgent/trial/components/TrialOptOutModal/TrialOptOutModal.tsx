@@ -48,35 +48,41 @@ const FeaturesList = memo(() => {
 
 export type TrialOptOutModalProps = {
     isOpen: boolean
-    onClose: () => void
+    onClose: (extendTrialRequestSent: boolean) => void
+    onRequestTrialExtension: () => Promise<boolean>
 }
 
-const TrialOptOutModal = ({ isOpen, onClose }: TrialOptOutModalProps) => {
+const TrialOptOutModal = ({
+    isOpen,
+    onClose,
+    onRequestTrialExtension,
+}: TrialOptOutModalProps) => {
     const optOutMutation = useOptOutSalesTrialUpgradeMutation()
 
     const onOptOutClick = useCallback(() => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
-            CTA: 'Confirm',
+            CTA: DESTRUCTIVE_ACTION,
         })
         optOutMutation.mutate([], {
             onSuccess: () => {
-                onClose()
+                onClose(false)
             },
         })
     }, [optOutMutation, onClose])
 
-    const onDismissClick = useCallback(() => {
-        logEvent(SegmentEvent.TrialOptOutModalClicked, {
-            CTA: 'Dismiss',
+    const onRequestTrialExtensionClick = useCallback(() => {
+        onRequestTrialExtension().then((isSent) => {
+            if (isSent) {
+                onClose(true)
+            }
         })
-        onClose()
-    }, [onClose])
+    }, [onClose, onRequestTrialExtension])
 
     const onCloseModal = useCallback(() => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Close',
         })
-        onClose()
+        onClose(false)
     }, [onClose])
 
     return (
@@ -86,7 +92,7 @@ const TrialOptOutModal = ({ isOpen, onClose }: TrialOptOutModalProps) => {
             title={TITLE}
             onClose={onCloseModal}
             onOptOut={onOptOutClick}
-            onDismiss={onDismissClick}
+            onDismiss={onRequestTrialExtensionClick}
         >
             <OptOutModal.Body>
                 <Intro />

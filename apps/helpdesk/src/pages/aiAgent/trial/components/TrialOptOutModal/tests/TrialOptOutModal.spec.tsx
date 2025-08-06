@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
 import { logEvent } from 'common/segment/segment'
@@ -17,10 +17,12 @@ const mockUseOptOutSalesTrialUpgradeMutation =
 describe('TrialOptOutModal', () => {
     const mockOnClose = jest.fn()
     const mockMutate = jest.fn()
+    const mockOnRequestTrialExtension = jest.fn()
 
     const defaultProps = {
         isOpen: true,
         onClose: mockOnClose,
+        onRequestTrialExtension: mockOnRequestTrialExtension,
     }
 
     const mockMutation = {
@@ -120,7 +122,7 @@ describe('TrialOptOutModal', () => {
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialOptOutModalClicked,
                 {
-                    CTA: 'Confirm',
+                    CTA: 'Opt Out Anyway',
                 },
             )
             expect(mockMutate).toHaveBeenCalledWith([], {
@@ -128,7 +130,7 @@ describe('TrialOptOutModal', () => {
             })
         })
 
-        it('should call onClose when mutation succeeds', async () => {
+        it('should call onClose with false when mutation succeeds', async () => {
             const userEventSetup = user.setup()
             render(<TrialOptOutModal {...defaultProps} />)
 
@@ -141,32 +143,59 @@ describe('TrialOptOutModal', () => {
             const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
             onSuccessCallback()
 
-            expect(mockOnClose).toHaveBeenCalledTimes(1)
+            expect(mockOnClose).toHaveBeenCalledWith(false)
         })
     })
 
-    describe('when user clicks dismiss button', () => {
-        it('should log segment event and close modal', async () => {
+    describe('when user clicks request trial extension button', () => {
+        it('should call onRequestTrialExtension', async () => {
             const userEventSetup = user.setup()
+            mockOnRequestTrialExtension.mockResolvedValue(true)
             render(<TrialOptOutModal {...defaultProps} />)
 
-            const dismissButton = screen.getByRole('button', {
+            const requestButton = screen.getByRole('button', {
                 name: 'Request Trial Extension',
             })
-            await userEventSetup.click(dismissButton)
+            await userEventSetup.click(requestButton)
 
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                SegmentEvent.TrialOptOutModalClicked,
-                {
-                    CTA: 'Dismiss',
-                },
-            )
-            expect(mockOnClose).toHaveBeenCalledTimes(1)
+            expect(mockOnRequestTrialExtension).toHaveBeenCalledTimes(1)
+        })
+
+        it('should close modal with true when onRequestTrialExtension resolves with true', async () => {
+            const userEventSetup = user.setup()
+            mockOnRequestTrialExtension.mockResolvedValue(true)
+            render(<TrialOptOutModal {...defaultProps} />)
+
+            const requestButton = screen.getByRole('button', {
+                name: 'Request Trial Extension',
+            })
+            await userEventSetup.click(requestButton)
+
+            await waitFor(() => {
+                expect(mockOnClose).toHaveBeenCalledWith(true)
+            })
+        })
+
+        it('should not close modal when onRequestTrialExtension resolves with false', async () => {
+            const userEventSetup = user.setup()
+            mockOnRequestTrialExtension.mockResolvedValue(false)
+            render(<TrialOptOutModal {...defaultProps} />)
+
+            const requestButton = screen.getByRole('button', {
+                name: 'Request Trial Extension',
+            })
+            await userEventSetup.click(requestButton)
+
+            await waitFor(() => {
+                expect(mockOnRequestTrialExtension).toHaveBeenCalledTimes(1)
+            })
+
+            expect(mockOnClose).not.toHaveBeenCalled()
         })
     })
 
     describe('when user closes modal', () => {
-        it('should log segment event and close modal', async () => {
+        it('should log segment event and close modal with false', async () => {
             const userEventSetup = user.setup()
             render(<TrialOptOutModal {...defaultProps} />)
 
@@ -179,7 +208,7 @@ describe('TrialOptOutModal', () => {
                     CTA: 'Close',
                 },
             )
-            expect(mockOnClose).toHaveBeenCalledTimes(1)
+            expect(mockOnClose).toHaveBeenCalledWith(false)
         })
     })
 })

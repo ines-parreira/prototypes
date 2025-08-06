@@ -3,19 +3,34 @@ import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment'
 
+import { useFlag } from 'core/flags'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TrialEndedModal } from '../components/TrialEndedModal/TrialEndedModal'
-import { TrialEndingTomorrowModal } from '../components/TrialEndingModal/TrialEndingModal'
+import { TrialEndingModal } from '../components/TrialEndingModal/TrialEndingModal'
 
 // Mock the hooks
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
+    useStoreActivations: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow', () => ({
+    useShoppingAssistantTrialFlow: jest.fn(),
+}))
 
 // Mock TrialManageModal
 jest.mock(
@@ -50,6 +65,59 @@ const mockUseSalesTrialRevampMilestone = assumeMock(
 )
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseTrialModalProps = assumeMock(useTrialModalProps)
+const mockUseFlag = assumeMock(useFlag)
+const mockUseStoreActivations = assumeMock(useStoreActivations)
+const mockUseShoppingAssistantTrialFlow = assumeMock(
+    useShoppingAssistantTrialFlow,
+)
+
+const createMockShoppingAssistantTrialFlow = (overrides = {}) => ({
+    startTrial: jest.fn(),
+    revampStartTrial: jest.fn(),
+    isLoading: false,
+    isTrialModalOpen: false,
+    isTrialFinishSetupModalOpen: false,
+    isSuccessModalOpen: false,
+    isManageTrialModalOpen: false,
+    isUpgradePlanModalOpen: false,
+    isTrialRequestModalOpen: false,
+    closeTrialUpgradeModal: jest.fn(),
+    onDismissTrialUpgradeModal: jest.fn(),
+    onDismissUpgradePlanModal: jest.fn(),
+    closeSuccessModal: jest.fn(),
+    closeManageTrialModal: jest.fn(),
+    openTrialUpgradeModal: jest.fn(),
+    onConfirmTrial: jest.fn(),
+    openManageTrialModal: jest.fn(),
+    openUpgradePlanModal: jest.fn(),
+    closeUpgradePlanModal: jest.fn(),
+    closeTrialFinishSetupModal: jest.fn(),
+    openTrialFinishSetupModal: jest.fn(),
+    openTrialRequestModal: jest.fn(),
+    closeTrialRequestModal: jest.fn(),
+    onRequestTrialExtension: jest.fn().mockResolvedValue(true),
+    ...overrides,
+})
+
+const createMockStoreActivations = (overrides = {}) => ({
+    storeActivations: {},
+    progressPercentage: 0,
+    isFetchLoading: false,
+    isSaveLoading: false,
+    changeSales: jest.fn(),
+    changeSupport: jest.fn(),
+    changeSupportChat: jest.fn(),
+    changeSupportEmail: jest.fn(),
+    saveStoreConfigurations: jest.fn(),
+    migrateToNewPricing: jest.fn(),
+    endTrial: jest.fn(),
+    activation: jest.fn(() => ({
+        canActivate: jest.fn(() => ({ isLoading: false, isDisabled: false })),
+        activate: jest.fn(),
+        isActivating: false,
+    })),
+    ...overrides,
+})
 
 // Mock localStorage
 const localStorageMock = {
@@ -379,13 +447,18 @@ describe('TrialEndedModal', () => {
     })
 })
 
-describe('TrialEndingTomorrowModal', () => {
+describe('TrialEndingModal', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         localStorageMock.getItem.mockReturnValue(null)
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
         mockUseTrialModalProps.mockReturnValue(mockTrialModalProps)
+        mockUseFlag.mockReturnValue(false)
+        mockUseStoreActivations.mockReturnValue(createMockStoreActivations())
+        mockUseShoppingAssistantTrialFlow.mockReturnValue(
+            createMockShoppingAssistantTrialFlow(),
+        )
     })
 
     it('should render modal when trial ends tomorrow and not dismissed', () => {
@@ -398,15 +471,14 @@ describe('TrialEndingTomorrowModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingTomorrowModal
-                storeConfiguration={mockStoreConfiguration}
-            />,
+            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
         )
 
         expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
         expect(
             screen.getByText('Shopping Assistant trial ends tomorrow'),
         ).toBeInTheDocument()
+        expect(screen.getByText('Dismiss')).toBeInTheDocument()
     })
 
     it('should not render modal when remaining days is not 1', () => {
@@ -419,9 +491,7 @@ describe('TrialEndingTomorrowModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndingTomorrowModal
-                storeConfiguration={mockStoreConfiguration}
-            />,
+            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -444,9 +514,7 @@ describe('TrialEndingTomorrowModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndingTomorrowModal
-                storeConfiguration={mockStoreConfiguration}
-            />,
+            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -464,9 +532,7 @@ describe('TrialEndingTomorrowModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingTomorrowModal
-                storeConfiguration={mockStoreConfiguration}
-            />,
+            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
         )
 
         const closeButton = screen.getByText('Close')
@@ -490,9 +556,7 @@ describe('TrialEndingTomorrowModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingTomorrowModal
-                storeConfiguration={mockStoreConfiguration}
-            />,
+            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
         )
 
         const primaryButton = screen.getByText('Dismiss')
@@ -502,5 +566,76 @@ describe('TrialEndingTomorrowModal', () => {
             'ai-agent-trial-ending-tomorrow-dismissed',
             'true',
         )
+    })
+
+    describe('when user has opted out and feature flag is enabled', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseTrialEnding.mockReturnValue({
+                trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
+                remainingDays: 1,
+                remainingDaysFloat: 0.5,
+                trialEndDatetime: '2023-11-16T00:00:00.000Z',
+                optedOutDatetime: '2023-11-15T00:00:00.000Z', // User has opted out
+            })
+        })
+
+        it('should show upgrade and trial extension options', () => {
+            renderWithStoreAndQueryClientProvider(
+                <TrialEndingModal
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
+            expect(screen.getByText('Upgrade Now')).toBeInTheDocument()
+            expect(
+                screen.getByText('Request Trial Extension'),
+            ).toBeInTheDocument()
+        })
+
+        it('should call openTrialUpgradeModal when Upgrade Now is clicked', async () => {
+            const user = userEvent.setup()
+            const mockOpenTrialUpgradeModal = jest.fn()
+
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                createMockShoppingAssistantTrialFlow({
+                    openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+                }),
+            )
+
+            renderWithStoreAndQueryClientProvider(
+                <TrialEndingModal
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const upgradeButton = screen.getByText('Upgrade Now')
+            await user.click(upgradeButton)
+
+            expect(mockOpenTrialUpgradeModal).toHaveBeenCalled()
+        })
+
+        it('should call onRequestTrialExtension when Request Trial Extension is clicked', async () => {
+            const user = userEvent.setup()
+            const mockOnRequestTrialExtension = jest.fn()
+
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                createMockShoppingAssistantTrialFlow({
+                    onRequestTrialExtension: mockOnRequestTrialExtension,
+                }),
+            )
+
+            renderWithStoreAndQueryClientProvider(
+                <TrialEndingModal
+                    storeConfiguration={mockStoreConfiguration}
+                />,
+            )
+
+            const extensionButton = screen.getByText('Request Trial Extension')
+            await user.click(extensionButton)
+
+            expect(mockOnRequestTrialExtension).toHaveBeenCalled()
+        })
     })
 })
