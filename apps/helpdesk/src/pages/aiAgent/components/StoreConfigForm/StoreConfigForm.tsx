@@ -89,6 +89,7 @@ type Props = {
     shopType: string
     accountDomain: string
     faqHelpCenters: HelpCenter[]
+    section?: 'chat' | 'email' | 'sms'
 }
 
 export const StoreConfigForm = ({
@@ -96,6 +97,7 @@ export const StoreConfigForm = ({
     accountDomain,
     shopType,
     faqHelpCenters,
+    section,
 }: Props) => {
     const flags = useFlags()
     const trialModeAvailable = flags[FeatureFlagKey.AiAgentTrialMode]
@@ -107,8 +109,8 @@ export const StoreConfigForm = ({
         flags[FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]
 
     const { tab = 'general' } = useParams<{ tab?: 'channels' }>()
-    const shouldDisplayChannelsSection = tab === 'channels'
-    const shouldDisplayGeneralSections = tab === 'general'
+    const shouldDisplayChannelsSection = section ? true : tab === 'channels'
+    const shouldDisplayGeneralSections = section ? false : tab === 'general'
 
     const dispatch = useAppDispatch()
 
@@ -814,6 +816,7 @@ export const StoreConfigForm = ({
                                     deactivatedDatetime,
                                 )
                             }}
+                            section={section}
                         />
                     )}
 

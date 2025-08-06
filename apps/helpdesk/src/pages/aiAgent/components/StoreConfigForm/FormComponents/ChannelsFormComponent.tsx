@@ -49,6 +49,8 @@ type Props = {
         element: StoreConfigFormSection,
         isFormDirty: boolean,
     ) => void
+
+    section?: 'chat' | 'email' | 'sms' | 'all'
 }
 
 export const ChannelsFormComponent = ({
@@ -74,6 +76,7 @@ export const ChannelsFormComponent = ({
     updateSmsChannelDeactivatedDatetime,
 
     setIsFormDirty,
+    section = 'all',
 }: Props) => {
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
@@ -134,55 +137,60 @@ export const ChannelsFormComponent = ({
 
     return (
         <>
-            {isAiAgentChatEnabled && (
-                <ConfigurationSection
-                    title="Chat"
-                    data-candu-id="ai-agent-configuration-chat-settings"
-                    isBeta={true}
-                >
-                    {(!isAiAgentActivationEnabled ||
-                        hasAiAgentNewActivationXp) && (
-                        <div className={css.sectionBlock}>
-                            <ChannelToggleInput
-                                isToggled={isChatChannelEnabled}
-                                onUpdate={(isToggled) =>
-                                    updateChatChannelDeactivatedDatetime(
-                                        isToggled
-                                            ? null
-                                            : new Date().toISOString(),
-                                    )
+            {isAiAgentChatEnabled &&
+                (section === 'all' || section === 'chat') && (
+                    <ConfigurationSection
+                        title="Chat"
+                        data-candu-id="ai-agent-configuration-chat-settings"
+                        isBeta={true}
+                    >
+                        {(!isAiAgentActivationEnabled ||
+                            hasAiAgentNewActivationXp) && (
+                            <div className={css.sectionBlock}>
+                                <ChannelToggleInput
+                                    isToggled={isChatChannelEnabled}
+                                    onUpdate={(isToggled) =>
+                                        updateChatChannelDeactivatedDatetime(
+                                            isToggled
+                                                ? null
+                                                : new Date().toISOString(),
+                                        )
+                                    }
+                                    channel="chat"
+                                    isDisabled={!hasAutomate}
+                                    deactivatedDatetime={
+                                        chatChannelDeactivatedDatetime
+                                    }
+                                    type={SettingsBannerType.Chat}
+                                />
+                            </div>
+                        )}
+                        <div className={css.settingsSectionBlock}>
+                            <ChatSettingsFormComponent
+                                monitoredChatIntegrations={
+                                    monitoredChatIntegrations
                                 }
-                                channel="chat"
-                                isDisabled={!hasAutomate}
-                                deactivatedDatetime={
-                                    chatChannelDeactivatedDatetime
+                                isRequired={
+                                    chatChannelDeactivatedDatetime === null
                                 }
-                                type={SettingsBannerType.Chat}
+                                updateValue={updateValue}
+                                chatChannels={chatChannelsWithAvailableFlag}
+                                dropDownWithDisabledText
+                                dropDownDisabledText="Chat not installed"
                             />
                         </div>
-                    )}
-                    <div className={css.settingsSectionBlock}>
-                        <ChatSettingsFormComponent
-                            monitoredChatIntegrations={
+
+                        <HandoverCustomizationChatSettingsComponent
+                            shopName={shopName}
+                            shopType={shopType}
+                            monitoredChatIntegrationIds={
                                 monitoredChatIntegrations
                             }
-                            isRequired={chatChannelDeactivatedDatetime === null}
-                            updateValue={updateValue}
-                            chatChannels={chatChannelsWithAvailableFlag}
-                            dropDownWithDisabledText
-                            dropDownDisabledText="Chat not installed"
+                            setIsFormDirty={setIsFormDirty}
                         />
-                    </div>
-
-                    <HandoverCustomizationChatSettingsComponent
-                        shopName={shopName}
-                        shopType={shopType}
-                        monitoredChatIntegrationIds={monitoredChatIntegrations}
-                        setIsFormDirty={setIsFormDirty}
-                    />
-                </ConfigurationSection>
-            )}
-            {!isStandalone && (
+                    </ConfigurationSection>
+                )}
+            {!isStandalone && (section === 'all' || section === 'email') && (
                 <ConfigurationSection
                     title="Email"
                     data-candu-id="ai-agent-configuration-email-settings"
@@ -227,41 +235,46 @@ export const ChannelsFormComponent = ({
                 </ConfigurationSection>
             )}
 
-            {isAiAgentSmsEnabled && (
-                <ConfigurationSection
-                    title="Sms for AI Journey"
-                    data-candu-id="ai-agent-configuration-sms-settings"
-                >
-                    {showToggles && (
-                        <div className={css.sectionBlock}>
-                            <ChannelToggleInput
-                                isToggled={isSmsChannelEnabled}
-                                onUpdate={(isToggled) => {
-                                    updateSmsChannelDeactivatedDatetime(
-                                        isToggled
-                                            ? null
-                                            : new Date().toISOString(),
-                                    )
-                                }}
-                                channel="sms"
-                                isDisabled={!hasAutomate}
-                                deactivatedDatetime={
-                                    smsChannelDeactivatedDatetime
+            {isAiAgentSmsEnabled &&
+                (section === 'sms' || section === 'all') && (
+                    <ConfigurationSection
+                        title="Sms for AI Journey"
+                        data-candu-id="ai-agent-configuration-sms-settings"
+                    >
+                        {showToggles && (
+                            <div className={css.sectionBlock}>
+                                <ChannelToggleInput
+                                    isToggled={isSmsChannelEnabled}
+                                    onUpdate={(isToggled) => {
+                                        updateSmsChannelDeactivatedDatetime(
+                                            isToggled
+                                                ? null
+                                                : new Date().toISOString(),
+                                        )
+                                    }}
+                                    channel="sms"
+                                    isDisabled={!hasAutomate}
+                                    deactivatedDatetime={
+                                        smsChannelDeactivatedDatetime
+                                    }
+                                    type={SettingsBannerType.Sms}
+                                />
+                            </div>
+                        )}
+
+                        <div className={css.settingsSectionBlock}>
+                            <SmsSettingsFormComponent
+                                updateValue={updateValue}
+                                monitoredSmsIntegrations={
+                                    monitoredSmsIntegrations
                                 }
-                                type={SettingsBannerType.Sms}
+                                isRequired={
+                                    smsChannelDeactivatedDatetime === null
+                                }
                             />
                         </div>
-                    )}
-
-                    <div className={css.settingsSectionBlock}>
-                        <SmsSettingsFormComponent
-                            updateValue={updateValue}
-                            monitoredSmsIntegrations={monitoredSmsIntegrations}
-                            isRequired={smsChannelDeactivatedDatetime === null}
-                        />
-                    </div>
-                </ConfigurationSection>
-            )}
+                    </ConfigurationSection>
+                )}
         </>
     )
 }

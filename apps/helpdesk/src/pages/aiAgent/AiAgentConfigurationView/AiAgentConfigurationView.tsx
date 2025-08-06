@@ -25,11 +25,13 @@ type AiAgentConfigurationViewProps = {
     shopName: string
     shopType: string
     accountDomain: string
+    section?: 'chat' | 'email' | 'sms'
 }
 export const AiAgentConfigurationView = ({
     shopName,
     shopType,
     accountDomain,
+    section,
 }: AiAgentConfigurationViewProps) => {
     const dispatch = useAppDispatch()
 
@@ -77,11 +79,24 @@ export const AiAgentConfigurationView = ({
     const integrationNeedMorePermissions =
         !hasShopifyRequiredPermissions(integration)
 
+    const getTitle = () => {
+        switch (section) {
+            case 'chat':
+                return 'Chat'
+            case 'email':
+                return 'Email'
+            case 'sms':
+                return 'SMS'
+            default:
+                return SETTINGS
+        }
+    }
+
     return (
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={SETTINGS}
+            title={getTitle()}
         >
             <div>
                 {integrationNeedMorePermissions && (
@@ -106,6 +121,7 @@ export const AiAgentConfigurationView = ({
                         shopType={shopType}
                         accountDomain={accountDomain}
                         faqHelpCenters={helpCenters}
+                        section={section}
                     />
                 </AiAgentFormChangesProvider>
             </div>

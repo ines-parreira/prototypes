@@ -203,7 +203,7 @@ const useNavigationItems = (
                             title: GENERAL,
                             exact: true,
                         },
-                        {
+                        !isActionDrivenAiAgentNavigationEnabled && {
                             route: routes.settingsChannels,
                             title: CHANNELS,
                         },

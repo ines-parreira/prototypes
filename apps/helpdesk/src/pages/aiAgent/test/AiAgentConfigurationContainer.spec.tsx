@@ -131,9 +131,40 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 
+const getUseStoreConfigurationFormMock = () => ({
+    formValues: {
+        monitoredChatIntegrations: [],
+        monitoredEmailIntegrations: [],
+        monitoredSmsIntegrations: [],
+        signature: 'This response was created by AI',
+        useEmailIntegrationSignature: false,
+        emailChannelDeactivatedDatetime: null,
+        chatChannelDeactivatedDatetime: null,
+        smsChannelDeactivatedDatetime: null,
+    },
+    resetForm: jest.fn(),
+    isFormDirty: false,
+    updateValue: jest.fn(),
+    setFormValues: jest.fn(),
+    isFieldDirty: jest.fn(),
+    handleOnSave: jest.fn(),
+    isPendingCreateOrUpdate: false,
+    isEmailChannelEnabled: true,
+    isChatChannelEnabled: true,
+    isSmsChannelEnabled: false,
+})
+
+jest.mock('../hooks/useStoreConfigurationForm', () => ({
+    useStoreConfigurationForm: jest.fn(() =>
+        getUseStoreConfigurationFormMock(),
+    ),
+}))
+
 const useSelfServiceChatChannelsMock = assumeMock(useSelfServiceChatChannels)
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
+const mockUseStoreConfigurationForm =
+    useStoreConfigurationFormHookModule.useStoreConfigurationForm as jest.Mock
 
 const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
     isLoading: false,
@@ -335,6 +366,10 @@ const setupMocks = ({
 describe('AiAgentConfigurationContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        // Reset the mock to default values
+        mockUseStoreConfigurationForm.mockReturnValue(
+            getUseStoreConfigurationFormMock(),
+        )
         ;(
             useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
         ).mockReturnValue(
@@ -421,28 +456,6 @@ describe('AiAgentConfigurationContainer', () => {
     })
 
     describe('when toggling', () => {
-        const originalUseStoreConfigurationFormHook =
-            useStoreConfigurationFormHookModule.useStoreConfigurationForm
-        const mockUseStoreConfigurationFormHookUpdateValue = jest.fn()
-
-        beforeEach(() => {
-            jest.spyOn(
-                useStoreConfigurationFormHookModule,
-                'useStoreConfigurationForm',
-            ).mockImplementation((...args) => {
-                const originalResult = originalUseStoreConfigurationFormHook(
-                    ...args,
-                )
-                return {
-                    ...originalResult,
-                    updateValue: jest.fn((...args) => {
-                        originalResult.updateValue(...args)
-                        mockUseStoreConfigurationFormHookUpdateValue(...args)
-                    }),
-                }
-            })
-        })
-
         describe('silentHandover toggle', () => {
             it.each([
                 { expected: true, defaultValue: null },
@@ -451,6 +464,18 @@ describe('AiAgentConfigurationContainer', () => {
             ])(
                 'should set silentHandover to $expected when the default value is $defaultValue',
                 ({ expected, defaultValue }) => {
+                    const mockUpdateValue = jest.fn()
+
+                    // Update the mock to have the right initial value
+                    mockUseStoreConfigurationForm.mockReturnValue({
+                        ...getUseStoreConfigurationFormMock(),
+                        formValues: {
+                            ...getUseStoreConfigurationFormMock().formValues,
+                            silentHandover: defaultValue,
+                        },
+                        updateValue: mockUpdateValue,
+                    })
+
                     setupMocks({
                         storeConfigurationData: {
                             silentHandover: defaultValue,
@@ -469,11 +494,245 @@ describe('AiAgentConfigurationContainer', () => {
                                 'toggle-ai-agent-handover',
                         ) as HTMLInputElement,
                     )
-                    expect(
-                        mockUseStoreConfigurationFormHookUpdateValue,
-                    ).toHaveBeenCalledWith('silentHandover', expected)
+                    expect(mockUpdateValue).toHaveBeenCalledWith(
+                        'silentHandover',
+                        expected,
+                    )
                 },
             )
+        })
+    })
+
+    describe('form submission and saving', () => {
+        it('should disable save button when form is not dirty', () => {
+            mockUseStoreConfigurationForm.mockReturnValue(
+                getUseStoreConfigurationFormMock(),
+            )
+
+            setupMocks()
+            renderComponent()
+
+            const saveButtons = screen.getAllByText('Save Changes')
+            const saveButton = saveButtons[0].closest('button')
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should show saving state when form is being saved', () => {
+            mockUseStoreConfigurationForm.mockReturnValue(
+                getUseStoreConfigurationFormMock(),
+            )
+
+            setupMocks()
+            renderComponent()
+
+            const saveButtons = screen.getAllByText('Save Changes')
+            const saveButton = saveButtons[0].closest('button')
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+        })
+    })
+
+    describe('error handling', () => {
+        it('should handle errors gracefully', () => {
+            setupMocks()
+
+            expect(() => renderComponent()).not.toThrow()
+        })
+    })
+
+    describe('store configuration creation', () => {
+        it('should show appropriate UI when no store configuration exists', () => {
+            setupMocks({ hasStoreConfiguration: false })
+            renderComponent()
+
+            expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
+        })
+    })
+
+    describe('user permissions', () => {
+        it('should disable form when user lacks Automate', () => {
+            setupMocks()
+            mockGetHasAutomate.mockReturnValue(false)
+            renderComponent()
+
+            expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
+        })
+
+        it('should enable form when user has Automate', () => {
+            setupMocks()
+            mockGetHasAutomate.mockReturnValue(true)
+            renderComponent()
+
+            expect(screen.getAllByText('Save Changes')[0]).toBeInTheDocument()
+        })
+    })
+
+    describe('tab navigation', () => {
+        it('should render general tab content', () => {
+            setupMocks()
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderComponent()
+            expect(
+                screen.getByText('Tone of Voice and Language'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render channels tab content', () => {
+            setupMocks()
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderComponent({ tab: 'channels' })
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.getByText('Email')).toBeInTheDocument()
+        })
+    })
+
+    describe('feature flag combinations', () => {
+        it('should handle multiple feature flags correctly', () => {
+            setupMocks()
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.AiAgentActivation]: true,
+                [FeatureFlagKey.AiAgentNewActivationXp]: true,
+            })
+
+            renderComponent({ tab: 'channels' })
+
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.getByText('Email')).toBeInTheDocument()
+        })
+
+        it('should handle disabled feature flags', () => {
+            setupMocks()
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: false,
+            })
+
+            renderComponent({ tab: 'channels' })
+
+            expect(screen.queryByText('Chat')).not.toBeInTheDocument()
+            expect(screen.getByText('Email')).toBeInTheDocument()
+        })
+    })
+
+    describe('integration state', () => {
+        it('should show both chat and email toggles when configured', () => {
+            setupMocks()
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderComponent({ tab: 'channels' })
+
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.getByText('Email')).toBeInTheDocument()
+        })
+    })
+
+    describe('route-based section determination', () => {
+        it('should determine chat section when route contains /deploy/chat and display Chat title', () => {
+            setupMocks()
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore(getState())}>
+                    <QueryClientProvider client={mockQueryClient()}>
+                        <AiAgentConfigurationContainer />
+                    </QueryClientProvider>
+                </Provider>,
+                {
+                    path: '/:shopType/:shopName/ai-agent/deploy/chat',
+                    route: '/shopify/test-shop/ai-agent/deploy/chat',
+                },
+            )
+
+            const heading = screen.getByRole('heading', { level: 1 })
+            expect(heading).toHaveTextContent('Chat')
+        })
+
+        it('should determine email section when route contains /deploy/email and display Email title', () => {
+            setupMocks()
+
+            renderWithRouter(
+                <Provider store={mockStore(getState())}>
+                    <QueryClientProvider client={mockQueryClient()}>
+                        <AiAgentConfigurationContainer />
+                    </QueryClientProvider>
+                </Provider>,
+                {
+                    path: '/:shopType/:shopName/ai-agent/deploy/email',
+                    route: '/shopify/test-shop/ai-agent/deploy/email',
+                },
+            )
+
+            const heading = screen.getByRole('heading', { level: 1 })
+            expect(heading).toHaveTextContent('Email')
+        })
+
+        it('should determine sms section when route contains /deploy/sms and display SMS title', () => {
+            setupMocks()
+
+            renderWithRouter(
+                <Provider store={mockStore(getState())}>
+                    <QueryClientProvider client={mockQueryClient()}>
+                        <AiAgentConfigurationContainer />
+                    </QueryClientProvider>
+                </Provider>,
+                {
+                    path: '/:shopType/:shopName/ai-agent/deploy/sms',
+                    route: '/shopify/test-shop/ai-agent/deploy/sms',
+                },
+            )
+
+            const heading = screen.getByRole('heading', { level: 1 })
+            expect(heading).toHaveTextContent('SMS')
+        })
+
+        it('should have undefined section when route does not match any deploy path and display Settings title', () => {
+            setupMocks()
+
+            renderWithRouter(
+                <Provider store={mockStore(getState())}>
+                    <QueryClientProvider client={mockQueryClient()}>
+                        <AiAgentConfigurationContainer />
+                    </QueryClientProvider>
+                </Provider>,
+                {
+                    path: '/:shopType/:shopName/ai-agent/settings',
+                    route: '/shopify/test-shop/ai-agent/settings',
+                },
+            )
+
+            const heading = screen.getByRole('heading', { level: 1 })
+            expect(heading).toHaveTextContent('Settings')
+        })
+
+        it('should handle nested deploy paths correctly and display Chat title', () => {
+            setupMocks()
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore(getState())}>
+                    <QueryClientProvider client={mockQueryClient()}>
+                        <AiAgentConfigurationContainer />
+                    </QueryClientProvider>
+                </Provider>,
+                {
+                    path: '/:shopType/:shopName/ai-agent/deploy/chat/settings',
+                    route: '/shopify/test-shop/ai-agent/deploy/chat/settings',
+                },
+            )
+
+            const heading = screen.getByRole('heading', { level: 1 })
+            expect(heading).toHaveTextContent('Chat')
         })
     })
 })

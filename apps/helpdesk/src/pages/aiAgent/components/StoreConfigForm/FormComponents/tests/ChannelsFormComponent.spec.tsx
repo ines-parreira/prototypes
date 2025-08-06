@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -19,6 +19,11 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
     default: jest.fn(),
+}))
+
+// Mock state selectors
+jest.mock('state/integrations/selectors', () => ({
+    getIntegrationsByTypes: () => () => [],
 }))
 
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
@@ -70,19 +75,26 @@ jest.mock(
             onUpdate,
             channel,
             isDisabled,
+            type,
         }: {
             isToggled: boolean
             onUpdate: (isToggled: boolean) => void
             channel: string
             isDisabled: boolean
+            type: string
         }) => (
-            <div
-                data-testid={`channel-toggle-${channel}`}
-                data-toggled={isToggled}
-                data-disabled={isDisabled}
-                onClick={() => onUpdate(!isToggled)}
-            >
-                channel toggle {channel}
+            <div>
+                <div
+                    data-testid={`channel-toggle-${channel}`}
+                    data-toggled={isToggled}
+                    data-disabled={isDisabled}
+                    onClick={() => onUpdate(!isToggled)}
+                >
+                    channel toggle {channel}
+                </div>
+                <div data-testid="settings-banner" data-type={type}>
+                    settings banner {type}
+                </div>
             </div>
         ),
     }),
@@ -138,6 +150,17 @@ jest.mock(
         SignatureFormComponent: ({ isRequired }: { isRequired: boolean }) => (
             <div data-testid="signature-form" data-required={isRequired}>
                 signature form
+            </div>
+        ),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/components/StoreConfigForm/FormComponents/SmsSettingsFormComponent',
+    () => ({
+        SmsSettingsFormComponent: ({ isRequired }: { isRequired: boolean }) => (
+            <div data-testid="sms-form" data-required={isRequired}>
+                sms form
             </div>
         ),
     }),
@@ -568,6 +591,265 @@ describe('ChannelsFormComponent', () => {
             screen.getByText('channel toggle email')
             screen.getByText('email form')
             screen.getByText('signature form')
+        })
+    })
+
+    describe('channel toggle interactions', () => {
+        it('should call updateValue when email toggle is clicked', () => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            const emailToggle = screen.getByTestId('channel-toggle-email')
+            fireEvent.click(emailToggle)
+
+            expect(
+                mockProps.updateEmailChannelDeactivatedDatetime,
+            ).toHaveBeenCalled()
+        })
+
+        it('should call updateValue when chat toggle is clicked', () => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            const chatToggle = screen.getByTestId('channel-toggle-chat')
+            fireEvent.click(chatToggle)
+
+            expect(
+                mockProps.updateChatChannelDeactivatedDatetime,
+            ).toHaveBeenCalled()
+        })
+
+        it('should mark form as dirty when any toggle is changed', () => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            const emailToggle = screen.getByTestId('channel-toggle-email')
+            fireEvent.click(emailToggle)
+
+            expect(
+                mockProps.updateEmailChannelDeactivatedDatetime,
+            ).toHaveBeenCalled()
+        })
+    })
+
+    describe('SMS channel handling', () => {
+        it('should not render SMS section when feature flag is disabled', () => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.AiAgentSms]: false, // Disable SMS
+            })
+
+            const propsWithSms = {
+                ...mockProps,
+                monitoredSmsIntegrations: [1],
+                isSmsChannelEnabled: true,
+            }
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithSms} />
+                </BrowserRouter>,
+            )
+
+            const sections = screen.getAllByTestId('configuration-section')
+            const smsSection = sections.find(
+                (section) =>
+                    section.getAttribute('data-title') === 'Sms for AI Journey',
+            )
+            expect(smsSection).toBeUndefined()
+            expect(
+                screen.queryByTestId('channel-toggle-sms'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByTestId('sms-form')).not.toBeInTheDocument()
+
+            expect(screen.getByTestId('email-form')).toBeInTheDocument()
+            expect(
+                screen.getByTestId('channel-toggle-chat'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render SMS section when feature flag is enabled', () => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.AiAgentSms]: true, // Enable SMS feature flag
+            })
+
+            const propsWithSms = {
+                ...mockProps,
+                monitoredSmsIntegrations: [1],
+                isSmsChannelEnabled: true,
+            }
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithSms} />
+                </BrowserRouter>,
+            )
+
+            // Should render SMS configuration section
+            const sections = screen.getAllByTestId('configuration-section')
+            const smsSection = sections.find(
+                (section) =>
+                    section.getAttribute('data-title') === 'Sms for AI Journey',
+            )
+            expect(smsSection).toBeDefined()
+            expect(screen.getByTestId('channel-toggle-sms')).toBeInTheDocument()
+            expect(screen.getByTestId('sms-form')).toBeInTheDocument()
+            const smsBanners = screen.getAllByTestId('settings-banner')
+            const smsBanner = smsBanners.find(
+                (banner) => banner.getAttribute('data-type') === 'sms',
+            )
+            expect(smsBanner).toBeDefined()
+            expect(screen.getByText('settings banner sms')).toBeInTheDocument()
+        })
+    })
+
+    describe('settings banner', () => {
+        it('should render settings banner for chat', () => {
+            ;(useFlags as jest.Mock).mockReturnValue({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            const chatBanners = screen.getAllByTestId('settings-banner')
+            const chatBanner = chatBanners.find(
+                (banner) => banner.getAttribute('data-type') === 'chat',
+            )
+            expect(chatBanner).toBeDefined()
+            expect(screen.getByText('settings banner chat')).toBeInTheDocument()
+        })
+
+        it('should render settings banner for email', () => {
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            const emailBanners = screen.getAllByTestId('settings-banner')
+            const emailBanner = emailBanners.find(
+                (banner) => banner.getAttribute('data-type') === 'email',
+            )
+            expect(emailBanner).toBeDefined()
+            expect(
+                screen.getByText('settings banner email'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('signature handling', () => {
+        it('should pass correct props to signature form component', () => {
+            const propsWithSignature = {
+                ...mockProps,
+                signature: 'Custom Signature',
+                useEmailIntegrationSignature: true,
+            }
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithSignature} />
+                </BrowserRouter>,
+            )
+
+            const signatureForm = screen.getByTestId('signature-form')
+            expect(signatureForm).toBeInTheDocument()
+        })
+
+        it('should update signature values through updateValue', () => {
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...mockProps} />
+                </BrowserRouter>,
+            )
+
+            expect(mockProps.updateValue).toBeDefined()
+        })
+    })
+
+    describe('multiple email integrations', () => {
+        it('should handle multiple email integrations correctly', () => {
+            const propsWithMultipleEmails = {
+                ...mockProps,
+                monitoredEmailIntegrations: [
+                    { id: 1, email: 'test1@example.com' },
+                    { id: 2, email: 'test2@example.com' },
+                    { id: 3, email: 'test3@example.com' },
+                ],
+            }
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithMultipleEmails} />
+                </BrowserRouter>,
+            )
+
+            expect(screen.getAllByTestId('email-form')).toHaveLength(1)
+        })
+    })
+
+    describe('edge cases', () => {
+        it('should handle empty monitored integrations', () => {
+            const propsWithEmptyIntegrations = {
+                ...mockProps,
+                monitoredChatIntegrations: [],
+                monitoredEmailIntegrations: [],
+            }
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithEmptyIntegrations} />
+                </BrowserRouter>,
+            )
+
+            expect(
+                screen.getByTestId('channel-toggle-email'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle null deactivated datetime values', () => {
+            const propsWithNullDates = {
+                ...mockProps,
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: null,
+                smsChannelDeactivatedDatetime: null,
+            }
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithNullDates} />
+                </BrowserRouter>,
+            )
+
+            expect(screen.getByTestId('email-form')).toHaveAttribute(
+                'data-required',
+                'true',
+            )
         })
     })
 })

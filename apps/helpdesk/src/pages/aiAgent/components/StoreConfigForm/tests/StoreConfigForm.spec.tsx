@@ -2379,6 +2379,210 @@ describe('<StoreConfigForm />', () => {
         })
     })
 
+    describe('section prop display logic', () => {
+        it('should display channels section when section prop is provided regardless of tab', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderComponent({ section: 'email' })
+
+            expect(screen.getByText('Email')).toBeInTheDocument()
+
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display general sections when section prop is not provided and tab is general', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+
+            renderComponent({ section: undefined })
+
+            expect(
+                screen.getByText('Tone of Voice and Language'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Handover and exclusion'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
+
+            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+        })
+
+        it('should display channels sections when section prop is not provided and tab is channels', () => {
+            mockUseParams.mockReturnValue({ tab: 'channels' })
+
+            renderComponent({ section: undefined })
+
+            expect(screen.getByText('Email')).toBeInTheDocument()
+
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display only specific channel section when section prop is chat', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderComponent({ section: 'chat' })
+
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display only specific channel section when section prop is sms', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+            mockFlags({
+                [FeatureFlagKey.AiAgentSms]: true,
+            })
+
+            renderComponent({ section: 'sms' })
+
+            expect(screen.getByText('Sms for AI Journey')).toBeInTheDocument()
+
+            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('section-based display logic', () => {
+        it('should display only channels section when section prop is chat', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderComponent({ section: 'chat' })
+
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+
+            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display general sections when section prop is not provided and tab is general', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+
+            renderComponent({ section: undefined })
+
+            expect(
+                screen.getByText('Tone of Voice and Language'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Handover and exclusion'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
+
+            expect(screen.queryByText('Chat')).not.toBeInTheDocument()
+            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+        })
+
+        it('should display channels section when section prop is not provided and tab is channels', () => {
+            mockUseParams.mockReturnValue({ tab: 'channels' })
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            renderComponent({ section: undefined })
+
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.getByText('Email')).toBeInTheDocument()
+
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should override tab parameter when section prop is email', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+
+            renderComponent({ section: 'email' })
+
+            expect(screen.getByText('Email')).toBeInTheDocument()
+
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should override tab parameter when section prop is sms', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+            mockFlags({
+                [FeatureFlagKey.AiAgentSms]: true,
+            })
+
+            renderComponent({ section: 'sms' })
+
+            expect(screen.getByText('Sms for AI Journey')).toBeInTheDocument()
+
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Handover and exclusion'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('AI ticket tagging'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('custom fields', () => {
         beforeEach(() => {
             mockFlags({

@@ -673,6 +673,23 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                     />
                                 )}
                             </AiAgentErrorBoundary>
+                            <AiAgentErrorBoundary section="ai-agent-deploy">
+                                <Route
+                                    path={`${path}/deploy/:section`}
+                                    exact
+                                    component={AiAgentConfigurationContainer}
+                                />
+                            </AiAgentErrorBoundary>
+                            {location.pathname.includes(
+                                '/settings/channels',
+                            ) && (
+                                <Redirect
+                                    to={location.pathname.replace(
+                                        '/settings/channels',
+                                        '/deploy/chat',
+                                    )}
+                                />
+                            )}
                         </>
                     )}
                     <AiAgentErrorBoundary section="ai-agent-guidance">
