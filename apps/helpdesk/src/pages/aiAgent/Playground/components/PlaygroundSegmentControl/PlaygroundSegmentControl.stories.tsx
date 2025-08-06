@@ -23,5 +23,15 @@ export const Default: Story = {
     render: (args) => <PlaygroundSegmentControl {...args} />,
     args: {
         selectedValue: 'email',
+        segments: [
+            {
+                value: 'email',
+                label: 'Email',
+            },
+            {
+                value: 'chat',
+                label: 'Chat',
+            },
+        ],
     },
 }

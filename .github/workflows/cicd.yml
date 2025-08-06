@@ -23,7 +23,7 @@ jobs:
       assets-dir: apps/helpdesk/src/assets
       build-dir: apps/helpdesk/build
       bucket-path: web-app
-      node-version: '22'
+      node-version: '22.17.1'
     steps:
       - name: Workspace vars
         run: echo "empty step"
@@ -141,7 +141,6 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
-    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -157,7 +156,6 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
-    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -204,7 +202,6 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
-    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -253,7 +250,8 @@ jobs:
       - workspace-vars
       - workspace-setup
       - quality-check
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-default-runner-set
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -267,8 +265,14 @@ jobs:
           cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
-      - name: Upload Chromatic
-        run: pnpm platform:chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: apps/helpdesk
+          buildScriptName: "storybook:build"
+          exitOnceUploaded: true
+          zip: true
 
   security-sast:
     name: "Security: Static Code Analysis"

@@ -54,6 +54,14 @@ export class AiAgentOverviewRootStateFixture {
                 stats: { filters: initialState },
             },
             stats: initialStatsFiltersState,
+            billing: fromJS({
+                products: [],
+                invoices: [],
+                creditCard: {},
+                paymentMethod: '',
+                currentUsage: {},
+                currentProductsUsage: {},
+            }),
         } as Partial<RootState> as RootState
     }
 
