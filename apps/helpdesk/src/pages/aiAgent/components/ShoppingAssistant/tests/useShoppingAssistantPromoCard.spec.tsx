@@ -46,6 +46,12 @@ const mockUseShoppingAssistantTrialAccess = assumeMock(
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseTrialMetrics = assumeMock(useTrialMetrics)
 
+jest.mock('react-router-dom', () => ({
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+}))
+
 describe('useShoppingAssistantPromoCard', () => {
     let queryClient: QueryClient
     const mockStore = configureMockStore()
@@ -252,6 +258,7 @@ describe('useShoppingAssistantPromoCard', () => {
                 secondaryButton: {
                     label: 'Learn more',
                     href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+                    target: '_blank',
                     onClick: expect.any(Function),
                     disabled: false,
                 },
@@ -265,7 +272,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should trigger trial flow when primary button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () => useShoppingAssistantPromoCard('first-shop'),
                 {
                     wrapper: createWrapper(),
                 },
@@ -369,12 +376,14 @@ describe('useShoppingAssistantPromoCard', () => {
                 primaryButton: {
                     label: 'Book a demo',
                     href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
+                    target: '_blank',
                     onClick: expect.any(Function),
                     disabled: false,
                 },
                 secondaryButton: {
                     label: 'Learn more',
                     href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+                    target: '_blank',
                     onClick: expect.any(Function),
                     disabled: false,
                 },
@@ -435,6 +444,7 @@ describe('useShoppingAssistantPromoCard', () => {
                 secondaryButton: {
                     label: 'Learn more',
                     href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+                    target: '_blank',
                     onClick: expect.any(Function),
                     disabled: false,
                 },
@@ -495,6 +505,7 @@ describe('useShoppingAssistantPromoCard', () => {
                 secondaryButton: {
                     label: 'Book a demo',
                     href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
+                    target: '_blank',
                     onClick: expect.any(Function),
                     disabled: false,
                 },

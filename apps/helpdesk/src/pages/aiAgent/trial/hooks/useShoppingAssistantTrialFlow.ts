@@ -206,6 +206,9 @@ export const useShoppingAssistantTrialFlow = ({
     }
 
     const openTrialRequestModal = () => {
+        logEvent(SegmentEvent.PricingModalViewed, {
+            type: 'Notify',
+        })
         trialRequestModal.openModal(TRIAL_REQUEST_MODAL_NAME)
     }
 

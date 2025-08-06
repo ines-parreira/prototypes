@@ -2,14 +2,30 @@ import { renderHook } from '@testing-library/react'
 
 import { useTrialDescription } from '../hooks/useTrialDescription'
 
+const createMockTrialAccess = (overrides = {}) => ({
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasCurrentStoreTrialStarted: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasAnyTrialOptedOut: false,
+    hasCurrentStoreTrialExpired: false,
+    hasAnyTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasAnyTrialActive: false,
+    isLoading: false,
+    ...overrides,
+})
+
 describe('useTrialDescription', () => {
     it('shows GMV influenced when in trial and opted out', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialStarted: true,
             hasAnyTrialStarted: true,
             hasCurrentStoreTrialOptedOut: true,
-            hasAnyTrialOptedOut: false,
-        }
+        })
 
         const trialMetrics = {
             gmvInfluenced: '$1,000',
@@ -26,12 +42,10 @@ describe('useTrialDescription', () => {
     })
 
     it('shows GMV influenced when in trial and GMV rate above threshold', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialStarted: true,
             hasAnyTrialStarted: false,
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-        }
+        })
 
         const trialMetrics = {
             gmvInfluenced: '$500',
@@ -48,12 +62,10 @@ describe('useTrialDescription', () => {
     })
 
     it('shows empty description when in trial but GMV rate below threshold and not opted out', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialStarted: true,
             hasAnyTrialStarted: false,
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-        }
+        })
 
         const trialMetrics = {
             gmvInfluenced: '$100',
@@ -70,12 +82,10 @@ describe('useTrialDescription', () => {
     })
 
     it('shows empty description when metrics are loading', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialStarted: true,
             hasAnyTrialStarted: false,
-            hasCurrentStoreTrialOptedOut: true,
-            hasAnyTrialOptedOut: false,
-        }
+        })
 
         const trialMetrics = {
             gmvInfluenced: '$1,000',
@@ -92,12 +102,10 @@ describe('useTrialDescription', () => {
     })
 
     it('shows default description when not in trial', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialStarted: false,
             hasAnyTrialStarted: false,
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-        }
+        })
 
         const trialMetrics = {
             gmvInfluenced: '$0',

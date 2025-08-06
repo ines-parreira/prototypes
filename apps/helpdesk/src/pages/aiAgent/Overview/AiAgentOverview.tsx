@@ -35,6 +35,9 @@ export const AiAgentOverview = () => {
     const hasResourceSection =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
 
+    const isShoppingAssistantTrialImprovement =
+        useFlags()[FeatureFlagKey.ShoppingAssistantTrialImprovement]
+
     const {
         activationButton,
         activationModal,
@@ -98,27 +101,33 @@ export const AiAgentOverview = () => {
                 }
             />
 
-            {/* TODO: [AIFLY-547] remove banner */}
-            {(canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted && (
-                <TrialAlertBanner {...trialModalProps.trialAlertBanner} />
-            )}
+            {/* TODO: [AIFLY-547] remove this when the trial improvement is enabled */}
+            {!isShoppingAssistantTrialImprovement && (
+                <>
+                    {(canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted && (
+                        <TrialAlertBanner
+                            {...trialModalProps.trialAlertBanner}
+                        />
+                    )}
 
-            {isTrialUpgradeModalOpen && (
-                <UpgradePlanModal
-                    {...trialModalProps.trialUpgradePlanModal}
-                    onClose={closeTrialUpgradeModal}
-                    onConfirm={startTrial}
-                    onDismiss={onDismissTrialUpgradeModal}
-                    isLoading={isTrialRevampLoading}
-                    isTrial
-                />
-            )}
+                    {isTrialUpgradeModalOpen && (
+                        <UpgradePlanModal
+                            {...trialModalProps.trialUpgradePlanModal}
+                            onClose={closeTrialUpgradeModal}
+                            onConfirm={startTrial}
+                            onDismiss={onDismissTrialUpgradeModal}
+                            isLoading={isTrialRevampLoading}
+                            isTrial
+                        />
+                    )}
 
-            {isSuccessModalOpen && (
-                <TrialActivatedModal
-                    {...trialModalProps.trialActivatedModal}
-                    onConfirm={closeSuccessModal}
-                />
+                    {isSuccessModalOpen && (
+                        <TrialActivatedModal
+                            {...trialModalProps.trialActivatedModal}
+                            onConfirm={closeSuccessModal}
+                        />
+                    )}
+                </>
             )}
 
             <KpiSection

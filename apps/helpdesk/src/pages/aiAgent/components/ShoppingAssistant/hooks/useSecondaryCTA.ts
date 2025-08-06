@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 import {
@@ -11,7 +12,7 @@ import { logShoppingAssistantEvent } from '../utils/eventLogger'
 
 export const useSecondaryCTA = (
     variant: PromoCardVariant,
-    trialAccess: any,
+    trialAccess: ReturnType<typeof useShoppingAssistantTrialAccess>,
 ): ButtonConfig | undefined => {
     return useMemo(() => {
         if (variant === PromoCardVariant.AdminTrialProgress) {
@@ -34,6 +35,7 @@ export const useSecondaryCTA = (
             return {
                 label: 'Book a demo',
                 href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
+                target: '_blank',
                 onClick: () =>
                     logShoppingAssistantEvent(ShoppingAssistantEventType.Demo),
                 disabled: false,
@@ -43,6 +45,7 @@ export const useSecondaryCTA = (
         return {
             label: 'Learn more',
             href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+            target: '_blank',
             onClick: () =>
                 logShoppingAssistantEvent(ShoppingAssistantEventType.Learn),
             disabled: false,

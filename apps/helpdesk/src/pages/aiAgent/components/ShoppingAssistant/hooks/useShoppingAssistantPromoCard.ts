@@ -59,6 +59,8 @@ export const useShoppingAssistantPromoCard = (
         trialFlow,
         isDisabled,
         trialMetrics,
+        routeShopName,
+        firstShopifyIntegration: allShopifyIntegrations[0],
     })
 
     const secondaryButton = useSecondaryCTA(variant, trialAccess)

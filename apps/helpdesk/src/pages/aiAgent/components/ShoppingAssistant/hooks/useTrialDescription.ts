@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
 
+import { ShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+
 import { SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD } from '../constants/shoppingAssistant'
 
 export const useTrialDescription = (
-    trialAccess: any,
+    trialAccess: ShoppingAssistantTrialAccess,
     trialMetrics: {
         gmvInfluenced: string
         gmvInfluencedRate: number

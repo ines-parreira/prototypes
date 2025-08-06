@@ -24,7 +24,7 @@ import { isAdmin, isTeamLead } from 'utils'
 
 import { useSalesTrialRevampMilestone } from './useSalesTrialRevampMilestone'
 
-type ShoppingAssistantTrialAccess = {
+export type ShoppingAssistantTrialAccess = {
     /** Whether the user can notify the admin about the trial (only for Leads) */
     canNotifyAdmin: boolean
     /** Whether the user can book a demo (Pro+ Admins without feature flag) */

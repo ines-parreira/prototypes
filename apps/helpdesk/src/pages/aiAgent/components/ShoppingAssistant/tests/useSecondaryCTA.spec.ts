@@ -19,12 +19,29 @@ beforeEach(() => {
     jest.clearAllMocks()
 })
 
+const createMockTrialAccess = (overrides = {}) => ({
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasCurrentStoreTrialStarted: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasAnyTrialOptedOut: false,
+    hasCurrentStoreTrialExpired: false,
+    hasAnyTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasAnyTrialActive: false,
+    isLoading: false,
+    ...overrides,
+})
+
 describe('useSecondaryCTA', () => {
     it('returns "Manage Trial" button for AdminTrialProgress variant when not opted out', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialOptedOut: false,
             hasAnyTrialOptedOut: false,
-        }
+        })
 
         const { result } = renderHook(() =>
             useSecondaryCTA(PromoCardVariant.AdminTrialProgress, trialAccess),
@@ -38,10 +55,10 @@ describe('useSecondaryCTA', () => {
     })
 
     it('returns undefined for AdminTrialProgress variant when opted out', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialOptedOut: true,
             hasAnyTrialOptedOut: false,
-        }
+        })
 
         const { result } = renderHook(() =>
             useSecondaryCTA(PromoCardVariant.AdminTrialProgress, trialAccess),
@@ -51,10 +68,10 @@ describe('useSecondaryCTA', () => {
     })
 
     it('returns undefined for LeadTrialProgress variant', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             hasCurrentStoreTrialOptedOut: false,
             hasAnyTrialOptedOut: false,
-        }
+        })
 
         const { result } = renderHook(() =>
             useSecondaryCTA(PromoCardVariant.LeadTrialProgress, trialAccess),
@@ -64,10 +81,10 @@ describe('useSecondaryCTA', () => {
     })
 
     it('returns "Book a demo" button when user can notify admin and book demo', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             canNotifyAdmin: true,
             canBookDemo: true,
-        }
+        })
 
         const { result } = renderHook(() =>
             useSecondaryCTA(PromoCardVariant.AdminTrial, trialAccess),
@@ -76,6 +93,7 @@ describe('useSecondaryCTA', () => {
         expect(result.current).toEqual({
             label: 'Book a demo',
             href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
+            target: '_blank',
             onClick: expect.any(Function),
             disabled: false,
         })
@@ -87,10 +105,10 @@ describe('useSecondaryCTA', () => {
     })
 
     it('returns "Learn more" button as default', () => {
-        const trialAccess = {
+        const trialAccess = createMockTrialAccess({
             canNotifyAdmin: false,
             canBookDemo: false,
-        }
+        })
 
         const { result } = renderHook(() =>
             useSecondaryCTA(PromoCardVariant.AdminDemo, trialAccess),
@@ -99,6 +117,7 @@ describe('useSecondaryCTA', () => {
         expect(result.current).toEqual({
             label: 'Learn more',
             href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+            target: '_blank',
             onClick: expect.any(Function),
             disabled: false,
         })

@@ -1,3 +1,9 @@
+import { useHistory } from 'react-router-dom'
+
+import { ShopifyIntegration } from 'models/integration/types'
+import { ShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 import {
@@ -16,10 +22,21 @@ export const usePrimaryCTA = ({
     trialFlow,
     isDisabled,
     trialMetrics,
-}: any): {
+    routeShopName,
+    firstShopifyIntegration,
+}: {
+    trialAccess: ShoppingAssistantTrialAccess
+    trialFlow: UseShoppingAssistantTrialFlowReturn
+    isDisabled: boolean
+    trialMetrics: TrialMetrics
+    routeShopName: string | undefined
+    firstShopifyIntegration: ShopifyIntegration
+}): {
     button: ButtonConfig
     variant: PromoCardVariant
 } => {
+    const history = useHistory()
+
     const { gmvInfluencedRate, isLoading: isLoadingMetrics } = trialMetrics
 
     const gmvAboveThreshold =
@@ -31,6 +48,12 @@ export const usePrimaryCTA = ({
     const isInTrial = trialAccess.hasCurrentStoreTrialStarted
 
     const isAdmin = trialAccess.canSeeTrialCTA
+
+    const redirectToFirstShopifyIntegration = () => {
+        history.push(
+            `/app/ai-agent/shopify/${firstShopifyIntegration.meta.shop_name}/sales`,
+        )
+    }
 
     if (isInTrial) {
         if (isAdmin) {
@@ -83,7 +106,12 @@ export const usePrimaryCTA = ({
                     logShoppingAssistantEvent(
                         ShoppingAssistantEventType.StartTrial,
                     )
-                    trialFlow.openTrialUpgradeModal()
+
+                    if (!routeShopName) {
+                        redirectToFirstShopifyIntegration()
+                    } else {
+                        trialFlow.openTrialUpgradeModal()
+                    }
                 },
                 disabled: false,
             },
@@ -112,6 +140,7 @@ export const usePrimaryCTA = ({
             button: {
                 label: 'Book a demo',
                 href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
+                target: '_blank',
                 onClick: () =>
                     logShoppingAssistantEvent(ShoppingAssistantEventType.Demo),
                 disabled: false,
@@ -140,6 +169,7 @@ export const usePrimaryCTA = ({
         button: {
             label: 'Learn more',
             href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+            target: '_blank',
             onClick: () =>
                 logShoppingAssistantEvent(ShoppingAssistantEventType.Learn),
             disabled: false,

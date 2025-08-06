@@ -166,6 +166,13 @@ export const SalesPaywallMiddleware =
         })
         const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
 
+        const displayNotifyAdminButton =
+            canNotifyAdmin &&
+            !displayTrialButton &&
+            !hasCurrentStoreTrialStarted &&
+            !hasCurrentStoreTrialOptedOut &&
+            !earlyAccessPlan
+
         const eventData = {
             accountId: currentAccount.get('id'),
             userId: currentUser.get('id'),
@@ -250,7 +257,7 @@ export const SalesPaywallMiddleware =
                     canBookDemo={canBookDemo}
                     hasCurrentStoreTrialOptedOut={hasCurrentStoreTrialOptedOut}
                     isTrialAccessLoading={isTrialAccessLoading!}
-                    canNotifyAdmin={canNotifyAdmin}
+                    canNotifyAdmin={displayNotifyAdminButton}
                     isNotifyAdminDisabled={isNotifyAdminDisabled}
                     onNotifyAdminClick={openTrialRequestModal}
                 />
@@ -412,7 +419,7 @@ const PaywallWrapperComponent = ({
             )
         }
 
-        if (canNotifyAdmin && !displayTrialButton && !displayUpgradeButton) {
+        if (canNotifyAdmin) {
             return (
                 <Button
                     fillStyle="ghost"
@@ -477,7 +484,7 @@ const PaywallWrapperComponent = ({
                                 Upgrade Now
                             </Button>
                         )}
-                        {!displayUpgradeButton && canNotifyAdmin && (
+                        {canNotifyAdmin && (
                             <Button
                                 size="medium"
                                 onClick={onNotifyAdminClick}
