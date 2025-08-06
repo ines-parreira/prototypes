@@ -65,6 +65,7 @@ const createMockTrialFlow = (overrides = {}) => ({
     openTrialFinishSetupModal: jest.fn(),
     openTrialRequestModal: jest.fn(),
     closeTrialRequestModal: jest.fn(),
+    onRequestTrialExtension: jest.fn(),
     ...overrides,
 })
 
