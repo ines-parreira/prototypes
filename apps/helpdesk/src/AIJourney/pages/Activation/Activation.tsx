@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
@@ -27,7 +27,7 @@ export const Activation = () => {
     const dispatch = useAppDispatch()
 
     const [isVisible, setIsVisible] = useState(true)
-    const [selectedProduct, setSelectedProduct] = useState({} as Product)
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const [testSmsNumber, setTestSmsNumber] = useState('')
 
     const { currentIntegration, isLoading: isLoadingIntegrations } =
@@ -66,6 +66,12 @@ export const Activation = () => {
             .map((item) => item.data)
     }, [integrationItems])
 
+    useEffect(() => {
+        if (products.length > 0 && !selectedProduct) {
+            setSelectedProduct(products[0])
+        }
+    }, [products, selectedProduct])
+
     const handleProductSelectChange = (newValue: Product) => {
         setSelectedProduct(newValue)
     }
@@ -82,7 +88,15 @@ export const Activation = () => {
 
     const handleTestSms = async () => {
         try {
-            if (!abandonedCartJourney?.id || !testSmsNumber) {
+            if (!selectedProduct) {
+                void dispatch(
+                    notify({
+                        message: 'Please select a product',
+                        status: NotificationStatus.Error,
+                    }),
+                )
+                return
+            } else if (!abandonedCartJourney?.id || !testSmsNumber) {
                 void dispatch(
                     notify({
                         message: `Missing information: test number: ${testSmsNumber}, journeyID: ${abandonedCartJourney?.id}`,
@@ -111,6 +125,7 @@ export const Activation = () => {
             )
         } catch (error) {
             console.error(`Error sending test SMS: ${error}`)
+
             void dispatch(
                 notify({
                     message: `Could not send test SMS`,

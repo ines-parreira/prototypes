@@ -12,6 +12,7 @@ import { appQueryClient } from 'api/queryClient'
 import { shopifyProductResult } from 'fixtures/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListProducts } from 'models/integration/queries'
+import { NotificationStatus } from 'state/notifications/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { Activation } from './Activation'
@@ -285,6 +286,10 @@ describe('<Activation />', () => {
             }))
         })
 
+        afterEach(() => {
+            jest.clearAllMocks()
+        })
+
         it('should show error notification when journey ID is missing', async () => {
             mockUseJourneys.mockImplementation(() => ({
                 data: [{ type: 'cart_abandoned' }], // missing id
@@ -352,19 +357,18 @@ describe('<Activation />', () => {
                 await userEvent.click(button)
             })
 
-            // await waitFor(() => {
-            //     expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
-            // })
+            await waitFor(() => {
+                expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
+            })
 
-            // await waitFor(() => {
-            //     expect(mockNotify).toHaveBeenCalledWith({
-            //         message:
-            //             'Error sending test SMS: Error: SMS service unavailable',
-            //         status: 'error',
-            //     })
-            // })
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    message: 'Could not send test SMS',
+                    status: 'error',
+                })
+            })
 
-            // expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
+            expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
         })
 
         it('should successfully send test SMS when all conditions are met', async () => {
@@ -385,12 +389,10 @@ describe('<Activation />', () => {
                 </Provider>,
             )
 
-            // Wait for the product to be pre-selected and visible
             await waitFor(async () => {
                 expect(screen.queryAllByText('Strong phone')).toHaveLength(1)
             })
 
-            // Select product
             await act(async () => {
                 await userEvent.click(screen.getByText('Strong phone'))
             })
@@ -411,10 +413,256 @@ describe('<Activation />', () => {
                 phoneNumber: '+11234567890',
                 journeyId: 'journey-123',
                 product: {
-                    product_id: expect.any(String),
-                    variant_id: expect.any(String),
-                    price: expect.any(Number),
+                    product_id: '6694863569105',
+                    variant_id: '39924461306065',
+                    price: 3310,
                 },
+            })
+        })
+
+        it('should auto-select the first product when products are loaded', async () => {
+            mockUseIntegrations.mockImplementation(() => ({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Activation />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(async () => {
+                expect(screen.queryAllByText('Black shirt')).toHaveLength(2) // one in the display, other in the list
+            })
+
+            const input = screen.getByRole('textbox')
+            const button = screen.getByText('Send test SMS')
+
+            await act(async () => {
+                await userEvent.type(input, '1234567890')
+                expect(button).toBeEnabled()
+                await userEvent.click(button)
+            })
+
+            expect(mockDispatch).toHaveBeenCalledTimes(1)
+            expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
+
+            expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
+                phoneNumber: '+11234567890',
+                journeyId: 'journey-123',
+                product: {
+                    price: 25,
+                    product_id: '1',
+                    variant_id: '39923189874897',
+                },
+            })
+        })
+
+        it('should show error notification when no journey is available', async () => {
+            const mockDispatch = jest.fn()
+            const mockNotifyAction = { type: 'NOTIFY_ACTION' }
+            const mockNotify = jest.fn().mockReturnValue(mockNotifyAction)
+
+            jest.spyOn(
+                require('hooks/useAppDispatch'),
+                'default',
+            ).mockReturnValue(mockDispatch)
+
+            jest.spyOn(
+                require('state/notifications/actions'),
+                'notify',
+            ).mockImplementation(mockNotify)
+
+            mockUseJourneys.mockImplementation(() => ({
+                data: [],
+                isError: false,
+                isLoading: false,
+            }))
+
+            mockUseIntegrations.mockImplementation(() => ({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Activation />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('textbox')).toBeInTheDocument()
+            })
+
+            const input = screen.getByRole('textbox')
+            const button = screen.getByText('Send test SMS')
+
+            await act(async () => {
+                await userEvent.type(input, '1234567890')
+                expect(button).toBeEnabled()
+                await userEvent.click(button)
+            })
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    message:
+                        'Missing information: test number: (123) 456-7890, journeyID: undefined',
+                    status: NotificationStatus.Error,
+                })
+                expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
+            })
+        })
+
+        it('should show error notification when no product is selected', async () => {
+            const mockDispatch = jest.fn()
+            const mockNotifyAction = { type: 'NOTIFY_ACTION' }
+            const mockNotify = jest.fn().mockReturnValue(mockNotifyAction)
+
+            jest.spyOn(
+                require('hooks/useAppDispatch'),
+                'default',
+            ).mockReturnValue(mockDispatch)
+
+            jest.spyOn(
+                require('state/notifications/actions'),
+                'notify',
+            ).mockImplementation(mockNotify)
+
+            // Mock empty products list so no product gets auto-selected
+            useListProductsMock.mockReturnValue({
+                data: {
+                    pages: [{ data: { data: [] } }],
+                },
+            } as any)
+
+            mockUseJourneys.mockImplementation(() => ({
+                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
+                isError: false,
+                isLoading: false,
+            }))
+
+            mockUseIntegrations.mockImplementation(() => ({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Activation />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('textbox')).toBeInTheDocument()
+            })
+
+            const input = screen.getByRole('textbox')
+            const button = screen.getByText('Send test SMS')
+
+            await act(async () => {
+                await userEvent.type(input, '1234567890')
+                expect(button).toBeEnabled()
+                await userEvent.click(button)
+            })
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    message: 'Please select a product',
+                    status: NotificationStatus.Error,
+                })
+                expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
+            })
+        })
+
+        it('should NOT override existing product selection when products change', async () => {
+            const initialProducts = [
+                {
+                    id: 'product-1',
+                    title: 'First Product',
+                    image: 'image1.jpg',
+                    variants: [{ id: 'variant-1', price: '10.00' }],
+                },
+            ]
+
+            useListProductsMock.mockReturnValue({
+                data: {
+                    pages: [
+                        {
+                            data: {
+                                data: initialProducts.map((product) => ({
+                                    data: product,
+                                })),
+                            },
+                        },
+                    ],
+                },
+            } as any)
+
+            const { rerender } = renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Activation />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(screen.getAllByText('First Product')).toHaveLength(2)
+            })
+
+            const updatedProducts = [
+                ...initialProducts,
+                {
+                    id: 'product-2',
+                    title: 'Second Product',
+                    image: 'image2.jpg',
+                    variants: [{ id: 'variant-2', price: '20.00' }],
+                },
+            ]
+
+            useListProductsMock.mockReturnValue({
+                data: {
+                    pages: [
+                        {
+                            data: {
+                                data: updatedProducts.map((product) => ({
+                                    data: product,
+                                })),
+                            },
+                        },
+                    ],
+                },
+            } as any)
+
+            rerender(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Activation />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                // Should still show first product as selected, not change selection
+                expect(screen.getAllByText('First Product')).toHaveLength(2)
+                expect(screen.getAllByText('Second Product')).toHaveLength(1)
             })
         })
     })
