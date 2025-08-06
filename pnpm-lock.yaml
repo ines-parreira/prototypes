@@ -276,8 +276,8 @@ importers:
         specifier: 0.1.14
         version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
-        specifier: ^0.4.3
-        version: 0.4.3
+        specifier: ^0.5.0
+        version: 0.5.0
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -333,8 +333,8 @@ importers:
         specifier: catalog:rest-api-sdk
         version: 0.2.22
       '@gorgias/merchant-ui-kit':
-        specifier: ^0.39.0
-        version: 0.39.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        specifier: ^0.40.0
+        version: 0.40.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/realtime':
         specifier: ^0.18.7
         version: 0.18.7(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -2728,8 +2728,8 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.4.3':
-    resolution: {integrity: sha512-YZtqkBhshgW8mGSQtJmLbniKGbMMuDtgdt4M1MFCNATbSgReA3PlcXAvmAe12nFt3VY6hFRjrOyaNK3J52CW5Q==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.4.3/3ab411b3473c11b1c473b246c3e98fcef70661c9}
+  '@gorgias/axiom@0.5.0':
+    resolution: {integrity: sha512-ASnZBT8kduWD7s5xdV2Sl54yFWxAH4j/mxr912c3oG/eB2+ZiZJjIjgim9h6B7NlcnX3Luc5mqmeLWpmHZ974A==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.5.0/9539277b1da3651af8c359bc41613cb246db044c}
 
   '@gorgias/branding-assets@0.2.1':
     resolution: {integrity: sha512-NxxSjkJ5xguwXqYpQwEuxoz1eEnJLMlfzRbTTk+cbQxucGyazUsterz0mdTXru2d/yd6iUnPAvZ1Q45s/mjJWg==, tarball: https://npm.pkg.github.com/download/@gorgias/branding-assets/0.2.1/78d49790593f16706d120f57cb71e8362e9080a3}
@@ -2834,8 +2834,8 @@ packages:
   '@gorgias/knowledge-service-validators@0.2.22':
     resolution: {integrity: sha512-PUKQInDvRd6wzKnpb307GJb+sQJoE+Rv6EYd+P8auOuEOazslFfKXPdOEFlxAMr84GqcK/PZap5qdhoR4tbEpw==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.22/38f68763ea8162f5fedd3edb0116fd72fe45e239}
 
-  '@gorgias/merchant-ui-kit@0.39.0':
-    resolution: {integrity: sha512-OJ/kv2tiK+DUO5xxvSPrprij5OArgF7o47QVLRMcfRu6xeBJ+oLGpGIdE22koywtrTGkpJQKLTjiima+9GBpGA==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.39.0/1963ec61ef15dbebeafccc5b89cbc837ca429b31}
+  '@gorgias/merchant-ui-kit@0.40.0':
+    resolution: {integrity: sha512-0m05VzbDOdAV8JFK0DYWR83Ey16yPL5UYb9lnFSANaTU7kSWsanM8lF4PcWQK8fs+n4yCdjC67wu1UnezVb/gA==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.40.0/a62fedeb75937d6bad80112dddd6d93b45efbf21}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -13352,7 +13352,7 @@ snapshots:
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.4.3': {}
+  '@gorgias/axiom@0.5.0': {}
 
   '@gorgias/branding-assets@0.2.1': {}
 
@@ -13574,9 +13574,10 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/merchant-ui-kit@0.39.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/merchant-ui-kit@0.40.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@gorgias/axiom': 0.5.0
       '@gorgias/design-tokens': 0.10.6
       classnames: 2.5.1
       downshift: 9.0.9(react@18.2.0)

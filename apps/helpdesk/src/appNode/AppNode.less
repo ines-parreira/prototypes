@@ -3,11 +3,16 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey-6); // legacy
 
         &:global(.globalNav) {
             background-color: var(--navigation-background);
         }
     }
+}
+
+.axiom:local(.app) {
+    background-color: var(--elevation-neutral-default);
+    color: var(--content-neutral-default);
 }

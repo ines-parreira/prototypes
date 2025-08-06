@@ -27,7 +27,7 @@
         overflow: auto;
         height: 100%;
         max-height: 100%;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-2);
         scrollbar-width: thin;
@@ -119,5 +119,21 @@
         width: 100%;
         overflow-y: auto;
         padding: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .page {
+        background-color: var(--elevation-neutral-default);
+
+        scrollbar-color: var(--neutral-grey-3) var(--elevation-neutral-default);
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--elevation-neutral-default);
+        }
+
+        .separator {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
     }
 }

@@ -15,7 +15,7 @@
         right: 0;
         bottom: 0;
         padding: var(--layout-spacing-s);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         transition: background-color 0.2s ease-out;
 
         &::before {
@@ -30,15 +30,15 @@
         }
 
         &:hover {
-            background: var(--neutral-grey-1);
-            color: var(--neutral-grey-5);
+            background: var(--neutral-grey-1); // legacy
+            color: var(--neutral-grey-5); // legacy
         }
 
         &.active {
-            background: var(--main-primary-0);
+            background: var(--main-primary-0); // legacy
 
             &::before {
-                background-color: var(--main-primary);
+                background-color: var(--main-primary); // legacy
             }
         }
     }
@@ -88,7 +88,7 @@
         .caption-regular();
 
         overflow: hidden;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-overflow: ellipsis;
     }
 
@@ -101,14 +101,14 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: var(--feedback-error);
+        background-color: var(--feedback-error); // legacy
     }
 
     .subject {
         .body-regular();
 
         overflow: hidden;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-overflow: ellipsis;
         white-space: nowrap;
     }
@@ -127,7 +127,7 @@
     }
 
     .errorLabel {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         .body-semibold();
         margin-bottom: 0;
     }
@@ -143,7 +143,7 @@
         height: 8px;
         margin: auto 0 auto 16px;
         border-radius: 50%;
-        background-color: var(--feedback-error);
+        background-color: var(--feedback-error); // legacy
     }
 
     .body {
@@ -205,5 +205,43 @@
             opacity: 0;
             transform: translateX(-30px);
         }
+    }
+}
+
+.axiom :local {
+    .inner {
+        color: var(--content-neutral-default);
+
+        &:hover {
+            background: var(--elevation-neutral-bg);
+        }
+
+        &.active {
+            background: var(--elevation-neutral-bg);
+
+            &::before {
+                background-color: var(--surface-additional-blue);
+            }
+        }
+    }
+
+    .customer {
+        color: var(--content-neutral-default);
+    }
+
+    .subject {
+        color: var(--content-neutral-default);
+    }
+
+    .counter {
+        background-color: var(--static-error);
+    }
+
+    .unreadIndicator {
+        background-color: var(--static-error);
+    }
+
+    .errorLabel {
+        color: var(--static-error);
     }
 }

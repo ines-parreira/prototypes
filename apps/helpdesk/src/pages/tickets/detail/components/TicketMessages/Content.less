@@ -2,8 +2,8 @@
 
 :local {
     .content {
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-0); // legacy
+        color: var(--neutral-grey-6); // legacy
 
         > * {
             position: inherit;
@@ -35,5 +35,12 @@
 .ticket-thread-revamp :local {
     .content {
         line-height: 20px;
+    }
+}
+
+.axiom :local {
+    .content {
+        background-color: var(--elevation-neutral-default);
+        color: var(--content-neutral-default);
     }
 }

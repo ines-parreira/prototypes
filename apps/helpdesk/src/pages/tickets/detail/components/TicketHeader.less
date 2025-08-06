@@ -2,7 +2,7 @@
 
 :local .component {
     padding: 16px 24px 8px 24px;
-    background: var(--neutral-grey-0);
+    background: var(--neutral-grey-0); // legacy
 
     @media @mobiles {
         padding-top: 6px;
@@ -70,5 +70,11 @@
             margin: var(--layout-spacing-xxs) var(--layout-spacing-xs)
                 var(--layout-spacing-xs);
         }
+    }
+}
+
+.axiom :local {
+    .component {
+        background-color: var(--elevation-neutral-default);
     }
 }

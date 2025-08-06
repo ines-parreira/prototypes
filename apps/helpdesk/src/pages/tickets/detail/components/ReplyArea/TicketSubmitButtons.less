@@ -1,8 +1,8 @@
 :local {
     .component {
         padding-bottom: 0.4rem;
-        background: var(--neutral-grey-1);
-        border-top: 1px solid var(--neutral-grey-2);
+        background: var(--neutral-grey-1); // legacy
+        border-top: 1px solid var(--neutral-grey-2); // legacy
         flex-wrap: wrap;
         text-align: right;
         border-bottom-left-radius: 4px;
@@ -12,5 +12,12 @@
     .buttons,
     .tip {
         margin: 0.8rem 0.5rem 0.4rem 0.5rem;
+    }
+}
+
+.axiom :local {
+    .component {
+        background-color: var(--elevation-neutral-mid);
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

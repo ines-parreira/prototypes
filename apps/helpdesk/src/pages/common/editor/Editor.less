@@ -12,7 +12,7 @@
         }
 
         form {
-            border: 1px solid var(--neutral-grey-2);
+            border: 1px solid var(--neutral-grey-2); // legacy
             border-radius: 4px;
 
             @media @mobiles {
@@ -25,7 +25,7 @@
         display: flex;
         align-items: flex-start;
         padding: 0.5rem;
-        border-bottom: 1px solid var(--neutral-grey-2);
+        border-bottom: 1px solid var(--neutral-grey-2); // legacy
     }
 }
 
@@ -37,5 +37,18 @@
         @media (pointer: coarse) {
             padding-bottom: 14rem;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        form {
+            border: 1px solid var(--border-neutral-default);
+            background-color: var(--elevation-neutral-mid);
+        }
+    }
+
+    .replyChannel {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

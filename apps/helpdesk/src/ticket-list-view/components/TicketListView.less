@@ -5,7 +5,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .subHeader {
@@ -27,7 +27,7 @@
     }
 
     .scroller {
-        scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0);
+        scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0); // legacy
         scrollbar-width: thin;
 
         &::-webkit-scrollbar-thumb {
@@ -35,7 +35,7 @@
         }
 
         &::-webkit-scrollbar-track {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
         }
     }
 
@@ -45,7 +45,7 @@
         align-items: center;
         justify-content: space-between;
         padding: var(--layout-spacing-xs);
-        border-bottom: 1px solid var(--neutral-grey-2);
+        border-bottom: 1px solid var(--neutral-grey-2); // legacy
     }
 
     .headerLeft {
@@ -88,5 +88,29 @@
         .wrapper {
             border-right: 1px solid var(--neutral-grey-2);
         }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .titleWrapper {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .scroller {
+        scrollbar-color: var(--neutral-grey-3) var(--elevation-neutral-default);
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--elevation-neutral-default);
+        }
+    }
+}
+
+.axiom.globalNav :local {
+    .wrapper {
+        border-right: 1px solid var(--border-neutral-default);
     }
 }

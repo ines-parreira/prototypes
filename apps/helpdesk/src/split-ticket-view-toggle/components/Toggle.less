@@ -9,7 +9,7 @@
         width: 60px;
         padding: 0;
         border: 0;
-        background-color: var(--navigation-title-item);
+        background-color: var(--navigation-title-item); // legacy
         -webkit-mask-image: url(../assets/dock_to_right.svg);
         mask-image: url(../assets/dock_to_right.svg);
         -webkit-mask-repeat: no-repeat;
@@ -91,5 +91,15 @@
 
     .tooltip {
         width: 180px;
+    }
+}
+
+.axiom :local {
+    .toggle {
+        background-color: var(--elevation-neutral-bg);
+
+        &.disabled {
+            background-color: var(--elevation-neutral-default);
+        }
     }
 }
