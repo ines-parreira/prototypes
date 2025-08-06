@@ -15,6 +15,7 @@ import { OBJECT_TYPES } from 'custom-fields/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
@@ -66,6 +67,11 @@ const SettingsNavbar = () => {
         [hasAutomate, integrations],
     )
 
+    // If there is no usage of article recommendations during the last month,
+    // for any of stores, we will not show the them in the settings navbar.
+    const { enabled: isArticleRecEnabledWhileSunset } =
+        useIsArticleRecommendationsEnabledWhileSunset()
+
     return (
         <Navbar activeContent={ActiveContent.Settings} title="Settings">
             <Navigation.Root
@@ -88,12 +94,14 @@ const SettingsNavbar = () => {
                             requiredRole={AGENT_ROLE}
                             shouldRender={shouldRender}
                         />
-                        <Item
-                            to="article-recommendations"
-                            text="Article Recommendations"
-                            requiredRole={AGENT_ROLE}
-                            shouldRender={shouldRender}
-                        />
+                        {isArticleRecEnabledWhileSunset && (
+                            <Item
+                                to="article-recommendations"
+                                text="Article Recommendations"
+                                requiredRole={AGENT_ROLE}
+                                shouldRender={shouldRender}
+                            />
+                        )}
                         <Item
                             to="automate"
                             text="AI Agent"

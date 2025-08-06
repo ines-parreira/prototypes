@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
 
 import { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
@@ -12,6 +11,7 @@ import {
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AutomatedInteractionsPerFeatureGraphChart } from 'domains/reporting/pages/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
@@ -85,7 +85,9 @@ describe('AutomatedInteractionsPerFeatureGraphChart', () => {
     })
 
     it('renders default y scale when no activity', () => {
-        render(<AutomatedInteractionsPerFeatureGraphChart />)
+        renderWithStoreAndQueryClientProvider(
+            <AutomatedInteractionsPerFeatureGraphChart />,
+        )
 
         expect(LineChartMock).toHaveBeenCalledWith(
             expect.objectContaining({

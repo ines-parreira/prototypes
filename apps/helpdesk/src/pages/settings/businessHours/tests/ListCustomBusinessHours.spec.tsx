@@ -299,23 +299,31 @@ describe('ListCustomBusinessHours', () => {
         renderComponent()
 
         await waitFor(() => {
+            // The error message is split across elements, so we need to check for parts of it
             expect(
-                screen.getByText(
-                    'Something went wrong when fetching the data. Please try again.',
-                ),
+                screen.getByText(/Something went wrong when fetching the data/),
             ).toBeInTheDocument()
+            expect(screen.getByText(/Please try again/)).toBeInTheDocument()
         })
 
-        server.use(mockHandler.handler)
-        await act(() =>
-            user.click(screen.getByRole('button', { name: /refresh/i })),
-        )
+        // Verify refresh button is present
+        const refreshButton = screen.getByRole('button', { name: /refresh/i })
+        expect(refreshButton).toBeInTheDocument()
 
-        expect(
-            screen.queryByText(
-                'Something went wrong when fetching the data. Please try again.',
-            ),
-        ).not.toBeInTheDocument()
+        server.use(mockHandler.handler)
+        await act(() => user.click(refreshButton))
+
+        // After refresh, the error message should be gone
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /Something went wrong when fetching the data/,
+                ),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Please try again/),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('search functionality', () => {

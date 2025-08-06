@@ -19,6 +19,7 @@ import useSelfServiceChannels, {
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
@@ -256,6 +257,9 @@ export const ConnectedChannelsChatView = ({
         )
     }, [applicationsAutomationSettings, selectedChannel])
 
+    const { enabled: isArticleRecEnabledWhileSunset } =
+        useIsArticleRecommendationsEnabledWhileSunset()
+
     const isArticleRecommendationEnabled = useMemo(() => {
         if (!selectedChannel) return false
 
@@ -346,19 +350,22 @@ export const ConnectedChannelsChatView = ({
                     onToggle={updateSettings('orderManagement')}
                 />
 
-                <FeatureSettings
-                    title="Article Recommendation"
-                    label="Enable Article Recommendation"
-                    subtitle="Requires an active Help Center with published articles"
-                    labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
-                    enabled={isArticleRecommendationEnabled}
-                    disabled={isHelpCenterSelfServiceDeleted}
-                    externalLinkUrl={articleRecommendationExternalLink}
-                    showConfigurationRequiredAlert={
-                        isHelpCenterSelfServiceDeleted
-                    }
-                    onToggle={updateSettings('articleRecommendation')}
-                />
+                {isArticleRecommendationEnabled &&
+                    isArticleRecEnabledWhileSunset && (
+                        <FeatureSettings
+                            title="Article Recommendation"
+                            label="Enable Article Recommendation"
+                            subtitle="Requires an active Help Center with published articles"
+                            labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
+                            enabled={isArticleRecommendationEnabled}
+                            disabled={isHelpCenterSelfServiceDeleted}
+                            externalLinkUrl={articleRecommendationExternalLink}
+                            showConfigurationRequiredAlert={
+                                isHelpCenterSelfServiceDeleted
+                            }
+                            onToggle={updateSettings('articleRecommendation')}
+                        />
+                    )}
             </div>
 
             {selfServiceConfiguration && (

@@ -295,6 +295,15 @@ jest.mock('../components/ConnectedChannelsEmailView', () => ({
     ),
 }))
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    () => ({
+        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(() => ({
+            enabled: true,
+        })),
+    }),
+)
+
 const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
     const history = createMemoryHistory({ initialEntries: [route] })
     return {

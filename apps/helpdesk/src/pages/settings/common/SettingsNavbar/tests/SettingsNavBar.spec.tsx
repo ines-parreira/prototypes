@@ -21,6 +21,9 @@ jest.mock('common/segment', () => ({
     ...jest.requireActual('common/segment'),
     logEvent: jest.fn(),
 }))
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
+}))
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: jest.fn(() => [
@@ -31,6 +34,15 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
         },
     ]),
 }))
+
+const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    () => ({
+        useIsArticleRecommendationsEnabledWhileSunset: () =>
+            mockUseIsArticleRecommendationsEnabledWhileSunset(),
+    }),
+)
 
 const mockStore = configureStore([])
 const scrollToMock = jest.fn()
@@ -59,6 +71,9 @@ describe('SettingsNavbar', () => {
         jest.clearAllMocks()
         ;(useLocation as jest.Mock).mockReturnValue(mockLocation)
         ;(logEvent as jest.Mock).mockImplementation(() => {})
+        mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+            enabled: true,
+        })
     })
 
     const renderComponent = (
@@ -198,5 +213,66 @@ describe('SettingsNavbar', () => {
         renderComponent()
 
         expect(screen.getByText('Store Management')).toBeInTheDocument()
+    })
+
+    describe('Article Recommendations visibility', () => {
+        it('shows Article Recommendations menu item when useIsArticleRecommendationsEnabledWhileSunset returns enabled: true', () => {
+            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+                enabled: true,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText('Article Recommendations'),
+            ).toBeInTheDocument()
+        })
+
+        it('hides Article Recommendations menu item when useIsArticleRecommendationsEnabledWhileSunset returns enabled: false', () => {
+            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+                enabled: false,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Article Recommendations'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('Article Recommendations menu item requires agent role', () => {
+            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+                enabled: true,
+            })
+
+            // Set user to basic role (not agent or admin)
+            const basicUserStore = mockStore({
+                currentAccount: mockAccount,
+                currentUser: fromJS({
+                    has_password: true,
+                    role: { name: 'basic' },
+                }),
+                billing: fromJS({
+                    products: [
+                        {
+                            id: '111',
+                            type: ProductType.Automation,
+                            prices: [
+                                {
+                                    product_id: 'product_111',
+                                    price_id: '111',
+                                },
+                            ],
+                        },
+                    ],
+                }),
+            })
+
+            renderComponent(basicUserStore)
+
+            expect(
+                screen.queryByText('Article Recommendations'),
+            ).not.toBeInTheDocument()
+        })
     })
 })

@@ -99,6 +99,14 @@ jest.mock('pages/settings/helpCenter/queries', () => ({
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
 }))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    () => ({
+        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(() => ({
+            enabled: true,
+        })),
+    }),
+)
 
 const downloadData = {
     name: `test-stat.csv`,

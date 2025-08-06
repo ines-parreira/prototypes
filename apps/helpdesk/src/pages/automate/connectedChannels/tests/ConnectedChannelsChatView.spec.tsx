@@ -21,6 +21,7 @@ import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useAp
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import history from 'pages/history'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
@@ -217,6 +218,9 @@ const mockedStore = mockStore({
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceChannels')
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+)
 
 describe('ConnectedChannelsView', () => {
     beforeEach(() => {
@@ -232,7 +236,7 @@ describe('ConnectedChannelsView', () => {
                     id: 110,
                     applicationId: 20,
                     articleRecommendation: {
-                        enabled: false,
+                        enabled: true,
                     },
                     orderManagement: {
                         enabled: false,
@@ -270,6 +274,9 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
+        ;(
+            useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
+        ).mockReturnValue({ enabled: true })
     })
     it('should render', () => {
         render(
@@ -434,20 +441,9 @@ describe('ConnectedChannelsView', () => {
         )
 
         await act(async () => {
-            fireEvent.click(
-                screen.getByLabelText(/Enable Article Recommendation/i),
-            )
+            fireEvent.click(screen.getByLabelText(/Enable Order Management/i))
             await waitFor(() => {
                 expect(handleUpdate).toHaveBeenCalledTimes(1)
-            })
-
-            await act(async () => {
-                await waitFor(() => {
-                    fireEvent.click(
-                        screen.getByLabelText(/Enable Order Management/i),
-                    )
-                    expect(handleUpdate).toHaveBeenCalledTimes(3)
-                })
             })
         })
     })
@@ -489,11 +485,20 @@ describe('ConnectedChannelsView', () => {
         expect(screen.queryByText(/Test/i)).not.toBeInTheDocument()
     })
 
-    it(`will call 'handleUpdate' when switching on the article recommendation`, () => {
+    it.skip(`will call 'handleUpdate' when switching on the article recommendation - skipped due to sunset behavior`, () => {
+        // This test is skipped because the article recommendation feature is being sunset.
+        // The toggle is only visible when article recommendation is already enabled,
+        // so we cannot test "switching on" behavior.
         const handleUpdate = jest.fn()
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
-            applicationsAutomationSettings:
-                applicationsAutomationSettingsStateFixture,
+            applicationsAutomationSettings: {
+                25: {
+                    ...applicationAutomationSettingsFixture,
+                    articleRecommendation: {
+                        enabled: false,
+                    },
+                },
+            },
             isFetchPending: false,
             handleChatApplicationAutomationSettingsUpdate: handleUpdate,
         })
@@ -560,7 +565,7 @@ describe('ConnectedChannelsView', () => {
                     id: 110,
                     applicationId: 20,
                     articleRecommendation: {
-                        enabled: false,
+                        enabled: true,
                     },
                     orderManagement: {
                         enabled: true,
@@ -627,7 +632,7 @@ describe('ConnectedChannelsView', () => {
                     ...applicationAutomationSettingsFixture,
                     id: 23,
                     articleRecommendation: {
-                        enabled: false,
+                        enabled: true,
                     },
                     orderManagement: {
                         enabled: false,
@@ -654,11 +659,12 @@ describe('ConnectedChannelsView', () => {
 
         expect(screen.queryByText(/currently viewing/i)).not.toBeInTheDocument()
         expect(screen.queryByText(/chat_bubble/i)).not.toBeInTheDocument()
+        // Article recommendation toggle is shown but should be checked (enabled)
         expect(
             screen.getByRole('switch', {
                 name: /enable article recommendation/i,
             }),
-        ).not.toBeChecked()
+        ).toBeChecked()
         expect(
             screen.getByRole('switch', { name: /enable order management/i }),
         ).not.toBeChecked()
@@ -767,7 +773,7 @@ describe('ConnectedChannelsView', () => {
                     id: 110,
                     applicationId: 20,
                     articleRecommendation: {
-                        enabled: false,
+                        enabled: true,
                     },
                     orderManagement: {
                         enabled: false,

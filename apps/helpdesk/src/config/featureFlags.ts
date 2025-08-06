@@ -77,6 +77,7 @@ export enum FeatureFlagKey {
     ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
     ChatTranscript = 'chat-transcript',
+    ChatArticleRecommendationsEnabled = 'chat-article-recommendations-enabled',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',

@@ -5,8 +5,8 @@ import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'domains/reporting/hooks/automate/useAutomationDataset'
+import { useFilteredAutomatedInteractionTimeSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionTimeSeries'
 import {
-    getAutomateColorsForEventType,
     getGreyAreaAndChartParam,
     renderAutomateTooltipLabel,
     renderAutomateXTickLabel,
@@ -48,11 +48,10 @@ export const AutomatedInteractionsPerFeatureGraphChart = ({
         [granularity, greyArea, timeseries],
     )
 
-    const colorsForInteractionsByEventType = useMemo(() => {
-        return automatedInteractionByEventTypesTimeSeriesData.map((data) =>
-            getAutomateColorsForEventType(data.label),
-        )
-    }, [automatedInteractionByEventTypesTimeSeriesData])
+    const { filteredData, colors } = useFilteredAutomatedInteractionTimeSeries({
+        automatedInteractionByEventTypesTimeSeriesData,
+    })
+
     const hasActivity =
         !automatedInteractionTrend.isFetching &&
         automatedInteractionTrend.data?.value
@@ -69,14 +68,14 @@ export const AutomatedInteractionsPerFeatureGraphChart = ({
                 isCurvedLine={false}
                 yAxisBeginAtZero
                 isLoading={isTimeSeriesFetching}
-                data={automatedInteractionByEventTypesTimeSeriesData}
+                data={filteredData}
                 greyArea={greyAreaChartParam}
                 _displayLegacyTooltip
                 displayLegend
                 toggleLegend
                 legendOnLeft
                 _renderLegacyTooltipLabel={renderAutomateTooltipLabel()}
-                customColors={colorsForInteractionsByEventType}
+                customColors={colors}
                 renderXTickLabel={renderAutomateXTickLabel}
                 yAxisScale={hasActivity ? {} : { min: 0, max: 750 }}
                 wrapperclassNames={css.chartWrapper}

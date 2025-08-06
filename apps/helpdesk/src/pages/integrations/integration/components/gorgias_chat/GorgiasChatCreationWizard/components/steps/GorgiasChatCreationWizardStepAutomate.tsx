@@ -134,8 +134,9 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         currentIsOrderManagementEnabled ??
         !!automationSettings?.orderManagement?.enabled
 
-    const isArticleRecommendationEnabled =
-        !!automationSettings?.articleRecommendation?.enabled
+    // Article recommendation sunset:
+    // By default, article recommendation will be disabled for new Gorgias Chat integrations.
+    const isArticleRecommendationEnabled = false
 
     const isFormDisabled =
         !storeIntegration ||

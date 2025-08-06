@@ -5,6 +5,7 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import {
+    articleRecommendedInteractionsTimeSeriesQueryFactory,
     billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
@@ -88,6 +89,20 @@ export function fetchBillableTicketDatasetTimeSeries(
             timezone,
             granularity,
             aiAgentUserId,
+        ),
+    )
+}
+
+export function fetchRecommendedResourcesTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+) {
+    return fetchTimeSeries(
+        articleRecommendedInteractionsTimeSeriesQueryFactory(
+            filters,
+            timezone,
+            granularity,
         ),
     )
 }

@@ -1,3 +1,4 @@
+import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import {
     AIAgentAutomatedInteractionsCube,
     AIAgentInteractionsBySkillDatasetDimension,
@@ -7,6 +8,7 @@ import {
 import {
     AutomationDatasetCube,
     AutomationDatasetDimension,
+    AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
@@ -137,3 +139,31 @@ export const AIAgentInteractionsBySkillTimeSeriesQueryFactory = (
         ],
     }
 }
+
+export const articleRecommendedInteractionsTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): TimeSeriesQuery<AutomationDatasetCube> => ({
+    measures: [AutomationDatasetMeasure.AutomatedInteractions],
+    dimensions: [],
+    timeDimensions: [
+        {
+            dimension:
+                AutomationDatasetDimension.AutomationEventCreatedDatetime,
+            granularity,
+            dateRange: getFilterDateRange(filters.period),
+        },
+    ],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        ...automationDatasetAdditionalFilters(filters),
+        // Filter for article recommendation events only
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [AutomateEventType.ARTICLE_RECOMMENDATION_STARTED],
+        },
+    ],
+})
