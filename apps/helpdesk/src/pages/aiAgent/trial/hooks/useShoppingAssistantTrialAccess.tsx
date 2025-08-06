@@ -142,6 +142,9 @@ export const useShoppingAssistantTrialAccess = (
     const isAiShoppingAssistantTrialMerchantsEnabled =
         flags[FeatureFlagKey.AiShoppingAssistantTrialMerchants]
 
+    const isShoppingAssistantTrialImprovement =
+        flags[FeatureFlagKey.ShoppingAssistantTrialImprovement]
+
     // Check if AI Agent is being used on chat (any store with monitored chat integrations)
     const isUsingAiAgentOnChat = storeConfigurations.some(
         (config) => config.monitoredChatIntegrations.length > 0,
@@ -166,7 +169,9 @@ export const useShoppingAssistantTrialAccess = (
     // Team leads can notify admin if trial CTA conditions are met (except admin check)
     const canNotifyAdmin = Boolean(
         isTeamLeadUser &&
+            !isAdminUser &&
             (isOnStarterOrBasicPlan ||
+                (isShoppingAssistantTrialImprovement && isOnProPlusPlan) ||
                 isAiShoppingAssistantTrialMerchantsEnabled),
     )
 

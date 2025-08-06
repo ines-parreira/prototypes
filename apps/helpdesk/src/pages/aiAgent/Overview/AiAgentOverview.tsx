@@ -77,13 +77,23 @@ export const AiAgentOverview = () => {
         storeActivations,
     })
 
+    /* TODO: [AIFLY-547] remove this when the trial improvement is enabled */
     useEffect(() => {
-        if ((canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted) {
+        if (
+            (canSeeTrialCTA || canBookDemo) &&
+            !hasAnyTrialStarted &&
+            !isShoppingAssistantTrialImprovement
+        ) {
             logEvent(SegmentEvent.TrialBannerOverviewViewed, {
                 type: canBookDemo ? 'Demo' : 'Trial',
             })
         }
-    }, [canSeeTrialCTA, canBookDemo, hasAnyTrialStarted])
+    }, [
+        canSeeTrialCTA,
+        canBookDemo,
+        hasAnyTrialStarted,
+        isShoppingAssistantTrialImprovement,
+    ])
 
     const onConfirmModal = () => handleModalAction('confirm')
     const onCloseModal = () => handleModalAction('close')
