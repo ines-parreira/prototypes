@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
@@ -15,8 +16,12 @@ export default function WrappedCustomerMetafields(props: MetafieldProps) {
         return null
     }
 
+    const onOpened = () => {
+        logEvent(SegmentEvent.ShopifyMetafieldsOpenCustomer)
+    }
+
     return (
-        <MetafieldsContainer title="Customer Metafields">
+        <MetafieldsContainer onOpened={onOpened} title="Customer Metafields">
             <CustomerMetafields {...props} />
         </MetafieldsContainer>
     )

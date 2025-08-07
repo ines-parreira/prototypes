@@ -2,6 +2,7 @@ import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
 import { ShopifyMetafield } from '@gorgias/helpdesk-types'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     Metafield,
     MetafieldsContainer,
@@ -15,8 +16,12 @@ type Props = {
 }
 
 export default function WrappedOrderMetafields(props: Props) {
+    const onOpened = () => {
+        logEvent(SegmentEvent.ShopifyMetafieldsOpenOrder)
+    }
+
     return (
-        <MetafieldsContainer title="Metafields">
+        <MetafieldsContainer onOpened={onOpened} title="Metafields">
             <OrderMetafields {...props} />
         </MetafieldsContainer>
     )

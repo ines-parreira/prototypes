@@ -1,14 +1,54 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import WrappedCustomerMetafields from '../WrappedCustomerMetafields'
 
 jest.mock('core/flags')
 const mockUseFlag = assumeMock(useFlag)
+
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        ShopifyMetafieldsOpenCustomer: 'shopify/metafields/customer/open',
+    },
+}))
+
+const server = setupServer()
+
+const mockShopifyCustomerMetafieldsHandler = http.get(
+    '/integrations/shopify/:integrationId/customer/:customerId/metafields',
+    () => {
+        return HttpResponse.json({
+            data: {
+                data: [],
+            },
+        })
+    },
+)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(mockShopifyCustomerMetafieldsHandler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('<WrappedCustomerMetafields />', () => {
     const defaultProps = {
@@ -26,7 +66,7 @@ describe('<WrappedCustomerMetafields />', () => {
         })
 
         it('should return null and not render anything', () => {
-            const { container } = render(
+            const { container } = renderWithQueryClientProvider(
                 <WrappedCustomerMetafields {...defaultProps} />,
             )
 
@@ -40,9 +80,27 @@ describe('<WrappedCustomerMetafields />', () => {
         })
 
         it('should render CustomerMetafields', () => {
-            render(<WrappedCustomerMetafields {...defaultProps} />)
+            renderWithQueryClientProvider(
+                <WrappedCustomerMetafields {...defaultProps} />,
+            )
 
             expect(screen.getByText('Customer Metafields')).toBeInTheDocument()
+        })
+
+        it('should log ShopifyMetafieldsOpenCustomer event when metafields container is expanded', () => {
+            renderWithQueryClientProvider(
+                <WrappedCustomerMetafields {...defaultProps} />,
+            )
+
+            expect(logEvent).not.toHaveBeenCalled()
+
+            const expandButton = screen.getByTitle('Unfold this card')
+            fireEvent.click(expandButton)
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.ShopifyMetafieldsOpenCustomer,
+            )
+            expect(logEvent).toHaveBeenCalledTimes(1)
         })
     })
 })

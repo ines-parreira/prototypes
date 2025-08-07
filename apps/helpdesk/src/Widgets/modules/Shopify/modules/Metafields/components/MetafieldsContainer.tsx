@@ -3,21 +3,25 @@ import React, { ReactNode, useState } from 'react'
 import classnames from 'classnames'
 
 import orderIcon from 'assets/img/icons/order-icon.svg'
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import css from './MetafieldsContainer.less'
 
 type Props = {
     children: ReactNode
     title: string
+    onOpened?: () => void
 }
 
-export default function MetafieldsContainer({ children, title }: Props) {
+export default function MetafieldsContainer({
+    children,
+    title,
+    onOpened,
+}: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const onClick = () => {
         setIsOpen(!isOpen)
         if (!isOpen) {
-            logEvent(SegmentEvent.ShopifyMetafieldsOpen)
+            onOpened?.()
         }
     }
     return (

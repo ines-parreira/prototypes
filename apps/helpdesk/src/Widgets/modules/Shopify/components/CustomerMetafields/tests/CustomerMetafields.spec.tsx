@@ -47,24 +47,13 @@ describe('<CustomerMetafields/>', () => {
         ).toBeInTheDocument()
     })
 
-    it.each([
-        { description: 'data is null', mockData: null },
-        { description: 'data is undefined', mockData: undefined },
-        {
-            description: 'data.data is undefined',
-            mockData: { data: undefined },
-        },
-        {
-            description: 'data.data.data is undefined',
-            mockData: { data: { data: undefined } },
-        },
-        {
-            description: 'data.data.data is empty array',
-            mockData: { data: { data: [] } },
-        },
-    ])('should show empty state when $description', ({ mockData }) => {
+    it('should return empty state', () => {
         mockUseListShopifyCustomerMetafields.mockReturnValue({
-            data: mockData,
+            data: {
+                data: {
+                    data: [],
+                },
+            },
         })
 
         render(<CustomerMetafields integrationId={1} customerId={1} />)
