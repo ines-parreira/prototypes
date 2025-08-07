@@ -5,8 +5,14 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { CallExpression as ESCallExpression, LogicalExpression } from 'estree'
 import { fromJS } from 'immutable'
 
+import {
+    StoreMapping,
+    useGetStoreMappingsByAccountId,
+} from '@gorgias/helpdesk-queries'
+
 import { CustomField } from 'custom-fields/types'
 import { view as viewFixture } from 'fixtures/views'
+import useAppSelector from 'hooks/useAppSelector'
 import useQAScoreFilters from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'
 import Left from 'pages/common/components/ViewTable/Filters/Left'
 import Right from 'pages/common/components/ViewTable/Filters/Right'
@@ -16,6 +22,14 @@ import useCustomFieldsFilters from '../hooks/useCustomFieldsFilters'
 import { QaScoreDimensions } from '../utils/qaScoreDimensions'
 
 jest.mock('state/views/actions')
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useGetStoreMappingsByAccountId: jest.fn(),
+}))
+const useGetStoreMappingsByAccountIdMock =
+    useGetStoreMappingsByAccountId as jest.Mock
+jest.mock('hooks/useAppSelector')
+const mockUseAppSelector = useAppSelector as jest.Mock
 
 const updateOperatorMock = jest.fn()
 const removeConditionMock = jest.fn()
@@ -30,19 +44,19 @@ const LeftMock = assumeMock(Left)
 jest.mock('pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters')
 const useQAScoreFiltersMock = assumeMock(useQAScoreFilters)
 
-jest.mock(
-    '../Right',
-    () =>
-        ({ updateFieldFilter, index }: ComponentProps<typeof Right>) => (
-            <div
-                onClick={() => {
-                    updateFieldFilter(index, 'open')
-                }}
-            >
-                Right
-            </div>
-        ),
+jest.mock('../Right', () =>
+    jest.fn((props: ComponentProps<typeof Right>) => (
+        <div
+            onClick={() => {
+                props.updateFieldFilter(props.index, 'open')
+            }}
+        >
+            Right
+        </div>
+    )),
 )
+
+const RightMock = assumeMock(Right)
 
 const callExpressionNode = {
     type: 'CallExpression',
@@ -138,6 +152,14 @@ describe('<CallExpression />', () => {
             qaScoreDimension: QaScoreDimensions.ACCURACY,
             onQAScoreDimensionFieldChange: jest.fn(),
         })
+        mockUseAppSelector.mockReturnValue({
+            currentAccountId: 1,
+        })
+        useGetStoreMappingsByAccountIdMock.mockReturnValue({
+            data: {
+                data: [],
+            },
+        })
     })
 
     it('should update active view on remove field', () => {
@@ -183,5 +205,56 @@ describe('<CallExpression />', () => {
             <CallExpression {...minProps} config={fromJS([])} />,
         )
         expect(getByText('System condition')).toBeInTheDocument()
+    })
+
+    describe('store mappings integration', () => {
+        const mockStoreMappings: StoreMapping[] = [
+            {
+                store_id: 1,
+                integration_id: 123,
+                created_datetime: '2021-01-01',
+                updated_datetime: '2021-01-01',
+            },
+            {
+                store_id: 2,
+                integration_id: 456,
+                created_datetime: '2021-01-01',
+                updated_datetime: '2021-01-01',
+            },
+        ]
+
+        it('should pass store mappings to Right component', () => {
+            useGetStoreMappingsByAccountIdMock.mockReturnValue({
+                data: {
+                    data: { data: mockStoreMappings },
+                },
+            })
+            render(<CallExpression {...minProps} />)
+
+            expect(RightMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    storeMappings: mockStoreMappings,
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should handle undefined store mappings data', () => {
+            const {
+                useGetStoreMappingsByAccountId,
+            } = require('@gorgias/helpdesk-queries')
+            useGetStoreMappingsByAccountId.mockReturnValue({
+                data: undefined,
+            })
+
+            render(<CallExpression {...minProps} />)
+
+            expect(RightMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    storeMappings: [],
+                }),
+                expect.anything(),
+            )
+        })
     })
 })

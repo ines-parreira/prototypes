@@ -1,4 +1,4 @@
-import { isValidElement, ReactNode } from 'react'
+import { isValidElement, ReactNode, useMemo } from 'react'
 
 import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
@@ -12,6 +12,7 @@ import { UserRole } from 'config/types/user'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { isStoreIntegration } from 'models/integration/types'
 import { SourceType } from 'models/ticket/types'
 import { ViewField } from 'models/view/types'
 import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
@@ -26,6 +27,7 @@ import { getTeams } from 'state/teams/selectors'
 import { parseTimeDelta } from 'tickets/common/utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
+import { IntegrationIcon } from '../components/IntegrationIcon/IntegrationIcon'
 import DatetimeLabel from './DatetimeLabel'
 
 import css from './labels.less'
@@ -276,9 +278,22 @@ export const IntegrationsDetailLabel = ({
         label = `${integration.get('name') as string} (${address})`
     }
 
+    const isStore = useMemo(
+        () => isStoreIntegration(integration.toJS()),
+        [integration],
+    )
+
     return (
         <span>
-            <SourceIcon type={channel} className="mr-2" />
+            {isStore ? (
+                <IntegrationIcon
+                    kind={integration.get('type')}
+                    className={css.storeIcon}
+                />
+            ) : (
+                <SourceIcon type={channel} className="mr-2" />
+            )}
+
             {label}
         </span>
     )
@@ -439,6 +454,12 @@ export const RenderLabel = ({
                 <span>{value}</span>
             ) : (
                 <IntegrationsDetailLabel integration={value} />
+            )
+        case ViewField.Store:
+            return (
+                <IntegrationsDetailLabel
+                    integration={value.get('integration')}
+                />
             )
         case ViewField.Customer:
             return <CustomerLabel customer={value} />

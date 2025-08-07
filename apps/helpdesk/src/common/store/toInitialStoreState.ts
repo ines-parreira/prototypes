@@ -24,6 +24,18 @@ export const TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION = {
     },
 }
 
+export const TICKET_STORE_ID_FILTER_SCHEMA_DEFINITION = {
+    meta: {
+        operators: {
+            eq: { label: 'is' },
+            neq: { label: 'is not' },
+            containsAny: { label: 'is one of' },
+            notContainsAny: { label: 'is not one of' },
+        },
+        defaultOperator: 'eq',
+    },
+}
+
 export default function toInitialStoreState(initialState: GorgiasInitialState) {
     const nextState: Record<string, any> = {
         ...initialState,
@@ -37,7 +49,15 @@ export default function toInitialStoreState(initialState: GorgiasInitialState) {
     if (nextState?.schemas?.definitions?.Ticket?.properties) {
         nextState.schemas.definitions.Ticket.properties.qa_score_dimensions =
             TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION
+
+        /*
+            Add store_id filter schema definition to the ticket schema as it's not provided from the backend
+            This allows filtering by store_id with custom operators: eq, neq, containsAny, notContainsAny
+        */
+        nextState.schemas.definitions.Ticket.properties.store_id =
+            TICKET_STORE_ID_FILTER_SCHEMA_DEFINITION
     }
+
     const sections = initialState.viewSections
     delete nextState.viewSections
 

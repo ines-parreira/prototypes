@@ -11,7 +11,11 @@ import configureMockStore from 'redux-mock-store'
 import { ThemeProvider } from 'core/theme'
 import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
 
-const defaultState = {}
+const defaultState = {
+    integrations: fromJS({
+        integrations: [],
+    }),
+}
 
 const storyConfig: Meta = {
     title: 'Data Display/ViewTable/RightContainer',
@@ -85,6 +89,7 @@ const defaultProps: ComponentProps<typeof RightContainer> = {
         type: 'Literal',
         value: '2021-12-01T06:00:00.000Z',
     },
+    storeMappings: [],
 }
 
 export const Default = Template.bind({})

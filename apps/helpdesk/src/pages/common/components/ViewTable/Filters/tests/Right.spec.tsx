@@ -10,7 +10,10 @@ import thunk from 'redux-thunk'
 
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
+import { IntegrationType } from 'models/integration/constants'
+import { IntegrationFromType } from 'models/integration/types'
 import { RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
+import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import { CHANNELS } from 'tickets/common/config'
 
 jest.mock('moment-timezone', () => () => {
@@ -28,9 +31,12 @@ jest.mock(
         },
 )
 
-jest.mock('pages/common/forms/MultiSelectField', () => () => {
-    return <div data-testid="multi-select-field">MultiSelectField</div>
-})
+jest.mock('pages/common/forms/MultiSelectField', () =>
+    jest.fn(() => {
+        return <div data-testid="multi-select-field">MultiSelectField</div>
+    }),
+)
+const MultiSelectFieldMock = MultiSelectField as unknown as jest.Mock
 
 jest.mock('pages/common/forms/TimedeltaPicker', () => () => {
     return <div data-testid="timedelta-picker">TimedeltaPicker</div>
@@ -127,6 +133,8 @@ describe('<Right />', () => {
             DateTimeFormatMapper[
                 DateTimeFormatType.COMPACT_DATE_WITH_TIME_EN_GB_24_HOUR
             ],
+        storeMappings: [],
+        storeIntegrationMapping: [],
     } as unknown as ComponentProps<typeof RightContainer>
 
     it('should default the current datetime when the date value is invalid', () => {
@@ -637,5 +645,115 @@ describe('<Right />', () => {
             </Provider>,
         )
         expect(updateMock).toHaveBeenCalledWith(minProps.index, 'only-option')
+    })
+
+    describe('store field rendering', () => {
+        const storeField = fromJS({
+            name: 'store',
+            title: 'Store',
+            path: 'store_id',
+            filter: {},
+        })
+
+        it('should render MultiSelectField for store field when node is ArrayExpression', () => {
+            const node = {
+                type: 'ArrayExpression',
+                elements: [
+                    { type: 'Literal', value: 1, raw: '1' },
+                    { type: 'Literal', value: 2, raw: '2' },
+                ],
+            } as Expression
+
+            const props = {
+                ...minProps,
+                field: storeField,
+                node,
+                storeIntegrationMapping: [
+                    {
+                        integration: {
+                            id: 1,
+                            name: 'Store 1',
+                        } as IntegrationFromType<
+                            | IntegrationType.Shopify
+                            | IntegrationType.BigCommerce
+                            | IntegrationType.Magento2
+                        >,
+                        id: 1,
+                    },
+                    {
+                        integration: {
+                            id: 2,
+                            name: 'Store 2',
+                        } as IntegrationFromType<
+                            | IntegrationType.Shopify
+                            | IntegrationType.BigCommerce
+                            | IntegrationType.Magento2
+                        >,
+                        id: 2,
+                    },
+                ],
+            }
+
+            const { getByTestId } = render(
+                <Provider store={store}>
+                    <RightContainer {...props} />
+                </Provider>,
+            )
+
+            expect(getByTestId('multi-select-field')).toBeInTheDocument()
+            expect(MultiSelectFieldMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    values: [1, 2],
+                    options: [
+                        {
+                            label: 'Store 1',
+                            value: 1,
+                            displayLabel: expect.anything(),
+                        },
+                        {
+                            label: 'Store 2',
+                            value: 2,
+                            displayLabel: expect.anything(),
+                        },
+                    ],
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should render store value for single store value', () => {
+            const node = {
+                raw: '1',
+                type: 'Literal',
+                value: 1,
+            } as Expression
+
+            const props = {
+                ...minProps,
+                field: storeField,
+                node,
+                storeIntegrationMapping: [
+                    {
+                        integration: {
+                            id: 1,
+                            name: 'Store 1',
+                        } as IntegrationFromType<
+                            | IntegrationType.Shopify
+                            | IntegrationType.BigCommerce
+                            | IntegrationType.Magento2
+                        >,
+                        id: 1,
+                    },
+                ],
+            }
+
+            const { getByText } = render(
+                <Provider store={store}>
+                    <RightContainer {...props} />
+                </Provider>,
+            )
+
+            expect(getByText('Store 1')).toBeInTheDocument()
+        })
     })
 })

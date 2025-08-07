@@ -385,36 +385,58 @@ export const FilterTopbar = ({
         FeatureFlagKey.TicketAllowPriorityUsage,
     )
 
-    const filterableFields = (config.get('fields') as List<any>)
-        .filter((field) => {
-            const filterConfig = field.get('filter')
-            if (!filterConfig) {
-                return false
-            }
+    const isFilterViewsByStoreEnabled = useFlag(
+        FeatureFlagKey.FilterViewsByStore,
+    )
 
-            const fieldName: string = field.get('name')
-            if (
-                !areCustomerSatisfactionQaFiltersInViewsEnabled &&
-                (fieldName === ViewField.CSATScore ||
-                    fieldName === ViewField.QAScore)
-            ) {
-                return false
-            }
+    const filterableFields = useMemo(
+        () =>
+            (config.get('fields') as List<any>)
+                .filter((field) => {
+                    const filterConfig = field.get('filter')
+                    if (!filterConfig) {
+                        return false
+                    }
 
-            if (
-                fieldName === ViewField.Priority &&
-                !hasPriorityFilteringEnabled
-            ) {
-                return false
-            }
+                    const fieldName: string = field.get('name')
+                    if (
+                        !areCustomerSatisfactionQaFiltersInViewsEnabled &&
+                        (fieldName === ViewField.CSATScore ||
+                            fieldName === ViewField.QAScore)
+                    ) {
+                        return false
+                    }
 
-            if (field.get('path', '') === 'custom_fields') {
-                return isSearch ? true : isTicketFieldsViewFilterEnabled
-            }
+                    if (
+                        fieldName === ViewField.Priority &&
+                        !hasPriorityFilteringEnabled
+                    ) {
+                        return false
+                    }
 
-            return true
-        })
-        .sortBy((field) => field.get('title'))
+                    if (field.get('path', '') === 'custom_fields') {
+                        return isSearch ? true : isTicketFieldsViewFilterEnabled
+                    }
+
+                    if (
+                        fieldName === ViewField.Store &&
+                        !isFilterViewsByStoreEnabled
+                    ) {
+                        return false
+                    }
+
+                    return true
+                })
+                .sortBy((field) => field.get('title')),
+        [
+            config,
+            areCustomerSatisfactionQaFiltersInViewsEnabled,
+            hasPriorityFilteringEnabled,
+            isFilterViewsByStoreEnabled,
+            isSearch,
+            isTicketFieldsViewFilterEnabled,
+        ],
+    )
 
     const totalSearchResources = useMemo(() => {
         return navigationMeta.get('total_resources') as number | undefined

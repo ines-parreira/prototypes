@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react'
 
+import classNames from 'classnames'
+
 import { THEME_NAME, useTheme } from 'core/theme'
 import { IntegrationType } from 'models/integration/constants'
 import { getIconFromType } from 'state/integrations/helpers'
@@ -9,9 +11,10 @@ import css from './IntegrationIcon.less'
 
 type Props = {
     kind: IntegrationType
+    className?: string
 }
 
-export function IntegrationIcon({ kind }: Props) {
+export function IntegrationIcon({ kind, className }: Props) {
     const theme = useTheme()
 
     const src = useMemo(
@@ -27,7 +30,7 @@ export function IntegrationIcon({ kind }: Props) {
     return (
         <img
             alt={`${kind} logo`}
-            className={css.icon}
+            className={classNames(css.icon, className)}
             role="presentation"
             src={src}
         />

@@ -98,6 +98,7 @@ export enum FeatureFlagKey {
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',
     FeedbackToAIAgentInTicketViewsV4 = 'feedback-to-ai-agent-in-ticket-views-v-4',
+    FilterViewsByStore = 'linear.project_filter-search-views-by-store.enable_filtering',
     FilterViewsByTicketFields = 'filter-views-by-ticket-fields',
     FlowsStepsOrderLineItemSelection = 'flows-steps-order-line-item-selection',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',

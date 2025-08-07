@@ -1,13 +1,15 @@
 import React, { Component, ReactNode } from 'react'
 
 import { ArrayExpression, Expression, Identifier, Literal } from 'estree'
-import { List, Map, Seq } from 'immutable'
+import { fromJS, List, Map, Seq } from 'immutable'
 import { LDFlagSet } from 'launchdarkly-js-client-sdk'
 import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import moment from 'moment-timezone'
 import { connect, ConnectedProps } from 'react-redux'
 import { Input } from 'reactstrap'
+
+import { StoreMapping } from '@gorgias/helpdesk-queries'
 
 import { timedeltaOperators } from 'config/rules'
 import { DateAndTimeFormatting, TimeFormatType } from 'constants/datetime'
@@ -28,7 +30,10 @@ import {
     getDateAndTimeFormatter,
     getTimeFormatPreferenceSetting,
 } from 'state/currentUser/selectors'
-import { getMessagingAndAppIntegrations } from 'state/integrations/selectors'
+import {
+    getMessagingAndAppIntegrations,
+    getStoreIntegrations,
+} from 'state/integrations/selectors'
 import { getTags } from 'state/tags/selectors'
 import { humanizeChannel, humanizeCSATScore } from 'state/ticket/utils'
 import { RootState } from 'state/types'
@@ -58,6 +63,7 @@ type OwnProps = {
     objectPath: string
     empty: boolean
     flags?: LDFlagSet
+    storeMappings: StoreMapping[]
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -215,6 +221,7 @@ export class RightContainer extends Component<Props, State> {
         let displayedValue: Literal['value'] | ReactNode = (node as Literal)
             .value
         const fieldName = field.get('name')
+        let modifiedField: Map<any, any> | null = null
         if (displayedValue === '{{current_user.id}}') {
             // display current user variable
             displayedValue = 'Me (current user)'
@@ -257,6 +264,53 @@ export class RightContainer extends Component<Props, State> {
             if (integration) {
                 displayedValue = (
                     <IntegrationsDetailLabel integration={integration} />
+                )
+            }
+        } else if (fieldName === ViewField.Store) {
+            // display store
+            if (node.type === 'ArrayExpression') {
+                const selectedOptions = node.elements.map((opt) => {
+                    return (opt as Literal).value
+                })
+                const storeOptions = this.props.storeIntegrationMapping.map(
+                    ({ integration, id }) => {
+                        return {
+                            label: integration.name,
+                            displayLabel: (
+                                <IntegrationsDetailLabel
+                                    integration={fromJS(integration)}
+                                />
+                            ),
+                            value: id,
+                        }
+                    },
+                )
+
+                return (
+                    <MultiSelectField
+                        values={selectedOptions}
+                        options={storeOptions}
+                        singular="store"
+                        plural="stores"
+                        onChange={(value: Option[]) =>
+                            updateFieldFilter(index, value)
+                        }
+                    />
+                )
+            }
+
+            modifiedField = field.setIn(
+                ['filter', 'enum'],
+                fromJS(this.props.storeIntegrationMapping),
+            )
+            const storeIntegration = this.props.storeIntegrationMapping.find(
+                (mapping) => mapping.id === displayedValue,
+            )
+            if (storeIntegration) {
+                displayedValue = (
+                    <IntegrationsDetailLabel
+                        integration={fromJS(storeIntegration.integration)}
+                    />
                 )
             }
         } else if (fieldName === ViewField.AssigneeTeam) {
@@ -480,7 +534,7 @@ export class RightContainer extends Component<Props, State> {
                 {this.state.dropdownOpen && (
                     <FilterDropdown
                         viewConfig={config}
-                        field={field}
+                        field={modifiedField || field}
                         updateFieldFilter={(value) =>
                             updateFieldFilter(index, value)
                         }
@@ -497,9 +551,29 @@ export class RightContainer extends Component<Props, State> {
     }
 }
 
-const connector = connect((state: RootState) => {
+const connector = connect((state: RootState, ownProps: OwnProps) => {
+    const storeIntegrations = getStoreIntegrations(state)
+    const storeIntegrationMapping = storeIntegrations.reduce(
+        (acc, integration) => {
+            const storeId = ownProps.storeMappings.find(
+                (map) => map.store_id === integration.id,
+            )?.store_id
+
+            if (storeId) {
+                acc.push({
+                    integration,
+                    id: storeId,
+                })
+            }
+
+            return acc
+        },
+        [] as Array<{ integration: any; id: number }>,
+    )
+
     return {
         integrations: getMessagingAndAppIntegrations(state),
+        storeIntegrationMapping: storeIntegrationMapping,
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         tags: getTags(state),
         datetimeFormat: getDateAndTimeFormatter(state)(

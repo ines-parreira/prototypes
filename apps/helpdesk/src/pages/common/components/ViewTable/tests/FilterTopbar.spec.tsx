@@ -798,4 +798,32 @@ describe('<FilterTopbar />', () => {
 
         expect(screen.getByText('Priority')).toBeInTheDocument()
     })
+
+    it('should not render store filter when FF is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = screen.getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(screen.queryByText('Store')).not.toBeInTheDocument()
+    })
+
+    it('should render store filter when FF is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = screen.getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(screen.getByText('Store')).toBeInTheDocument()
+    })
 })

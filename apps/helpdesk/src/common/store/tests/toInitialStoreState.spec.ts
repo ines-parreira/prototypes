@@ -1,5 +1,6 @@
 import toInitialStoreState, {
     TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION,
+    TICKET_STORE_ID_FILTER_SCHEMA_DEFINITION,
 } from 'common/store/toInitialStoreState'
 import { initialState } from 'fixtures/initialState'
 
@@ -27,5 +28,25 @@ describe('toInitialStoreState', () => {
             state.schemas.toJS().definitions.Ticket.properties
                 .qa_score_dimensions,
         ).toEqual(TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION)
+    })
+
+    it('should should include store_id schema definitions when initialState has Ticket > properties', () => {
+        const initialStateWithSchemaDefinitions = {
+            ...initialState,
+        }
+
+        initialStateWithSchemaDefinitions.schemas.definitions = {
+            Ticket: {
+                properties: {},
+            },
+        }
+
+        const state = toInitialStoreState(
+            initialStateWithSchemaDefinitions,
+        ) as any
+
+        expect(
+            state.schemas.toJS().definitions.Ticket.properties.store_id,
+        ).toEqual(TICKET_STORE_ID_FILTER_SCHEMA_DEFINITION)
     })
 })

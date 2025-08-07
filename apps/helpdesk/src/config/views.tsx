@@ -371,6 +371,13 @@ export const defaultTicketView = {
                 },
             },
         },
+        {
+            name: ViewField.Store,
+            title: 'Store',
+            path: 'store_id',
+            filter: {},
+            show: false,
+        },
     ],
 
     cell: (fieldName: ViewField, item: Map<any, any>) => {

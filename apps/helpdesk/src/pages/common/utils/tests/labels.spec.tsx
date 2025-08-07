@@ -37,6 +37,7 @@ const integrationJsObject = {
 const integrationMap = fromJS(integrationJsObject)
 
 const mockStore = configureMockStore()
+const store = mockStore({})
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
@@ -307,6 +308,27 @@ describe('components utils: labels', () => {
                     </Provider>,
                 )
                 expect(getByAltText('TikTok Shop')).toBeDefined()
+            })
+
+            it('should render store icon for a store integration', () => {
+                const integration = fromJS({
+                    id: 1,
+                    type: IntegrationType.Shopify,
+                    name: 'Test Shopify Store',
+                })
+
+                render(
+                    <Provider store={store}>
+                        <labels.IntegrationsDetailLabel
+                            integration={integration}
+                        />
+                    </Provider>,
+                )
+
+                expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Test Shopify Store'),
+                ).toBeInTheDocument()
             })
         })
     })

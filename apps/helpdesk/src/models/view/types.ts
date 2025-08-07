@@ -48,6 +48,7 @@ export enum ViewField {
     CSATScore = 'csat_score',
     QAScore = 'qa_score',
     Priority = 'priority',
+    Store = 'store',
 }
 
 export enum ViewVisibility {

@@ -85,3 +85,10 @@ export type StoreIntegration = IntegrationFromType<
     | IntegrationType.Magento2
     | IntegrationType.BigCommerce
 >
+
+export const isStoreIntegration = (
+    integration: Integration,
+): integration is StoreIntegration =>
+    integration.type === IntegrationType.Shopify ||
+    integration.type === IntegrationType.Magento2 ||
+    integration.type === IntegrationType.BigCommerce

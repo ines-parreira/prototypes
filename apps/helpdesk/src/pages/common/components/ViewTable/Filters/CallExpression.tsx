@@ -12,6 +12,10 @@ import _get from 'lodash/get'
 import _pickBy from 'lodash/pickBy'
 import { connect, ConnectedProps } from 'react-redux'
 
+import {
+    StoreMapping,
+    useGetStoreMappingsByAccountId,
+} from '@gorgias/helpdesk-queries'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { BASIC_OPERATORS, UNARY_OPERATORS } from 'config'
@@ -143,6 +147,15 @@ export const CallExpression = ({
         isQaScoreFieldPath,
     ])
 
+    // useGetStoreMappingsByAccountId seems to return the wrong type assuming stores.data is already StoreMapping[]
+    const { data: stores } = useGetStoreMappingsByAccountId<{
+        data: {
+            data: StoreMapping[]
+        }
+    }>()
+
+    const storeMappings = useMemo(() => stores?.data?.data || [], [stores])
+
     return (
         <div className={css.component}>
             {index > 0 && (
@@ -175,6 +188,7 @@ export const CallExpression = ({
                 config={config}
                 field={field}
                 empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
+                storeMappings={storeMappings}
             />
             {!field && <Badge type={'error'}>System condition</Badge>}
             <RemoveCallExpression onClick={removeCondition} index={index} />
