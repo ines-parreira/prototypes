@@ -14,6 +14,9 @@ registerCategory({
 registerNotification({
     type: 'ticket-message.created.chat.unassigned',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-chat-unassigned',
     settings: {
         type: 'ticket-updates',
@@ -25,6 +28,9 @@ registerNotification({
 registerNotification<TicketPayload>({
     type: 'user.mentioned',
     component: UserMentionedNotification,
+    getDesktopNotification: () => ({
+        title: 'New mention',
+    }),
     workflow: 'user-mentioned',
     settings: {
         type: 'ticket-updates',
@@ -34,6 +40,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket.snooze-expired',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'Snooze expired',
+    }),
     workflow: 'ticket-snooze-expired',
     settings: {
         type: 'ticket-updates',
@@ -43,6 +52,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket.assigned',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: "You've been assigned to a ticket",
+    }),
     workflow: 'ticket-assigned',
     settings: {
         type: 'ticket-updates',
@@ -52,6 +64,9 @@ registerNotification<TicketPayload>({
 registerNotification({
     type: 'ticket.last-message-failed',
     component: MessageFailedNotification,
+    getDesktopNotification: () => ({
+        title: 'Message not delivered',
+    }),
     workflow: 'ticket-last-message-failed',
     settings: {
         type: 'ticket-updates',

@@ -6,7 +6,11 @@ import { useHistory } from 'react-router-dom'
 import AlertBanners from 'AlertBanners'
 import { AppNode } from 'appNode'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import { NotificationsOverlay, NotificationsToasts } from 'common/notifications'
+import {
+    NotificationsOverlay,
+    NotificationsToasts,
+    useDesktopNotifications,
+} from 'common/notifications'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
@@ -62,6 +66,7 @@ export default function App({ children }: Props) {
     useAppShortcuts()
     usePollingManager()
     useSetBanners()
+    useDesktopNotifications()
 
     useSharedLogic()
     useActivityTracker()

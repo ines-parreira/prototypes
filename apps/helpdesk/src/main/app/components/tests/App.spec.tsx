@@ -18,6 +18,7 @@ const useFlagMock = assumeMock(useFlag)
 jest.mock('common/notifications', () => ({
     NotificationsOverlay: () => <div>NotificationsOverlay</div>,
     NotificationsToasts: jest.fn(() => <div>toasts</div>),
+    useDesktopNotifications: jest.fn(),
 }))
 jest.mock('hooks/useHasPhone', () => jest.fn(() => true))
 jest.mock('notifications', () => ({

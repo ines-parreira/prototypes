@@ -14,6 +14,9 @@ registerCategory({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.email',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-email',
     settings: {
         type: 'ticket-message-created',
@@ -24,6 +27,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.chat',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-chat',
     settings: {
         type: 'ticket-message-created',
@@ -34,6 +40,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.phone',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-phone',
     settings: {
         type: 'ticket-message-created',
@@ -46,6 +55,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.sms',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-sms',
     settings: {
         type: 'ticket-message-created',
@@ -56,6 +68,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.facebook',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-facebook',
     settings: {
         type: 'ticket-message-created',
@@ -68,6 +83,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.instagram',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-instagram',
     settings: {
         type: 'ticket-message-created',
@@ -80,6 +98,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.whatsapp',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-whatsapp',
     settings: {
         type: 'ticket-message-created',
@@ -90,6 +111,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.yotpo',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-yotpo',
     settings: {
         type: 'ticket-message-created',
@@ -100,6 +124,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created.aircall',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     workflow: 'ticket-message-created-aircall',
     settings: {
         type: 'ticket-message-created',
@@ -110,6 +137,9 @@ registerNotification<TicketPayload>({
 registerNotification<TicketPayload>({
     type: 'ticket-message.created',
     component: TicketNotification,
+    getDesktopNotification: () => ({
+        title: 'New message',
+    }),
     mapType: mapTicketMessageCreatedType,
     workflow: 'ticket-message-created',
     settings: {

@@ -5,6 +5,8 @@ jest.mock('common/notifications', () => ({
     registerNotification: jest.fn(),
 }))
 
+const registerNotificationMock = registerNotification as jest.Mock
+
 describe('initNewMessages', () => {
     it('should register categories and notifications', () => {
         require('../initNewMessages')
@@ -15,21 +17,28 @@ describe('initNewMessages', () => {
         )
 
         const notifications = [
-            'ticket-message.created.email',
-            'ticket-message.created.chat',
-            'ticket-message.created.phone',
-            'ticket-message.created.sms',
-            'ticket-message.created.facebook',
-            'ticket-message.created.instagram',
-            'ticket-message.created.whatsapp',
-            'ticket-message.created.yotpo',
-            'ticket-message.created.aircall',
-            'ticket-message.created',
+            { type: 'ticket-message.created.email', title: 'New message' },
+            { type: 'ticket-message.created.chat', title: 'New message' },
+            { type: 'ticket-message.created.phone', title: 'New message' },
+            { type: 'ticket-message.created.sms', title: 'New message' },
+            { type: 'ticket-message.created.facebook', title: 'New message' },
+            { type: 'ticket-message.created.instagram', title: 'New message' },
+            { type: 'ticket-message.created.whatsapp', title: 'New message' },
+            { type: 'ticket-message.created.yotpo', title: 'New message' },
+            { type: 'ticket-message.created.aircall', title: 'New message' },
+            { type: 'ticket-message.created', title: 'New message' },
         ]
-        notifications.forEach((notificationType) => {
+        notifications.forEach((n) => {
             expect(registerNotification).toHaveBeenCalledWith(
-                expect.objectContaining({ type: notificationType }),
+                expect.objectContaining({ type: n.type }),
             )
+
+            const entry = registerNotificationMock.mock.calls.find(
+                ([c]) => c.type === n.type,
+            )[0]
+
+            const dn = entry.getDesktopNotification()
+            expect(dn.title).toBe(n.title)
         })
     })
 })

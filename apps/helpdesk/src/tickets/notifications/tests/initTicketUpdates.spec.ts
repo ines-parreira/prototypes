@@ -5,6 +5,8 @@ jest.mock('common/notifications', () => ({
     registerNotification: jest.fn(),
 }))
 
+const registerNotificationMock = registerNotification as jest.Mock
+
 describe('initTicketUpdates', () => {
     it('should register categories and notifications', () => {
         require('../initTicketUpdates')
@@ -15,16 +17,32 @@ describe('initTicketUpdates', () => {
         )
 
         const notifications = [
-            'ticket-message.created.chat.unassigned',
-            'user.mentioned',
-            'ticket.snooze-expired',
-            'ticket.assigned',
-            'ticket.last-message-failed',
+            {
+                type: 'ticket-message.created.chat.unassigned',
+                title: 'New message',
+            },
+            { type: 'user.mentioned', title: 'New mention' },
+            { type: 'ticket.snooze-expired', title: 'Snooze expired' },
+            {
+                type: 'ticket.assigned',
+                title: "You've been assigned to a ticket",
+            },
+            {
+                type: 'ticket.last-message-failed',
+                title: 'Message not delivered',
+            },
         ]
-        notifications.forEach((notificationType) => {
+        notifications.forEach((n) => {
             expect(registerNotification).toHaveBeenCalledWith(
-                expect.objectContaining({ type: notificationType }),
+                expect.objectContaining({ type: n.type }),
             )
+
+            const entry = registerNotificationMock.mock.calls.find(
+                ([c]) => c.type === n.type,
+            )[0]
+
+            const dn = entry.getDesktopNotification()
+            expect(dn.title).toBe(n.title)
         })
     })
 })

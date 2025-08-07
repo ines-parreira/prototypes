@@ -46,6 +46,10 @@ export type CategoryConfig = {
 export type NotificationConfig<T = unknown> = {
     type: string
     component: ComponentType<{ notification: Notification<T> } & ParentProps>
+    getDesktopNotification?: (notification: Notification<T>) => {
+        description?: string
+        title: string
+    }
     mapType?: (notification: Notification<T>) => string
     workflow: string
     settings?: {
