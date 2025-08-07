@@ -45,6 +45,7 @@ exports[`<QRCodeStep /> render() should render the component with the loading co
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-1"
         name="verificationCode"
         placeholder="Enter 6-digit verification code from app or recovery code"
@@ -91,6 +92,7 @@ exports[`<QRCodeStep /> render() should render the component with the qr code 1`
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-3"
         name="verificationCode"
         placeholder="Enter 6-digit verification code from app or recovery code"
@@ -125,6 +127,7 @@ exports[`<QRCodeStep /> render() should render the component without the qrcode 
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-5"
         name="verificationCode"
         placeholder="Enter 6-digit verification code from app or recovery code"

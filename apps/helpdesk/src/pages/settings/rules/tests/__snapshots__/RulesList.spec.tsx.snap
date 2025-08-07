@@ -36,6 +36,7 @@ exports[`<RulesList/> should render the rules list 1`] = `
               </span>
               <input
                 class="input"
+                data-resizable="false"
                 id="input-text-5"
                 name="input-text-5"
                 placeholder="Search rules..."

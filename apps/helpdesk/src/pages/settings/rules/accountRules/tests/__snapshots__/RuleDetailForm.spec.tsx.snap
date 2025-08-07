@@ -72,6 +72,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleName"
               name="ruleName"
               type="text"
@@ -93,6 +94,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleDescription"
               name="ruleDescription"
               type="textarea"
@@ -435,6 +437,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleName"
               name="ruleName"
               type="text"
@@ -456,6 +459,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleDescription"
               name="ruleDescription"
               type="textarea"
@@ -784,6 +788,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleName"
               name="ruleName"
               type="text"
@@ -805,6 +810,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleDescription"
               name="ruleDescription"
               type="textarea"

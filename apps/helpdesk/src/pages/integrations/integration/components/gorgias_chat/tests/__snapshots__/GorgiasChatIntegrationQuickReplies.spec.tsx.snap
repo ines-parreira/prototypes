@@ -128,6 +128,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 >
                   <input
                     class="input"
+                    data-resizable="false"
                     disabled=""
                     id="input-text-1"
                     maxlength="20"
@@ -161,6 +162,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 >
                   <input
                     class="input"
+                    data-resizable="false"
                     disabled=""
                     id="input-text-2"
                     maxlength="20"
@@ -570,6 +572,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 >
                   <input
                     class="input"
+                    data-resizable="false"
                     id="input-text-3"
                     maxlength="20"
                     name="item-0"
@@ -602,6 +605,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 >
                   <input
                     class="input"
+                    data-resizable="false"
                     id="input-text-4"
                     maxlength="20"
                     name="item-1"

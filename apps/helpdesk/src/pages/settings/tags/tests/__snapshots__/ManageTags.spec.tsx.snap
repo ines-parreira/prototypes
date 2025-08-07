@@ -36,6 +36,7 @@ exports[`ManageTags component should render a loader while fetching data 1`] = `
               </span>
               <input
                 class="input"
+                data-resizable="false"
                 id="input-text-1"
                 name="input-text-1"
                 placeholder="Search tags by name..."

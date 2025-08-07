@@ -21,6 +21,7 @@ exports[`<DropdownInputRow/> should render correctly 1`] = `
     >
       <input
         class="input"
+        data-resizable="false"
         data-testid="dropdown-choice-123"
         id="dropdown-choice-123"
         name="dropdown-choice-123"
@@ -70,6 +71,7 @@ exports[`<DropdownInputRow/> should render correctly when validation fails 1`] =
     >
       <input
         class="input"
+        data-resizable="false"
         data-testid="dropdown-choice-123"
         id="dropdown-choice-123"
         name="dropdown-choice-123"

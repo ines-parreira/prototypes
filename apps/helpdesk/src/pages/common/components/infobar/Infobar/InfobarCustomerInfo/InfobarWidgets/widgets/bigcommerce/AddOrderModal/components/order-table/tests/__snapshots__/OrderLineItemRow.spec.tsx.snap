@@ -74,6 +74,7 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-mocked"
           min="1"
           name="input-text-mocked"
@@ -193,6 +194,7 @@ exports[`<OrderLineItemRow/> render() should render with modifiers visible 1`] =
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-mocked"
           min="1"
           name="input-text-mocked"
@@ -305,6 +307,7 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-mocked"
           min="1"
           name="input-text-mocked"
@@ -417,6 +420,7 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-mocked"
           min="1"
           name="input-text-mocked"

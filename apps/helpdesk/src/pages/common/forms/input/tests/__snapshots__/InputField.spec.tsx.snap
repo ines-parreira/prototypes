@@ -8,6 +8,7 @@ exports[`<InputField /> should display a caption 1`] = `
     <input
       aria-describedby="input-text-5-caption"
       class="input"
+      data-resizable="false"
       id="input-text-5"
       name="input-text-5"
       type="text"
@@ -36,6 +37,7 @@ exports[`<InputField /> should display a label 1`] = `
   >
     <input
       class="input"
+      data-resizable="false"
       id="input-text-3"
       name="input-text-3"
       type="text"
@@ -54,6 +56,7 @@ exports[`<InputField /> should render an input field 1`] = `
   >
     <input
       class="input"
+      data-resizable="false"
       id="input-text-1"
       name="input-text-1"
       type="text"

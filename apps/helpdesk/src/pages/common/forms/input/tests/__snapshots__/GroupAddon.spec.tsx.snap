@@ -9,6 +9,7 @@ exports[`<GroupAddon /> should render an GroupAddon inside a group input wrapper
   >
     <input
       class="input"
+      data-resizable="false"
       id="input-text-1"
       name="input-text-1"
       type="text"

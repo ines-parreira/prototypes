@@ -81,6 +81,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-13"
           name="input-text-13"
           required=""
@@ -112,6 +113,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-15"
           name="input-text-15"
           placeholder="Street address, apartment, suite etc."
@@ -150,6 +152,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-17"
               name="input-text-17"
               required=""
@@ -185,6 +188,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-19"
               name="input-text-19"
               required=""
@@ -224,6 +228,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-21"
               name="input-text-21"
               required=""
@@ -259,6 +264,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           >
             <input
               class="input"
+              data-resizable="false"
               disabled=""
               id="input-text-23"
               name="input-text-23"
@@ -355,6 +361,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-25"
           name="input-text-25"
           required=""
@@ -386,6 +393,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-27"
           name="input-text-27"
           placeholder="Street address, apartment, suite etc."
@@ -424,6 +432,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-29"
               name="input-text-29"
               required=""
@@ -459,6 +468,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-31"
               name="input-text-31"
               required=""
@@ -498,6 +508,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-33"
               name="input-text-33"
               required=""
@@ -533,6 +544,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           >
             <input
               class="input"
+              data-resizable="false"
               disabled=""
               id="input-text-35"
               name="input-text-35"
@@ -628,6 +640,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-37"
           name="input-text-37"
           required=""
@@ -660,6 +673,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
         <input
           aria-describedby="input-text-39-caption"
           class="input"
+          data-resizable="false"
           id="input-text-39"
           name="input-text-39"
           placeholder="Street address, apartment, suite etc."
@@ -704,6 +718,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-41"
               name="input-text-41"
               required=""
@@ -739,6 +754,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-43"
               name="input-text-43"
               required=""
@@ -778,6 +794,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-45"
               name="input-text-45"
               required=""
@@ -813,6 +830,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           >
             <input
               class="input"
+              data-resizable="false"
               disabled=""
               id="input-text-47"
               name="input-text-47"
@@ -908,6 +926,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-1"
           name="input-text-1"
           required=""
@@ -939,6 +958,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-3"
           name="input-text-3"
           placeholder="Street address, apartment, suite etc."
@@ -977,6 +997,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-5"
               name="input-text-5"
               required=""
@@ -1012,6 +1033,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-7"
               name="input-text-7"
               required=""
@@ -1051,6 +1073,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="input-text-9"
               name="input-text-9"
               required=""
@@ -1086,6 +1109,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               disabled=""
               id="input-text-11"
               name="input-text-11"

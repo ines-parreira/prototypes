@@ -32,6 +32,7 @@ exports[`<CreditShopifyBillingIntegration /> should render the form 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="shopify-credit-description"
               name="shopify-credit-description"
               type="text"

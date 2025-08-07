@@ -15,6 +15,7 @@ exports[`SearchInput should render with a search icon and a clear icon when has 
   </span>
   <input
     class="input"
+    data-resizable="false"
     id="custom-field-dropdown-search"
     name="custom-field-dropdown-search"
     placeholder="Search"

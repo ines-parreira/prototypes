@@ -70,6 +70,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
               >
                 <input
                   class="input"
+                  data-resizable="false"
                   data-testid="name"
                   id="input-text-1"
                   name="name"

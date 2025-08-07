@@ -51,6 +51,7 @@ exports[`<ProvinceInput/> should render with text input 1`] = `
       <input
         class="input"
         data-1p-ignore="true"
+        data-resizable="false"
         id="input-text-3"
         name="stateOrProvince"
         placeholder="Type state or province..."

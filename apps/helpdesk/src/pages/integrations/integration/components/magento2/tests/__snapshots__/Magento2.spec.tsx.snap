@@ -416,6 +416,7 @@ exports[`<Magento2/> Integration should render 1`] = `
             >
               <input
                 class="input"
+                data-resizable="false"
                 id="store-field"
                 name="admin-url-suffix"
                 placeholder="ex: admin_45f1c"
@@ -724,6 +725,7 @@ exports[`<Magento2/> New should render 1`] = `
             >
               <input
                 class="input"
+                data-resizable="false"
                 id="store-field"
                 name="admin-url"
                 pattern="^[a-z.0-9-]*\\.[a-z0-9]*(:[0-9]+)?\\/(index\\.php)?[\\/\\w\\d_-]*$"

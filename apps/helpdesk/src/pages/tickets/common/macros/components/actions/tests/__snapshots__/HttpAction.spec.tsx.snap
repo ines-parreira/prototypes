@@ -25,6 +25,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     >
       <input
         class="input"
+        data-resizable="false"
         form="macro_form"
         id="input-text-1"
         name="title"
@@ -111,6 +112,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
           <input
             aria-describedby="input-text-3-caption"
             class="input"
+            data-resizable="false"
             form="macro_form"
             id="input-text-3"
             name="url"

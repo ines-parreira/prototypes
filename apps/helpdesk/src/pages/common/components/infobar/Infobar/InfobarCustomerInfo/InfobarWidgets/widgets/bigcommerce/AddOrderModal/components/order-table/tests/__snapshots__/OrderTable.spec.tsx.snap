@@ -89,6 +89,7 @@ exports[`<OrderTable/> rendering should render with items 1`] = `
             >
               <input
                 class="input"
+                data-resizable="false"
                 id="input-text-1"
                 min="1"
                 name="input-text-1"

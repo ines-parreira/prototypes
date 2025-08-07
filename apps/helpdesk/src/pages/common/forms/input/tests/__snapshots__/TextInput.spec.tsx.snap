@@ -6,6 +6,7 @@ exports[`<TextInput /> should render a disabled input 1`] = `
 >
   <input
     class="input"
+    data-resizable="false"
     disabled=""
     id="input-text-2"
     name="input-text-2"
@@ -21,6 +22,7 @@ exports[`<TextInput /> should render a required input 1`] = `
 >
   <input
     class="input"
+    data-resizable="false"
     id="input-text-3"
     name="input-text-3"
     required=""
@@ -36,6 +38,7 @@ exports[`<TextInput /> should render an enabled input 1`] = `
 >
   <input
     class="input"
+    data-resizable="false"
     id="input-text-1"
     name="input-text-1"
     type="text"
@@ -50,6 +53,7 @@ exports[`<TextInput /> should render an input with error state 1`] = `
 >
   <input
     class="input"
+    data-resizable="false"
     id="input-text-5"
     name="input-text-5"
     type="text"
@@ -64,6 +68,7 @@ exports[`<TextInput /> should render with a custom className for the input 1`] =
 >
   <input
     class="input custom-class-for-input"
+    data-resizable="false"
     id="input-text-4"
     name="input-text-4"
     type="text"

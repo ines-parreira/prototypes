@@ -56,6 +56,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-1"
           id="dropdown-choice-1"
           name="dropdown-choice-1"
@@ -102,6 +103,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-2"
           id="dropdown-choice-2"
           name="dropdown-choice-2"
@@ -148,6 +150,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-3"
           id="dropdown-choice-3"
           name="dropdown-choice-3"
@@ -194,6 +197,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-4"
           id="dropdown-choice-4"
           name="dropdown-choice-4"
@@ -240,6 +244,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-5"
           id="dropdown-choice-5"
           name="dropdown-choice-5"
@@ -286,6 +291,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-6"
           id="dropdown-choice-6"
           name="dropdown-choice-6"
@@ -332,6 +338,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-7"
           id="dropdown-choice-7"
           name="dropdown-choice-7"
@@ -378,6 +385,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-8"
           id="dropdown-choice-8"
           name="dropdown-choice-8"
@@ -422,6 +430,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           data-testid="dropdown-choice-9"
           id="dropdown-choice-9"
           name="dropdown-choice-9"

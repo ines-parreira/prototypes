@@ -15,6 +15,7 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-2"
         name="input-text-2"
         placeholder="Search..."
@@ -64,6 +65,7 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-1"
         name="input-text-1"
         placeholder="Search..."
@@ -112,6 +114,7 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-3"
         name="input-text-3"
         placeholder="Search..."
@@ -161,6 +164,7 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-4"
         name="input-text-4"
         placeholder="Search..."

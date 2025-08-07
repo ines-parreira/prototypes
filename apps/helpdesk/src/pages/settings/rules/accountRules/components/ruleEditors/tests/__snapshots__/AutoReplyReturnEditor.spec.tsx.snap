@@ -30,6 +30,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
         <input
           aria-describedby="input-text-1-caption"
           class="input"
+          data-resizable="false"
           id="input-text-1"
           name="input-text-1"
           required=""

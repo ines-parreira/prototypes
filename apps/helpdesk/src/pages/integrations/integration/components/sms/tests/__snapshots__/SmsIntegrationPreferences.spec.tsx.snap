@@ -48,6 +48,7 @@ exports[`<SmsIntegrationPreferences/> render() should render 1`] = `
                   >
                     <input
                       class="input"
+                      data-resizable="false"
                       id="title"
                       name="title"
                       placeholder="Ex: Company Support Line"
@@ -198,6 +199,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
                   >
                     <input
                       class="input"
+                      data-resizable="false"
                       id="title"
                       name="title"
                       placeholder="Ex: Company Support Line"

@@ -57,6 +57,7 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="url"
               name="url"
               readonly=""
@@ -100,6 +101,7 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="email"
               name="email"
               readonly=""
@@ -273,6 +275,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="url"
               name="url"
               readonly=""
@@ -316,6 +319,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="email"
               name="email"
               readonly=""
@@ -359,6 +363,7 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="apiKey"
               name="apiKey"
               readonly=""

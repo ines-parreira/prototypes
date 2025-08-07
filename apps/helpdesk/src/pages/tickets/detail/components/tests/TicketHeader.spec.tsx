@@ -926,5 +926,208 @@ describe('<TicketHeader />', () => {
             const input = await screen.findByRole('textbox')
             expect(input).toHaveValue('Test Ticket Subject')
         })
+
+        it("should make EditableTitle not resizable when translation isn't available", async () => {
+            const ticketWithTranslation = fromJS({
+                ...ticket,
+                subject: 'Original Subject',
+            })
+
+            const { handler } = mockListTicketTranslationsHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: [],
+                    }),
+            )
+            server.use(handler)
+
+            const { container } = render(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithTranslation,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithTranslation}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const editableTitleInput =
+                    container.querySelector('input[type="text"]')
+                expect(editableTitleInput).toHaveAttribute(
+                    'data-resizable',
+                    'false',
+                )
+            })
+        })
+
+        it('should make EditableTitle not resizable for new tickets without ID', () => {
+            const newTicket = fromJS(_omit(ticket, 'id'))
+
+            const { container } = render(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: newTicket,
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={newTicket} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const editableTitleInput =
+                container.querySelector('input[type="text"]')
+            expect(editableTitleInput).toHaveAttribute(
+                'data-resizable',
+                'false',
+            )
+        })
+
+        it('should make EditableTitle not resizable when ticket has no translated subject', async () => {
+            const ticketWithSubject = fromJS({
+                ...ticket,
+                subject: 'Original Subject',
+            })
+
+            // Mock translation response with empty data
+            const { handler } = mockListTicketTranslationsHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: [],
+                    }),
+            )
+            server.use(handler)
+
+            const { container } = render(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithSubject,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithSubject}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const editableTitleInput =
+                    container.querySelector('input[type="text"]')
+                expect(editableTitleInput).toHaveAttribute(
+                    'data-resizable',
+                    'false',
+                )
+            })
+        })
+
+        it('should make EditableTitle not resizable when title is empty', async () => {
+            const ticketWithEmptySubject = fromJS({
+                ...ticket,
+                subject: '',
+            })
+
+            const mockTranslation = mockTicketTranslationCompact({
+                subject: '',
+                excerpt: 'Some excerpt',
+                ticket_id: ticket.id,
+                ticket_translation_id: `${ticket.id}-translation`,
+            })
+
+            const { handler } = mockListTicketTranslationsHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: [mockTranslation],
+                    }),
+            )
+            server.use(handler)
+
+            const { container } = render(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithEmptySubject,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithEmptySubject}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const editableTitleInput =
+                    container.querySelector('input[type="text"]')
+                expect(editableTitleInput).toHaveAttribute(
+                    'data-resizable',
+                    'false',
+                )
+            })
+        })
+
+        it('should make EditableTitle not resizable when title has zero length', async () => {
+            const ticketWithNullSubject = fromJS({
+                ...ticket,
+                subject: null,
+            })
+
+            const mockTranslation = mockTicketTranslationCompact({
+                subject: null,
+                excerpt: 'Some excerpt',
+                ticket_id: ticket.id,
+                ticket_translation_id: `${ticket.id}-translation`,
+            })
+
+            const { handler } = mockListTicketTranslationsHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: [mockTranslation],
+                    }),
+            )
+            server.use(handler)
+
+            const { container } = render(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithNullSubject,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithNullSubject}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const editableTitleInput =
+                    container.querySelector('input[type="text"]')
+                expect(editableTitleInput).toHaveAttribute(
+                    'data-resizable',
+                    'false',
+                )
+            })
+        })
     })
 })

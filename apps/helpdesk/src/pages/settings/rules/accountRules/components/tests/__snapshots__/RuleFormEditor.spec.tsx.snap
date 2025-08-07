@@ -54,6 +54,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleName"
               name="ruleName"
               type="text"
@@ -75,6 +76,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleDescription"
               name="ruleDescription"
               type="textarea"
@@ -414,6 +416,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleName"
               name="ruleName"
               type="text"
@@ -435,6 +438,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
           >
             <input
               class="input"
+              data-resizable="false"
               id="ruleDescription"
               name="ruleDescription"
               type="textarea"

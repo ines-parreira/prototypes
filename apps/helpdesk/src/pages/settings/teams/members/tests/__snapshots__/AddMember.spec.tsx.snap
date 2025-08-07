@@ -87,6 +87,7 @@ exports[`<AddMember /> should render the dropdown on click 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-1"
           name="input-text-1"
           placeholder="Search user..."
@@ -168,6 +169,7 @@ exports[`<AddMember /> should render user with empty name 1`] = `
       >
         <input
           class="input"
+          data-resizable="false"
           id="input-text-2"
           name="input-text-2"
           placeholder="Search user..."

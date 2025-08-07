@@ -62,6 +62,7 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
           <input
             class="input"
             data-1p-ignore="true"
+            data-resizable="false"
             id="twoFAEnforcementDatetime"
             name="twoFAEnforcementDatetime"
             type="text"

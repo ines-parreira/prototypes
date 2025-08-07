@@ -320,7 +320,11 @@ const TicketHeader = ({
                         onBlur={() => setIsFocused(false)}
                         onMouseEnter={() => setIsMouseOver(true)}
                         onMouseLeave={() => setIsMouseOver(false)}
-                        isResizable={!!ticket.get('id') && title?.length > 0}
+                        isResizable={
+                            !!ticket.get('id') &&
+                            !!translatedSubject &&
+                            title?.length > 0
+                        }
                         maxWidth={
                             titleContentRef.current?.clientWidth
                                 ? titleContentRef.current.clientWidth -

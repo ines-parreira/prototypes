@@ -19,6 +19,7 @@ exports[`<ValidateVerificationCodeStep /> render() should render the component w
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-1"
         name="verificationCode"
         placeholder="Enter 6-digit verification code from app or recovery code"
@@ -48,6 +49,7 @@ exports[`<ValidateVerificationCodeStep /> render() should show a different title
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-5"
         name="verificationCode"
         placeholder="Enter 6-digit verification code from app or recovery code"

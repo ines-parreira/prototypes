@@ -66,6 +66,7 @@ exports[`ast widgets IntegrationSelect should render a loading imput (no integra
 >
   <input
     class="input"
+    data-resizable="false"
     id="input-text-1"
     name="input-text-1"
     placeholder="Loading integrations..."

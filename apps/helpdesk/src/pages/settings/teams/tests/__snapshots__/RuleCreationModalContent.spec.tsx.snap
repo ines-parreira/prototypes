@@ -39,6 +39,7 @@ exports[`<RuleCreationModalContent /> should render 1`] = `
     >
       <input
         class="input"
+        data-resizable="false"
         id="name"
         name="name"
         placeholder="[Auto assign] foo"

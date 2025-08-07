@@ -93,6 +93,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
             >
               <input
                 class="input"
+                data-resizable="false"
                 disabled=""
                 id="disabled-store-field"
                 name="store-name"

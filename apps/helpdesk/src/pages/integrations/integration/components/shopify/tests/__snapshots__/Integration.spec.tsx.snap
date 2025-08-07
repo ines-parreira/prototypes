@@ -93,6 +93,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
             >
               <input
                 class="input"
+                data-resizable="false"
                 disabled=""
                 id="disabled-store-field"
                 name="store-name"

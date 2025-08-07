@@ -124,6 +124,7 @@ exports[`<CustomFieldInput/> should render a text input 1`] = `
     >
       <input
         class="input"
+        data-resizable="false"
         id="input-text-1"
         name="input-text-1"
         placeholder="Some placeholder"

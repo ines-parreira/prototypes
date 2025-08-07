@@ -61,6 +61,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             >
               <input
                 class="input"
+                data-resizable="false"
                 data-testid="name"
                 id="name"
                 name="name"

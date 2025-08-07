@@ -16,6 +16,7 @@ exports[`SearchBar triggers search when searchInput is not empty 1`] = `
     </span>
     <input
       class="input"
+      data-resizable="false"
       id="input-text-1"
       name="input-text-1"
       placeholder="Search by content, articles and categories"
@@ -42,6 +43,7 @@ exports[`SearchBar triggers search when searchInput is not empty 2`] = `
     </span>
     <input
       class="input"
+      data-resizable="false"
       id="input-text-1"
       name="input-text-1"
       placeholder="Search by content, articles and categories"

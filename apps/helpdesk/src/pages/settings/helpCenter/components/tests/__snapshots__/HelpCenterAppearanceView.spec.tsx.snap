@@ -190,6 +190,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 <input
                   aria-describedby="input-text-1-caption"
                   class="input"
+                  data-resizable="false"
                   id="input-text-1"
                   name="name"
                   placeholder="Ex. Customer Support"
@@ -914,6 +915,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               >
                 <input
                   class="input"
+                  data-resizable="false"
                   id="input-text-6"
                   name="name"
                   placeholder="Banner title"

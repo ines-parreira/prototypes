@@ -64,6 +64,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
               >
                 <input
                   class="input"
+                  data-resizable="false"
                   id="title"
                   name="title"
                   placeholder="Ex: Company Support Line"
@@ -301,6 +302,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
               >
                 <input
                   class="input"
+                  data-resizable="false"
                   id="title"
                   name="title"
                   placeholder="Ex: Company Support Line"
@@ -508,6 +510,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
               >
                 <input
                   class="input"
+                  data-resizable="false"
                   id="title"
                   name="title"
                   placeholder="Ex: Company Support Line"

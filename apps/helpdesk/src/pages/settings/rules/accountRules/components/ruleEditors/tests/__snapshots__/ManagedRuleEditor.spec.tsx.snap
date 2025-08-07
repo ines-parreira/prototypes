@@ -1503,6 +1503,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             <input
               aria-describedby="input-text-75-caption"
               class="input"
+              data-resizable="false"
               id="input-text-75"
               name="input-text-75"
               required=""

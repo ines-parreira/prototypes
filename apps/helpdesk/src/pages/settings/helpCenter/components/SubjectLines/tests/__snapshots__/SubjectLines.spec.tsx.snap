@@ -55,6 +55,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
+            data-resizable="false"
             id="input-text-2"
             name="input-text-2"
             type="text"
@@ -86,6 +87,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
+            data-resizable="false"
             id="input-text-3"
             name="input-text-3"
             type="text"
@@ -117,6 +119,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
+            data-resizable="false"
             id="input-text-4"
             name="input-text-4"
             type="text"

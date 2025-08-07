@@ -125,6 +125,7 @@ function TextInput(
                 </span>
             )}
             <input
+                data-resizable={isResizable ? 'true' : 'false'}
                 ref={setInputElement}
                 type={type || 'text'}
                 className={classnames(css.input, inputClassName, {

@@ -19,6 +19,7 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch focused 1`] = `
     </span>
     <input
       class="input searchInput"
+      data-resizable="false"
       id="input-text-2"
       name="input-text-2"
       placeholder="Search macros by name, tags or body..."
@@ -60,6 +61,7 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch unfocused 1`] =
     </span>
     <input
       class="input searchInput"
+      data-resizable="false"
       id="input-text-1"
       name="input-text-1"
       placeholder="Search macros by name, tags or body..."
