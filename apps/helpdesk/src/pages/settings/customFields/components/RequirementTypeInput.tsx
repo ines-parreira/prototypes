@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Badge, Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import { RequirementType } from 'custom-fields/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
@@ -15,9 +15,7 @@ interface RequirementTypeInputProps {
 export default function RequirementTypeInput(props: RequirementTypeInputProps) {
     return (
         <div className={props.className}>
-            <Label className={css.label}>
-                Field visibility <Badge type={'blue'}>BETA</Badge>
-            </Label>
+            <Label className={css.label}>Field visibility</Label>
             <p className="mb-2">
                 Configure fields to always appear, or only when specific
                 conditions are met. See conditional visibility of Optional or

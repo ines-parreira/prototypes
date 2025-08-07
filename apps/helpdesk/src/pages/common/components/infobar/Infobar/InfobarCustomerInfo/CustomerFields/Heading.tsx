@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'
@@ -62,9 +62,6 @@ export function Heading() {
                     </span>
                 </>
             )}
-            <Badge type={'blue'} className="">
-                BETA
-            </Badge>
         </div>
     )
 }

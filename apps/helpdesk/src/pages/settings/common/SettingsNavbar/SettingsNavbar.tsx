@@ -2,9 +2,6 @@ import { useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
-
-import cssNavbar from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
@@ -127,27 +124,11 @@ const SettingsNavbar = () => {
                             to={CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]}
                             text="Customer Fields"
                             requiredRole={ADMIN_ROLE}
-                            extra={
-                                <Badge
-                                    type={'blue'}
-                                    className={cssNavbar.badge}
-                                >
-                                    BETA
-                                </Badge>
-                            }
                         />
                         <Item
                             to={CUSTOM_FIELD_CONDITIONS_ROUTE}
                             text="Field Conditions"
                             requiredRole={ADMIN_ROLE}
-                            extra={
-                                <Badge
-                                    type={'blue'}
-                                    className={cssNavbar.badge}
-                                >
-                                    BETA
-                                </Badge>
-                            }
                         />
                         <Item
                             to="manage-tags"
