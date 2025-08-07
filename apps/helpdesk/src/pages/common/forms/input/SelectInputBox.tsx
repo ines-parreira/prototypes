@@ -39,6 +39,7 @@ type Props = {
     placeholder?: string
     prefix?: ReactNode
     suffix?: ReactNode
+    inputClassName?: string
 } & Omit<HTMLAttributes<HTMLDivElement>, 'prefix'>
 
 export type SelectInputBoxContextState = {
@@ -62,6 +63,7 @@ const SelectInputBox = (
         placeholder,
         prefix,
         suffix,
+        inputClassName,
         id,
         ['aria-controls']: ariaControls, // TODO: make aria-controls and aria-expanded required to comply with role="combobox" requirements https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules/role-has-required-aria-props.md
         ['aria-expanded']: ariaExpanded,
@@ -187,9 +189,14 @@ const SelectInputBox = (
                     )}
 
                     <div
-                        className={classnames(css.input, {
-                            [css.isGreyed]: isDisabledMemoized || isPlaceholder,
-                        })}
+                        className={classnames(
+                            css.input,
+                            {
+                                [css.isGreyed]:
+                                    isDisabledMemoized || isPlaceholder,
+                            },
+                            inputClassName,
+                        )}
                         {...props}
                     >
                         {labelMemoized}

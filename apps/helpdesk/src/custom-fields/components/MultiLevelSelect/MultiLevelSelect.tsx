@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import _xor from 'lodash/xor'
 import { Link } from 'react-router-dom'
 
-import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { CheckBoxField, Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { UserRole } from 'config/types/user'
 import StealthInput from 'custom-fields/components/StealthInput'
@@ -86,7 +86,9 @@ export type MultiLevelSelectProps<
     dropdownMatchTriggerWidth?: boolean
     hideClearButton?: boolean
     wrapperClassName?: string
+    bodyClassName?: string
     isLoading?: boolean
+    showCheckboxes?: boolean
 }
 
 export default function MultiLevelSelect<
@@ -113,7 +115,9 @@ export default function MultiLevelSelect<
     dropdownMatchTriggerWidth = false,
     hideClearButton = false,
     wrapperClassName,
+    bodyClassName,
     isLoading = false,
+    showCheckboxes = false,
 }: MultiLevelSelectProps<AllowMultiValues>) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -332,7 +336,7 @@ export default function MultiLevelSelect<
                         dropdownName={label}
                     />
                 )}
-                <DropdownBody>
+                <DropdownBody className={bodyClassName}>
                     {isLoading ? (
                         <>
                             {Array.from({ length: 4 }).map((_, index) => (
@@ -432,13 +436,33 @@ export default function MultiLevelSelect<
                                                 {label}
                                             </span>
                                         </span>
-                                        {(isMultiValueAllowed(
-                                            allowMultiValues,
-                                            value,
-                                        )
-                                            ? value?.includes(fullValue)
-                                            : fullValue === value) && (
-                                            <CheckIcon />
+                                        {showCheckboxes ? (
+                                            <span className={css.checkbox}>
+                                                <CheckBoxField
+                                                    value={
+                                                        isMultiValueAllowed(
+                                                            allowMultiValues,
+                                                            value,
+                                                        )
+                                                            ? value.includes(
+                                                                  fullValue,
+                                                              )
+                                                            : fullValue ===
+                                                              value
+                                                    }
+                                                    onChange={() => {}}
+                                                    onClick={() => {}}
+                                                />
+                                            </span>
+                                        ) : (
+                                            (isMultiValueAllowed(
+                                                allowMultiValues,
+                                                value,
+                                            )
+                                                ? value.includes(fullValue)
+                                                : fullValue === value) && (
+                                                <CheckIcon />
+                                            )
                                         )}
                                     </DropdownItem>
                                 )

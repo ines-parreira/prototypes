@@ -13,6 +13,27 @@ jest.mock('@repo/hooks', () => ({
     }),
 }))
 
+jest.mock('pages/common/forms/input/SelectInputBox', () => {
+    return function MockSelectInputBox({
+        id,
+        className,
+        inputClassName,
+        placeholder,
+        onClick,
+    }: any) {
+        return (
+            <div
+                id={id}
+                className={`${className || ''} ${inputClassName || ''}`}
+                onClick={onClick}
+                data-testid="select-input-box"
+            >
+                {placeholder}
+            </div>
+        )
+    }
+})
+
 jest.mock('custom-fields/components/MultiLevelSelect', () => {
     return function MockMultiLevelSelect({
         onChange,
@@ -456,5 +477,44 @@ describe('AIAgentFeedbackReasonSection', () => {
         })
 
         expect(screen.getByTestId('multi-level-select')).toBeInTheDocument()
+    })
+
+    it('should apply selectInputBoxWithValues className when values exist', () => {
+        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+            {
+                id: 1,
+                feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
+                objectType: 'TICKET',
+                objectId: '123',
+                targetType: 'TICKET',
+                targetId: '123',
+                feedbackType: 'TICKET_FREEFORM',
+                submittedBy: 1,
+                createdDatetime: '2023-10-01T00:00:00Z',
+                updatedDatetime: '2023-10-01T00:00:00Z',
+                executionId: 'test-execution',
+            },
+        ]
+
+        render(
+            <AIAgentFeedbackReasonSection
+                {...defaultProps}
+                badInteractionReasons={badInteractionReasons}
+            />,
+        )
+
+        const selectInputBox = document.getElementById(
+            'ai-agent-bad-interaction-reason-select',
+        )
+        expect(selectInputBox).toHaveClass('selectInputBoxWithValues')
+    })
+
+    it('should not apply selectInputBoxWithValues className when values are empty', () => {
+        render(<AIAgentFeedbackReasonSection {...defaultProps} />)
+
+        const selectInputBox = document.getElementById(
+            'ai-agent-bad-interaction-reason-select',
+        )
+        expect(selectInputBox).not.toHaveClass('selectInputBoxWithValues')
     })
 })

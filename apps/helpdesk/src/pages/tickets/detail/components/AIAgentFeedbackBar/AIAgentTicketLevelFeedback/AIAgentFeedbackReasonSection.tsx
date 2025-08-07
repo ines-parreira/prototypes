@@ -125,8 +125,13 @@ export const AIAgentFeedbackReasonSection = ({
                 <SelectInputBox
                     id="ai-agent-bad-interaction-reason-select"
                     className={css.selectInputBox}
+                    inputClassName={
+                        values.length > 0
+                            ? css.selectInputBoxWithValues
+                            : undefined
+                    }
                     placeholder={
-                        values?.length
+                        values.length
                             ? values.join(', ')
                             : 'Select all that apply'
                     }
@@ -191,6 +196,8 @@ export const AIAgentFeedbackReasonSection = ({
                 autoWidth={false}
                 CustomInput={CustomInput}
                 wrapperClassName={css.multiLevelSelectWrapper}
+                bodyClassName={css.multiLevelSelectBodyWrapper}
+                showCheckboxes={true}
             />
         </div>
     )
