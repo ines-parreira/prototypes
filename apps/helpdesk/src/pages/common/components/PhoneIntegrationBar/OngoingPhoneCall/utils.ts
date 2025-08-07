@@ -1,6 +1,7 @@
 import { User } from '@gorgias/helpdesk-queries'
 
 import {
+    AgentWithStatus,
     AvailabilityStatusTag,
     User as GorgiasStateUser,
 } from 'config/types/user'
@@ -8,12 +9,7 @@ import {
 export const mergeAgentData = (
     agentsData: GorgiasStateUser[],
     agentsDataWithStatus?: User[],
-): {
-    id: number
-    status?: string
-    name: string
-    meta: { profile_picture_url?: string | null }
-}[] => {
+): AgentWithStatus[] => {
     const result = agentsData.map((agent) => {
         const agentWithStatus = agentsDataWithStatus?.find(
             (agentWithStatus) => agentWithStatus.id === agent.id,

@@ -1,24 +1,31 @@
-import React, { ComponentProps, createRef } from 'react'
+import { ComponentProps, createRef } from 'react'
 
+import { assumeMock } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
+    act,
     cleanup,
-    fireEvent,
     render,
     screen,
+    waitFor,
     within,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 
 import {
-    useListUsers,
-    useTransferCall,
-    VoiceCallTransferReceiverType,
-    VoiceCallTransferType,
-} from '@gorgias/helpdesk-queries'
+    mockListUsersHandler,
+    mockTransferCallHandler,
+} from '@gorgias/helpdesk-mocks'
 
-import * as notificationActions from 'state/notifications/actions'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { mockIncomingCall } from 'tests/twilioMocks'
 import { mockStore } from 'utils/testing'
 
@@ -47,17 +54,32 @@ jest.mock('pages/common/utils/labels', () => ({
     ),
 }))
 jest.mock('pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/utils')
-jest.mock('@gorgias/helpdesk-queries')
+jest.mock('state/notifications/actions')
 
-const mockUseTransferCall = useTransferCall as jest.Mock
-const mockUseListUsers = useListUsers as jest.Mock
+const mockNotify = jest.mocked(notify)
+
+const server = setupServer()
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
+
 const mockGetAvailabilityBadgeColor = getAvailabilityBadgeColor as jest.Mock
 const mockGetAvailabilityStatus = getAvailabilityStatus as jest.Mock
 const mockMergeAgentData = mergeAgentData as jest.Mock
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const useFlagMock = assumeMock(useFlag)
+
 describe('CallTransferDropdown', () => {
     const setIsOpen = jest.fn()
     const onTransferInitiated = jest.fn()
+    const mockListUsers = mockListUsersHandler()
+    const mockTransferCall = mockTransferCallHandler()
 
     const baseProps = {
         isOpen: true,
@@ -68,10 +90,10 @@ describe('CallTransferDropdown', () => {
     }
 
     const allAgents = [
-        { id: 1, name: 'Agent 1' },
-        { id: 2, name: 'Agent 2' },
-        { id: 3, name: 'Agent 3' },
-        { id: 4, name: 'Agent 4' },
+        { id: 1, name: 'Agent 1', status: 'online' },
+        { id: 2, name: 'Agent 2', status: 'online' },
+        { id: 3, name: 'Agent 3', status: 'online' },
+        { id: 4, name: 'Agent 4', status: 'online' },
     ]
 
     const renderComponent = (
@@ -88,50 +110,51 @@ describe('CallTransferDropdown', () => {
                     }),
                 } as any)}
             >
-                <CallTransferDropdown {...props} />
+                <QueryClientProvider client={queryClient}>
+                    <CallTransferDropdown {...props} />
+                </QueryClientProvider>
             </Provider>,
         )
 
-    beforeEach(() => {
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
-        mockUseListUsers.mockReturnValue({
-            data: {
-                data: [],
-            },
-        })
-        mockMergeAgentData.mockReturnValue(allAgents)
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
     })
 
-    afterEach(cleanup)
+    beforeEach(() => {
+        server.use(mockListUsers.handler, mockTransferCall.handler)
+        mockMergeAgentData.mockReturnValue(allAgents)
+        mockNotify.mockReturnValue(jest.fn())
 
-    it(`renders the dropdown body when isOpen is true and doesn't display current agent`, () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
+                return true
+            }
+            return false
+        })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+        queryClient.clear()
+        cleanup()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    it(`renders the dropdown body when isOpen is true and doesn't display current agent`, async () => {
         renderComponent()
 
-        expect(mockMergeAgentData).toHaveBeenCalledWith(
-            allAgents.filter((agent) => agent.id !== 2),
-            undefined,
-        )
+        await waitFor(() => {
+            expect(mockMergeAgentData).toHaveBeenCalledWith(
+                allAgents.filter((agent) => agent.id !== 2),
+                mockListUsers.data.data,
+            )
+        })
     })
 
     it('renders the dropdown body with the correct agent availability status', () => {
-        const agentsWithStatus = [
-            {
-                id: 1,
-                name: 'Agent 1',
-                availability_status: {
-                    status: 'online',
-                },
-            },
-        ]
-
-        mockUseListUsers.mockReturnValue({
-            data: {
-                data: agentsWithStatus,
-            },
-        })
-
         mockGetAvailabilityBadgeColor.mockImplementation(
             (status: string) => status,
         )
@@ -155,34 +178,38 @@ describe('CallTransferDropdown', () => {
     it('does not render the dropdown body when isOpen is false', () => {
         renderComponent({ ...baseProps, isOpen: false })
 
-        expect(screen.queryByText('Agents')).not.toBeInTheDocument()
+        expect(screen.queryByText('Available')).not.toBeInTheDocument()
+        expect(screen.queryByText('Unavailable')).not.toBeInTheDocument()
     })
 
-    it('calls the setIsOpen function when the target element is clicked', () => {
+    it('calls the setIsOpen function when the target element is clicked', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        fireEvent.click(screen.getByTestId('floating-overlay'))
+        await act(() => user.click(screen.getByTestId('floating-overlay')))
         expect(setIsOpen).toHaveBeenCalled()
     })
 
-    it(`doesn't select more than one agent`, () => {
+    it(`doesn't select more than one agent`, async () => {
+        const user = userEvent.setup()
         renderComponent()
 
         const agent1 = screen.getByRole('option', {
             name: /agent 1/i,
         })
-        fireEvent.click(agent1)
+        await act(() => user.click(agent1))
         expect(within(agent1).getByText(/done/i)).toBeVisible()
 
         const agent3 = screen.getByRole('option', {
             name: /agent 3/i,
         })
-        fireEvent.click(agent3)
+        await act(() => user.click(agent3))
         expect(within(agent3).getByText(/done/i)).toBeVisible()
         expect(within(agent1).queryByText(/done/i)).toBeNull()
     })
 
-    it('only enables the transfer button when an agent is selected', () => {
+    it('only enables the transfer button when an agent is selected', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
         expect(
@@ -192,123 +219,174 @@ describe('CallTransferDropdown', () => {
         const agent1 = screen.getByRole('option', {
             name: /agent 1/i,
         })
-        fireEvent.click(agent1)
+        await act(() => user.click(agent1))
         expect(
             screen.getByRole('button', { name: /transfer call/i }),
         ).toBeAriaEnabled()
     })
 
-    it('calls the onTransferInitiated function when the transfer button is clicked', () => {
+    it('displays transfer button when agent is selected', async () => {
         renderComponent()
-        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
-            .mock.calls[0][0]?.mutation?.onSuccess!(
-            '' as any,
-            '' as any,
-            '' as any,
-        )
 
-        expect(onTransferInitiated).toHaveBeenCalled()
-        expect(setIsOpen).toHaveBeenLastCalledWith(false)
-    })
-
-    it('displays warning notification on transfer failure if status is 400', () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
-        renderComponent()
-        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
-            .mock.calls[0][0]?.mutation?.onError!(
-            {
-                response: {
-                    data: {
-                        error: {
-                            msg: 'Call transfer could not be attempted because the agent is offline or unavailable for calls. The customer is still on the line.',
-                        },
-                    },
-                    status: 400,
-                },
-            },
-            '' as any,
-            '' as any,
-        )
-
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Call transfer could not be attempted because the agent is offline or unavailable for calls. The customer is still on the line.',
-            status: 'info',
+        await waitFor(() => {
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeInTheDocument()
         })
     })
 
-    it('displays error notification on transfer failure if status is not 400', () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
+    it('calls the onTransferInitiated function when transfer succeeds', async () => {
+        const user = userEvent.setup()
         renderComponent()
-        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
-            .mock.calls[0][0]?.mutation?.onError!(
-            {
-                response: {
-                    data: {
-                        error: {
-                            msg: 'Call transfer failed because an error occurred. Please try again.',
-                        },
-                    },
-                    status: 500,
-                },
-            },
-            '' as any,
-            '' as any,
-        )
 
-        expect(notify).toHaveBeenCalledWith({
-            message:
+        await waitFor(() => {
+            const agent1 = screen.getByRole('option', { name: /agent 1/i })
+            return act(() => user.click(agent1))
+        })
+
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+        await act(() => user.click(transferButton))
+
+        await waitFor(() => {
+            expect(onTransferInitiated).toHaveBeenCalledWith(1)
+            expect(setIsOpen).toHaveBeenCalledWith(false)
+        })
+    })
+
+    it.each([
+        {
+            status: 400,
+            errorMessage: { error: { msg: 'Transfer failed' } } as any,
+            notifiedMessage: 'Transfer failed',
+            notificationStatus: NotificationStatus.Info,
+        },
+        {
+            status: 404,
+            errorMessage: null,
+            notifiedMessage:
                 'Call transfer failed because an error occurred. Please try again.',
-            status: 'error',
+            notificationStatus: NotificationStatus.Error,
+        },
+    ])(
+        'handles transfer failure',
+        async ({
+            status,
+            errorMessage,
+            notificationStatus,
+            notifiedMessage,
+        }) => {
+            const user = userEvent.setup()
+            const failedTransferHandler = mockTransferCallHandler(async () =>
+                HttpResponse.json(errorMessage, {
+                    status,
+                    headers: { 'Content-Type': 'application/json' },
+                }),
+            )
+            server.use(failedTransferHandler.handler)
+
+            renderComponent()
+
+            await waitFor(() => {
+                const agent1 = screen.getByRole('option', { name: /agent 1/i })
+                return act(() => user.click(agent1))
+            })
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            await act(() => user.click(transferButton))
+
+            await waitFor(() => {
+                expect(onTransferInitiated).not.toHaveBeenCalled()
+                expect(setIsOpen).not.toHaveBeenCalledWith(false)
+                expect(mockNotify).toHaveBeenCalledWith({
+                    status: notificationStatus,
+                    message: notifiedMessage,
+                })
+            })
+        },
+    )
+
+    it('allows transferring to selected agent', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await waitFor(() => {
+            const agent1 = screen.getByRole('option', { name: /agent 1/i })
+            return act(() => user.click(agent1))
         })
+
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+        expect(transferButton).toBeAriaEnabled()
+        await act(() => user.click(transferButton))
     })
 
-    it('displays default error notification on transfer failure if no message', () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
+    it('displays Available and Unavailable sections with correct counts', () => {
+        mockMergeAgentData.mockReturnValue([
+            { id: 1, name: 'Agent 1', status: 'online' },
+            { id: 2, name: 'Agent 2', status: 'online' },
+            { id: 3, name: 'Agent 3', status: 'online' },
+            { id: 4, name: 'Agent 4', status: 'offline' },
+        ])
         renderComponent()
-        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
-            .mock.calls[0][0]?.mutation?.onError!(
-            {
-                response: {
-                    status: 500,
-                },
-            },
-            '' as any,
-            '' as any,
-        )
 
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Call transfer failed because an error occurred. Please try again.',
-            status: 'error',
-        })
+        expect(screen.getByText('Available (3)')).toBeInTheDocument()
+        expect(screen.getByText('Unavailable (1)')).toBeInTheDocument()
     })
 
-    it("calls the 'transfer-call' endpoint with the correct data", () => {
-        const mockMutate = jest.fn()
-        mockUseTransferCall.mockReturnValue({
-            mutate: mockMutate,
-        })
+    it('sections always render even when empty', () => {
+        mockMergeAgentData.mockReturnValue([
+            { id: 1, name: 'Agent 1', status: 'online' },
+        ])
         renderComponent()
 
-        const agent1 = screen.getByRole('option', {
-            name: /agent 1/i,
+        expect(screen.getByText('Available (1)')).toBeInTheDocument()
+        expect(screen.getByText('Unavailable (0)')).toBeInTheDocument()
+    })
+
+    it('disables agents in unavailable section', () => {
+        mockMergeAgentData.mockReturnValue([
+            { id: 1, name: 'Agent 1', status: 'online' },
+            { id: 4, name: 'Agent 4', status: 'offline' },
+        ])
+        renderComponent()
+
+        const availableAgent = screen.getByRole('option', { name: /agent 1/i })
+        const unavailableAgent = screen.getByRole('option', {
+            name: /agent 4/i,
         })
-        fireEvent.click(agent1)
-        fireEvent.click(screen.getByRole('button', { name: /transfer call/i }))
-        expect(mockMutate).toHaveBeenCalledWith({
-            data: {
-                type: VoiceCallTransferType.Cold,
-                receiver_type: VoiceCallTransferReceiverType.Agent,
-                receiver_id: 1,
-                call_sid: 'fake-call-sid',
-            },
+
+        expect(availableAgent.className).not.toContain('disabled')
+        expect(unavailableAgent.className).toContain('disabled')
+    })
+
+    describe('transfer to external number FF off', () => {
+        beforeEach(() => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
+                    return false
+                }
+                return false
+            })
+        })
+
+        it('does not show grouped headers', () => {
+            mockMergeAgentData.mockReturnValue([
+                { id: 1, name: 'Agent 1', status: 'online' },
+                { id: 2, name: 'Agent 2', status: 'online' },
+                { id: 3, name: 'Agent 3', status: 'online' },
+                { id: 4, name: 'Agent 4', status: 'offline' },
+            ])
+            const { getByText, queryByText } = renderComponent()
+
+            expect(getByText('Agents')).toBeInTheDocument()
+            expect(queryByText('Available')).not.toBeInTheDocument()
+            expect(queryByText('Unavailable')).not.toBeInTheDocument()
         })
     })
 })

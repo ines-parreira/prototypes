@@ -1,4 +1,4 @@
-import React, { ComponentProps, useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
 import { Call } from '@twilio/voice-sdk'
 import { get } from 'lodash'
@@ -10,15 +10,19 @@ import {
     VoiceCallTransferReceiverType,
     VoiceCallTransferType,
 } from '@gorgias/helpdesk-queries'
+import { Button } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AgentWithStatus } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { getCallSid } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import * as ToggleButton from 'pages/common/components/ToggleButton'
 import { AgentLabel } from 'pages/common/utils/labels'
 import { getHumanAgentsJS } from 'state/agents/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
@@ -33,6 +37,12 @@ import {
 } from './utils'
 
 import css from './CallTransferDropdown.less'
+
+enum TransferType {
+    Agents = 'agents',
+    Queues = 'queues',
+    External = 'external',
+}
 
 type Props = Pick<
     ComponentProps<typeof Dropdown>,
@@ -51,7 +61,13 @@ export default function CallTransferDropdown({
     onTransferInitiated,
     call,
 }: Props) {
+    const isTransferToExternalNumberEnabled = useFlag(
+        FeatureFlagKey.TransferCallToExternalNumber,
+    )
+
     const [selectedAgent, setSelectedAgent] = useState<number | null>(null)
+    const [selectedTransferType, setSelectedTransferType] =
+        useState<TransferType>(TransferType.Agents)
     const dispatch = useAppDispatch()
 
     const { data: agentsDataWithStatus } = useListUsers(
@@ -104,6 +120,12 @@ export default function CallTransferDropdown({
         filteredAgents,
         agentsDataWithStatus?.data?.data,
     )
+    const availableAgents = mergedAgentData.filter(
+        (agent) => agent.status === 'online',
+    )
+    const unavailableAgents = mergedAgentData.filter(
+        (agent) => agent.status !== 'online',
+    )
 
     const handleTransferCallClick = () => {
         if (!selectedAgent) return
@@ -127,32 +149,62 @@ export default function CallTransferDropdown({
             className={css.container}
             value={selectedAgent}
         >
+            {isTransferToExternalNumberEnabled && (
+                <div className={css.toggleContainer}>
+                    <ToggleButton.Wrapper
+                        type={ToggleButton.Type.Label}
+                        value={selectedTransferType}
+                        onChange={setSelectedTransferType}
+                        size="small"
+                        className={css.toggleButtonWrapper}
+                    >
+                        <ToggleButton.Option value={TransferType.Agents}>
+                            Agents
+                        </ToggleButton.Option>
+                    </ToggleButton.Wrapper>
+                </div>
+            )}
             <DropdownSearch />
             <DropdownBody className={css.dropdownBody}>
-                <DropdownSection title="Agents">
-                    {mergedAgentData.map((option) => (
-                        <DropdownItem
-                            key={`agent-${option.id}`}
-                            option={{
-                                label: `${option.name}`,
-                                value: option.id,
-                            }}
-                            onClick={setSelectedAgent}
+                {isTransferToExternalNumberEnabled ? (
+                    <>
+                        <DropdownSection
+                            title={`Available (${availableAgents.length})`}
+                            alwaysRender
                         >
-                            <AgentLabel
-                                shouldDisplayAvatar
-                                name={option.name}
-                                profilePictureUrl={
-                                    option.meta?.profile_picture_url
-                                }
-                                badgeColor={getAvailabilityBadgeColor(
-                                    option.status,
-                                )}
-                                status={getAvailabilityStatus(option.status)}
+                            {availableAgents.map((agent) => (
+                                <AgentDropdownItem
+                                    key={`agent-${agent.id}`}
+                                    agent={agent}
+                                    onSelect={setSelectedAgent}
+                                />
+                            ))}
+                        </DropdownSection>
+                        <DropdownSection
+                            title={`Unavailable (${unavailableAgents.length})`}
+                            alwaysRender
+                        >
+                            {unavailableAgents.map((agent) => (
+                                <AgentDropdownItem
+                                    key={`agent-${agent.id}`}
+                                    agent={agent}
+                                    onSelect={setSelectedAgent}
+                                    isDisabled
+                                />
+                            ))}
+                        </DropdownSection>
+                    </>
+                ) : (
+                    <DropdownSection title="Agents">
+                        {mergedAgentData.map((agent) => (
+                            <AgentDropdownItem
+                                key={`agent-${agent.id}`}
+                                agent={agent}
+                                onSelect={setSelectedAgent}
                             />
-                        </DropdownItem>
-                    ))}
-                </DropdownSection>
+                        ))}
+                    </DropdownSection>
+                )}
             </DropdownBody>
             <div className={css.dropdownFooter}>
                 <Button
@@ -165,5 +217,36 @@ export default function CallTransferDropdown({
                 </Button>
             </div>
         </Dropdown>
+    )
+}
+
+type AgentDropdownItemProps = {
+    agent: AgentWithStatus
+    onSelect: (agentId: number) => void
+    isDisabled?: boolean
+}
+
+function AgentDropdownItem({
+    agent,
+    onSelect,
+    isDisabled = false,
+}: AgentDropdownItemProps) {
+    return (
+        <DropdownItem
+            option={{
+                label: agent.name,
+                value: agent.id,
+            }}
+            onClick={onSelect}
+            isDisabled={isDisabled}
+        >
+            <AgentLabel
+                shouldDisplayAvatar
+                name={agent.name}
+                profilePictureUrl={agent.meta?.profile_picture_url}
+                badgeColor={getAvailabilityBadgeColor(agent.status)}
+                status={getAvailabilityStatus(agent.status)}
+            />
+        </DropdownItem>
     )
 }

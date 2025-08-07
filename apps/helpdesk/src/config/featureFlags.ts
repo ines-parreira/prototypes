@@ -170,6 +170,7 @@ export enum FeatureFlagKey {
     TicketAllowPriorityUsage = 'ticket-allow-priority-usage',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
+    TransferCallToExternalNumber = 'transfer-call-to-external-number',
     UseLiveVoiceUpdates = 'use-live-voice-updates',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',

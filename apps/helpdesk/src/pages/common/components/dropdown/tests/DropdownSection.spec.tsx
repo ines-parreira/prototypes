@@ -46,4 +46,36 @@ describe('<DropdownSection />', () => {
             getByText(/Foo/).parentElement?.className.includes('isHidden'),
         ).toBeTruthy()
     })
+
+    it('should always display when alwaysRender is true even with no children', () => {
+        const { getByText } = render(
+            MockedComponent(
+                { children: null, title: 'Foo', alwaysRender: true },
+                defaultContext,
+            ),
+        )
+
+        expect(
+            getByText(/Foo/).parentElement?.className.includes('isHidden'),
+        ).toBeFalsy()
+    })
+
+    it('should show border for sections with alwaysRender when previous sibling exists', () => {
+        const { container } = render(
+            <>
+                {MockedComponent(
+                    { children: null, title: 'First', alwaysRender: true },
+                    defaultContext,
+                )}
+                {MockedComponent(
+                    { children: null, title: 'Second', alwaysRender: true },
+                    defaultContext,
+                )}
+            </>,
+        )
+
+        const sections = container.querySelectorAll('.wrapper')
+        expect(sections[0].className.includes('hasBorder')).toBeFalsy()
+        expect(sections[1].className.includes('hasBorder')).toBeTruthy()
+    })
 })

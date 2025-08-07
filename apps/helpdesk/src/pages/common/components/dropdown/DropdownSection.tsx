@@ -20,6 +20,7 @@ import css from './DropdownSection.less'
 
 type Props = {
     title: ReactNode
+    alwaysRender?: boolean
 } & HTMLProps<HTMLDivElement>
 
 function isValidSection(element?: Element | null): boolean {
@@ -27,7 +28,7 @@ function isValidSection(element?: Element | null): boolean {
 }
 
 const DropdownSection = (
-    { children, className, title, ...other }: Props,
+    { children, className, title, alwaysRender = false, ...other }: Props,
     ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const dropdownContext = useContext(DropdownContext)
@@ -45,18 +46,22 @@ const DropdownSection = (
     const [hasBorder, setHasBorder] = useState(false)
 
     const handleSiblingChange = useCallback(() => {
-        setHasBorder(isValidSection(elementRef.current?.previousElementSibling))
-    }, [])
+        setHasBorder(
+            alwaysRender
+                ? !!elementRef.current?.previousElementSibling
+                : isValidSection(elementRef.current?.previousElementSibling),
+        )
+    }, [alwaysRender])
 
     useEffectOnce(() => {
         handleSiblingChange()
     })
     useEffect(() => {
         if (query !== previousQuery) {
-            setShouldRender(isValidSection(elementRef.current))
+            setShouldRender(alwaysRender || isValidSection(elementRef.current))
             handleSiblingChange()
         }
-    }, [children, handleSiblingChange, previousQuery, query])
+    }, [children, handleSiblingChange, previousQuery, query, alwaysRender])
 
     return (
         <div

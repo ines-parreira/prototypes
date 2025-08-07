@@ -164,3 +164,10 @@ export type UserNotificationPreferencesData = {
         }
     }
 }
+
+export type AgentWithStatus = {
+    id: number
+    status?: string
+    name: string
+    meta: { profile_picture_url?: string | null }
+}
