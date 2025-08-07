@@ -459,7 +459,7 @@ export default function MultiLevelSelect<
                                                 allowMultiValues,
                                                 value,
                                             )
-                                                ? value.includes(fullValue)
+                                                ? value?.includes(fullValue)
                                                 : fullValue === value) && (
                                                 <CheckIcon />
                                             )
