@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { Components } from 'react-virtuoso'
 
+import { TicketTranslationCompact } from '@gorgias/helpdesk-types'
 import { CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -30,6 +31,7 @@ type Props = {
     viewId: number
     isNewTicket?: boolean
     isSelected: boolean
+    translation?: TicketTranslationCompact
     onSelect: (id: number, selected: boolean, selectRange?: boolean) => void
 }
 
@@ -45,6 +47,7 @@ const classNames = {
 export default function Ticket({
     isActive,
     ticket,
+    translation,
     viewId,
     isNewTicket,
     isSelected,
@@ -181,14 +184,24 @@ export default function Ticket({
                                     )}
                                 </header>
                                 <span className={css.subject}>
-                                    {ticket.subject}
+                                    {translation?.subject || ticket.subject}
+                                    {translation?.subject && (
+                                        <i
+                                            className={cn(
+                                                'material-icons',
+                                                css.translateIcon,
+                                            )}
+                                        >
+                                            translate
+                                        </i>
+                                    )}
                                 </span>
                                 {!hasUndeliveredMessages && (
                                     <div
                                         ref={excerptRef}
                                         className={css.excerpt}
                                     >
-                                        {ticket.excerpt}
+                                        {translation?.excerpt || ticket.excerpt}
                                     </div>
                                 )}
                                 {hasUndeliveredMessages && (
@@ -201,7 +214,7 @@ export default function Ticket({
                                         placement="top"
                                         target={excerptRef}
                                     >
-                                        {ticket.excerpt}
+                                        {translation?.excerpt || ticket.excerpt}
                                     </Tooltip>
                                 )}
                             </div>

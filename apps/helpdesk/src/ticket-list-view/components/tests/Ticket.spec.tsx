@@ -2,6 +2,8 @@ import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { mockTicketTranslationCompact } from '@gorgias/helpdesk-mocks'
+
 import { TicketPriority } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { Customer } from 'models/customer/types'
@@ -460,6 +462,181 @@ describe('Ticket', () => {
             expect(
                 screen.queryByText(`priority: ${TicketPriority.Critical}`),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('translation behavior', () => {
+        const ticketWithTranslation = {
+            ...defaultTicket,
+        }
+
+        const mockTranslation = {
+            ...mockTicketTranslationCompact(),
+            subject: 'Translated Subject',
+            excerpt: 'Translated Excerpt',
+        }
+
+        it('should display translated subject when translation.subject is provided', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithTranslation}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(screen.getByText('Translated Subject')).toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultTicket.subject),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display original subject when translation.subject is not provided', () => {
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
+
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated Subject'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display translate icon when translation.subject is provided', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithTranslation}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(screen.getByText('translate')).toBeInTheDocument()
+        })
+
+        it('should not display translate icon when no translation prop is provided', () => {
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
+
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should display translated excerpt when translation.excerpt is provided', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithTranslation}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(screen.getByText('Translated Excerpt')).toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultTicket.excerpt!),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display original excerpt when translation.excerpt is not provided', () => {
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
+
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated Excerpt'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display original excerpt when no translation prop is provided', () => {
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
+
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+        })
+
+        it('should display both translated subject and excerpt when both are provided', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithTranslation}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(screen.getByText('Translated Subject')).toBeInTheDocument()
+            expect(screen.getByText('Translated Excerpt')).toBeInTheDocument()
+            expect(screen.getByText('translate')).toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultTicket.subject),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultTicket.excerpt!),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not display translated excerpt when there are undelivered messages', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={{
+                        ...ticketWithTranslation,
+                        last_sent_message_not_delivered: true,
+                    }}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(
+                screen.getByText('Last message not delivered'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated Excerpt'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultTicket.excerpt!),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should handle empty translation values gracefully', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithTranslation}
+                    translation={{
+                        ...mockTicketTranslationCompact(),
+                        subject: '',
+                        excerpt: '',
+                    }}
+                />,
+            )
+
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should handle undefined translation values gracefully', () => {
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
+
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should use translated excerpt in tooltip when translation.excerpt is provided', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithTranslation}
+                    translation={mockTranslation}
+                />,
+            )
+
+            const tooltip = screen.getByText('Translated Excerpt').parentElement
+            expect(tooltip).toBeInTheDocument()
+        })
+
+        it('should use original excerpt in tooltip when translation.excerpt is not provided', () => {
+            render(<Ticket {...defaultProps} ticket={ticketWithTranslation} />)
+
+            const tooltip = screen.getByText(
+                defaultTicket.excerpt!,
+            ).parentElement
+            expect(tooltip).toBeInTheDocument()
         })
     })
 })

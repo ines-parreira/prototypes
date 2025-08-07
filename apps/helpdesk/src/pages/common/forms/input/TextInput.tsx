@@ -9,7 +9,8 @@ import {
     useState,
 } from 'react'
 
-import { useEffectOnce, useEvent, useId } from '@repo/hooks'
+import { useEffectOnce, useEvent, useId, useTextWidth } from '@repo/hooks'
+import type { UseTextWidthOptions } from '@repo/hooks'
 import classnames from 'classnames'
 
 import {
@@ -21,7 +22,7 @@ import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
 
 import css from './TextInput.less'
 
-type Props = {
+type Props = UseTextWidthOptions & {
     hasError?: boolean
     inputClassName?: string
     isDisabled?: boolean
@@ -32,10 +33,12 @@ type Props = {
     inputWrapperClassName?: string
     withClearText?: boolean
     disableAffixClick?: boolean
+    isResizable?: boolean
+    maxWidth?: number
 } & Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'disabled' | 'onChange' | 'prefix' | 'required'
->
+        InputHTMLAttributes<HTMLInputElement>,
+        'disabled' | 'onChange' | 'prefix' | 'required'
+    >
 
 function TextInput(
     {
@@ -54,6 +57,8 @@ function TextInput(
         inputWrapperClassName,
         withClearText = false,
         disableAffixClick = false,
+        isResizable = false,
+        maxWidth = undefined,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>,
@@ -68,6 +73,8 @@ function TextInput(
     const inputGroupContext = useContext(InputGroupContext)
     const appendPosition = useContext(GroupPositionContext) || ''
     const [isFocused, setIsFocused] = useState(!!autoFocus)
+
+    const textWidth = useTextWidth(String(value || ''), props)
 
     const handleFocus = useCallback(() => {
         inputGroupContext?.setIsFocused(true)
@@ -106,6 +113,7 @@ function TextInput(
                     [css.isDisabled]: context?.isDisabled || isDisabled,
                     [css.isFocused]: isFocused,
                     [css.isNested]: !!inputGroupContext,
+                    [css.isResizable]: isResizable,
                 },
                 className,
                 inputWrapperClassName,
@@ -119,7 +127,9 @@ function TextInput(
             <input
                 ref={setInputElement}
                 type={type || 'text'}
-                className={classnames(css.input, inputClassName)}
+                className={classnames(css.input, inputClassName, {
+                    [css.isResizable]: isResizable,
+                })}
                 value={value}
                 id={inputId}
                 name={inputId}
@@ -127,6 +137,15 @@ function TextInput(
                 required={isRequired}
                 disabled={context?.isDisabled || isDisabled}
                 autoFocus={autoFocus}
+                {...(isResizable && {
+                    style: {
+                        width: maxWidth
+                            ? textWidth < maxWidth
+                                ? textWidth
+                                : maxWidth
+                            : textWidth,
+                    },
+                })}
                 {...props}
             />
             {suffix && (

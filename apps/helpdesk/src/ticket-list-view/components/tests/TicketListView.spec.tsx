@@ -13,13 +13,13 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 import { setViewEditMode } from 'state/views/actions'
+import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import useSelection from 'ticket-list-view/hooks/useSelection'
 import useSortOrder, {
     sortOrderOptions,
 } from 'ticket-list-view/hooks/useSortOrder'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import { TicketPartial } from 'ticket-list-view/types'
-import { renderWithRouter } from 'utils/testing'
 
 import Ticket from '../Ticket'
 import TicketListView, { listInfoProps } from '../TicketListView'
@@ -150,6 +150,7 @@ describe('<TicketListView />', () => {
             newTickets: {},
             ticketIds: { current: [152] },
             initialLoaded: true,
+            partials: [ticket],
         })
         mockUseSplitTicketViewMock.mockReturnValue({
             isEnabled: false,
@@ -170,7 +171,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should pause updates when there are selected tickets', () => {
-        renderWithRouter(
+        renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -187,7 +188,7 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
             clear: jest.fn(),
         })
-        renderWithRouter(
+        renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -205,7 +206,7 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
         })
 
-        const { rerender } = renderWithRouter(
+        const { rerender } = renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -227,7 +228,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should display a list of tickets', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -237,7 +238,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should register the scrolling element', () => {
-        renderWithRouter(
+        renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -247,7 +248,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should call loadMore when the end of the list is reached', () => {
-        renderWithRouter(
+        renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -276,9 +277,10 @@ describe('<TicketListView />', () => {
             tickets: [ticket],
             newTickets: { [ticket.id]: ticket },
             ticketIds: { current: [152] },
+            partials: [ticket],
         })
 
-        const { getByText } = renderWithRouter(
+        const { getByText } = renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -325,9 +327,10 @@ describe('<TicketListView />', () => {
             tickets: [ticket, { ...ticket, id: 456 }],
             newTickets: {},
             ticketIds: { current: [152, 456] },
+            partials: [ticket, { ...ticket, id: 456 }],
         })
 
-        const { rerender, getByText } = renderWithRouter(
+        const { rerender, getByText } = renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -341,6 +344,7 @@ describe('<TicketListView />', () => {
             tickets: [ticket],
             newTickets: [],
             ticketIds: { current: [152] },
+            partials: [ticket],
         })
         rerender(
             <Provider store={store}>
@@ -367,9 +371,10 @@ describe('<TicketListView />', () => {
             newTickets: {},
             ticketIds: { current: [] },
             initialLoaded: true,
+            partials: [],
         })
 
-        const { getByText } = renderWithRouter(
+        const { getByText } = renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -390,13 +395,14 @@ describe('<TicketListView />', () => {
             newTickets: {},
             ticketIds: { current: [] },
             initialLoaded: true,
+            partials: [],
         })
 
         const deactivatedView = {
             ...view,
             deactivated_datetime: '2021-01-01T00:00:00Z',
         }
-        const { getByText } = renderWithRouter(
+        const { getByText } = renderWithQueryClientAndRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -432,9 +438,10 @@ describe('<TicketListView />', () => {
             newTickets: {},
             ticketIds: { current: [] },
             initialLoaded: true,
+            partials: [],
         })
 
-        const { getByText } = renderWithRouter(
+        const { getByText } = renderWithQueryClientAndRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -453,7 +460,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should redirect to edition view', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = renderWithQueryClientAndRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -472,7 +479,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should display bulk actions', () => {
-        const { getByText } = renderWithRouter(
+        const { getByText } = renderWithQueryClientAndRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -482,7 +489,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should hide bulk actions for view with count 0', () => {
-        const { queryByText } = renderWithRouter(
+        const { queryByText } = renderWithQueryClientAndRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -511,7 +518,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithRouter(
+            const { getByText } = renderWithQueryClientAndRouter(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
                 </Provider>,
@@ -529,7 +536,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithRouter(
+            const { getByText } = renderWithQueryClientAndRouter(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
                 </Provider>,
@@ -547,7 +554,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithRouter(
+            const { getByText } = renderWithQueryClientAndRouter(
                 <Provider
                     store={mockStore({
                         views: fromJS({
@@ -577,7 +584,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = renderWithRouter(
+            const { getByText } = renderWithQueryClientAndRouter(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
                 </Provider>,

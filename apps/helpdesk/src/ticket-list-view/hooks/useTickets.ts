@@ -160,6 +160,7 @@ export default function useTickets(
             tickets,
             ticketIds,
             newTickets: visibleNewPartialsMap,
+            partials,
         }),
         [
             bulkToggleUnread,
@@ -173,6 +174,7 @@ export default function useTickets(
             tickets,
             ticketIds,
             visibleNewPartialsMap,
+            partials,
         ],
     )
 }

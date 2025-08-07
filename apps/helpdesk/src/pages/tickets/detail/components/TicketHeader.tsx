@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import moment, { Moment } from 'moment-timezone'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
@@ -37,6 +38,7 @@ import {
     ticketPartialUpdate,
 } from 'state/ticket/actions'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
+import { useTicketsTranslatedProperties } from 'ticket-list-view/hooks/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { hasRole } from 'utils'
 
@@ -72,6 +74,10 @@ const TicketHeader = ({
     ticket,
     onToggleUnread,
 }: Props) => {
+    const [isMouseOver, setIsMouseOver] = useState(false)
+    const [isFocused, setIsFocused] = useState(false)
+    const translateIconRef = useRef<HTMLDivElement>(null)
+    const titleContentRef = useRef<HTMLDivElement>(null)
     const [askTrashConfirmation, setAskTrashConfirmation] = useState(false)
     const [isMergeTicketModalOpen, setIsMergeTicketModalOpen] = useState(false)
     const appNode = useAppNode()
@@ -84,6 +90,10 @@ const TicketHeader = ({
     const setPriorityFlagEnabled = useFlag(
         FeatureFlagKey.TicketAllowPriorityUsage,
     )
+    const { translationMap, invalidateTicketTranslatedProperties } =
+        useTicketsTranslatedProperties({
+            ticket_ids: [ticket.get('id')],
+        })
 
     const dispatch = useAppDispatch()
 
@@ -283,19 +293,73 @@ const TicketHeader = ({
         )
     }
 
+    const handleSubjectChange = (subject: string) => {
+        dispatch(setSubject(subject))
+        invalidateTicketTranslatedProperties([ticket.get('id')])
+    }
+
+    const hasTranslation = !!translationMap[ticket.get('id')]?.subject
+    const translatedSubject = translationMap[ticket.get('id')]?.subject
+    const title = translatedSubject || ticket.get('subject')
+    const resizableEditableTitlePadding = isMouseOver || isFocused ? 27 : 20
+
     return (
         <div className={classnames(css.component, className)} id="TicketHeader">
             <div className={css.title}>
-                <TicketHeaderToggle />
-                <EditableTitle
-                    className={css.editableTitleWrapper}
-                    inputClassName={css.editableTitle}
-                    title={ticket.get('subject')}
-                    placeholder="Subject"
-                    update={(subject) => dispatch(setSubject(subject))}
-                    focus={!ticket.get('id')}
-                    maxLength={998}
-                />
+                <div ref={titleContentRef} className={css.titleContent}>
+                    <TicketHeaderToggle />
+                    <EditableTitle
+                        className={css.editableTitleWrapper}
+                        inputClassName={css.editableTitle}
+                        title={title}
+                        placeholder="Subject"
+                        update={handleSubjectChange}
+                        focus={!ticket.get('id')}
+                        maxLength={998}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        onMouseEnter={() => setIsMouseOver(true)}
+                        onMouseLeave={() => setIsMouseOver(false)}
+                        isResizable={!!ticket.get('id') && title.length > 0}
+                        maxWidth={
+                            titleContentRef.current?.clientWidth
+                                ? titleContentRef.current.clientWidth -
+                                  (hasTranslation
+                                      ? resizableEditableTitlePadding
+                                      : 5)
+                                : undefined
+                        }
+                        padding={resizableEditableTitlePadding}
+                        fontSize="16px"
+                        fontWeight="600"
+                    />
+                    {translationMap[ticket.get('id')]?.subject && (
+                        <>
+                            <i
+                                ref={translateIconRef}
+                                className={classnames(
+                                    'material-icons md-2',
+                                    css.translateIcon,
+                                    {
+                                        [css.isInputFocused]: isFocused,
+                                        [css.isInputMousedOver]: isMouseOver,
+                                    },
+                                )}
+                            >
+                                translate
+                            </i>
+                            <Tooltip
+                                target={translateIconRef}
+                                boundariesElement="viewport"
+                                offset="0, 8"
+                                placement="right"
+                                trigger={['hover']}
+                            >
+                                {ticket.get('subject')}
+                            </Tooltip>
+                        </>
+                    )}
+                </div>
 
                 <div className={css.actions}>
                     {setPriorityFlagEnabled ? (

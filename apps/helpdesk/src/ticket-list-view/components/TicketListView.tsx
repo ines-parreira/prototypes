@@ -28,6 +28,7 @@ import {
 } from 'split-ticket-view-toggle'
 import { setViewActive, setViewEditMode } from 'state/views/actions'
 import { getViewCount, getViewPlainJS } from 'state/views/selectors'
+import { useTicketsTranslatedProperties } from 'ticket-list-view/hooks/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
@@ -98,7 +99,18 @@ export default function TicketListView({
         initialLoaded,
         pauseUpdates,
         resumeUpdates,
+        partials,
     } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
+
+    const ticketIdsToFetchTranslationsFor = useMemo(
+        () => partials.map((partial) => partial.id),
+        [partials],
+    )
+
+    const { translationMap } = useTicketsTranslatedProperties({
+        ticket_ids: ticketIdsToFetchTranslationsFor,
+    })
+
     const { setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView } =
         useSplitTicketView()
 
@@ -138,6 +150,7 @@ export default function TicketListView({
                 isNewTicket={!!newTickets[ticket.id]}
                 isSelected={hasSelectedAll || !!selectedTickets[ticket.id]}
                 onSelect={onSelect}
+                translation={translationMap[ticket.id]}
             />
         ),
         [
@@ -147,6 +160,7 @@ export default function TicketListView({
             onSelect,
             selectedTickets,
             viewId,
+            translationMap,
         ],
     )
 

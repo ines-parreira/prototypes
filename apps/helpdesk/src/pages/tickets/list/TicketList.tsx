@@ -1,4 +1,4 @@
-import React, {
+import {
     ComponentProps,
     useCallback,
     useEffect,
@@ -9,9 +9,10 @@ import React, {
 import { useTitle } from '@repo/hooks'
 import classnames from 'classnames'
 import decorateComponentWithProps from 'decorate-component-with-props'
-import { List, Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 import { useLocation, useParams } from 'react-router-dom'
 
+import { Ticket } from '@gorgias/helpdesk-queries'
 import { useAgentActivity } from '@gorgias/realtime'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -35,6 +36,7 @@ import {
     hasActiveView as getHasActiveView,
     getSelectedItemsIds,
 } from 'state/views/selectors'
+import { useTicketsTranslatedProperties } from 'ticket-list-view/hooks/useTicketsTranslatedProperties'
 import { compactInteger } from 'utils'
 
 const TicketList = () => {
@@ -45,15 +47,21 @@ const TicketList = () => {
     const selectedItemsIds = useAppSelector(getSelectedItemsIds)
     const tickets = useAppSelector(getTickets)
     const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
+    const ticketIds = useMemo(
+        () =>
+            tickets
+                .map((ticket) => ticket.get('id') as number)
+                .toJS() as number[],
+        [tickets],
+    )
+    const { translationMap } = useTicketsTranslatedProperties({
+        ticket_ids: ticketIds,
+    })
 
     const { viewTickets } = useAgentActivity()
-
     useEffect(() => {
-        const ticketIds = tickets.map(
-            (item: Map<any, any>) => item.get('id') as number,
-        )
-        viewTickets(ticketIds.toJS())
-    }, [tickets, viewTickets])
+        viewTickets(ticketIds)
+    }, [ticketIds, viewTickets])
 
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 
@@ -109,11 +117,28 @@ const TicketList = () => {
 
     useTitle(title)
 
+    const translatedTickets = useMemo(() => {
+        const translatedTickets = tickets.toJS().map((ticket: Ticket) => {
+            const translation = translationMap[ticket.id]
+            return {
+                ...ticket,
+                ...(translation
+                    ? {
+                          excerpt: translation.excerpt,
+                          subject: translation.subject,
+                      }
+                    : {}),
+            }
+        })
+
+        return fromJS(translatedTickets)
+    }, [tickets, translationMap])
+
     const viewTable = (
         <ViewTable
             className={css.table}
             type={EntityType.Ticket}
-            items={tickets}
+            items={translatedTickets}
             isUpdate={isUpdate}
             isSearch={isSearch}
             urlViewId={params.viewId}

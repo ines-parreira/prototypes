@@ -1,4 +1,4 @@
-import React, {
+import {
     ComponentProps,
     FocusEvent,
     ForwardedRef,
@@ -10,12 +10,13 @@ import React, {
 } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import type { UseTextWidthOptions } from '@repo/hooks'
 import classnames from 'classnames'
 
 import css from 'pages/common/components/EditableTitle/EditableTitle.less'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-type Props = {
+type Props = UseTextWidthOptions & {
     className?: string
     inputClassName?: string
     title: string
@@ -26,6 +27,8 @@ type Props = {
     disabled?: boolean
     forceEditMode?: boolean
     onChange?: (value?: string) => void
+    isResizable?: boolean
+    maxWidth?: number
 } & ComponentProps<typeof TextInput>
 
 const EditableTitle = (
@@ -40,7 +43,9 @@ const EditableTitle = (
         disabled,
         forceEditMode,
         onChange,
+        onBlur: onBlurProps,
         isRequired,
+        isResizable = false,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>,
@@ -103,9 +108,10 @@ const EditableTitle = (
         onChange?.(value)
     }
 
-    const onBlur = ({ target: { value } }: FocusEvent<HTMLInputElement>) => {
+    const onBlur = (event: FocusEvent<HTMLInputElement>) => {
         setEditMode(false)
-        update(value)
+        update(event.target.value)
+        onBlurProps?.(event)
     }
 
     return (
@@ -128,6 +134,7 @@ const EditableTitle = (
             onKeyUp={onKeyUp}
             onKeyDown={onKeyDown}
             hasError={isRequired && !value.trim().length}
+            isResizable={isResizable}
             {...props}
         />
     )

@@ -1,6 +1,7 @@
 import { ComponentProps, ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent } from '@testing-library/react'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import { createMemoryHistory } from 'history'
@@ -18,6 +19,7 @@ import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import TicketList from 'pages/tickets/list/TicketList'
 import { fetchTags } from 'state/tags/actions'
 import { updateSelectedItemsIds } from 'state/views/actions'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('decorate-component-with-props')
@@ -101,6 +103,8 @@ jest.mock('pages/common/components/CreateTicket/CreateTicketButton')
 const MockCreateTicketButton = CreateTicketButton as jest.Mock
 MockCreateTicketButton.mockImplementation(() => <div>CreateTicketButton</div>)
 
+const mockedQueryClient = mockQueryClient()
+
 describe('<TicketList />', () => {
     beforeEach(() => {
         jest.spyOn(ViewTable, 'default').mockImplementation(
@@ -132,27 +136,33 @@ describe('<TicketList />', () => {
 
     it('should display with default props', () => {
         const { container } = renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch the tags on load', () => {
         renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
         expect(fetchTagsMock).toHaveBeenCalled()
     })
 
     it('should display "New view" as title', () => {
         renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: 'app/tickets/',
                 route: 'app/tickets/new',
@@ -163,18 +173,22 @@ describe('<TicketList />', () => {
 
     it(`should display "${fixtureView.name}" as title`, () => {
         renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
         expect(document.title).toEqual(fixtureView.name)
     })
 
     it('should display Search as title', () => {
         renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: 'app/tickets/',
                 route: 'app/tickets/search',
@@ -185,9 +199,11 @@ describe('<TicketList />', () => {
 
     it('should render SearchRankProvider on search url', () => {
         const { container } = renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: 'app/tickets/',
                 route: 'app/tickets/search',
@@ -198,9 +214,11 @@ describe('<TicketList />', () => {
 
     it('should render CreateTicketButton when not in edit mode', () => {
         const { queryByText } = renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(queryByText('CreateTicketButton')).toBeInTheDocument()
@@ -208,19 +226,21 @@ describe('<TicketList />', () => {
 
     it('should not render CreateTicketButton when in edit mode', () => {
         const { queryByText } = renderWithRouter(
-            <Provider
-                store={mockStore({
-                    tickets: fromJS({ items: [] }),
-                    views: fromJS({
-                        active: { ...fixtureView, editMode: true },
-                        _internal: {
-                            selectedItemsIds: [],
-                        },
-                    }),
-                })}
-            >
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider
+                    store={mockStore({
+                        tickets: fromJS({ items: [] }),
+                        views: fromJS({
+                            active: { ...fixtureView, editMode: true },
+                            _internal: {
+                                selectedItemsIds: [],
+                            },
+                        }),
+                    })}
+                >
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(queryByText('CreateTicketButton')).not.toBeInTheDocument()
@@ -232,19 +252,21 @@ describe('<TicketList />', () => {
             .mockImplementation(() => <div />)
 
         renderWithRouter(
-            <Provider
-                store={mockStore({
-                    tickets: fromJS({ items: [] }),
-                    views: fromJS({
-                        active: { ...fixtureView, editMode: true },
-                        _internal: {
-                            selectedItemsIds: [],
-                        },
-                    }),
-                })}
-            >
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider
+                    store={mockStore({
+                        tickets: fromJS({ items: [] }),
+                        views: fromJS({
+                            active: { ...fixtureView, editMode: true },
+                            _internal: {
+                                selectedItemsIds: [],
+                            },
+                        }),
+                    })}
+                >
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(spy).toHaveBeenCalledWith(
@@ -265,19 +287,21 @@ describe('<TicketList />', () => {
             .mockImplementation(() => <div />)
 
         renderWithRouter(
-            <Provider
-                store={mockStore({
-                    tickets: fromJS({ items: [] }),
-                    views: fromJS({
-                        active: { ...fixtureView, editMode: true },
-                        _internal: {
-                            selectedItemsIds: [],
-                        },
-                    }),
-                })}
-            >
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider
+                    store={mockStore({
+                        tickets: fromJS({ items: [] }),
+                        views: fromJS({
+                            active: { ...fixtureView, editMode: true },
+                            _internal: {
+                                selectedItemsIds: [],
+                            },
+                        }),
+                    })}
+                >
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: 'app/tickets/search',
                 history,
@@ -295,9 +319,11 @@ describe('<TicketList />', () => {
 
     it('should trigger update of selected items ids', () => {
         const { getByText } = renderWithRouter(
-            <Provider store={store}>
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider store={store}>
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         fireEvent.click(getByText('openMacroModal'))
@@ -307,19 +333,21 @@ describe('<TicketList />', () => {
 
     it('should call viewTickets with ticket ids', () => {
         renderWithRouter(
-            <Provider
-                store={mockStore({
-                    tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
-                    views: fromJS({
-                        active: fixtureView,
-                        _internal: {
-                            selectedItemsIds: [],
-                        },
-                    }),
-                })}
-            >
-                <TicketList />
-            </Provider>,
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider
+                    store={mockStore({
+                        tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
+                        views: fromJS({
+                            active: fixtureView,
+                            _internal: {
+                                selectedItemsIds: [],
+                            },
+                        }),
+                    })}
+                >
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(mockViewTickets).toHaveBeenCalledWith([1, 2])

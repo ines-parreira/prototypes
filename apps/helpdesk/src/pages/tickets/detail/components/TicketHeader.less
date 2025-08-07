@@ -30,6 +30,28 @@
         align-items: center;
     }
 
+    .titleContent {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .translateIcon {
+        color: var(--neutral-grey-4);
+        transition: transform 0.2s linear;
+        transform: translateX(-8px);
+        transform-origin: left;
+
+        &.isInputFocused {
+            transform: translateX(2px);
+        }
+
+        &.isInputMousedOver {
+            transform: translateX(2px);
+        }
+    }
+
     .secondRow {
         display: flex;
         justify-content: space-between;
@@ -48,7 +70,6 @@
 
     .editableTitleWrapper {
         height: 32px;
-        margin-right: 16px;
     }
 
     .editableTitle {

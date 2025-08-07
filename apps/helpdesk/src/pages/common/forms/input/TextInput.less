@@ -46,6 +46,10 @@
             }
         }
 
+        &.isResizable {
+            width: fit-content;
+        }
+
         &.right,
         &.center {
             border-bottom-left-radius: 0;
@@ -107,6 +111,10 @@
 
         ::placeholder {
             color: var(--neutral-grey-4);
+        }
+
+        &.isResizable {
+            width: auto;
         }
     }
 

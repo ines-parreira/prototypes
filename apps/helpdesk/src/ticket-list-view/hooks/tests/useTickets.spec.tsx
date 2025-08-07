@@ -76,6 +76,7 @@ describe('useTickets', () => {
             tickets: partials,
             newTickets: {},
             ticketIds: { current: [123] },
+            partials: partials,
         })
     })
 
