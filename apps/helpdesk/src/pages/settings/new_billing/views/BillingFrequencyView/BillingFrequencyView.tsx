@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
@@ -68,36 +68,48 @@ const BillingFrequencyView = ({
     const isPaymentEnabled = !!useIsPaymentEnabled()
 
     const [showAlert, setShowAlert] = useState(true)
-    const [helpdeskPlansForAllCadences, setHelpdeskPlansForAllCadences] =
-        useState<Partial<Record<Cadence, HelpdeskPlan>>>({
-            [cadence]: currentHelpdeskPlan,
-        })
-    const [automatePlansForAllCadences, setAutomatePlansForAllCadences] =
-        useState<Partial<Record<Cadence, AutomatePlan>>>({
-            [cadence]: currentAutomatePlan,
-        })
-    const [voicePlansForAllCadences, setVoicePlansForAllCadences] = useState<
-        Partial<Record<Cadence, SMSOrVoicePlan>>
-    >({
-        [cadence]: currentVoicePlan,
-    })
-    const [smsPlansForAllCadences, setSmsPlansForAllCadences] = useState<
-        Partial<Record<Cadence, SMSOrVoicePlan>>
-    >({ [cadence]: currentSmsPlan })
-    const [convertPlansForAllCadences, setConvertPlansForAllCadences] =
-        useState<Partial<Record<Cadence, ConvertPlan>>>({
-            [cadence]: currentConvertPlan,
-        })
-
     const [selectedCadence, setSelectedCadence] = useState<Cadence>(cadence)
-    const [disabledCadences] = useState<Set<Cadence>>(() => {
+
+    const {
+        disabledCadences,
+        helpdeskPlansForAllCadences,
+        automatePlansForAllCadences,
+        voicePlansForAllCadences,
+        smsPlansForAllCadences,
+        convertPlansForAllCadences,
+    } = useMemo(() => {
         const disabledCadences = new Set<Cadence>()
+        const helpdeskPlansForAllCadences: Partial<
+            Record<Cadence, HelpdeskPlan>
+        > = {
+            [cadence]: currentHelpdeskPlan,
+        }
+        const automatePlansForAllCadences: Partial<
+            Record<Cadence, AutomatePlan>
+        > = {
+            [cadence]: currentAutomatePlan,
+        }
+        const voicePlansForAllCadences: Partial<
+            Record<Cadence, SMSOrVoicePlan>
+        > = {
+            [cadence]: currentVoicePlan,
+        }
+        const smsPlansForAllCadences: Partial<Record<Cadence, SMSOrVoicePlan>> =
+            {
+                [cadence]: currentSmsPlan,
+            }
+        const convertPlansForAllCadences: Partial<
+            Record<Cadence, ConvertPlan>
+        > = {
+            [cadence]: currentConvertPlan,
+        }
+
         const otherCadences = Object.values(Cadence).filter(
             (otherCadence) => otherCadence !== cadence,
         )
+
         otherCadences.forEach((otherCadence) => {
             try {
-                // Test all the plan conversions
                 const helpdeskPlan = getCorrespondingPlanAtCadence({
                     availablePlans: helpdeskAvailablePlans,
                     cadence: otherCadence,
@@ -123,30 +135,12 @@ const BillingFrequencyView = ({
                     cadence: otherCadence,
                     currentPlan: currentConvertPlan,
                 })
-                setHelpdeskPlansForAllCadences((prev) => ({
-                    ...prev,
-                    [otherCadence]: helpdeskPlan,
-                }))
 
-                setAutomatePlansForAllCadences((prev) => ({
-                    ...prev,
-                    [otherCadence]: automatePlan,
-                }))
-
-                setVoicePlansForAllCadences((prev) => ({
-                    ...prev,
-                    [otherCadence]: voicePlan,
-                }))
-
-                setSmsPlansForAllCadences((prev) => ({
-                    ...prev,
-                    [otherCadence]: smsPlan,
-                }))
-
-                setConvertPlansForAllCadences((prev) => ({
-                    ...prev,
-                    [otherCadence]: convertPlan,
-                }))
+                helpdeskPlansForAllCadences[otherCadence] = helpdeskPlan
+                automatePlansForAllCadences[otherCadence] = automatePlan
+                voicePlansForAllCadences[otherCadence] = voicePlan
+                smsPlansForAllCadences[otherCadence] = smsPlan
+                convertPlansForAllCadences[otherCadence] = convertPlan
             } catch (error) {
                 if (
                     error instanceof Error &&
@@ -158,8 +152,28 @@ const BillingFrequencyView = ({
                 }
             }
         })
-        return disabledCadences
-    })
+
+        return {
+            disabledCadences,
+            helpdeskPlansForAllCadences,
+            automatePlansForAllCadences,
+            voicePlansForAllCadences,
+            smsPlansForAllCadences,
+            convertPlansForAllCadences,
+        }
+    }, [
+        cadence,
+        currentHelpdeskPlan,
+        currentAutomatePlan,
+        currentVoicePlan,
+        currentSmsPlan,
+        currentConvertPlan,
+        helpdeskAvailablePlans,
+        automateAvailablePlans,
+        voiceAvailablePlans,
+        smsAvailablePlans,
+        convertAvailablePlans,
+    ])
 
     const onFrequencySelect = useCallback(
         (selectedCadence: Cadence) => {
