@@ -90,7 +90,7 @@
         "@gorgias/knowledge-service-types": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-validators": "catalog:rest-api-sdk",
         "@gorgias/merchant-ui-kit": "^0.40.0",
-        "@gorgias/realtime": "^0.18.7",
+        "@gorgias/realtime": "^0.20.0",
         "@hookform/resolvers": "^3.10.0",
         "@knocklabs/client": "^0.13.0",
         "@knocklabs/react": "^0.6.0",
