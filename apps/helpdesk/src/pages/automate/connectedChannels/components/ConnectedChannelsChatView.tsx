@@ -350,22 +350,22 @@ export const ConnectedChannelsChatView = ({
                     onToggle={updateSettings('orderManagement')}
                 />
 
-                {isArticleRecommendationEnabled &&
-                    isArticleRecEnabledWhileSunset && (
-                        <FeatureSettings
-                            title="Article Recommendation"
-                            label="Enable Article Recommendation"
-                            subtitle="Requires an active Help Center with published articles"
-                            labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
-                            enabled={isArticleRecommendationEnabled}
-                            disabled={isHelpCenterSelfServiceDeleted}
-                            externalLinkUrl={articleRecommendationExternalLink}
-                            showConfigurationRequiredAlert={
-                                isHelpCenterSelfServiceDeleted
-                            }
-                            onToggle={updateSettings('articleRecommendation')}
-                        />
-                    )}
+                {(isArticleRecommendationEnabled ||
+                    isArticleRecEnabledWhileSunset) && (
+                    <FeatureSettings
+                        title="Article Recommendation"
+                        label="Enable Article Recommendation"
+                        subtitle="Requires an active Help Center with published articles"
+                        labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
+                        enabled={isArticleRecommendationEnabled}
+                        disabled={isHelpCenterSelfServiceDeleted}
+                        externalLinkUrl={articleRecommendationExternalLink}
+                        showConfigurationRequiredAlert={
+                            isHelpCenterSelfServiceDeleted
+                        }
+                        onToggle={updateSettings('articleRecommendation')}
+                    />
+                )}
             </div>
 
             {selfServiceConfiguration && (
