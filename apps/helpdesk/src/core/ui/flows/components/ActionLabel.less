@@ -1,0 +1,33 @@
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        height: var(--layout-spacing-m);
+        max-width: 150px;
+        width: fit-content;
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+
+        border-radius: var(--layout-spacing-l);
+        border: 1px solid var(--neutral-grey-4);
+        background: var(--neutral-grey-3);
+
+        .caption-regular();
+
+        span {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
+        border: 1px solid var(--border-neutral-tertiary);
+    }
+}
