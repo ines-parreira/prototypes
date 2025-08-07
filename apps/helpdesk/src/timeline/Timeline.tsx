@@ -1,17 +1,13 @@
-import React, { memo, useMemo, useState } from 'react'
+import React, { memo, useState } from 'react'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import * as timelineItem from './helpers/timelineItem'
-import { useRangeFilter } from './hooks/useRangeFilter'
-import { useSort } from './hooks/useSort'
-import { useStatusFilter } from './hooks/useStatusFilter'
+import Filters from './filters/Filters'
+import { useTimelineFilters } from './filters/hooks/useTimelineFilters'
 import { useTimelineData } from './hooks/useTimelineData'
 import { NoResults } from './NoResults'
-import { RangeFilter } from './RangeFilter'
 import { Sort } from './Sort'
 import { SortedTicketList } from './SortedTicketList'
-import { StatusFilter } from './StatusFilter'
 
 import css from './Timeline.less'
 
@@ -29,30 +25,23 @@ export function Timeline({
     containerRef,
 }: Props) {
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
+    const { items, isLoading } = useTimelineData(shopperId ?? undefined)
 
-    const { items, isLoading, enableOrdersInTimeline } = useTimelineData(
-        shopperId ?? undefined,
-    )
+    const {
+        activeFilters,
+        selectedTypeKeys,
+        selectedStatusKeys,
+        setActiveFilters,
+        rangeFilter,
+        setRangeFilter,
+        setSortOption,
+        sortedTickets,
+        sortOptions,
+        sortOption,
+    } = useTimelineFilters({ items })
 
-    const { rangeFilter, rangeFilteredTickets, setRangeFilter } =
-        useRangeFilter(items)
-
-    // TODO: add status and sort for orders
-    const { selectedStatus, statusFilteredTickets, toggleSelectedStatus } =
-        useStatusFilter(
-            enableOrdersInTimeline
-                ? []
-                : rangeFilteredTickets.map(timelineItem.toTicket),
-        )
-    const { sortedTickets, sortOption, setSortOption } = useSort(
-        statusFilteredTickets,
-    )
-
-    const itemsList = useMemo(() => {
-        return enableOrdersInTimeline
-            ? items
-            : sortedTickets.map(timelineItem.fromTicket)
-    }, [enableOrdersInTimeline, items, sortedTickets])
+    const isTypeFilterDisabled =
+        activeFilters.type.order && !activeFilters.type.ticket
 
     if (isLoading) {
         return (
@@ -77,23 +66,21 @@ export function Timeline({
         <>
             <div>
                 <div className={css.toolbar}>
-                    <div className={css.filters}>
-                        <RangeFilter
-                            range={rangeFilter}
-                            setRangeFilter={setRangeFilter}
-                        />
-                        {!enableOrdersInTimeline && (
-                            <StatusFilter
-                                selectedStatus={selectedStatus}
-                                toggleSelectedStatus={toggleSelectedStatus}
-                            />
-                        )}
-                    </div>
-                    {!enableOrdersInTimeline && (
-                        <Sort value={sortOption} onChange={setSortOption} />
-                    )}
+                    <Filters
+                        isTypeFilterDisabled={isTypeFilterDisabled}
+                        setActiveFilters={setActiveFilters}
+                        setRangeFilter={setRangeFilter}
+                        selectedTypeKeys={selectedTypeKeys}
+                        selectedStatusKeys={selectedStatusKeys}
+                        rangeFilter={rangeFilter}
+                    />
+                    <Sort
+                        value={sortOption}
+                        onChange={setSortOption}
+                        sortOptions={sortOptions}
+                    />
                 </div>
-                {itemsList.length === 0 ? (
+                {sortedTickets.length === 0 ? (
                     <NoResults>
                         <b>No matching tickets</b>
                         <br />
@@ -102,7 +89,7 @@ export function Timeline({
                 ) : (
                     <SortedTicketList
                         ticketId={ticketId}
-                        sortedItems={itemsList}
+                        sortedItems={sortedTickets}
                         sortOption={sortOption}
                         containerRef={containerRef}
                     />

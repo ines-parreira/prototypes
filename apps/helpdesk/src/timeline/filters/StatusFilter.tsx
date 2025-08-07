@@ -6,22 +6,28 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import FilterName from 'pages/common/forms/FilterInput/FilterName'
 import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
 
-import { STATUS_FILTERS } from './constants'
+import { STATUS_FILTERS } from '../constants'
+import { FilterKey } from '../types'
 import { getOptionLabels } from './helpers/statusFilter'
-import { FilterKey } from './types'
 
-import css from './StatusFilter.less'
+import css from './Filters.less'
 
 type Props = {
     selectedStatus: FilterKey[]
     toggleSelectedStatus: (newStatus: FilterKey) => void
+    isDisabled: boolean
 }
 
-export function StatusFilter({ selectedStatus, toggleSelectedStatus }: Props) {
+export function StatusFilter({
+    selectedStatus,
+    toggleSelectedStatus,
+    isDisabled,
+}: Props) {
     const ref = useRef<HTMLDivElement>(null)
     const [isStatusFilterOpen, setStatusFilterOpen] = useState(false)
+
     return (
-        <div className={css.statusFilter}>
+        <div className={css.customerTimelineFilter}>
             <FilterName name="status" />
             <FilterValue
                 ref={ref}
@@ -30,6 +36,7 @@ export function StatusFilter({ selectedStatus, toggleSelectedStatus }: Props) {
                     setStatusFilterOpen(true)
                 }}
                 placeholder="Select a status"
+                isDisabled={isDisabled}
             />
             <Dropdown
                 isMultiple
@@ -37,9 +44,10 @@ export function StatusFilter({ selectedStatus, toggleSelectedStatus }: Props) {
                 onToggle={setStatusFilterOpen}
                 target={ref}
                 value={selectedStatus}
+                isDisabled={isDisabled}
             >
                 <DropdownBody>
-                    <ul className={css.statusList}>
+                    <ul className={css.customerTimelineStatusList}>
                         {STATUS_FILTERS.map((option) => (
                             <DropdownItem
                                 key={option.value}

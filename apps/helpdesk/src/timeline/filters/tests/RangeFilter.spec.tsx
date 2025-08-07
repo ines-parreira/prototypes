@@ -9,7 +9,7 @@ import {
     getTimezone,
 } from 'state/currentUser/selectors'
 
-import { END_OF_TODAY_DATE, MIN_RANGE_DATE } from '../constants'
+import { END_OF_TODAY_DATE, MIN_RANGE_DATE } from '../../constants'
 import { getRangeLabel } from '../helpers/rangeFilter'
 import { RangeFilter, ranges } from '../RangeFilter'
 
@@ -17,12 +17,12 @@ jest.mock('../helpers/rangeFilter', () => ({
     getRangeLabel: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
+jest.mock('../../../hooks/useAppSelector', () => (fn: () => unknown) => fn())
 
-jest.mock('pages/common/forms/DatePicker', () =>
+jest.mock('../../../pages/common/forms/DatePicker', () =>
     jest.fn(({ children }) => <div data-testid="DatePicker">{children}</div>),
 )
-jest.mock('state/currentUser/selectors', () => ({
+jest.mock('../../../state/currentUser/selectors', () => ({
     getTimezone: jest.fn(),
     getDateAndTimeFormatter: jest.fn(() => () => {}),
 }))

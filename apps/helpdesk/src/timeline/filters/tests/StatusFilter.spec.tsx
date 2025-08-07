@@ -8,6 +8,7 @@ describe('StatusFilter', () => {
             <StatusFilter
                 selectedStatus={['open']}
                 toggleSelectedStatus={jest.fn()}
+                isDisabled={false}
             />,
         )
         expect(screen.getByText('status')).toBeInTheDocument()
@@ -19,6 +20,7 @@ describe('StatusFilter', () => {
             <StatusFilter
                 selectedStatus={['open']}
                 toggleSelectedStatus={toggleSelectedStatus}
+                isDisabled={false}
             />,
         )
 

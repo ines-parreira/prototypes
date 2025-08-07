@@ -9,6 +9,24 @@ export default function DisplayedDate(
     sortOption: SortOption,
     ticket: TicketCompact,
 ) {
+    const getTicketDateValue = (key: SortOption['key']): string | null => {
+        switch (key) {
+            case 'last_updated':
+                return ticket.updated_datetime
+            case 'last_message_datetime':
+                return ticket.last_message_datetime
+            case 'last_received_message_datetime':
+                return ticket.last_received_message_datetime
+            case 'created_datetime':
+                return ticket.created_datetime
+            default:
+                return null
+        }
+    }
+
+    const dateValue =
+        getTicketDateValue(sortOption.key) || ticket[FALLBACK_SORT_KEY]
+
     return (
         <>
             {Boolean(sortOption.key === 'created_datetime') && (
@@ -17,12 +35,7 @@ export default function DisplayedDate(
                     &nbsp;
                 </>
             )}
-            <DatetimeLabel
-                dateTime={
-                    ticket[sortOption.key] ||
-                    (ticket[FALLBACK_SORT_KEY] as string)
-                }
-            />
+            <DatetimeLabel dateTime={dateValue as string} />
         </>
     )
 }

@@ -11,6 +11,7 @@ export type Range = {
 }
 
 export type FilterKey = TicketStatus | 'snooze'
+export type InteractionFilterType = 'ticket' | 'order'
 
 export type SortType = 'asc' | 'desc'
 export type SortableKey = (typeof SORTABLE_KEYS)[number]

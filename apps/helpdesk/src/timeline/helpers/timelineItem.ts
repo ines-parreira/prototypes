@@ -32,11 +32,12 @@ export function fromTicket(ticket: TicketCompact): TimelineItem {
     }
 }
 
-export function toTicket(item: TimelineItem): TicketCompact {
+export function toTicket(item: TimelineItem): TicketCompact | null {
     if (item.kind === TimelineItemKind.Ticket) {
         return item.ticket
     }
-    throw new Error('Item is not a ticket')
+
+    return null
 }
 
 export function toOrder(item: TimelineItem): Order {

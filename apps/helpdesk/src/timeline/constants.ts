@@ -4,7 +4,12 @@ import { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { KeysMatching } from 'types'
 
-import { FilterKey, SortableKey, SortOption } from './types'
+import {
+    FilterKey,
+    InteractionFilterType,
+    SortableKey,
+    SortOption,
+} from './types'
 
 export const TIMELINE_SEARCH_PARAM = 'timelineShopperId'
 
@@ -26,6 +31,14 @@ export const STATUS_FILTERS: {
     { value: 'snooze', label: 'Snoozed' },
 ]
 
+export const INTERACTION_FILTER_OPTIONS: {
+    value: InteractionFilterType
+    label: string
+}[] = [
+    { value: 'ticket', label: 'Ticket' },
+    { value: 'order', label: 'Order' },
+]
+
 export const FALLBACK_SORT_KEY: KeysMatching<TicketCompact, string> =
     'created_datetime'
 
@@ -33,12 +46,14 @@ export const SORTABLE_KEYS = [
     'last_message_datetime',
     'last_received_message_datetime',
     'created_datetime',
-] satisfies Array<KeysMatching<TicketCompact, string | null>>
+    'last_updated',
+] as const
 
 export const SORTABLE_KEY_TO_LABEL = {
     last_message_datetime: 'Last message' as const,
     last_received_message_datetime: 'Last received message' as const,
     created_datetime: 'Created' as const,
+    last_updated: 'Last updated' as const,
 } satisfies Record<SortableKey, unknown>
 
 export const DEFAULT_SORT_OPTION: SortOption = {
@@ -77,3 +92,27 @@ export const SORT_OPTIONS: SortOption[] = [
         label: SORTABLE_KEY_TO_LABEL['created_datetime'],
     },
 ]
+
+export const SORT_OPTIONS_WITH_ORDERS: SortOption[] = [
+    {
+        key: 'last_updated',
+        order: 'asc',
+        label: SORTABLE_KEY_TO_LABEL['last_updated'],
+    },
+    {
+        key: 'last_updated',
+        order: 'desc',
+        label: SORTABLE_KEY_TO_LABEL['last_updated'],
+    },
+    {
+        key: 'created_datetime',
+        order: 'asc',
+        label: SORTABLE_KEY_TO_LABEL['created_datetime'],
+    },
+    {
+        key: 'created_datetime',
+        order: 'desc',
+        label: SORTABLE_KEY_TO_LABEL['created_datetime'],
+    },
+]
+export const ALL_FILTERS = ['All']

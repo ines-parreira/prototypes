@@ -1,64 +1,54 @@
-import { assumeMock, getLastMockCall } from '@repo/testing'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { assumeMock } from '@repo/testing'
+import { render, screen } from '@testing-library/react'
 
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 import { useTimelineData } from 'timeline/hooks/useTimelineData'
-import { useModalShortcuts } from 'timeline/ticket-modal/hooks/useModalShortcuts'
 
-import { RangeFilter } from '../RangeFilter'
-import { TicketModal } from '../ticket-modal/components/TicketModal'
-import { useTicketModal } from '../ticket-modal/hooks/useTicketModal'
-import TicketCard from '../TicketCard'
-import Timeline from '../Timeline'
+import Filters from '../filters/Filters'
+import { useTimelineFilters } from '../filters/hooks/useTimelineFilters'
+import { NoResults } from '../NoResults'
+import { Sort } from '../Sort'
+import { SortedTicketList } from '../SortedTicketList'
+import { Timeline } from '../Timeline'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('core/flags/hooks/useFlag', () => jest.fn())
-jest.mock('common/segment', () => ({
-    logEvent: jest.fn(),
-    SegmentEvent: {
-        CustomerTimelineTicketClicked: 'CustomerTimelineTicketClicked',
-    },
-}))
 
 jest.mock('../hooks/useTimelineData', () => ({
     useTimelineData: jest.fn(),
 }))
 jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
-jest.mock('../DisplayedDate', () => jest.fn(() => 'Mocked DatetimeLabel'))
-jest.mock('../RangeFilter', () => ({
-    RangeFilter: jest.fn(() => <div>RangeFilter</div>),
+jest.mock('../filters/Filters', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>Filters</div>),
 }))
-jest.mock('../ticket-modal/components/TicketModal', () => ({
-    TicketModal: jest.fn(() => <div>TicketModal</div>),
+jest.mock('../Sort', () => ({
+    Sort: jest.fn(() => <div>Sort</div>),
 }))
-jest.mock('../ticket-modal/hooks/useTicketModal', () => ({
-    useTicketModal: jest.fn(),
+jest.mock('../SortedTicketList', () => ({
+    SortedTicketList: jest.fn(() => <div>SortedTicketList</div>),
 }))
-jest.mock('../ticket-modal/hooks/useModalShortcuts', () => ({
-    useModalShortcuts: jest.fn(),
+jest.mock('../NoResults', () => ({
+    NoResults: jest.fn(({ children }) => <div>NoResults: {children}</div>),
+}))
+jest.mock('../filters/hooks/useTimelineFilters', () => ({
+    useTimelineFilters: jest.fn(),
 }))
 
-const TicketCardMock = assumeMock(TicketCard)
-const rangeFilterMock = assumeMock(RangeFilter)
+const FiltersMock = assumeMock(Filters)
+const SortMock = assumeMock(Sort)
+const SortedTicketListMock = assumeMock(SortedTicketList)
+const NoResultsMock = assumeMock(NoResults)
 const useTimelineDataMock = assumeMock(useTimelineData)
+const useTimelineFiltersMock = assumeMock(useTimelineFilters)
 const useFlagMock = assumeMock(useFlag)
-const useTicketModalMock = assumeMock(useTicketModal)
-const TicketModalMock = assumeMock(TicketModal)
 
 describe('<Timeline />', () => {
-    const useTicketModalReturnValue = {
-        ticketId: null,
-        onClose: jest.fn(),
-        onNext: jest.fn(),
-        onOpen: jest.fn(),
-        onPrevious: jest.fn(),
-    }
     const ticket1 = {
         id: 1,
         created_datetime: '2024-01-02T03:04:05.123456+00:00',
@@ -85,10 +75,54 @@ describe('<Timeline />', () => {
         enableOrdersInTimeline: false,
     }
 
+    const defaultTimelineFiltersReturnValue = {
+        activeFilters: {
+            type: { ticket: true, order: true },
+            status: { open: true, closed: true, snooze: true },
+            sortOption: {
+                order: 'desc' as const,
+                key: 'last_message_datetime' as const,
+                label: 'Last message' as const,
+            },
+        },
+        selectedTypeKeys: ['ticket' as const, 'order' as const],
+        selectedStatusKeys: [
+            'open' as const,
+            'closed' as const,
+            'snooze' as const,
+        ],
+        setActiveFilters: jest.fn(),
+        rangeFilter: { start: null, end: null },
+        setRangeFilter: jest.fn(),
+        setSortOption: jest.fn(),
+        sortedTickets: [ticket1, ticket2, ticket3].map((v) =>
+            timelineItem.fromTicket(v),
+        ),
+        sortOptions: [
+            {
+                order: 'desc' as const,
+                key: 'last_message_datetime' as const,
+                label: 'Last message' as const,
+            },
+            {
+                order: 'asc' as const,
+                key: 'created_datetime' as const,
+                label: 'Created' as const,
+            },
+        ],
+        sortOption: {
+            order: 'desc' as const,
+            key: 'last_message_datetime' as const,
+            label: 'Last message' as const,
+        },
+    }
+
     beforeEach(() => {
         useTimelineDataMock.mockReturnValue(defaultTimelineReturnValue)
+        useTimelineFiltersMock.mockReturnValue(
+            defaultTimelineFiltersReturnValue,
+        )
         useFlagMock.mockReturnValue(true)
-        useTicketModalMock.mockReturnValue(useTicketModalReturnValue)
     })
 
     it('should render loading spinner', () => {
@@ -128,28 +162,16 @@ describe('<Timeline />', () => {
         expect(useTimelineDataMock).toHaveBeenCalledWith(123)
     })
 
-    it('should call TicketCard for each ticket with a channel, in correct order, with correct props', () => {
+    it('should call SortedTicketList with correct props', () => {
         const ticketId = 3
         render(<Timeline ticketId={ticketId} shopperId={null} />)
 
-        expect(TicketCard).toHaveBeenCalledTimes(2)
-        expect(TicketCard).toHaveBeenNthCalledWith(
-            1,
+        expect(SortedTicketListMock).toHaveBeenCalledWith(
             {
-                className: expect.any(String),
-                isHighlighted: false,
-                ticket: ticket1,
-                displayedDate: 'Mocked DatetimeLabel',
-            },
-            {},
-        )
-        expect(TicketCard).toHaveBeenNthCalledWith(
-            2,
-            {
-                className: expect.any(String),
-                isHighlighted: true,
-                ticket: ticket3,
-                displayedDate: 'Mocked DatetimeLabel',
+                ticketId: ticketId,
+                sortedItems: defaultTimelineFiltersReturnValue.sortedTickets,
+                sortOption: defaultTimelineFiltersReturnValue.sortOption,
+                containerRef: undefined,
             },
             {},
         )
@@ -164,173 +186,114 @@ describe('<Timeline />', () => {
 
             render(<Timeline shopperId={null} />)
 
-            expect(
-                screen.getByText('This customer doesn’t have any tickets yet.'),
-            ).toBeInTheDocument()
-        })
-
-        it('should say that there are no matching tickets', () => {
-            render(<Timeline shopperId={null} />)
-
-            fireEvent.click(screen.getByText('All'))
-            fireEvent.click(screen.getByText('Closed'))
-            fireEvent.click(screen.getByText('Open'))
-
-            expect(screen.getByText('No matching tickets')).toBeInTheDocument()
-        })
-    })
-
-    describe('Sorting and filtering', () => {
-        it('should should correctly filter tickets by range', () => {
-            render(<Timeline shopperId={null} />)
-
-            TicketCardMock.mockClear()
-
-            act(() => {
-                getLastMockCall(rangeFilterMock)[0].setRangeFilter({
-                    start: new Date('2025-01-01').getTime(),
-                    end: new Date('2025-01-02').getTime(),
-                })
-            })
-
-            expect(TicketCardMock).toHaveBeenCalledTimes(0)
-        })
-
-        it('should should correctly filter tickets by status', () => {
-            render(<Timeline shopperId={null} />)
-
-            TicketCardMock.mockClear()
-
-            fireEvent.click(screen.getByText('All'))
-            fireEvent.click(screen.getByText('Closed'))
-
-            expect(TicketCardMock).toHaveBeenCalledTimes(1)
-            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket1)
-
-            TicketCardMock.mockClear()
-
-            fireEvent.click(screen.getByText('Closed'))
-            expect(TicketCardMock).toHaveBeenCalledTimes(2)
-            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket1)
-            expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket3)
-        })
-
-        it('should call sort tickets when a SelectField option is clicked', () => {
-            useFlagMock.mockReturnValue(false)
-            render(<Timeline shopperId={null} />)
-
-            TicketCardMock.mockClear()
-
-            fireEvent.click(screen.getByRole('combobox'))
-            fireEvent.click(
-                screen.getByRole('option', { name: 'arrow_upward Created' }),
-            )
-
-            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket3)
-            expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket1)
-        })
-
-        it('should call sort tickets when a dropdown option is clicked (drawer UX)', () => {
-            useFlagMock.mockReturnValue(true)
-            render(<Timeline shopperId={null} />)
-
-            TicketCardMock.mockClear()
-
-            // Click the sort button to open dropdown
-            fireEvent.click(screen.getByRole('button', { name: /sort/i }))
-
-            // Click on a sort option in the dropdown
-            fireEvent.click(screen.getAllByText('Created')[0])
-
-            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket3)
-            expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket1)
-        })
-
-        it('should render SelectField when hasCTDrawerUX is false', () => {
-            useFlagMock.mockReturnValue(false)
-            render(<Timeline shopperId={null} />)
-
-            // Should render the SelectField combobox
-            expect(screen.getByRole('combobox')).toBeInTheDocument()
-
-            // Should not render the dropdown sort button
-            expect(
-                screen.queryByRole('button', { name: /sort/i }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should render dropdown sort button when hasCTDrawerUX is true', () => {
-            useFlagMock.mockReturnValue(true)
-            render(<Timeline shopperId={null} />)
-
-            // Should render the dropdown sort button
-            expect(
-                screen.getByRole('button', { name: /sort/i }),
-            ).toBeInTheDocument()
-
-            // Should not render the SelectField combobox
-            expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
-        })
-    })
-
-    describe('Modal', () => {
-        it('should call useTicketModal with the correct props', () => {
-            render(<Timeline shopperId={null} />)
-
-            expect(useTicketModal).toHaveBeenCalledWith([1, 2, 3])
-        })
-
-        it('should log event and redirect when a ticket card is clicked', () => {
-            useFlagMock.mockReturnValue(false)
-            render(<Timeline shopperId={null} />)
-
-            const card = screen.getAllByText('TicketCard')[0].parentElement
-            card?.click()
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.CustomerTimelineTicketClicked,
-            )
-            expect(card).toHaveAttribute('to', '/app/ticket/1')
-        })
-
-        it('should log event and call modal.onOpen when a ticket card is clicked', () => {
-            render(<Timeline shopperId={null} />)
-
-            // Find the link that wraps the TicketCard
-            const card = screen.getAllByText('TicketCard')[0].parentElement
-            card?.click()
-
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.CustomerTimelineTicketClicked,
-            )
-            expect(useTicketModalReturnValue.onOpen).toHaveBeenCalledWith(1)
-        })
-
-        it('should call useModalShortcuts with the correct props', () => {
-            render(<Timeline shopperId={null} />)
-
-            expect(useModalShortcuts).toHaveBeenCalledWith(
-                useTicketModalReturnValue,
-            )
-        })
-
-        it('should not render TicketModal if useTicketModal returns no ticketId', () => {
-            render(<Timeline shopperId={null} />)
-
-            expect(TicketModalMock).not.toHaveBeenCalled()
-        })
-
-        it('should call TicketModal with the correct props if useTicketModal returns a ticketId', () => {
-            useTicketModalMock.mockReturnValue({
-                ...useTicketModalReturnValue,
-                ticketId: 1,
-            })
-
-            render(<Timeline shopperId={null} />)
-
-            expect(TicketModalMock).toHaveBeenCalledWith(
+            expect(NoResultsMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    ...useTicketModalReturnValue,
-                    ticketId: 1,
+                    children: expect.stringContaining('This customer'),
+                }),
+                expect.anything(),
+            )
+        })
+    })
+
+    describe('Filters and sorting', () => {
+        it('should call Filters with correct props', () => {
+            render(<Timeline shopperId={null} />)
+
+            expect(FiltersMock).toHaveBeenCalledWith(
+                {
+                    isTypeFilterDisabled: false,
+                    setActiveFilters:
+                        defaultTimelineFiltersReturnValue.setActiveFilters,
+                    setRangeFilter:
+                        defaultTimelineFiltersReturnValue.setRangeFilter,
+                    selectedTypeKeys:
+                        defaultTimelineFiltersReturnValue.selectedTypeKeys,
+                    selectedStatusKeys:
+                        defaultTimelineFiltersReturnValue.selectedStatusKeys,
+                    rangeFilter: defaultTimelineFiltersReturnValue.rangeFilter,
+                },
+                {},
+            )
+        })
+
+        it('should call Sort with correct props', () => {
+            render(<Timeline shopperId={null} />)
+
+            expect(SortMock).toHaveBeenCalledWith(
+                {
+                    value: defaultTimelineFiltersReturnValue.sortOption,
+                    onChange: defaultTimelineFiltersReturnValue.setSortOption,
+                    sortOptions: defaultTimelineFiltersReturnValue.sortOptions,
+                },
+                {},
+            )
+        })
+
+        it('should disable type filter when only orders are selected', () => {
+            useTimelineFiltersMock.mockReturnValue({
+                ...defaultTimelineFiltersReturnValue,
+                activeFilters: {
+                    ...defaultTimelineFiltersReturnValue.activeFilters,
+                    type: { ticket: false, order: true },
+                },
+            })
+
+            render(<Timeline shopperId={null} />)
+
+            expect(FiltersMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isTypeFilterDisabled: true,
+                }),
+                {},
+            )
+        })
+
+        it('should render NoResults when no tickets match filters', () => {
+            useTimelineFiltersMock.mockReturnValue({
+                ...defaultTimelineFiltersReturnValue,
+                sortedTickets: [],
+            })
+
+            render(<Timeline shopperId={null} />)
+
+            expect(NoResultsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    children: expect.arrayContaining([
+                        expect.objectContaining({ type: 'b' }),
+                        expect.objectContaining({ type: 'br' }),
+                        'Try adjusting filters to get results',
+                    ]),
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('Integration', () => {
+        it('should call useTimelineFilters with items from useTimelineData', () => {
+            render(<Timeline shopperId={null} />)
+
+            expect(useTimelineFiltersMock).toHaveBeenCalledWith({
+                items: defaultTimelineReturnValue.items,
+            })
+        })
+
+        it('should pass sorted tickets to SortedTicketList', () => {
+            const customSortedTickets = [
+                timelineItem.fromTicket(ticket2),
+                timelineItem.fromTicket(ticket1),
+            ]
+
+            useTimelineFiltersMock.mockReturnValue({
+                ...defaultTimelineFiltersReturnValue,
+                sortedTickets: customSortedTickets,
+            })
+
+            render(<Timeline shopperId={null} />)
+
+            expect(SortedTicketListMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    sortedItems: customSortedTickets,
                 }),
                 {},
             )

@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 
+import { Range, TimelineItem } from '../../types'
 import { filterTicketsByRange } from '../helpers/rangeFilter'
-import { Range, TimelineItem } from '../types'
 
 export function useRangeFilter(tickets: TimelineItem[]) {
     const [rangeFilter, setRangeFilter] = useState<Range>({

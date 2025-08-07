@@ -1,14 +1,12 @@
 import { useState } from 'react'
 
-import { TicketCompact } from '@gorgias/helpdesk-queries'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 
-import { DEFAULT_SORT_OPTION } from '../constants'
+import { DEFAULT_SORT_OPTION } from '../../constants'
+import { SortOption, TimelineItem } from '../../types'
 import { sortTickets } from '../helpers/sortTickets'
-import { SortOption } from '../types'
 
-export function useSort(tickets: TicketCompact[]) {
+export function useSort(tickets: TimelineItem[]) {
     const [sortOption, setSortOption] =
         useState<SortOption>(DEFAULT_SORT_OPTION)
 

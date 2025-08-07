@@ -13,7 +13,6 @@ import { useFlag } from 'core/flags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
-import { SORT_OPTIONS } from './constants'
 import { SortOption } from './types'
 
 import css from './Sort.less'
@@ -35,12 +34,13 @@ const SelectTrigger = ({
     />
 )
 
-type Props = {
+type SortProps = {
+    sortOptions: SortOption[]
     value: SortOption
     onChange: (value: SortOption) => void
 }
 
-export function Sort({ value, onChange }: Props) {
+export function Sort({ value, onChange, sortOptions }: SortProps) {
     const ref = useRef<HTMLButtonElement>(null)
     const [isSortOpen, setSortOpen] = useState(false)
 
@@ -66,7 +66,7 @@ export function Sort({ value, onChange }: Props) {
                 >
                     <DropdownBody className={css.sortDropdownContainer}>
                         <ul className={css.sortList}>
-                            {SORT_OPTIONS.map((option) => (
+                            {sortOptions.map((option) => (
                                 <DropdownCustomItem
                                     key={`${option.key}-${option.order}`}
                                     value={value}
@@ -88,7 +88,7 @@ export function Sort({ value, onChange }: Props) {
             dropdownMaxWidth={400}
             selectedOption={value}
             onChange={onChange}
-            options={SORT_OPTIONS}
+            options={sortOptions}
             optionMapper={(option) => ({
                 icon:
                     option.order === 'asc' ? 'arrow_upward' : 'arrow_downward',

@@ -1,6 +1,6 @@
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import { FilterKey } from '../../types'
+import { FilterKey, TimelineItem, TimelineItemKind } from '../../../types'
 import { filterTicketsByStatus, getOptionLabels } from '../statusFilter'
 
 describe('getOptionLabels', () => {
@@ -57,11 +57,11 @@ describe('filterTicketsByStatus', () => {
         snooze_datetime: '2023-01-01T00:00:00Z',
     } as TicketCompact
 
-    const tickets: TicketCompact[] = [
-        openTicket,
-        closedTicket,
-        snoozedTicket,
-        snoozedTicketWithNoStatus,
+    const tickets: TimelineItem[] = [
+        { kind: TimelineItemKind.Ticket, ticket: openTicket },
+        { kind: TimelineItemKind.Ticket, ticket: closedTicket },
+        { kind: TimelineItemKind.Ticket, ticket: snoozedTicket },
+        { kind: TimelineItemKind.Ticket, ticket: snoozedTicketWithNoStatus },
     ]
 
     it('should return all tickets if all statuses are selected', () => {
@@ -73,25 +73,25 @@ describe('filterTicketsByStatus', () => {
     it('should return tickets matching the selected status', () => {
         const selectedStatus: FilterKey[] = ['open']
         const result = filterTicketsByStatus(tickets, selectedStatus)
-        expect(result).toEqual([openTicket])
+        expect(result).toEqual([tickets[0]])
     })
 
     it('should return snoozed tickets', () => {
         const selectedStatus: FilterKey[] = ['snooze']
         const result = filterTicketsByStatus(tickets, selectedStatus)
-        expect(result).toEqual([snoozedTicket])
+        expect(result).toEqual([tickets[2]])
     })
 
     it('should return tickets matching multiple selected statuses', () => {
         const selectedStatus: FilterKey[] = ['open', 'closed']
         const result = filterTicketsByStatus(tickets, selectedStatus)
-        expect(result).toEqual([openTicket, closedTicket])
+        expect(result).toEqual([tickets[0], tickets[1]])
     })
 
     it('should not return snoozed tickets if "close" is selected', () => {
         const selectedStatus: FilterKey[] = ['closed']
         const result = filterTicketsByStatus(tickets, selectedStatus)
-        expect(result).toEqual([closedTicket])
+        expect(result).toEqual([tickets[1]])
     })
 
     it('should return an empty array if selectedStatus is empty', () => {

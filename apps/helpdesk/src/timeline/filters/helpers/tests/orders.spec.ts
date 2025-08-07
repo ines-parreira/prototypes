@@ -1,6 +1,6 @@
 import { Customer } from 'models/customer/types'
 
-import { extractOrders } from '../orders'
+import { extractOrders } from '../../../helpers/orders'
 
 describe('extractOrders', () => {
     it('should extract supported integratin orders from customer', () => {

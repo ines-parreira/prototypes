@@ -1,11 +1,11 @@
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import { toTicket } from 'timeline/helpers/timelineItem'
 
-import { STATUS_FILTERS } from '../constants'
-import { FilterKey } from '../types'
+import { ALL_FILTERS, STATUS_FILTERS } from '../../constants'
+import { FilterKey, TimelineItem } from '../../types'
 
 export function getOptionLabels(selectedStatus: FilterKey[]): string[] {
     return selectedStatus.length === STATUS_FILTERS.length
-        ? ['All']
+        ? ALL_FILTERS
         : (selectedStatus
               .map(
                   (status) =>
@@ -17,10 +17,11 @@ export function getOptionLabels(selectedStatus: FilterKey[]): string[] {
 }
 
 export function filterTicketsByStatus(
-    tickets: TicketCompact[],
+    tickets: TimelineItem[],
     selectedStatus: FilterKey[],
-): TicketCompact[] {
+): TimelineItem[] {
     const isAllSelected = selectedStatus.length === STATUS_FILTERS.length
+
     if (isAllSelected) return tickets
 
     const isOpenSelected = selectedStatus.includes('open')
@@ -28,24 +29,26 @@ export function filterTicketsByStatus(
     const isSnoozeSelected = selectedStatus.includes('snooze')
 
     return tickets.filter((ticket) => {
-        if (!ticket.status) return false
+        const extractedTicket = toTicket(ticket)
 
-        if (isOpenSelected && ticket.status === 'open') {
+        if (!extractedTicket) return false
+
+        if (isOpenSelected && extractedTicket.status === 'open') {
             return true
         }
 
         if (
             isClosedSelected &&
-            ticket.status === 'closed' &&
-            !ticket.snooze_datetime
+            extractedTicket.status === 'closed' &&
+            !extractedTicket.snooze_datetime
         ) {
             return true
         }
 
         if (
             isSnoozeSelected &&
-            ticket.snooze_datetime &&
-            ticket.status === 'closed'
+            extractedTicket.snooze_datetime &&
+            extractedTicket.status === 'closed'
         ) {
             return true
         }
