@@ -419,4 +419,52 @@ describe('Filter', () => {
             expect(screen.getByText('warningMessage')).toBeInTheDocument()
         })
     })
+
+    it('should render DropdownBody with correct key based on options length', async () => {
+        const customFilterOptionGroups = [
+            {
+                options: [
+                    { label: 'Option 1', value: 'option1' },
+                    { label: 'Option 2', value: 'option2' },
+                    { label: 'Option 3', value: 'option3' },
+                ],
+            },
+        ]
+
+        const { rerender } = render(
+            <Filter
+                filterName={filterName}
+                initializeAsOpen
+                filterOptionGroups={[]}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />,
+        )
+
+        expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+        expect(screen.queryByText('Option 2')).not.toBeInTheDocument()
+        expect(screen.queryByText('Option 3')).not.toBeInTheDocument()
+
+        rerender(
+            <Filter
+                filterName={filterName}
+                initializeAsOpen
+                filterOptionGroups={customFilterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />,
+        )
+
+        expect(screen.getByText('Option 1')).toBeInTheDocument()
+        expect(screen.getByText('Option 2')).toBeInTheDocument()
+        expect(screen.getByText('Option 3')).toBeInTheDocument()
+    })
 })

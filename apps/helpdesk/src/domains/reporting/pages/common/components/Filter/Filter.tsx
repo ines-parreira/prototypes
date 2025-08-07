@@ -237,6 +237,7 @@ const Filter = ({
                     />
                 )}
                 <DropdownBody
+                    key={`option_${filterOptionGroups[0]?.options?.length || 0}`}
                     className={classNames({
                         [css.withInfiniteScroll]: !!infiniteScroll,
                     })}
