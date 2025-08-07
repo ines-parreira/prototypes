@@ -8,10 +8,26 @@
     .previewContent {
         grid-row: span 2;
         border-bottom: 0;
+        user-select: text;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
 
         .title {
             .heading-section-semibold;
             color: var(--neutral-grey-6);
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+
+        /* Ensure ReactMarkdown content is selectable */
+        * {
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
         }
     }
 
