@@ -1,9 +1,9 @@
-import { CartAbandonedJourneyConfigurationApiDTOMaxDiscountPercent } from '@gorgias/convert-client'
+import { CartAbandonedJourneyConfigurationApiDTO } from '@gorgias/convert-client'
 
 import css from './Footer.less'
 
 type FooterProps = {
-    maxDiscount?: CartAbandonedJourneyConfigurationApiDTOMaxDiscountPercent
+    maxDiscount?: CartAbandonedJourneyConfigurationApiDTO['max_discount_percent']
     totalSent?: string
 }
 

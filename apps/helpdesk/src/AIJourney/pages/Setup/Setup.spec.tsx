@@ -214,12 +214,14 @@ describe('<Setup />', () => {
             '/app/ai-journey/shopify-store',
         )
     })
+
     it('should update state when journeyParams is fetched', async () => {
         mockUseJourneyConfiguration.mockImplementation(() => ({
             data: {
                 max_follow_up_messages: 3,
                 offer_discount: true,
                 max_discount_percent: 20,
+                discount_code_message_threshold: 2,
             },
             isError: false,
             isLoading: false,
@@ -235,13 +237,100 @@ describe('<Setup />', () => {
             </Provider>,
         )
 
-        const selectedFollowUpButton = screen.getByRole('button', {
-            name: '3',
-        })
+        const selectedFollowUpButton = screen.getAllByRole('button', {
+            name: '4',
+        })[0]
         expect(selectedFollowUpButton).toHaveClass('selectorOption--selected')
 
         const discountInput = screen.getByDisplayValue('20')
         expect(discountInput).toBeInTheDocument()
+
+        const selectedThresholdButton = screen.getAllByRole('button', {
+            name: '2',
+        })[1]
+        expect(selectedThresholdButton).toHaveClass('selectorOption--selected')
+    })
+
+    it('should reset the discount threshold message when total of message is changed', async () => {
+        // Mock no existing journey configuration so the component starts with defaults
+        mockUseJourneyConfiguration.mockImplementation(() => ({
+            data: null,
+            isError: false,
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        // Wait for component to render with default state
+        await waitFor(() => {
+            // Component should start with default of 1 message (showing as button "1" selected)
+            expect(screen.getByRole('button', { name: '1' })).toHaveClass(
+                'selectorOption--selected',
+            )
+        })
+
+        // First, enable discount
+        const discountToggle = screen.getByRole('checkbox')
+        await act(async () => {
+            await user.click(discountToggle)
+        })
+
+        // Now click on button "4" to set total messages to 4 (this will make discount threshold field appear)
+        const button4 = screen.getAllByRole('button', { name: '4' })[0]
+        await act(async () => {
+            await user.click(button4)
+        })
+
+        // Wait for discount threshold selector to appear (only shows when messages > 1)
+        await waitFor(() => {
+            expect(
+                screen.getByText('Select message that includes discount code'),
+            ).toBeInTheDocument()
+        })
+
+        // Verify button "4" is selected in messages field
+        await waitFor(() => {
+            expect(button4).toHaveClass('selectorOption--selected')
+        })
+
+        // Click on button "3" in the discount threshold selector (should be button "3" at index [1])
+        const discountButton3 = screen.getAllByRole('button', { name: '3' })[1]
+        await act(async () => {
+            await user.click(discountButton3)
+        })
+
+        // Verify button "3" is selected in discount threshold
+        await waitFor(() => {
+            expect(discountButton3).toHaveClass('selectorOption--selected')
+        })
+
+        // Now click button "2" in messages to trigger the reset behavior
+        const messagesButton2 = screen.getAllByRole('button', { name: '2' })[0]
+        await act(async () => {
+            await user.click(messagesButton2)
+        })
+
+        // Verify the reset behavior:
+        // 1. Messages field should show "2" selected
+        // 2. Discount threshold should reset to "1"
+        await waitFor(() => {
+            expect(messagesButton2).toHaveClass('selectorOption--selected')
+
+            const discountButton1 = screen.getAllByRole('button', {
+                name: '1',
+            })[1]
+            expect(discountButton1).toHaveClass('selectorOption--selected')
+        })
     })
 
     describe('Error Handling', () => {
@@ -636,6 +725,7 @@ describe('<Setup />', () => {
                     max_discount_percent: 20,
                     sms_sender_number: '415-111-111',
                     sms_sender_integration_id: 1,
+                    discount_code_message_threshold: 2,
                 },
                 isError: false,
                 isLoading: false,
@@ -694,6 +784,7 @@ describe('<Setup />', () => {
                 </Provider>,
             )
             const user = userEvent.setup()
+
             const button = screen.getByTestId('ai-journey-button')
             await act(async () => {
                 await user.click(button)
@@ -713,6 +804,7 @@ describe('<Setup />', () => {
                     offer_discount: true,
                     max_discount_percent: 20,
                     sms_sender_integration_id: 1,
+                    discount_code_message_threshold: 2,
                 },
             })
 
@@ -805,6 +897,54 @@ describe('<Setup />', () => {
                 journeyConfigs: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_integration_id: 1,
+                    discount_code_message_threshold: 2,
+                },
+            })
+        })
+
+        it('should call handleCreate without discount_code_message_threshold when no existing journey exists and discount disabled', async () => {
+            mockUseJourneys.mockImplementation(() => ({
+                data: [],
+                isError: false,
+                isLoading: false,
+            }))
+
+            const mockMutateAsync = jest.fn()
+            mockUseCreateNewJourney.mockImplementation(() => ({
+                mutateAsync: mockMutateAsync,
+                isError: false,
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await act(async () => {
+                await userEvent.click(screen.getByRole('checkbox'))
+                await userEvent.click(screen.getByTestId('ai-journey-button'))
+            })
+
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledTimes(1)
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                params: {
+                    store_integration_id: 1,
+                    store_name: 'shopify-store',
+                },
+                journeyConfigs: {
+                    max_follow_up_messages: 3,
+                    offer_discount: false,
                     max_discount_percent: 20,
                     sms_sender_integration_id: 1,
                 },

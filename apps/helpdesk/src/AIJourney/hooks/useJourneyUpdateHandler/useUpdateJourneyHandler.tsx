@@ -1,6 +1,9 @@
 import { useCallback } from 'react'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
+import {
+    CartAbandonedJourneyConfigurationApiDTO,
+    JourneyStatusEnum,
+} from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
 import { useUpdateJourney } from 'AIJourney/queries'
@@ -17,6 +20,7 @@ type UseJourneyActionsParams = {
     isDiscountEnabled?: boolean
     discountValue?: string
     phoneNumberValue?: NewPhoneNumber
+    discountCodeThresholdValue?: number
 }
 
 export const useJourneyUpdateHandler = ({
@@ -27,6 +31,7 @@ export const useJourneyUpdateHandler = ({
     isDiscountEnabled,
     discountValue,
     phoneNumberValue,
+    discountCodeThresholdValue,
 }: UseJourneyActionsParams) => {
     const dispatch = useAppDispatch()
     const updateJourney = useUpdateJourney()
@@ -48,15 +53,18 @@ export const useJourneyUpdateHandler = ({
                     (integration) => integration.type === 'sms',
                 )?.id
 
-                const journeyConfigs = {
-                    max_follow_up_messages: followUpValue,
-                    offer_discount: isDiscountEnabled,
-                    max_discount_percent: discountValue
-                        ? Number(discountValue)
-                        : undefined,
-                    sms_sender_integration_id: smsIntegrationId,
-                    sms_sender_number: phoneNumberValue?.phone_number,
-                }
+                const journeyConfigs: CartAbandonedJourneyConfigurationApiDTO =
+                    {
+                        max_follow_up_messages: followUpValue,
+                        offer_discount: isDiscountEnabled,
+                        max_discount_percent: discountValue
+                            ? Number(discountValue)
+                            : undefined,
+                        sms_sender_integration_id: smsIntegrationId,
+                        sms_sender_number: phoneNumberValue?.phone_number,
+                        discount_code_message_threshold:
+                            discountCodeThresholdValue,
+                    }
 
                 const shouldUpdateConfigs = Object.values(journeyConfigs).some(
                     (value) => value !== undefined && value !== null,
@@ -89,6 +97,7 @@ export const useJourneyUpdateHandler = ({
             isDiscountEnabled,
             discountValue,
             phoneNumberValue,
+            discountCodeThresholdValue,
             updateJourney,
             dispatch,
         ],

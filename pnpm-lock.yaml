@@ -101,8 +101,8 @@ catalogs:
       version: 18.2.0
   rest-api-sdk:
     '@gorgias/convert-client':
-      specifier: ^0.3.1
-      version: 0.3.1
+      specifier: ^0.3.6
+      version: 0.3.6
     '@gorgias/help-center-client':
       specifier: ^0.3.0
       version: 0.3.0
@@ -283,7 +283,7 @@ importers:
         version: 0.2.1
       '@gorgias/convert-client':
         specifier: catalog:rest-api-sdk
-        version: 0.3.1
+        version: 0.3.6
       '@gorgias/design-tokens':
         specifier: ^0.10.5
         version: 0.10.5
@@ -2746,11 +2746,11 @@ packages:
       eslint-plugin-react: ^7.34.3
       eslint-plugin-react-hooks: ^4.6.2
 
-  '@gorgias/convert-client@0.3.1':
-    resolution: {integrity: sha512-oUyK82wJvQtgRLGKhHGQeQp+8nWzjhNLhZtwi+YG9nhfoNtVP9dNxntiMK7Z73dmetEGhef4euAcavawvWH/bw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.1/9e5e2ed583ec8147f70383f37fa273327bc1731c}
+  '@gorgias/convert-client@0.3.6':
+    resolution: {integrity: sha512-uFU3EZeh0WF2eOlclRLYtTFpx7ptBV6OyYZSMY82xaC2WLT/MBF57R9Uqrc93zZrHTlpJyv1adZ89wEWP/khHA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.6/204becb513ef70a850d71e5f943ce77edd86035e}
 
-  '@gorgias/convert-types@0.2.13':
-    resolution: {integrity: sha512-brDc3ZCX+pGyeBsNV54z7FgjHj8hwGEPHnJjGA2Y6TQerftAaORzwLpOQFgHR5UlHWp76tVCeV5jy0uYD9wrxA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.2.13/41501ce7581d48898733ea49aebaa80eb9043a7b}
+  '@gorgias/convert-types@0.4.3':
+    resolution: {integrity: sha512-Z51E+zi4cjXoNprOT2MoDFpoABU01wmT5KltVnonk7JlnOrSE2RSXQC+cSs9mCt3QkXHv0ED9JiUIbhCcCEe6Q==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.3/4046722c7eb51d6ddcbbb9a590656fd1ffdaff4b}
 
   '@gorgias/design-tokens@0.10.5':
     resolution: {integrity: sha512-qx8g0V81tVGQYJNhpNwbo+XpdMU/QUUfb2EukKjzKeTE9elPYKuZj0LrWErax2MibAeSh5ngOl/5mPtbcHpAgg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.5/f9bd803a287ca6ae26e6c47b2234e67fbc0f8242}
@@ -13378,15 +13378,15 @@ snapshots:
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
 
-  '@gorgias/convert-client@0.3.1':
+  '@gorgias/convert-client@0.3.6':
     dependencies:
-      '@gorgias/convert-types': 0.2.13
-      '@gorgias/sdk-client': 0.9.3
+      '@gorgias/convert-types': 0.4.3
+      '@gorgias/sdk-client': 0.9.7
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/convert-types@0.2.13': {}
+  '@gorgias/convert-types@0.4.3': {}
 
   '@gorgias/design-tokens@0.10.5': {}
 
@@ -21713,7 +21713,7 @@ snapshots:
   object.assign@4.1.4:
     dependencies:
       call-bind: 1.0.8
-      define-properties: 1.2.1
+      define-properties: 1.1.4
       has-symbols: 1.1.0
       object-keys: 1.1.1
 
@@ -23753,7 +23753,7 @@ snapshots:
   string.prototype.trimend@1.0.4:
     dependencies:
       call-bind: 1.0.8
-      define-properties: 1.2.1
+      define-properties: 1.1.4
 
   string.prototype.trimend@1.0.9:
     dependencies:
@@ -23765,7 +23765,7 @@ snapshots:
   string.prototype.trimstart@1.0.4:
     dependencies:
       call-bind: 1.0.8
-      define-properties: 1.2.1
+      define-properties: 1.1.4
 
   string.prototype.trimstart@1.0.8:
     dependencies:

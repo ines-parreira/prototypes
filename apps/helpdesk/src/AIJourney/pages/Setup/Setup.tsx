@@ -23,8 +23,9 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import {
     EnableDiscountField,
-    FollowUpField,
     MaximumDiscountField,
+    MessagesToSendField,
+    MessageWithDiscountCodeField,
     PhoneNumberField,
 } from './fields'
 
@@ -79,8 +80,8 @@ export const Setup = () => {
 
     const createNewJourney = useCreateNewJourney()
 
-    const [followUpValue, setFollowUpValue] = useState(
-        journeyParams?.max_follow_up_messages || undefined,
+    const [numberOfMessageValue, setNumberOfMessageValue] = useState<number>(
+        (journeyParams?.max_follow_up_messages ?? 0) + 1,
     )
     const [isDiscountEnabled, setIsDiscountEnabled] = useState(
         journeyParams?.offer_discount || false,
@@ -89,19 +90,26 @@ export const Setup = () => {
         journeyParams?.max_discount_percent?.toString() || '',
     )
     const [isDiscountValueValid, setIsDiscountValueValid] = useState(true)
-
+    const [discountCodeThreshold, setDiscountCodeThreshold] = useState<number>(
+        journeyParams?.discount_code_message_threshold ?? 1,
+    )
     const [phoneNumberValue, setPhoneNumberValue] = useState<
         NewPhoneNumber | undefined
     >(currentPhoneNumber)
 
     useEffect(() => {
         if (journeyParams) {
-            setFollowUpValue(journeyParams.max_follow_up_messages || undefined)
+            const numberOfMessages =
+                (journeyParams.max_follow_up_messages ?? 0) + 1
+            setNumberOfMessageValue(numberOfMessages)
             setIsDiscountEnabled(journeyParams.offer_discount || false)
             setDiscountValue(
                 journeyParams.max_discount_percent?.toString() || '',
             )
             setPhoneNumberValue(currentPhoneNumber)
+            setDiscountCodeThreshold(
+                journeyParams.discount_code_message_threshold ?? 1,
+            )
         }
     }, [journeyParams, currentPhoneNumber])
 
@@ -121,6 +129,11 @@ export const Setup = () => {
         setPhoneNumberValue(newValue)
     }
 
+    const handleNumberOfMessageChange = (newValue: number) => {
+        setNumberOfMessageValue(newValue)
+        setDiscountCodeThreshold(1)
+    }
+
     const handleCreate = async () => {
         try {
             if (!integrationId || !currentIntegration?.name) {
@@ -135,7 +148,7 @@ export const Setup = () => {
                     store_name: currentIntegration.name,
                 },
                 journeyConfigs: {
-                    max_follow_up_messages: followUpValue,
+                    max_follow_up_messages: numberOfMessageValue - 1,
                     offer_discount: isDiscountEnabled,
                     max_discount_percent: Number(discountValue),
                     sms_sender_integration_id:
@@ -143,6 +156,9 @@ export const Setup = () => {
                             (integration) => integration.type === 'sms',
                         )?.id,
                     sms_sender_number: phoneNumberValue?.phone_number,
+                    discount_code_message_threshold: isDiscountEnabled
+                        ? discountCodeThreshold
+                        : undefined,
                 },
             })
         } catch (error) {
@@ -160,10 +176,13 @@ export const Setup = () => {
         integrationId,
         currentIntegration,
         abandonedCartJourney,
-        followUpValue,
+        followUpValue: numberOfMessageValue - 1,
         isDiscountEnabled,
         discountValue,
         phoneNumberValue,
+        discountCodeThresholdValue: isDiscountEnabled
+            ? discountCodeThreshold
+            : undefined,
     })
 
     const handleContinue = async () => {
@@ -187,13 +206,13 @@ export const Setup = () => {
         }
     }
 
-    const followUpOptions = [0, 1, 2, 3]
-
     const isDiscountFieldValid = isDiscountEnabled
         ? !!discountValue && isDiscountValueValid
         : true
 
     const shouldDisableButton = !isDiscountFieldValid || !phoneNumberValue
+    const showMessageWithDiscountCode =
+        isDiscountEnabled && numberOfMessageValue > 1
 
     const isLoading =
         isLoadingIntegrations ||
@@ -217,21 +236,31 @@ export const Setup = () => {
                 value={phoneNumberValue}
                 onChange={handlePhoneNumberChange}
             />
-            <FollowUpField
-                value={followUpValue}
-                options={followUpOptions}
-                onChange={setFollowUpValue}
+            <MessagesToSendField
+                value={numberOfMessageValue}
+                onChange={handleNumberOfMessageChange}
             />
             <EnableDiscountField
                 isEnabled={isDiscountEnabled}
                 onChange={handleDiscountToggle}
             />
-            <MaximumDiscountField
-                value={discountValue}
-                isDisabled={!isDiscountEnabled}
-                onChange={handleMaximumDiscountChange}
-                onValidationChange={handleValidationChange}
-            />
+
+            {isDiscountEnabled && (
+                <MaximumDiscountField
+                    value={discountValue}
+                    isDisabled={!isDiscountEnabled}
+                    onChange={handleMaximumDiscountChange}
+                    onValidationChange={handleValidationChange}
+                />
+            )}
+
+            {showMessageWithDiscountCode && (
+                <MessageWithDiscountCodeField
+                    value={discountCodeThreshold}
+                    numberOfMessages={numberOfMessageValue}
+                    onChange={setDiscountCodeThreshold}
+                />
+            )}
 
             <div className={css.buttonsContainer}>
                 <Button
