@@ -1,5 +1,7 @@
 import classnames from 'classnames'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AgentLabel } from 'pages/common/utils/labels'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
@@ -88,6 +90,7 @@ const TicketHeaderWrapper = ({
     onToggleUnread,
 }: Props) => {
     const ticket = useAppSelector((state) => state.ticket)
+    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
 
     const isExistingTicket = !!ticket.get('id')
 
@@ -105,7 +108,9 @@ const TicketHeaderWrapper = ({
                 <TicketFields />
                 <CollisionDetection ticketId={ticket.get('id')} />
             </div>
-            {isExistingTicket && <div style={{ height: 8 }} />}
+            {isExistingTicket && !hasMessagesTranslation && (
+                <div style={{ height: 8 }} />
+            )}
         </>
     )
 }

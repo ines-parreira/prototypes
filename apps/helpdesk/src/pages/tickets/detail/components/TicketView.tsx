@@ -41,7 +41,7 @@ export const TicketView = ({
 }: Props) => {
     const drawerContainerRef = useRef<HTMLDivElement>(null)
     const hasCTDrawer = useFlag(FeatureFlagKey.CustomerTimelineDrawerUX)
-
+    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
@@ -181,6 +181,7 @@ export const TicketView = ({
                     className={classnames(css.page, {
                         'ticket-thread-revamp': hasTicketThreadRevamp,
                         'transition out fade right': isTicketHidden,
+                        [css.hasMessagesTranslation]: hasMessagesTranslation,
                     })}
                     ref={pageRef}
                 >

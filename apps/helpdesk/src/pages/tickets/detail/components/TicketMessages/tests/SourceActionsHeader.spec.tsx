@@ -4,6 +4,8 @@ import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
@@ -51,6 +53,9 @@ jest.mock(
             </div>
         ),
 )
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 
 // Get typed mock functions
 const mockUseAppDispatch = jest.mocked(useAppDispatch)
@@ -59,6 +64,7 @@ const mockUseDebouncedValue = jest.mocked(useDebouncedValue)
 const mockUseElementSize = jest.mocked(useElementSize)
 const mockIsTicketMessageDeleted = jest.mocked(isTicketMessageDeleted)
 const mockExecuteAction = jest.mocked(infobarActions.executeAction)
+const mockUseFlag = jest.mocked(useFlag)
 
 type MessageOverrides = Partial<TicketMessage> & {
     source?: Source | Partial<Source> | null
@@ -97,6 +103,7 @@ describe('SourceActionsHeader', () => {
         mockUseElementSize.mockReturnValue([500, 300])
         mockIsTicketMessageDeleted.mockReturnValue(false)
         mockExecuteAction.mockReturnValue(mockActionObject as any)
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('returns null for no source', () => {
@@ -286,5 +293,99 @@ describe('SourceActionsHeader', () => {
             />,
         )
         expect(screen.queryByText('private-reply')).not.toBeInTheDocument()
+    })
+
+    describe('MessagesTranslations feature flag', () => {
+        it('does not render TranslationsDropdown when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            render(<SourceActionsHeader message={createMessage()} />)
+
+            expect(
+                screen.queryByLabelText('Translate message'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders TranslationsDropdown when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            render(<SourceActionsHeader message={createMessage()} />)
+
+            expect(
+                screen.getByLabelText('Translate message'),
+            ).toBeInTheDocument()
+        })
+
+        it('applies correct CSS class when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            const { container } = render(
+                <SourceActionsHeader message={createMessage()} />,
+            )
+
+            const widgetsDiv = container.querySelector('.widgets')
+            expect(widgetsDiv).toHaveClass('hasMessageTranslation')
+        })
+
+        it('does not apply hasMessageTranslation CSS class when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            const { container } = render(
+                <SourceActionsHeader message={createMessage()} />,
+            )
+
+            const widgetsDiv = container.querySelector('.widgets')
+            expect(widgetsDiv).not.toHaveClass('hasMessageTranslation')
+        })
+
+        it('disables action collapse behavior when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseElementSize.mockReturnValue([300, 300])
+            render(<SourceActionsHeader message={createMessage()} />)
+
+            expect(
+                screen.queryByText('collapsed-actions'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByTitle(/hide|unhide/i)).toBeInTheDocument()
+        })
+
+        it('disables intents collapse behavior when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseElementSize.mockReturnValue([250, 300])
+            render(<SourceActionsHeader message={createMessage()} />)
+
+            expect(screen.getByText('intents-feedback')).toBeInTheDocument()
+        })
+
+        it('renders PrivateReply when feature flag is enabled and conditions are met', () => {
+            mockUseFlag.mockReturnValue(true)
+            render(
+                <SourceActionsHeader
+                    message={createMessage({
+                        source: {
+                            type: TicketMessageSourceType.FacebookComment,
+                        },
+                    })}
+                />,
+            )
+
+            expect(screen.getByText('private-reply')).toBeInTheDocument()
+        })
+
+        it('applies correct CSS classes to hide/unhide button when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            const { container } = render(
+                <SourceActionsHeader message={createMessage()} />,
+            )
+
+            const hideButton = container.querySelector(
+                '.visibilityButton.hasMessageTranslation',
+            )
+            expect(hideButton).toBeInTheDocument()
+        })
+
+        it('calls useFlag with correct feature flag key', () => {
+            render(<SourceActionsHeader message={createMessage()} />)
+
+            expect(mockUseFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.MessagesTranslations,
+            )
+        })
     })
 })

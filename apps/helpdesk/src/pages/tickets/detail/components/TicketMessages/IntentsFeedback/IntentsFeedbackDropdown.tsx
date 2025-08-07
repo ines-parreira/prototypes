@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import classnames from 'classnames'
 import {
@@ -9,6 +9,9 @@ import {
 } from 'reactstrap'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 import { Messages } from './constants'
 
@@ -37,6 +40,7 @@ export const IntentsFeedbackDropdown = ({
     onContentMouseLeave?: () => void
     onBack?: () => void
 }) => {
+    const hasMessageTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const tooltipContainer = `intent-tooltip-${messageId}`
 
     const [isOpen, setOpen] = useState(false)
@@ -48,8 +52,12 @@ export const IntentsFeedbackDropdown = ({
 
     const dropdownMenuContent = (
         <>
-            <div id={tooltipContainer} />
-            <div className={classnames(css.header)}>
+            <div
+                id={tooltipContainer}
+                className={classnames(css.header, {
+                    [css.hasMessageTranslation]: hasMessageTranslation,
+                })}
+            >
                 {onBack && (
                     <i
                         className="material-icons mr-1 cursor-pointer"
@@ -108,22 +116,52 @@ export const IntentsFeedbackDropdown = ({
         )
 
     return (
-        <div className={css.wrapper}>
+        <div
+            className={classnames(css.wrapper, {
+                [css.hasMessageTranslation]: hasMessageTranslation,
+            })}
+        >
             <Dropdown
                 toggle={() => _setOpen(!isOpen)}
                 isOpen={isOpen}
                 onMouseLeave={() => _setOpen(false)}
             >
-                <DropdownToggle className={css.toggleMenu}>
-                    <span className={classnames('mr-1', css.menuLabel)}>
-                        {label}
-                    </span>
-                    <span className={classnames(css.caret, 'material-icons')}>
-                        arrow_drop_down
-                    </span>
+                <DropdownToggle
+                    className={classnames(css.toggleMenu, {
+                        [css.hasMessageTranslation]: hasMessageTranslation,
+                    })}
+                >
+                    {hasMessageTranslation ? (
+                        <i className="material-icons">topic</i>
+                    ) : (
+                        <>
+                            <span className={classnames('mr-1', css.menuLabel)}>
+                                {label}
+                            </span>
+                            <span
+                                className={classnames(
+                                    css.caret,
+                                    'material-icons',
+                                )}
+                            >
+                                arrow_drop_down
+                            </span>
+                        </>
+                    )}
                 </DropdownToggle>
-                <DropdownMenu className={css.menuWrapper} right>
-                    <div className={css.menu}>{dropdownMenuContent}</div>
+                <DropdownMenu
+                    className={classnames(css.menuWrapper, {
+                        [css.hasMessageTranslation]: hasMessageTranslation,
+                    })}
+                    right
+                >
+                    <div
+                        className={classnames(css.menu, {
+                            [css.hasMessageTranslation]: hasMessageTranslation,
+                        })}
+                    >
+                        {dropdownMenuContent}
+                    </div>
                 </DropdownMenu>
             </Dropdown>
         </div>

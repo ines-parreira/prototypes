@@ -4,6 +4,8 @@ import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import cn from 'classnames'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
@@ -14,6 +16,7 @@ import * as infobarActions from 'state/infobar/actions'
 
 import CollapsedSourceActions from './CollapsedSourceActions/CollapsedSourceActions'
 import IntentsFeedback from './IntentsFeedback/IntentsFeedback'
+import { TranslationsDropdown } from './TranslationsDropdown/TranslationsDropdown'
 
 import css from './SourceActionsHeader.less'
 
@@ -23,6 +26,7 @@ type Props = {
 }
 
 export default function SourceActionsHeader({ message, containerRef }: Props) {
+    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const dispatch = useAppDispatch()
 
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
@@ -63,8 +67,10 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
 
     const [width] = useElementSize(containerRef?.current || null)
     const debouncedWidth = useDebouncedValue(width, 300)
-    const collapseActions = Boolean(width) && debouncedWidth < 400
-    const collapseIntents = Boolean(width) && debouncedWidth < 300
+    const collapseActions =
+        Boolean(width) && debouncedWidth < 400 && !hasMessagesTranslation
+    const collapseIntents =
+        Boolean(width) && debouncedWidth < 300 && !hasMessagesTranslation
 
     if (
         !source ||
@@ -102,11 +108,16 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
             : toggleFacebookHideComment(shouldHide)
 
     return (
-        <div className={css.widgets}>
+        <div
+            className={cn(css.widgets, {
+                [css.hasMessageTranslation]: hasMessagesTranslation,
+            })}
+        >
+            {hasMessagesTranslation && <TranslationsDropdown />}
             {!fromAgent && !collapseIntents && (
                 <IntentsFeedback message={message} />
             )}
-            {collapseActions ? (
+            {collapseActions && !hasMessagesTranslation ? (
                 <CollapsedSourceActions
                     key="collapsed-source-actions"
                     message={message}
@@ -134,11 +145,12 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
                             meta={meta!}
                             messageCreatedDatetime={messageCreatedDatetime}
                             isFacebookComment={isFacebookComment}
-                            className={cn(
-                                'hidden-sm-down',
-                                css.actionButton,
-                                css.replyButton,
-                            )}
+                            className={cn('hidden-sm-down', {
+                                [css.actionButton]: !hasMessagesTranslation,
+                                [css.replyButton]: hasMessagesTranslation,
+                                [css.hasMessageTranslation]:
+                                    hasMessagesTranslation,
+                            })}
                         />
                     )}
                     <span
@@ -149,6 +161,10 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
                             'hidden-sm-down',
                             css.visibilityButton,
                             css.actionButton,
+                            {
+                                [css.hasMessageTranslation]:
+                                    hasMessagesTranslation,
+                            },
                         )}
                         onClick={toggleHideComment}
                     >

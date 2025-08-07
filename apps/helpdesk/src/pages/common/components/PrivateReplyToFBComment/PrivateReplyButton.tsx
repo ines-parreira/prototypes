@@ -5,6 +5,8 @@ import { UncontrolledTooltip } from 'reactstrap'
 
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import type { Meta } from 'models/ticket/types'
 
 import css from './PrivateReplyButton.less'
@@ -42,6 +44,7 @@ export default function PrivateReplyButton({
     className,
     onClick = _noop,
 }: Props) {
+    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const icon = isFacebookComment ? messengerIcon : instagramDirectMessageIcon
     const buttonText = isFacebookComment ? 'Message' : 'Direct message'
 
@@ -60,6 +63,37 @@ export default function PrivateReplyButton({
     }
 
     const isDisabled = isAlreadySent || isMessageTooOld
+
+    if (hasMessagesTranslation) {
+        const componentId = `private-reply-button-${ticketMessageId}`
+
+        return (
+            <>
+                <Component
+                    id={componentId}
+                    type="submit"
+                    className={css.hasMessageTranslation}
+                    onClick={onClick}
+                    isDisabled={isDisabled}
+                >
+                    <img
+                        src={icon}
+                        alt="private reply icon"
+                        className={classnames(
+                            isFacebookComment
+                                ? css.messengerIcon
+                                : css.instagramDirectMessageIcon,
+                        )}
+                    />
+                </Component>
+                {isDisabled && (
+                    <UncontrolledTooltip target={componentId}>
+                        {tooltipMessage}
+                    </UncontrolledTooltip>
+                )}
+            </>
+        )
+    }
 
     return (
         <>
@@ -87,6 +121,7 @@ export default function PrivateReplyButton({
                             }}
                         />
                     </div>
+
                     {buttonText}
                 </Component>
             </div>

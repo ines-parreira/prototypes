@@ -1,0 +1,88 @@
+@import (reference) '~css/typography';
+
+:local {
+    .dropdown {
+        .dropdownToggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            border-radius: 4px;
+            background: var(--neutral-grey-0);
+            border: none;
+
+            &:hover {
+                background: var(--neutral-grey-2);
+            }
+        }
+
+        .menuWrapper {
+            padding: var(--layout-spacing-xs);
+            min-width: 240px;
+            border-radius: 8px;
+            border: 1px solid var(--neutral-grey-0);
+            background: var(--neutral-grey-0);
+        }
+
+        .translationsList {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .translationsListItem {
+            width: 100%;
+        }
+
+        .translationsItem {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--layout-spacing-xs);
+            border: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            width: 100%;
+            .body-regular();
+            text-align: left;
+            padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+            box-sizing: border-box;
+            padding: var(--layout-spacing-xs);
+            color: var(--neutral-grey-6);
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+            &:hover {
+                background-color: var(--neutral-grey-2);
+            }
+
+            .translationsItemContent {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                flex: 1;
+                gap: var(--layout-spacing-xs);
+            }
+
+            .icon {
+                flex-shrink: 0;
+                flex-grow: 0;
+                display: flex;
+                height: 1.4em;
+                width: 1em;
+                justify-content: center;
+                align-items: center;
+                margin-right: var(--layout-spacing-xxs);
+            }
+        }
+    }
+}

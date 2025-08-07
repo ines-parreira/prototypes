@@ -79,10 +79,8 @@ exports[`<IntentsFeedback /> Single initial intent should add an intent on click
           class="menu"
         >
           <div
-            id="intent-tooltip-1"
-          />
-          <div
             class="header"
+            id="intent-tooltip-1"
           >
             Message intents
             <i
@@ -284,10 +282,8 @@ exports[`<IntentsFeedback /> Single initial intent should remove an intent on cl
           class="menu"
         >
           <div
-            id="intent-tooltip-1"
-          />
-          <div
             class="header"
+            id="intent-tooltip-1"
           >
             Message intents
             <i
@@ -490,10 +486,8 @@ exports[`<IntentsFeedback /> Single initial intent should render active and avai
         class="menu"
       >
         <div
-          id="intent-tooltip-1"
-        />
-        <div
           class="header"
+          id="intent-tooltip-1"
         >
           Message intents
           <i

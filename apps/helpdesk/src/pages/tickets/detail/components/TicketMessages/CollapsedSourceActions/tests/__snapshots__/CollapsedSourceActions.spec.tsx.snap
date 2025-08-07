@@ -28,10 +28,8 @@ exports[`CollapsedSourceActions content should be intents if no other option is 
     >
       <div>
         <div
-          id="intent-tooltip-1"
-        />
-        <div
           class="header"
+          id="intent-tooltip-1"
         >
           Message intents
           <i
@@ -127,10 +125,8 @@ exports[`CollapsedSourceActions content should move between intents and all opti
     >
       <div>
         <div
-          id="intent-tooltip-1"
-        />
-        <div
           class="header"
+          id="intent-tooltip-1"
         >
           <i
             class="material-icons mr-1 cursor-pointer"
@@ -369,10 +365,8 @@ exports[`CollapsedSourceActions content should move between intents and all opti
     >
       <div>
         <div
-          id="intent-tooltip-1"
-        />
-        <div
           class="header"
+          id="intent-tooltip-1"
         >
           <i
             class="material-icons mr-1 cursor-pointer"
