@@ -210,6 +210,7 @@ export const useShoppingAssistantTrialFlow = ({
     }
 
     const closeTrialFinishSetupModal = () => {
+        history.push(routes.customerEngagement)
         trialFinishSetupModal.closeModal(TRIAL_FINISH_SETUP_MODAL_NAME)
     }
 

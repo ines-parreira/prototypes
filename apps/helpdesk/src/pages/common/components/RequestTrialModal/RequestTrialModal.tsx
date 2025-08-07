@@ -32,7 +32,7 @@ const AdminItem = memo(({ admin }: { admin: User }) => (
             shape="circle"
         />
         <span className={css.adminName}>{admin.name}</span>
-        <Tooltip target={`admin-${admin.id}`} placement="top-end">
+        <Tooltip target={`admin-${admin.id}`} placement="top-start">
             {admin.email}
         </Tooltip>
     </div>
@@ -46,7 +46,7 @@ const StackedAvatar = memo(({ admin }: { admin: User }) => (
             size="sm"
             shape="circle"
         />
-        <Tooltip target={`remaining-admin-${admin.id}`} placement="top">
+        <Tooltip target={`remaining-admin-${admin.id}`} placement="top-start">
             {admin.email}
         </Tooltip>
     </div>

@@ -42,35 +42,33 @@ export const ShoppingAssistantPromoCard: React.FC<
 
     const { variant } = promoContent
 
+    let variantComponent: React.ReactNode = null
+
     switch (variant) {
         case PromoCardVariant.AdminTrialProgress:
-            return (
+            variantComponent = (
                 <AdminTrialProgress
                     className={className}
                     promoContent={promoContent}
                 />
             )
+            break
 
         case PromoCardVariant.LeadTrialProgress:
-            return (
+            variantComponent = (
                 <LeadTrialProgress
                     className={className}
                     promoContent={promoContent}
                 />
             )
+            break
 
         case PromoCardVariant.AdminTrial:
-            return (
+            variantComponent = (
                 <>
                     <TrialTryModal
                         {...trialModalProps.newTrialUpgradePlanModal}
                         isOpen={trialFlow.isTrialModalOpen}
-                    />
-
-                    <TrialFinishSetupModal
-                        {...trialModalProps.trialFinishSetupModal}
-                        isOpen={trialFlow.isTrialFinishSetupModalOpen}
-                        onClose={trialFlow.closeTrialFinishSetupModal}
                     />
                     <AdminTrial
                         className={className}
@@ -78,32 +76,43 @@ export const ShoppingAssistantPromoCard: React.FC<
                     />
                 </>
             )
+            break
 
         case PromoCardVariant.AdminDemo:
-            return (
+            variantComponent = (
                 <AdminDemo className={className} promoContent={promoContent} />
             )
+            break
 
         case PromoCardVariant.LeadNotify:
-            return (
+            variantComponent = (
                 <>
                     <RequestTrialModal
                         {...trialModalProps.trialRequestModal}
                         isOpen={trialFlow.isTrialRequestModalOpen}
                         onClose={trialFlow.closeTrialRequestModal}
                     />
-
                     <LeadNotify
                         className={className}
                         promoContent={promoContent}
                     />
                 </>
             )
+            break
 
         case PromoCardVariant.Hidden:
-            return null
-
         default:
             return null
     }
+
+    return (
+        <>
+            {variantComponent}
+            <TrialFinishSetupModal
+                {...trialModalProps.trialFinishSetupModal}
+                isOpen={trialFlow.isTrialFinishSetupModalOpen}
+                onClose={trialFlow.closeTrialFinishSetupModal}
+            />
+        </>
+    )
 }
