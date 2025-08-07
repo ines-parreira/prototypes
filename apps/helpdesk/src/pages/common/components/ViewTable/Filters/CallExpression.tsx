@@ -152,7 +152,11 @@ export const CallExpression = ({
         data: {
             data: StoreMapping[]
         }
-    }>()
+    }>({
+        query: {
+            staleTime: 60_000, // 1 minute
+        },
+    })
 
     const storeMappings = useMemo(() => stores?.data?.data || [], [stores])
 
