@@ -28,14 +28,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
-const useIsPinnedFilterEnabled = () =>
-    useFlag(FeatureFlagKey.ReportingSavedFiltersInDashboards, false)
-
 export const DASHBOARD_SCHEMA_ERROR = 'Dashboard schema error'
 
 export const DashboardPage = () => {
-    const isPinnedFilterEnabled = useIsPinnedFilterEnabled()
-
     const { id } = useParams<{ id: string }>()
 
     const dashboard = useDashboardById(Number(id))
@@ -62,11 +57,10 @@ export const DashboardPage = () => {
         <DashboardPageContent
             key={dashboard.data.id}
             dashboard={dashboard.data}
-            isPinnedFilterEnabled={isPinnedFilterEnabled}
         />
     )
 
-    if (isPinnedFilterEnabled && pinnedFilterId) {
+    if (pinnedFilterId) {
         content = (
             <PinnedFilterSyncProvider savedFilterId={pinnedFilterId}>
                 {content}
@@ -79,10 +73,8 @@ export const DashboardPage = () => {
 
 const DashboardPageContent = ({
     dashboard,
-    isPinnedFilterEnabled,
 }: {
     dashboard: DashboardSchema
-    isPinnedFilterEnabled: boolean
 }) => {
     const isDashboardResizeChartsEnabled = useFlag(
         FeatureFlagKey.ReportingDashboardResizeCharts,
@@ -109,8 +101,6 @@ const DashboardPageContent = ({
     }
 
     const dashboardPinnedFilter = useMemo(() => {
-        if (!isPinnedFilterEnabled) return undefined
-
         const handleUpdatePinnedFilter = (
             savedFilterId: number,
             filterName: string,
@@ -133,7 +123,7 @@ const DashboardPageContent = ({
             id: dashboard.analytics_filter_id,
             pin: handleUpdatePinnedFilter,
         })
-    }, [isPinnedFilterEnabled, dashboard, updateDashboardHandler])
+    }, [dashboard, updateDashboardHandler])
 
     const [details, setDetails] = useState({
         name: dashboard.name,

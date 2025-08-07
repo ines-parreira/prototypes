@@ -138,7 +138,6 @@ export enum FeatureFlagKey {
     ReportingExtendFieldAndTag = 'reporting-extend-field-and-tag-reporting',
     ReportingFilteringAndCalculationsTagsReport = 'reporting-filtering-and-calculations-tags-report',
     ReportingTicketFieldsPivotTable = 'reporting-ticket-fields-pivot-table',
-    ReportingSavedFiltersInDashboards = 'linear.project_reporting-saved-filters-in-dashboards',
     ReportingVoiceOfCustomer = 'reporting-voice-of-customer',
     ReportingMultiStoreFilter = 'reporting-multi-store-filter',
     ReportingDashboardResizeCharts = 'reporting-dashboard-resize-charts',

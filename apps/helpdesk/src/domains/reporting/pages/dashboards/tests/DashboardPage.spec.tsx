@@ -132,9 +132,6 @@ describe('DashboardPage', () => {
 
     beforeEach(() => {
         useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
-                return false
-            }
             if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
                 return false
             }
@@ -275,9 +272,6 @@ describe('DashboardPage', () => {
 
     it('should wrap in PinnedFilterSyncProvider when analytics_filter_id is present', () => {
         useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
-                return true
-            }
             if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
                 return false
             }
@@ -290,17 +284,6 @@ describe('DashboardPage', () => {
         renderWithStore(<DashboardPage />, {})
 
         expect(PinnedFilterSyncProviderMock).toHaveBeenCalled()
-    })
-
-    it('should not wrap in PinnedFilterSyncProvider if flag is disabled', () => {
-        useDashboardByIdMock.mockReturnValue({
-            data: { ...dashboard, analytics_filter_id: 1 },
-            isLoading: false,
-        } as any)
-
-        renderWithStore(<DashboardPage />, {})
-
-        expect(PinnedFilterSyncProviderMock).not.toHaveBeenCalled()
     })
 
     it('should update name when input is blurred', async () => {
@@ -447,9 +430,6 @@ describe('DashboardPage', () => {
 
         beforeEach(() => {
             useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-                if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
-                    return true
-                }
                 if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
                     return false
                 }
@@ -595,31 +575,6 @@ describe('DashboardPage', () => {
             )
         })
 
-        it('should not pass pinnedFilter when feature flag is disabled', () => {
-            useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-                if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
-                    return false
-                }
-                if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
-                    return false
-                }
-            })
-            const savedFilterId = 789
-            useDashboardByIdMock.mockReturnValue({
-                data: { ...dashboard, analytics_filter_id: savedFilterId },
-                isLoading: false,
-            } as any)
-
-            renderWithStore(<DashboardPage />, defaultState)
-
-            expect(DashboardMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    pinnedFilter: undefined,
-                }),
-                expect.anything(),
-            )
-        })
-
         it('should not pass pinnedFilter when no filter is pinned', () => {
             useDashboardByIdMock.mockReturnValue({
                 data: { ...dashboard, analytics_filter_id: null },
@@ -643,9 +598,6 @@ describe('DashboardPage', () => {
     describe('New Dashboard Report functionality', () => {
         beforeEach(() => {
             useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-                if (flag === FeatureFlagKey.ReportingSavedFiltersInDashboards) {
-                    return false
-                }
                 if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
                     return true
                 }
