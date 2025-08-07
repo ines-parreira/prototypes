@@ -1,0 +1,164 @@
+import { Meta, StoryObj } from '@storybook/react'
+import { Edge, Handle, Node, Position } from 'reactflow'
+
+import { Background, Flow } from '../index'
+import { CustomControls } from './CustomControls'
+
+const meta: Meta<typeof Flow> = {
+    title: 'Common/Flows/Flow',
+    component: Flow,
+}
+
+export default meta
+
+type Story = StoryObj<typeof Flow>
+
+const defaultNodes: Node[] = [
+    {
+        id: 'node-1',
+        type: 'input',
+        position: { x: 0, y: 50 },
+        data: { label: 'Start Node' },
+    },
+    {
+        id: 'node-2',
+        position: { x: 0, y: 250 },
+        data: { label: 'Processing Node' },
+    },
+    {
+        id: 'node-3',
+        type: 'output',
+        position: { x: 0, y: 450 },
+        data: { label: 'End Node' },
+    },
+]
+
+const defaultEdges: Edge[] = [
+    {
+        id: 'e1-2',
+        source: 'node-1',
+        target: 'node-2',
+        animated: true,
+    },
+    {
+        id: 'e2-3',
+        source: 'node-2',
+        target: 'node-3',
+    },
+]
+
+export const Default: Story = {
+    render: (args) => (
+        <div style={{ height: '400px', width: '100%' }}>
+            <Flow {...args} />
+        </div>
+    ),
+    args: {
+        nodes: defaultNodes,
+        edges: defaultEdges,
+    },
+}
+
+export const WithBackgroundAndCustomControls: Story = {
+    render: (args) => (
+        <div style={{ height: '400px', width: '100%' }}>
+            <Flow {...args}>
+                <Background />
+                <CustomControls />
+            </Flow>
+        </div>
+    ),
+    args: {
+        nodes: defaultNodes,
+        edges: defaultEdges,
+    },
+}
+
+const customNodes: Node[] = [
+    {
+        id: 'custom-1',
+        type: 'customNode',
+        position: { x: 0, y: 0 },
+        data: { label: 'Start', color: '#a8e6cf' },
+    },
+    {
+        id: 'custom-2',
+        type: 'customNode',
+        position: { x: 0, y: 150 },
+        data: { label: 'Process', color: '#ffd3b6' },
+    },
+    {
+        id: 'custom-3',
+        type: 'customNode',
+        position: { x: 0, y: 300 },
+        data: { label: 'End', color: '#ffaaa5' },
+    },
+]
+
+const customEdges: Edge[] = [
+    {
+        id: 'custom-e1-2',
+        source: 'custom-1',
+        target: 'custom-2',
+        type: 'customEdge',
+    },
+    {
+        id: 'custom-e2-3',
+        source: 'custom-2',
+        target: 'custom-3',
+        type: 'customEdge',
+    },
+]
+
+export const WithCustomNodes: Story = {
+    render: (args) => (
+        <div style={{ height: '400px', width: '100%' }}>
+            <Flow {...args}>
+                <Background />
+            </Flow>
+        </div>
+    ),
+    args: {
+        nodes: customNodes,
+        edges: customEdges,
+        nodeTypes: {
+            customNode: ({
+                data,
+            }: {
+                data: { label: string; color?: string }
+            }) => {
+                return (
+                    <div
+                        style={{
+                            padding: '10px 20px',
+                            borderRadius: '8px',
+                            backgroundColor: data.color || '#f0f0f0',
+                            width: '100px',
+                            height: '50px',
+                            position: 'relative',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Handle type="source" position={Position.Top} />
+                        <div>{data.label}</div>
+                        <Handle type="target" position={Position.Bottom} />
+                    </div>
+                )
+            },
+        },
+        edgeTypes: {
+            customEdge: ({ id, sourceX, sourceY, targetX, targetY }) => {
+                return (
+                    <path
+                        id={id}
+                        className="react-flow__edge-path"
+                        d={`M${sourceX},${sourceY} C${(sourceX + targetX) / 2},${sourceY} ${(sourceX + targetX) / 2},${targetY} ${targetX},${targetY}`}
+                        style={{ stroke: 'red', strokeWidth: 2, fill: 'none' }}
+                    />
+                )
+            },
+        },
+    },
+}

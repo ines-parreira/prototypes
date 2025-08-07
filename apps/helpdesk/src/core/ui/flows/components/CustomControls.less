@@ -1,0 +1,26 @@
+:local {
+    .container {
+        display: inline-flex;
+        padding: var(--layout-spacing-xs);
+        align-items: flex-start;
+        gap: var(--layout-spacing-xxs);
+        border-radius: var(--layout-spacing-xs);
+        background: var(--neutral-grey-0);
+
+        /* shadow/shadow-container */
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    .zoomDropdown {
+        display: flex;
+        padding: 6px 4px !important; // Override default padding for button
+        justify-content: center;
+        align-items: center;
+        gap: --var(--layout-spacing-xxs);
+
+        i {
+            font-size: 20px;
+            width: 16px;
+        }
+    }
+}
