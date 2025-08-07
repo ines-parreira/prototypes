@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { useTrialDescription } from '../hooks/useTrialDescription'
 
 const createMockTrialAccess = (overrides = {}) => ({
@@ -119,6 +120,27 @@ describe('useTrialDescription', () => {
 
         expect(result.current.description).toBe(
             'Go beyond automation and grow revenue by 1.5%.',
+        )
+        expect(result.current.shouldShowDescriptionIcon).toBe(false)
+    })
+
+    it('shows trial duration description when user can notify admin', () => {
+        const trialAccess = createMockTrialAccess({
+            canNotifyAdmin: true,
+        })
+
+        const trialMetrics = {
+            gmvInfluenced: '$0',
+            gmvInfluencedRate: 0,
+            isLoading: false,
+        }
+
+        const { result } = renderHook(() =>
+            useTrialDescription(trialAccess, trialMetrics, false),
+        )
+
+        expect(result.current.description).toBe(
+            `Try AI Agent's shopping assistant capabilities for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days.`,
         )
         expect(result.current.shouldShowDescriptionIcon).toBe(false)
     })

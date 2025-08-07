@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 
 import { ShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 
-import { SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD } from '../constants/shoppingAssistant'
+import {
+    SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
+    SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD,
+} from '../constants/shoppingAssistant'
 
 export const useTrialDescription = (
     trialAccess: ShoppingAssistantTrialAccess,
@@ -20,8 +23,13 @@ export const useTrialDescription = (
 
     return useMemo(() => {
         if (!isTrialProgress) {
+            let description = 'Go beyond automation and grow revenue by 1.5%.'
+            if (trialAccess.canNotifyAdmin) {
+                description = `Try AI Agent's shopping assistant capabilities for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days.`
+            }
+
             return {
-                description: 'Go beyond automation and grow revenue by 1.5%.',
+                description,
                 shouldShowDescriptionIcon: false,
             }
         }

@@ -53,7 +53,7 @@ const mockAdmins: User[] = adminNames.map((admin, index) => {
 const STANDARD_TITLE =
     "Request your admin to activate AI Agent's sales skills trial"
 const STANDARD_SUBTITLE =
-    'Your Gorgias admins will be notified of your request via both email and an in-app notification.'
+    'Your Gorgias admins will be notified of your request to start Shopping Assistant trial via both email and an in-app notification.'
 
 const storyConfig: Meta<typeof RequestTrialModal> = {
     title: 'Overlays/RequestTrialModal',

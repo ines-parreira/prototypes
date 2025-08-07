@@ -7,11 +7,6 @@ import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/Upg
 
 import TrialTryModal from '../TrialTryModal'
 
-// Mock SVG imports
-jest.mock('assets/img/icons/check.svg', () => 'check.svg')
-jest.mock('assets/img/icons/notifications.svg', () => 'notifications.svg')
-jest.mock('assets/img/icons/star_border.svg', () => 'star_border.svg')
-
 const mockCurrentPlan = {
     name: 'Basic',
     price: '$50',

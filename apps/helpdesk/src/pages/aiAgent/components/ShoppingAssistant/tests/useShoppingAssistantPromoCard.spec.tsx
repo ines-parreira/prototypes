@@ -430,7 +430,7 @@ describe('useShoppingAssistantPromoCard', () => {
             expect(result.current?.promoCardContent).toEqual({
                 variant: 'lead-notify',
                 title: 'Unlock new AI Agent skills',
-                description: 'Go beyond automation and grow revenue by 1.5%.',
+                description: `Try AI Agent's shopping assistant capabilities for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days.`,
                 shouldShowDescriptionIcon: false,
                 showVideo: true,
                 shouldShowNotificationIcon: true,
@@ -491,7 +491,7 @@ describe('useShoppingAssistantPromoCard', () => {
             expect(result.current?.promoCardContent).toEqual({
                 variant: 'lead-notify',
                 title: 'Unlock new AI Agent skills',
-                description: 'Go beyond automation and grow revenue by 1.5%.',
+                description: `Try AI Agent's shopping assistant capabilities for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days.`,
                 shouldShowDescriptionIcon: false,
                 showVideo: true,
                 shouldShowNotificationIcon: true,

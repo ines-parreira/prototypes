@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -219,6 +219,13 @@ const TrialTryModal = ({
     }
 
     const hasCheckboxError = !isTermsChecked && hasAttemptedSubmit
+
+    useEffect(() => {
+        if (!isOpen) {
+            setIsTermsChecked(false)
+            setHasAttemptedSubmit(false)
+        }
+    }, [isOpen])
 
     return (
         <Modal

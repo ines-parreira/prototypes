@@ -630,9 +630,9 @@ const useTrialRequestModal = (storeName?: string) => {
     )
     return useMemo(
         () => ({
-            title: 'Request your admin to activate Shopping Assistant trial',
+            title: 'Request your admin to start trial',
             subtitle:
-                'Your Gorgias admins will be notified of your request via both email and an in-app notification.',
+                'Your Gorgias admins will be notified of your request to start Shopping Assistant trial via both email and an in-app notification.',
             primaryCTALabel: 'Notify Admins',
             accountAdmins,
             onPrimaryAction: handleNotifyAdmins,
