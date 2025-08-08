@@ -1,5 +1,6 @@
+import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+
 import { AnalyticsBarChart } from '../AnalyticsBarChart/AnalyticsBarChart'
-import { AnalyticsMetricVariation } from '../AnalyticsMetricVariation/AnalyticsMetricVariation'
 
 import css from './AnalyticsData.less'
 
@@ -50,8 +51,12 @@ export const AnalyticsData = ({ data }: AnalyticsDataProps) => {
                         </div>
                         <AnalyticsBarChart dataArray={barValues()} />
                     </div>
-                    <AnalyticsMetricVariation
-                        metricVariation={metric.variation}
+                    <TrendBadge
+                        value={metric.value}
+                        prevValue={metric.prevValue}
+                        metricFormat={metric.metricFormat}
+                        currency={metric.currency}
+                        interpretAs="more-is-better"
                     />
                 </div>
             ))}

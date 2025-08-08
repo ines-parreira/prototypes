@@ -9,6 +9,7 @@ import {
     JourneyPlaceholder,
     Selector,
 } from 'AIJourney/components'
+import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneyConfiguration, useJourneys } from 'AIJourney/queries'
 
@@ -17,7 +18,7 @@ import css from './Performance.less'
 const digestContent = (hasDiscount?: boolean) => (
     <>
         In the <b>last 30 days</b>, revenue is <b>up 14%</b>, driven primarily
-        by your Abandoned Cart Journey converting at 12%.{' '}
+        by your Abandoned Cart Journey converting at 12%.
         {!hasDiscount && (
             <>
                 To <b>unlock an extra $5k</b>, your biggest opportunity is to{' '}
@@ -30,15 +31,10 @@ const digestContent = (hasDiscount?: boolean) => (
 const totalSent = '10'
 
 const digestMetrics = [
-    { label: 'Total Revenue', value: '$123,273', variation: '+14%' },
-    { label: 'Total Orders', value: '7,289', variation: '+90%' },
-    { label: 'Conversion Rate', value: '19%', variation: '0%' },
-    { label: 'Global Sentiment', value: 'Positive', variation: '-30%' },
+    { label: 'Total Revenue', value: '$123,273' },
+    { label: 'Total Orders', value: '7,289' },
+    { label: 'Conversion Rate', value: '19%' },
 ]
-
-const analyticsData = digestMetrics.filter(
-    (d) => d.label !== 'Global Sentiment',
-)
 
 type userJourney = {
     name: string
@@ -87,12 +83,10 @@ export const Performance = () => {
     const abandonedCartJourney = merchantAiJourneys?.find(
         (journey) => journey.type === 'cart_abandoned',
     )
-    const { data: journeyParams } = useJourneyConfiguration(
-        abandonedCartJourney?.id,
-        {
+    const { data: journeyParams, isLoading: isLoadingJourneyParams } =
+        useJourneyConfiguration(abandonedCartJourney?.id, {
             enabled: !!currentIntegration?.id && !!abandonedCartJourney?.id,
-        },
-    )
+        })
 
     const { offer_discount: isDiscountEnabled } = journeyParams || {}
 
@@ -120,11 +114,15 @@ export const Performance = () => {
             filteredUpcomingJourneys = []
     }
 
+    const metrics = useAIJourneyKpis()
+    const availableMetrics = metrics.filter((metric) => metric.value)
+
     return (
         <div className={css.container}>
             <DigestCard
                 content={digestContent(isDiscountEnabled)}
-                metrics={digestMetrics}
+                metrics={availableMetrics}
+                isLoading={isLoadingJourneyParams}
             />
             <motion.div
                 initial={{ opacity: 0 }}
@@ -155,7 +153,7 @@ export const Performance = () => {
                 {abandonedCartJourney &&
                     filteredUserJourneys.map(() => (
                         <AnalyticsCard
-                            analyticsData={analyticsData}
+                            analyticsData={digestMetrics}
                             journeyConfigurations={journeyParams}
                             integrationId={integrationId}
                             currentIntegration={currentIntegration}

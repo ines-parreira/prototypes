@@ -1,39 +1,44 @@
-import classNames from 'classnames'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { isNegative, isZero } from 'AIJourney/utils'
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 import css from './Metrics.less'
 
-export type MetricsProps = {
-    label: string
-    value: string
-    variation: string
-}
-
-const metricsVariationClass = (metricVariation: string) =>
-    classNames(css.metricVariation, {
-        [css['metricVariation--negative']]: isNegative(metricVariation),
-        [css['metricVariation--neutral']]: isZero(metricVariation),
-    })
-
-export const Metrics = ({ label, value, variation }: MetricsProps) => {
+export const Metrics = ({
+    label,
+    value,
+    prevValue,
+    interpretAs,
+    metricFormat,
+    currency,
+    isLoading,
+}: MetricProps) => {
+    const formattedValue = formatMetricValue(
+        value,
+        metricFormat,
+        undefined,
+        currency,
+    )
     return (
         <div className={css.metric}>
             <span>{label}</span>
             <div className={css.metricInformation}>
-                <div className={css.metricValue}>
-                    <b>{value}</b>
-                </div>
-                <div className={metricsVariationClass(variation)}>
-                    <b>{variation}</b>
-                    {!isZero(variation) && (
-                        <i className="material-icons-outlined">
-                            {isNegative(variation)
-                                ? 'arrow_downward'
-                                : 'arrow_upward'}
-                        </i>
-                    )}
-                </div>
+                {isLoading ? (
+                    <LoadingSpinner style={{ height: '25px', width: '25px' }} />
+                ) : (
+                    <>
+                        <div className={css.metricValue}>{formattedValue}</div>
+                        <TrendBadge
+                            value={value}
+                            prevValue={prevValue}
+                            metricFormat={metricFormat}
+                            currency={currency}
+                            interpretAs={interpretAs}
+                        />
+                    </>
+                )}
             </div>
         </div>
     )

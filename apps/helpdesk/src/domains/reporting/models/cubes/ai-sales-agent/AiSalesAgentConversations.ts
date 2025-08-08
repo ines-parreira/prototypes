@@ -16,6 +16,7 @@ export enum AiSalesAgentConversationsDimension {
     PeriodStart = 'AiSalesAgentConversations.periodStart',
     PeriodEnd = 'AiSalesAgentConversations.periodEnd',
     Outcome = 'AiSalesAgentConversations.outcome',
+    Source = 'AiSalesAgentConversations.source',
 }
 
 export enum AiSalesAgentConversationsFilterMember {

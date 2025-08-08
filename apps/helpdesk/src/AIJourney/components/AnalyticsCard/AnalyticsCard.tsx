@@ -31,7 +31,7 @@ type AnalyticsCardProps = {
     journeyConfigurations?: CartAbandonedJourneyConfigurationApiDTO
     integrationId?: number
     currentIntegration?: Integration
-    abandonedCartJourney: JourneyApiDTO
+    abandonedCartJourney: Omit<JourneyApiDTO, 'created_datetime'>
     totalSent?: string
 }
 
@@ -49,8 +49,8 @@ export const AnalyticsCard = ({
         abandonedCartJourney.state,
     )
 
-    // const isEmpty = !analyticsData?.length
-    const isEmpty = true
+    const isEmpty = !analyticsData?.length
+    // const isEmpty = true
 
     useEffect(() => {
         setJourneyState(abandonedCartJourney.state)

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -5,9 +6,16 @@ import { Provider } from 'react-redux'
 
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { Performance } from './Performance'
+
+jest.mock('domains/reporting/state/ui/stats/selectors')
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone,
+)
 
 jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
@@ -26,6 +34,19 @@ describe('<Performance />', () => {
             isError: false,
             isLoading: false,
         }))
+
+        const cleanStatsFilters = {
+            period: {
+                start_datetime: '1970-01-01T00:00:00+00:00',
+                end_datetime: '1970-01-01T00:00:00+00:00',
+            },
+        }
+
+        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+            userTimezone: 'someTimezone',
+            cleanStatsFilters,
+            granularity: ReportingGranularity.Day,
+        })
     })
     it('should render AI Journey performance page', () => {
         renderWithRouter(

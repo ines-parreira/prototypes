@@ -28,6 +28,7 @@ export enum AiSalesAgentOrdersDimension {
     ShippingCity = 'AiSalesAgentOrders.shippingCity',
     TicketId = 'AiSalesAgentOrders.ticketId',
     CustomerId = 'AiSalesAgentOrders.customerId',
+    Source = 'AiSalesAgentOrders.source',
 }
 
 export const ProductRecommendation = 'product-recommendation'

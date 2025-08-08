@@ -45,8 +45,7 @@ export const AdditionalInfo = () => {
                     <span className={css.revenueGrowText}>
                         Based on abandoned cart data from the past{' '}
                         <span className={css.bold}>30 days</span>, you could
-                        have generated an additional{' '}
-                        <span className={css.bold}>$56,000</span> in revenue.
+                        have generated an additional revenue.
                     </span>
                 </div>
             </div>

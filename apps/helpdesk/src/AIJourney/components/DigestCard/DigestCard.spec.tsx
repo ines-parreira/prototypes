@@ -1,58 +1,57 @@
 import { render, screen } from '@testing-library/react'
 
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+
 import { DigestCard } from './DigestCard'
 
 describe('<DigestCard />', () => {
-    it.skip('renders metrics and content with correct values and variations', () => {
-        const metrics = [
-            { label: 'Revenue', value: '$1000', variation: '+12%' },
-            { label: 'Opt-outs', value: '5', variation: '-2%' },
-            { label: 'Neutral', value: '0', variation: '0%' },
+    it('renders metrics and content with correct values', () => {
+        const metrics: MetricProps[] = [
+            {
+                label: 'Revenue',
+                value: 1000,
+                prevValue: 250,
+                interpretAs: 'more-is-better',
+                metricFormat: 'currency',
+                isLoading: false,
+            },
+            {
+                label: 'Opt-outs',
+                value: 5,
+                prevValue: 10,
+                interpretAs: 'more-is-better',
+                metricFormat: 'decimal-precision-1',
+                isLoading: false,
+            },
+            {
+                label: 'Neutral',
+                value: 0,
+                prevValue: 0,
+                interpretAs: 'more-is-better',
+                metricFormat: 'decimal-precision-1',
+                isLoading: false,
+            },
         ]
-        render(<DigestCard content="Metrics test" metrics={metrics} />)
+        render(
+            <DigestCard
+                content="Metrics test"
+                metrics={metrics}
+                isLoading={false}
+            />,
+        )
 
         expect(screen.getByText('Revenue')).toBeInTheDocument()
-        expect(screen.getByText('$1000')).toBeInTheDocument()
-        expect(screen.getByText('+12%')).toBeInTheDocument()
+        expect(screen.getByText('$1,000')).toBeInTheDocument()
+        expect(screen.getByText('300%')).toBeInTheDocument()
 
         expect(screen.getByText('Opt-outs')).toBeInTheDocument()
         expect(screen.getByText('5')).toBeInTheDocument()
-        expect(screen.getByText('-2%')).toBeInTheDocument()
+        expect(screen.getByText('50%')).toBeInTheDocument()
 
         expect(screen.getByText('Neutral')).toBeInTheDocument()
         expect(screen.getByText('0')).toBeInTheDocument()
         expect(screen.getByText('0%')).toBeInTheDocument()
 
         expect(screen.getByText('Metrics test')).toBeInTheDocument()
-    })
-
-    it.skip('shows arrow_upward for positive and arrow_downward for negative variations and no arrow for neutral', () => {
-        const metrics = [
-            { label: 'Positive', value: '10', variation: '+5%' },
-            { label: 'Negative', value: '2', variation: '-3%' },
-            { label: 'Neutral', value: '0', variation: '0%' },
-        ]
-        render(<DigestCard content="Arrows" metrics={metrics} />)
-
-        const upwardArrows = screen.getAllByText('arrow_upward')
-        const downwardArrows = screen.getAllByText('arrow_downward')
-        expect(upwardArrows.length).toBe(1)
-        expect(downwardArrows.length).toBe(1)
-    })
-
-    it.skip('applies negative class for negative variations', () => {
-        const metrics = [{ label: 'Negative', value: '2', variation: '-3%' }]
-        render(<DigestCard content="Negative class" metrics={metrics} />)
-        const negativeVariation = screen.getByText('-3%').parentElement
-        expect(negativeVariation?.className).toMatch(
-            /metricVariation--negative/,
-        )
-    })
-
-    it.skip('applies neutral class for negative variations', () => {
-        const metrics = [{ label: 'neutral', value: '2', variation: '0%' }]
-        render(<DigestCard content="Negative class" metrics={metrics} />)
-        const negativeVariation = screen.getByText('0%').parentElement
-        expect(negativeVariation?.className).toMatch(/metricVariation--neutral/)
     })
 })

@@ -18,9 +18,11 @@ import { IntegrationsProvider, TokenProvider } from 'AIJourney/providers'
 import { logPageChange } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
+import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { billingState } from 'fixtures/billing'
@@ -172,6 +174,10 @@ jest.mock('@gorgias/helpdesk-client', () => ({
     }),
 }))
 
+jest.mock('domains/reporting/state/ui/stats/selectors')
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone,
+)
 jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
     useJourneys: jest.fn(),
@@ -188,8 +194,6 @@ const useListProductsMock = assumeMock(useListProducts)
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 const mockUseJourneyConfiguration = require('AIJourney/queries')
     .useJourneyConfiguration as jest.Mock
-// const mockUseIntegrations = require('AIJourney/providers')
-//     .useIntegrations as jest.Mock
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
@@ -831,10 +835,18 @@ describe('<Routes/>', () => {
                 return Promise.reject(new Error('Mocked network error'))
             })
 
-            // mockUseIntegrations.mockImplementation(() => ({
-            //     integrations: [{ id: 1, name: 'shopify-store' }],
-            //     isLoading: false,
-            // }))
+            const cleanStatsFilters = {
+                period: {
+                    start_datetime: '1970-01-01T00:00:00+00:00',
+                    end_datetime: '1970-01-01T00:00:00+00:00',
+                },
+            }
+
+            getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+                userTimezone: 'someTimezone',
+                cleanStatsFilters,
+                granularity: ReportingGranularity.Day,
+            })
 
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
@@ -974,13 +986,13 @@ describe('<Routes/>', () => {
             })
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={queryClient}>
                         <Router history={history}>
                             <Routes />
                         </Router>
-                    </Provider>
-                </QueryClientProvider>,
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             await waitFor(() => {

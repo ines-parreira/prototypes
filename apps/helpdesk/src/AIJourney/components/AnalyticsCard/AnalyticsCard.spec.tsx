@@ -20,9 +20,9 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const data = [
-    { label: 'Revenue', value: '$999', variation: '+24%' },
-    { label: 'Orders', value: '789', variation: '+9%' },
-    { label: 'Conversion Rate', value: '9%', variation: '0%' },
+    { label: 'Revenue', value: '$999' },
+    { label: 'Orders', value: '789' },
+    { label: 'Conversion Rate', value: '9%' },
 ]
 
 const mockAbandonedCartJourney = {
