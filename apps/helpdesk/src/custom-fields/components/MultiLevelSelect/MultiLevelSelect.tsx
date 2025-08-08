@@ -87,6 +87,7 @@ export type MultiLevelSelectProps<
     hideClearButton?: boolean
     wrapperClassName?: string
     bodyClassName?: string
+    itemClassName?: string
     isLoading?: boolean
     showCheckboxes?: boolean
 }
@@ -116,6 +117,7 @@ export default function MultiLevelSelect<
     hideClearButton = false,
     wrapperClassName,
     bodyClassName,
+    itemClassName,
     isLoading = false,
     showCheckboxes = false,
 }: MultiLevelSelectProps<AllowMultiValues>) {
@@ -341,6 +343,7 @@ export default function MultiLevelSelect<
                         <>
                             {Array.from({ length: 4 }).map((_, index) => (
                                 <DropdownItem
+                                    className={itemClassName}
                                     key={`skeleton-${index}`}
                                     tag="div"
                                     onClick={() => {}}
@@ -358,6 +361,7 @@ export default function MultiLevelSelect<
                             {searchResults.length ? (
                                 searchResults.map((searchResult) => (
                                     <DropdownItem
+                                        className={itemClassName}
                                         key={searchResult.value.toString()}
                                         tag="button"
                                         onClick={() =>
@@ -385,6 +389,7 @@ export default function MultiLevelSelect<
                                 const label = getValueLabel(choice)
                                 return (
                                     <DropdownItem
+                                        className={itemClassName}
                                         key={choice}
                                         tag="button"
                                         onClick={() => goNext(choice)}
@@ -413,6 +418,7 @@ export default function MultiLevelSelect<
                                 )
                                 return (
                                     <DropdownItem
+                                        className={itemClassName}
                                         key={choice.toString()}
                                         tag="button"
                                         onClick={() => {

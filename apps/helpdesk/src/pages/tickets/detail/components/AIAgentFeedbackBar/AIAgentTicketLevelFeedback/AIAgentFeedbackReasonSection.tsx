@@ -197,6 +197,7 @@ export const AIAgentFeedbackReasonSection = ({
                 CustomInput={CustomInput}
                 wrapperClassName={css.multiLevelSelectWrapper}
                 bodyClassName={css.multiLevelSelectBodyWrapper}
+                itemClassName={css.multiLevelSelectItem}
                 showCheckboxes={true}
             />
         </div>

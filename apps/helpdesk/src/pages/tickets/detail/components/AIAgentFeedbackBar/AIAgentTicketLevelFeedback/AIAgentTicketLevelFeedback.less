@@ -87,13 +87,23 @@
         padding-right: 0;
     }
 
+    .multiLevelSelectItem {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--layout-spacing-xxs);
+        padding-right: 0;
+    }
+
     .multiLevelSelectBodyWrapper {
         padding-right: 0;
         overflow-y: scroll !important;
+        border-right: 1px solid transparent !important;
 
         &::-webkit-scrollbar {
             -webkit-appearance: none !important;
-            width: 8px !important;
+            width: 10px !important;
             display: block !important;
             opacity: 1 !important;
         }
@@ -103,22 +113,32 @@
             border-radius: 10px !important;
             display: block !important;
             visibility: visible !important;
+            margin-right: 1px !important;
+            &:hover {
+                background-color: transparent !important;
+            }
         }
 
         &::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.3) !important;
+            background-color: var(--neutral-grey-3) !important;
             border-radius: 10px !important;
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
-
+            border-right: 1px solid transparent !important; // Creates gap effect
+            background-clip: padding-box !important; // Ensures border creates gap
             &:hover {
-                background-color: rgba(0, 0, 0, 0.5) !important;
+                background-color: var(--neutral-grey-3) !important;
             }
         }
 
-        // Alternative approach for non-webkit browsers
-        scrollbar-width: thin !important;
-        scrollbar-color: rgba(0, 0, 0, 0.1) transparent !important;
+        // Firefox-only styles (non-WebKit browsers)
+        @supports not selector(::-webkit-scrollbar) {
+            scrollbar-width: thin !important;
+            // Use a visible track color for Firefox
+            scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-1) !important;
+            // Force scrollbar gutter to always reserve space
+            scrollbar-gutter: stable !important;
+        }
     }
 }
