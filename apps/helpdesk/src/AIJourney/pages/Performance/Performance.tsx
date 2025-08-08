@@ -115,13 +115,12 @@ export const Performance = () => {
     }
 
     const metrics = useAIJourneyKpis()
-    const availableMetrics = metrics.filter((metric) => metric.value)
 
     return (
         <div className={css.container}>
             <DigestCard
                 content={digestContent(isDiscountEnabled)}
-                metrics={availableMetrics}
+                metrics={metrics}
                 isLoading={isLoadingJourneyParams}
             />
             <motion.div
