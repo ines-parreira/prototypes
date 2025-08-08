@@ -15,11 +15,9 @@ type Props = {
 const PriorityDropdownMenu = ({ onClick }: Props) => {
     const contextValue = useMemo(
         () => ({
-            data: Object.values(TicketPriority)
-                .reverse()
-                .map((priority) => ({
-                    name: priority,
-                })),
+            data: Object.values(TicketPriority).map((priority) => ({
+                name: priority,
+            })),
             onClick,
             shouldRender: true,
         }),

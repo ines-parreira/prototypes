@@ -3,8 +3,8 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { mockTicketTranslationCompact } from '@gorgias/helpdesk-mocks'
+import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import { TicketPriority } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'

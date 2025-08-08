@@ -1,6 +1,7 @@
 import { List } from 'immutable'
 
-import { TicketPriority } from 'business/types/ticket'
+import { TicketPriority } from '@gorgias/helpdesk-types'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

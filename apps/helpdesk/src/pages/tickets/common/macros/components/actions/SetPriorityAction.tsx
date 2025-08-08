@@ -1,7 +1,8 @@
 import { fromJS, Map } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
-import { TicketPriority } from 'business/types/ticket'
+import { TicketPriority } from '@gorgias/helpdesk-types'
+
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 type Props = {

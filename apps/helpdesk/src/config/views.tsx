@@ -1,7 +1,7 @@
 import { fromJS, List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import { TicketTag } from '@gorgias/helpdesk-types'
+import { TicketPriority, TicketTag } from '@gorgias/helpdesk-types'
 
 import { fromAST } from 'common/utils'
 import ticketLanguages from 'config/ticketLanguages'
@@ -19,7 +19,7 @@ import { FEEDBACK_VALUE_TYPE_FILTER_OPTIONS } from 'pages/common/components/View
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { getChannels } from 'services/channels'
 import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
-import { PRIORITIES, STATUSES } from 'tickets/common/config'
+import { STATUSES } from 'tickets/common/config'
 import { fieldPath, getAST, getLanguageDisplayName, stripHTML } from 'utils'
 import { getMomentUtcISOString } from 'utils/date'
 import { sanitizeHtmlDefault } from 'utils/html'
@@ -366,7 +366,7 @@ export const defaultTicketView = {
             title: 'Priority',
             path: 'priority',
             filter: {
-                enum: PRIORITIES,
+                enum: Object.values(TicketPriority),
                 sort: {
                     priority: 'desc',
                 },

@@ -35,7 +35,6 @@ import socketManager from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { RootState, StoreDispatch } from 'state/types'
 import * as actions from 'state/views/actions'
-import { fetchActiveViewTickets } from 'state/views/actions'
 import {
     FETCH_LIST_VIEW_START,
     FETCH_LIST_VIEW_SUCCESS,
@@ -251,7 +250,7 @@ describe('actions', () => {
                 }),
             })
 
-            store.dispatch(fetchActiveViewTickets())
+            store.dispatch(actions.fetchActiveViewTickets())
             expect(mockServer.history.get[0].params.order_by).toEqual(
                 `${viewOrderBy}:${viewOrderDir}`,
             )
@@ -272,7 +271,7 @@ describe('actions', () => {
                 }),
             })
 
-            store.dispatch(fetchActiveViewTickets())
+            store.dispatch(actions.fetchActiveViewTickets())
             expect(mockServer.history.get[0].params).toBeUndefined()
         })
     })

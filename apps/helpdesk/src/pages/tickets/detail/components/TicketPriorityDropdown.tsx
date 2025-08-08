@@ -12,8 +12,7 @@ import { PriorityIcon } from 'pages/tickets/common/components/PriorityIcon'
 
 import css from './TicketPriorityDropdown.less'
 
-const PRIORITY_OPTIONS: TicketPriority[] =
-    Object.values(TicketPriority).reverse()
+const PRIORITY_OPTIONS: TicketPriority[] = Object.values(TicketPriority)
 
 const TicketPriorityDropdown = ({
     priority,
