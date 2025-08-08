@@ -4,9 +4,13 @@ import client from 'models/api/resources'
 
 import {
     fetchEcommerceItemByExternalId,
-    fetchEcommerceProductTags,
+    fetchEcommerceLookupValues,
 } from '../resources'
-import { mockEcommerceData, mockEcommerceProductTags } from './mocks'
+import {
+    mockEcommerceData,
+    mockEcommerceProductTags,
+    mockEcommerceVendors,
+} from './mocks'
 
 jest.mock('utils/gorgiasAppsAuth', () => ({
     gorgiasAppsAuthInterceptor: jest.fn().mockImplementation((config) => {
@@ -70,7 +74,7 @@ describe('Ecommerce Resources', () => {
         })
     })
 
-    describe('fetchEcommerceProductTags', () => {
+    describe('fetchEcommerceLookupValues', () => {
         it('should fetch product tags', async () => {
             const integrationId = 123
 
@@ -86,7 +90,10 @@ describe('Ecommerce Resources', () => {
                     },
                 })
 
-            const result = await fetchEcommerceProductTags(integrationId)
+            const result = await fetchEcommerceLookupValues(
+                'product_tag',
+                integrationId,
+            )
 
             expect(result.data.data).toEqual(mockEcommerceProductTags)
             expect(result.data.metadata).toEqual({
@@ -105,7 +112,48 @@ describe('Ecommerce Resources', () => {
                 .reply(500, { message: 'error' })
 
             return expect(
-                fetchEcommerceProductTags(integrationId),
+                fetchEcommerceLookupValues('product_tag', integrationId),
+            ).rejects.toEqual(new Error('Request failed with status code 500'))
+        })
+
+        it('should fetch vendors', async () => {
+            const integrationId = 123
+
+            mockedServer
+                .onGet(
+                    `/api/ecommerce/lookup_values/vendor/shopify/${integrationId}`,
+                )
+                .reply(200, {
+                    data: mockEcommerceVendors,
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                })
+
+            const result = await fetchEcommerceLookupValues(
+                'vendor',
+                integrationId,
+            )
+
+            expect(result.data.data).toEqual(mockEcommerceVendors)
+            expect(result.data.metadata).toEqual({
+                next_cursor: 'next-cursor',
+                prev_cursor: 'prev-cursor',
+            })
+        })
+
+        it('should handle error when fetching product vendors', async () => {
+            const integrationId = 123
+
+            mockedServer
+                .onGet(
+                    `/api/ecommerce/lookup_values/vendor/shopify/${integrationId}`,
+                )
+                .reply(500, { message: 'error' })
+
+            return expect(
+                fetchEcommerceLookupValues('vendor', integrationId),
             ).rejects.toEqual(new Error('Request failed with status code 500'))
         })
     })

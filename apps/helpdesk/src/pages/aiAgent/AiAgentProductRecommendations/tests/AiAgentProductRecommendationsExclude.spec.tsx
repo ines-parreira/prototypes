@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react'
 import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useGetEcommerceProductTags } from 'models/ecommerce/queries'
+import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
@@ -11,6 +11,7 @@ import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainCo
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { AiAgentProductRecommendationsExclude } from '../AiAgentProductRecommendationsExclude'
+import { allProducts, allTags, allVendors } from './data'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -39,7 +40,7 @@ const mockUsePaginatedProductIntegration =
     usePaginatedProductIntegration as jest.Mock
 
 jest.mock('models/ecommerce/queries')
-const mockUseGetEcommerceProductTags = useGetEcommerceProductTags as jest.Mock
+const mockUseGetEcommerceLookupValues = useGetEcommerceLookupValues as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -58,92 +59,41 @@ const mockUseUpsertRulesProductRecommendation =
 
 const mockUpsertRulesProductRecommendation = jest.fn()
 
-const allProducts = [
-    {
-        id: 1,
-        title: 'Performance Running Shorts',
-        image: { src: 'running-shorts.jpg' },
-    },
-    { id: 2, title: 'Men’s Compression Top' },
-    {
-        id: 3,
-        title: 'Seamless Yoga Leggings',
-        image: { src: 'yoga-leggings.jpg' },
-    },
-    { id: 4, title: 'Lightweight Training Hoodie' },
-    { id: 5, title: 'Women’s Sports Bra', image: { src: 'sports-bra.jpg' } },
-    { id: 6, title: 'High-Waisted Gym Leggings' },
-    {
-        id: 7,
-        title: 'Moisture-Wicking T-Shirt',
-        image: { src: 'moisture-tee.jpg' },
-    },
-    { id: 8, title: 'Resistance Band Set' },
-    {
-        id: 9,
-        title: 'Breathable Mesh Tank Top',
-        image: { src: 'mesh-tank.jpg' },
-    },
-    { id: 10, title: 'Youth Track Pants' },
-    {
-        id: 11,
-        title: 'Athletic Water Bottle',
-        image: { src: 'water-bottle.jpg' },
-    },
-    { id: 12, title: 'CrossFit Shorts' },
-    {
-        id: 13,
-        title: 'Outdoor Running Jacket',
-        image: { src: 'running-jacket.jpg' },
-    },
-    { id: 14, title: 'Sweat-Wicking Socks' },
-    { id: 15, title: 'Unisex Workout Cap', image: { src: 'workout-cap.jpg' } },
-    { id: 16, title: 'Kids Active Tee' },
-    {
-        id: 17,
-        title: 'Men’s Training Joggers',
-        image: { src: 'training-joggers.jpg' },
-    },
-    { id: 18, title: '4-Way Stretch Shorts' },
-    { id: 19, title: 'Fitness Gloves', image: { src: 'fitness-gloves.jpg' } },
-    { id: 20, title: 'Slim Fit Gym Tee' },
-]
+const defaultProductRules = {
+    type: 'product',
+    items: [
+        { target: '1' },
+        { target: '6' },
+        { target: '9' },
+        { target: '11' },
+        { target: '15' },
+    ],
+}
 
-const allTags = [
-    'Running Gear',
-    'Training Essentials',
-    'CrossFit Apparel',
-    'HIIT Wear',
-    'Yoga Clothing',
-    'Gym Gear',
-    'Outdoor Fitness',
-    'Track & Field',
-    'Endurance Equipment',
-    'Speed Training',
-    'Compression Wear',
-    'Relaxed Fit',
-    'Slim Fit',
-    'High-Waisted',
-    'Moisture-Wicking',
-    'Seamless Design',
-    'Breathable Fabric',
-    'Lightweight Material',
-    'Four-Way Stretch',
-    'Performance Mesh',
-].map((tag) => ({
-    id: '019838e2-e878-752a-8202-eb2f0c88c48c',
-    account_id: 456,
-    integration_id: 123,
-    source_type: 'shopify',
-    lookup_type: 'product_tag',
-    created_datetime: '2025-07-23T20:04:11.512000+00:00',
-    value: tag,
-}))
+const defaultTagRules = {
+    type: 'tag',
+    items: [
+        { target: 'Yoga Clothing' },
+        { target: 'Slim Fit' },
+        { target: 'Performance Mesh' },
+    ],
+}
+
+const defaultVendorRules = {
+    type: 'vendor',
+    items: [
+        { target: 'Adidas' },
+        { target: 'Reebok' },
+        { target: 'ProForm' },
+        { target: 'The North Face' },
+    ],
+}
 
 const renderComponent = (
     options: {
         selectedProducts?: number[]
         selectedTags?: string[]
+        selectedVendors?: string[]
         integrationId?: number | null
         isLoadingRules?: boolean
         isFetchingRules?: boolean
@@ -151,8 +101,11 @@ const renderComponent = (
     } = {},
 ) => {
     const {
-        selectedProducts = [1, 6, 9, 11, 15],
-        selectedTags = ['Yoga Clothing', 'Slim Fit', 'Performance Mesh'],
+        selectedProducts = defaultProductRules.items.map((item) =>
+            Number(item.target),
+        ),
+        selectedTags = defaultTagRules.items.map((item) => item.target),
+        selectedVendors = defaultVendorRules.items.map((item) => item.target),
         integrationId = 123,
         isLoadingRules = false,
         isFetchingRules = false,
@@ -172,11 +125,11 @@ const renderComponent = (
             },
             {
                 type: 'tag',
-                items: allTags.flatMap((tag) =>
-                    selectedTags.includes(tag.value)
-                        ? [{ target: tag.value }]
-                        : [],
-                ),
+                items: selectedTags.map((tag) => ({ target: tag })),
+            },
+            {
+                type: 'vendor',
+                items: selectedVendors.map((vendor) => ({ target: vendor })),
             },
         ],
     }
@@ -222,16 +175,16 @@ const renderComponent = (
         hasPrevPage: false,
     })
 
-    mockUseGetEcommerceProductTags.mockReturnValue({
+    mockUseGetEcommerceLookupValues.mockImplementation((type: string) => ({
         data: {
-            data: allTags,
+            data: type === 'product_tag' ? allTags : allVendors,
             metadata: {
                 next_cursor: null,
                 prev_cursor: null,
             },
         },
         isLoading: false,
-    })
+    }))
 
     return render(<AiAgentProductRecommendationsExclude />)
 }
@@ -265,6 +218,14 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(screen.queryAllByText('Yoga Clothing')).toHaveLength(2)
         expect(screen.queryAllByText('Slim Fit')).toHaveLength(2)
         expect(screen.queryAllByText('Performance Mesh')).toHaveLength(2)
+
+        expect(screen.queryByText('Exclude vendors')).toBeInTheDocument()
+        expect(screen.queryByText('4 vendors')).toBeInTheDocument()
+
+        expect(screen.queryAllByText('Adidas')).toHaveLength(2)
+        expect(screen.queryAllByText('Reebok')).toHaveLength(2)
+        expect(screen.queryAllByText('ProForm')).toHaveLength(2)
+        expect(screen.queryAllByText('The North Face')).toHaveLength(2)
     })
 
     it('should update products correctly', () => {
@@ -294,6 +255,8 @@ describe('AiAgentProductRecommendationsExclude', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
+                    defaultTagRules,
+                    defaultVendorRules,
                     {
                         type: 'product',
                         items: [
@@ -303,14 +266,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
                             { target: '15' },
                             { target: '10' },
                             { target: '20' },
-                        ],
-                    },
-                    {
-                        type: 'tag',
-                        items: [
-                            { target: 'Yoga Clothing' },
-                            { target: 'Slim Fit' },
-                            { target: 'Performance Mesh' },
                         ],
                     },
                 ],
@@ -332,6 +287,8 @@ describe('AiAgentProductRecommendationsExclude', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
+                    defaultTagRules,
+                    defaultVendorRules,
                     {
                         type: 'product',
                         items: [
@@ -339,14 +296,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
                             { target: '6' },
                             { target: '11' },
                             { target: '15' },
-                        ],
-                    },
-                    {
-                        type: 'tag',
-                        items: [
-                            { target: 'Yoga Clothing' },
-                            { target: 'Slim Fit' },
-                            { target: 'Performance Mesh' },
                         ],
                     },
                 ],
@@ -385,16 +334,8 @@ describe('AiAgentProductRecommendationsExclude', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
-                    {
-                        type: 'product',
-                        items: [
-                            { target: '1' },
-                            { target: '6' },
-                            { target: '9' },
-                            { target: '11' },
-                            { target: '15' },
-                        ],
-                    },
+                    defaultProductRules,
+                    defaultVendorRules,
                     {
                         type: 'tag',
                         items: [
@@ -422,21 +363,89 @@ describe('AiAgentProductRecommendationsExclude', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
-                    {
-                        type: 'product',
-                        items: [
-                            { target: '1' },
-                            { target: '6' },
-                            { target: '9' },
-                            { target: '11' },
-                            { target: '15' },
-                        ],
-                    },
+                    defaultProductRules,
+                    defaultVendorRules,
                     {
                         type: 'tag',
                         items: [
                             { target: 'Slim Fit' },
                             { target: 'Performance Mesh' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should update vendors correctly', () => {
+        const screen = renderComponent()
+
+        const addButton = screen.getAllByText('Add vendors')[0]
+        fireEvent.click(addButton)
+
+        // Remove vendor
+        const vendor1 = screen.getAllByText('The North Face')[1]
+        fireEvent.click(vendor1)
+
+        // Remove vendor
+        const vendor2 = screen.getAllByText('Adidas')[1]
+        fireEvent.click(vendor2)
+
+        // Add vendor
+        const vendor3 = screen.getByText('Nike')
+        fireEvent.click(vendor3)
+
+        // Add vendor
+        const vendor4 = screen.getByText('Mizuno')
+        fireEvent.click(vendor4)
+
+        const submitButton = screen.getAllByText('Done')[2]
+        fireEvent.click(submitButton)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'excluded',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    {
+                        type: 'vendor',
+                        items: [
+                            { target: 'Reebok' },
+                            { target: 'ProForm' },
+                            { target: 'Nike' },
+                            { target: 'Mizuno' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should remove vendors correctly', () => {
+        const screen = renderComponent()
+
+        const button = screen.getAllByRole('button', {
+            name: 'Remove vendor',
+        })[2]
+        fireEvent.click(button)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'excluded',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    {
+                        type: 'vendor',
+                        items: [
+                            { target: 'Adidas' },
+                            { target: 'Reebok' },
+                            { target: 'The North Face' },
                         ],
                     },
                 ],

@@ -5,10 +5,10 @@ import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
-export const TagRecommendationRuleCard = ({
+export const VendorRecommendationRuleCard = ({
     type,
     integrationId,
-    tags,
+    vendors,
     isLoadingRules,
     isFetchingRules,
     isUpserting,
@@ -16,11 +16,11 @@ export const TagRecommendationRuleCard = ({
 }: {
     type: 'promote' | 'exclude'
     integrationId: number
-    tags: string[]
+    vendors: string[]
     isLoadingRules: boolean
     isFetchingRules: boolean
     isUpserting: boolean
-    onUpsert: (tags: string[]) => Promise<any>
+    onUpsert: (vendors: string[]) => Promise<any>
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [isEnabled, setIsEnabled] = useState(false)
@@ -28,7 +28,7 @@ export const TagRecommendationRuleCard = ({
         Parameters<typeof useGetEcommerceLookupValues>[2]
     >({ limit: 25 })
 
-    // Only load tags when drawer is open
+    // Only load vendors when drawer is open
     useEffect(() => {
         if (!isDrawerOpen) {
             return
@@ -37,26 +37,24 @@ export const TagRecommendationRuleCard = ({
         setIsEnabled(true)
     }, [isDrawerOpen])
 
-    const { data, isLoading: isLoadingAllTags } = useGetEcommerceLookupValues(
-        'product_tag',
-        integrationId,
-        params,
-        { enabled: isEnabled },
-    )
+    const { data, isLoading: isLoadingAllVendors } =
+        useGetEcommerceLookupValues('vendor', integrationId, params, {
+            enabled: isEnabled,
+        })
 
-    const allTags = data?.data || []
+    const allVendors = data?.data || []
     const { next_cursor: nextCursor, prev_cursor: prevCursor } =
         data?.metadata || {}
 
     const typeMap = {
         promote: {
-            title: 'Promote tags',
-            description: 'Choose tags to prioritize in recommendations.',
+            title: 'Promote vendors',
+            description: 'Choose vendors to prioritize in recommendations.',
             badge: { label: 'Promoted', type: 'light-success' as const },
         },
         exclude: {
-            title: 'Exclude tags',
-            description: 'Choose tags to exclude from recommendations.',
+            title: 'Exclude vendors',
+            description: 'Choose vendors to exclude from recommendations.',
             badge: { label: 'Excluded', type: 'light-error' as const },
         },
     }
@@ -71,32 +69,34 @@ export const TagRecommendationRuleCard = ({
                 hasImages={false}
                 badge={typeMap[type].badge}
                 addButton={{
-                    label: 'Add tags',
+                    label: 'Add vendors',
                     onClick: () => setIsDrawerOpen(true),
                 }}
-                itemLabelSingular="tag"
-                itemLabelPlural="tags"
-                items={tags.map((tag) => ({
-                    id: tag,
-                    title: tag,
+                itemLabelSingular="vendor"
+                itemLabelPlural="vendors"
+                items={vendors.map((vendor) => ({
+                    id: vendor,
+                    title: vendor,
                 }))}
-                onDelete={(deletedTag: string) =>
-                    onUpsert(tags.filter((tag) => tag !== deletedTag))
+                onDelete={(deletedVendor: string) =>
+                    onUpsert(
+                        vendors.filter((vendor) => vendor !== deletedVendor),
+                    )
                 }
             />
 
             <ItemSelectionDrawer
                 isOpen={isDrawerOpen}
-                isLoading={isLoadingAllTags}
+                isLoading={isLoadingAllVendors}
                 hasImages={false}
-                title="Add tags"
-                itemLabelPlural="tags"
-                selectedItemIds={tags}
+                title="Add vendors"
+                itemLabelPlural="vendors"
+                selectedItemIds={vendors}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
-                items={allTags.map((tag) => ({
-                    id: tag.value,
-                    title: tag.value,
+                items={allVendors.map((vendor) => ({
+                    id: vendor.value,
+                    title: vendor.value,
                 }))}
                 pagination={{
                     hasNextPage: !!nextCursor,

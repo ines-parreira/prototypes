@@ -26,7 +26,8 @@ export const fetchEcommerceItemByExternalId = async <T>(
         `/api/ecommerce/${objectType}/${sourceType}/${integrationId}/${externalId}`,
     )
 
-export const fetchEcommerceProductTags = async (
+export const fetchEcommerceLookupValues = async (
+    type: 'product_tag' | 'vendor',
     integrationId: number,
     params: ApiPaginationParams & { value?: string } = {},
 ) =>
@@ -36,6 +37,6 @@ export const fetchEcommerceProductTags = async (
             next_cursor: string | null
             prev_cursor: string | null
         }
-    }>(`/api/ecommerce/lookup_values/product_tag/shopify/${integrationId}`, {
+    }>(`/api/ecommerce/lookup_values/${type}/shopify/${integrationId}`, {
         params,
     })

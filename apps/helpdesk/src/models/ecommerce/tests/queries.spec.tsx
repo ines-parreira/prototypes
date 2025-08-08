@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -9,13 +7,14 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import {
     useGetEcommerceItemByExternalId,
-    useGetEcommerceProductTags,
+    useGetEcommerceLookupValues,
 } from '../queries'
 import * as resources from '../resources'
 import {
     mockEcommerceData,
     mockEcommerceItem,
     mockEcommerceProductTags,
+    mockEcommerceVendors,
 } from './mocks'
 
 const fetchEcommerceItemByExternalId = jest.spyOn(
@@ -23,9 +22,9 @@ const fetchEcommerceItemByExternalId = jest.spyOn(
     'fetchEcommerceItemByExternalId',
 )
 
-const fetchEcommerceProductTags = jest.spyOn(
+const fetchEcommerceLookupValues = jest.spyOn(
     resources,
-    'fetchEcommerceProductTags',
+    'fetchEcommerceLookupValues',
 )
 
 const queryClient = mockQueryClient()
@@ -97,7 +96,7 @@ describe('Ecommerce Queries', () => {
 
     describe('useGetEcommerceProductTags', () => {
         it('should fetch ecommerce product tags', async () => {
-            fetchEcommerceProductTags.mockResolvedValueOnce({
+            fetchEcommerceLookupValues.mockResolvedValueOnce({
                 data: {
                     data: mockEcommerceProductTags,
                     metadata: {
@@ -108,7 +107,7 @@ describe('Ecommerce Queries', () => {
             } as AxiosResponse)
 
             const { result } = renderHook(
-                () => useGetEcommerceProductTags(123),
+                () => useGetEcommerceLookupValues('product_tag', 123),
                 { wrapper },
             )
 
@@ -125,13 +124,17 @@ describe('Ecommerce Queries', () => {
                     prev_cursor: 'prev-cursor',
                 },
             })
-            expect(fetchEcommerceProductTags).toHaveBeenCalledWith(123, {})
+            expect(fetchEcommerceLookupValues).toHaveBeenCalledWith(
+                'product_tag',
+                123,
+                {},
+            )
         })
 
-        it('should not call the api function when enabled false', () => {
-            fetchEcommerceProductTags.mockResolvedValueOnce({
+        it('should fetch ecommerce vendors', async () => {
+            fetchEcommerceLookupValues.mockResolvedValueOnce({
                 data: {
-                    data: mockEcommerceProductTags,
+                    data: mockEcommerceVendors,
                     metadata: {
                         next_cursor: 'next-cursor',
                         prev_cursor: 'prev-cursor',
@@ -140,7 +143,49 @@ describe('Ecommerce Queries', () => {
             } as AxiosResponse)
 
             const { result } = renderHook(
-                () => useGetEcommerceProductTags(123, {}, { enabled: false }),
+                () => useGetEcommerceLookupValues('vendor', 123),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+
+            expect(result.current.data).toEqual({
+                data: mockEcommerceVendors,
+                metadata: {
+                    next_cursor: 'next-cursor',
+                    prev_cursor: 'prev-cursor',
+                },
+            })
+            expect(fetchEcommerceLookupValues).toHaveBeenCalledWith(
+                'vendor',
+                123,
+                {},
+            )
+        })
+
+        it('should not call the api function when enabled false', () => {
+            fetchEcommerceLookupValues.mockResolvedValueOnce({
+                data: {
+                    data: mockEcommerceVendors,
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                },
+            } as AxiosResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useGetEcommerceLookupValues(
+                        'vendor',
+                        123,
+                        {},
+                        { enabled: false },
+                    ),
                 { wrapper },
             )
 

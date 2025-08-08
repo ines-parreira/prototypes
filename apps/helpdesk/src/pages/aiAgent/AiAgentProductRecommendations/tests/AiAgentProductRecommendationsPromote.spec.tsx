@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react'
 import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useGetEcommerceProductTags } from 'models/ecommerce/queries'
+import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
@@ -11,6 +11,7 @@ import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainCo
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { AiAgentProductRecommendationsPromote } from '../AiAgentProductRecommendationsPromote'
+import { allProducts, allTags, allVendors } from './data'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -39,7 +40,7 @@ const mockUsePaginatedProductIntegration =
     usePaginatedProductIntegration as jest.Mock
 
 jest.mock('models/ecommerce/queries')
-const mockUseGetEcommerceProductTags = useGetEcommerceProductTags as jest.Mock
+const mockUseGetEcommerceLookupValues = useGetEcommerceLookupValues as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -58,92 +59,42 @@ const mockUseUpsertRulesProductRecommendation =
 
 const mockUpsertRulesProductRecommendation = jest.fn()
 
-const allProducts = [
-    {
-        id: 1,
-        title: 'Performance Running Shorts',
-        image: { src: 'running-shorts.jpg' },
-    },
-    { id: 2, title: 'Men’s Compression Top' },
-    {
-        id: 3,
-        title: 'Seamless Yoga Leggings',
-        image: { src: 'yoga-leggings.jpg' },
-    },
-    { id: 4, title: 'Lightweight Training Hoodie' },
-    { id: 5, title: 'Women’s Sports Bra', image: { src: 'sports-bra.jpg' } },
-    { id: 6, title: 'High-Waisted Gym Leggings' },
-    {
-        id: 7,
-        title: 'Moisture-Wicking T-Shirt',
-        image: { src: 'moisture-tee.jpg' },
-    },
-    { id: 8, title: 'Resistance Band Set' },
-    {
-        id: 9,
-        title: 'Breathable Mesh Tank Top',
-        image: { src: 'mesh-tank.jpg' },
-    },
-    { id: 10, title: 'Youth Track Pants' },
-    {
-        id: 11,
-        title: 'Athletic Water Bottle',
-        image: { src: 'water-bottle.jpg' },
-    },
-    { id: 12, title: 'CrossFit Shorts' },
-    {
-        id: 13,
-        title: 'Outdoor Running Jacket',
-        image: { src: 'running-jacket.jpg' },
-    },
-    { id: 14, title: 'Sweat-Wicking Socks' },
-    { id: 15, title: 'Unisex Workout Cap', image: { src: 'workout-cap.jpg' } },
-    { id: 16, title: 'Kids Active Tee' },
-    {
-        id: 17,
-        title: 'Men’s Training Joggers',
-        image: { src: 'training-joggers.jpg' },
-    },
-    { id: 18, title: '4-Way Stretch Shorts' },
-    { id: 19, title: 'Fitness Gloves', image: { src: 'fitness-gloves.jpg' } },
-    { id: 20, title: 'Slim Fit Gym Tee' },
-]
+const defaultProductRules = {
+    type: 'product',
+    items: [
+        { target: '2' },
+        { target: '7' },
+        { target: '10' },
+        { target: '12' },
+    ],
+}
 
-const allTags = [
-    'Running Gear',
-    'Training Essentials',
-    'CrossFit Apparel',
-    'HIIT Wear',
-    'Yoga Clothing',
-    'Gym Gear',
-    'Outdoor Fitness',
-    'Track & Field',
-    'Endurance Equipment',
-    'Speed Training',
-    'Compression Wear',
-    'Relaxed Fit',
-    'Slim Fit',
-    'High-Waisted',
-    'Moisture-Wicking',
-    'Seamless Design',
-    'Breathable Fabric',
-    'Lightweight Material',
-    'Four-Way Stretch',
-    'Performance Mesh',
-].map((tag) => ({
-    id: '019838e2-e878-752a-8202-eb2f0c88c48c',
-    account_id: 456,
-    integration_id: 123,
-    source_type: 'shopify',
-    lookup_type: 'product_tag',
-    created_datetime: '2025-07-23T20:04:11.512000+00:00',
-    value: tag,
-}))
+const defaultTagRules = {
+    type: 'tag',
+    items: [
+        { target: 'Gym Gear' },
+        { target: 'Moisture-Wicking' },
+        { target: 'Four-Way Stretch' },
+        { target: 'Speed Training' },
+    ],
+}
+
+const defaultVendorRules = {
+    type: 'vendor',
+    items: [
+        { target: 'ASICS' },
+        { target: 'New Balance' },
+        { target: 'Spalding' },
+        { target: 'The North Face' },
+        { target: 'Salomon' },
+    ],
+}
 
 const renderComponent = (
     options: {
         selectedProducts?: number[]
         selectedTags?: string[]
+        selectedVendors?: string[]
         integrationId?: number | null
         isLoadingRules?: boolean
         isFetchingRules?: boolean
@@ -151,13 +102,11 @@ const renderComponent = (
     } = {},
 ) => {
     const {
-        selectedProducts = [2, 7, 10, 12],
-        selectedTags = [
-            'Gym Gear',
-            'Moisture-Wicking',
-            'Four-Way Stretch',
-            'Speed Training',
-        ],
+        selectedProducts = defaultProductRules.items.map((item) =>
+            Number(item.target),
+        ),
+        selectedTags = defaultTagRules.items.map((item) => item.target),
+        selectedVendors = defaultVendorRules.items.map((item) => item.target),
         integrationId = 123,
         isLoadingRules = false,
         isFetchingRules = false,
@@ -177,11 +126,11 @@ const renderComponent = (
             },
             {
                 type: 'tag',
-                items: allTags.flatMap((tag) =>
-                    selectedTags.includes(tag.value)
-                        ? [{ target: tag.value }]
-                        : [],
-                ),
+                items: selectedTags.map((tag) => ({ target: tag })),
+            },
+            {
+                type: 'vendor',
+                items: selectedVendors.map((vendor) => ({ target: vendor })),
             },
         ],
     }
@@ -227,16 +176,16 @@ const renderComponent = (
         hasPrevPage: false,
     })
 
-    mockUseGetEcommerceProductTags.mockReturnValue({
+    mockUseGetEcommerceLookupValues.mockImplementation((type: string) => ({
         data: {
-            data: allTags,
+            data: type === 'product_tag' ? allTags : allVendors,
             metadata: {
                 next_cursor: null,
                 prev_cursor: null,
             },
         },
         isLoading: false,
-    })
+    }))
 
     return render(<AiAgentProductRecommendationsPromote />)
 }
@@ -266,6 +215,15 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(screen.queryAllByText('Moisture-Wicking')).toHaveLength(2)
         expect(screen.queryAllByText('Four-Way Stretch')).toHaveLength(2)
         expect(screen.queryAllByText('Speed Training')).toHaveLength(2)
+
+        expect(screen.queryByText('Promote vendors')).toBeInTheDocument()
+        expect(screen.queryByText('5 vendors')).toBeInTheDocument()
+
+        expect(screen.queryAllByText('ASICS')).toHaveLength(2)
+        expect(screen.queryAllByText('New Balance')).toHaveLength(2)
+        expect(screen.queryAllByText('Spalding')).toHaveLength(2)
+        expect(screen.queryAllByText('The North Face')).toHaveLength(2)
+        expect(screen.queryAllByText('Salomon')).toHaveLength(2)
     })
 
     it('should update products correctly', () => {
@@ -295,6 +253,8 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
+                    defaultTagRules,
+                    defaultVendorRules,
                     {
                         type: 'product',
                         items: [
@@ -303,15 +263,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
                             { target: '12' },
                             { target: '16' },
                             { target: '19' },
-                        ],
-                    },
-                    {
-                        type: 'tag',
-                        items: [
-                            { target: 'Gym Gear' },
-                            { target: 'Speed Training' },
-                            { target: 'Moisture-Wicking' },
-                            { target: 'Four-Way Stretch' },
                         ],
                     },
                 ],
@@ -333,21 +284,14 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
+                    defaultTagRules,
+                    defaultVendorRules,
                     {
                         type: 'product',
                         items: [
                             { target: '2' },
                             { target: '7' },
                             { target: '12' },
-                        ],
-                    },
-                    {
-                        type: 'tag',
-                        items: [
-                            { target: 'Gym Gear' },
-                            { target: 'Speed Training' },
-                            { target: 'Moisture-Wicking' },
-                            { target: 'Four-Way Stretch' },
                         ],
                     },
                 ],
@@ -386,21 +330,14 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
-                    {
-                        type: 'product',
-                        items: [
-                            { target: '2' },
-                            { target: '7' },
-                            { target: '10' },
-                            { target: '12' },
-                        ],
-                    },
+                    defaultProductRules,
+                    defaultVendorRules,
                     {
                         type: 'tag',
                         items: [
                             { target: 'Gym Gear' },
-                            { target: 'Speed Training' },
                             { target: 'Moisture-Wicking' },
+                            { target: 'Speed Training' },
                             { target: 'Track & Field' },
                             { target: 'Lightweight Material' },
                             { target: 'CrossFit Apparel' },
@@ -423,21 +360,97 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
-                    {
-                        type: 'product',
-                        items: [
-                            { target: '2' },
-                            { target: '7' },
-                            { target: '10' },
-                            { target: '12' },
-                        ],
-                    },
+                    defaultProductRules,
+                    defaultVendorRules,
                     {
                         type: 'tag',
                         items: [
                             { target: 'Gym Gear' },
+                            { target: 'Moisture-Wicking' },
                             { target: 'Speed Training' },
-                            { target: 'Four-Way Stretch' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should update vendors correctly', () => {
+        const screen = renderComponent()
+
+        const addButton = screen.getAllByText('Add vendors')[0]
+        fireEvent.click(addButton)
+
+        // Remove vendor
+        const vendor1 = screen.getAllByText('Salomon')[1]
+        fireEvent.click(vendor1)
+
+        // Remove vendor
+        const vendor2 = screen.getAllByText('ASICS')[1]
+        fireEvent.click(vendor2)
+
+        // Add vendor
+        const vendor3 = screen.getByText('Puma')
+        fireEvent.click(vendor3)
+
+        // Add vendor
+        const vendor4 = screen.getByText('Franklin Sports')
+        fireEvent.click(vendor4)
+
+        // Add vendor
+        const vendor5 = screen.getByText('ProForm')
+        fireEvent.click(vendor5)
+
+        const submitButton = screen.getAllByText('Done')[2]
+        fireEvent.click(submitButton)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    {
+                        type: 'vendor',
+                        items: [
+                            { target: 'New Balance' },
+                            { target: 'Spalding' },
+                            { target: 'The North Face' },
+                            { target: 'Puma' },
+                            { target: 'Franklin Sports' },
+                            { target: 'ProForm' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should remove vendors correctly', () => {
+        const screen = renderComponent()
+
+        const button = screen.getAllByRole('button', {
+            name: 'Remove vendor',
+        })[3]
+        fireEvent.click(button)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    {
+                        type: 'vendor',
+                        items: [
+                            { target: 'ASICS' },
+                            { target: 'New Balance' },
+                            { target: 'Spalding' },
+                            { target: 'Salomon' },
                         ],
                     },
                 ],

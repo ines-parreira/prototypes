@@ -21,7 +21,7 @@ export const ProductRecommendationRuleCard = ({
     isLoadingRules: boolean
     isFetchingRules: boolean
     isUpserting: boolean
-    onUpsert: (productIds: string[]) => Promise<void>
+    onUpsert: (productIds: string[]) => Promise<any>
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [isEnabled, setIsEnabled] = useState(false)

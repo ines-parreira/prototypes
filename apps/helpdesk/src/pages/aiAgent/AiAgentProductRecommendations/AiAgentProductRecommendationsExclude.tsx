@@ -1,7 +1,5 @@
 import { useParams } from 'react-router-dom'
 
-import { UpsertProductRecommendationRulesRulesItem } from '@gorgias/knowledge-service-types'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
@@ -12,6 +10,7 @@ import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { PRODUCT_RECOMMENDATIONS } from '../constants'
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
+import { VendorRecommendationRuleCard } from './components/VendorRecommendationRuleCard'
 
 import css from './AiAgentProductRecommendations.less'
 
@@ -51,15 +50,29 @@ export const AiAgentProductRecommendationsExclude = () => {
             rule.type === 'tag' ? rule.items.map((item) => item.target) : [],
         ) || []
 
+    const excludedVendors =
+        productRecommendationRules?.excluded.flatMap((rule) =>
+            rule.type === 'vendor' ? rule.items.map((item) => item.target) : [],
+        ) || []
+
     const handleUpsert = async (
-        rules: UpsertProductRecommendationRulesRulesItem[],
+        targets: string[],
+        type: 'product' | 'tag' | 'vendor',
     ) =>
         upsertProductRecommendationRules({
             integrationId: integrationId,
             data: {
                 gorgiasDomain,
                 recommendationAction: 'excluded',
-                rules,
+                rules: [
+                    ...(productRecommendationRules?.excluded ?? []).filter(
+                        (rule) => rule.type !== type,
+                    ),
+                    {
+                        type,
+                        items: targets.map((target) => ({ target })),
+                    },
+                ],
             },
         })
 
@@ -76,22 +89,7 @@ export const AiAgentProductRecommendationsExclude = () => {
                 isLoadingRules={isLoadingRules}
                 isFetchingRules={isFetchingRules}
                 isUpserting={isUpserting}
-                onUpsert={async (productIds) => {
-                    await handleUpsert([
-                        {
-                            type: 'product',
-                            items: productIds.map((productId) => ({
-                                target: productId,
-                            })),
-                        },
-                        {
-                            type: 'tag',
-                            items: excludedTags.map((tag) => ({
-                                target: tag,
-                            })),
-                        },
-                    ])
-                }}
+                onUpsert={(productIds) => handleUpsert(productIds, 'product')}
             />
 
             <TagRecommendationRuleCard
@@ -101,22 +99,17 @@ export const AiAgentProductRecommendationsExclude = () => {
                 isLoadingRules={isLoadingRules}
                 isFetchingRules={isFetchingRules}
                 isUpserting={isUpserting}
-                onUpsert={async (tags) => {
-                    await handleUpsert([
-                        {
-                            type: 'product',
-                            items: excludedProductIds.map((productId) => ({
-                                target: productId,
-                            })),
-                        },
-                        {
-                            type: 'tag',
-                            items: tags.map((tag) => ({
-                                target: tag,
-                            })),
-                        },
-                    ])
-                }}
+                onUpsert={(tags) => handleUpsert(tags, 'tag')}
+            />
+
+            <VendorRecommendationRuleCard
+                type="exclude"
+                integrationId={integrationId}
+                vendors={excludedVendors}
+                isLoadingRules={isLoadingRules}
+                isFetchingRules={isFetchingRules}
+                isUpserting={isUpserting}
+                onUpsert={(vendors) => handleUpsert(vendors, 'vendor')}
             />
         </AiAgentLayout>
     )

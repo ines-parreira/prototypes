@@ -6,7 +6,7 @@ import { IntegrationDataItem } from 'models/integration/types/misc'
 
 import {
     fetchEcommerceItemByExternalId,
-    fetchEcommerceProductTags,
+    fetchEcommerceLookupValues,
 } from './resources'
 
 export const ecommerceKeys = {
@@ -25,13 +25,11 @@ export const ecommerceKeys = {
             integrationId,
             externalId,
         ] as const,
-    productTags: (integrationId: number, params: EcommerceProductTagsParams) =>
-        [
-            ...ecommerceKeys.all(),
-            'product-tags',
-            integrationId,
-            params,
-        ] as const,
+    lookupValues: (
+        type: string,
+        integrationId: number,
+        params: EcommerceLookupValuesParams,
+    ) => [...ecommerceKeys.all(), type, integrationId, params] as const,
 }
 
 /**
@@ -73,19 +71,21 @@ export const useGetEcommerceItemByExternalId = <
     })
 }
 
-type EcommerceProductTagsParams = ApiPaginationParams & { value?: string }
+type EcommerceLookupValuesParams = ApiPaginationParams & { value?: string }
 
-export const useGetEcommerceProductTags = (
+export const useGetEcommerceLookupValues = (
+    type: 'product_tag' | 'vendor',
     integrationId: number,
-    params: EcommerceProductTagsParams = {},
+    params: EcommerceLookupValuesParams = {},
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof fetchEcommerceProductTags>>['data']
+        Awaited<ReturnType<typeof fetchEcommerceLookupValues>>['data']
     >,
 ) => {
     return useQuery({
-        queryKey: ecommerceKeys.productTags(integrationId, params),
+        queryKey: ecommerceKeys.lookupValues(type, integrationId, params),
         queryFn: async () => {
-            const response = await fetchEcommerceProductTags(
+            const response = await fetchEcommerceLookupValues(
+                type,
                 integrationId,
                 params,
             )
