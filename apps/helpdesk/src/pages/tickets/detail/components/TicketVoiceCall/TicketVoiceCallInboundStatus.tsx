@@ -60,6 +60,7 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                                     phoneNumber={
                                         voiceCall.phone_number_destination
                                     }
+                                    interactable
                                 />
                             )}
                         </div>

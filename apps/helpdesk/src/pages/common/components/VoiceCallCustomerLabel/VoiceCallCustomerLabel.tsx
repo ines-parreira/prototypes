@@ -18,6 +18,7 @@ type CustomerLabelProps = {
     phoneNumber: string
     className?: string
     withTooltip?: boolean
+    interactable?: boolean
 }
 
 export default function VoiceCallCustomerLabel({
@@ -26,6 +27,7 @@ export default function VoiceCallCustomerLabel({
     phoneNumber,
     className,
     withTooltip = false,
+    interactable = false,
 }: CustomerLabelProps) {
     const { customer, error } = useCustomerDetails({
         customerId,
@@ -44,7 +46,12 @@ export default function VoiceCallCustomerLabel({
     return (
         <>
             {withTooltip && <Tooltip target={id}>{label}</Tooltip>}
-            <div id={id} className={classNames(css.name, className)}>
+            <div
+                id={id}
+                className={classNames(css.name, className, {
+                    [css.interactable]: interactable,
+                })}
+            >
                 {label}
             </div>
         </>

@@ -56,4 +56,39 @@ describe('<VoiceCallAgentLabel/>', () => {
 
         expect(getByText('Deleted agent (1234567890)')).toBeInTheDocument()
     })
+
+    it('should correctly display non-interactable label', () => {
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+
+        const { container } = render(
+            <VoiceCallAgentLabel
+                agentId={1}
+                phoneNumber="1234567890"
+                interactable={false}
+            />,
+        )
+
+        const agentLabel = container.querySelector('.interactable')
+        expect(agentLabel).not.toBeInTheDocument()
+    })
+
+    it('should correctly display interactable label', () => {
+        useAgentDetailsSpy.mockReturnValue({
+            data: { name: 'Agent Name' },
+        } as any)
+
+        const { container } = render(
+            <VoiceCallAgentLabel
+                agentId={1}
+                phoneNumber="1234567890"
+                interactable
+            />,
+        )
+
+        const agentLabel = container.querySelector('.interactable')
+        expect(agentLabel).toBeInTheDocument()
+        expect(agentLabel).toHaveTextContent('Agent Name')
+    })
 })

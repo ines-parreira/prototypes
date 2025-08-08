@@ -48,6 +48,7 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
                             <VoiceCallCustomerLabel
                                 customerId={voiceCall.customer_id}
                                 phoneNumber={voiceCall.phone_number_source}
+                                interactable
                             />
                         </div>
                     }

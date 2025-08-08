@@ -16,6 +16,7 @@ type AgentLabelProps = {
     className?: string
     semibold?: boolean
     withTooltip?: boolean
+    interactable?: boolean
 }
 
 export default function VoiceCallAgentLabel({
@@ -24,6 +25,7 @@ export default function VoiceCallAgentLabel({
     className,
     semibold,
     withTooltip = false,
+    interactable = false,
 }: AgentLabelProps) {
     const { data: agent, error } = useAgentDetails(agentId)
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
@@ -55,7 +57,10 @@ export default function VoiceCallAgentLabel({
             <AgentLabel
                 id={id}
                 name={displayedValue}
-                className={classNames(css.agentLabel, className)}
+                className={classNames(
+                    { [css.interactable]: interactable },
+                    className,
+                )}
                 shouldDisplayAvatar={false}
                 semibold={semibold}
             />

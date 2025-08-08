@@ -61,4 +61,35 @@ describe('VoiceCallCustomerLabel', () => {
         )
         expect(screen.getByText('CustomerLabel NameProp')).toBeInTheDocument()
     })
+
+    it('should correctly display non-interactable label', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+
+        const { container } = renderComponent({
+            customerId: 1,
+            phoneNumber: '1234567890',
+            interactable: false,
+        })
+
+        const customerLabel = container.querySelector('.interactable')
+        expect(customerLabel).not.toBeInTheDocument()
+    })
+
+    it('should correctly display interactable label', () => {
+        useCustomerDetailsSpy.mockReturnValue({
+            customer: 'Customer Name',
+        } as any)
+
+        const { container } = renderComponent({
+            customerId: 1,
+            phoneNumber: '1234567890',
+            interactable: true,
+        })
+
+        const customerLabel = container.querySelector('.interactable')
+        expect(customerLabel).toBeInTheDocument()
+        expect(customerLabel).toHaveTextContent('Customer Name')
+    })
 })

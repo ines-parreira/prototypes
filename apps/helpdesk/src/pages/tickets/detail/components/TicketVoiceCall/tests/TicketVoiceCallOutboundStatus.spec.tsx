@@ -12,8 +12,16 @@ import TicketVoiceCallOutboundStatus from '../TicketVoiceCallOutboundStatus'
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
     () =>
-        ({ customerId }: { customerId: string }) => (
-            <div>TicketVoiceCallCustomerLabel {customerId}</div>
+        ({
+            customerId,
+            interactable,
+        }: {
+            customerId: string
+            interactable?: boolean
+        }) => (
+            <div data-interactable={interactable}>
+                TicketVoiceCallCustomerLabel {customerId}
+            </div>
         ),
 )
 
@@ -45,18 +53,39 @@ describe('TicketVoiceCallOutboundStatus', () => {
     it.each([
         [VoiceCallDisplayStatus.Ringing, 'Waiting for'],
         [VoiceCallDisplayStatus.Failed, 'Failed:'],
-        [VoiceCallDisplayStatus.InProgress, 'Answered by'],
-        [VoiceCallDisplayStatus.Answered, 'Answered by'],
         [VoiceCallDisplayStatus.Unanswered, 'Unanswered by'],
     ])(
-        'should render the correct status message based on the voice call status',
+        'should render the correct status message when voice call status is %s',
         (displayStatus, expectedText) => {
             getOutboundDisplayStatusMock.mockReturnValue(displayStatus)
-            const { getByText } = renderComponent({
+            const { getByText, container } = renderComponent({
                 customer_id: '123',
                 phone_number_source: '+1234567890',
             })
             expect(getByText(expectedText)).toBeInTheDocument()
+            const agentLabel = container.querySelector(
+                '[data-interactable="true"]',
+            )
+            expect(agentLabel).not.toBeInTheDocument()
+        },
+    )
+
+    it.each([
+        [VoiceCallDisplayStatus.InProgress, 'Answered by'],
+        [VoiceCallDisplayStatus.Answered, 'Answered by'],
+    ])(
+        'should render the correct status message when voice call status is %s',
+        (displayStatus, expectedText) => {
+            getOutboundDisplayStatusMock.mockReturnValue(displayStatus)
+            const { getByText, container } = renderComponent({
+                customer_id: '123',
+                phone_number_source: '+1234567890',
+            })
+            expect(getByText(expectedText)).toBeInTheDocument()
+            const agentLabel = container.querySelector(
+                '[data-interactable="true"]',
+            )
+            expect(agentLabel).toBeInTheDocument()
         },
     )
 
@@ -83,5 +112,21 @@ describe('TicketVoiceCallOutboundStatus', () => {
 
         expect(getByText('Answered by')).toBeInTheDocument()
         expect(getByTestId('collapsible-details')).toBeInTheDocument()
+    })
+
+    it('should pass interactable prop to VoiceCallCustomerLabel', () => {
+        getOutboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.InProgress,
+        )
+        const voiceCall = {
+            customer_id: '123',
+            phone_number_source: '+1234567890',
+        }
+
+        const { container } = renderComponent(voiceCall)
+        const customerLabel = container.querySelector(
+            '[data-interactable="true"]',
+        )
+        expect(customerLabel).toBeInTheDocument()
     })
 })

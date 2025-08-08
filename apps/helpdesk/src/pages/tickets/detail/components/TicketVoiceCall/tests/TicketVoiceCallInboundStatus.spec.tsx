@@ -15,8 +15,16 @@ import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({ agentId }: { agentId: number }) => (
-            <div>VoiceCallAgentLabel {agentId}</div>
+        ({
+            agentId,
+            interactable,
+        }: {
+            agentId: number
+            interactable?: boolean
+        }) => (
+            <div data-interactable={interactable}>
+                VoiceCallAgentLabel {agentId}
+            </div>
         ),
 )
 
@@ -66,13 +74,17 @@ describe('TicketVoiceCallInboundStatus', () => {
             getInboundDisplayStatusMock.mockReturnValue(
                 VoiceCallDisplayStatus.InProgress,
             )
-            const { getByText, getByTestId } = renderComponent({
+            const { getByText, getByTestId, container } = renderComponent({
                 last_answered_by_agent_id: 1,
                 phone_number_destination: '1234567890',
             } as VoiceCall)
             expect(getByText('Answered by')).toBeInTheDocument()
             expect(getByText('VoiceCallAgentLabel 1')).toBeInTheDocument()
             expect(getByTestId('collapsible-details')).toBeInTheDocument()
+            const agentLabel = container.querySelector(
+                '[data-interactable="true"]',
+            )
+            expect(agentLabel).toBeInTheDocument()
         },
     )
 
@@ -161,7 +173,7 @@ describe('TicketVoiceCallInboundStatus', () => {
         'should render "$textToDisplay" when display status is $displayStatus',
         ({ displayStatus, colorClass, textToDisplay, iconToDisplay }) => {
             getInboundDisplayStatusMock.mockReturnValue(displayStatus)
-            const { getByText, getByTestId } = renderComponent({
+            const { getByText, getByTestId, container } = renderComponent({
                 last_answered_by_agent_id: null,
                 phone_number_destination: '1234567890',
             } as VoiceCall)
@@ -173,6 +185,10 @@ describe('TicketVoiceCallInboundStatus', () => {
                     `.${colorClass}`,
                 ),
             ).toBeInTheDocument()
+            const agentLabel = container.querySelector(
+                '[data-interactable="true"]',
+            )
+            expect(agentLabel).not.toBeInTheDocument()
         },
     )
 
