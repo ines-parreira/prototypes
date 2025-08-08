@@ -278,4 +278,80 @@ describe('ApplySavedFilers', () => {
             expect(queryByText(/^hi!.*\.\.\.$/)).toBeInTheDocument()
         })
     })
+
+    describe('toggleCanduId', () => {
+        it('should set data-candu-id when canEdit is true and pinnedFilter exists', () => {
+            const pinnedFilter = {
+                id: 1,
+                pin: jest.fn(),
+            }
+
+            const { container } = renderWithStore(
+                <ApplySavedFilers
+                    canEdit={true}
+                    savedFilters={savedFilters}
+                    pinnedFilter={pinnedFilter}
+                />,
+                defaultState,
+            )
+
+            const toggleButton = container.querySelector(
+                '[data-candu-id="pinned-filter-dropdown-button"]',
+            )
+            expect(toggleButton).toBeInTheDocument()
+        })
+
+        it('should not set data-candu-id when canEdit is false', () => {
+            const pinnedFilter = {
+                id: 1,
+                pin: jest.fn(),
+            }
+
+            const { container } = renderWithStore(
+                <ApplySavedFilers
+                    canEdit={false}
+                    savedFilters={savedFilters}
+                    pinnedFilter={pinnedFilter}
+                />,
+                defaultState,
+            )
+
+            const toggleButton = container.querySelector(
+                '[data-candu-id="pinned-filter-dropdown-button"]',
+            )
+            expect(toggleButton).not.toBeInTheDocument()
+        })
+
+        it('should not set data-candu-id when pinnedFilter is undefined', () => {
+            const { container } = renderWithStore(
+                <ApplySavedFilers
+                    canEdit={true}
+                    savedFilters={savedFilters}
+                    pinnedFilter={undefined}
+                />,
+                defaultState,
+            )
+
+            const toggleButton = container.querySelector(
+                '[data-candu-id="pinned-filter-dropdown-button"]',
+            )
+            expect(toggleButton).not.toBeInTheDocument()
+        })
+
+        it('should not set data-candu-id when both canEdit is false and pinnedFilter is undefined', () => {
+            const { container } = renderWithStore(
+                <ApplySavedFilers
+                    canEdit={false}
+                    savedFilters={savedFilters}
+                    pinnedFilter={undefined}
+                />,
+                defaultState,
+            )
+
+            const toggleButton = container.querySelector(
+                '[data-candu-id="pinned-filter-dropdown-button"]',
+            )
+            expect(toggleButton).not.toBeInTheDocument()
+        })
+    })
 })

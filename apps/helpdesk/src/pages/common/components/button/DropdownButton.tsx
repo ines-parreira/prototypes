@@ -11,6 +11,7 @@ type Props = {
     toggleId?: string
     toggleRef?: Ref<HTMLButtonElement> | null | undefined
     onToggleClick: () => void
+    toggleCanduId?: string
 }
 
 const DropdownButton = (
@@ -22,6 +23,7 @@ const DropdownButton = (
         onToggleClick,
         toggleId,
         toggleRef,
+        toggleCanduId,
         ...others
     }: Props & ComponentProps<typeof Button>,
     ref: ForwardedRef<HTMLDivElement>,
@@ -45,6 +47,7 @@ const DropdownButton = (
                 ref={toggleRef}
                 size={size}
                 isDisabled={others.isDisabled}
+                data-candu-id={toggleCanduId}
             >
                 arrow_drop_down
             </IconButton>

@@ -51,6 +51,8 @@ export const APPLY_SAVED_FILTERS = 'Apply Saved Filter'
 
 const MAX_FILTER_NAME_LENGTH = 40
 
+const TOGGLE_CANDU_ID = 'pinned-filter-dropdown-button'
+
 const logSavedFilterSelection = ({ name, id }: SavedFilterType) => {
     logEvent(SegmentEvent.StatSavedFilterSelected, {
         name,
@@ -124,6 +126,9 @@ const ApplySavedFilters = ({
                 intent="primary"
                 size="small"
                 ref={buttonRef}
+                toggleCanduId={
+                    canEdit && pinnedFilter ? TOGGLE_CANDU_ID : undefined
+                }
             >
                 <Truncate
                     text={buttonLabel}
