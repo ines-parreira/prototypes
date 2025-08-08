@@ -2,6 +2,7 @@ import { Cube } from 'domains/reporting/models/types'
 
 export enum AiSalesAgentConversationsMeasure {
     Count = 'AiSalesAgentConversations.count',
+    AiJourneyTotalMessages = 'AiSalesAgentConversations.journeyTotalMessages',
 }
 
 export enum AiSalesAgentConversationsDimension {
@@ -17,6 +18,7 @@ export enum AiSalesAgentConversationsDimension {
     PeriodEnd = 'AiSalesAgentConversations.periodEnd',
     Outcome = 'AiSalesAgentConversations.outcome',
     Source = 'AiSalesAgentConversations.source',
+    JourneyId = 'AiSalesAgentConversations.journeyId',
 }
 
 export enum AiSalesAgentConversationsFilterMember {

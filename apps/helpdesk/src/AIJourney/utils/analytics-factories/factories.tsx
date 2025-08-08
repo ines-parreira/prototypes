@@ -120,3 +120,31 @@ export const aiJourneyUniqClicksQueryFactory = (
     ],
     timezone,
 })
+
+export const aiJourneyTotalMessagesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const baseFilters = statsFiltersToReportingFilters(
+        aiSalesAgentConversationsDefaultFiltersMembers,
+        filters,
+    )
+
+    const journeyIdFilter = journeyId
+        ? [
+              {
+                  member: AiSalesAgentConversationsDimension.JourneyId,
+                  operator: ReportingFilterOperator.Equals,
+                  values: [journeyId],
+              },
+          ]
+        : []
+
+    return {
+        measures: [AiSalesAgentConversationsMeasure.AiJourneyTotalMessages],
+        dimensions: [],
+        filters: [...journeyIdFilter, ...baseFilters],
+        timezone,
+    }
+}

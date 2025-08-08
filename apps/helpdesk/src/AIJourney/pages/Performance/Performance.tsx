@@ -9,19 +9,34 @@ import {
     Selector,
 } from 'AIJourney/components'
 import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import { useAIJourneyTotalMessages } from 'AIJourney/hooks/useAIJourneyTotalMessages/useAIJourneyTotalMessages'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneyConfiguration, useJourneys } from 'AIJourney/queries'
+import {
+    formatMetricTrend,
+    formatMetricValue,
+} from 'domains/reporting/pages/common/utils'
 
 import css from './Performance.less'
 
-const digestContent = (hasDiscount?: boolean) => (
+const digestContent = (
+    revenueVariation: string,
+    conversionVariationContent: string,
+    messagesSent: number,
+    hasDiscount?: boolean,
+    hasMaxFollowUpMessages?: boolean,
+) => (
     <>
-        In the <b>last 30 days</b>, revenue is <b>up 14%</b>, driven primarily
-        by your Abandoned Cart Journey converting at 12%.
-        {!hasDiscount && (
+        Over the last 30 days, your Abandoned Cart Journey recovered{' '}
+        <b>{revenueVariation}</b>, converting at{' '}
+        <b>{conversionVariationContent}</b>, with{' '}
+        <b>{messagesSent} messages sent</b>.{' '}
+        {(!hasDiscount || !hasMaxFollowUpMessages) && (
             <>
-                To <b>unlock an extra $5k</b>, your biggest opportunity is to{' '}
-                <b>enable the Discount Code skill</b>.
+                To drive more revenue, consider enabling the{' '}
+                {!hasDiscount && <>Discount Code skill</>}{' '}
+                {!hasDiscount && !hasMaxFollowUpMessages && <>or</>}{' '}
+                {!hasMaxFollowUpMessages && <>Follow-up messages</>}.
             </>
         )}
     </>
@@ -88,7 +103,14 @@ export const Performance = () => {
             enabled: !!currentIntegration?.id && !!abandonedCartJourney?.id,
         })
 
-    const { offer_discount: isDiscountEnabled } = journeyParams || {}
+    const totalMessagesSent = useAIJourneyTotalMessages(
+        abandonedCartJourney?.id,
+    )
+
+    const {
+        offer_discount: isDiscountEnabled,
+        max_follow_up_messages: maxFollowUpMessages,
+    } = journeyParams || {}
 
     let filteredUserJourneys: userJourney[] = []
     switch (filter) {
@@ -116,10 +138,69 @@ export const Performance = () => {
 
     const metrics = useAIJourneyKpis()
 
+    const metricsContent = useMemo(() => {
+        const [gmvInfluenced] = metrics
+        const [, , conversionRate] = metrics
+
+        const {
+            formattedTrend: gmvInfluencedFormattedTrend,
+            sign: gmvInfluencedSign = 0,
+        } =
+            gmvInfluenced.value != null && gmvInfluenced.prevValue != null
+                ? formatMetricTrend(
+                      gmvInfluenced.value,
+                      gmvInfluenced.prevValue,
+                      'percent',
+                  )
+                : { formattedTrend: null }
+
+        const {
+            formattedTrend: conversionRateFormattedTrend,
+            sign: conversionRateSign = 0,
+        } =
+            conversionRate.value != null && conversionRate.prevValue != null
+                ? formatMetricTrend(
+                      conversionRate.value,
+                      conversionRate.prevValue,
+                      'percent',
+                  )
+                : { formattedTrend: null }
+
+        const gmvInfluencedFormattedValue = formatMetricValue(
+            gmvInfluenced.value,
+            gmvInfluenced.metricFormat,
+            undefined,
+            gmvInfluenced.currency,
+        )
+
+        const conversionRateFormattedValue = formatMetricValue(
+            conversionRate.value,
+            conversionRate.metricFormat,
+            undefined,
+            conversionRate.currency,
+        )
+
+        const gmvInfluencedVariationDescription =
+            gmvInfluencedSign === -1 ? '-' : '+'
+        const conversionRateVariationDescription =
+            conversionRateSign === -1 ? '-' : '+'
+
+        return {
+            revenueVariationContent: `${gmvInfluencedFormattedValue}${gmvInfluencedFormattedTrend && parseFloat(gmvInfluencedFormattedTrend) !== 0 ? ` ${gmvInfluencedVariationDescription}${gmvInfluencedFormattedTrend}` : ''}`,
+            conversionVariationContent: `${conversionRateFormattedValue}${conversionRateFormattedTrend && parseFloat(conversionRateFormattedTrend) !== 0 ? ` ${conversionRateVariationDescription}${conversionRateFormattedTrend}` : ''}`,
+        }
+    }, [metrics])
+
     return (
         <div className={css.container}>
             <DigestCard
-                content={digestContent(isDiscountEnabled)}
+                content={digestContent(
+                    metricsContent.revenueVariationContent,
+                    metricsContent.conversionVariationContent,
+                    totalMessagesSent.value || 0,
+                    isDiscountEnabled,
+                    !!maxFollowUpMessages,
+                )}
                 metrics={metrics}
                 isLoading={isLoadingJourneyParams || isLoadingJourneys}
             />

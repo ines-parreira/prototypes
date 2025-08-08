@@ -21,7 +21,7 @@ export type filterType = {
 export type MetricProps = {
     label: string
     value: number | null | undefined
-    prevValue: number | null | undefined
+    prevValue?: number | null | undefined
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat: MetricTrendFormat
     currency?: string
