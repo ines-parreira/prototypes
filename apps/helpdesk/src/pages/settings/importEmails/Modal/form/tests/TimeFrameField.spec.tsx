@@ -8,6 +8,12 @@ describe('TimeFrameField', () => {
 
     beforeEach(() => {
         mockSetTimeframe.mockClear()
+        jest.useFakeTimers()
+        jest.setSystemTime(new Date('2025-08-08'))
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     describe('Initial Rendering', () => {
@@ -57,7 +63,9 @@ describe('TimeFrameField', () => {
 
     describe('User Interactions', () => {
         it('opens TimeFrameSelector when text field is clicked', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -77,7 +85,9 @@ describe('TimeFrameField', () => {
         })
 
         it('displays all predefined timeframe options when opened', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -99,7 +109,9 @@ describe('TimeFrameField', () => {
         })
 
         it('closes selector and updates timeframe when a predefined option is selected', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -124,7 +136,9 @@ describe('TimeFrameField', () => {
         })
 
         it('handles different predefined timeframe selections', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -149,7 +163,9 @@ describe('TimeFrameField', () => {
         })
 
         it('can reopen selector after making a selection', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe="Last 6 months"
@@ -199,7 +215,9 @@ describe('TimeFrameField', () => {
 
     describe('State Management', () => {
         it('maintains selector open/closed state correctly', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -224,7 +242,9 @@ describe('TimeFrameField', () => {
         })
 
         it('calls setTimeframe only once per selection', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -251,7 +271,9 @@ describe('TimeFrameField', () => {
 
     describe('Date Range Selection', () => {
         it('shows all available predefined options', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -273,7 +295,9 @@ describe('TimeFrameField', () => {
         })
 
         it('displays calendar interface for custom selection', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
             render(
                 <TimeFrameField
                     timeframe=""
@@ -288,7 +312,7 @@ describe('TimeFrameField', () => {
             await user.click(textField)
 
             await waitFor(() => {
-                const monthSelects = screen.getAllByDisplayValue('Jul')
+                const monthSelects = screen.getAllByDisplayValue('Aug')
                 expect(monthSelects.length).toBeGreaterThan(0)
 
                 const yearSelects = screen.getAllByDisplayValue('2025')
@@ -345,7 +369,9 @@ describe('TimeFrameField', () => {
         })
 
         it('handles undefined setTimeframe callback gracefully', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
 
             const { container } = render(
                 <TimeFrameField

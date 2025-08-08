@@ -1,10 +1,10 @@
+import { ImportProvider } from '@gorgias/helpdesk-types'
 import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import gmailIcon from 'assets/img/integrations/gmail.svg'
 import officeIcon from 'assets/img/integrations/office.svg'
-import { IntegrationType } from 'models/integration/constants'
 
-import { EmailProviderType, ImportStatus } from '../types'
+import { ImportStatus } from '../types'
 
 import css from '../ImportEmail.less'
 
@@ -22,9 +22,9 @@ export const getDateRange = (
     return `${formatDate(import_window_start)} – ${formatDate(import_window_end)}`
 }
 
-export const getProviderIcon = (provider: EmailProviderType) => {
+export const getProviderIcon = (provider: ImportProvider) => {
     switch (provider) {
-        case IntegrationType.Gmail:
+        case ImportProvider.Gmail:
             return (
                 <img
                     alt="gmail logo"
@@ -32,7 +32,7 @@ export const getProviderIcon = (provider: EmailProviderType) => {
                     className={css.providerIcon}
                 />
             )
-        case IntegrationType.Outlook:
+        case ImportProvider.Outlook:
             return (
                 <img
                     alt="outlook logo"

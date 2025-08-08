@@ -1,6 +1,4 @@
-import { IntegrationType } from 'models/integration/constants'
-
-export type EmailProviderType = IntegrationType.Gmail | IntegrationType.Outlook
+import { ImportProvider } from '@gorgias/helpdesk-types'
 
 export type ImportStatus = 'completed' | 'failed' | 'in_progress'
 
@@ -12,5 +10,5 @@ export type ImportItem = {
     import_window_end: string
     status: ImportStatus
     progressPercentage: number
-    provider: EmailProviderType
+    provider: ImportProvider
 }

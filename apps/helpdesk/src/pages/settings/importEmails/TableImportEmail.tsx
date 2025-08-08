@@ -20,62 +20,19 @@ const COLUMN_WIDTHS = {
     status: 360,
 }
 
-const MOCK_IMPORT_DATA = [
-    {
-        id: '1',
-        email: 'info@betseyjohnson.com',
-        emailCount: 333,
-        dateRange: 'Jan 1, 2025 – Jan 25, 2025',
-        status: 'in_progress',
-        progressPercentage: 50,
-        provider: IntegrationType.Gmail,
-    },
-    {
-        id: '2',
-        email: 'infoUSA@betseyjohnson.com',
-        emailCount: 11333,
-        dateRange: 'Dec 7, 2024 – Feb 7, 2025',
-        status: 'in_progress',
-        progressPercentage: 75,
-        provider: IntegrationType.Gmail,
-    },
-    {
-        id: '3',
-        email: 'info@dolcevita.com',
-        emailCount: 567,
-        dateRange: 'May 1, 2025 – May 31, 2025',
-        status: 'failed',
-        progressPercentage: 0,
-        provider: IntegrationType.Gmail,
-    },
-    {
-        id: '4',
-        email: 'info@dolcevita.ca',
-        emailCount: 102,
-        dateRange: 'June 7, 2025 – June 30, 2025',
-        status: 'completed',
-        progressPercentage: 100,
-        provider: IntegrationType.Outlook,
-    },
-    {
-        id: '5',
-        email: 'info@dolcevita.mx',
-        emailCount: 30,
-        dateRange: 'June 4, 2024 – June 7, 2025',
-        status: 'completed',
-        progressPercentage: 100,
-        provider: IntegrationType.Gmail,
-    },
-    {
-        id: '6',
-        email: 'info@stevemadden.fr',
-        emailCount: 11333,
-        dateRange: 'Dec 8, 2024 – June 7, 2025',
-        status: 'completed',
-        progressPercentage: 100,
-        provider: IntegrationType.Outlook,
-    },
-]
+export interface ImportEmailData {
+    id: string
+    email: string
+    emailCount: number
+    dateRange: string
+    status: string
+    progressPercentage: number
+    provider: IntegrationType
+}
+
+interface TableImportEmailProps {
+    data?: ImportEmailData[]
+}
 
 const getProviderIcon = (provider: IntegrationType) => {
     switch (provider) {
@@ -130,7 +87,7 @@ const getStatusBadge = (status: string, progressPercentage: number) => {
     }
 }
 
-const TableImportEmail = () => {
+const TableImportEmail = ({ data = [] }: TableImportEmailProps) => {
     const isFetching = false
 
     return (
@@ -156,7 +113,7 @@ const TableImportEmail = () => {
                 {isFetching ? (
                     <div>Loading...</div>
                 ) : (
-                    MOCK_IMPORT_DATA.map((importItem) => (
+                    data.map((importItem) => (
                         <TableBodyRow key={importItem.id}>
                             <BodyCell width={COLUMN_WIDTHS.email}>
                                 {getProviderIcon(importItem.provider)}

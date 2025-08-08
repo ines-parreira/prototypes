@@ -1,11 +1,70 @@
 import { render, screen } from '@testing-library/react'
 
-import TableImportEmail from '../TableImportEmail'
+import { IntegrationType } from 'models/integration/types'
+
+import TableImportEmail, { ImportEmailData } from '../TableImportEmail'
+
+const MOCK_IMPORT_DATA: ImportEmailData[] = [
+    {
+        id: '1',
+        email: 'info@betseyjohnson.com',
+        emailCount: 333,
+        dateRange: 'Jan 1, 2025 – Jan 25, 2025',
+        status: 'in_progress',
+        progressPercentage: 50,
+        provider: IntegrationType.Gmail,
+    },
+    {
+        id: '2',
+        email: 'infoUSA@betseyjohnson.com',
+        emailCount: 11333,
+        dateRange: 'Dec 7, 2024 – Feb 7, 2025',
+        status: 'in_progress',
+        progressPercentage: 75,
+        provider: IntegrationType.Gmail,
+    },
+    {
+        id: '3',
+        email: 'info@dolcevita.com',
+        emailCount: 567,
+        dateRange: 'May 1, 2025 – May 31, 2025',
+        status: 'failed',
+        progressPercentage: 0,
+        provider: IntegrationType.Gmail,
+    },
+    {
+        id: '4',
+        email: 'info@dolcevita.ca',
+        emailCount: 102,
+        dateRange: 'June 7, 2025 – June 30, 2025',
+        status: 'completed',
+        progressPercentage: 100,
+        provider: IntegrationType.Outlook,
+    },
+    {
+        id: '5',
+        email: 'info@dolcevita.mx',
+        emailCount: 30,
+        dateRange: 'June 4, 2024 – June 7, 2025',
+        status: 'completed',
+        progressPercentage: 100,
+        provider: IntegrationType.Gmail,
+    },
+    {
+        id: '6',
+        email: 'info@stevemadden.fr',
+        emailCount: 11333,
+        dateRange: 'Dec 8, 2024 – June 7, 2025',
+        status: 'completed',
+        progressPercentage: 100,
+        provider: IntegrationType.Outlook,
+    },
+]
 
 describe('TableImportEmail', () => {
     describe('Table Structure', () => {
         it('renders table with correct headers', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             expect(screen.getByText('Email')).toBeInTheDocument()
             expect(screen.getByText('Import data')).toBeInTheDocument()
@@ -13,7 +72,9 @@ describe('TableImportEmail', () => {
         })
 
         it('renders table wrapper component', () => {
-            const { container } = render(<TableImportEmail />)
+            const { container } = render(
+                <TableImportEmail data={MOCK_IMPORT_DATA} />,
+            )
 
             expect(container.querySelector('table')).toBeInTheDocument()
         })
@@ -21,14 +82,14 @@ describe('TableImportEmail', () => {
 
     describe('Import Items Rendering', () => {
         it('renders all 6 mock import items', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const emailElements = screen.getAllByText(/@/)
             expect(emailElements).toHaveLength(6)
         })
 
         it('displays email addresses correctly', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             expect(
                 screen.getByText('info@betseyjohnson.com'),
@@ -43,7 +104,7 @@ describe('TableImportEmail', () => {
         })
 
         it('displays email counts with proper formatting', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const emailCounts = screen.getAllByText((content) => {
                 const normalizedContent = content.replace(/\s+/g, ' ').trim()
@@ -69,7 +130,7 @@ describe('TableImportEmail', () => {
         })
 
         it('shows date ranges are properly displayed', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             expect(
                 screen.getByText('Jan 1, 2025 – Jan 25, 2025'),
@@ -92,7 +153,7 @@ describe('TableImportEmail', () => {
         })
 
         it('displays provider icons correctly', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const gmailIcons = screen.getAllByAltText('gmail logo')
             const outlookIcons = screen.getAllByAltText('outlook logo')
@@ -105,7 +166,7 @@ describe('TableImportEmail', () => {
 
     describe('Status Display', () => {
         it('shows different status badges correctly', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const completedBadges = screen.getAllByText('COMPLETED')
             const failedBadge = screen.getByText('FAILED')
@@ -117,14 +178,14 @@ describe('TableImportEmail', () => {
         })
 
         it('displays progress percentages for in-progress items', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             expect(screen.getByText('50% COMPLETED')).toBeInTheDocument()
             expect(screen.getByText('75% COMPLETED')).toBeInTheDocument()
         })
 
         it('shows status icons correctly', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const successIcons = screen.getAllByText('✓')
             expect(successIcons).toHaveLength(3)
@@ -139,7 +200,7 @@ describe('TableImportEmail', () => {
 
     describe('Loading State', () => {
         it('shows loading spinners for in-progress items', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const loadingTexts = screen.getAllByText('Loading...')
             expect(loadingTexts).toHaveLength(2)
@@ -148,7 +209,7 @@ describe('TableImportEmail', () => {
 
     describe('Data Structure Validation', () => {
         it('displays complete data structure for each item', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const emailElements = screen.getAllByText(/@/)
             expect(emailElements).toHaveLength(6)
@@ -165,7 +226,7 @@ describe('TableImportEmail', () => {
         })
 
         it('renders proper table structure with body cells', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const emailAddresses = screen.getAllByText(/@/)
             expect(emailAddresses).toHaveLength(6)
@@ -174,7 +235,7 @@ describe('TableImportEmail', () => {
 
     describe('Component Integration', () => {
         it('integrates provider icons with email addresses', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const emailElements = screen.getAllByText(/@/)
             const iconElements = screen.getAllByRole('img')
@@ -184,7 +245,7 @@ describe('TableImportEmail', () => {
         })
 
         it('integrates import statistics with proper styling', () => {
-            render(<TableImportEmail />)
+            render(<TableImportEmail data={MOCK_IMPORT_DATA} />)
 
             const statsContainers = screen
                 .getAllByText(/\d+ emails/)

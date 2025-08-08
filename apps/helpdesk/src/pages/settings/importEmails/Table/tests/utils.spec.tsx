@@ -2,15 +2,14 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { IntegrationType } from 'models/integration/constants'
+import { ImportProvider } from '@gorgias/helpdesk-types'
 
-import { EmailProviderType } from '../../types'
 import { getProviderIcon, getStatusBadge } from '../utils'
 
 describe('utils', () => {
     describe('getProviderIcon', () => {
         it('returns Gmail icon for Gmail provider', () => {
-            const result = getProviderIcon(IntegrationType.Gmail)
+            const result = getProviderIcon(ImportProvider.Gmail)
 
             render(<div>{result}</div>)
 
@@ -18,7 +17,7 @@ describe('utils', () => {
         })
 
         it('returns Outlook icon for Outlook provider', () => {
-            const result = getProviderIcon(IntegrationType.Outlook)
+            const result = getProviderIcon(ImportProvider.Outlook)
 
             render(<div>{result}</div>)
 
@@ -27,7 +26,7 @@ describe('utils', () => {
 
         it('returns default email icon for unsupported provider', () => {
             const result = getProviderIcon(
-                'UnsupportedProvider' as EmailProviderType,
+                'UnsupportedProvider' as ImportProvider,
             )
 
             render(<div>{result}</div>)
