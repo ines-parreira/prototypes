@@ -1826,12 +1826,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             jest.runAllTimers()
         })
 
-        // Should call mutateAsync with empty array when executionId is missing
-        expect(mutateAsyncMock).toHaveBeenCalledWith({
-            data: {
-                feedbackToUpsert: [],
-            },
-        })
+        expect(mutateAsyncMock).not.toHaveBeenCalled()
     })
 
     it('should handle null enrichedFeedbackMetadata from useEnrichFeedbackData', () => {

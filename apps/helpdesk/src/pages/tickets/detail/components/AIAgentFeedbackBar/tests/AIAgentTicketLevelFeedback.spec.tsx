@@ -426,11 +426,7 @@ describe('AIAgentTicketLevelFeedback', () => {
             jest.runAllTimers()
         })
 
-        expect(mockUpsertFeedback).toHaveBeenCalledWith({
-            data: {
-                feedbackToUpsert: [],
-            },
-        })
+        expect(mockUpsertFeedback).not.toHaveBeenCalled()
     })
 
     it('should handle feedback without updatedDatetime', () => {

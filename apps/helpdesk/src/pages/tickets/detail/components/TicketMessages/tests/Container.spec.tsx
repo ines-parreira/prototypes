@@ -257,4 +257,90 @@ describe('Container', () => {
 
         expect(screen.getByText('New Avatar')).toBeInTheDocument()
     })
+
+    describe('AI Agent Reasoning visibility with impersonation', () => {
+        const baseAiAgentProps = {
+            ...props,
+            isAIAgentMessage: true,
+            isTicketAfterFeedbackCollectionPeriod: true,
+        }
+
+        it('should show AiAgentReasoning when isImpersonated is true and onlyShowReasoningWhileImpersonating is enabled', () => {
+            const { getByText } = render(
+                <Container
+                    {...baseAiAgentProps}
+                    flags={{
+                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+                        [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: true,
+                    }}
+                    isImpersonated={true}
+                />,
+            )
+
+            expect(getByText('AiAgentReasoning')).toBeInTheDocument()
+        })
+
+        it('should not show AiAgentReasoning when isImpersonated is false and onlyShowReasoningWhileImpersonating is enabled', () => {
+            const { queryByText } = render(
+                <Container
+                    {...baseAiAgentProps}
+                    flags={{
+                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+                        [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: true,
+                    }}
+                    isImpersonated={false}
+                />,
+            )
+
+            expect(queryByText('AiAgentReasoning')).not.toBeInTheDocument()
+            expect(queryByText('SimplifiedAIAgentBanner')).toBeInTheDocument()
+        })
+
+        it('should show AiAgentReasoning when onlyShowReasoningWhileImpersonating is disabled regardless of isImpersonated', () => {
+            const { getByText, rerender } = render(
+                <Container
+                    {...baseAiAgentProps}
+                    flags={{
+                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+                        [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: false,
+                    }}
+                    isImpersonated={false}
+                />,
+            )
+
+            expect(getByText('AiAgentReasoning')).toBeInTheDocument()
+
+            rerender(
+                <Container
+                    {...baseAiAgentProps}
+                    flags={{
+                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+                        [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: false,
+                    }}
+                    isImpersonated={true}
+                />,
+            )
+
+            expect(getByText('AiAgentReasoning')).toBeInTheDocument()
+        })
+
+        it('should show AiAgentReasoning when onlyShowReasoningWhileImpersonating flag is not present', () => {
+            const { getByText } = render(
+                <Container
+                    {...baseAiAgentProps}
+                    flags={{
+                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+                        [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                    }}
+                    isImpersonated={false}
+                />,
+            )
+
+            expect(getByText('AiAgentReasoning')).toBeInTheDocument()
+        })
+    })
 })

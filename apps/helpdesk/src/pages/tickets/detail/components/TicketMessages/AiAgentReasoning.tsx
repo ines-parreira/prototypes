@@ -31,6 +31,15 @@ type AiAgentReasoningProps = {
     messageId: number
 }
 
+export const coerceResourceType = (resourceType: string) => {
+    switch (resourceType) {
+        case 'action_execution':
+            return AiAgentKnowledgeResourceTypeEnum.ACTION
+        default:
+            return resourceType.toUpperCase() as AiAgentKnowledgeResourceTypeEnum
+    }
+}
+
 export const parseReasoningResources = (
     content: string,
     resources: NonNullable<
@@ -45,8 +54,7 @@ export const parseReasoningResources = (
                 .split('::')
             let metadata
 
-            const resourceType =
-                stringParts[0].toUpperCase() as AiAgentKnowledgeResourceTypeEnum
+            const resourceType = coerceResourceType(stringParts[0])
 
             switch (resourceType) {
                 case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
@@ -67,6 +75,16 @@ export const parseReasoningResources = (
                         resourceTitle: metadata?.resourceTitle,
                     }
                 case AiAgentKnowledgeResourceTypeEnum.ACTION:
+                    metadata = resources.find(
+                        (resource) =>
+                            resource.resourceSetId === stringParts[1] &&
+                            resource.resourceType === resourceType,
+                    )
+                    return {
+                        resourceType,
+                        resourceId: metadata?.resourceId || '',
+                        resourceTitle: metadata?.resourceTitle,
+                    }
                 case AiAgentKnowledgeResourceTypeEnum.ORDER:
                     metadata = resources.find(
                         (resource) =>
@@ -158,7 +176,7 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                 reasoningContent: content,
                 reasoningResources: [
                     ...parseReasoningResources(
-                        outcomeReasoning.value,
+                        responseReasoning.value,
                         messageAiReasoning.resources,
                     ),
                     ...fullDetailsReasoning.flatMap((taskReasoning) =>
@@ -172,7 +190,7 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                         ),
                     ),
                     ...parseReasoningResources(
-                        responseReasoning.value,
+                        outcomeReasoning.value,
                         messageAiReasoning.resources,
                     ),
                 ],

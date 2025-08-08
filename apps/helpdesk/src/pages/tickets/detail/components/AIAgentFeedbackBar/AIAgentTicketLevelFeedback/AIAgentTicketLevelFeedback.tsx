@@ -124,6 +124,8 @@ export const AIAgentTicketLevelFeedback = ({
                     })
                     .filter(Boolean) as FeedbackMutation[]
 
+                if (feedbackToUpsert.length === 0) return
+
                 await upsertFeedback({
                     data: {
                         feedbackToUpsert,

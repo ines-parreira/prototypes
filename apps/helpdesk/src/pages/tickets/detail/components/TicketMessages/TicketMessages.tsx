@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -15,6 +15,7 @@ import {
 } from 'models/ticket/predicates'
 import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
@@ -63,6 +64,8 @@ export default function TicketMessages({
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
     const isTicketAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
+
+    const isImpersonated = useMemo(() => isSessionImpersonated(), [])
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -200,6 +203,7 @@ export default function TicketMessages({
             lastCustomerMessageDateTime={lastCustomerMessage.get(
                 'sent_datetime',
             )}
+            isImpersonated={isImpersonated}
         >
             {messages?.map(
                 (message: TicketMessage_DEPRECATED, index: number) => {

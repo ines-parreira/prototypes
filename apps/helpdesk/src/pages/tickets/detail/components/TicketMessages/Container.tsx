@@ -52,6 +52,7 @@ type Props = {
     lastCustomerMessageDateTime?: string
     shouldDisplayAuditLogEvents?: boolean
     flags?: LDFlagSet
+    isImpersonated?: boolean
 }
 
 export class Container extends Component<Props> {
@@ -82,6 +83,7 @@ export class Container extends Component<Props> {
             shouldDisplayAuditLogEvents = false,
             isTicketAfterFeedbackCollectionPeriod = false,
             flags,
+            isImpersonated,
         } = this.props
 
         const hasTicketThreadRevamp =
@@ -93,6 +95,9 @@ export class Container extends Component<Props> {
 
         const showAiReasoning =
             !!flags?.[FeatureFlagKey.ShowAiReasoningInTicket]
+
+        const onlyShowReasoningWhileImpersonating =
+            !!flags?.[FeatureFlagKey.OnlyShowReasoningWhileImpersonating]
 
         const sender = fromJS(message.sender || {}) as Map<any, any>
         let avatar
@@ -260,7 +265,10 @@ export class Container extends Component<Props> {
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
                                 (isSimplifiedFeedbackCollectionEnabled ? (
-                                    showAiReasoning && message.id ? (
+                                    showAiReasoning &&
+                                    message.id &&
+                                    (isImpersonated ||
+                                        !onlyShowReasoningWhileImpersonating) ? (
                                         <AiAgentReasoning
                                             messageId={message.id}
                                         />

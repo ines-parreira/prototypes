@@ -1134,7 +1134,7 @@ describe('AiAgentReasoning', () => {
             {
                 resourceType: 'ACTION' as const,
                 resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
-                resourceSetId: '',
+                resourceSetId: 'uuid',
                 resourceTitle: 'Test Action',
                 resourceLocale: 'en',
                 taskIds: [],
@@ -1219,7 +1219,7 @@ describe('AiAgentReasoning', () => {
             ],
             [
                 'ACTION',
-                'Action <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> here',
+                'Action <<<action_execution::uuid>>> here',
                 [expectedActionResource],
             ],
 
@@ -1245,7 +1245,7 @@ describe('AiAgentReasoning', () => {
         it('should parse all resource types in a single string', () => {
             const content = `
                 Test <<<ARTICLE::16::13608>>> <<<GUIDANCE::26665::1045245>>> 
-                <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> 
+                <<<action_execution::uuid>>> 
                 <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> 
                 <<<ORDER::98765>>>
             `
