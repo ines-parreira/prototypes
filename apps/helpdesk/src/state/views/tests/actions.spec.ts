@@ -267,7 +267,7 @@ describe('actions', () => {
                 }),
             })
 
-            store.dispatch(fetchActiveViewTickets())
+            store.dispatch(actions.fetchActiveViewTickets())
             expect(mockServer.history.get[0].params).toBeUndefined()
         })
 
