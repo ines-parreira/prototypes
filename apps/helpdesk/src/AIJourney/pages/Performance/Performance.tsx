@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 
-import { motion } from 'framer-motion'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -76,9 +75,10 @@ export const Performance = () => {
         return currentIntegration?.id
     }, [currentIntegration])
 
-    const { data: merchantAiJourneys } = useJourneys(currentIntegration?.id, {
-        enabled: !!currentIntegration?.id,
-    })
+    const { data: merchantAiJourneys, isLoading: isLoadingJourneys } =
+        useJourneys(currentIntegration?.id, {
+            enabled: !!currentIntegration?.id,
+        })
 
     const abandonedCartJourney = merchantAiJourneys?.find(
         (journey) => journey.type === 'cart_abandoned',
@@ -121,14 +121,9 @@ export const Performance = () => {
             <DigestCard
                 content={digestContent(isDiscountEnabled)}
                 metrics={metrics}
-                isLoading={isLoadingJourneyParams}
+                isLoading={isLoadingJourneyParams || isLoadingJourneys}
             />
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                className={css.header}
-            >
+            <div className={css.header}>
                 <div>
                     <span className={css.filterPrimaryText}>Journeys</span>
                     <span className={css.filterSecondaryText}>
@@ -142,13 +137,8 @@ export const Performance = () => {
                         onChange={setFilter}
                     />
                 </div>
-            </motion.div>
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 1.2 }}
-                className={css.dashboardsContainer}
-            >
+            </div>
+            <div className={css.dashboardsContainer}>
                 {abandonedCartJourney &&
                     filteredUserJourneys.map(() => (
                         <AnalyticsCard
@@ -164,7 +154,7 @@ export const Performance = () => {
                 {filteredUpcomingJourneys.map((journey, index) => (
                     <JourneyPlaceholder name={journey.name} key={index} />
                 ))}
-            </motion.div>
+            </div>
         </div>
     )
 }

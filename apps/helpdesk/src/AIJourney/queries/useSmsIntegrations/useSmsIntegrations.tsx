@@ -25,7 +25,7 @@ export const useSmsIntegrations = (options: { enabled?: boolean } = {}) => {
         queryFn: () => getSmsIntegrationsInUse(accessToken!),
         enabled: true,
         refetchOnWindowFocus: false,
-        refetchOnMount: true,
+        refetchOnMount: false,
         ...options,
     })
 }

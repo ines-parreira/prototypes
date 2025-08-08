@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import Skeleton from 'react-loading-skeleton'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
@@ -21,15 +21,27 @@ export const DigestCard = ({
     metrics,
     isLoading,
 }: DigestCardProps) => {
-    const isEmpty = !content || !metrics?.length
+    const isEmpty = !content || !metrics?.length || isLoading
+
+    if (isLoading) {
+        return (
+            <div className={css.digestCard}>
+                <div className={css.digestHeader}>
+                    <PerformanceBadge />
+
+                    <div className={css.digestContent}>
+                        <Skeleton />
+                    </div>
+                </div>
+                <div className={css.digestMetrics}>
+                    <LoadingSpinner style={{ height: '25px', width: '25px' }} />
+                </div>
+            </div>
+        )
+    }
 
     return (
-        <motion.div
-            className={css.digestCard}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7 }}
-        >
+        <div className={css.digestCard}>
             <div className={css.digestHeader}>
                 <PerformanceBadge />
                 {isLoading && (
@@ -48,6 +60,6 @@ export const DigestCard = ({
                     ))
                 )}
             </div>
-        </motion.div>
+        </div>
     )
 }
