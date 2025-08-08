@@ -111,7 +111,7 @@ export default function GlobalNavigation() {
                     {isAiJourneyEnabled && (
                         <GlobalNavigationItem
                             as={Link}
-                            icon="chat"
+                            icon="route"
                             label="AI Journey"
                             isActive={activeItem === MenuItemName.AiJourney}
                             tooltip={<span>AI Journey</span>}

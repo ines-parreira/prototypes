@@ -193,11 +193,11 @@ describe('GlobalNavigation', () => {
             flag === FeatureFlagKey.AiJourneyEnabled ? true : false,
         )
         const { queryByText } = renderWithContext()
-        expect(queryByText('chat')).toBeInTheDocument()
+        expect(queryByText('route')).toBeInTheDocument()
     })
 
     it('should not render AI Journey icon if isAiJourneyEnabled feature flag is disabled', () => {
         const { queryByText } = renderWithContext()
-        expect(queryByText('chat')).not.toBeInTheDocument()
+        expect(queryByText('route')).not.toBeInTheDocument()
     })
 })
