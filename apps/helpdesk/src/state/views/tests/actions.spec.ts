@@ -256,6 +256,21 @@ describe('actions', () => {
             )
         })
 
+        it('should not include orderBy params when params are undefined', () => {
+            shouldFetchActiveViewTicketsMock.mockReturnValue(true)
+            const store = mockStore({
+                views: fromJS({
+                    active: {
+                        ...view,
+                        dirty: false,
+                    },
+                }),
+            })
+
+            store.dispatch(fetchActiveViewTickets())
+            expect(mockServer.history.get[0].params).toBeUndefined()
+        })
+
         it('should not include orderBy params when view is not dirty', () => {
             shouldFetchActiveViewTicketsMock.mockReturnValue(true)
             const viewOrderBy = 'created_datetime'
