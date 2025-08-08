@@ -9,8 +9,11 @@ import {
     LoadingSpinner,
 } from '@gorgias/merchant-ui-kit'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import { Drawer } from 'pages/common/components/Drawer'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './ItemSelectionDrawer.less'
 
@@ -48,6 +51,7 @@ export const ItemSelectionDrawer = ({
     onSubmit: (itemsIds: string[]) => Promise<void>
     onSearch: (searchTerm: string) => void
 }) => {
+    const dispatch = useAppDispatch()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [localSearchTerm, setLocalSearchTerm] = useState('')
     const [localSelectedItemIds, setLocalSelectedItemIds] =
@@ -217,8 +221,28 @@ export const ItemSelectionDrawer = ({
                         <Button
                             onClick={async () => {
                                 setIsSubmitting(true)
-                                await onSubmit(localSelectedItemIds)
-                                onClose()
+
+                                try {
+                                    await onSubmit(localSelectedItemIds)
+                                    onClose()
+
+                                    void dispatch(
+                                        notify({
+                                            message:
+                                                'Product recommendations saved.',
+                                            status: NotificationStatus.Success,
+                                        }),
+                                    )
+                                } catch {
+                                    void dispatch(
+                                        notify({
+                                            message:
+                                                'Failed to save product recommendations.',
+                                            status: NotificationStatus.Error,
+                                        }),
+                                    )
+                                }
+
                                 setIsSubmitting(false)
                             }}
                             intent="primary"

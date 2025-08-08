@@ -50,7 +50,7 @@ export const VendorRecommendationRuleCard = ({
         promote: {
             title: 'Promote vendors',
             description: 'Choose vendors to prioritize in recommendations.',
-            badge: { label: 'Promoted', type: 'light-success' as const },
+            badge: { label: '\u2605 Promoted', type: 'light-success' as const },
         },
         exclude: {
             title: 'Exclude vendors',

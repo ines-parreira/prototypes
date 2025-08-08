@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
 
@@ -12,6 +13,8 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 
 import { AiAgentProductRecommendationsExclude } from '../AiAgentProductRecommendationsExclude'
 import { allProducts, allTags, allVendors } from './data'
+
+jest.mock('hooks/useAppDispatch', () => jest.fn(() => jest.fn()))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -186,7 +189,11 @@ const renderComponent = (
         isLoading: false,
     }))
 
-    return render(<AiAgentProductRecommendationsExclude />)
+    return render(
+        <MemoryRouter>
+            <AiAgentProductRecommendationsExclude />
+        </MemoryRouter>,
+    )
 }
 
 describe('AiAgentProductRecommendationsExclude', () => {

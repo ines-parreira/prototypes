@@ -52,7 +52,7 @@ export const TagRecommendationRuleCard = ({
         promote: {
             title: 'Promote tags',
             description: 'Choose tags to prioritize in recommendations.',
-            badge: { label: 'Promoted', type: 'light-success' as const },
+            badge: { label: '\u2605 Promoted', type: 'light-success' as const },
         },
         exclude: {
             title: 'Exclude tags',

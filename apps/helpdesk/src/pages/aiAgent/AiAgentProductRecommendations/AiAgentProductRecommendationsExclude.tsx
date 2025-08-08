@@ -1,4 +1,6 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
@@ -8,6 +10,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { PRODUCT_RECOMMENDATIONS } from '../constants'
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
 import { VendorRecommendationRuleCard } from './components/VendorRecommendationRuleCard'
@@ -22,6 +25,7 @@ export const AiAgentProductRecommendationsExclude = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const gorgiasDomain = currentAccount.get('domain')
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const {
         data: productRecommendationRules,
@@ -82,6 +86,16 @@ export const AiAgentProductRecommendationsExclude = () => {
             title={PRODUCT_RECOMMENDATIONS}
             className={css.container}
         >
+            <Link to={routes.productRecommendations}>
+                <Button
+                    fillStyle="ghost"
+                    intent="secondary"
+                    leadingIcon="arrow_back"
+                >
+                    Back to {PRODUCT_RECOMMENDATIONS}
+                </Button>
+            </Link>
+
             <ProductRecommendationRuleCard
                 type="exclude"
                 integrationId={integrationId}

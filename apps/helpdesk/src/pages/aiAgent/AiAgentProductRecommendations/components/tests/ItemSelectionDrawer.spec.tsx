@@ -1,4 +1,7 @@
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { ItemSelectionDrawer } from '../ItemSelectionDrawer'
 
@@ -10,6 +13,14 @@ jest.spyOn(document, 'getElementById').mockImplementation((id) => {
     }
     return null
 })
+
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+const dispatchMock = jest.fn()
+;(useAppDispatch as jest.Mock).mockReturnValue(dispatchMock)
+
+jest.mock('state/notifications/actions', () => ({
+    notify: (value: any) => value,
+}))
 
 const mockOnSubmit = jest.fn().mockResolvedValue(undefined)
 const mockOnClose = jest.fn()
@@ -122,7 +133,7 @@ describe('ItemSelectionDrawer', () => {
         expect(screen.queryByText('Loading...')).toBeInTheDocument()
     })
 
-    it('should submit the selected items', () => {
+    it('should submit the selected items', async () => {
         const screen = renderComponent()
 
         fireEvent.click(screen.getByText('Test product 3'))
@@ -131,6 +142,15 @@ describe('ItemSelectionDrawer', () => {
         fireEvent.click(screen.getByText('Done'))
 
         expect(mockOnSubmit).toHaveBeenCalledWith(['3', '6', '8'])
+
+        await waitFor(() => expect(mockOnClose).toHaveBeenCalledTimes(1))
+
+        await waitFor(() =>
+            expect(dispatchMock).toHaveBeenCalledWith({
+                message: 'Product recommendations saved.',
+                status: NotificationStatus.Success,
+            }),
+        )
     })
 
     it('should correctly update the selected items', () => {
@@ -219,5 +239,26 @@ describe('ItemSelectionDrawer', () => {
         expect(mockChatContainer.style.display).toBe('none')
         unmount()
         expect(mockChatContainer.style.display).toBe('')
+    })
+
+    it('should show error notification when submit fails', async () => {
+        mockOnSubmit.mockRejectedValue(undefined)
+
+        const screen = renderComponent()
+
+        fireEvent.click(screen.getByText('Test product 4'))
+        fireEvent.click(screen.getByText('Test product 5'))
+        fireEvent.click(screen.getByText('Done'))
+
+        expect(mockOnSubmit).toHaveBeenCalledWith(['4', '5'])
+
+        await waitFor(() => expect(mockOnClose).toHaveBeenCalledTimes(0))
+
+        await waitFor(() =>
+            expect(dispatchMock).toHaveBeenCalledWith({
+                message: 'Failed to save product recommendations.',
+                status: NotificationStatus.Error,
+            }),
+        )
     })
 })

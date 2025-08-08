@@ -67,7 +67,7 @@ export const ProductRecommendationRuleCard = ({
         promote: {
             title: 'Promote products',
             description: 'Choose products to prioritize in recommendations.',
-            badge: { label: 'Promoted', type: 'light-success' as const },
+            badge: { label: '\u2605 Promoted', type: 'light-success' as const },
         },
         exclude: {
             title: 'Exclude products',
