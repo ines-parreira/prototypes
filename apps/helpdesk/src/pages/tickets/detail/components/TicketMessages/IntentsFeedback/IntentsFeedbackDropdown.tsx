@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import {
     Dropdown,
@@ -40,6 +41,8 @@ export const IntentsFeedbackDropdown = ({
     onContentMouseLeave?: () => void
     onBack?: () => void
 }) => {
+    const id = useId()
+    const scopedWithMessageTranslationId = `intent-feedback-dropdown-with-message-translation-${id}`
     const hasMessageTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const tooltipContainer = `intent-tooltip-${messageId}`
 
@@ -127,12 +130,27 @@ export const IntentsFeedbackDropdown = ({
                 onMouseLeave={() => _setOpen(false)}
             >
                 <DropdownToggle
+                    id={
+                        hasMessageTranslation
+                            ? scopedWithMessageTranslationId
+                            : undefined
+                    }
                     className={classnames(css.toggleMenu, {
                         [css.hasMessageTranslation]: hasMessageTranslation,
                     })}
                 >
                     {hasMessageTranslation ? (
-                        <i className="material-icons">topic</i>
+                        <>
+                            <i className="material-icons">topic</i>
+                            <Tooltip
+                                target={scopedWithMessageTranslationId}
+                                boundariesElement="viewport"
+                                placement="bottom"
+                                offset="0, 8"
+                            >
+                                <span>Message intent: {label}</span>
+                            </Tooltip>
+                        </>
                     ) : (
                         <>
                             <span className={classnames('mr-1', css.menuLabel)}>

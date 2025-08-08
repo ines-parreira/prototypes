@@ -231,5 +231,36 @@ describe('<IntentsFeedbackDropdown/>', () => {
 
             expect(screen.getByText('info_outline')).toBeInTheDocument()
         })
+
+        it('should display tooltip with correct content when feature flag is enabled', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            render(<IntentsFeedbackDropdown {...minProps} />)
+
+            const toggleButton = screen.getByRole('button')
+            await act(async () => {
+                await user.hover(toggleButton)
+            })
+
+            const tooltip = screen.getByText(
+                'Message intent: no intent detected',
+            )
+            expect(tooltip).toBeInTheDocument()
+        })
+        it('should not display tooltip when feature flag is disabled', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(false)
+            render(<IntentsFeedbackDropdown {...minProps} />)
+
+            const toggleButton = screen.getByRole('button')
+            await act(async () => {
+                await user.hover(toggleButton)
+            })
+
+            const tooltip = screen.queryByText(
+                'Message intent: no intent detected',
+            )
+            expect(tooltip).not.toBeInTheDocument()
+        })
     })
 })

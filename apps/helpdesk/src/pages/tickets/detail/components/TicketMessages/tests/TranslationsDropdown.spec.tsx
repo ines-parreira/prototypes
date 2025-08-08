@@ -108,4 +108,17 @@ describe('TranslationsDropdown', () => {
             ).toBeInTheDocument()
         })
     })
+
+    it('should display tooltip with correct content', async () => {
+        const user = userEvent.setup()
+        render(<TranslationsDropdown />)
+
+        const toggleButton = screen.getByRole('button')
+        await act(async () => {
+            await user.hover(toggleButton)
+        })
+
+        const tooltip = screen.getByText('Translations menu')
+        expect(tooltip).toBeInTheDocument()
+    })
 })

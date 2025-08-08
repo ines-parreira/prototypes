@@ -1,12 +1,17 @@
 import { useState } from 'react'
 
+import { useId } from '@repo/hooks'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './TranslationsDropdown.less'
 
 export function TranslationsDropdown() {
     const [isTranslationsDropdownOpen, setTranslationsDropdownOpen] =
         useState(false)
+    const id = useId()
+    const scopedId = `translations-dropdown-${id}`
 
     return (
         <>
@@ -16,7 +21,7 @@ export function TranslationsDropdown() {
                 toggle={() => setTranslationsDropdownOpen((isOpen) => !isOpen)}
                 className={css.dropdown}
             >
-                <DropdownToggle className={css.dropdownToggle}>
+                <DropdownToggle id={scopedId} className={css.dropdownToggle}>
                     <i
                         className="material-icons"
                         aria-label="Translate message"
@@ -24,6 +29,15 @@ export function TranslationsDropdown() {
                         translate
                     </i>
                 </DropdownToggle>
+                <Tooltip
+                    target={scopedId}
+                    boundariesElement="viewport"
+                    placement="left"
+                    offset="0, 8"
+                >
+                    <span>Translations menu</span>
+                </Tooltip>
+
                 <DropdownMenu right className={css.menuWrapper}>
                     <ul className={css.translationsList}>
                         <TranslationsItem onClick={() => {}}>
