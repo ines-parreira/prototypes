@@ -49,6 +49,7 @@ export enum ViewField {
     QAScore = 'qa_score',
     Priority = 'priority',
     Store = 'store',
+    Feedback = 'feedback',
 }
 
 export enum ViewVisibility {

@@ -82,6 +82,7 @@ export enum FeatureFlagKey {
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',
     ConvertPerformanceView = 'convert-performance-view',
+    CreateDedicatedReviewTicketViewEnableNewFilters = 'linear.project_create-dedicated-review-ticket-view.enable-new-filters',
     CustomerTimelineDrawerUX = 'linear.task_SUPXP-3671.customer-timeline-drawer-ux',
     DefaultEmailAddress = 'default-email-address',
     DesktopNotifications = 'linear.project_desktop-notifications.enabled',

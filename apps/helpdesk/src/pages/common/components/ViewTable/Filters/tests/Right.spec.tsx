@@ -1,7 +1,7 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
 import { userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { Expression, Identifier } from 'estree'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,6 +13,7 @@ import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/
 import { IntegrationType } from 'models/integration/constants'
 import { IntegrationFromType } from 'models/integration/types'
 import { RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
+import { FEEDBACK_VALUE_TYPE_FILTER_OPTIONS } from 'pages/common/components/ViewTable/Filters/utils/feedbackValueTypeFilterOptions'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import { CHANNELS } from 'tickets/common/config'
 
@@ -31,12 +32,25 @@ jest.mock(
         },
 )
 
-jest.mock('pages/common/forms/MultiSelectField', () =>
-    jest.fn(() => {
-        return <div data-testid="multi-select-field">MultiSelectField</div>
-    }),
+jest.mock(
+    'pages/common/forms/MultiSelectField',
+    () =>
+        ({ onChange, options }: ComponentProps<typeof MultiSelectField>) => {
+            return (
+                <div data-testid="multi-select-field">
+                    MultiSelectField
+                    {options.map((option) => (
+                        <div
+                            key={option.value}
+                            onClick={() => onChange([option.value])}
+                        >
+                            {option.label}
+                        </div>
+                    ))}
+                </div>
+            )
+        },
 )
-const MultiSelectFieldMock = MultiSelectField as unknown as jest.Mock
 
 jest.mock('pages/common/forms/TimedeltaPicker', () => () => {
     return <div data-testid="timedelta-picker">TimedeltaPicker</div>
@@ -600,6 +614,40 @@ describe('<Right />', () => {
         expect(getByTestId('multi-select-field')).toBeInTheDocument()
     })
 
+    it('should render MultiSelectField for Feedback', () => {
+        const feedbackField = fromJS({
+            name: 'feedback',
+            title: 'Feedback',
+            filter: { enum: FEEDBACK_VALUE_TYPE_FILTER_OPTIONS },
+        })
+        const node = {
+            type: 'ArrayExpression',
+            elements: [
+                {
+                    type: 'Literal',
+                    value: 'TICKET_RATING_GOOD',
+                    raw: "'TICKET_RATING_GOOD'",
+                },
+            ],
+        } as Expression
+        const props = { ...minProps, field: feedbackField, node }
+
+        const { getByTestId, getByText } = render(
+            <Provider store={store}>
+                <RightContainer {...props} />
+            </Provider>,
+        )
+
+        expect(getByTestId('multi-select-field')).toBeInTheDocument()
+        expect(getByText('Thumbs Down')).toBeInTheDocument()
+        expect(getByText('Thumbs Up')).toBeInTheDocument()
+        fireEvent.click(getByText('Thumbs Down'))
+
+        expect(updateFieldFilterMock).toHaveBeenCalledWith(minProps.index, [
+            'KNOWLEDGE_THUMBS_DOWN',
+        ])
+    })
+
     it('should render default clickable dropdown and toggle FilterDropdown', () => {
         const otherField = fromJS({ name: 'other_field', title: 'Other Field' })
         const node = {
@@ -694,31 +742,20 @@ describe('<Right />', () => {
                 ],
             }
 
-            const { getByTestId } = render(
+            const { getByTestId, getByText } = render(
                 <Provider store={store}>
                     <RightContainer {...props} />
                 </Provider>,
             )
 
             expect(getByTestId('multi-select-field')).toBeInTheDocument()
-            expect(MultiSelectFieldMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    values: [1, 2],
-                    options: [
-                        {
-                            label: 'Store 1',
-                            value: 1,
-                            displayLabel: expect.anything(),
-                        },
-                        {
-                            label: 'Store 2',
-                            value: 2,
-                            displayLabel: expect.anything(),
-                        },
-                    ],
-                }),
-                expect.anything(),
-            )
+            expect(getByText('Store 1')).toBeInTheDocument()
+            expect(getByText('Store 2')).toBeInTheDocument()
+
+            fireEvent.click(getByText('Store 1'))
+            expect(updateFieldFilterMock).toHaveBeenCalledWith(minProps.index, [
+                1,
+            ])
         })
 
         it('should render store value for single store value', () => {

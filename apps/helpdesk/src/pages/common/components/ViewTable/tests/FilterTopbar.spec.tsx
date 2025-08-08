@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { mockSearchRank } from 'fixtures/searchRank'
@@ -825,5 +826,38 @@ describe('<FilterTopbar />', () => {
         fireEvent.click(addFilterButton)
 
         expect(screen.getByText('Store')).toBeInTheDocument()
+    })
+
+    it('should not render feedback filter when FF is disabled', () => {
+        mockUseFlag.mockImplementation((f) =>
+            f === FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters
+                ? false
+                : true,
+        )
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = screen.getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(screen.queryByText('AI Agent feedback')).not.toBeInTheDocument()
+    })
+
+    it('should render feedback filter when FF is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = screen.getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(screen.getByText('AI Agent feedback')).toBeInTheDocument()
     })
 })

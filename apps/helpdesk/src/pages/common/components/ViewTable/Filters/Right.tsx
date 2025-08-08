@@ -511,6 +511,30 @@ export class RightContainer extends Component<Props, State> {
                     />
                 )
             }
+        } else if (fieldName === ViewField.Feedback) {
+            if (node.type === 'ArrayExpression') {
+                const selectedOptions = node.elements.map(
+                    (opt) => (opt as Literal).value,
+                )
+                const options = (
+                    field.getIn(['filter', 'enum']) as List<{
+                        value: string
+                        label: string
+                    }>
+                ).toJS()
+
+                return (
+                    <MultiSelectField
+                        values={selectedOptions}
+                        options={options}
+                        singular="feedback value"
+                        plural="feedback values"
+                        onChange={(value: Option[]) =>
+                            updateFieldFilter(index, value)
+                        }
+                    />
+                )
+            }
         }
 
         const safeDisplayValue =

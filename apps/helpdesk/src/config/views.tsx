@@ -15,6 +15,7 @@ import {
     ViewVisibility,
 } from 'models/view/types'
 import { trimWithEllipsisBeforeTheHighlight } from 'pages/common/components/Spotlight/helpers'
+import { FEEDBACK_VALUE_TYPE_FILTER_OPTIONS } from 'pages/common/components/ViewTable/Filters/utils/feedbackValueTypeFilterOptions'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { getChannels } from 'services/channels'
 import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
@@ -376,6 +377,15 @@ export const defaultTicketView = {
             title: 'Store',
             path: 'store_id',
             filter: {},
+            show: false,
+        },
+        {
+            name: ViewField.Feedback,
+            title: 'AI Agent feedback',
+            path: 'feedback.value',
+            filter: {
+                enum: FEEDBACK_VALUE_TYPE_FILTER_OPTIONS,
+            },
             show: false,
         },
     ],

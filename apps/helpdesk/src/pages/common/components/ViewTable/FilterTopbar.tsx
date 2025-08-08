@@ -381,6 +381,10 @@ export const FilterTopbar = ({
         FeatureFlagKey.EnableCustomerSatisfactionQaFiltersInViews,
     )
 
+    const isAIAgentFeedbackFilterEnabled = useFlag(
+        FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
+    )
+
     const hasPriorityFilteringEnabled = useFlag(
         FeatureFlagKey.TicketAllowPriorityUsage,
     )
@@ -414,6 +418,13 @@ export const FilterTopbar = ({
                         return false
                     }
 
+                    if (
+                        fieldName === ViewField.Feedback &&
+                        !isAIAgentFeedbackFilterEnabled
+                    ) {
+                        return false
+                    }
+
                     if (field.get('path', '') === 'custom_fields') {
                         return isSearch ? true : isTicketFieldsViewFilterEnabled
                     }
@@ -435,6 +446,7 @@ export const FilterTopbar = ({
             isFilterViewsByStoreEnabled,
             isSearch,
             isTicketFieldsViewFilterEnabled,
+            isAIAgentFeedbackFilterEnabled,
         ],
     )
 
