@@ -244,7 +244,6 @@ const useNavigationItems = (
                                   isAiShoppingAssistantProductRecommendationsEnabled && {
                                       route: routes.productRecommendations,
                                       title: PRODUCT_RECOMMENDATIONS,
-                                      exact: true,
                                   },
                           ].filter((x) => !!x) as NavigationItem[])
                         : undefined,

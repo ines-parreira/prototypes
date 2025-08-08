@@ -23,6 +23,7 @@ export const RecommendationRuleCard = ({
     itemLabelPlural,
     items,
     onDelete,
+    onSeeAllClick,
 }: {
     title: string
     description: string
@@ -45,6 +46,7 @@ export const RecommendationRuleCard = ({
         img?: string
     }>
     onDelete: (id: string) => Promise<void>
+    onSeeAllClick: () => void
 }) => {
     const [deletingItemId, setDeletingItemId] = useState<string | null>(null)
 
@@ -92,7 +94,7 @@ export const RecommendationRuleCard = ({
             )}
 
             {!isLoading &&
-                items?.map((item) => (
+                items.slice(0, 4).map((item) => (
                     <div key={item.id} className={css.item}>
                         {hasImages && (
                             <div>
@@ -139,6 +141,21 @@ export const RecommendationRuleCard = ({
                         </div>
                     </div>
                 ))}
+
+            {!isLoading && items.length > 4 && (
+                <div className={css.seeAll}>
+                    <Button
+                        intent="secondary"
+                        fillStyle="ghost"
+                        onClick={onSeeAllClick}
+                        isDisabled={disableActions}
+                        aria-label={`See All ${itemLabelPlural[0].toUpperCase()}${itemLabelPlural.slice(1)}`}
+                    >
+                        See All {itemLabelPlural[0].toUpperCase()}
+                        {itemLabelPlural.slice(1)}
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

@@ -1,4 +1,9 @@
-import { fireEvent, render } from '@testing-library/react'
+import {
+    fireEvent,
+    isInaccessible,
+    render,
+    RenderResult,
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
@@ -197,6 +202,10 @@ const renderComponent = (
     )
 }
 
+const queryAllByTextAccessible = (screen: RenderResult, text: string) => {
+    return screen.queryAllByText(text).filter((el) => !isInaccessible(el))
+}
+
 describe('AiAgentProductRecommendationsPromote', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -205,53 +214,74 @@ describe('AiAgentProductRecommendationsPromote', () => {
     it('should render the component correctly', () => {
         const screen = renderComponent()
 
-        expect(screen.queryByText('Promote products')).toBeInTheDocument()
-        expect(screen.queryByText('4 products')).toBeInTheDocument()
+        expect(
+            queryAllByTextAccessible(screen, 'Promote products'),
+        ).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, '4 products')).toHaveLength(1)
 
-        expect(screen.queryAllByText('Men’s Compression Top')).toHaveLength(2)
-        expect(screen.queryAllByText('Moisture-Wicking T-Shirt')).toHaveLength(
-            2,
+        expect(
+            queryAllByTextAccessible(screen, 'Men’s Compression Top'),
+        ).toHaveLength(1)
+        expect(
+            queryAllByTextAccessible(screen, 'Moisture-Wicking T-Shirt'),
+        ).toHaveLength(1)
+        expect(
+            queryAllByTextAccessible(screen, 'Youth Track Pants'),
+        ).toHaveLength(1)
+        expect(
+            queryAllByTextAccessible(screen, 'CrossFit Shorts'),
+        ).toHaveLength(1)
+
+        expect(queryAllByTextAccessible(screen, 'Promote tags')).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, '4 tags')).toHaveLength(1)
+
+        expect(queryAllByTextAccessible(screen, 'Gym Gear')).toHaveLength(1)
+        expect(
+            queryAllByTextAccessible(screen, 'Moisture-Wicking'),
+        ).toHaveLength(1)
+        expect(
+            queryAllByTextAccessible(screen, 'Four-Way Stretch'),
+        ).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, 'Speed Training')).toHaveLength(
+            1,
         )
-        expect(screen.queryAllByText('Youth Track Pants')).toHaveLength(2)
-        expect(screen.queryAllByText('CrossFit Shorts')).toHaveLength(2)
 
-        expect(screen.queryByText('Promote tags')).toBeInTheDocument()
-        expect(screen.queryByText('4 tags')).toBeInTheDocument()
+        expect(
+            queryAllByTextAccessible(screen, 'Promote vendors'),
+        ).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, '5 vendors')).toHaveLength(1)
 
-        expect(screen.queryAllByText('Gym Gear')).toHaveLength(2)
-        expect(screen.queryAllByText('Moisture-Wicking')).toHaveLength(2)
-        expect(screen.queryAllByText('Four-Way Stretch')).toHaveLength(2)
-        expect(screen.queryAllByText('Speed Training')).toHaveLength(2)
-
-        expect(screen.queryByText('Promote vendors')).toBeInTheDocument()
-        expect(screen.queryByText('5 vendors')).toBeInTheDocument()
-
-        expect(screen.queryAllByText('ASICS')).toHaveLength(2)
-        expect(screen.queryAllByText('New Balance')).toHaveLength(2)
-        expect(screen.queryAllByText('Spalding')).toHaveLength(2)
-        expect(screen.queryAllByText('The North Face')).toHaveLength(2)
-        expect(screen.queryAllByText('Salomon')).toHaveLength(2)
+        expect(queryAllByTextAccessible(screen, 'ASICS')).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, 'New Balance')).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, 'Spalding')).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, 'The North Face')).toHaveLength(
+            1,
+        )
+        expect(queryAllByTextAccessible(screen, 'Salomon')).toHaveLength(0)
     })
 
     it('should update products correctly', () => {
         const screen = renderComponent()
 
-        const addButton = screen.getAllByText('Add products')[0]
+        const addButton = queryAllByTextAccessible(screen, 'Add products')[0]
         fireEvent.click(addButton)
 
         // Remove product
-        const product1 = screen.getAllByText('Men’s Compression Top')[1]
+        const product1 = queryAllByTextAccessible(
+            screen,
+            'Men’s Compression Top',
+        )[1]
         fireEvent.click(product1)
 
         // Add product
-        const product2 = screen.getByText('Kids Active Tee')
+        const product2 = queryAllByTextAccessible(screen, 'Kids Active Tee')[0]
         fireEvent.click(product2)
 
         // Add product
-        const product3 = screen.getByText('Fitness Gloves')
+        const product3 = queryAllByTextAccessible(screen, 'Fitness Gloves')[0]
         fireEvent.click(product3)
 
-        const submitButton = screen.getAllByText('Done')[0]
+        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -270,6 +300,57 @@ describe('AiAgentProductRecommendationsPromote', () => {
                             { target: '12' },
                             { target: '16' },
                             { target: '19' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should update products through see all drawer correctly', () => {
+        const screen = renderComponent({
+            selectedProducts: [2, 4, 11, 16, 17, 18, 20],
+        })
+
+        const seeAllButton = queryAllByTextAccessible(
+            screen,
+            'See All Products',
+        )[0]
+        fireEvent.click(seeAllButton)
+
+        const product1 = queryAllByTextAccessible(
+            screen,
+            'Men’s Compression Top',
+        )[1]
+        fireEvent.click(product1)
+
+        const product2 = queryAllByTextAccessible(screen, 'Slim Fit Gym Tee')[0]
+        fireEvent.click(product2)
+
+        const product3 = queryAllByTextAccessible(
+            screen,
+            'Men’s Training Joggers',
+        )[0]
+        fireEvent.click(product3)
+
+        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        fireEvent.click(submitButton)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultTagRules,
+                    defaultVendorRules,
+                    {
+                        type: 'product',
+                        items: [
+                            { target: '4' },
+                            { target: '11' },
+                            { target: '16' },
+                            { target: '18' },
                         ],
                     },
                 ],
@@ -309,26 +390,26 @@ describe('AiAgentProductRecommendationsPromote', () => {
     it('should update tags correctly', () => {
         const screen = renderComponent()
 
-        const addButton = screen.getAllByText('Add tags')[0]
+        const addButton = queryAllByTextAccessible(screen, 'Add tags')[0]
         fireEvent.click(addButton)
 
         // Remove tag
-        const tag1 = screen.getAllByText('Four-Way Stretch')[1]
+        const tag1 = queryAllByTextAccessible(screen, 'Four-Way Stretch')[1]
         fireEvent.click(tag1)
 
         // Add tag
-        const tag2 = screen.getByText('Track & Field')
+        const tag2 = queryAllByTextAccessible(screen, 'Track & Field')[0]
         fireEvent.click(tag2)
 
         // Add tag
-        const tag3 = screen.getByText('Lightweight Material')
+        const tag3 = queryAllByTextAccessible(screen, 'Lightweight Material')[0]
         fireEvent.click(tag3)
 
         // Add tag
-        const tag4 = screen.getByText('CrossFit Apparel')
+        const tag4 = queryAllByTextAccessible(screen, 'CrossFit Apparel')[0]
         fireEvent.click(tag4)
 
-        const submitButton = screen.getAllByText('Done')[1]
+        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -348,6 +429,50 @@ describe('AiAgentProductRecommendationsPromote', () => {
                             { target: 'Track & Field' },
                             { target: 'Lightweight Material' },
                             { target: 'CrossFit Apparel' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should update tags through see all drawer correctly', () => {
+        const screen = renderComponent({
+            selectedTags: [
+                'Yoga Clothing',
+                'Gym Gear',
+                'Speed Training',
+                'Compression Wear',
+                'Relaxed Fit',
+                'Slim Fit',
+            ],
+        })
+
+        const seeAllButton = queryAllByTextAccessible(screen, 'See All Tags')[0]
+        fireEvent.click(seeAllButton)
+
+        const product1 = queryAllByTextAccessible(screen, 'Gym Gear')[1]
+        fireEvent.click(product1)
+
+        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        fireEvent.click(submitButton)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultProductRules,
+                    defaultVendorRules,
+                    {
+                        type: 'tag',
+                        items: [
+                            { target: 'Yoga Clothing' },
+                            { target: 'Speed Training' },
+                            { target: 'Compression Wear' },
+                            { target: 'Relaxed Fit' },
+                            { target: 'Slim Fit' },
                         ],
                     },
                 ],
@@ -385,30 +510,30 @@ describe('AiAgentProductRecommendationsPromote', () => {
     it('should update vendors correctly', () => {
         const screen = renderComponent()
 
-        const addButton = screen.getAllByText('Add vendors')[0]
+        const addButton = queryAllByTextAccessible(screen, 'Add vendors')[0]
         fireEvent.click(addButton)
 
         // Remove vendor
-        const vendor1 = screen.getAllByText('Salomon')[1]
+        const vendor1 = queryAllByTextAccessible(screen, 'Salomon')[0]
         fireEvent.click(vendor1)
 
         // Remove vendor
-        const vendor2 = screen.getAllByText('ASICS')[1]
+        const vendor2 = queryAllByTextAccessible(screen, 'ASICS')[1]
         fireEvent.click(vendor2)
 
         // Add vendor
-        const vendor3 = screen.getByText('Puma')
+        const vendor3 = queryAllByTextAccessible(screen, 'Puma')[0]
         fireEvent.click(vendor3)
 
         // Add vendor
-        const vendor4 = screen.getByText('Franklin Sports')
+        const vendor4 = queryAllByTextAccessible(screen, 'Franklin Sports')[0]
         fireEvent.click(vendor4)
 
         // Add vendor
-        const vendor5 = screen.getByText('ProForm')
+        const vendor5 = queryAllByTextAccessible(screen, 'ProForm')[0]
         fireEvent.click(vendor5)
 
-        const submitButton = screen.getAllByText('Done')[2]
+        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -428,6 +553,57 @@ describe('AiAgentProductRecommendationsPromote', () => {
                             { target: 'Puma' },
                             { target: 'Franklin Sports' },
                             { target: 'ProForm' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should update vendors through see all drawer correctly', () => {
+        const screen = renderComponent({
+            selectedVendors: [
+                'Nike',
+                'Adidas',
+                'Rawlings',
+                'Easton',
+                'Mizuno',
+                'TRX Training',
+                'Rogue Fitness',
+            ],
+        })
+
+        const seeAllButton = queryAllByTextAccessible(
+            screen,
+            'See All Vendors',
+        )[0]
+        fireEvent.click(seeAllButton)
+
+        const product1 = queryAllByTextAccessible(screen, 'Nike')[1]
+        fireEvent.click(product1)
+
+        const product2 = queryAllByTextAccessible(screen, 'Mizuno')[0]
+        fireEvent.click(product2)
+
+        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        fireEvent.click(submitButton)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    {
+                        type: 'vendor',
+                        items: [
+                            { target: 'Adidas' },
+                            { target: 'Rawlings' },
+                            { target: 'Easton' },
+                            { target: 'TRX Training' },
+                            { target: 'Rogue Fitness' },
                         ],
                     },
                 ],

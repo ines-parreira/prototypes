@@ -4,6 +4,7 @@ import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
 
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
+import { SelectedItemsDrawer } from './SelectedItemsDrawer'
 
 export const TagRecommendationRuleCard = ({
     type,
@@ -23,6 +24,7 @@ export const TagRecommendationRuleCard = ({
     onUpsert: (tags: string[]) => Promise<any>
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [isSeeAllDrawerOpen, setIsSeeAllDrawerOpen] = useState(false)
     const [isEnabled, setIsEnabled] = useState(false)
     const [params, setParams] = useState<
         Parameters<typeof useGetEcommerceLookupValues>[2]
@@ -44,7 +46,16 @@ export const TagRecommendationRuleCard = ({
         { enabled: isEnabled },
     )
 
-    const allTags = data?.data || []
+    const allTags = (data?.data || []).map((tag) => ({
+        id: tag.value,
+        title: tag.value,
+    }))
+
+    const selectedTags = tags.map((tag) => ({
+        id: tag,
+        title: tag,
+    }))
+
     const { next_cursor: nextCursor, prev_cursor: prevCursor } =
         data?.metadata || {}
 
@@ -76,13 +87,11 @@ export const TagRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="tag"
                 itemLabelPlural="tags"
-                items={tags.map((tag) => ({
-                    id: tag,
-                    title: tag,
-                }))}
+                items={selectedTags}
                 onDelete={(deletedTag: string) =>
                     onUpsert(tags.filter((tag) => tag !== deletedTag))
                 }
+                onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
             />
 
             <ItemSelectionDrawer
@@ -94,10 +103,7 @@ export const TagRecommendationRuleCard = ({
                 selectedItemIds={tags}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
-                items={allTags.map((tag) => ({
-                    id: tag.value,
-                    title: tag.value,
-                }))}
+                items={allTags}
                 pagination={{
                     hasNextPage: !!nextCursor,
                     hasPrevPage: !!prevCursor,
@@ -111,6 +117,16 @@ export const TagRecommendationRuleCard = ({
                 onSearch={(value) => {
                     setParams({ ...params, value })
                 }}
+            />
+
+            <SelectedItemsDrawer
+                title="All tags"
+                itemLabelPlural="tags"
+                items={selectedTags}
+                isOpen={isSeeAllDrawerOpen}
+                hasImages={false}
+                onClose={() => setIsSeeAllDrawerOpen(false)}
+                onSubmit={onUpsert}
             />
         </div>
     )

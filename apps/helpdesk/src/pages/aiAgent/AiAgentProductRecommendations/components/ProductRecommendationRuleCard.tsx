@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 
+import { Product } from 'constants/integrations/types/shopify'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
+import { SelectedItemsDrawer } from './SelectedItemsDrawer'
 
 export const ProductRecommendationRuleCard = ({
     type,
@@ -24,6 +26,7 @@ export const ProductRecommendationRuleCard = ({
     onUpsert: (productIds: string[]) => Promise<any>
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [isSeeAllDrawerOpen, setIsSeeAllDrawerOpen] = useState(false)
     const [isEnabled, setIsEnabled] = useState(false)
 
     // Only load products when drawer is open
@@ -76,6 +79,13 @@ export const ProductRecommendationRuleCard = ({
         },
     }
 
+    const mapProducts = (products: Product[]) =>
+        products.map((product) => ({
+            id: product.id.toString(),
+            title: product.title,
+            img: product.image?.src,
+        }))
+
     return (
         <div>
             <RecommendationRuleCard
@@ -91,11 +101,7 @@ export const ProductRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="product"
                 itemLabelPlural="products"
-                items={selectedProducts.map((product) => ({
-                    id: product.id.toString(),
-                    title: product.title,
-                    img: product.image?.src,
-                }))}
+                items={mapProducts(selectedProducts)}
                 onDelete={(deletedProductId: string) =>
                     onUpsert(
                         selectedProducts
@@ -105,6 +111,7 @@ export const ProductRecommendationRuleCard = ({
                             ),
                     )
                 }
+                onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
             />
 
             <ItemSelectionDrawer
@@ -116,13 +123,7 @@ export const ProductRecommendationRuleCard = ({
                 selectedItemIds={productIds}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
-                items={
-                    allProducts?.map((product) => ({
-                        id: product.id.toString(),
-                        title: product.title,
-                        img: product.image?.src,
-                    })) || []
-                }
+                items={mapProducts(allProducts)}
                 pagination={{
                     hasNextPage,
                     hasPrevPage,
@@ -130,6 +131,16 @@ export const ProductRecommendationRuleCard = ({
                     onPrevClick: fetchPrev,
                 }}
                 onSearch={setSearchTerm}
+            />
+
+            <SelectedItemsDrawer
+                title="All products"
+                itemLabelPlural="products"
+                items={mapProducts(selectedProducts)}
+                isOpen={isSeeAllDrawerOpen}
+                hasImages={true}
+                onClose={() => setIsSeeAllDrawerOpen(false)}
+                onSubmit={onUpsert}
             />
         </div>
     )

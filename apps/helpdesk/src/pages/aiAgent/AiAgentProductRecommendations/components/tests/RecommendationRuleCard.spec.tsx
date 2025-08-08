@@ -4,6 +4,7 @@ import { RecommendationRuleCard } from '../RecommendationRuleCard'
 
 const mockOnAddButtonClick = jest.fn()
 const mockOnDelete = jest.fn()
+const mockOnSeeAllClick = jest.fn()
 
 const renderComponent = (
     options: {
@@ -54,6 +55,7 @@ const renderComponent = (
             itemLabelPlural={itemLabelPlural}
             items={items}
             onDelete={mockOnDelete}
+            onSeeAllClick={mockOnSeeAllClick}
         />,
     )
 }
@@ -75,7 +77,7 @@ describe('RecommendationRuleCard', () => {
         expect(screen.queryByText('8 products')).toBeInTheDocument()
 
         const badges = screen.getAllByText('Excluded')
-        expect(badges).toHaveLength(8)
+        expect(badges).toHaveLength(4)
 
         const button = screen.getByRole('button', { name: 'Add Products' })
         expect(button).toBeInTheDocument()
@@ -127,10 +129,10 @@ describe('RecommendationRuleCard', () => {
         expect(screen.queryByText('Test product 2')).toBeInTheDocument()
         expect(screen.queryByText('Test product 3')).toBeInTheDocument()
         expect(screen.queryByText('Test product 4')).toBeInTheDocument()
-        expect(screen.queryByText('Test product 5')).toBeInTheDocument()
-        expect(screen.queryByText('Test product 6')).toBeInTheDocument()
-        expect(screen.queryByText('Test product 7')).toBeInTheDocument()
-        expect(screen.queryByText('Test product 8')).toBeInTheDocument()
+        expect(screen.queryByText('Test product 5')).not.toBeInTheDocument()
+        expect(screen.queryByText('Test product 6')).not.toBeInTheDocument()
+        expect(screen.queryByText('Test product 7')).not.toBeInTheDocument()
+        expect(screen.queryByText('Test product 8')).not.toBeInTheDocument()
 
         expect(
             screen.container.querySelectorAll('[data-testid="item-image"]')
@@ -140,7 +142,7 @@ describe('RecommendationRuleCard', () => {
             screen.container.querySelectorAll(
                 '[data-testid="item-image-placeholder"]',
             ).length,
-        ).toBe(6)
+        ).toBe(2)
     })
 
     it('should not render images when hasImages is false', () => {
@@ -171,28 +173,28 @@ describe('RecommendationRuleCard', () => {
 
         expect(
             screen.getAllByRole('button', { name: 'Remove product' }),
-        ).toHaveLength(8)
+        ).toHaveLength(4)
         expect(screen.queryAllByText('Loading...')).toHaveLength(0)
 
         const button1 = screen.getAllByRole('button', {
             name: 'Remove product',
-        })[4]
+        })[2]
         fireEvent.click(button1)
 
         expect(mockOnDelete).toHaveBeenCalledTimes(1)
-        expect(mockOnDelete).toHaveBeenCalledWith('5')
+        expect(mockOnDelete).toHaveBeenCalledWith('3')
 
         const button2 = screen.getAllByRole('button', {
             name: 'Remove product',
-        })[6]
+        })[2]
         fireEvent.click(button2)
 
         expect(mockOnDelete).toHaveBeenCalledTimes(2)
-        expect(mockOnDelete).toHaveBeenCalledWith('8')
+        expect(mockOnDelete).toHaveBeenCalledWith('4')
 
         expect(
             screen.getAllByRole('button', { name: 'Remove product' }),
-        ).toHaveLength(7)
+        ).toHaveLength(3)
         expect(screen.queryAllByText('Loading...')).toHaveLength(1)
     })
 })

@@ -4,6 +4,7 @@ import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
 
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
+import { SelectedItemsDrawer } from './SelectedItemsDrawer'
 
 export const VendorRecommendationRuleCard = ({
     type,
@@ -23,6 +24,7 @@ export const VendorRecommendationRuleCard = ({
     onUpsert: (vendors: string[]) => Promise<any>
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [isSeeAllDrawerOpen, setIsSeeAllDrawerOpen] = useState(false)
     const [isEnabled, setIsEnabled] = useState(false)
     const [params, setParams] = useState<
         Parameters<typeof useGetEcommerceLookupValues>[2]
@@ -42,7 +44,16 @@ export const VendorRecommendationRuleCard = ({
             enabled: isEnabled,
         })
 
-    const allVendors = data?.data || []
+    const allVendors = (data?.data || []).map((vendor) => ({
+        id: vendor.value,
+        title: vendor.value,
+    }))
+
+    const selectedVendors = vendors.map((vendor) => ({
+        id: vendor,
+        title: vendor,
+    }))
+
     const { next_cursor: nextCursor, prev_cursor: prevCursor } =
         data?.metadata || {}
 
@@ -74,15 +85,13 @@ export const VendorRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="vendor"
                 itemLabelPlural="vendors"
-                items={vendors.map((vendor) => ({
-                    id: vendor,
-                    title: vendor,
-                }))}
+                items={selectedVendors}
                 onDelete={(deletedVendor: string) =>
                     onUpsert(
                         vendors.filter((vendor) => vendor !== deletedVendor),
                     )
                 }
+                onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
             />
 
             <ItemSelectionDrawer
@@ -94,10 +103,7 @@ export const VendorRecommendationRuleCard = ({
                 selectedItemIds={vendors}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
-                items={allVendors.map((vendor) => ({
-                    id: vendor.value,
-                    title: vendor.value,
-                }))}
+                items={allVendors}
                 pagination={{
                     hasNextPage: !!nextCursor,
                     hasPrevPage: !!prevCursor,
@@ -111,6 +117,16 @@ export const VendorRecommendationRuleCard = ({
                 onSearch={(value) => {
                     setParams({ ...params, value })
                 }}
+            />
+
+            <SelectedItemsDrawer
+                title="All vendors"
+                itemLabelPlural="vendors"
+                items={selectedVendors}
+                isOpen={isSeeAllDrawerOpen}
+                hasImages={false}
+                onClose={() => setIsSeeAllDrawerOpen(false)}
+                onSubmit={onUpsert}
             />
         </div>
     )

@@ -47,6 +47,28 @@ export const allProducts = [
     { id: 18, title: '4-Way Stretch Shorts' },
     { id: 19, title: 'Fitness Gloves', image: { src: 'fitness-gloves.jpg' } },
     { id: 20, title: 'Slim Fit Gym Tee' },
+    { id: 21, title: 'Adjustable Jump Rope', image: { src: 'jump-rope.jpg' } },
+    { id: 22, title: 'Foam Roller', image: { src: 'foam-roller.jpg' } },
+    { id: 23, title: 'Hydration Backpack' },
+    {
+        id: 24,
+        title: 'Men’s Sleeveless Hoodie',
+        image: { src: 'sleeveless-hoodie.jpg' },
+    },
+    { id: 25, title: 'Women’s Zip-Up Jacket' },
+    { id: 26, title: 'Ankle Support Brace', image: { src: 'ankle-brace.jpg' } },
+    { id: 27, title: 'Gym Duffel Bag' },
+    {
+        id: 28,
+        title: 'Grip Strength Trainer',
+        image: { src: 'grip-trainer.jpg' },
+    },
+    { id: 29, title: 'Longline Sports Tee' },
+    {
+        id: 30,
+        title: 'Reflective Running Vest',
+        image: { src: 'reflective-vest.jpg' },
+    },
 ]
 
 export const allTags = [
