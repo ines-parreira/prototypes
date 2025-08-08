@@ -36,7 +36,7 @@ export default function ChannelItem({
             </div>
             <div className={css.actions}>
                 {shouldShowEditButton(channel) && (
-                    <Link to={determineChannelLink(channel)}>
+                    <Link target="_blank" to={determineChannelLink(channel)}>
                         <IconButton
                             size="small"
                             icon="open_in_new"
