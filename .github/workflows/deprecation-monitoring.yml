@@ -12,7 +12,7 @@ permissions:
 jobs:
   deprecation-analysis:
     name: Deprecation analysis
-    runs-on: ubuntu-latest
+    runs-on: gh-actions-small-runner-set
     outputs:
       changed: ${{ steps.check-changes.outputs.changed }}
     
