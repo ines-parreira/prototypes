@@ -48,6 +48,10 @@ export function SortedTicketList({
                                     <OrderTicketCard
                                         className={css.card}
                                         order={item.order}
+                                        displayedDate={DisplayedDate(
+                                            sortOption,
+                                            item,
+                                        )}
                                     />
                                 </li>
                             )
@@ -64,7 +68,7 @@ export function SortedTicketList({
                                     isHighlighted={ticketId === item.ticket.id}
                                     displayedDate={DisplayedDate(
                                         sortOption,
-                                        item.ticket,
+                                        item,
                                     )}
                                     onModalOpen={modal.onOpen}
                                 />

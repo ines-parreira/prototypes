@@ -2,8 +2,10 @@ import { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { Order } from 'constants/integrations/types/shopify'
 import { CustomerIntegration } from 'models/customer/types'
+import { SORTABLE_KEY_TO_ORDER_KEY } from 'timeline/constants'
 
 import {
+    SortableKey,
     SupportedOrderIntegration,
     TimelineItem,
     TimelineItemKind,
@@ -66,4 +68,21 @@ export function isSupportedOrderIntegration(
     item: CustomerIntegration,
 ): boolean {
     return SupportedOrderIntegration.includes(item.__integration_type__)
+}
+
+// A bit hacky solution, yet it's straightforward and overall safe
+// since all the shady stuff is done within the function, but outside of it
+// the contract (signature) is typed properly.
+export function getDateTimeField(
+    item: TimelineItem,
+    key: SortableKey,
+): string | null {
+    let result: string | undefined
+    if (item.kind === TimelineItemKind.Ticket) {
+        result = item.ticket[key as keyof TicketCompact] as string | undefined
+    } else {
+        const orderKey = SORTABLE_KEY_TO_ORDER_KEY[key]
+        result = item.order[orderKey as keyof Order] as string | undefined
+    }
+    return result ?? null
 }

@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { TicketCompact } from '@gorgias/helpdesk-types'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import * as timelineItem from 'timeline/helpers/timelineItem'
 
 import DisplayedDate from '../DisplayedDate'
 import { SortOption } from '../types'
@@ -23,6 +24,7 @@ describe('DisplayedDate', () => {
         last_received_message_datetime: '2021-01-03T00:00:00Z',
         updated_datetime: '2021-01-04T00:00:00Z',
     } as TicketCompact
+    const mockItem = timelineItem.fromTicket(mockTicket)
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -35,7 +37,7 @@ describe('DisplayedDate', () => {
                 order: 'asc',
                 label: 'Created',
             }
-            render(DisplayedDate(sortOption, mockTicket))
+            render(DisplayedDate(sortOption, mockItem))
 
             expect(screen.getByText(/Created/)).toBeInTheDocument()
             expect(screen.getByText('Mocked DatetimeLabel')).toBeInTheDocument()
@@ -47,7 +49,7 @@ describe('DisplayedDate', () => {
                 order: 'asc',
                 label: 'Created',
             }
-            render(DisplayedDate(sortOption, mockTicket))
+            render(DisplayedDate(sortOption, mockItem))
 
             expect(DatetimeLabelMock).toHaveBeenCalledWith(
                 {
@@ -65,9 +67,7 @@ describe('DisplayedDate', () => {
                 order: 'asc',
                 label: 'Last message',
             }
-            const { queryByText } = render(
-                DisplayedDate(sortOption, mockTicket),
-            )
+            const { queryByText } = render(DisplayedDate(sortOption, mockItem))
 
             expect(queryByText(/Created/)).not.toBeInTheDocument()
 
@@ -85,9 +85,7 @@ describe('DisplayedDate', () => {
                 order: 'asc',
                 label: 'Last received message',
             }
-            const { queryByText } = render(
-                DisplayedDate(sortOption, mockTicket),
-            )
+            const { queryByText } = render(DisplayedDate(sortOption, mockItem))
 
             expect(queryByText(/Created/)).not.toBeInTheDocument()
 
@@ -99,15 +97,13 @@ describe('DisplayedDate', () => {
             )
         })
 
-        it('should handle last_updated key correctly', () => {
+        it('should handle updated_datetime key correctly', () => {
             const sortOption: SortOption = {
-                key: 'last_updated',
+                key: 'updated_datetime',
                 order: 'desc',
                 label: 'Last updated',
             }
-            const { queryByText } = render(
-                DisplayedDate(sortOption, mockTicket),
-            )
+            const { queryByText } = render(DisplayedDate(sortOption, mockItem))
 
             expect(queryByText(/Created/)).not.toBeInTheDocument()
 
@@ -132,7 +128,12 @@ describe('DisplayedDate', () => {
                 order: 'asc',
                 label: 'Last received message',
             }
-            render(DisplayedDate(sortOption, ticketWithMissingField))
+            render(
+                DisplayedDate(
+                    sortOption,
+                    timelineItem.fromTicket(ticketWithMissingField),
+                ),
+            )
 
             expect(DatetimeLabelMock).toHaveBeenCalledWith(
                 {
@@ -153,7 +154,12 @@ describe('DisplayedDate', () => {
                 order: 'asc',
                 label: 'Last received message',
             }
-            render(DisplayedDate(sortOption, ticketWithNullValue))
+            render(
+                DisplayedDate(
+                    sortOption,
+                    timelineItem.fromTicket(ticketWithNullValue),
+                ),
+            )
 
             expect(DatetimeLabelMock).toHaveBeenCalledWith(
                 {
@@ -174,7 +180,12 @@ describe('DisplayedDate', () => {
                 order: 'desc',
                 label: 'Last message',
             }
-            render(DisplayedDate(sortOption, ticketWithNullLastMessage))
+            render(
+                DisplayedDate(
+                    sortOption,
+                    timelineItem.fromTicket(ticketWithNullLastMessage),
+                ),
+            )
 
             expect(DatetimeLabelMock).toHaveBeenCalledWith(
                 {
@@ -191,7 +202,7 @@ describe('DisplayedDate', () => {
                 'last_message_datetime',
                 'last_received_message_datetime',
                 'created_datetime',
-                'last_updated',
+                'updated_datetime',
             ] as const
 
             sortableKeys.forEach((key) => {
@@ -201,7 +212,7 @@ describe('DisplayedDate', () => {
                     last_message_datetime: 'Last message',
                     last_received_message_datetime: 'Last received message',
                     created_datetime: 'Created',
-                    last_updated: 'Last updated',
+                    updated_datetime: 'Last updated',
                 } as const
 
                 const sortOption: SortOption = {
@@ -210,7 +221,7 @@ describe('DisplayedDate', () => {
                     label: labelMap[key],
                 } as const
 
-                render(DisplayedDate(sortOption, mockTicket))
+                render(DisplayedDate(sortOption, mockItem))
 
                 // Verify DatetimeLabel was called
                 expect(DatetimeLabelMock).toHaveBeenCalled()
@@ -219,12 +230,12 @@ describe('DisplayedDate', () => {
 
         it('should properly map last_updated to updated_datetime property', () => {
             const sortOption: SortOption = {
-                key: 'last_updated',
+                key: 'updated_datetime',
                 order: 'asc',
                 label: 'Last updated',
             }
 
-            render(DisplayedDate(sortOption, mockTicket))
+            render(DisplayedDate(sortOption, mockItem))
 
             expect(DatetimeLabelMock).toHaveBeenCalledWith(
                 {

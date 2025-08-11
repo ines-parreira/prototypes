@@ -12,12 +12,14 @@ type Props = {
     className?: string
     isHighlighted?: boolean
     order: Order
+    displayedDate: JSX.Element
 }
 
 const OrderTicketCard = ({
     className,
     isHighlighted = false,
     order,
+    displayedDate,
 }: Props) => {
     return (
         <div
@@ -32,6 +34,7 @@ const OrderTicketCard = ({
                         <span className={css.subject}>{order.id}</span>
                         <OrderStatusBadge status={order.financial_status} />
                     </span>
+                    <span className={css.date}>{displayedDate}</span>
                 </div>
                 <ul className={css.orderTicketFields}>
                     <li>${order.total_price}</li>

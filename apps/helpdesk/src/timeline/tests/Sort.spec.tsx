@@ -336,12 +336,12 @@ describe('Sort', () => {
         it('should handle option with different key and order combinations', () => {
             const customOptions: SortOption[] = [
                 {
-                    key: 'last_updated',
+                    key: 'updated_datetime',
                     order: 'asc',
                     label: 'Last updated',
                 } as const,
                 {
-                    key: 'last_updated',
+                    key: 'updated_datetime',
                     order: 'desc',
                     label: 'Last updated',
                 } as const,

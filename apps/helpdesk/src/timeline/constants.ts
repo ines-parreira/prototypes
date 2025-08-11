@@ -1,8 +1,6 @@
 import moment from 'moment'
 
-import { TicketCompact } from '@gorgias/helpdesk-types'
-
-import { KeysMatching } from 'types'
+import { Order } from 'constants/integrations/types/shopify'
 
 import {
     FilterKey,
@@ -39,21 +37,18 @@ export const INTERACTION_FILTER_OPTIONS: {
     { value: 'order', label: 'Order' },
 ]
 
-export const FALLBACK_SORT_KEY: KeysMatching<TicketCompact, string> =
-    'created_datetime'
-
 export const SORTABLE_KEYS = [
     'last_message_datetime',
     'last_received_message_datetime',
     'created_datetime',
-    'last_updated',
+    'updated_datetime',
 ] as const
 
 export const SORTABLE_KEY_TO_LABEL = {
     last_message_datetime: 'Last message' as const,
     last_received_message_datetime: 'Last received message' as const,
     created_datetime: 'Created' as const,
-    last_updated: 'Last updated' as const,
+    updated_datetime: 'Last updated' as const,
 } satisfies Record<SortableKey, unknown>
 
 export const DEFAULT_SORT_OPTION: SortOption = {
@@ -95,14 +90,14 @@ export const SORT_OPTIONS: SortOption[] = [
 
 export const SORT_OPTIONS_WITH_ORDERS: SortOption[] = [
     {
-        key: 'last_updated',
+        key: 'updated_datetime',
         order: 'asc',
-        label: SORTABLE_KEY_TO_LABEL['last_updated'],
+        label: SORTABLE_KEY_TO_LABEL['updated_datetime'],
     },
     {
-        key: 'last_updated',
+        key: 'updated_datetime',
         order: 'desc',
-        label: SORTABLE_KEY_TO_LABEL['last_updated'],
+        label: SORTABLE_KEY_TO_LABEL['updated_datetime'],
     },
     {
         key: 'created_datetime',
@@ -115,4 +110,12 @@ export const SORT_OPTIONS_WITH_ORDERS: SortOption[] = [
         label: SORTABLE_KEY_TO_LABEL['created_datetime'],
     },
 ]
+
+export const SORTABLE_KEY_TO_ORDER_KEY: Record<SortableKey, keyof Order> = {
+    created_datetime: 'created_at',
+    last_message_datetime: 'updated_at',
+    last_received_message_datetime: 'updated_at',
+    updated_datetime: 'updated_at',
+}
+
 export const ALL_FILTERS = ['All']
