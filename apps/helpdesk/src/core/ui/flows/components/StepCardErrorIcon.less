@@ -1,0 +1,31 @@
+@import (reference) '~css/typography';
+
+:local {
+    .errorIcon {
+        i {
+            color: var(--feedback-error);
+            font-size: 16px;
+        }
+    }
+
+    .tooltipMessage {
+        display: flex;
+        flex-direction: column;
+
+        .errorTitle {
+            .caption-semibold();
+        }
+
+        .errorMessage {
+            .caption-regular();
+        }
+    }
+}
+
+.axiom :local {
+    .errorIcon {
+        i {
+            color: var(--content-error-primary);
+        }
+    }
+}

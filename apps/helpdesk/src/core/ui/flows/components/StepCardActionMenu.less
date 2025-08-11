@@ -1,0 +1,37 @@
+@import (reference) '~css/typography';
+
+:local {
+    .menuButton {
+        position: absolute;
+        top: var(--layout-spacing-xxs);
+        right: var(--layout-spacing-xxs);
+    }
+
+    .menuOptionContent {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        .body-medium();
+        padding: var(--layout-spacing-xs);
+
+        &:hover {
+            background: var(--neutral-grey-1);
+        }
+    }
+}
+
+.axiom :local {
+    .menuOptionContent {
+        color: var(--content-neutral-default);
+
+        &:hover {
+            background:
+                linear-gradient(
+                    0deg,
+                    var(--hover-default) 0%,
+                    var(--hover-default) 100%
+                ),
+                var(--elevation-neutral-mid);
+        }
+    }
+}
