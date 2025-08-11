@@ -24,10 +24,7 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Total Revenue',
                     value: 15,
                     prevValue: null,
-                    interpretAs: 'more-is-better' as
-                        | 'more-is-better'
-                        | 'less-is-better'
-                        | 'neutral',
+                    interpretAs: 'more-is-better',
                     metricFormat: 'currency',
                     currency: 'USD',
                     isLoading: false,
@@ -36,10 +33,7 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Total Orders',
                     value: 10,
                     prevValue: 0,
-                    interpretAs: 'more-is-better' as
-                        | 'more-is-better'
-                        | 'less-is-better'
-                        | 'neutral',
+                    interpretAs: 'more-is-better',
                     metricFormat: 'decimal-precision-1',
                     isLoading: false,
                 },
@@ -47,10 +41,7 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Conversion rate',
                     value: 20,
                     prevValue: 0,
-                    interpretAs: 'more-is-better' as
-                        | 'more-is-better'
-                        | 'less-is-better'
-                        | 'neutral',
+                    interpretAs: 'more-is-better',
                     metricFormat: 'percent',
                     isLoading: false,
                 },
@@ -58,10 +49,7 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Click Through Rate',
                     value: 30,
                     prevValue: 0,
-                    interpretAs: 'more-is-better' as
-                        | 'more-is-better'
-                        | 'less-is-better'
-                        | 'neutral',
+                    interpretAs: 'more-is-better',
                     metricFormat: 'percent',
                     currency: 'USD',
                     isLoading: false,

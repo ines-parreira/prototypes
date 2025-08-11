@@ -97,6 +97,10 @@ export const AnalyticsCard = ({
         }
     }, [journeyState, dispatch, handleUpdate])
 
+    const totalRevenue = analyticsData.find(
+        (data) => data.label === 'Total Revenue',
+    )
+
     return (
         <div className={css.analyticsCard}>
             <div className={analyticsContentClass}>
@@ -117,7 +121,9 @@ export const AnalyticsCard = ({
                 ) : (
                     <>
                         <AnalyticsData data={analyticsData} />
-                        {!isDiscountEnabled && <DiscountCard />}
+                        {!isDiscountEnabled && (
+                            <DiscountCard totalRevenue={totalRevenue} />
+                        )}
                     </>
                 )}
             </div>
