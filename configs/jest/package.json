@@ -9,15 +9,18 @@
     "scripts": {
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
-        "lint": "oxlint --quiet"
+        "lint": "oxlint --quiet",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
         "jest": "catalog:jest"
     },
     "devDependencies": {
+        "@repo/tsconfigs": "workspace:*",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "jest": "catalog:jest",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier"
+        "prettier": "catalog:prettier",
+        "typescript": "catalog:typescript"
     }
 }

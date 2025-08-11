@@ -1257,6 +1257,9 @@ importers:
 
   configs/jest:
     devDependencies:
+      '@repo/tsconfigs':
+        specifier: workspace:*
+        version: link:../typescript
       '@trivago/prettier-plugin-sort-imports':
         specifier: catalog:prettier
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
@@ -1269,6 +1272,9 @@ importers:
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
+      typescript:
+        specifier: catalog:typescript
+        version: 5.3.3
 
   configs/typescript:
     devDependencies:
