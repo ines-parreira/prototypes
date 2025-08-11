@@ -17,6 +17,8 @@ import {
 } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
+import { AiSalesAgentOrdersFilterMember } from '../cubes/ai-sales-agent/AiSalesAgentOrders'
+
 export type OptionalFilter =
     | string[]
     | number[]
@@ -90,6 +92,9 @@ export const FilterOperatorMap = {
 
 export const toLowerCaseString = (value: string | number) =>
     String(value).toLowerCase()
+
+export const toUpperCaseString = (value: string | number) =>
+    String(value).toUpperCase()
 
 const NotEqualsMap = {
     [TicketMember.CustomField]: TicketMember.CustomFieldToExclude,
@@ -244,6 +249,16 @@ export const addOptionalFilter = (
                 {
                     member: filterDefaults.member,
                     values: [...filter.values.map(toLowerCaseString), null],
+                    operator: FilterOperatorMap[filter.operator],
+                },
+            ]
+        } else if (
+            filterDefaults.member === AiSalesAgentOrdersFilterMember.JourneyId
+        ) {
+            reportingFilters = [
+                {
+                    member: filterDefaults.member,
+                    values: filter.values.map(toUpperCaseString),
                     operator: FilterOperatorMap[filter.operator],
                 },
             ]

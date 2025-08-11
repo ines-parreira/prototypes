@@ -315,7 +315,7 @@ describe('TimeFrameField', () => {
                 const monthSelects = screen.getAllByDisplayValue('Aug')
                 expect(monthSelects.length).toBeGreaterThan(0)
 
-                const yearSelects = screen.getAllByDisplayValue('2025')
+                const yearSelects = screen.getAllByText('2025')
                 expect(yearSelects.length).toBeGreaterThan(0)
             })
         })

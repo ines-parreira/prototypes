@@ -28,6 +28,8 @@ import {
 } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
+import { AiSalesAgentOrdersFilterMember } from '../../cubes/ai-sales-agent/AiSalesAgentOrders'
+
 describe('utils', () => {
     describe('addOptionalFilter', () => {
         it.each([[[123, 456]], [['asd', 'qwe']]])(
@@ -378,6 +380,34 @@ describe('utils', () => {
             )
 
             expect(updatedFilters).toEqual(filters)
+        })
+
+        it('should convert journey IDs to uppercase when using AiSalesAgentOrdersFilterMember.JourneyId', () => {
+            const filter = {
+                values: ['01k0spsfvap1xsx3jzyjwtr9q7', 'abc123def456'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            }
+
+            const filters: ReportingFilter[] = []
+
+            const filterDefaults = {
+                member: AiSalesAgentOrdersFilterMember.JourneyId,
+                operator: ReportingFilterOperator.Equals,
+            }
+
+            const updatedFilters = addOptionalFilter(
+                filters,
+                filter,
+                filterDefaults,
+            )
+
+            expect(updatedFilters).toEqual([
+                {
+                    member: AiSalesAgentOrdersFilterMember.JourneyId,
+                    values: ['01K0SPSFVAP1XSX3JZYJWTR9Q7', 'ABC123DEF456'],
+                    operator: ReportingFilterOperator.Equals,
+                },
+            ])
         })
     })
 

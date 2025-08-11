@@ -11,20 +11,30 @@ import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { filterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useClickThroughRate = (
+    integrationId: string,
     userTimezone: string,
     filters: filterType,
+    shopName: string,
+    journeyId?: string,
 ): MetricProps => {
     const { currency } = useCurrency()
 
     const { data: totalUniqClicks, isFetching: isFetchingTotalUniqClicks } =
         useMetricTrend(
-            aiJourneyUniqClicksQueryFactory(filters, userTimezone),
+            aiJourneyUniqClicksQueryFactory(
+                filters,
+                userTimezone,
+                shopName,
+                journeyId,
+            ),
             aiJourneyUniqClicksQueryFactory(
                 {
                     ...filters,
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
+                shopName,
+                journeyId,
             ),
         )
 
@@ -33,15 +43,19 @@ export const useClickThroughRate = (
         isFetching: isFetchingtotalContactsEnrolled,
     } = useMetricTrend(
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
+            integrationId,
             filters,
             userTimezone,
+            journeyId,
         ),
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
+            integrationId,
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
+            journeyId,
         ),
     )
 

@@ -14,14 +14,53 @@ jest.mock('../Tooltip/Tooltip', () => ({
 
 describe('<AnalyticsBarChart />', () => {
     const dataArray = [
-        { value: 10, dateRange: 'Jun 26th - Jun 31st' },
-        { value: 20, dateRange: 'Jun 21st - Jun 25th' },
-        { value: 30, dateRange: 'Jun 16th - Jun 20th' },
+        {
+            dateRange: {
+                startDate: '2025-07-09T00:00:00Z',
+                endDate: '2025-07-14T23:59:59Z',
+            },
+            value: [
+                {
+                    label: 'Total Revenue',
+                    value: 15,
+                    prevValue: null,
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'currency',
+                    currency: 'USD',
+                    isLoading: false,
+                },
+                {
+                    label: 'Total Orders',
+                    value: 10,
+                    prevValue: 0,
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'decimal-precision-1',
+                    isLoading: false,
+                },
+                {
+                    label: 'Conversion rate',
+                    value: 20,
+                    prevValue: 0,
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'percent',
+                    isLoading: false,
+                },
+                {
+                    label: 'Click Through Rate',
+                    value: 30,
+                    prevValue: 0,
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'percent',
+                    currency: 'USD',
+                    isLoading: false,
+                },
+            ],
+        },
     ]
 
     it('renders the correct number of bars', () => {
         const { container } = render(
-            <AnalyticsBarChart dataArray={dataArray} />,
+            <AnalyticsBarChart dataArray={dataArray} metricIndex={1} />,
         )
         const bars = container.querySelectorAll('.bar')
         expect(bars.length).toBe(dataArray.length)
@@ -29,23 +68,32 @@ describe('<AnalyticsBarChart />', () => {
 
     it('shows tooltip on bar hover', async () => {
         const { container } = render(
-            <AnalyticsBarChart dataArray={dataArray} />,
+            <AnalyticsBarChart dataArray={dataArray} metricIndex={1} />,
         )
         const bars = container.querySelectorAll('.bar')
-        await userEvent.hover(bars[1])
+        await userEvent.hover(bars[0])
         expect(screen.getByTestId('tooltip')).toBeInTheDocument()
-        expect(screen.getByText('Jun 21st - Jun 25th')).toBeInTheDocument()
-        expect(screen.getByText('20')).toBeInTheDocument()
+        expect(screen.getByText('Jul 9 - Jul 14')).toBeInTheDocument()
+        expect(screen.getByText('10')).toBeInTheDocument()
     })
 
     it('hides tooltip when not hovering', async () => {
         const { container } = render(
-            <AnalyticsBarChart dataArray={dataArray} />,
+            <AnalyticsBarChart dataArray={dataArray} metricIndex={1} />,
         )
         const bars = container.querySelectorAll('.bar')
         await userEvent.hover(bars[0])
         expect(screen.getByTestId('tooltip')).toBeInTheDocument()
         await userEvent.unhover(bars[0])
         expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('returns empty array when dataArray is empty', () => {
+        const { container } = render(
+            <AnalyticsBarChart dataArray={[]} metricIndex={0} />,
+        )
+
+        const bars = container.querySelectorAll('.bar')
+        expect(bars.length).toBe(0)
     })
 })

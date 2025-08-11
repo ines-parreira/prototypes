@@ -50,7 +50,6 @@ export const AnalyticsCard = ({
     )
 
     const isEmpty = !analyticsData?.length
-    // const isEmpty = true
 
     useEffect(() => {
         setJourneyState(abandonedCartJourney.state)

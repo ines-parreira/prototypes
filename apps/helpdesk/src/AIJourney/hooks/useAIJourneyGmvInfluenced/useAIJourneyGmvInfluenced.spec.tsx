@@ -40,7 +40,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -55,10 +55,10 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
         )
 
-        expect(result.current.value).toBe(undefined)
+        expect(result.current.value).toBe(0)
     })
 
     it('should handle missing previous value', () => {
@@ -71,7 +71,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.value).toBe(1000)
@@ -87,7 +87,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.value).toBe(1000)

@@ -10,18 +10,27 @@ import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { filterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyConversionRate = (
+    integrationId: string,
     userTimezone: string,
     filters: filterType,
+    journeyId?: string,
 ): MetricProps => {
     const { data: totalOrdersData, isFetching: isFetchingTotalOrders } =
         useMetricTrend(
-            aiJourneyTotalNumberOfOrderQueryFactory(filters, userTimezone),
             aiJourneyTotalNumberOfOrderQueryFactory(
+                integrationId,
+                filters,
+                userTimezone,
+                journeyId,
+            ),
+            aiJourneyTotalNumberOfOrderQueryFactory(
+                integrationId,
                 {
                     ...filters,
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
+                journeyId,
             ),
         )
 
@@ -30,15 +39,19 @@ export const useAIJourneyConversionRate = (
         isFetching: isFetchingtotalContactsEnrolled,
     } = useMetricTrend(
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
+            integrationId,
             filters,
             userTimezone,
+            journeyId,
         ),
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
+            integrationId,
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
+            journeyId,
         ),
     )
 

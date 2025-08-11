@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
@@ -15,6 +16,13 @@ import { Performance } from './Performance'
 jest.mock('domains/reporting/state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone,
+)
+
+jest.mock(
+    'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore',
+)
+const useGetNamespacedShopNameForStoreMock = assumeMock(
+    useGetNamespacedShopNameForStore,
 )
 
 jest.mock('AIJourney/queries', () => ({
@@ -34,6 +42,7 @@ describe('<Performance />', () => {
             isError: false,
             isLoading: false,
         }))
+        useGetNamespacedShopNameForStoreMock.mockReturnValue('shopName')
 
         const cleanStatsFilters = {
             period: {
@@ -48,7 +57,24 @@ describe('<Performance />', () => {
             granularity: ReportingGranularity.Day,
         })
     })
+
     it('should render AI Journey performance page', () => {
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <IntegrationsProvider>
+                        <Performance />
+                    </IntegrationsProvider>
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
+    })
+
+    it('missing shopName should not break the page', () => {
+        useGetNamespacedShopNameForStoreMock.mockReturnValue('')
+
         renderWithRouter(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>

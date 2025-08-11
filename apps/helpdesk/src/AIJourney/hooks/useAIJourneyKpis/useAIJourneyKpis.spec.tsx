@@ -61,7 +61,7 @@ describe('useAIJourneyKpis', () => {
     })
 
     it('should return KPIs in correct order', () => {
-        const { result } = renderHook(() => useAIJourneyKpis())
+        const { result } = renderHook(() => useAIJourneyKpis('123', 'shopName'))
 
         expect(result.current).toHaveLength(4)
         expect(result.current[0]).toEqual({ label: 'GMV', value: '1000' })
@@ -77,7 +77,7 @@ describe('useAIJourneyKpis', () => {
     })
 
     it('should create filters with 30 days period', () => {
-        renderHook(() => useAIJourneyKpis())
+        renderHook(() => useAIJourneyKpis('123', 'shopName'))
 
         expect(mockMoment).toHaveBeenCalledTimes(2)
         expect(mockMomentInstance.subtract).toHaveBeenCalledWith(30, 'days')
@@ -93,23 +93,32 @@ describe('useAIJourneyKpis', () => {
             },
         }
 
-        renderHook(() => useAIJourneyKpis())
+        renderHook(() => useAIJourneyKpis('123', 'shopName'))
 
         expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+            '123',
             'America/New_York',
             expectedFilters,
+            undefined,
         )
         expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
+            '123',
             'America/New_York',
             expectedFilters,
+            undefined,
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
+            '123',
             'America/New_York',
             expectedFilters,
+            undefined,
         )
         expect(mockUseClickThroughRate).toHaveBeenCalledWith(
+            '123',
             'America/New_York',
             expectedFilters,
+            'shopName',
+            undefined,
         )
     })
 
@@ -118,31 +127,79 @@ describe('useAIJourneyKpis', () => {
             userTimezone: 'Europe/London',
         })
 
-        renderHook(() => useAIJourneyKpis())
+        renderHook(() => useAIJourneyKpis('123', 'shopName'))
 
         expect(mockUseAppSelector).toHaveBeenCalledWith(
             getCleanStatsFiltersWithTimezone,
         )
         expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+            '123',
             'Europe/London',
             expect.any(Object),
+            undefined,
         )
         expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
+            '123',
             'Europe/London',
             expect.any(Object),
+            undefined,
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
+            '123',
             'Europe/London',
             expect.any(Object),
+            undefined,
         )
         expect(mockUseClickThroughRate).toHaveBeenCalledWith(
+            '123',
             'Europe/London',
             expect.any(Object),
+            'shopName',
+            undefined,
+        )
+    })
+
+    it('should call with journeyID correctly', () => {
+        mockUseAppSelector.mockReturnValue({
+            userTimezone: 'Europe/London',
+        })
+
+        renderHook(() => useAIJourneyKpis('123', 'shopName', 'journey-id'))
+
+        expect(mockUseAppSelector).toHaveBeenCalledWith(
+            getCleanStatsFiltersWithTimezone,
+        )
+        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
+            'journey-id',
+        )
+        expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
+            'journey-id',
+        )
+        expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
+            'journey-id',
+        )
+        expect(mockUseClickThroughRate).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
+            'shopName',
+            'journey-id',
         )
     })
 
     it('should memoize filters correctly', () => {
-        const { rerender } = renderHook(() => useAIJourneyKpis())
+        const { rerender } = renderHook(() =>
+            useAIJourneyKpis('123', 'shopName'),
+        )
 
         // Clear the mocks after first render
         jest.clearAllMocks()

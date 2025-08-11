@@ -20,7 +20,7 @@ export type filterType = {
 
 export type MetricProps = {
     label: string
-    value: number | null | undefined
+    value: number
     prevValue?: number | null | undefined
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat: MetricTrendFormat
@@ -28,26 +28,54 @@ export type MetricProps = {
     isLoading: boolean
 }
 
-export const useAIJourneyKpis = () => {
+export const useAIJourneyKpis = (
+    integrationId: string,
+    shopName: string,
+    journeyId?: string,
+    customStartDate?: string,
+    customEndDate?: string,
+) => {
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
     const filters: filterType = useMemo(() => {
-        const start_datetime = moment()
-            .subtract(30, 'days')
-            .startOf('day')
-            .format()
+        const start_datetime =
+            customStartDate ??
+            moment().subtract(30, 'days').startOf('day').format()
+
+        const end_datetime = customEndDate ?? moment().endOf('day').format()
 
         return {
             period: {
                 start_datetime,
-                end_datetime: moment().endOf('day').format(),
+                end_datetime,
             },
         }
-    }, [])
+    }, [customStartDate, customEndDate])
 
-    const gmvInfluenced = useAIJourneyGmvInfluenced(userTimezone, filters)
-    const totalOrders = useAIJourneyTotalOrders(userTimezone, filters)
-    const conversionRate = useAIJourneyConversionRate(userTimezone, filters)
-    const clickThroughRate = useClickThroughRate(userTimezone, filters)
+    const gmvInfluenced = useAIJourneyGmvInfluenced(
+        integrationId,
+        userTimezone,
+        filters,
+        journeyId,
+    )
+    const totalOrders = useAIJourneyTotalOrders(
+        integrationId,
+        userTimezone,
+        filters,
+        journeyId,
+    )
+    const conversionRate = useAIJourneyConversionRate(
+        integrationId,
+        userTimezone,
+        filters,
+        journeyId,
+    )
+    const clickThroughRate = useClickThroughRate(
+        integrationId,
+        userTimezone,
+        filters,
+        shopName,
+        journeyId,
+    )
 
     return [gmvInfluenced, totalOrders, conversionRate, clickThroughRate]
 }

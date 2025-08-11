@@ -32,7 +32,7 @@ describe('useAIJourneyTotalOrders', () => {
         const userTimezone = 'America/New_York'
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalOrders(userTimezone, mockFilters),
+            useAIJourneyTotalOrders('123', userTimezone, mockFilters),
         )
 
         expect(result.current).toEqual({
@@ -52,7 +52,7 @@ describe('useAIJourneyTotalOrders', () => {
         }))
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalOrders('UTC', mockFilters),
+            useAIJourneyTotalOrders('123', 'UTC', mockFilters),
         )
 
         expect(result.current).toEqual({
@@ -60,8 +60,8 @@ describe('useAIJourneyTotalOrders', () => {
             isLoading: true,
             label: 'Total Orders',
             metricFormat: 'decimal-precision-1',
-            prevValue: undefined,
-            value: undefined,
+            prevValue: 0,
+            value: 0,
         })
     })
 })

@@ -10,11 +10,13 @@ export enum ConvertTrackingEventsDimension {
     ProductId = `CampaignEvents.productId`,
     CreatedDatetime = `CampaignEvents.createdDatetime`,
     JourneyId = `CampaignEvents.journeyId`,
+    ShopName = `CampaignEvents.shopName`,
 }
 
 export enum ConvertTrackingEventsFilterMember {
     AccountId = 'CampaignEvents.accountId',
     CreatedDatetime = `CampaignEvents.createdDatetime`,
+    ShopName = 'CampaignEvents.shopName',
 }
 
 export type ConvertTrackingEventsTimeDimension =

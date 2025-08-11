@@ -34,7 +34,7 @@ export const useAIJourneyTotalMessages = (journeyId?: string): MetricProps => {
 
     return {
         label: 'Total Messages Sent',
-        value: data?.value,
+        value: data?.value || 0,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-precision-1',
         currency,

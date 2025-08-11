@@ -32,7 +32,7 @@ describe('useClickThroughRate', () => {
         const userTimezone = 'America/New_York'
 
         const { result } = renderHook(() =>
-            useClickThroughRate(userTimezone, mockFilters),
+            useClickThroughRate('123', userTimezone, mockFilters, 'shopName'),
         )
 
         expect(result.current).toEqual({
@@ -53,7 +53,7 @@ describe('useClickThroughRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useClickThroughRate('UTC', mockFilters),
+            useClickThroughRate('123', 'UTC', mockFilters, 'shopName'),
         )
 
         expect(result.current).toEqual({
@@ -77,7 +77,7 @@ describe('useClickThroughRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useClickThroughRate('UTC', mockFilters),
+            useClickThroughRate('123', 'UTC', mockFilters, 'shopName'),
         )
 
         expect(result.current.currency).toBe('EUR')

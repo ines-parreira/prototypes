@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { motion } from 'framer-motion'
+import moment from 'moment'
+
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 import { Tooltip } from '../Tooltip/Tooltip'
 
@@ -8,13 +11,39 @@ import css from './AnalyticsBarChart.less'
 
 type AnalyticsBarChartProps = {
     dataArray: any[]
+    metricIndex: number // Add this prop to know which metric to display
 }
 
-export const AnalyticsBarChart = ({ dataArray }: AnalyticsBarChartProps) => {
+export const AnalyticsBarChart = ({
+    dataArray,
+    metricIndex,
+}: AnalyticsBarChartProps) => {
     const [hoveredBar, setHoveredBar] = useState<number | null>(null)
 
-    const highestValue = Math.max(...dataArray.map((v) => v.value))
-    const lowestValue = Math.min(...dataArray.map((v) => v.value))
+    const transformedData = useMemo(() => {
+        if (!dataArray.length) return []
+
+        return dataArray.map((item) => {
+            const metricValue = item.value[metricIndex]?.value || 0
+            return {
+                dateRange: {
+                    startDate: item.dateRange.startDate,
+                    endDate: item.dateRange.endDate,
+                    formatted: `${moment(item.dateRange.startDate).format('MMM D')} - ${moment(item.dateRange.endDate).format('MMM D')}`,
+                },
+                formattedValue: formatMetricValue(
+                    metricValue,
+                    item.value[metricIndex].metricFormat,
+                    undefined,
+                    item.value[metricIndex].currency,
+                ),
+                value: metricValue,
+            }
+        })
+    }, [dataArray, metricIndex])
+
+    const highestValue = Math.max(...transformedData.map((v) => v.value || 0))
+    const lowestValue = Math.min(...transformedData.map((v) => v.value || 0))
 
     const getBarHeightFactor = (
         value: number,
@@ -22,7 +51,11 @@ export const AnalyticsBarChart = ({ dataArray }: AnalyticsBarChartProps) => {
         lowestValue: number,
     ) => {
         const TOP_FACTOR = 1
-        const BOTTOM_FACTOR = 0.4
+        const BOTTOM_FACTOR = 0.2
+
+        if (highestValue === 0) return BOTTOM_FACTOR
+
+        if (highestValue === lowestValue) return TOP_FACTOR
 
         return (
             TOP_FACTOR +
@@ -33,7 +66,7 @@ export const AnalyticsBarChart = ({ dataArray }: AnalyticsBarChartProps) => {
 
     return (
         <div className={css.barsContainer}>
-            {dataArray.map((data, barIndex) => (
+            {transformedData.map((data, barIndex) => (
                 <div key={barIndex} style={{ position: 'relative' }}>
                     <motion.div
                         style={{
@@ -53,8 +86,8 @@ export const AnalyticsBarChart = ({ dataArray }: AnalyticsBarChartProps) => {
                     />
                     {hoveredBar === barIndex && (
                         <Tooltip
-                            date={data.dateRange}
-                            info={data.value.toString()}
+                            date={data.dateRange.formatted}
+                            info={data.formattedValue}
                         />
                     )}
                 </div>

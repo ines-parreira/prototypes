@@ -16,13 +16,14 @@ import {
     formatMetricTrend,
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
+import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 
 import css from './Performance.less'
 
 const digestContent = (
     revenueVariation: string,
     conversionVariationContent: string,
-    messagesSent: number,
+    messagesSent: string,
     hasDiscount?: boolean,
     hasMaxFollowUpMessages?: boolean,
 ) => (
@@ -41,14 +42,6 @@ const digestContent = (
         )}
     </>
 )
-
-const totalSent = '10'
-
-const digestMetrics = [
-    { label: 'Total Revenue', value: '$123,273' },
-    { label: 'Total Orders', value: '7,289' },
-    { label: 'Conversion Rate', value: '19%' },
-]
 
 type userJourney = {
     name: string
@@ -85,9 +78,12 @@ export const Performance = () => {
     const [filter, setFilter] = useState('All')
 
     const { currentIntegration } = useIntegrations(shopName)
+    const namespacedShopName = useGetNamespacedShopNameForStore(
+        currentIntegration?.id ? [currentIntegration.id] : [],
+    )
 
     const integrationId = useMemo(() => {
-        return currentIntegration?.id
+        return currentIntegration?.id || 0
     }, [currentIntegration])
 
     const { data: merchantAiJourneys, isLoading: isLoadingJourneys } =
@@ -106,6 +102,10 @@ export const Performance = () => {
     const totalMessagesSent = useAIJourneyTotalMessages(
         abandonedCartJourney?.id,
     )
+    const formattedTotalMessagesSent =
+        totalMessagesSent?.value > 1000
+            ? `${(totalMessagesSent.value / 1000).toFixed(1)}k`
+            : totalMessagesSent.value.toString()
 
     const {
         offer_discount: isDiscountEnabled,
@@ -136,7 +136,16 @@ export const Performance = () => {
             filteredUpcomingJourneys = []
     }
 
-    const metrics = useAIJourneyKpis()
+    const metrics = useAIJourneyKpis(
+        integrationId?.toString(),
+        namespacedShopName,
+    )
+
+    const journeyMetrics = useAIJourneyKpis(
+        integrationId?.toString(),
+        namespacedShopName,
+        abandonedCartJourney?.id,
+    )
 
     const metricsContent = useMemo(() => {
         const [gmvInfluenced] = metrics
@@ -197,7 +206,7 @@ export const Performance = () => {
                 content={digestContent(
                     metricsContent.revenueVariationContent,
                     metricsContent.conversionVariationContent,
-                    totalMessagesSent.value || 0,
+                    formattedTotalMessagesSent,
                     isDiscountEnabled,
                     !!maxFollowUpMessages,
                 )}
@@ -223,12 +232,12 @@ export const Performance = () => {
                 {abandonedCartJourney &&
                     filteredUserJourneys.map(() => (
                         <AnalyticsCard
-                            analyticsData={digestMetrics}
+                            analyticsData={journeyMetrics}
                             journeyConfigurations={journeyParams}
                             integrationId={integrationId}
                             currentIntegration={currentIntegration}
                             abandonedCartJourney={abandonedCartJourney}
-                            totalSent={totalSent}
+                            totalSent={formattedTotalMessagesSent}
                             key={abandonedCartJourney?.id}
                         />
                     ))}

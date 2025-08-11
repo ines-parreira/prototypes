@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -5,6 +6,8 @@ import { Provider } from 'react-redux'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { appQueryClient } from 'api/queryClient'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { mockStore } from 'utils/testing'
 
 import { AnalyticsCard } from './AnalyticsCard'
@@ -18,6 +21,11 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: () => mockUseParams(),
 }))
+
+jest.mock('domains/reporting/state/ui/stats/selectors')
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone,
+)
 
 const data = [
     { label: 'Revenue', value: '$999' },
@@ -44,12 +52,25 @@ const mockJourneyConfigurations = {
     max_discount_percent: 22,
 }
 
+const cleanStatsFilters = {
+    period: {
+        start_datetime: '1970-01-01T00:00:00+00:00',
+        end_datetime: '1970-01-01T00:00:00+00:00',
+    },
+}
+
 describe('<AnalyticsCard />', () => {
     beforeEach(() => {
         mockUseParams.mockReturnValue({ shopName: 'test-shop' })
+
+        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+            userTimezone: 'someTimezone',
+            cleanStatsFilters,
+            granularity: ReportingGranularity.Day,
+        })
     })
 
-    it.skip('renders active status with correct badge and icon', () => {
+    it('renders active status with correct badge and icon', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
@@ -72,7 +93,7 @@ describe('<AnalyticsCard />', () => {
         expect(img).toBeInTheDocument()
     })
 
-    it.skip('renders paused status with correct badge and icon', () => {
+    it('renders paused status with correct badge and icon', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>

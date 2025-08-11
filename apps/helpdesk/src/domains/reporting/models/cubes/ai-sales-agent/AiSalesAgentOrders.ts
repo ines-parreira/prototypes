@@ -42,6 +42,7 @@ export enum AiSalesAgentOrdersFilterMember {
     OrderId = 'AiSalesAgentOrders.orderId',
     Channel = 'AiSalesAgentOrders.channel',
     IsInfluenced = 'AiSalesAgentOrders.isInfluenced',
+    JourneyId = 'AiSalesAgentOrders.journeyId',
     TicketId = 'AiSalesAgentOrders.ticketId',
 }
 

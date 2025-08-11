@@ -72,7 +72,7 @@ describe('useAIJourneyTotalMessages', () => {
         )
 
         expect(result.current.isLoading).toBe(true)
-        expect(result.current.value).toBeUndefined()
+        expect(result.current.value).toBe(0)
     })
 
     it('should handle undefined journeyId', () => {

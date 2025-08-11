@@ -33,7 +33,7 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.value).toBe(100)
@@ -56,7 +56,7 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.value).toBe(0)
@@ -78,7 +78,7 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.value).toBe(0)
@@ -93,7 +93,7 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.value).toBe(0)
@@ -114,7 +114,7 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
         )
 
         expect(result.current.value).toBe(100)

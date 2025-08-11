@@ -25,8 +25,6 @@ export const Footer = ({ maxDiscount, totalSent }: FooterProps) => {
             )}
             <div className={css.totalSent}>
                 <i className="material-icons-outlined">forward_to_inbox</i>
-                {/* TODO: format this number to avoid showing big numbers in the future
-                    ex: 10 000 should be shown as 10k */}
                 Total sent {totalSent}
             </div>
         </div>
