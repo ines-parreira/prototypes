@@ -5,7 +5,7 @@
         display: flex;
         align-items: flex-start;
         padding: 1.7rem; // ~24px
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     .heroImage {
@@ -17,8 +17,8 @@
         margin-right: var(--layout-spacing-m);
         padding: var(--layout-spacing-s);
         font-size: 3.714rem !important; // ~52px
-        color: var(--neutral-grey-0);
-        background-color: var(--main-primary);
+        color: var(--neutral-grey-0); // legacy
+        background-color: var(--main-primary); // legacy
         border-radius: 4px;
     }
 
@@ -92,7 +92,7 @@
         max-height: 100%;
         max-width: 100%;
         border-radius: 4px;
-        box-shadow: 1px 1px 8px var(--neutral-grey-3);
+        box-shadow: 1px 1px 8px var(--neutral-grey-3); // legacy
         cursor: pointer;
     }
 
@@ -200,5 +200,20 @@
 
     .slideNext {
         right: -45px !important;
+    }
+}
+
+.axiom :local {
+    .hero {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .heroIcon {
+        color: var(--elevation-neutral-default);
+        background-color: var(--surface-additional-blue);
+    }
+
+    .screenshot {
+        box-shadow: 1px 1px 8px var(--border-neutral-default);
     }
 }

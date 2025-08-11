@@ -16,7 +16,7 @@
             }
 
             .fr-toolbar {
-                border-color: var(--neutral-grey-4);
+                border-color: var(--neutral-grey-4); // legacy
             }
             .fr-toolbar.fr-top,
             .fr-second-toolbar {
@@ -33,7 +33,7 @@
             }
 
             .fr-action-buttons button.fr-command {
-                color: var(--main-primary);
+                color: var(--main-primary); // legacy
             }
 
             .fr-qi-helper a.fr-btn.fr-floating-btn {
@@ -41,21 +41,21 @@
             }
 
             .fr-toolbar {
-                background-color: var(--neutral-grey-2);
+                background-color: var(--neutral-grey-2); // legacy
 
                 fr-tabs .fr-command.fr-btn:not(:hover):not(:focus) {
                     &.fr-active-tab {
-                        background-color: var(--neutral-grey-0);
+                        background-color: var(--neutral-grey-0); // legacy
                     }
 
                     &.fr-active {
-                        background-color: var(--neutral-grey-0);
+                        background-color: var(--neutral-grey-0); // legacy
                     }
                 }
             }
 
             .fr-command {
-                color: var(--neutral-grey-6) !important;
+                color: var(--neutral-grey-6) !important; // legacy
 
                 &.fr-btn {
                     i {
@@ -67,13 +67,13 @@
                     }
 
                     &.fr-btn-active-popup {
-                        background-color: var(--neutral-grey-3);
+                        background-color: var(--neutral-grey-3); // legacy
                     }
 
                     + .fr-dropdown-menu
                         .fr-dropdown-wrapper
                         .fr-dropdown-content {
-                        background-color: var(--neutral-grey-1);
+                        background-color: var(--neutral-grey-1); // legacy
 
                         ul.fr-dropdown-list li a.fr-active {
                             background-color: hsl(
@@ -85,27 +85,27 @@
                     }
 
                     &.fr-dropdown.fr-active {
-                        background-color: var(--neutral-grey-3);
+                        background-color: var(--neutral-grey-3); // legacy
 
                         &:hover {
-                            background-color: var(--neutral-grey-3);
+                            background-color: var(--neutral-grey-3); // legacy
                         }
                     }
                 }
             }
 
             .fr-separator {
-                background-color: var(--neutral-grey-3);
+                background-color: var(--neutral-grey-3); // legacy
             }
 
             .gorgias-file-attachment__wrapper {
-                background-color: var(--neutral-grey-2);
+                background-color: var(--neutral-grey-2); // legacy
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
 
                 height: 36px;
-                background: var(--neutral-grey-2);
+                background: var(--neutral-grey-2); // legacy
                 border-radius: 4px;
                 padding: 8px;
 
@@ -119,7 +119,7 @@
                 .material-icons {
                     font-size: 20px;
 
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                 }
 
                 i.gorgias-file-attachment__close-icon {
@@ -127,11 +127,11 @@
 
                     cursor: pointer;
 
-                    color: var(--neutral-grey-4);
+                    color: var(--neutral-grey-4); // legacy
                 }
 
                 a.gorgias-file-attachment__anchor-name {
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                     font-weight: 600;
                     font-size: 14px;
                     line-height: 20px;
@@ -149,7 +149,7 @@
                     font-weight: 400;
                     font-size: 14px;
                     line-height: 20px;
-                    color: var(--neutral-grey-4);
+                    color: var(--neutral-grey-4); // legacy
                 }
 
                 > div {
@@ -165,11 +165,11 @@
             .fr-desktop {
                 .fr-command {
                     &:active {
-                        background-color: var(--neutral-grey-3);
+                        background-color: var(--neutral-grey-3); // legacy
                     }
 
                     &:hover:not(.fr-table-cell) {
-                        background-color: var(--neutral-grey-3);
+                        background-color: var(--neutral-grey-3); // legacy
                     }
                 }
             }
@@ -182,7 +182,7 @@
                 }
 
                 .fr-buttons.fr-tabs {
-                    background-color: var(--neutral-grey-2);
+                    background-color: var(--neutral-grey-2); // legacy
                 }
             }
         }
@@ -194,6 +194,98 @@
 
         .skeleton {
             margin-bottom: var(--layout-spacing-m);
+        }
+    }
+}
+
+.axiom :local {
+    .froalaEditorWrapper {
+        :global {
+            .fr-toolbar {
+                border-color: var(--border-neutral-secondary);
+                background-color: var(--elevation-neutral-mid);
+            }
+
+            .fr-action-buttons button.fr-command {
+                color: var(--surface-additional-blue);
+            }
+
+            .fr-command {
+                color: var(--content-neutral-default) !important;
+
+                &.fr-btn {
+                    &.fr-btn-active-popup {
+                        background-color: var(--border-neutral-default);
+                    }
+
+                    + .fr-dropdown-menu
+                        .fr-dropdown-wrapper
+                        .fr-dropdown-content {
+                        background-color: var(--elevation-neutral-mid);
+                    }
+
+                    &.fr-dropdown.fr-active {
+                        background-color: var(--border-neutral-default);
+
+                        &:hover {
+                            background-color: var(--border-neutral-default);
+                        }
+                    }
+                }
+            }
+
+            fr-tabs .fr-command.fr-btn:not(:hover):not(:focus) {
+                &.fr-active-tab {
+                    background-color: var(--elevation-neutral-default);
+                }
+
+                &.fr-active {
+                    background-color: var(--elevation-neutral-default);
+                }
+            }
+
+            .fr-separator {
+                background-color: var(--border-neutral-default);
+            }
+
+            .gorgias-file-attachment__wrapper {
+                background-color: var(--elevation-neutral-mid);
+                background: var(--elevation-neutral-mid);
+
+                .material-icons {
+                    color: var(--content-neutral-default);
+                }
+
+                i.gorgias-file-attachment__close-icon {
+                    color: var(--content-neutral-secondary);
+                }
+
+                a.gorgias-file-attachment__anchor-name {
+                    color: var(--content-neutral-default);
+                }
+
+                span.gorgias-file-attachment__span-size {
+                    color: var(--content-neutral-secondary);
+                }
+            }
+
+            .fr-desktop {
+                .fr-command {
+                    &:active {
+                        background-color: var(--border-neutral-default);
+                    }
+
+                    &:hover:not(.fr-table-cell) {
+                        background-color: var(--border-neutral-default);
+                    }
+                }
+            }
+
+            .fr-popup {
+                .fr-buttons.fr-tabs {
+                    background-color: var(--elevation-neutral-mid);
+                }
+            }
         }
     }
 }

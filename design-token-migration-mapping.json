@@ -1,0 +1,234 @@
+{
+  "migrationAnalysis": {
+    "totalCommits": 3,
+    "totalFilesAffected": 25,
+    "migrationStrategy": "Systematic replacement of color-based tokens with semantic axiom design tokens while maintaining backward compatibility"
+  },
+  "commits": {
+    "5308fc2a74d4c88da916408f0d2430a425143e65": {
+      "title": "feat(tokens): Migrate tokens on the ticket related pages",
+      "date": "2025-08-06",
+      "filesAffected": 15
+    },
+    "515c9b3f4e26f5c0bcfca3a2541d12141e277dff": {
+      "title": "feat(tokens): Start the token migration",
+      "date": "2025-08-05", 
+      "filesAffected": 11
+    },
+    "35b6d6b0e7bed4f21af15b5bafa93ef5911eba70": {
+      "title": "feat(tokens): Migrate design tokens for ticket detail and infobar components",
+      "date": "2025-08-08",
+      "filesAffected": 10
+    }
+  },
+  "tokenMappings": {
+    "backgroundColors": {
+      "--neutral-grey-0": "--elevation-neutral-default",
+      "--neutral-grey-1": ["--elevation-neutral-mid", "--elevation-neutral-bg"],
+      "--navigation-background": "--elevation-neutral-bg"
+    },
+    "textColors": {
+      "--neutral-grey-6": "--content-neutral-default",
+      "--neutral-grey-5": "--content-neutral-default",
+      "--navigation-text-item": "--content-neutral-default",
+      "--navigation-title-item": "--content-neutral-default"
+    },
+    "borderColors": {
+      "--neutral-grey-2": "--border-neutral-default",
+      "--neutral-grey-3": "--border-neutral-default",
+      "--navigation-border": "--border-neutral-default"
+    },
+    "accentColors": {
+      "--main-primary": "--surface-additional-blue",
+      "--main-primary-0": "--elevation-neutral-bg",
+      "--feedback-error": "--static-error"
+    },
+    "specialCases": {
+      "--neutral-grey-4": {
+        "note": "Some instances remain unchanged for specific secondary text, others migrate to --content-neutral-default"
+      }
+    }
+  },
+  "detailedMappings": {
+    "commit_5308fc2a74": [
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-neutral-default",
+        "context": "Background color",
+        "files": ["AppNode.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-6", 
+        "newToken": "--content-neutral-default",
+        "context": "Text/content color",
+        "files": ["AppNode.less", "Content.less", "EditableTitle.less", "Ticket.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--border-neutral-default", 
+        "context": "Border color",
+        "files": ["Editor.less", "TicketSubmitButtons.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Background color", 
+        "files": ["TicketHeader.less", "TicketHeaderWrapper.less", "Content.less", "TicketView.less", "TicketListView.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-neutral-mid",
+        "context": "Background color",
+        "files": ["TicketSubmitButtons.less", "SatisfactionSurvey.less", "Editor.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-1", 
+        "newToken": "--elevation-neutral-bg",
+        "context": "Background/hover color",
+        "files": ["Ticket.less", "TicketEmptyPanel.less"]
+      },
+      {
+        "legacyToken": "--main-primary-0",
+        "newToken": "--elevation-neutral-bg",
+        "context": "Active background",
+        "files": ["Ticket.less"]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--surface-additional-blue", 
+        "context": "Active border/accent",
+        "files": ["Ticket.less"]
+      },
+      {
+        "legacyToken": "--feedback-error",
+        "newToken": "--static-error",
+        "context": "Error color",
+        "files": ["Ticket.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-5",
+        "newToken": "--content-neutral-default",
+        "context": "Secondary text color", 
+        "files": ["Ticket.less"]
+      },
+      {
+        "legacyToken": "--navigation-title-item",
+        "newToken": "--elevation-neutral-bg",
+        "context": "Navigation item color",
+        "files": ["Toggle.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--border-neutral-default",
+        "context": "Border color",
+        "files": ["TicketListView.less"]
+      }
+    ],
+    "commit_515c9b3f4e": [
+      {
+        "legacyToken": "--navigation-background",
+        "newToken": "--elevation-neutral-bg",
+        "context": "Navigation background",
+        "files": ["GlobalNavigation.less", "Navbar.less", "App.less"]
+      },
+      {
+        "legacyToken": "--navigation-text-item",
+        "newToken": "--content-neutral-default",
+        "context": "Navigation text", 
+        "files": ["GlobalNavigation.less", "GlobalNavigationItem.less", "NavigationSectionItem.less", "NavigationSectionTrigger.less", "Navbar.less"]
+      },
+      {
+        "legacyToken": "--navigation-title-item",
+        "newToken": "--content-neutral-default",
+        "context": "Navigation title",
+        "files": ["GlobalNavigationItem.less"]
+      },
+      {
+        "legacyToken": "--navigation-border",
+        "newToken": "--border-neutral-default",
+        "context": "Navigation border",
+        "files": ["GlobalNavigation.less", "Navbar.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-0", 
+        "newToken": "--elevation-neutral-default",
+        "context": "Background color",
+        "files": ["App.less", "SecondaryNavbar.less", "MacrosSettingsTable.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--border-neutral-default",
+        "context": "Border color", 
+        "files": ["SecondaryNavbar.less", "MacrosSettingsTable.less"]
+      }
+    ],
+    "commit_35b6d6b0e7": [
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-neutral-mid",
+        "context": "Background/hover color",
+        "files": ["view-table.less", "FilterTopbar.less", "Infobar.less", "TicketInfobarContainer.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--border-neutral-default", 
+        "context": "Border color",
+        "files": ["view-table.less", "Table.less", "Infobar.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-4",
+        "newToken": "--content-neutral-default",
+        "context": "Active text",
+        "files": ["view-table.less"]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--surface-additional-blue",
+        "context": "Primary accent",
+        "files": ["view-table.less", "Table.less", "TicketInfobarContainer.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-5",
+        "newToken": "--content-neutral-default", 
+        "context": "Text color",
+        "files": ["AutoQA.less", "FilterTopbar.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-6",
+        "newToken": "--content-neutral-default",
+        "context": "Primary text",
+        "files": ["FilterTopbar.less", "Header.less", "Infobar.less", "InfobarCustomerInfo.less", "TicketInfobarContainer.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Background color",
+        "files": ["Table.less", "ViewTableHeaderContainer.less", "Infobar.less", "InfobarCustomerInfo.less", "TicketFeedback.less", "TicketInfobarContainer.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--elevation-neutral-mid",
+        "context": "Background color",
+        "files": ["Infobar.less"]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--border-neutral-default",
+        "context": "Border/separator color", 
+        "files": ["Infobar.less", "InfobarCustomerInfo.less", "TicketInfobarContainer.less"]
+      },
+      {
+        "legacyToken": "--feedback-error",
+        "newToken": "--static-error",
+        "context": "Error color",
+        "files": ["Infobar.less"]
+      }
+    ]
+  },
+  "implementationNotes": {
+    "backwardCompatibility": "Legacy tokens are marked with '// legacy' comments",
+    "newTokenStructure": "New axiom tokens are defined in '.axiom' CSS selector blocks",
+    "semanticNaming": "Migration moves from color-based naming to semantic meaning (elevation, content, surface, etc.)",
+    "transitionStrategy": "Maintains both token systems during migration period"
+  }
+}

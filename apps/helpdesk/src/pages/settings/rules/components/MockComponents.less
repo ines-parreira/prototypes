@@ -1,15 +1,15 @@
 :local .container {
     margin: 14px 0px;
-    border: 1px solid var(--neutral-grey-3);
+    border: 1px solid var(--neutral-grey-3); // legacy
     border-radius: 4px;
-    background-color: var(--neutral-grey-0);
+    background-color: var(--neutral-grey-0); // legacy
 
     &.orderTracking {
         & {
             border-bottom: 0px;
         }
         .orderTitleContainer {
-            border-bottom: 1px dashed var(--neutral-grey-3);
+            border-bottom: 1px dashed var(--neutral-grey-3); // legacy
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -20,12 +20,12 @@
                 font-size: 16px;
             }
             .orderPrice {
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
             }
         }
 
         .fulfillmentContainer {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
             padding: 0px 8px;
 
             .product {
@@ -35,12 +35,12 @@
                     font-weight: 600;
                 }
                 .productPrice {
-                    color: var(--neutral-grey-5);
+                    color: var(--neutral-grey-5); // legacy
                 }
             }
             .trackingLink {
                 padding: 8px;
-                color: var(--main-primary);
+                color: var(--main-primary); // legacy
                 cursor: pointer;
             }
         }
@@ -49,39 +49,88 @@
         padding: 12px;
 
         .articleTitle {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             font-weight: 600;
             flex-direction: row;
             font-size: 16px;
             margin-bottom: 4px;
         }
         .articleDescription {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             line-height: 18px;
             margin-bottom: 4px;
         }
         .articleLink {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
             text-decoration: underline;
             font-weight: 500;
         }
     }
     &.FAQArticlePreview {
         padding: 12px;
-        background-color: var(--accessory-blue-1);
+        background-color: var(--accessory-blue-1); // legacy
 
         .previewTitle {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             font-weight: 600;
             font-size: 16px;
             margin-bottom: 4px;
         }
         .previewAnswer {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             line-height: 18px;
         }
         .previewAnswer p:last-child {
             margin-bottom: 0px;
+        }
+    }
+}
+
+.axiom :local .container {
+    border: 1px solid var(--border-neutral-default);
+    background-color: var(--elevation-neutral-default);
+
+    &.orderTracking {
+        .orderTitleContainer {
+            border-bottom: 1px dashed var(--border-neutral-default);
+
+            .orderPrice {
+                color: var(--content-neutral-tertiary);
+            }
+        }
+
+        .fulfillmentContainer {
+            border-bottom: 1px solid var(--border-neutral-default);
+
+            .product {
+                .productPrice {
+                    color: var(--content-neutral-tertiary);
+                }
+            }
+            .trackingLink {
+                color: var(--surface-additional-blue);
+            }
+        }
+    }
+    &.FAQArticle {
+        .articleTitle {
+            color: var(--content-neutral-default);
+        }
+        .articleDescription {
+            color: var(--content-neutral-tertiary);
+        }
+        .articleLink {
+            color: var(--surface-additional-blue);
+        }
+    }
+    &.FAQArticlePreview {
+        background-color: var(--surface-additional-blue);
+
+        .previewTitle {
+            color: var(--content-neutral-default);
+        }
+        .previewAnswer {
+            color: var(--content-neutral-tertiary);
         }
     }
 }

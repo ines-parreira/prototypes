@@ -23,7 +23,6 @@
         font-weight: 400;
         font-size: 16px;
         color: var(--neutral-grey-6);
-
         i {
             padding: 4px;
             background-color: var(--neutral-grey-1);
@@ -73,7 +72,6 @@
         font-size: 14px;
         font-weight: 400;
         color: var(--neutral-grey-4);
-
         i {
             font-size: 20px;
             width: 20px;
@@ -111,5 +109,45 @@
 
     .select {
         max-height: 300px;
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
+
+        i {
+            background-color: var(--elevation-neutral-mid);
+            color: var(--content-neutral-tertiary);
+
+            &.activeIcon {
+                background-color: var(--surface-additional-blue);
+                color: var(--content-additional-blue);
+            }
+        }
+    }
+
+    .closeButton {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .addProduct {
+        color: var(--surface-additional-blue);
+
+        &:hover {
+            color: var(--content-additional-blue);
+        }
+    }
+
+    .counter {
+        color: var(--content-neutral-secondary);
+    }
+
+    .productName {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .oldPrice {
+        color: var(--content-neutral-tertiary);
     }
 }

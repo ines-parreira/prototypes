@@ -9,7 +9,7 @@
     .headerTitle {
         .heading-page-semibold();
         padding: var(--layout-spacing-m);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .contentWrapper {
@@ -32,38 +32,38 @@
     }
 
     .asterisk {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-left: var(--layout-spacing-xxs);
     }
 
     .inputField {
         height: var(--layout-spacing-xl);
         .body-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         display: flex;
         padding: 12px; // custom spacing
         align-items: center;
         justify-content: space-between;
         gap: var(--layout-spacing-xs);
         border-radius: var(--layout-spacing-xxs);
-        border: 1px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-0); // legacy
 
         i {
             font-size: 24px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .textArea {
         height: 126px;
         .body-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         padding: 12px; // custom spacing
         align-items: start;
         border-radius: var(--layout-spacing-xxs);
-        border: 1px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-0); // legacy
     }
 
     .attachmentsWrapper {
@@ -76,9 +76,9 @@
         display: flex;
         flex-direction: row;
         column-gap: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: var(--layout-spacing-xxs);
-        border: 1px dashed var(--neutral-grey-3);
+        border: 1px dashed var(--neutral-grey-3); // legacy
         align-items: center;
         justify-content: center;
         padding: var(--layout-spacing-s);
@@ -92,7 +92,7 @@
     .caption {
         .caption-regular();
         line-height: 20px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .footerSection {
@@ -103,8 +103,8 @@
     }
 
     .sendButton {
-        background-color: var(--neutral-grey-6);
-        color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-6); // legacy
+        color: var(--neutral-grey-0); // legacy
         .heading-subsection-regular();
         font-weight: 500;
         display: inline-flex;
@@ -116,5 +116,45 @@
 
     .linkText {
         color: #0075ff;
+    }
+}
+
+.axiom :local {
+    .headerTitle {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .asterisk {
+        color: var(--static-error);
+    }
+
+    .inputField {
+        color: var(--content-neutral-secondary);
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .textArea {
+        color: var(--content-neutral-secondary);
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+    }
+
+    .attachments {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px dashed var(--border-neutral-default);
+    }
+
+    .caption {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .sendButton {
+        background-color: var(--content-neutral-default);
+        color: var(--elevation-neutral-default);
     }
 }

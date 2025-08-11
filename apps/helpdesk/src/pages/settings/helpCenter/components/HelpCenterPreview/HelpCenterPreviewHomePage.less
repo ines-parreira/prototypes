@@ -13,7 +13,7 @@
     }
 
     .onePagerLayout {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .searchBar {
@@ -24,16 +24,16 @@
         border-radius: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-s);
         gap: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         box-shadow: 0px 2px 4px rgba(22, 22, 22, 0.16);
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
     }
 
     .sectionHeader {
         display: flex;
         justify-content: space-between;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         padding-bottom: var(--layout-spacing-s);
     }
@@ -93,23 +93,23 @@
         cursor: pointer;
 
         transition: border-color 0.4s;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
     }
 
     .articleItem {
         padding: var(--layout-spacing-m);
-        border-color: var(--neutral-grey-2);
+        border-color: var(--neutral-grey-2); // legacy
     }
 
     .articleDescription {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: 0;
     }
 
     .itemImage {
         flex: 1;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .itemCatName {
@@ -118,7 +118,7 @@
         display: flex;
         padding: var(--layout-spacing-xs);
 
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         .body-semibold();
     }
 
@@ -150,12 +150,12 @@
         justify-content: space-between;
         gap: var(--layout-spacing-xs);
         border-radius: var(--layout-spacing-xxs);
-        border: 1px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-0); // legacy
 
         i {
             font-size: 24px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -183,11 +183,63 @@
         display: flex;
         padding: 20px 0px; // custom spacing
         justify-content: space-between;
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
 
         i {
             font-size: 24px;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .onePagerLayout {
+        background: var(--elevation-neutral-default);
+    }
+
+    .searchBar {
+        background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--elevation-neutral-mid);
+    }
+
+    .sectionHeader {
+        color: var(--content-neutral-default);
+    }
+
+    .item {
+        border: 1px solid var(--elevation-neutral-mid);
+    }
+
+    .articleItem {
+        border-color: var(--elevation-neutral-mid);
+    }
+
+    .articleDescription {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .itemImage {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .itemCatName {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .categoryMenu {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .articleTitle {
+        border-top: 1px solid var(--border-neutral-default);
+
+        i {
+            color: var(--content-neutral-tertiary);
         }
     }
 }

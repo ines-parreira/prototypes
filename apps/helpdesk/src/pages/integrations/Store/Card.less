@@ -10,14 +10,14 @@
         display: block;
         height: 190px;
         padding: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         overflow: hidden;
     }
 
     .featured {
-        background-color: var(--main-primary-0);
+        background-color: var(--main-primary-0); // legacy
     }
 
     .interactive {
@@ -27,8 +27,11 @@
             box-shadow: 0 2px 3px
                 hsla(
                     var(--neutral-grey-6-h),
+                    // legacy
                     var(--neutral-grey-6-s),
+                    // legacy
                     var(--neutral-grey-6-l),
+                    // legacy
                     0.2
                 );
         }
@@ -67,7 +70,7 @@
         width: 24px;
         height: 24px;
         font-weight: 600;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         background-color: var(--feedback-success);
         border-radius: 50%;
     }
@@ -76,7 +79,7 @@
         margin-bottom: var(--layout-spacing-xxs);
         font-weight: 600;
         font-size: 20px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -89,7 +92,36 @@
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         line-height: 20px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         overflow: hidden;
+    }
+}
+
+.axiom :local {
+    .card {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .featured {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .interactive {
+        &:hover {
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    .installedPill {
+        color: var(--elevation-neutral-default);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-default);
     }
 }

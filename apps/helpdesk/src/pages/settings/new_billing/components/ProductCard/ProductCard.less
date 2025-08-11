@@ -3,7 +3,7 @@
         display: flex;
         flex-direction: column;
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         height: 200px;
         padding: 16px;
         justify-content: space-between;
@@ -20,17 +20,17 @@
         align-items: center;
         font-weight: 400;
         font-size: 16px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         i {
             padding: 4px;
-            background-color: var(--neutral-grey-1);
-            color: var(--neutral-grey-5);
+            background-color: var(--neutral-grey-1); // legacy
+            color: var(--neutral-grey-5); // legacy
             border-radius: 4px;
 
             &.activeIcon {
-                background-color: var(--accessory-blue-1);
-                color: var(--main-primary-4);
+                background-color: var(--accessory-blue-1); // legacy
+                color: var(--main-primary-4); // legacy
             }
         }
     }
@@ -43,7 +43,7 @@
 
         i {
             font-size: 20px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -83,11 +83,11 @@
     }
 
     .danger {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .warning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
 
     .contactUs {
@@ -101,5 +101,39 @@
     .disabledLock {
         padding-right: 4px;
         font-size: 20px;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+
+        i {
+            background-color: var(--elevation-neutral-mid);
+            color: var(--content-neutral-tertiary);
+
+            &.activeIcon {
+                background-color: var(--surface-additional-blue);
+                color: var(--content-additional-blue);
+            }
+        }
+    }
+
+    .counter {
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .danger {
+        color: var(--static-error);
+    }
+
+    .warning {
+        color: var(--static-warning);
     }
 }

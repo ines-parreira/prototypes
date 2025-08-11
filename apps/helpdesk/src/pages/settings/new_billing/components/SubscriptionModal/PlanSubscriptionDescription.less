@@ -27,10 +27,10 @@
         gap: 8px;
         align-items: flex-start;
         font-size: 16px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         i {
-            color: var(--feedback-success-3);
+            color: var(--feedback-success-3); // legacy
             font-size: 24px;
         }
     }
@@ -45,7 +45,7 @@
     .title {
         font-size: 16px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .selectedPlan {
@@ -62,7 +62,7 @@
     }
 
     .counter {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         gap: 4px;
         align-items: center;
@@ -75,7 +75,7 @@
     .payment {
         margin-top: 12px;
         padding: 20px 16px;
-        border: 1px solid var(--feedback-warning);
+        border: 1px solid var(--feedback-warning); // legacy
         border-radius: 4px;
         display: none;
 
@@ -85,13 +85,13 @@
     }
 
     .enterprisePrice {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 600;
     }
 
     .enterpriseDescription {
         padding: 12px 16px;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .starterDescription {
@@ -105,7 +105,7 @@
 
     .link {
         .component-button-small();
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
 
         i {
             margin-left: 4px;
@@ -113,7 +113,7 @@
     }
 
     .summaryPaymentSection {
-        border: 0px solid var(--neutral-grey-3);
+        border: 0px solid var(--neutral-grey-3); // legacy
         padding: 0px;
         width: 100%;
         font-size: 14px;
@@ -126,5 +126,43 @@
             font-size: 14px;
             white-space: nowrap;
         }
+    }
+}
+
+.axiom :local {
+    .feature {
+        color: var(--content-neutral-tertiary);
+
+        i {
+            color: var(--content-success-primary);
+        }
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .counter {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .payment {
+        border: 1px solid var(--static-warning);
+    }
+
+    .enterprisePrice {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .enterpriseDescription {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .link {
+        color: var(--surface-additional-blue);
+    }
+
+    .summaryPaymentSection {
+        border: 0px solid var(--border-neutral-default);
     }
 }

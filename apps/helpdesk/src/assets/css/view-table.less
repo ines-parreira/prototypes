@@ -12,11 +12,11 @@
 
     tbody {
         tr:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
 
         tr {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
             &.highlighted {
                 .subject {
                     .heading-subsection-semibold();
@@ -44,7 +44,7 @@
         }
 
         .description {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             .body-regular();
 
             em {
@@ -106,20 +106,20 @@
 
     thead {
         tr {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
 
         tr:first-child .field-title {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             .caption-allcaps();
 
             &.active {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
         }
 
         .clickable {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         td > div {
@@ -133,6 +133,40 @@
             min-height: 36px;
             flex-direction: column;
             align-items: flex-start;
+        }
+    }
+}
+
+.axiom .view-table {
+    tbody {
+        tr:hover {
+            background: var(--elevation-neutral-mid);
+        }
+
+        tr {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+
+        .description {
+            color: var(--neutral-grey-4);
+        }
+    }
+
+    thead {
+        tr {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+
+        tr:first-child .field-title {
+            color: var(--neutral-grey-4);
+
+            &.active {
+                color: var(--content-neutral-default);
+            }
+        }
+
+        .clickable {
+            color: var(--surface-additional-blue);
         }
     }
 }

@@ -4,7 +4,7 @@
 
     .legend {
         margin: 8px 0 0 0;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         text-align: center;
     }
 
@@ -18,7 +18,7 @@
     }
 
     .bordered {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         padding: 16px;
     }
@@ -39,7 +39,7 @@
     &.autoCloseSpam {
         .example {
             display: flex;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -51,11 +51,11 @@
                 content: '*';
             }
             font-style: italic;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy // legacy
         }
         .exampleContainer {
             flex-grow: 1;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             max-height: 492px;
             overflow: scroll;
             .fakeMessage {
@@ -63,7 +63,7 @@
                 flex-direction: row;
                 display: flex;
                 .fakeLink {
-                    color: var(--main-primary);
+                    color: var(--main-primary); // legacy
                     text-decoration: underline;
                     font-weight: 600;
                 }
@@ -73,19 +73,63 @@
                     margin-bottom: 6px;
                 }
                 .autoResponder {
-                    color: var(--main-primary);
+                    color: var(--main-primary); // legacy
                 }
 
                 .clientAvatar {
-                    background: var(--neutral-grey-2);
+                    background: var(--neutral-grey-2); // legacy
 
                     span {
-                        color: var(--neutral-grey-4);
+                        color: var(--neutral-grey-4); // legacy // legacy
                     }
                 }
 
                 .autoResponderAvatar {
                     background: #fff8f3;
+                }
+            }
+        }
+    }
+}
+
+.axiom :local .managedRule {
+    .legend {
+        color: var(--content-neutral-secondary);
+    }
+
+    .bordered {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    &.autoCloseSpam {
+        .example {
+            background-color: var(--elevation-neutral-mid);
+        }
+    }
+
+    &.autoReplyWismo,
+    &.autoReplyFAQ,
+    &.autoReplyReturn {
+        .addendum {
+            color: var(--content-neutral-secondary);
+        }
+        .exampleContainer {
+            background-color: var(--elevation-neutral-mid);
+            .fakeMessage {
+                .fakeLink {
+                    color: var(--surface-additional-blue);
+                }
+
+                .autoResponder {
+                    color: var(--surface-additional-blue);
+                }
+
+                .clientAvatar {
+                    background: var(--elevation-neutral-mid);
+
+                    span {
+                        color: var(--content-neutral-secondary);
+                    }
                 }
             }
         }

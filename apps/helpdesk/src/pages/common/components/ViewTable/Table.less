@@ -5,7 +5,7 @@
         .tableHead {
             position: sticky;
             top: 0;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             z-index: 1;
 
             &::after {
@@ -14,7 +14,7 @@
                 display: block;
                 width: 100%;
                 height: 1px;
-                background-color: var(--neutral-grey-3);
+                background-color: var(--neutral-grey-3); // legacy
             }
 
             tr {
@@ -23,11 +23,11 @@
 
             .banner {
                 box-shadow: inset 0 1px 0 rgba(22, 22, 22, 0.1);
-                background-color: var(--neutral-grey-1);
+                background-color: var(--neutral-grey-1); // legacy
                 text-align: center;
                 padding-top: 8px;
                 padding-bottom: 8px;
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
 
                 b {
                     font-weight: 500;
@@ -54,7 +54,7 @@
             }
 
             &.has-cursor {
-                box-shadow: inset 4px 0 0 var(--main-primary);
+                box-shadow: inset 4px 0 0 var(--main-primary); // legacy
             }
         }
     }
@@ -81,6 +81,29 @@
 
         .checkBoxLabel {
             width: fit-content;
+        }
+    }
+}
+
+.axiom :local {
+    .table {
+        .tableHead {
+            background-color: var(--elevation-neutral-default);
+
+            &::after {
+                background-color: var(--border-neutral-default);
+            }
+
+            .banner {
+                background-color: var(--elevation-neutral-mid);
+                color: var(--content-neutral-default);
+            }
+        }
+
+        tr {
+            &.has-cursor {
+                box-shadow: inset 4px 0 0 var(--surface-additional-blue);
+            }
         }
     }
 }

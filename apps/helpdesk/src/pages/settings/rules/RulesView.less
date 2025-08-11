@@ -21,11 +21,17 @@
     .pageHeaderContainer {
         top: 0;
         z-index: 10;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .headerContainer {
         display: flex;
         flex-direction: row;
+    }
+}
+
+.axiom :local {
+    .pageHeaderContainer {
+        background-color: var(--elevation-neutral-default);
     }
 }

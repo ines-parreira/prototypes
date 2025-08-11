@@ -9,7 +9,7 @@
     :global(.card-body),
     :global(.card-footer) {
         padding: var(--layout-spacing-m);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     :global(.card-footer) {
@@ -17,7 +17,7 @@
         border-style: solid;
         padding-top: var(--layout-spacing-xs);
         padding-bottom: var(--layout-spacing-xs);
-        border-color: var(--neutral-grey-1);
+        border-color: var(--neutral-grey-1); // legacy
     }
 
     .cardActions {
@@ -37,7 +37,7 @@
     }
 
     .subtitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         font-size: 11px;
         letter-spacing: 0.6px;
@@ -52,7 +52,7 @@
     .updateViewFeedback {
         .caption-regular();
         align-items: center;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-left: 12px;
         opacity: 0;
         transition: all 0.2s linear;
@@ -73,6 +73,29 @@
     .searchResourceCount {
         float: right;
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local .component {
+    :global(.card-body),
+    :global(.card-footer) {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    :global(.card-footer) {
+        border-color: var(--elevation-neutral-mid);
+    }
+
+    .subtitle {
+        color: var(--content-neutral-default);
+    }
+
+    .updateViewFeedback {
+        color: var(--neutral-grey-4);
+    }
+
+    .searchResourceCount {
+        color: var(--content-neutral-default);
     }
 }

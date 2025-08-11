@@ -1,7 +1,7 @@
 :local {
     .customerInfo {
         padding: var(--layout-spacing-s);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .customerProfile {
@@ -21,7 +21,7 @@
 
     .displayName {
         margin: 0;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         font-size: 17px;
     }
@@ -32,6 +32,20 @@
 
     .separator {
         margin: calc(var(--layout-spacing-xs) * 1.5) 0;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
+    }
+}
+
+.axiom :local {
+    .customerInfo {
+        background: var(--elevation-neutral-default);
+    }
+
+    .displayName {
+        color: var(--content-neutral-default);
+    }
+
+    .separator {
+        background-color: var(--border-neutral-default);
     }
 }

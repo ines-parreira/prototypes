@@ -19,15 +19,19 @@
             }
             .allowList {
                 :global(.badge-secondary) {
-                    background-color: var(--neutral-grey-2) !important;
-                    color: var(--neutral-grey-6) !important;
+                    background-color: var(
+                        --neutral-grey-2
+                    ) !important; // legacy
+                    color: var(--neutral-grey-6) !important; // legacy
                     padding: 4px 6px !important;
                 }
             }
             .blockList {
                 :global(.badge-secondary) {
-                    background-color: var(--feedback-error-0) !important;
-                    color: var(--feedback-error-3) !important;
+                    background-color: var(
+                        --feedback-error-0
+                    ) !important; // legacy
+                    color: var(--feedback-error-3) !important; // legacy
                     padding: 4px 6px !important;
                 }
             }
@@ -53,7 +57,7 @@
         height: 100%;
 
         .previewBodyWrapper {
-            border: 1px dashed var(--neutral-grey-3);
+            border: 1px dashed var(--neutral-grey-3); // legacy
             border-radius: 4px;
             padding: 16px;
             & * {
@@ -62,19 +66,19 @@
         }
 
         .previewLegend {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             font-style: italic;
         }
 
         .topbar {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             height: 27px;
             border-radius: 8px 8px 0px 0px;
             display: flex;
             align-items: center;
             .circle {
                 border-radius: 50%;
-                background-color: var(--neutral-grey-3);
+                background-color: var(--neutral-grey-3); // legacy
                 height: 14px;
                 width: 14px;
                 display: inline-block;
@@ -83,13 +87,13 @@
         }
 
         .demoContent {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 0px 0px 4px 4px;
             .textdata {
-                background-color: var(--neutral-grey-0);
+                background-color: var(--neutral-grey-0); // legacy
                 overflow-y: scroll;
                 height: 95%;
                 width: 90%;
@@ -116,6 +120,49 @@
                 text-transform: none;
                 pointer-events: none;
                 cursor: initial;
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        .listWrapper {
+            .allowList {
+                :global(.badge-secondary) {
+                    background-color: var(--elevation-neutral-mid) !important;
+                    color: var(--content-neutral-default) !important;
+                }
+            }
+            .blockList {
+                :global(.badge-secondary) {
+                    background-color: var(--surface-error-primary) !important;
+                    color: var(--content-error-primary) !important;
+                }
+            }
+        }
+    }
+
+    .demo {
+        .previewBodyWrapper {
+            border: 1px dashed var(--border-neutral-default);
+        }
+
+        .previewLegend {
+            color: var(--content-neutral-secondary);
+        }
+
+        .topbar {
+            background-color: var(--elevation-neutral-mid);
+            .circle {
+                background-color: var(--border-neutral-default);
+            }
+        }
+
+        .demoContent {
+            background-color: var(--elevation-neutral-mid);
+            .textdata {
+                background-color: var(--elevation-neutral-default);
             }
         }
     }

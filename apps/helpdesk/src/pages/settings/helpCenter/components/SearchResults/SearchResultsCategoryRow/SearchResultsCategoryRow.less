@@ -1,7 +1,7 @@
 :local {
     .caret {
         margin-right: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 22px;
     }
 
@@ -18,11 +18,11 @@
     }
 
     .row {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         height: 67px;
 
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
 
             .actions {
                 opacity: 1;
@@ -32,7 +32,7 @@
 
     .parent-cell {
         > div {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
             padding: 0;
             margin: -1px 0;
 
@@ -51,11 +51,11 @@
 
     .category-title {
         font-weight: bold;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .cell {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: normal;
         font-size: 14px;
         line-height: 20px;
@@ -73,11 +73,11 @@
 
         .count {
             padding: 2px 9px;
-            border: 1px solid var(--neutral-grey-3);
+            border: 1px solid var(--neutral-grey-3); // legacy
             margin-left: 8px;
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
 
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             font-weight: 600;
             font-size: 12px;
             line-height: 16px;
@@ -87,6 +87,40 @@
     .language {
         > div {
             width: 125px;
+        }
+    }
+}
+
+.axiom :local {
+    .caret {
+        color: var(--content-neutral-secondary);
+    }
+
+    .row {
+        background-color: var(--elevation-neutral-default);
+
+        &:hover {
+            background-color: var(--elevation-neutral-mid);
+        }
+    }
+
+    .parent-cell {
+        > div {
+            background: var(--elevation-neutral-mid);
+        }
+    }
+
+    .category-title {
+        color: var(--content-neutral-default);
+    }
+
+    .cell {
+        color: var(--content-neutral-default);
+
+        .count {
+            border: 1px solid var(--border-neutral-default);
+            background: var(--elevation-neutral-mid);
+            color: var(--content-neutral-tertiary);
         }
     }
 }

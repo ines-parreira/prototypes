@@ -4,10 +4,10 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: var(--neutral-grey-0);
+    background-color: var(--neutral-grey-0); // legacy
     height: 100%;
 
-    scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-1);
+    scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-1); // legacy
     scrollbar-width: thin;
 
     ::-webkit-scrollbar {
@@ -15,12 +15,12 @@
     }
 
     ::-webkit-scrollbar-thumb {
-        background-color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-4); // legacy
         visibility: visible;
     }
 
     ::-webkit-scrollbar-track {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .selectionBackButton {
@@ -29,7 +29,7 @@
 
     .suggestedCustomer {
         margin: 1.5rem;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-radius: 3px;
         padding: 16px;
     }
@@ -46,7 +46,7 @@
     }
 
     .cardTitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 17px;
         font-weight: 500;
     }
@@ -59,14 +59,14 @@
     }
 
     .subtitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 500;
     }
 
     .footer {
         padding: 0.78em;
-        background-color: var(--neutral-grey-1);
-        border-top: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-1); // legacy
+        border-top: 1px solid var(--neutral-grey-3); // legacy
         box-shadow: 1px 0 6px
             hsla(
                 var(--neutral-grey-6-h),
@@ -81,22 +81,22 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
     }
 
     .infobarSectionSeparator {
         content: ' ';
         display: block;
         width: 100%;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         white-space: pre;
         margin: 8px 0;
     }
 
     .infobarSearchWrapper {
         padding: 12px;
-        background: var(--neutral-grey-0);
-        border-bottom: 1px solid var(--neutral-grey-2);
+        background: var(--neutral-grey-0); // legacy
+        border-bottom: 1px solid var(--neutral-grey-2); // legacy
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -148,6 +148,56 @@
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local .component {
+    background-color: var(--elevation-neutral-default);
+
+    scrollbar-color: var(--neutral-grey-3) var(--elevation-neutral-mid);
+
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--neutral-grey-4);
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .suggestedCustomer {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .cardTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .subtitle {
+        color: var(--content-neutral-default);
+    }
+
+    .footer {
+        background-color: var(--elevation-neutral-mid);
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .infobarContent {
+        background: var(--elevation-neutral-mid);
+    }
+
+    .infobarSectionSeparator {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .infobarSearchWrapper {
+        background: var(--elevation-neutral-default);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+}
+
+.axiom .infobar {
+    .error {
+        color: var(--static-error);
     }
 }

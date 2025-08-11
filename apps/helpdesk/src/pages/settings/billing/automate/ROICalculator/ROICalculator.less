@@ -26,7 +26,7 @@
         flex-direction: column;
         padding: var(--layout-spacing-s);
         border-radius: 4px;
-        background-color: var(--main-latte);
+        background-color: var(--main-latte); // legacy
     }
 
     .formRow {
@@ -55,7 +55,7 @@
 
         i {
             font-size: 16px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -70,12 +70,12 @@
     .title {
         font-size: 14px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding-bottom: var(--layout-spacing-xs);
     }
 
     .resultRowBackground {
-        background-color: var(--accessory-magenta-1);
+        background-color: var(--accessory-magenta-1); // legacy
         border-radius: 4px;
         height: 48px;
         display: flex;
@@ -116,7 +116,7 @@
         width: 240px;
         padding: var(--layout-spacing-xs) 10px;
         border-radius: 4px;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         align-items: center;
         height: 100%;
     }
@@ -124,7 +124,7 @@
     .withAutomateCost {
         font-size: 16px;
         font-weight: 400;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
     }
 
     .savePercentage {
@@ -147,7 +147,7 @@
         display: flex;
         height: 100%;
         flex: 1;
-        background-color: var(--accessory-magenta-2);
+        background-color: var(--accessory-magenta-2); // legacy
         border-radius: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-m) 18px;
         gap: var(--layout-spacing-xs);
@@ -160,7 +160,7 @@
         display: flex;
         height: 100%;
         flex: 1;
-        background-color: var(--accessory-magenta-1);
+        background-color: var(--accessory-magenta-1); // legacy
         border-radius: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-m) 18px;
         gap: var(--layout-spacing-xs);
@@ -178,7 +178,7 @@
     .reduceTime {
         font-size: 24px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-align: center;
     }
 
@@ -204,7 +204,51 @@
     .timeSavedTime {
         font-size: 24px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-align: center;
+    }
+}
+
+.axiom :local {
+    .resultsWrapper {
+        background-color: var(--surface-additional-yellow);
+    }
+
+    .labelContainer {
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .resultRowBackground {
+        background-color: var(--surface-additional-fuchsia);
+    }
+
+    .withAutomate {
+        color: var(--elevation-neutral-default);
+    }
+
+    .withAutomateCost {
+        color: var(--elevation-neutral-default);
+    }
+
+    .reduceResolutionTime {
+        background-color: var(--surface-additional-purple);
+    }
+
+    .reduceFirstResponseTime {
+        background-color: var(--surface-additional-fuchsia);
+    }
+
+    .reduceTime {
+        color: var(--content-neutral-default);
+    }
+
+    .timeSavedTime {
+        color: var(--content-neutral-default);
     }
 }
