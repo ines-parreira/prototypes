@@ -53,6 +53,23 @@ const mockUseSalesTrialRevampMilestone = assumeMock(
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
 
+const defaultExpectedValues = {
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasAnyTrialActive: false,
+    hasAnyTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasAnyTrialOptedOut: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialExpired: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasCurrentStoreTrialStarted: false,
+    isAdminUser: false,
+    isLoading: false,
+} as const
+
 describe('useShoppingAssistantTrialAccess', () => {
     const mockUser = fromJS({
         id: 1,
@@ -143,21 +160,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 useShoppingAssistantTrialAccess(),
             )
 
-            expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
-            })
+            expect(result.current).toEqual(defaultExpectedValues)
         })
     })
 
@@ -168,19 +171,10 @@ describe('useShoppingAssistantTrialAccess', () => {
             )
 
             expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
+                ...defaultExpectedValues,
                 canSeeSystemBanner: true, // Has AI Agent on chat + all other conditions
                 canSeeTrialCTA: true,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
+                isAdminUser: true,
             })
         })
 
@@ -206,19 +200,10 @@ describe('useShoppingAssistantTrialAccess', () => {
             )
 
             expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
+                ...defaultExpectedValues,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
+                isAdminUser: true,
             })
         })
 
@@ -231,19 +216,10 @@ describe('useShoppingAssistantTrialAccess', () => {
             )
 
             expect(result.current).toEqual({
+                ...defaultExpectedValues,
                 canNotifyAdmin: true, // Team lead can notify admin
-                canBookDemo: false,
                 canSeeSystemBanner: false, // Only admins can see system banner
                 canSeeTrialCTA: false, // Only admins can see trial CTA
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
             })
         })
     })
@@ -273,19 +249,10 @@ describe('useShoppingAssistantTrialAccess', () => {
             )
 
             expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
+                ...defaultExpectedValues,
                 canSeeSystemBanner: false, // System banner only for Starter/Basic
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
+                isAdminUser: true,
             })
         })
 
@@ -299,19 +266,9 @@ describe('useShoppingAssistantTrialAccess', () => {
             )
 
             expect(result.current).toEqual({
-                canNotifyAdmin: false,
+                ...defaultExpectedValues,
                 canBookDemo: true, // Pro+ without feature flag can book demo
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
+                isAdminUser: true,
             })
         })
 
@@ -324,19 +281,8 @@ describe('useShoppingAssistantTrialAccess', () => {
             )
 
             expect(result.current).toEqual({
+                ...defaultExpectedValues,
                 canNotifyAdmin: true, // Team lead can notify for Pro+ with feature flag
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
             })
         })
     })
@@ -363,21 +309,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 useShoppingAssistantTrialAccess(),
             )
 
-            expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
-            })
+            expect(result.current).toEqual(defaultExpectedValues)
         })
 
         it('should return false for all trial access when no automate plan', () => {
@@ -401,21 +333,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 useShoppingAssistantTrialAccess(),
             )
 
-            expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
-            })
+            expect(result.current).toEqual(defaultExpectedValues)
         })
     })
 
@@ -439,19 +357,10 @@ describe('useShoppingAssistantTrialAccess', () => {
             )
 
             expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
+                ...defaultExpectedValues,
                 canSeeSystemBanner: false, // No AI Agent on chat
                 canSeeTrialCTA: true, // Trial CTA doesn't require AI Agent on chat
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
+                isAdminUser: true,
             })
         })
     })
@@ -467,19 +376,10 @@ describe('useShoppingAssistantTrialAccess', () => {
 
             // With placeholder (hasAlreadyCompletedTrial = false), all conditions pass
             expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
+                ...defaultExpectedValues,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
+                isAdminUser: true,
             })
         })
     })
@@ -493,21 +393,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                 useShoppingAssistantTrialAccess(),
             )
 
-            expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialActive: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasCurrentStoreTrialStarted: false,
-                isLoading: false,
-            })
+            expect(result.current).toEqual(defaultExpectedValues)
         })
     })
 
@@ -590,19 +476,11 @@ describe('useShoppingAssistantTrialAccess', () => {
                 )
 
                 expect(result.current).toEqual({
-                    canNotifyAdmin: false,
-                    canBookDemo: false,
+                    ...defaultExpectedValues,
                     canSeeSystemBanner: true,
                     canSeeTrialCTA: true,
-                    hasAnyTrialActive: false,
-                    hasAnyTrialExpired: false,
-                    hasAnyTrialOptedIn: false,
                     hasAnyTrialOptedOut: true,
-                    hasAnyTrialStarted: false,
-                    hasCurrentStoreTrialExpired: false,
-                    hasCurrentStoreTrialOptedOut: false,
-                    hasCurrentStoreTrialStarted: false,
-                    isLoading: false,
+                    isAdminUser: true,
                 })
             })
 

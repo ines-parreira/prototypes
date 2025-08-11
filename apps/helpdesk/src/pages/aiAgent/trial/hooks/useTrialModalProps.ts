@@ -171,13 +171,13 @@ const createPlanModalData = (
         buttonText: buttonTexts.current,
     },
     newPlan: {
-        title: 'AI Agent with Shopping Assistant',
-        description: 'Power up AI Agent with new advanced sales skills',
+        title: 'AI Agent + Shopping Assistant',
+        description: 'Add powerful conversion features to your support flow',
         price: planDetails.earlyAccessPlanAmount,
         billingPeriod: `${planDetails.earlyAccessPlanCadence}${isTrial ? ' after trial ends' : ''}`,
         features: [
             {
-                label: 'Everything in Support Agent skills',
+                label: 'Everything in your current plan',
                 isError: false,
             },
             {
@@ -186,6 +186,10 @@ const createPlanModalData = (
             },
             {
                 label: 'Personalize product recommendations powered by rich customer insights',
+                isError: false,
+            },
+            {
+                label: 'Maximize cart size with intelligent upsells',
                 isError: false,
             },
             {
@@ -206,7 +210,7 @@ const useUpgradePlanModal = (): TrialModalProps['upgradePlanModal'] => {
     return useMemo(
         () =>
             createPlanModalData(
-                'Upgrade your AI Agent with new skills to drive more sales',
+                'Turn every interaction into a sale opportunity',
                 planDetails,
                 { current: 'Keep current plan', new: 'Upgrade AI Agent' },
             ),
@@ -490,6 +494,7 @@ const useTrialEndedModal = (
     const currency = currentPlan?.currency ?? 'USD'
 
     const difference = earlyAccessPlanPrice - currentPlanAmount
+    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? 'month'
 
     const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
 
@@ -519,15 +524,15 @@ const useTrialEndedModal = (
         const increaseAmount = formatAmount(difference, currency)
         if (gmvInfluencedRate > 0.005) {
             if (difference > 0) {
-                return `After your trial, your plan will increase by ${increaseAmount}.`
+                return `After your trial, your plan will increase by ${increaseAmount}/${cadence}.`
             }
             return 'The price of your plan remains the same after the upgrade.'
         }
         if (difference > 0) {
-            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}.`
+            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
         }
         return `Typical results achieved by merchants. The price of your plan remains the same after the upgrade.`
-    }, [difference, currency, gmvInfluencedRate])
+    }, [difference, currency, gmvInfluencedRate, cadence])
 
     return useMemo(
         () => ({
@@ -564,6 +569,7 @@ const useTrialEndingModal = (
     const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
     const hasPriceIncrease = difference > 0
     const increaseAmount = formatAmount(difference, currency)
+    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? 'month'
 
     const description = useMemo(() => {
         if (hasSignificantGmvImpact) {
@@ -590,16 +596,16 @@ const useTrialEndingModal = (
     const secondaryDescription = useMemo(() => {
         if (hasSignificantGmvImpact) {
             const priceMessage = hasPriceIncrease
-                ? `your plan will increase by ${increaseAmount}`
+                ? `your plan will increase by ${increaseAmount}/${cadence}`
                 : 'the price of your plan remains the same'
             return `With the upgrade, ${priceMessage}.`
         }
 
         const priceMessage = hasPriceIncrease
-            ? `After upgrading, your plan will increase by ${increaseAmount}`
+            ? `After upgrading, your plan will increase by ${increaseAmount}/${cadence}`
             : 'The price of your plan remains the same after the upgrade'
         return `Typical results achieved by merchants. ${priceMessage}.`
-    }, [hasSignificantGmvImpact, hasPriceIncrease, increaseAmount])
+    }, [hasSignificantGmvImpact, hasPriceIncrease, increaseAmount, cadence])
 
     return useMemo(
         () => ({

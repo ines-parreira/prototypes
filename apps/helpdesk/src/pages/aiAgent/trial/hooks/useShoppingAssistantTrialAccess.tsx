@@ -44,6 +44,7 @@ export type ShoppingAssistantTrialAccess = {
     hasAnyTrialOptedIn: boolean
     hasAnyTrialActive: boolean
 
+    isAdminUser: boolean
     isLoading?: boolean
 }
 
@@ -105,6 +106,7 @@ export const useShoppingAssistantTrialAccess = (
             hasAnyTrialOptedIn: false,
             hasAnyTrialActive: false,
 
+            isAdminUser: false,
             isLoading: false,
         }
     }
@@ -198,6 +200,7 @@ export const useShoppingAssistantTrialAccess = (
         hasAnyTrialOptedIn,
         hasAnyTrialActive,
 
+        isAdminUser,
         isLoading: isFetchLoading,
     }
 }

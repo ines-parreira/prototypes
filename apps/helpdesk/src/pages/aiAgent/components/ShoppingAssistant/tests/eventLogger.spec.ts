@@ -1,12 +1,16 @@
 import { logEvent, SegmentEvent } from 'common/segment'
 
 import { ShoppingAssistantEventType } from '../types/ShoppingAssistant'
-import { logShoppingAssistantEvent } from '../utils/eventLogger'
+import {
+    logShoppingAssistantEvent,
+    logShoppingAssistantInTrialEvent,
+} from '../utils/eventLogger'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         TrialBannerOverviewCTAClicked: 'TrialBannerOverviewCTAClicked',
+        TrialBannerSettingsClicked: 'TrialBannerSettingsClicked',
     },
 }))
 
@@ -58,6 +62,51 @@ describe('logShoppingAssistantEvent', () => {
 
         // @ts-ignore - Testing invalid event type
         logShoppingAssistantEvent('InvalidEventType')
+
+        expect(mockLogEvent).not.toHaveBeenCalled()
+        expect(consoleSpy).toHaveBeenCalledWith(
+            'Unsupported event type: InvalidEventType',
+        )
+
+        consoleSpy.mockRestore()
+    })
+})
+
+describe('logShoppingAssistantInTrialEvent', () => {
+    it('logs UpgradePlan event correctly', () => {
+        logShoppingAssistantInTrialEvent(ShoppingAssistantEventType.UpgradePlan)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialBannerSettingsClicked,
+            { CTA: ShoppingAssistantEventType.UpgradePlan },
+        )
+    })
+
+    it('logs ManageTrial event correctly', () => {
+        logShoppingAssistantInTrialEvent(ShoppingAssistantEventType.ManageTrial)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialBannerSettingsClicked,
+            { CTA: ShoppingAssistantEventType.ManageTrial },
+        )
+    })
+
+    it('logs SetUpSalesStrategy event correctly', () => {
+        logShoppingAssistantInTrialEvent(
+            ShoppingAssistantEventType.SetUpSalesStrategy,
+        )
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialBannerSettingsClicked,
+            { CTA: ShoppingAssistantEventType.SetUpSalesStrategy },
+        )
+    })
+
+    it('handles invalid event types with warning', () => {
+        const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+
+        // @ts-ignore - Testing invalid event type
+        logShoppingAssistantInTrialEvent('InvalidEventType')
 
         expect(mockLogEvent).not.toHaveBeenCalled()
         expect(consoleSpy).toHaveBeenCalledWith(

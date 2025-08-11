@@ -1,5 +1,9 @@
 import React from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+
+import { logEvent } from 'common/segment/segment'
+import { SegmentEvent } from 'common/segment/types'
 import { PromoCard } from 'pages/common/components/PromoCard'
 
 import { PromoCardContent } from '../types/ShoppingAssistant'
@@ -27,6 +31,10 @@ export const LeadTrialProgress: React.FC<LeadTrialProgressProps> = ({
         progressPercentage,
         progressText,
     } = promoContent
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.TrialBannerSettingsViewed)
+    })
 
     return (
         <div className={css.promoCardSection}>
@@ -73,6 +81,7 @@ export const LeadTrialProgress: React.FC<LeadTrialProgressProps> = ({
                                 onClick={primaryButton.onClick}
                                 variant="primary"
                                 disabled={primaryButton.disabled}
+                                isLoading={primaryButton.isLoading}
                             />
                         )}
                     </PromoCard.Actions>

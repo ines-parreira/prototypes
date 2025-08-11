@@ -1004,7 +1004,7 @@ describe('PromoCard', () => {
                 const ctaButton = screen.getByRole('button', {
                     name: /disabled cta/i,
                 })
-                expect(ctaButton).toBeDisabled()
+                expect(ctaButton).toHaveAttribute('aria-disabled', 'true')
             })
 
             // Try to click disabled button - should not trigger onClick or close modal

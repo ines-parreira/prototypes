@@ -12,6 +12,9 @@ export enum ShoppingAssistantEventType {
     Demo = 'Demo',
     Learn = 'Learn',
     NotifyAdmin = 'Notify Admin',
+    UpgradePlan = 'Upgrade Plan',
+    ManageTrial = 'Manage Trial',
+    SetUpSalesStrategy = 'Set Up Sales Strategy',
 }
 
 export interface ButtonConfig {
@@ -20,6 +23,7 @@ export interface ButtonConfig {
     target?: string
     onClick?: () => void
     disabled?: boolean
+    isLoading?: boolean
 }
 
 export interface PromoCardContent {

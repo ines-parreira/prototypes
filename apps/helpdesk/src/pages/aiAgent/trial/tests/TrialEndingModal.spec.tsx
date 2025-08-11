@@ -317,7 +317,7 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
@@ -336,7 +336,7 @@ describe('TrialEndedModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -354,7 +354,7 @@ describe('TrialEndedModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -370,7 +370,7 @@ describe('TrialEndedModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -388,7 +388,7 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         const closeButton = screen.getByText('Close')
@@ -412,7 +412,7 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         const secondaryButton = screen.getByText('No, thanks')
@@ -436,7 +436,7 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         const primaryButton = screen.getByText('Upgrade to Reactivate')
@@ -471,7 +471,7 @@ describe('TrialEndingModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
@@ -491,7 +491,7 @@ describe('TrialEndingModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -514,7 +514,7 @@ describe('TrialEndingModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -532,7 +532,7 @@ describe('TrialEndingModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         const closeButton = screen.getByText('Close')
@@ -556,7 +556,7 @@ describe('TrialEndingModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeConfiguration={mockStoreConfiguration} />,
+            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
         )
 
         const primaryButton = screen.getByText('Dismiss')
@@ -583,7 +583,7 @@ describe('TrialEndingModal', () => {
         it('should show upgrade and trial extension options', () => {
             renderWithStoreAndQueryClientProvider(
                 <TrialEndingModal
-                    storeConfiguration={mockStoreConfiguration}
+                    storeName={mockStoreConfiguration.storeName}
                 />,
             )
 
@@ -606,7 +606,7 @@ describe('TrialEndingModal', () => {
 
             renderWithStoreAndQueryClientProvider(
                 <TrialEndingModal
-                    storeConfiguration={mockStoreConfiguration}
+                    storeName={mockStoreConfiguration.storeName}
                 />,
             )
 
@@ -628,7 +628,7 @@ describe('TrialEndingModal', () => {
 
             renderWithStoreAndQueryClientProvider(
                 <TrialEndingModal
-                    storeConfiguration={mockStoreConfiguration}
+                    storeName={mockStoreConfiguration.storeName}
                 />,
             )
 

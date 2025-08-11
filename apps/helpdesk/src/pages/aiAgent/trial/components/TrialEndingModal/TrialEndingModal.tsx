@@ -3,7 +3,6 @@ import { useCallback, useState } from 'react'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreConfiguration } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -15,13 +14,10 @@ const TRIAL_ENDING_TOMORROW_DISMISSED_KEY =
     'ai-agent-trial-ending-tomorrow-dismissed'
 
 type TrialEndingModalProps = {
-    storeConfiguration: StoreConfiguration
+    storeName: string
 }
 
-export const TrialEndingModal = ({
-    storeConfiguration,
-}: TrialEndingModalProps) => {
-    const storeName = storeConfiguration.storeName
+export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations({ storeName })
     const { trialEndingModal } = useTrialModalProps({ storeName })

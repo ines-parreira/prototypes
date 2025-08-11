@@ -61,6 +61,23 @@ const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseUpgradePlan = assumeMock(useUpgradePlan)
 
+const createMockTrialAccess = (overrides = {}) => ({
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasCurrentStoreTrialStarted: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasAnyTrialOptedOut: false,
+    hasCurrentStoreTrialExpired: false,
+    hasAnyTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasAnyTrialActive: false,
+    isAdminUser: false,
+    ...overrides,
+})
+
 // Helper function to generate trial end time based on remaining days
 const getTrialEndTime = (remainingDays: number): string => {
     return moment().add(remainingDays, 'days').toISOString()
@@ -154,20 +171,9 @@ describe('useTrialModalProps', () => {
             optedOutDatetime: undefined,
         })
 
-        mockUseShoppingAssistantTrialAccess.mockReturnValue({
-            hasAnyTrialStarted: false,
-            canBookDemo: false,
-            canSeeSystemBanner: false,
-            canSeeTrialCTA: false,
-            canNotifyAdmin: false,
-            hasCurrentStoreTrialStarted: false,
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-            hasCurrentStoreTrialExpired: false,
-            hasAnyTrialExpired: false,
-            hasAnyTrialOptedIn: false,
-            hasAnyTrialActive: false,
-        })
+        mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            createMockTrialAccess(),
+        )
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
 
@@ -296,15 +302,15 @@ describe('useTrialModalProps', () => {
                     buttonText: 'Keep current plan',
                 },
                 newPlan: {
-                    title: 'AI Agent with Shopping Assistant',
+                    title: 'AI Agent + Shopping Assistant',
                     description:
-                        'Power up AI Agent with new advanced sales skills',
+                        'Add powerful conversion features to your support flow',
                     price: '$99',
                     billingPeriod: 'month after trial ends',
                     features: [
                         {
                             isError: false,
-                            label: 'Everything in Support Agent skills',
+                            label: 'Everything in your current plan',
                         },
                         {
                             isError: false,
@@ -313,6 +319,10 @@ describe('useTrialModalProps', () => {
                         {
                             isError: false,
                             label: 'Personalize product recommendations powered by rich customer insights',
+                        },
+                        {
+                            label: 'Maximize cart size with intelligent upsells',
+                            isError: false,
                         },
                         {
                             isError: false,
@@ -783,20 +793,6 @@ describe('useTrialModalProps', () => {
                 mockUseEarlyAccessAutomatePlan.mockReturnValue({
                     data: null,
                 } as any)
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                    hasAnyTrialStarted: false,
-                    canBookDemo: false,
-                    canSeeSystemBanner: false,
-                    canSeeTrialCTA: false,
-                    canNotifyAdmin: false,
-                    hasCurrentStoreTrialOptedOut: false,
-                    hasAnyTrialOptedOut: false,
-                    hasAnyTrialExpired: false,
-                    hasCurrentStoreTrialStarted: false,
-                    hasCurrentStoreTrialExpired: false,
-                    hasAnyTrialOptedIn: false,
-                    hasAnyTrialActive: false,
-                })
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -811,20 +807,6 @@ describe('useTrialModalProps', () => {
                 mockUseEarlyAccessAutomatePlan.mockReturnValue({
                     data: { amount: 9900 },
                 } as any)
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                    hasAnyTrialStarted: false,
-                    canBookDemo: false,
-                    canSeeSystemBanner: false,
-                    canSeeTrialCTA: false,
-                    canNotifyAdmin: false,
-                    hasCurrentStoreTrialOptedOut: false,
-                    hasAnyTrialOptedOut: false,
-                    hasAnyTrialExpired: false,
-                    hasCurrentStoreTrialStarted: false,
-                    hasCurrentStoreTrialExpired: false,
-                    hasAnyTrialOptedIn: false,
-                    hasAnyTrialActive: false,
-                })
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -843,20 +825,9 @@ describe('useTrialModalProps', () => {
                 mockUseEarlyAccessAutomatePlan.mockReturnValue({
                     data: null,
                 } as any)
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                    hasAnyTrialStarted: false,
-                    canBookDemo: true,
-                    canSeeSystemBanner: false,
-                    canSeeTrialCTA: false,
-                    canNotifyAdmin: false,
-                    hasCurrentStoreTrialOptedOut: false,
-                    hasAnyTrialOptedOut: false,
-                    hasAnyTrialExpired: false,
-                    hasCurrentStoreTrialStarted: false,
-                    hasCurrentStoreTrialExpired: false,
-                    hasAnyTrialOptedIn: false,
-                    hasAnyTrialActive: false,
-                })
+                mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                    createMockTrialAccess({ canBookDemo: true }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -888,20 +859,9 @@ describe('useTrialModalProps', () => {
         })
 
         it('should return correct alert banner when user can book demo', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: true,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({ canBookDemo: true }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -923,21 +883,6 @@ describe('useTrialModalProps', () => {
         })
 
         it('should return correct alert banner when user cannot book demo', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
-
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
             )
@@ -964,20 +909,9 @@ describe('useTrialModalProps', () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: true,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({ canBookDemo: true }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -994,21 +928,6 @@ describe('useTrialModalProps', () => {
         it('should open shopping assistant page when growth link is clicked', () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
-
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -1057,20 +976,12 @@ describe('useTrialModalProps', () => {
                 openUpgradePlanModal: mockOpenUpgradePlanModal,
             })
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: true,
-                hasAnyTrialOptedOut: true,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasCurrentStoreTrialOptedOut: true,
+                    hasAnyTrialOptedOut: true,
+                }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -1088,21 +999,6 @@ describe('useTrialModalProps', () => {
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
                 ...defaultMockUseShoppingAssistantTrialFlow,
                 openUpgradePlanModal: mockOpenUpgradePlanModal,
-            })
-
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -1131,20 +1027,13 @@ describe('useTrialModalProps', () => {
                 defaultMockUseShoppingAssistantTrialFlow,
             )
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: true,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: true,
-                hasAnyTrialActive: true,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasAnyTrialStarted: true,
+                    hasAnyTrialOptedIn: true,
+                    hasAnyTrialActive: true,
+                }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -1327,20 +1216,13 @@ describe('useTrialModalProps', () => {
         })
 
         it('should handle when user has opted out of trial', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: true,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: true,
-                hasAnyTrialOptedOut: true,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                    hasCurrentStoreTrialOptedOut: true,
+                    hasAnyTrialOptedOut: true,
+                }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -1353,20 +1235,9 @@ describe('useTrialModalProps', () => {
         })
 
         it('should maintain consistent modal props when hasOptedOut changes', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: true,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({ canSeeTrialCTA: true }),
+            )
 
             const { result, rerender } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -1374,20 +1245,13 @@ describe('useTrialModalProps', () => {
 
             const initialResult = result.current
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: true,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: true,
-                hasAnyTrialOptedOut: true,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                    hasCurrentStoreTrialOptedOut: true,
+                    hasAnyTrialOptedOut: true,
+                }),
+            )
 
             rerender()
 
@@ -1534,7 +1398,9 @@ describe('useTrialModalProps', () => {
 
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
-                ).toBe('With the upgrade, your plan will increase by $49.')
+                ).toBe(
+                    'With the upgrade, your plan will increase by $49/month.',
+                )
             })
 
             it('should show same price message when difference <= 0', () => {
@@ -1575,7 +1441,7 @@ describe('useTrialModalProps', () => {
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
-                    'Typical results achieved by merchants. After upgrading, your plan will increase by $49.',
+                    'Typical results achieved by merchants. After upgrading, your plan will increase by $49/month.',
                 )
             })
 
@@ -1642,20 +1508,9 @@ describe('useTrialModalProps', () => {
         })
 
         it('should return correct modal props', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: true,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({ canSeeTrialCTA: true }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
@@ -1708,20 +1563,12 @@ describe('useTrialModalProps', () => {
         })
 
         it('should return correct modal props', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                hasAnyTrialStarted: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: true,
-                canNotifyAdmin: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                    isAdminUser: true,
+                }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({ storeName: mockStoreName }),

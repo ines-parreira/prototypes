@@ -7,9 +7,11 @@ import configureMockStore from 'redux-mock-store'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
+import { shopifyIntegration } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
+import { useEarlyAccessModalState } from 'pages/aiAgent/Activation/hooks/useEarlyAccessModalState'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -32,11 +34,13 @@ jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
+jest.mock('pages/aiAgent/Activation/hooks/useEarlyAccessModalState')
 
 const mockLogEvent = assumeMock(logEvent)
 const mockUseFlag = assumeMock(useFlag)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseStoreActivations = assumeMock(useStoreActivations)
+const mockUseEarlyAccessModalState = assumeMock(useEarlyAccessModalState)
 const mockUseShoppingAssistantTrialFlow = assumeMock(
     useShoppingAssistantTrialFlow,
 )
@@ -50,6 +54,13 @@ jest.mock('react-router-dom', () => ({
     useHistory: () => ({
         push: jest.fn(),
     }),
+    useLocation: () => ({
+        pathname: '/test-path',
+        search: '',
+        hash: '',
+        state: null,
+    }),
+    MemoryRouter: ({ children }: { children: React.ReactNode }) => children,
 }))
 
 describe('useShoppingAssistantPromoCard', () => {
@@ -83,6 +94,20 @@ describe('useShoppingAssistantPromoCard', () => {
     const mockStoreActivations = {
         'test-store': storeActivationFixture({ storeName: 'test-store' }),
     }
+    const mockShopifyIntegrations = [
+        {
+            ...shopifyIntegration,
+            id: 1,
+            name: 'First Shop',
+            meta: { ...shopifyIntegration.meta, shop_name: 'first-shop' },
+        },
+        {
+            ...shopifyIntegration,
+            id: 2,
+            name: 'Second Shop',
+            meta: { ...shopifyIntegration.meta, shop_name: 'second-shop' },
+        },
+    ]
     const mockTrialFlow = {
         startTrial: jest.fn(),
         isLoading: false,
@@ -122,6 +147,7 @@ describe('useShoppingAssistantPromoCard', () => {
         hasCurrentStoreTrialExpired: false,
         hasCurrentStoreTrialOptedOut: false,
         hasCurrentStoreTrialStarted: false,
+        isAdminUser: false,
     }
 
     beforeEach(() => {
@@ -138,18 +164,7 @@ describe('useShoppingAssistantPromoCard', () => {
                 return mockAccount
             }
             if (selector === getShopifyIntegrationsSortedByName) {
-                return [
-                    {
-                        id: 1,
-                        name: 'First Shop',
-                        meta: { shop_name: 'first-shop' },
-                    },
-                    {
-                        id: 2,
-                        name: 'Second Shop',
-                        meta: { shop_name: 'second-shop' },
-                    },
-                ]
+                return mockShopifyIntegrations
             }
             if (selector === getCurrentUser) {
                 return fromJS(user)
@@ -170,6 +185,18 @@ describe('useShoppingAssistantPromoCard', () => {
             endTrial: jest.fn(),
             activation: jest.fn(),
         })
+        mockUseEarlyAccessModalState.mockReturnValue({
+            isOnNewPlan: false,
+            setIsPreviewModalVisible: jest.fn(),
+            isPreviewModalVisible: false,
+            isCurrentUserAdmin: true,
+            currentPlan: null,
+            helpdeskPlan: null,
+            earlyAccessPlan: null,
+            isLoading: false,
+            handleSubscriptionUpdate: jest.fn(),
+            isSubscriptionUpdating: false,
+        } as any)
         mockUseShoppingAssistantTrialFlow.mockReturnValue(mockTrialFlow)
         mockUseShoppingAssistantTrialAccess.mockReturnValue(baseTrialAccess)
         mockUseTrialEnding.mockReturnValue({
@@ -191,7 +218,11 @@ describe('useShoppingAssistantPromoCard', () => {
             mockUseFlag.mockReturnValue(false)
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -213,7 +244,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -235,7 +270,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should return admin-trial variant with correct content - Try for X days', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -273,7 +312,12 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should trigger trial flow when primary button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard('first-shop'),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                        'first-shop',
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -286,7 +330,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should trigger trial flow when video modal CTA is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -299,7 +347,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should log correct event when primary button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -315,7 +367,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should log correct event when video modal CTA is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -331,7 +387,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should log correct event when secondary button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -358,7 +418,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should return admin-demo variant with correct content - Book a Demo', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -394,7 +458,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should log correct event when demo button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -421,7 +489,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should return lead-notify variant with correct content and notification icon', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -455,7 +527,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should log correct event when notify admin button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -482,7 +558,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should return lead-notify variant with notify admin as primary and demo as secondary', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -516,7 +596,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should log correct event when primary notify admin button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -532,7 +616,11 @@ describe('useShoppingAssistantPromoCard', () => {
 
         it('should log correct event when secondary demo button is clicked', () => {
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -551,13 +639,17 @@ describe('useShoppingAssistantPromoCard', () => {
         it('should prioritize trial progress over pre-trial access for admin', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
-                canSeeTrialCTA: true,
+                isAdminUser: true,
                 canBookDemo: true,
                 hasCurrentStoreTrialStarted: true,
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -579,7 +671,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -603,7 +699,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -625,7 +725,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -645,9 +749,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -661,9 +772,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 canBookDemo: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -677,9 +795,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 canNotifyAdmin: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -693,9 +818,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 // All false - no access
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockLogEvent).not.toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
@@ -712,7 +844,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -733,7 +869,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -755,9 +895,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                 accountDomain: 'test-account',
@@ -773,9 +920,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: 'first-shop',
@@ -783,9 +937,17 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should use route shopName when provided', () => {
-            renderHook(() => useShoppingAssistantPromoCard('specific-shop'), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'specific-shop',
+                        mockShopifyIntegrations,
+                        'specific-shop',
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: 'specific-shop',
@@ -810,9 +972,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        undefined as any, // Test edge case with no shop name
+                        [], // Pass empty array to match what the selector returns
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: undefined,
@@ -820,18 +989,24 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should handle shopify integrations without meta.shop_name', () => {
+            const integrationsWithoutShopName = [
+                {
+                    ...shopifyIntegration,
+                    id: 1,
+                    name: 'First Shop',
+                    meta: {
+                        ...shopifyIntegration.meta,
+                        shop_name: undefined as any, // No shop_name property
+                    },
+                },
+            ]
+
             mockUseAppSelector.mockImplementation((selector: any) => {
                 if (selector === getCurrentAccountState) {
                     return mockAccount
                 }
                 if (selector === getShopifyIntegrationsSortedByName) {
-                    return [
-                        {
-                            id: 1,
-                            name: 'First Shop',
-                            meta: {},
-                        },
-                    ]
+                    return integrationsWithoutShopName
                 }
                 if (selector === getCurrentUser) {
                     return fromJS(user)
@@ -843,9 +1018,16 @@ describe('useShoppingAssistantPromoCard', () => {
                 canSeeTrialCTA: true,
             })
 
-            renderHook(() => useShoppingAssistantPromoCard(), {
-                wrapper: createWrapper(),
-            })
+            renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        undefined as any, // Test edge case with no shop name
+                        integrationsWithoutShopName, // Pass the integrations without shop_name
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
 
             expect(mockUseStoreActivations).toHaveBeenCalledWith({
                 storeName: undefined,
@@ -857,7 +1039,7 @@ describe('useShoppingAssistantPromoCard', () => {
         beforeEach(() => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
-                canSeeTrialCTA: true,
+                isAdminUser: true,
                 hasCurrentStoreTrialStarted: true,
             })
         })
@@ -870,7 +1052,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -892,7 +1078,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -912,7 +1102,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -934,14 +1128,18 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
             )
 
             expect(result.current?.promoCardContent?.primaryButton.label).toBe(
-                'Set Up Sales Strategy',
+                'Upgrade now',
             )
             expect(
                 result.current?.promoCardContent?.primaryButton.disabled,
@@ -956,7 +1154,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -971,7 +1173,7 @@ describe('useShoppingAssistantPromoCard', () => {
         it('should show GMV description when user has opted out', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
-                canSeeTrialCTA: true,
+                isAdminUser: true,
                 hasCurrentStoreTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: true,
             })
@@ -982,7 +1184,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -1012,7 +1218,11 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             const { result } = renderHook(
-                () => useShoppingAssistantPromoCard(),
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
                 {
                     wrapper: createWrapper(),
                 },
@@ -1053,7 +1263,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1080,7 +1294,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1104,7 +1322,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1128,7 +1350,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1147,12 +1373,16 @@ describe('useShoppingAssistantPromoCard', () => {
             it('should show progress bar during admin trial', () => {
                 mockUseShoppingAssistantTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
-                    canSeeTrialCTA: true,
+                    isAdminUser: true,
                     hasCurrentStoreTrialStarted: true,
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1174,7 +1404,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1197,7 +1431,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1229,7 +1467,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1247,7 +1489,7 @@ describe('useShoppingAssistantPromoCard', () => {
             beforeEach(() => {
                 mockUseShoppingAssistantTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
-                    canSeeTrialCTA: true,
+                    isAdminUser: true,
                     hasCurrentStoreTrialStarted: true,
                 })
                 mockUseTrialEnding.mockReturnValue({
@@ -1267,7 +1509,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1287,7 +1533,7 @@ describe('useShoppingAssistantPromoCard', () => {
             it('should show "Upgrade now" button when admin has opted out', () => {
                 mockUseShoppingAssistantTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
-                    canSeeTrialCTA: true,
+                    isAdminUser: true,
                     hasCurrentStoreTrialStarted: true,
                     hasCurrentStoreTrialOptedOut: true,
                 })
@@ -1298,7 +1544,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1320,29 +1570,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
-                    {
-                        wrapper: createWrapper(),
-                    },
-                )
-
-                expect(
-                    result.current?.promoCardContent?.primaryButton.label,
-                ).toBe('Set Up Sales Strategy')
-                expect(
-                    result.current?.promoCardContent?.primaryButton.disabled,
-                ).toBe(false)
-            })
-
-            it('should disable "Upgrade now" button when metrics are loading', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$8,500',
-                    gmvInfluencedRate: 0.85,
-                    isLoading: true,
-                })
-
-                const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1353,7 +1585,33 @@ describe('useShoppingAssistantPromoCard', () => {
                 ).toBe('Upgrade now')
                 expect(
                     result.current?.promoCardContent?.primaryButton.disabled,
-                ).toBe(true)
+                ).toBe(false)
+            })
+
+            it('should not disable "Upgrade now" button when metrics are loading', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$8,500',
+                    gmvInfluencedRate: 0.85,
+                    isLoading: true,
+                })
+
+                const { result } = renderHook(
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
+                    {
+                        wrapper: createWrapper(),
+                    },
+                )
+
+                expect(
+                    result.current?.promoCardContent?.primaryButton.label,
+                ).toBe('Upgrade now')
+                expect(
+                    result.current?.promoCardContent?.primaryButton.disabled,
+                ).toBe(false)
             })
 
             it('should show "Manage Trial" secondary button when not opted out', () => {
@@ -1364,7 +1622,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1387,7 +1649,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1428,7 +1694,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1439,10 +1709,10 @@ describe('useShoppingAssistantPromoCard', () => {
                 )
                 expect(
                     result.current?.promoCardContent?.primaryButton.label,
-                ).toBe('Set Up Sales Strategy')
+                ).toBe('')
                 expect(
                     result.current?.promoCardContent?.primaryButton.disabled,
-                ).toBe(false)
+                ).toBe(true)
             })
 
             it('should disable primary button when GMV is above threshold', () => {
@@ -1457,7 +1727,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1485,7 +1759,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },
@@ -1511,7 +1789,11 @@ describe('useShoppingAssistantPromoCard', () => {
                 })
 
                 const { result } = renderHook(
-                    () => useShoppingAssistantPromoCard(),
+                    () =>
+                        useShoppingAssistantPromoCard(
+                            'first-shop',
+                            mockShopifyIntegrations,
+                        ),
                     {
                         wrapper: createWrapper(),
                     },

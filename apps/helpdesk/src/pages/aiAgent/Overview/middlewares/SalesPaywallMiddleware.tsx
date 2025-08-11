@@ -146,7 +146,9 @@ export const SalesPaywallMiddleware =
         })
 
         const onStartTrialClicked = () => {
-            if (isShoppingAssistantTrialRevampEnabled) {
+            if (ishoppingAssistantTrialImprovement) {
+                openTrialUpgradeModal()
+            } else if (isShoppingAssistantTrialRevampEnabled) {
                 if (hasAnyTrialOptedIn) {
                     startRevampTrial()
                 } else {
@@ -185,7 +187,10 @@ export const SalesPaywallMiddleware =
             !!flags[FeatureFlagKey.AiSalesAgentBypassPlanCheck]
 
         const ishoppingAssistantTrialImprovement =
-            useFlags()[FeatureFlagKey.ShoppingAssistantTrialImprovement]
+            !!flags[FeatureFlagKey.ShoppingAssistantTrialImprovement]
+
+        const isShoppingAssistantDuringTrialEnabled =
+            !!flags[FeatureFlagKey.ShoppingAssistantDuringTrial]
 
         const showUpgradePaywall =
             !hasNewAutomatePlan &&
@@ -263,16 +268,18 @@ export const SalesPaywallMiddleware =
                 />
 
                 {/* TODO: [AIFLY-547] remove previous upgrade plan modal */}
-                {!ishoppingAssistantTrialImprovement && isTrialModalOpen && (
-                    <UpgradePlanModal
-                        {...trialModalProps.trialUpgradePlanModal}
-                        onClose={closeTrialUpgradeModal}
-                        onConfirm={startRevampTrial}
-                        onDismiss={onDismissTrialUpgradeModal}
-                        isLoading={isTrialRevampLoading}
-                        isTrial
-                    />
-                )}
+                {!isShoppingAssistantDuringTrialEnabled &&
+                    !ishoppingAssistantTrialImprovement &&
+                    isTrialModalOpen && (
+                        <UpgradePlanModal
+                            {...trialModalProps.trialUpgradePlanModal}
+                            onClose={closeTrialUpgradeModal}
+                            onConfirm={startRevampTrial}
+                            onDismiss={onDismissTrialUpgradeModal}
+                            isLoading={isTrialRevampLoading}
+                            isTrial
+                        />
+                    )}
 
                 {ishoppingAssistantTrialImprovement && (
                     <>
@@ -296,21 +303,24 @@ export const SalesPaywallMiddleware =
                     />
                 )}
 
-                {isUpgradePlanModalOpen && (
-                    <UpgradePlanModal
-                        {...trialModalProps.upgradePlanModal}
-                        onClose={closeUpgradePlanModal}
-                        onConfirm={onUpgradeClick}
-                        onDismiss={onDismissUpgradePlanModal}
-                        isLoading={isUpgradePlanLoading}
-                    />
-                )}
+                {!isShoppingAssistantDuringTrialEnabled &&
+                    isUpgradePlanModalOpen && (
+                        <UpgradePlanModal
+                            {...trialModalProps.upgradePlanModal}
+                            onClose={closeUpgradePlanModal}
+                            onConfirm={onUpgradeClick}
+                            onDismiss={onDismissUpgradePlanModal}
+                            isLoading={isUpgradePlanLoading}
+                        />
+                    )}
 
-                {currentStore && (
-                    <TrialEndedModal
-                        storeConfiguration={currentStore.configuration}
-                    />
-                )}
+                {!isShoppingAssistantDuringTrialEnabled &&
+                    currentStore &&
+                    currentStore.configuration.storeName && (
+                        <TrialEndedModal
+                            storeName={currentStore.configuration.storeName}
+                        />
+                    )}
 
                 <AIAgentTrialSuccessModal
                     isOpen={trialModal.isOpen(AI_TRIAL_MODAL_NAME)}

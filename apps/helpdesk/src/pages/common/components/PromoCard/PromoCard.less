@@ -152,13 +152,19 @@
         border-radius: 4px;
         text-align: center;
 
-        &.primary:not([disabled]) {
+        &.primary:not([disabled]):not([aria-disabled='true']) {
             background: var(--neutral-grey-6, #222);
             color: var(--neutral-grey-0, #fff);
             border-color: var(--neutral-grey-6, #222);
 
             svg {
                 fill: var(--neutral-grey-0, #fff);
+            }
+
+            &:hover:not([aria-disabled='true']) {
+                background: var(--neutral-grey-6, #222);
+                color: var(--neutral-grey-0, #fff);
+                border-color: var(--neutral-grey-6, #222);
             }
         }
 

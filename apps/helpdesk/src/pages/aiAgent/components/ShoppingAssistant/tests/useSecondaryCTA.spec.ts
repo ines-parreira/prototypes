@@ -7,16 +7,50 @@ import {
     PromoCardVariant,
     ShoppingAssistantEventType,
 } from '../types/ShoppingAssistant'
-import { logShoppingAssistantEvent } from '../utils/eventLogger'
+import {
+    logShoppingAssistantEvent,
+    logShoppingAssistantInTrialEvent,
+} from '../utils/eventLogger'
 
 jest.mock('../utils/eventLogger', () => ({
     logShoppingAssistantEvent: jest.fn(),
+    logShoppingAssistantInTrialEvent: jest.fn(),
 }))
 
 const mockLogShoppingAssistantEvent = logShoppingAssistantEvent as jest.Mock
+const mockLogShoppingAssistantInTrialEvent =
+    logShoppingAssistantInTrialEvent as jest.Mock
 
 beforeEach(() => {
     jest.clearAllMocks()
+})
+
+const createMockTrialFlow = (overrides = {}) => ({
+    startTrial: jest.fn(),
+    revampStartTrial: jest.fn(),
+    isLoading: false,
+    isTrialModalOpen: false,
+    isTrialFinishSetupModalOpen: false,
+    isSuccessModalOpen: false,
+    isManageTrialModalOpen: false,
+    isUpgradePlanModalOpen: false,
+    isTrialRequestModalOpen: false,
+    closeTrialUpgradeModal: jest.fn(),
+    onDismissTrialUpgradeModal: jest.fn(),
+    onDismissUpgradePlanModal: jest.fn(),
+    closeSuccessModal: jest.fn(),
+    closeManageTrialModal: jest.fn(),
+    openTrialUpgradeModal: jest.fn(),
+    onConfirmTrial: jest.fn(),
+    openManageTrialModal: jest.fn(),
+    openUpgradePlanModal: jest.fn(),
+    closeUpgradePlanModal: jest.fn(),
+    closeTrialFinishSetupModal: jest.fn(),
+    openTrialFinishSetupModal: jest.fn(),
+    openTrialRequestModal: jest.fn(),
+    closeTrialRequestModal: jest.fn(),
+    onRequestTrialExtension: jest.fn(),
+    ...overrides,
 })
 
 const createMockTrialAccess = (overrides = {}) => ({
@@ -32,6 +66,7 @@ const createMockTrialAccess = (overrides = {}) => ({
     hasAnyTrialExpired: false,
     hasAnyTrialOptedIn: false,
     hasAnyTrialActive: false,
+    isAdminUser: false,
     isLoading: false,
     ...overrides,
 })
@@ -42,9 +77,14 @@ describe('useSecondaryCTA', () => {
             hasCurrentStoreTrialOptedOut: false,
             hasAnyTrialOptedOut: false,
         })
+        const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(PromoCardVariant.AdminTrialProgress, trialAccess),
+            useSecondaryCTA(
+                PromoCardVariant.AdminTrialProgress,
+                trialAccess,
+                trialFlow,
+            ),
         )
 
         expect(result.current).toEqual({
@@ -52,6 +92,12 @@ describe('useSecondaryCTA', () => {
             onClick: expect.any(Function),
             disabled: false,
         })
+
+        result.current?.onClick?.()
+        expect(mockLogShoppingAssistantInTrialEvent).toHaveBeenCalledWith(
+            ShoppingAssistantEventType.ManageTrial,
+        )
+        expect(trialFlow.openManageTrialModal).toHaveBeenCalled()
     })
 
     it('returns undefined for AdminTrialProgress variant when opted out', () => {
@@ -59,9 +105,14 @@ describe('useSecondaryCTA', () => {
             hasCurrentStoreTrialOptedOut: true,
             hasAnyTrialOptedOut: false,
         })
+        const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(PromoCardVariant.AdminTrialProgress, trialAccess),
+            useSecondaryCTA(
+                PromoCardVariant.AdminTrialProgress,
+                trialAccess,
+                trialFlow,
+            ),
         )
 
         expect(result.current).toBeUndefined()
@@ -72,9 +123,14 @@ describe('useSecondaryCTA', () => {
             hasCurrentStoreTrialOptedOut: false,
             hasAnyTrialOptedOut: false,
         })
+        const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(PromoCardVariant.LeadTrialProgress, trialAccess),
+            useSecondaryCTA(
+                PromoCardVariant.LeadTrialProgress,
+                trialAccess,
+                trialFlow,
+            ),
         )
 
         expect(result.current).toBeUndefined()
@@ -85,9 +141,14 @@ describe('useSecondaryCTA', () => {
             canNotifyAdmin: true,
             canBookDemo: true,
         })
+        const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(PromoCardVariant.AdminTrial, trialAccess),
+            useSecondaryCTA(
+                PromoCardVariant.AdminTrial,
+                trialAccess,
+                trialFlow,
+            ),
         )
 
         expect(result.current).toEqual({
@@ -109,9 +170,10 @@ describe('useSecondaryCTA', () => {
             canNotifyAdmin: false,
             canBookDemo: false,
         })
+        const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(PromoCardVariant.AdminDemo, trialAccess),
+            useSecondaryCTA(PromoCardVariant.AdminDemo, trialAccess, trialFlow),
         )
 
         expect(result.current).toEqual({

@@ -56,6 +56,23 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
+const createMockTrialAccess = (overrides = {}) => ({
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasAnyTrialOptedOut: false,
+    hasAnyTrialExpired: false,
+    hasCurrentStoreTrialStarted: false,
+    hasCurrentStoreTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasAnyTrialActive: false,
+    isAdminUser: false,
+    ...overrides,
+})
+
 const mockShopName = 'test-store'
 
 const mockAccount = fromJS({
@@ -122,20 +139,9 @@ describe('useShoppingAssistantTrialBanner', () => {
             isFetchLoading: false,
         } as any)
 
-        mockUseShoppingAssistantTrialAccess.mockReturnValue({
-            canNotifyAdmin: false,
-            canBookDemo: false,
-            canSeeSystemBanner: false,
-            canSeeTrialCTA: false,
-            hasAnyTrialStarted: false,
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-            hasAnyTrialExpired: false,
-            hasCurrentStoreTrialStarted: false,
-            hasCurrentStoreTrialExpired: false,
-            hasAnyTrialOptedIn: false,
-            hasAnyTrialActive: false,
-        })
+        mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            createMockTrialAccess(),
+        )
     })
 
     describe('when banner should not be shown', () => {
@@ -148,20 +154,11 @@ describe('useShoppingAssistantTrialBanner', () => {
             })
 
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: true,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeSystemBanner: true,
+                }),
+            )
 
             renderHook(() => useShoppingAssistantTrialBanner())
 
@@ -181,20 +178,11 @@ describe('useShoppingAssistantTrialBanner', () => {
             })
 
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: true,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeSystemBanner: true,
+                }),
+            )
 
             renderHook(() => useShoppingAssistantTrialBanner())
 
@@ -207,20 +195,6 @@ describe('useShoppingAssistantTrialBanner', () => {
 
         it('should not add banner when canSeeSystemBanner is false', () => {
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
 
             renderHook(() => useShoppingAssistantTrialBanner())
 
@@ -232,22 +206,6 @@ describe('useShoppingAssistantTrialBanner', () => {
         })
 
         it('should not add banner when trial access hook returns false', () => {
-            // The trial access hook now handles all business logic internally
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false, // Hook returns false when conditions not met
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
-
             renderHook(() => useShoppingAssistantTrialBanner())
 
             expect(mockedAddBanner).not.toHaveBeenCalled()
@@ -268,20 +226,11 @@ describe('useShoppingAssistantTrialBanner', () => {
             })
 
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: true,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeSystemBanner: true,
+                }),
+            )
         })
 
         it('should add banner with correct configuration', () => {
@@ -343,20 +292,11 @@ describe('useShoppingAssistantTrialBanner', () => {
 
             // Make eligible
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: true,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeSystemBanner: true,
+                }),
+            )
 
             rerender()
 
@@ -367,20 +307,11 @@ describe('useShoppingAssistantTrialBanner', () => {
         it('should re-evaluate when isOnEligiblePlan changes from true to false', () => {
             // Initially eligible
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: true,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeSystemBanner: true,
+                }),
+            )
 
             const { rerender } = renderHook(() =>
                 useShoppingAssistantTrialBanner(),
@@ -393,21 +324,10 @@ describe('useShoppingAssistantTrialBanner', () => {
             mockedAddBanner.mockClear()
             mockedRemoveBanner.mockClear()
 
-            // Make not eligible
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            // // Make not eligible
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess(),
+            )
 
             rerender()
 
@@ -422,20 +342,11 @@ describe('useShoppingAssistantTrialBanner', () => {
     describe('location-based behavior', () => {
         beforeEach(() => {
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: true,
-                canSeeTrialCTA: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeSystemBanner: true,
+                }),
+            )
         })
 
         it('should remove banner when navigating to tickets page', () => {

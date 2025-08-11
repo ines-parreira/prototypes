@@ -1,5 +1,9 @@
 import React from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+
+import { logEvent } from 'common/segment/segment'
+import { SegmentEvent } from 'common/segment/types'
 import { PromoCard } from 'pages/common/components/PromoCard'
 
 import { PromoCardContent } from '../types/ShoppingAssistant'
@@ -28,6 +32,10 @@ export const AdminTrialProgress: React.FC<AdminTrialProgressProps> = ({
         progressText,
     } = promoContent
 
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.TrialBannerSettingsViewed)
+    })
+
     return (
         <div className={css.promoCardSection}>
             <PromoCard
@@ -55,7 +63,9 @@ export const AdminTrialProgress: React.FC<AdminTrialProgressProps> = ({
                             fillColor="linear-gradient(116deg, rgba(235, 139, 76, 0.90) 4.95%, rgba(210, 155, 255, 0.90) 60.81%)"
                         >
                             {progressText && (
-                                <PromoCard.Text>{progressText}</PromoCard.Text>
+                                <PromoCard.Text className={css.promoCardText}>
+                                    {progressText}
+                                </PromoCard.Text>
                             )}
                         </PromoCard.ProgressBar>
                     )}
@@ -68,6 +78,7 @@ export const AdminTrialProgress: React.FC<AdminTrialProgressProps> = ({
                             onClick={primaryButton.onClick}
                             variant="primary"
                             disabled={primaryButton.disabled}
+                            isLoading={primaryButton.isLoading}
                         />
                         {secondaryButton && (
                             <PromoCard.ActionButton

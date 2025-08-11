@@ -3,20 +3,24 @@ import user from '@testing-library/user-event'
 
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 
 import TrialOptOutModal from '../TrialOptOutModal'
 
 jest.mock('common/segment/segment')
+jest.mock('hooks/useAppDispatch')
 jest.mock('models/aiAgent/queries')
 
 const mockLogEvent = logEvent as jest.Mock
+const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockUseOptOutSalesTrialUpgradeMutation =
     useOptOutSalesTrialUpgradeMutation as jest.Mock
 
 describe('TrialOptOutModal', () => {
     const mockOnClose = jest.fn()
     const mockMutate = jest.fn()
+    const mockDispatch = jest.fn()
     const mockOnRequestTrialExtension = jest.fn()
 
     const defaultProps = {
@@ -32,6 +36,7 @@ describe('TrialOptOutModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseOptOutSalesTrialUpgradeMutation.mockReturnValue(mockMutation)
     })
 
@@ -130,7 +135,7 @@ describe('TrialOptOutModal', () => {
             })
         })
 
-        it('should call onClose with false when mutation succeeds', async () => {
+        it('should call onClose with true when mutation succeeds', async () => {
             const userEventSetup = user.setup()
             render(<TrialOptOutModal {...defaultProps} />)
 
@@ -143,7 +148,23 @@ describe('TrialOptOutModal', () => {
             const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
             onSuccessCallback()
 
-            expect(mockOnClose).toHaveBeenCalledWith(false)
+            expect(mockOnClose).toHaveBeenCalledWith(true)
+        })
+
+        it('should dispatch notification when mutation succeeds', async () => {
+            const userEventSetup = user.setup()
+            render(<TrialOptOutModal {...defaultProps} />)
+
+            const optOutButton = screen.getByRole('button', {
+                name: 'Opt Out Anyway',
+            })
+            await userEventSetup.click(optOutButton)
+
+            // Simulate successful mutation
+            const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
+            onSuccessCallback()
+
+            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
         })
     })
 
@@ -161,7 +182,7 @@ describe('TrialOptOutModal', () => {
             expect(mockOnRequestTrialExtension).toHaveBeenCalledTimes(1)
         })
 
-        it('should close modal with true when onRequestTrialExtension resolves with true', async () => {
+        it('should close modal with false when onRequestTrialExtension resolves with true', async () => {
             const userEventSetup = user.setup()
             mockOnRequestTrialExtension.mockResolvedValue(true)
             render(<TrialOptOutModal {...defaultProps} />)
@@ -172,7 +193,7 @@ describe('TrialOptOutModal', () => {
             await userEventSetup.click(requestButton)
 
             await waitFor(() => {
-                expect(mockOnClose).toHaveBeenCalledWith(true)
+                expect(mockOnClose).toHaveBeenCalledWith(false)
             })
         })
 

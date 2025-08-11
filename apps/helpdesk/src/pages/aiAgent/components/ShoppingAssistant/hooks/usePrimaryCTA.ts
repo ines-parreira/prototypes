@@ -5,6 +5,7 @@ import { ShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShopp
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
 import {
     SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
@@ -15,7 +16,10 @@ import {
     PromoCardVariant,
     ShoppingAssistantEventType,
 } from '../types/ShoppingAssistant'
-import { logShoppingAssistantEvent } from '../utils/eventLogger'
+import {
+    logShoppingAssistantEvent,
+    logShoppingAssistantInTrialEvent,
+} from '../utils/eventLogger'
 
 export const usePrimaryCTA = ({
     trialAccess,
@@ -36,18 +40,15 @@ export const usePrimaryCTA = ({
     variant: PromoCardVariant
 } => {
     const history = useHistory()
+    const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
+        useUpgradePlan()
 
-    const { gmvInfluencedRate, isLoading: isLoadingMetrics } = trialMetrics
+    const { gmvInfluencedRate } = trialMetrics
 
     const gmvAboveThreshold =
         gmvInfluencedRate > SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
-    const isOptedOut =
-        trialAccess.hasCurrentStoreTrialOptedOut ||
-        trialAccess.hasAnyTrialOptedOut
-
+    const isOptedOut = trialAccess.hasCurrentStoreTrialOptedOut
     const isInTrial = trialAccess.hasCurrentStoreTrialStarted
-
-    const isAdmin = trialAccess.canSeeTrialCTA
 
     const redirectToFirstShopifyIntegration = () => {
         history.push(
@@ -56,23 +57,39 @@ export const usePrimaryCTA = ({
     }
 
     if (isInTrial) {
-        if (isAdmin) {
+        if (trialAccess.isAdminUser) {
             if (isOptedOut || gmvAboveThreshold) {
                 return {
                     variant: PromoCardVariant.AdminTrialProgress,
                     button: {
                         label: 'Upgrade now',
-                        onClick: () => {},
-                        disabled: isLoadingMetrics,
+                        onClick: async () => {
+                            logShoppingAssistantInTrialEvent(
+                                ShoppingAssistantEventType.UpgradePlan,
+                            )
+                            await upgradePlanAsync()
+                        },
+                        disabled: isUpgradePlanLoading,
+                        isLoading: isUpgradePlanLoading,
                     },
                 }
             }
+
+            // This case is supposed to have label `Set Up Sales Strategy`
+            // as based on the design: https://www.figma.com/design/Mz0ejOxuLqF5NmpQjCFJfk/Post-GA-Shopping-Assistant-Trial-Improvements?node-id=6219-52993&m=dev
+            // Currently the flow does not exist yet, so we just show `Upgrade now`
             return {
                 variant: PromoCardVariant.AdminTrialProgress,
                 button: {
-                    label: 'Set Up Sales Strategy',
-                    onClick: () => {},
-                    disabled: false,
+                    label: 'Upgrade now',
+                    onClick: async () => {
+                        logShoppingAssistantInTrialEvent(
+                            ShoppingAssistantEventType.UpgradePlan,
+                        )
+                        await upgradePlanAsync()
+                    },
+                    disabled: isUpgradePlanLoading,
+                    isLoading: isUpgradePlanLoading,
                 },
             }
         }
@@ -87,12 +104,14 @@ export const usePrimaryCTA = ({
             }
         }
 
+        // This case is supposed to have label `Set Up Sales Strategy`
+        // as based on the design: https://www.figma.com/design/Mz0ejOxuLqF5NmpQjCFJfk/Post-GA-Shopping-Assistant-Trial-Improvements?node-id=6219-52993&m=dev
+        // Currently the flow does not exist yet, so we don't show any button
         return {
             variant: PromoCardVariant.LeadTrialProgress,
             button: {
-                label: 'Set Up Sales Strategy',
-                onClick: () => {},
-                disabled: false,
+                label: '',
+                disabled: true,
             },
         }
     }

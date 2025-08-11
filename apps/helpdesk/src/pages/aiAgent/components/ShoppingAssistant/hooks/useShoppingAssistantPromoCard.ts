@@ -4,6 +4,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { ShopifyIntegration } from 'models/integration/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
@@ -11,7 +12,6 @@ import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShop
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import {
     PromoCardContent,
@@ -25,15 +25,13 @@ import { useTrialDescription } from './useTrialDescription'
 import { useTrialProgress } from './useTrialProgress'
 
 export const useShoppingAssistantPromoCard = (
+    shopName: string,
+    allShopifyIntegrations: ShopifyIntegration[],
     routeShopName?: string,
 ): {
     promoCardContent: PromoCardContent | null
     trialFlow: ReturnType<typeof useShoppingAssistantTrialFlow>
 } => {
-    const allShopifyIntegrations = useAppSelector(
-        getShopifyIntegrationsSortedByName,
-    )
-    const shopName = routeShopName || allShopifyIntegrations[0]?.meta?.shop_name
     const account = useAppSelector(getCurrentAccountState)
     const accountDomain = account.get('domain')
 
@@ -63,7 +61,7 @@ export const useShoppingAssistantPromoCard = (
         firstShopifyIntegration: allShopifyIntegrations[0],
     })
 
-    const secondaryButton = useSecondaryCTA(variant, trialAccess)
+    const secondaryButton = useSecondaryCTA(variant, trialAccess, trialFlow)
 
     const isTrialProgress =
         variant === PromoCardVariant.AdminTrialProgress ||

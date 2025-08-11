@@ -1,9 +1,14 @@
 import React from 'react'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
+import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import {
     AdminDemo,
@@ -12,6 +17,7 @@ import {
     LeadNotify,
     LeadTrialProgress,
 } from './components'
+import { TrialProgressModals } from './components/TrialProgressModals'
 import { useShoppingAssistantPromoCard } from './hooks/useShoppingAssistantPromoCard'
 import { PromoCardVariant } from './types/ShoppingAssistant'
 import { extractShopNameFromUrl } from './utils/extractShopNameFromUrl'
@@ -27,39 +33,70 @@ interface ShoppingAssistantPromoCardProps {
 export const ShoppingAssistantPromoCard: React.FC<
     ShoppingAssistantPromoCardProps
 > = ({ className }) => {
-    const shopName = extractShopNameFromUrl(window.location.href)
+    const allShopifyIntegrations = useAppSelector(
+        getShopifyIntegrationsSortedByName,
+    )
+
+    const routeShopName = extractShopNameFromUrl(window.location.href)
+    const shopName = routeShopName || allShopifyIntegrations[0]?.meta?.shop_name
+
+    const isShoppingAssistantDuringTrialEnabled = useFlag(
+        FeatureFlagKey.ShoppingAssistantDuringTrial,
+        false,
+    )
 
     const trialModalProps = useTrialModalProps({
         storeName: shopName,
     })
 
     const { promoCardContent: promoContent, trialFlow } =
-        useShoppingAssistantPromoCard(shopName)
+        useShoppingAssistantPromoCard(
+            shopName,
+            allShopifyIntegrations,
+            routeShopName,
+        )
 
     if (!promoContent) {
         return null
     }
 
+    const sharedContent = isShoppingAssistantDuringTrialEnabled ? (
+        <TrialEndedModal storeName={shopName} />
+    ) : null
     const { variant } = promoContent
 
     let variantComponent: React.ReactNode = null
 
     switch (variant) {
         case PromoCardVariant.AdminTrialProgress:
+            if (!isShoppingAssistantDuringTrialEnabled) {
+                break
+            }
+
             variantComponent = (
-                <AdminTrialProgress
-                    className={className}
-                    promoContent={promoContent}
-                />
+                <>
+                    <AdminTrialProgress
+                        className={className}
+                        promoContent={promoContent}
+                    />
+                    <TrialProgressModals storeName={shopName} />
+                </>
             )
             break
 
         case PromoCardVariant.LeadTrialProgress:
+            if (!isShoppingAssistantDuringTrialEnabled) {
+                break
+            }
+
             variantComponent = (
-                <LeadTrialProgress
-                    className={className}
-                    promoContent={promoContent}
-                />
+                <>
+                    <LeadTrialProgress
+                        className={className}
+                        promoContent={promoContent}
+                    />
+                    <TrialProgressModals storeName={shopName} />
+                </>
             )
             break
 
@@ -102,7 +139,7 @@ export const ShoppingAssistantPromoCard: React.FC<
 
         case PromoCardVariant.Hidden:
         default:
-            return null
+            return sharedContent
     }
 
     return (
@@ -113,6 +150,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                 isOpen={trialFlow.isTrialFinishSetupModalOpen}
                 onClose={trialFlow.closeTrialFinishSetupModal}
             />
+            {sharedContent}
         </>
     )
 }

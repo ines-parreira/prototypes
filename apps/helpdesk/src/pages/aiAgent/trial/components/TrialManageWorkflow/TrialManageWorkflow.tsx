@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
@@ -8,6 +7,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { StoreConfiguration } from 'models/aiAgent/types'
@@ -23,7 +23,6 @@ import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanne
 import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal'
 import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
-import TrialOptOutModal from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -50,8 +49,14 @@ export const TrialManageWorkflow = ({
     const location = useLocation()
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
 
-    const isShoppingAssistantDuringTrialEnabled =
-        useFlags()[FeatureFlagKey.ShoppingAssistantDuringTrial]
+    const isShoppingAssistantTrialImprovementEnabled = useFlag(
+        FeatureFlagKey.ShoppingAssistantTrialImprovement,
+        false,
+    )
+    const isShoppingAssistantDuringTrialEnabled = useFlag(
+        FeatureFlagKey.ShoppingAssistantDuringTrial,
+        false,
+    )
 
     const { hasCurrentStoreTrialStarted, hasCurrentStoreTrialExpired } =
         useShoppingAssistantTrialAccess(storeConfiguration.storeName)
@@ -67,7 +72,6 @@ export const TrialManageWorkflow = ({
         isUpgradePlanModalOpen,
         openTrialUpgradeModal,
         closeUpgradePlanModal,
-        onRequestTrialExtension,
     } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
@@ -92,12 +96,8 @@ export const TrialManageWorkflow = ({
         storeName: storeConfiguration.storeName,
     })
 
-    const onCloseOptOutModal = (extendTrialRequestSent: boolean) => {
+    const onCloseOptOutModal = () => {
         setIsOptOutModalOpen(false)
-
-        if (extendTrialRequestSent) {
-            return
-        }
 
         // Add showOptOutFeedback=true to URL
         const newUrlParams = new URLSearchParams(location.search)
@@ -126,63 +126,63 @@ export const TrialManageWorkflow = ({
 
     return (
         <>
-            {displayTrialBanner && (
-                <TrialAlertBanner {...trialModalProps.trialStartedBanner} />
-            )}
+            {!isShoppingAssistantTrialImprovementEnabled &&
+                displayTrialBanner && (
+                    <TrialAlertBanner {...trialModalProps.trialStartedBanner} />
+                )}
 
-            {isManageTrialModalOpen && (
-                <TrialManageModal
-                    {...trialModalProps.trialEndingModal}
-                    title="Manage Shopping Assistant trial"
-                    onClose={closeManageTrialModal}
-                    primaryAction={
-                        earlyAccessPlan
-                            ? {
-                                  label: 'Upgrade Now',
-                                  onClick: openTrialUpgradeModal,
-                              }
-                            : undefined
-                    }
-                    secondaryAction={{
-                        label: 'Opt Out',
-                        onClick: onOptOutClick,
-                    }}
-                />
-            )}
+            {!isShoppingAssistantDuringTrialEnabled &&
+                isManageTrialModalOpen && (
+                    <TrialManageModal
+                        {...trialModalProps.trialEndingModal}
+                        title="Manage Shopping Assistant trial"
+                        onClose={closeManageTrialModal}
+                        primaryAction={
+                            earlyAccessPlan
+                                ? {
+                                      label: 'Upgrade Now',
+                                      onClick: openTrialUpgradeModal,
+                                  }
+                                : undefined
+                        }
+                        secondaryAction={{
+                            label: 'Opt Out',
+                            onClick: onOptOutClick,
+                        }}
+                    />
+                )}
 
-            {isUpgradePlanModalOpen && (
-                <UpgradePlanModal
-                    {...trialModalProps.upgradePlanModal}
-                    onClose={closeUpgradePlanModal}
-                    onConfirm={onUpgradeClick}
-                    onDismiss={closeUpgradePlanModal}
-                    isLoading={isUpgradePlanLoading}
-                />
-            )}
+            {!isShoppingAssistantDuringTrialEnabled &&
+                isUpgradePlanModalOpen && (
+                    <UpgradePlanModal
+                        {...trialModalProps.upgradePlanModal}
+                        onClose={closeUpgradePlanModal}
+                        onConfirm={onUpgradeClick}
+                        onDismiss={closeUpgradePlanModal}
+                        isLoading={isUpgradePlanLoading}
+                    />
+                )}
 
             {!isShoppingAssistantDuringTrialEnabled && isOptOutModalOpen && (
                 <TrialOptOutModalOld onClose={onCloseOptOutModal} />
             )}
-            {isShoppingAssistantDuringTrialEnabled && (
-                <TrialOptOutModal
-                    isOpen={isOptOutModalOpen}
-                    onClose={onCloseOptOutModal}
-                    onRequestTrialExtension={onRequestTrialExtension}
-                />
-            )}
 
-            <TrialEndingModal storeConfiguration={storeConfiguration} />
-
-            <TrialEndedModal storeConfiguration={storeConfiguration} />
+            {!isShoppingAssistantDuringTrialEnabled &&
+                storeConfiguration.storeName && (
+                    <>
+                        <TrialEndingModal
+                            storeName={storeConfiguration.storeName}
+                        />
+                        <TrialEndedModal
+                            storeName={storeConfiguration.storeName}
+                        />
+                    </>
+                )}
         </>
     )
 }
 
-export const TrialOptOutModalOld = ({
-    onClose,
-}: {
-    onClose: (trialRequestSent: boolean) => void
-}) => {
+export const TrialOptOutModalOld = ({ onClose }: { onClose: () => void }) => {
     const optOutMutation = useOptOutSalesTrialUpgradeMutation()
 
     const onOptOutClick = () => {
@@ -191,7 +191,7 @@ export const TrialOptOutModalOld = ({
         })
         optOutMutation.mutate([], {
             onSuccess: () => {
-                onClose(false)
+                onClose()
             },
         })
     }
@@ -200,14 +200,14 @@ export const TrialOptOutModalOld = ({
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Dismiss',
         })
-        onClose(false)
+        onClose()
     }
 
     const onCloseModal = () => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Close',
         })
-        onClose(false)
+        onClose()
     }
 
     return (

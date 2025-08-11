@@ -14,6 +14,13 @@ jest.mock('../utils/eventLogger', () => ({
     logShoppingAssistantEvent: jest.fn(),
 }))
 
+jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan', () => ({
+    useUpgradePlan: () => ({
+        upgradePlanAsync: jest.fn(),
+        isLoading: false,
+    }),
+}))
+
 const mockPush = jest.fn()
 jest.mock('react-router-dom', () => ({
     useHistory: () => ({
@@ -36,6 +43,7 @@ const createMockTrialAccess = (overrides = {}) => ({
     hasAnyTrialExpired: false,
     hasAnyTrialOptedIn: false,
     hasAnyTrialActive: false,
+    isAdminUser: false,
     isLoading: false,
     ...overrides,
 })
@@ -87,7 +95,7 @@ describe('usePrimaryCTA', () => {
             trialAccess: createMockTrialAccess({
                 hasCurrentStoreTrialStarted: true,
                 hasAnyTrialOptedOut: true,
-                canSeeTrialCTA: true,
+                isAdminUser: true,
             }),
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
@@ -107,6 +115,7 @@ describe('usePrimaryCTA', () => {
                 label: 'Upgrade now',
                 onClick: expect.any(Function),
                 disabled: false,
+                isLoading: false,
             },
         })
     })
@@ -117,7 +126,7 @@ describe('usePrimaryCTA', () => {
                 hasCurrentStoreTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: false,
                 hasAnyTrialOptedOut: false,
-                canSeeTrialCTA: true,
+                isAdminUser: true,
             }),
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
@@ -137,6 +146,7 @@ describe('usePrimaryCTA', () => {
                 label: 'Upgrade now',
                 onClick: expect.any(Function),
                 disabled: false,
+                isLoading: false,
             },
         })
     })
@@ -147,7 +157,7 @@ describe('usePrimaryCTA', () => {
                 hasCurrentStoreTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: false,
                 hasAnyTrialOptedOut: false,
-                canSeeTrialCTA: true,
+                isAdminUser: true,
             }),
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
@@ -164,9 +174,10 @@ describe('usePrimaryCTA', () => {
         expect(result.current).toEqual({
             variant: PromoCardVariant.AdminTrialProgress,
             button: {
-                label: 'Set Up Sales Strategy',
+                label: 'Upgrade now',
                 onClick: expect.any(Function),
                 disabled: false,
+                isLoading: false,
             },
         })
     })
@@ -222,9 +233,8 @@ describe('usePrimaryCTA', () => {
         expect(result.current).toEqual({
             variant: PromoCardVariant.LeadTrialProgress,
             button: {
-                label: 'Set Up Sales Strategy',
-                onClick: expect.any(Function),
-                disabled: false,
+                label: '',
+                disabled: true,
             },
         })
     })

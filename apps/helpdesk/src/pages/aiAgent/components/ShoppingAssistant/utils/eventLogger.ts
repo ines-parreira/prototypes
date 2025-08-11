@@ -19,3 +19,19 @@ export const logShoppingAssistantEvent = (
         console.warn(`Unsupported event type: ${eventType}`)
     }
 }
+
+export const logShoppingAssistantInTrialEvent = (
+    eventType: ShoppingAssistantEventType,
+) => {
+    const validEvents = [
+        ShoppingAssistantEventType.UpgradePlan,
+        ShoppingAssistantEventType.ManageTrial,
+        ShoppingAssistantEventType.SetUpSalesStrategy,
+    ]
+
+    if (validEvents.includes(eventType)) {
+        logEvent(SegmentEvent.TrialBannerSettingsClicked, { CTA: eventType })
+    } else {
+        console.warn(`Unsupported event type: ${eventType}`)
+    }
+}

@@ -10,7 +10,7 @@ import cn from 'classnames'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import css from './PromoCard.less'
 
@@ -338,6 +338,7 @@ interface ActionButtonProps {
     target?: string
     variant?: 'primary' | 'secondary' | 'ghost'
     disabled?: boolean
+    isLoading?: boolean
     Icon?: React.ComponentType<{ className?: string }>
     className?: string
 }
@@ -350,6 +351,7 @@ const ActionButton = ({
     target,
     variant = 'primary',
     disabled,
+    isLoading,
     Icon,
     className,
 }: ActionButtonProps) => {
@@ -385,16 +387,22 @@ const ActionButton = ({
         )
     }
 
+    const intent = variant === 'primary' ? 'primary' : 'secondary'
+    const fillStyle = variant === 'primary' ? 'fill' : 'ghost'
+
     // Default button
     return (
-        <button
-            className={baseClassName}
+        <Button
+            intent={intent}
+            fillStyle={fillStyle}
+            size="medium"
             onClick={onClick}
-            disabled={disabled}
-            type="button"
+            isDisabled={disabled}
+            isLoading={isLoading}
+            className={baseClassName}
         >
             {content}
-        </button>
+        </Button>
     )
 }
 

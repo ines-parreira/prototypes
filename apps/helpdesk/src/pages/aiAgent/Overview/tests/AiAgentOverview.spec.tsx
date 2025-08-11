@@ -415,11 +415,9 @@ describe('AiAgentOverview', () => {
             expect(queryByText('2000 automated interactions')).toBeTruthy()
 
             // Check new plan details
-            expect(queryByText('AI Agent with Shopping Assistant')).toBeTruthy()
+            expect(queryByText('AI Agent + Shopping Assistant')).toBeTruthy()
             expect(queryByText('$530')).toBeTruthy()
-            expect(
-                queryByText('Everything in Support Agent skills'),
-            ).toBeTruthy()
+            expect(queryByText('Everything in your current plan')).toBeTruthy()
             expect(
                 queryByText('Proactively engage with shoppers at key moments'),
             ).toBeTruthy()

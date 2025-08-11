@@ -5,7 +5,10 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -16,6 +19,20 @@ import { PromoCardContent, PromoCardVariant } from '../types/ShoppingAssistant'
 
 jest.mock('../hooks/useShoppingAssistantPromoCard')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
+jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
+jest.mock('core/flags')
+jest.mock('hooks/useAppSelector')
+jest.mock('../components/TrialProgressModals', () => ({
+    TrialProgressModals: jest.fn(() => (
+        <div data-testid="trial-progress-modals" />
+    )),
+}))
+jest.mock(
+    'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal',
+    () => ({
+        TrialEndedModal: () => <div data-testid="trial-ended-modal" />,
+    }),
+)
 
 const mockUseShoppingAssistantPromoCard =
     useShoppingAssistantPromoCard as jest.MockedFunction<
@@ -24,6 +41,15 @@ const mockUseShoppingAssistantPromoCard =
 
 const mockUseTrialModalProps = useTrialModalProps as jest.MockedFunction<
     typeof useTrialModalProps
+>
+
+const mockUseTrialEnding = useTrialEnding as jest.MockedFunction<
+    typeof useTrialEnding
+>
+
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUseAppSelector = useAppSelector as jest.MockedFunction<
+    typeof useAppSelector
 >
 
 const mockStore = configureMockStore()
@@ -68,6 +94,38 @@ describe('ShoppingAssistantPromoCard', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        localStorage.clear()
+
+        mockUseFlag.mockImplementation((flagKey: string) => {
+            if (
+                flagKey ===
+                'linear.project_post-ga-shopping-assistant-trial-improvement.during_trial'
+            ) {
+                return true
+            }
+            return false
+        })
+
+        mockUseAppSelector.mockReturnValue([
+            {
+                meta: {
+                    shop_name: 'test-shop',
+                },
+            },
+        ])
+
+        // Mock useTrialEnding to return values that make the modal show
+        mockUseTrialEnding.mockReturnValue({
+            remainingDays: 0,
+            remainingDaysFloat: 0,
+            trialEndDatetime: '2024-01-01T00:00:00.000Z',
+            trialTerminationDatetime: new Date(
+                Date.now() - 2 * 24 * 60 * 60 * 1000,
+            ).toISOString(), // 2 days ago
+            optedOutDatetime: new Date(
+                Date.now() - 2 * 24 * 60 * 60 * 1000,
+            ).toISOString(), // 2 days ago
+        })
 
         // Mock useTrialModalProps with minimal required properties
         mockUseTrialModalProps.mockReturnValue({
@@ -124,6 +182,12 @@ describe('ShoppingAssistantPromoCard', () => {
                     onClick: jest.fn(),
                 },
                 onClose: jest.fn(),
+            },
+            trialEndedModal: {
+                title: 'Mock Trial Ended',
+                description: 'Mock trial ended description',
+                advantages: ['Mock advantage 1', 'Mock advantage 2'],
+                secondaryDescription: 'Mock secondary description',
             },
         } as any)
     })
@@ -215,6 +279,35 @@ describe('ShoppingAssistantPromoCard', () => {
                 screen.queryByAltText('Shopping Assistant Demo'),
             ).not.toBeInTheDocument()
         })
+
+        it('should return null when feature flag is disabled', () => {
+            mockUseFlag.mockImplementation(() => false)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+
+            const { container } = renderComponent()
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should render AdminTrialProgress component with correct structure', () => {
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: adminTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
+
+            expect(
+                screen.getByText('Shopping Assistant Trial'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('$1250 GMV influenced')).toBeInTheDocument()
+            expect(screen.getByText('14 days left')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /upgrade now/i }),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('Lead Trial Progress variant', () => {
@@ -290,6 +383,32 @@ describe('ShoppingAssistantPromoCard', () => {
                 screen.queryByAltText('Shopping Assistant Demo'),
             ).not.toBeInTheDocument()
         })
+
+        it('should return null when feature flag is disabled', () => {
+            mockUseFlag.mockImplementation(() => false)
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+
+            const { container } = renderComponent()
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should render LeadTrialProgress component with correct structure', () => {
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: leadTrialProgressContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+            })
+            renderComponent()
+
+            expect(
+                screen.getByText('Shopping Assistant Trial'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('$1250 GMV influenced')).toBeInTheDocument()
+            expect(screen.getByText('14 days left')).toBeInTheDocument()
+        })
     })
 
     describe('Switch statement coverage', () => {
@@ -353,7 +472,7 @@ describe('ShoppingAssistantPromoCard', () => {
             ).toBeInTheDocument()
         })
 
-        it('should return null for Hidden variant', () => {
+        it('should return shared content for Hidden variant', () => {
             const hiddenContent: PromoCardContent = {
                 ...basePromoContent,
                 variant: PromoCardVariant.Hidden,
@@ -363,12 +482,12 @@ describe('ShoppingAssistantPromoCard', () => {
                 promoCardContent: hiddenContent,
                 trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
             })
-            const { container } = renderComponent()
+            renderComponent()
 
-            expect(container.firstChild).toBeNull()
+            expect(screen.getByTestId('trial-ended-modal')).toBeInTheDocument()
         })
 
-        it('should return null for unknown variant', () => {
+        it('should return shared content for unknown variant', () => {
             const unknownContent: PromoCardContent = {
                 ...basePromoContent,
                 variant: 'unknown-variant' as PromoCardVariant,
@@ -378,9 +497,9 @@ describe('ShoppingAssistantPromoCard', () => {
                 promoCardContent: unknownContent,
                 trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
             })
-            const { container } = renderComponent()
+            renderComponent()
 
-            expect(container.firstChild).toBeNull()
+            expect(screen.getByTestId('trial-ended-modal')).toBeInTheDocument()
         })
     })
 

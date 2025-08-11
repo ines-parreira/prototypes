@@ -198,6 +198,23 @@ const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
 
 const mockUseFlags = useFlags as jest.Mock
 
+const createMockTrialAccess = (overrides = {}) => ({
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasCurrentStoreTrialStarted: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasAnyTrialOptedOut: false,
+    hasCurrentStoreTrialExpired: false,
+    hasAnyTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasAnyTrialActive: false,
+    isAdminUser: false,
+    ...overrides,
+})
+
 describe('AiSalesAgentSalesOverview', () => {
     const baseState = {
         stats: {
@@ -271,20 +288,9 @@ describe('AiSalesAgentSalesOverview', () => {
         } as any)
 
         // Mock useShoppingAssistantTrialAccess
-        mockUseShoppingAssistantTrialAccess.mockReturnValue({
-            canNotifyAdmin: false,
-            canBookDemo: false,
-            canSeeSystemBanner: false,
-            canSeeTrialCTA: false, // Default to false, will override in specific tests
-            hasCurrentStoreTrialStarted: false,
-            hasAnyTrialStarted: false,
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-            hasCurrentStoreTrialExpired: false,
-            hasAnyTrialExpired: false,
-            hasAnyTrialOptedIn: false,
-            hasAnyTrialActive: false,
-        })
+        mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            createMockTrialAccess(),
+        )
 
         // Mock useFlag
         mockUseFlag.mockReturnValue(false)
@@ -434,20 +440,6 @@ describe('AiSalesAgentSalesOverview', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
             mockUseFlag.mockReturnValue(true) // isAiSalesAlphaDemoUser = true
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasCurrentStoreTrialStarted: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
 
             renderComponent()
 
@@ -460,20 +452,6 @@ describe('AiSalesAgentSalesOverview', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
             mockUseFlag.mockReturnValue(false) // isAiSalesAlphaDemoUser = false
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasCurrentStoreTrialStarted: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
 
             renderComponent()
 
@@ -483,20 +461,6 @@ describe('AiSalesAgentSalesOverview', () => {
         it('should not show paywall when user has new automate plan (generation >= 6) even without trial', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasCurrentStoreTrialStarted: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
 
             // Create state with a new automate plan
             // We need to update the products fixture to include a plan with generation 6
@@ -539,20 +503,6 @@ describe('AiSalesAgentSalesOverview', () => {
         it('should show paywall when user has old automate plan (generation < 6) and no trial', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasCurrentStoreTrialStarted: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
 
             // Create state with an old automate plan
             const productsWithOldAutomatePlan = products.map((product) => {
@@ -592,20 +542,6 @@ describe('AiSalesAgentSalesOverview', () => {
         it('should show paywall when user has no automate plan and no trial', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasCurrentStoreTrialStarted: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: false,
-                hasAnyTrialActive: false,
-            })
 
             renderComponent()
 
@@ -615,20 +551,14 @@ describe('AiSalesAgentSalesOverview', () => {
         it('should not show paywall when user has active trial regardless of automate plan', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasCurrentStoreTrialStarted: true,
-                hasAnyTrialStarted: true,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialExpired: false,
-                hasAnyTrialOptedIn: true,
-                hasAnyTrialActive: true,
-            })
+            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasCurrentStoreTrialStarted: true,
+                    hasAnyTrialStarted: true,
+                    hasAnyTrialOptedIn: true,
+                    hasAnyTrialActive: true,
+                }),
+            )
 
             renderComponent()
 

@@ -2,8 +2,11 @@ import { memo, useCallback } from 'react'
 
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { OptOutModal } from 'pages/common/components/OptOutModal/OptOutModal'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './TrialOptOutModal.less'
 
@@ -57,6 +60,7 @@ const TrialOptOutModal = ({
     onClose,
     onRequestTrialExtension,
 }: TrialOptOutModalProps) => {
+    const dispatch = useAppDispatch()
     const optOutMutation = useOptOutSalesTrialUpgradeMutation()
 
     const onOptOutClick = useCallback(() => {
@@ -65,15 +69,22 @@ const TrialOptOutModal = ({
         })
         optOutMutation.mutate([], {
             onSuccess: () => {
-                onClose(false)
+                onClose(true)
+                dispatch(
+                    notify({
+                        message:
+                            "Your plan won't be upgraded when the trial ends, and you'll lose access to AI Agent's sales skills.",
+                        status: NotificationStatus.Success,
+                    }),
+                )
             },
         })
-    }, [optOutMutation, onClose])
+    }, [optOutMutation, onClose, dispatch])
 
     const onRequestTrialExtensionClick = useCallback(() => {
         onRequestTrialExtension().then((isSent) => {
             if (isSent) {
-                onClose(true)
+                onClose(false)
             }
         })
     }, [onClose, onRequestTrialExtension])

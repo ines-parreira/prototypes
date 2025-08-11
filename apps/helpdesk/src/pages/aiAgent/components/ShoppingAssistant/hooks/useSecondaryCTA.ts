@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 import {
@@ -8,23 +9,30 @@ import {
     PromoCardVariant,
     ShoppingAssistantEventType,
 } from '../types/ShoppingAssistant'
-import { logShoppingAssistantEvent } from '../utils/eventLogger'
+import {
+    logShoppingAssistantEvent,
+    logShoppingAssistantInTrialEvent,
+} from '../utils/eventLogger'
 
 export const useSecondaryCTA = (
     variant: PromoCardVariant,
     trialAccess: ReturnType<typeof useShoppingAssistantTrialAccess>,
+    trialFlow: UseShoppingAssistantTrialFlowReturn,
 ): ButtonConfig | undefined => {
     return useMemo(() => {
         if (variant === PromoCardVariant.AdminTrialProgress) {
-            const isOptedOut =
-                trialAccess.hasCurrentStoreTrialOptedOut ||
-                trialAccess.hasAnyTrialOptedOut
+            const isOptedOut = trialAccess.hasCurrentStoreTrialOptedOut
 
             if (isOptedOut) return undefined
 
             return {
                 label: 'Manage Trial',
-                onClick: () => {},
+                onClick: () => {
+                    logShoppingAssistantInTrialEvent(
+                        ShoppingAssistantEventType.ManageTrial,
+                    )
+                    trialFlow.openManageTrialModal()
+                },
                 disabled: false,
             }
         }
@@ -50,5 +58,5 @@ export const useSecondaryCTA = (
                 logShoppingAssistantEvent(ShoppingAssistantEventType.Learn),
             disabled: false,
         }
-    }, [variant, trialAccess])
+    }, [variant, trialAccess, trialFlow])
 }

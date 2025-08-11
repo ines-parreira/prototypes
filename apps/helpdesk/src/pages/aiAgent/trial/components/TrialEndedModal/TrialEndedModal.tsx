@@ -2,19 +2,13 @@ import { useCallback, useState } from 'react'
 
 import moment from 'moment'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 const TRIAL_ENDED_DISMISSED_KEY = 'ai-agent-trial-ended-dismissed'
 
-export const TrialEndedModal = ({
-    storeConfiguration,
-}: {
-    storeConfiguration: StoreConfiguration
-}) => {
-    const storeName = storeConfiguration.storeName
+export const TrialEndedModal = ({ storeName }: { storeName: string }) => {
     const { trialEndedModal } = useTrialModalProps({ storeName })
     const { trialTerminationDatetime, optedOutDatetime } =
         useTrialEnding(storeName)
