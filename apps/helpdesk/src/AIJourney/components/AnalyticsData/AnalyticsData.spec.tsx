@@ -3,6 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { appQueryClient } from 'api/queryClient'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
@@ -54,7 +55,7 @@ const data = [
         currency: 'CAD',
         isLoading: false,
     },
-]
+] as MetricProps[]
 
 const cleanStatsFilters = {
     period: {
@@ -121,7 +122,7 @@ describe('<AnalyticsData />', () => {
                 isLoading: true,
             },
             ...data.slice(1), // Include other metrics from original data
-        ]
+        ] as MetricProps[]
 
         render(
             <QueryClientProvider client={appQueryClient}>

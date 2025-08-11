@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { appQueryClient } from 'api/queryClient'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
@@ -28,10 +29,34 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 )
 
 const data = [
-    { label: 'Revenue', value: '$999' },
-    { label: 'Orders', value: '789' },
-    { label: 'Conversion Rate', value: '9%' },
-]
+    {
+        label: 'Revenue',
+        value: 999,
+        prevValue: 1000,
+        interpretAs: 'more-is-better',
+        metricFormat: 'currency',
+        currency: 'CAD',
+        isLoading: false,
+    },
+    {
+        label: 'Orders',
+        value: 789,
+        prevValue: 789,
+        interpretAs: 'more-is-better',
+        metricFormat: 'currency',
+        currency: 'CAD',
+        isLoading: false,
+    },
+    {
+        label: 'Conversion Rate',
+        value: 9,
+        prevValue: 7589,
+        interpretAs: 'more-is-better',
+        metricFormat: 'currency',
+        currency: 'CAD',
+        isLoading: false,
+    },
+] as MetricProps[]
 
 const mockAbandonedCartJourney = {
     id: '01JZQS8ZYFFQPDB6NJTKNP7PYB',

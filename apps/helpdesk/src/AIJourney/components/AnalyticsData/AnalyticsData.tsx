@@ -1,12 +1,13 @@
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 import css from './AnalyticsData.less'
 
 type AnalyticsDataProps = {
-    data: any[]
+    data: MetricProps[]
 }
 
 export const AnalyticsData = ({ data }: AnalyticsDataProps) => {

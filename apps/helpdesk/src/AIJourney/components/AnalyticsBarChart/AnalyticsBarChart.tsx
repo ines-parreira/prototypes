@@ -3,14 +3,23 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import moment from 'moment'
 
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 import { Tooltip } from '../Tooltip/Tooltip'
 
 import css from './AnalyticsBarChart.less'
 
+export type DataArrayType = {
+    dateRange: {
+        startDate: string
+        endDate: string
+    }
+    value: MetricProps[]
+}
+
 type AnalyticsBarChartProps = {
-    dataArray: any[]
+    dataArray: DataArrayType[]
     metricIndex: number // Add this prop to know which metric to display
 }
 

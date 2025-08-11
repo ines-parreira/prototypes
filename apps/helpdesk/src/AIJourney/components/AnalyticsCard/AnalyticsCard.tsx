@@ -13,6 +13,7 @@ import { Integration } from '@gorgias/helpdesk-types'
 import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'
 import { DiscountCard } from 'AIJourney/components/DiscountCard/DiscountCard'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import greenLightningIcon from 'assets/img/ai-journey/green-lightning.svg'
 import greyLightningIcon from 'assets/img/ai-journey/lightning.svg'
 import orangeLightningIcon from 'assets/img/ai-journey/orange-lightning.svg'
@@ -27,7 +28,7 @@ import { MoreOptions } from './components/MoreOptions/MoreOptions'
 import css from './AnalyticsCard.less'
 
 type AnalyticsCardProps = {
-    analyticsData: any[]
+    analyticsData: MetricProps[]
     journeyConfigurations?: CartAbandonedJourneyConfigurationApiDTO
     integrationId?: number
     currentIntegration?: Integration

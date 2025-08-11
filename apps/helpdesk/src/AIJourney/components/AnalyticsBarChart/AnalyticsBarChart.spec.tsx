@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { AnalyticsBarChart } from './AnalyticsBarChart'
+import { AnalyticsBarChart, DataArrayType } from './AnalyticsBarChart'
 
 jest.mock('../Tooltip/Tooltip', () => ({
     Tooltip: ({ date, info }: { date: string; info: string }) => (
@@ -24,7 +24,10 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Total Revenue',
                     value: 15,
                     prevValue: null,
-                    interpretAs: 'more-is-better',
+                    interpretAs: 'more-is-better' as
+                        | 'more-is-better'
+                        | 'less-is-better'
+                        | 'neutral',
                     metricFormat: 'currency',
                     currency: 'USD',
                     isLoading: false,
@@ -33,7 +36,10 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Total Orders',
                     value: 10,
                     prevValue: 0,
-                    interpretAs: 'more-is-better',
+                    interpretAs: 'more-is-better' as
+                        | 'more-is-better'
+                        | 'less-is-better'
+                        | 'neutral',
                     metricFormat: 'decimal-precision-1',
                     isLoading: false,
                 },
@@ -41,7 +47,10 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Conversion rate',
                     value: 20,
                     prevValue: 0,
-                    interpretAs: 'more-is-better',
+                    interpretAs: 'more-is-better' as
+                        | 'more-is-better'
+                        | 'less-is-better'
+                        | 'neutral',
                     metricFormat: 'percent',
                     isLoading: false,
                 },
@@ -49,14 +58,17 @@ describe('<AnalyticsBarChart />', () => {
                     label: 'Click Through Rate',
                     value: 30,
                     prevValue: 0,
-                    interpretAs: 'more-is-better',
+                    interpretAs: 'more-is-better' as
+                        | 'more-is-better'
+                        | 'less-is-better'
+                        | 'neutral',
                     metricFormat: 'percent',
                     currency: 'USD',
                     isLoading: false,
                 },
             ],
         },
-    ]
+    ] as DataArrayType[]
 
     it('renders the correct number of bars', () => {
         const { container } = render(
