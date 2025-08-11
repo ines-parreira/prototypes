@@ -135,7 +135,7 @@ describe('TrialOptOutModal', () => {
             })
         })
 
-        it('should call onClose with true when mutation succeeds', async () => {
+        it('should call onClose when mutation succeeds', async () => {
             const userEventSetup = user.setup()
             render(<TrialOptOutModal {...defaultProps} />)
 
@@ -148,7 +148,7 @@ describe('TrialOptOutModal', () => {
             const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
             onSuccessCallback()
 
-            expect(mockOnClose).toHaveBeenCalledWith(true)
+            expect(mockOnClose).toHaveBeenCalled()
         })
 
         it('should dispatch notification when mutation succeeds', async () => {
@@ -182,7 +182,7 @@ describe('TrialOptOutModal', () => {
             expect(mockOnRequestTrialExtension).toHaveBeenCalledTimes(1)
         })
 
-        it('should close modal with false when onRequestTrialExtension resolves with true', async () => {
+        it('should close modal when onRequestTrialExtension resolves with true', async () => {
             const userEventSetup = user.setup()
             mockOnRequestTrialExtension.mockResolvedValue(true)
             render(<TrialOptOutModal {...defaultProps} />)
@@ -193,7 +193,7 @@ describe('TrialOptOutModal', () => {
             await userEventSetup.click(requestButton)
 
             await waitFor(() => {
-                expect(mockOnClose).toHaveBeenCalledWith(false)
+                expect(mockOnClose).toHaveBeenCalled()
             })
         })
 
@@ -216,7 +216,7 @@ describe('TrialOptOutModal', () => {
     })
 
     describe('when user closes modal', () => {
-        it('should log segment event and close modal with false', async () => {
+        it('should log segment event and close modal', async () => {
             const userEventSetup = user.setup()
             render(<TrialOptOutModal {...defaultProps} />)
 
@@ -229,7 +229,7 @@ describe('TrialOptOutModal', () => {
                     CTA: 'Close',
                 },
             )
-            expect(mockOnClose).toHaveBeenCalledWith(false)
+            expect(mockOnClose).toHaveBeenCalled()
         })
     })
 })

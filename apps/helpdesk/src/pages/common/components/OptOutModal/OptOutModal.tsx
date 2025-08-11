@@ -128,13 +128,19 @@ const SecondaryAction = ({ children }: SecondaryActionProps) => {
 
 interface DestructiveActionProps {
     children: React.ReactNode
+    id?: string
 }
 
-const DestructiveAction = ({ children }: DestructiveActionProps) => {
+const DestructiveAction = ({ children, id }: DestructiveActionProps) => {
     const { isLoading, onOptOut } = useOptOutModalContext()
 
     return (
-        <Button onClick={onOptOut} isLoading={isLoading} intent="destructive">
+        <Button
+            onClick={onOptOut}
+            isLoading={isLoading}
+            intent="destructive"
+            id={id}
+        >
             {children}
         </Button>
     )

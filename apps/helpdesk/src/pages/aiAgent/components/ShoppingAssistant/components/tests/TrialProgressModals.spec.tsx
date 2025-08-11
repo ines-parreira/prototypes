@@ -125,13 +125,6 @@ jest.mock(
 )
 
 describe('TrialProgressModals', () => {
-    const mockPush = jest.fn()
-    const mockHistory = { push: mockPush }
-    const mockLocation = {
-        pathname: '/test-path',
-        search: '?param=value',
-    }
-
     const mockUseAppSelector = assumeMock(useAppSelector)
     const mockUseStoreActivations = assumeMock(useStoreActivations)
     const mockUseShoppingAssistantTrialFlow = assumeMock(
@@ -309,9 +302,6 @@ describe('TrialProgressModals', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        require('react-router-dom').useHistory.mockReturnValue(mockHistory)
-        require('react-router-dom').useLocation.mockReturnValue(mockLocation)
 
         mockUseAppSelector.mockReturnValue(defaultMockValues.currentAccount)
         mockUseStoreActivations.mockReturnValue({
@@ -609,53 +599,6 @@ describe('TrialProgressModals', () => {
             })
 
             expect(screen.getByText('Trial Opt Out Modal')).toBeInTheDocument()
-        })
-
-        it('should close opt out modal without URL parameter when closed without extension', async () => {
-            const user = userEvent.setup()
-            render(<TrialProgressModals />)
-
-            await act(async () => {
-                await user.click(
-                    screen.getByRole('button', { name: 'Opt Out' }),
-                )
-            })
-
-            // Find the close button specifically in the opt out modal
-            const optOutModal = screen.getByText(
-                'Trial Opt Out Modal',
-            ).parentElement!
-            const closeButton = optOutModal.querySelector('button')!
-
-            await act(async () => {
-                await user.click(closeButton)
-            })
-
-            expect(mockPush).not.toHaveBeenCalled()
-        })
-
-        it('should close opt out modal and add URL parameter when extension is requested', async () => {
-            const user = userEvent.setup()
-            render(<TrialProgressModals />)
-
-            await act(async () => {
-                await user.click(
-                    screen.getByRole('button', { name: 'Opt Out' }),
-                )
-            })
-
-            await act(async () => {
-                await user.click(
-                    screen.getByRole('button', {
-                        name: 'Request Trial Extension',
-                    }),
-                )
-            })
-
-            expect(mockPush).toHaveBeenCalledWith({
-                pathname: '/test-path',
-                search: 'param=value&showOptOutFeedback=true',
-            })
         })
 
         it('should call onRequestTrialExtension when request extension button is clicked', async () => {

@@ -51,7 +51,7 @@ const FeaturesList = memo(() => {
 
 export type TrialOptOutModalProps = {
     isOpen: boolean
-    onClose: (extendTrialRequestSent: boolean) => void
+    onClose: () => void
     onRequestTrialExtension: () => Promise<boolean>
 }
 
@@ -69,7 +69,7 @@ const TrialOptOutModal = ({
         })
         optOutMutation.mutate([], {
             onSuccess: () => {
-                onClose(true)
+                onClose()
                 dispatch(
                     notify({
                         message:
@@ -84,7 +84,7 @@ const TrialOptOutModal = ({
     const onRequestTrialExtensionClick = useCallback(() => {
         onRequestTrialExtension().then((isSent) => {
             if (isSent) {
-                onClose(false)
+                onClose()
             }
         })
     }, [onClose, onRequestTrialExtension])
@@ -93,7 +93,7 @@ const TrialOptOutModal = ({
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
             CTA: 'Close',
         })
-        onClose(false)
+        onClose()
     }, [onClose])
 
     return (
@@ -113,7 +113,7 @@ const TrialOptOutModal = ({
                 <OptOutModal.SecondaryAction>
                     {SECONDARY_ACTION}
                 </OptOutModal.SecondaryAction>
-                <OptOutModal.DestructiveAction>
+                <OptOutModal.DestructiveAction id="shopping-assistant-opt-out">
                     {DESTRUCTIVE_ACTION}
                 </OptOutModal.DestructiveAction>
             </OptOutModal.Actions>

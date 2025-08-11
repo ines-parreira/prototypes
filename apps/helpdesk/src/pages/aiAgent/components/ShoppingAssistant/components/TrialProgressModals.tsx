@@ -1,7 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { useHistory, useLocation } from 'react-router-dom'
-
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -25,8 +23,6 @@ export const TrialProgressModals = ({
 }: TrialProgressModalsProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations()
-    const history = useHistory()
-    const location = useLocation()
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
 
     const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
@@ -63,22 +59,6 @@ export const TrialProgressModals = ({
     const trialModalProps = useTrialModalProps({
         storeName,
     })
-
-    const onCloseOptOutModal = (shouldShowOptOutFeedback: boolean) => {
-        setIsOptOutModalOpen(false)
-
-        if (!shouldShowOptOutFeedback) {
-            return
-        }
-
-        // Add showOptOutFeedback=true to URL
-        const newUrlParams = new URLSearchParams(location.search)
-        newUrlParams.set('showOptOutFeedback', 'true')
-        history.push({
-            pathname: location.pathname,
-            search: newUrlParams.toString(),
-        })
-    }
 
     const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
 
@@ -117,7 +97,7 @@ export const TrialProgressModals = ({
             {isOptOutModalOpen && (
                 <TrialOptOutModal
                     isOpen={isOptOutModalOpen}
-                    onClose={onCloseOptOutModal}
+                    onClose={() => setIsOptOutModalOpen(false)}
                     onRequestTrialExtension={onRequestTrialExtension}
                 />
             )}
