@@ -768,56 +768,6 @@ describe('PlaygroundChat', () => {
             expect(warningBanner).toBeInTheDocument()
         })
 
-        it('should show success banner when actions are disabled in test mode', () => {
-            mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
-                data: [
-                    {
-                        should_run_in_test_mode: false,
-                        id: 'test-action-1',
-                        name: 'Test Action',
-                    },
-                ],
-                isInitialLoading: false,
-                isLoading: false,
-                isError: false,
-                error: null,
-                isRefetching: false,
-                isRefetchError: false,
-                refetch: jest.fn(),
-            } as unknown as ReturnType<
-                typeof useGetStoreWorkflowsConfigurations
-            >)
-
-            renderComponent()
-
-            const successBanner = screen.getByText(
-                "Actions are disabled. In test mode, Actions won't run. We'll simulate success so you can safely test behavior.",
-            )
-            expect(successBanner).toBeInTheDocument()
-        })
-
-        it('should show success banner when there are no actions configured', () => {
-            mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
-                data: [],
-                isInitialLoading: false,
-                isLoading: false,
-                isError: false,
-                error: null,
-                isRefetching: false,
-                isRefetchError: false,
-                refetch: jest.fn(),
-            } as unknown as ReturnType<
-                typeof useGetStoreWorkflowsConfigurations
-            >)
-
-            renderComponent()
-
-            const successBanner = screen.getByText(
-                "Actions are disabled. In test mode, Actions won't run. We'll simulate success so you can safely test behavior.",
-            )
-            expect(successBanner).toBeInTheDocument()
-        })
-
         it('should not show any banner while loading workflow configurations', () => {
             mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
                 data: [],
@@ -834,15 +784,10 @@ describe('PlaygroundChat', () => {
 
             renderComponent()
 
-            // Check that neither banner text is present
+            // Check that the banner text is not present
             expect(
                 screen.queryByText(
                     'Actions are enabled. Executing an Action will run live and may update your store data.',
-                ),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText(
-                    "Actions are disabled. In test mode, Actions won't run. We'll simulate success so you can safely test behavior.",
                 ),
             ).not.toBeInTheDocument()
         })

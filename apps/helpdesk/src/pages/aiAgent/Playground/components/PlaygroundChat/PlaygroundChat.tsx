@@ -238,20 +238,12 @@ export const PlaygroundChat = ({
 
     return (
         <div className={css.container}>
-            {!isStoreWfConfigurationsInitialLoading && (
+            {!isStoreWfConfigurationsInitialLoading && hasActionsInTestMode && (
                 <>
-                    {hasActionsInTestMode ? (
-                        <Alert type={AlertType.Warning} icon className="mb-3">
-                            Actions are enabled. Executing an Action will run
-                            live and may update your store data.
-                        </Alert>
-                    ) : (
-                        <Alert type={AlertType.Success} icon className="mb-3">
-                            Actions are disabled. In test mode, Actions
-                            won&apos;t run. We&apos;ll simulate success so you
-                            can safely test behavior.
-                        </Alert>
-                    )}
+                    <Alert type={AlertType.Warning} icon className="mb-3">
+                        Actions are enabled. Executing an Action will run live
+                        and may update your store data.
+                    </Alert>
                 </>
             )}
             <div className={css.outputContainer}>
