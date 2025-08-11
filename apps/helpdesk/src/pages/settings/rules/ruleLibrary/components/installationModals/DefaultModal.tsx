@@ -40,6 +40,8 @@ const howItWorksText: Record<
         'This rule adds the "ai_ignore" tag to tickets, which will prevent your AI Agent from answering or perform any actions (e.g. auto-tagging).<br/>You can update the conditions in order to exclude tickets coming from certain email addresses, tickets with certain tags, messages from customers that include certain words, etc.',
     [RuleTemplateRecipeSlugs.AutoTagLowCSAT]:
         'This rule tags tickets that receive a low CSAT score and sends an email notification to the admin. Use this rule to quickly identify and address customer dissatisfaction, helping to improve overall service quality and customer satisfaction.',
+    [RuleTemplateRecipeSlugs.PriorityByMessageSentiments]:
+        'This rule sets the priority of newly created tickets to critical when their message sentiment is identified as threatening, negative, offensive, or urgent. Use this rule to automatically escalate emotionally charged or high-risk tickets and ensure timely and appropriate support responses.',
 }
 
 export const DefaultModal = ({

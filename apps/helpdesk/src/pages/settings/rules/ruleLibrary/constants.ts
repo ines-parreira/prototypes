@@ -24,6 +24,10 @@ export const tagColors: {
         color: '#3373DB',
         backgroundColor: '#F6F9FF',
     },
+    [RuleRecipeTag.PRIORITY]: {
+        color: '#FF5722',
+        backgroundColor: '#FFF3E0',
+    },
 }
 
 export enum RuleTemplateRecipeSlugs {
@@ -41,4 +45,5 @@ export enum RuleTemplateRecipeSlugs {
     AutoTagAiIgnore = 'auto-tag-ai-ignore',
     AutoTagLowCSAT = 'auto-tag-low-csat',
     AutoCloseSpamFilter = 'non-support-related-emails',
+    PriorityByMessageSentiments = 'priority-by-message-sentiments',
 }

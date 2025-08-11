@@ -6,6 +6,7 @@ export enum RuleRecipeTag {
     AUTO_CLOSE = 'Auto Close',
     AUTO_TAG = 'Auto Tag',
     AUTO_REPLY = 'Auto Reply',
+    PRIORITY = 'Priority',
 }
 
 export type RuleRecipe = {
