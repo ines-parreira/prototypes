@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import {
     CartAbandonedJourneyConfigurationApiDTO,
@@ -7,6 +7,7 @@ import {
 } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers'
+import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 const createNewJourney = async (
@@ -28,8 +29,15 @@ const createNewJourney = async (
 
 export const useCreateNewJourney = () => {
     const accessToken = useAccessToken()
-    return useMutation(
-        ({
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        onSuccess: async (_, { params: { store_integration_id } }) => {
+            await queryClient.invalidateQueries({
+                queryKey: aiJourneyKeys.journeys(store_integration_id),
+            })
+        },
+        mutationFn: async ({
             params,
             journeyConfigs,
         }: {
@@ -48,5 +56,5 @@ export const useCreateNewJourney = () => {
                 journeyConfigs,
             )
         },
-    )
+    })
 }

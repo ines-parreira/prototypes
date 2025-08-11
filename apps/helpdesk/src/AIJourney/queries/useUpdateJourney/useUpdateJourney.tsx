@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import {
     CartAbandonedJourneyConfigurationApiDTO,
@@ -7,6 +7,7 @@ import {
 } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers'
+import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 const updateJourney = async (
@@ -28,8 +29,14 @@ const updateJourney = async (
 
 export const useUpdateJourney = () => {
     const accessToken = useAccessToken()
+    const queryClient = useQueryClient()
 
     return useMutation({
+        onSuccess: async (_, { journeyId }) => {
+            await queryClient.invalidateQueries({
+                queryKey: aiJourneyKeys.journeyConfiguration(journeyId),
+            })
+        },
         mutationFn: async ({
             journeyId,
             params,
@@ -46,25 +53,7 @@ export const useUpdateJourney = () => {
                 throw new Error('Unauthorized: Access token is required')
             }
 
-            if (journeyConfigs) {
-                return updateJourney(
-                    journeyId,
-                    {
-                        ...params,
-                    },
-                    accessToken,
-                    {
-                        ...journeyConfigs,
-                    },
-                )
-            }
-            return updateJourney(
-                journeyId,
-                {
-                    ...params,
-                },
-                accessToken,
-            )
+            return updateJourney(journeyId, params, accessToken, journeyConfigs)
         },
     })
 }
