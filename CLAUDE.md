@@ -14,6 +14,32 @@
 - When creating new scripts in package.json, ensure they work with pnpm
 - When debugging dependency issues, use `pnpm why <package>` for dependency analysis
 
+## Common Tasks
+
+### Testing
+
+- Run tests with `pnpm test:all` for all packages
+- Run tests with `pnpm test:affected` for all affected packages
+- Run tests with `pnpm test:helpdesk` for the helpdesk app
+
+### Linting
+
+- Lint code with `pnpm lint:code:all` for all packages
+- Lint code with `pnpm lint:code:helpdesk` for the helpdesk app
+- Lint code with `pnpm lint:code:affected` for all affected packages
+
+### Formatting
+
+- Fix formatting with `pnpm format:fix:all` for all packages
+- Fix formatting with `pnpm format:fix:helpdesk` for the helpdesk app
+- Fix formatting with `pnpm format:fix:affected` for all affected packages
+
+### Type checking
+
+- Type check code with `pnpm typecheck:all` for all packages
+- Type check code with `pnpm typecheck:helpdesk` for the helpdesk app
+- Type check code with `pnpm typecheck:affected` for all affected packages
+
 ## Code Generation
 
 - When generating package.json scripts, ensure compatibility with pnpm
