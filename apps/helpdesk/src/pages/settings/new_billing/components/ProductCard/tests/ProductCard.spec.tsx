@@ -130,7 +130,7 @@ describe('ProductCard', () => {
 
             expect(tooltip).toHaveAttribute(
                 'data-candu-id',
-                `product-card-${productType}-tooltip`,
+                `product-info-${productType}-tooltip`,
             )
         },
     )

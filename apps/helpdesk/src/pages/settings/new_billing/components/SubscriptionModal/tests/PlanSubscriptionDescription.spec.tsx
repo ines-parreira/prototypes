@@ -117,7 +117,7 @@ describe('PlanSubscriptionDescription', () => {
 
             expect(tooltip).toHaveAttribute(
                 'data-candu-id',
-                'plan-subscription-tooltip',
+                `product-info-${productType}-tooltip`,
             )
         },
     )

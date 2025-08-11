@@ -191,7 +191,7 @@ const ProductCard = ({
                     className={css.tooltip}
                     autohide={false}
                 >
-                    <div data-candu-id={`product-card-${type}-tooltip`}>
+                    <div data-candu-id={`product-info-${type}-tooltip`}>
                         {PRODUCT_INFO[type].tooltip}
                     </div>
                     <a

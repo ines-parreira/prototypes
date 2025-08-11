@@ -570,7 +570,7 @@ describe('ProductPlanSelection', () => {
 
             expect(tooltip).toHaveAttribute(
                 'data-candu-id',
-                `plan-selection-${productType}-tooltip`,
+                `product-info-${productType}-tooltip`,
             )
         },
     )

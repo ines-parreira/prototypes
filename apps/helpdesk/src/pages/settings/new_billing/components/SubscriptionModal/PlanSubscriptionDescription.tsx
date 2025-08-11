@@ -175,7 +175,7 @@ const PlanSubscriptionDescription = ({
                                 container={ref}
                             >
                                 <div
-                                    data-candu-id={'plan-subscription-tooltip'}
+                                    data-candu-id={`product-info-${productType}-tooltip`}
                                 >
                                     {productInfo.tooltip}
                                 </div>

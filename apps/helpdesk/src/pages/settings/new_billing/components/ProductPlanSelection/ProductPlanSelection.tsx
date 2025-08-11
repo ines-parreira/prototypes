@@ -390,7 +390,7 @@ const ProductPlanSelection = ({
                                 autohide={false}
                             >
                                 <div
-                                    data-candu-id={`plan-selection-${type}-tooltip`}
+                                    data-candu-id={`product-info-${type}-tooltip`}
                                 >
                                     {PRODUCT_INFO[type].tooltip}
                                 </div>
