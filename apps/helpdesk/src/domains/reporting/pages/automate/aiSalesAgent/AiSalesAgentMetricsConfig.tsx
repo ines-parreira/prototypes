@@ -200,7 +200,7 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
     [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
         title: 'Orders influenced',
         hint: {
-            title: 'The number of orders placed within 7 days of a Shopping Assistant conversation, without a direct handover.',
+            title: 'The number of orders placed within 3 days of a Shopping Assistant conversation, without a direct handover.',
         },
         useTrend: useTotalNumberOfOrdersTrend,
         fetchTrend: fetchTotalNumberOfOrdersTrend,
@@ -236,7 +236,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentGmv]: {
         title: 'GMV Influenced',
         hint: {
-            title: 'Revenue from orders placed within 7 days of a Shopping Assistant conversation, without human help.',
+            title: 'Revenue from orders placed within 3 days of a Shopping Assistant conversation, without human help.',
         },
         useTrend: useGmvInfluencedTrend,
         fetchTrend: fetchGmvInfluencedTrend,
@@ -272,7 +272,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentAverageOrderValue]: {
         title: 'Average order value',
         hint: {
-            title: 'The average value of orders placed within 7 days of a conversation with Shopping Assistant.',
+            title: 'The average value of orders placed within 3 days of a conversation with Shopping Assistant.',
         },
         useTrend: useAverageOrderValueTrend,
         fetchTrend: fetchAverageOrderValueTrend,
@@ -309,7 +309,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentConversionRate]: {
         title: 'Conversion rate',
         hint: {
-            title: 'The percentage of Shopping Assistant interactions after which an order was placed within 7 days.',
+            title: 'The percentage of Shopping Assistant interactions after which an order was placed within 3 days.',
         },
         useTrend: useConversionRateTrend,
         fetchTrend: fetchConversionRateTrend,
