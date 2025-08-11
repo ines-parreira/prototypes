@@ -41,7 +41,7 @@ const BaseIconButton = (
 }
 
 /**
- * @deprecated This component is being phased out. Please use `IconButton` from `@gorgias/merchant-ui-kit` instead.
+ * @deprecated This component is being phased out. Please use `IconButton` from `@gorgias/axiom` instead.
  * @date 2024-03-05
  * @type ui-kit-migration
  */

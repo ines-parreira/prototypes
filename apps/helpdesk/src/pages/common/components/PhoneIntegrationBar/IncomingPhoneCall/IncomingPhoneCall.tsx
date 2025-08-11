@@ -5,7 +5,7 @@ import { Call } from '@twilio/voice-sdk'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'

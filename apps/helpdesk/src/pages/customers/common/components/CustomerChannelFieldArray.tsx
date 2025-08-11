@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import _clone from 'lodash/clone'
 import { Col, FormGroup, Row } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'

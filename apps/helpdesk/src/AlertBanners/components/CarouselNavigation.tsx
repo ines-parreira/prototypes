@@ -1,4 +1,4 @@
-import { Box, IconButton, Separator } from '@gorgias/merchant-ui-kit'
+import { Box, IconButton, Separator } from '@gorgias/axiom'
 
 type CarouselNavigationProps = {
     onPrevious: VoidFunction

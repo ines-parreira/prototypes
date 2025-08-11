@@ -4,7 +4,7 @@ import cn from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'

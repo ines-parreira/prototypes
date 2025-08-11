@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { useGetHTTPEvent } from 'models/integration/queries/http'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'

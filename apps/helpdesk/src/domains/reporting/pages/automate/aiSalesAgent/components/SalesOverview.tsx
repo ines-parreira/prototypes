@@ -5,7 +5,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { Banner, Button, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Banner, Button, Skeleton } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'

@@ -4,7 +4,7 @@ import { LocationDescriptor } from 'history'
 import _noop from 'lodash/noop'
 import { Link } from 'react-router-dom'
 
-import { Button, type ButtonIntent } from '@gorgias/merchant-ui-kit'
+import { Button, type ButtonIntent } from '@gorgias/axiom'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import DropdownButton from 'pages/common/components/button/DropdownButton'

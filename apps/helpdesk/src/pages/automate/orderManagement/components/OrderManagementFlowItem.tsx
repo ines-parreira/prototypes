@@ -2,7 +2,7 @@ import { MouseEvent, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import css from './OrderManagementFlowItem.less'
 

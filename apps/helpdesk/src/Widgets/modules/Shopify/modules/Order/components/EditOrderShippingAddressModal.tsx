@@ -22,7 +22,7 @@ import {
     Label,
 } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { states } from 'fixtures/states'

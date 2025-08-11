@@ -9,13 +9,13 @@ import { TicketInsightsFieldTrend } from 'domains/reporting/pages/ticket-insight
 import useAppSelector from 'hooks/useAppSelector'
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
 
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
+        }) as typeof import('@gorgias/axiom'),
 )
 
 jest.mock('domains/reporting/hooks/ticket-insights/useTicketsFieldTimeSeries')

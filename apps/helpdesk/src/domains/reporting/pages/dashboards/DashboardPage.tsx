@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

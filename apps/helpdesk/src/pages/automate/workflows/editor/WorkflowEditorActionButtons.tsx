@@ -1,4 +1,4 @@
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'

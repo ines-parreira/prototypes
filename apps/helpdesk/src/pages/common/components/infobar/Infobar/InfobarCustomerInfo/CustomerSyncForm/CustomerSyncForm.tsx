@@ -8,12 +8,12 @@ import React, {
 
 import { Map } from 'immutable'
 
+import { Button, TextField, Tooltip } from '@gorgias/axiom'
 import {
     useListCustomerIntegrationsWithChannelDefault,
     useScheduleShopifyCreateNewCustomerAction,
     useScheduleShopifyUpdateCustomerAction,
 } from '@gorgias/helpdesk-queries'
-import { Button, TextField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'

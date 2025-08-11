@@ -2,7 +2,7 @@ import React, { useReducer, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import {
     BigCommerceCart,

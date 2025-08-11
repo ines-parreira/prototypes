@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Box, Button } from '@gorgias/merchant-ui-kit'
+import { Box, Button } from '@gorgias/axiom'
 
 import { CopyableTextField } from 'core/ui'
 import { AuthenticatorData } from 'models/twoFactorAuthentication/types'

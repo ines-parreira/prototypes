@@ -12,7 +12,7 @@ import { useAsyncFn, usePrevious } from '@repo/hooks'
 import { BaseEmoji, EmojiData, emojiIndex } from 'emoji-mart'
 import { Map } from 'immutable'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

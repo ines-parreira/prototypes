@@ -1,4 +1,4 @@
-import { Tooltip, TooltipProps } from '@gorgias/merchant-ui-kit'
+import { Tooltip, TooltipProps } from '@gorgias/axiom'
 
 type Props = {
     id: string

@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

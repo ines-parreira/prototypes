@@ -3,7 +3,7 @@ import React, { useMemo, useRef } from 'react'
 import classNames from 'classnames'
 import _omit from 'lodash/omit'
 
-import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

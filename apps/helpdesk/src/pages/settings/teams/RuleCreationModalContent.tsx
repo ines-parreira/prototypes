@@ -4,7 +4,7 @@ import { useAsyncFn, usePrevious, useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

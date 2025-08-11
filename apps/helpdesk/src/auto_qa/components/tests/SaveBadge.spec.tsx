@@ -4,9 +4,9 @@ import { render } from '@testing-library/react'
 
 import SaveBadge from '../SaveBadge'
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         LoadingSpinner: () => <div>Spinner</div>,
     } as Record<string, unknown>
 })

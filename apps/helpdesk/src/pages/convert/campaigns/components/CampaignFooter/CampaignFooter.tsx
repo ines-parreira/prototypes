@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useDismissFlag, useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

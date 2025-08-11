@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'

@@ -4,7 +4,7 @@ import { useId } from '@repo/hooks'
 import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
 
-import { Label, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'

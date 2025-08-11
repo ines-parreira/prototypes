@@ -5,7 +5,7 @@ import { Map } from 'immutable'
 import { Route, Switch, useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { useGetCampaign } from 'models/convert/campaign/queries'
 import { CampaignUpdatePayload } from 'models/convert/campaign/types'

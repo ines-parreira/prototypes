@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'

@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import {
     CreateVoiceQueue,
     useCreateVoiceQueues,
 } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'
 import history from 'pages/history'

@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Badge, LoadingSpinner, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Badge, LoadingSpinner, Skeleton } from '@gorgias/axiom'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import error from 'assets/img/icons/error.svg'

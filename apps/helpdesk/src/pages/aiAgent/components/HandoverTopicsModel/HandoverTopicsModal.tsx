@@ -2,7 +2,7 @@ import React from 'react'
 
 import { List } from 'immutable'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import {
     EXCLUDED_TOPIC_MAX_LENGTH,

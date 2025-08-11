@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import { produce } from 'immer'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

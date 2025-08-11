@@ -11,7 +11,7 @@ import React, {
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import {
     extractVariablesFromText,

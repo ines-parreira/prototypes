@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { EmailIntegration } from 'models/integration/types'

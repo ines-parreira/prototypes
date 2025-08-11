@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react'
 
-import { Label, TextField } from '@gorgias/merchant-ui-kit'
+import { Label, TextField } from '@gorgias/axiom'
 
 import { states } from 'fixtures/states'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

@@ -1,6 +1,6 @@
 import { MouseEvent, useEffect, useState } from 'react'
 
-import { Chip } from '@gorgias/merchant-ui-kit'
+import { Chip } from '@gorgias/axiom'
 
 import { QuickFilterType } from '../../types/QuickFilter'
 

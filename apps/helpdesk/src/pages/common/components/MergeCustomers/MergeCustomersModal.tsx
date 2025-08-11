@@ -6,7 +6,7 @@ import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 import { Form } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

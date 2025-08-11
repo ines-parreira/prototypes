@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { Redirect } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { LocaleCode } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'

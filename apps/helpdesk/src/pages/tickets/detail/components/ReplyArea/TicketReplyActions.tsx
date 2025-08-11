@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { Collapse } from 'reactstrap'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import { ActionTemplateExecution } from 'config'
 import useAppSelector from 'hooks/useAppSelector'

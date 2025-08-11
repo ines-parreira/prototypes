@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

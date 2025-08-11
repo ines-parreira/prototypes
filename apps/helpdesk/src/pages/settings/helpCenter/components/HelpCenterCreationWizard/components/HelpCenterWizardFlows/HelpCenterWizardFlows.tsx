@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import WorkflowsFeatureList, {

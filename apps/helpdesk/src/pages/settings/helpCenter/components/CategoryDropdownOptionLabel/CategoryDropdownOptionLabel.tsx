@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Category } from 'models/helpCenter/types'

@@ -13,7 +13,7 @@ import {
 } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

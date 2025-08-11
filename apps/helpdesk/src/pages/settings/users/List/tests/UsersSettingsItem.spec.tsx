@@ -4,8 +4,8 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
+import { Badge } from '@gorgias/axiom'
 import { User } from '@gorgias/helpdesk-types'
-import { Badge } from '@gorgias/merchant-ui-kit'
 
 import {
     AvailabilityStatusChannel,
@@ -26,7 +26,7 @@ jest.mock('react-router-dom', () => ({
     Link: jest.fn(({ children }) => <div data-testid="link">{children}</div>),
 }))
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Badge: jest.fn(({ children, type }) => (
         <div data-testid={`badge-${type}`}>{children}</div>
     )),

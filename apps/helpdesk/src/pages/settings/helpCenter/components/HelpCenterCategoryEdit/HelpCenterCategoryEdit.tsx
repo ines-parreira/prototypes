@@ -12,7 +12,7 @@ import {
     Label,
 } from 'reactstrap'
 
-import { Button, IconButton } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

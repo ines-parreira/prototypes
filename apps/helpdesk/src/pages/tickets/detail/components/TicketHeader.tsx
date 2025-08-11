@@ -4,8 +4,8 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import moment, { Moment } from 'moment-timezone'
 
+import { Tooltip } from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'

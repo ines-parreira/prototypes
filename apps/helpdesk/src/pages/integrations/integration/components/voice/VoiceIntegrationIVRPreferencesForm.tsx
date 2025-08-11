@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
+import { CheckBoxField } from '@gorgias/axiom'
 import { PhoneIntegration } from '@gorgias/helpdesk-types'
-import { CheckBoxField } from '@gorgias/merchant-ui-kit'
 
 import { FormField, FormSubmitButton } from 'core/forms'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

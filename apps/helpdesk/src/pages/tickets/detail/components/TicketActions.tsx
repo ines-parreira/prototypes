@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

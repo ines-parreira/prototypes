@@ -3,7 +3,7 @@ import React, { useContext, useMemo, useState } from 'react'
 import { useId } from '@repo/hooks'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useSaveTagsInTicketDraft from 'hooks/useSaveTagsInTicketDraft'

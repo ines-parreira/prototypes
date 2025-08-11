@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 
 import TicketSkeleton from '../TicketSkeleton'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div>skeleton</div>,
 }))
 

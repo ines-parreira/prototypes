@@ -7,7 +7,7 @@ import {
     IconButton,
     LoadingSpinner,
     Skeleton,
-} from '@gorgias/merchant-ui-kit'
+} from '@gorgias/axiom'
 
 import css from './RecommendationRuleCard.less'
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Label, TextField } from '@gorgias/merchant-ui-kit'
+import { Label, TextField } from '@gorgias/axiom'
 
 import { TimeFrameSelector } from './TimeFrameSelector'
 

@@ -18,7 +18,7 @@ import {
     Form as ReactStrapForm,
 } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'

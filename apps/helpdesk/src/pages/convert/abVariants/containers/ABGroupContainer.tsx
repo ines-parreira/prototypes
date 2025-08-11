@@ -4,7 +4,7 @@ import { useDismissFlag } from '@repo/hooks'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import Button from 'pages/common/components/button/Button'

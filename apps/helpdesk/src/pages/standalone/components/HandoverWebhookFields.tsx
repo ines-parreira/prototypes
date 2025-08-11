@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 
 import { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
-import { Banner, Label } from '@gorgias/merchant-ui-kit'
+import { Banner, Label } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import { SelectInputBoxContextState } from 'pages/common/forms/input/SelectInputBox'

@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react'
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/TruncateCellContent.less'
 

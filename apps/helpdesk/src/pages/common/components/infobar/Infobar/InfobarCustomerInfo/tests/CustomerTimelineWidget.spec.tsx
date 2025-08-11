@@ -2,8 +2,8 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-types'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
@@ -19,8 +19,8 @@ import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
 jest.mock('pages/history', () => ({
     replace: jest.fn(),
 }))
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual('@gorgias/merchant-ui-kit'),
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Button: jest.fn(({ onClick, children }) => (
         <button onClick={onClick}>{children}</button>
     )),

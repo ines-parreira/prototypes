@@ -18,7 +18,7 @@ import _min from 'lodash/min'
 import _trim from 'lodash/trim'
 import { findDOMNode } from 'react-dom'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { ReceiverValue } from 'state/ticket/utils'
 

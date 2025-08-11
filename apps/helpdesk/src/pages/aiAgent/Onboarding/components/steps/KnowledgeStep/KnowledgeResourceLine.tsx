@@ -1,4 +1,4 @@
-import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Badge, LoadingSpinner } from '@gorgias/axiom'
 
 import { KnowledgeSourceType } from '../types'
 import ChatIcon from './icons/ChatIcon'

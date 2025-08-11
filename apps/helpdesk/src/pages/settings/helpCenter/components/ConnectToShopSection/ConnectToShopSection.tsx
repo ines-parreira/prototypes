@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import store from 'assets/img/icons/store.svg'
 import { useTheme } from 'core/theme'

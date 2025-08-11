@@ -1,6 +1,6 @@
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import {
     useCreateTrackstarLink,

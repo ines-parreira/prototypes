@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import { Prompt, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

@@ -11,9 +11,9 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import { Doughnut } from 'react-chartjs-2'
 
+import { Skeleton } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
 import typography from '@gorgias/design-tokens/tokens/typography'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTheme } from 'core/theme'
 import css from 'domains/reporting/pages/common/components/charts/Chart.less'

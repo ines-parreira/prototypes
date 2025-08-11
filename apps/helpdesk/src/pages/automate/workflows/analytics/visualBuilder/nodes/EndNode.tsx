@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import classNames from 'classnames'
 import { Handle, NodeProps, Position, useNodeId } from 'reactflow'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import {

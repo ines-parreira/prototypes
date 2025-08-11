@@ -21,7 +21,7 @@ const dummyData = [
     },
 ]
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div>Skeleton</div>,
 }))
 

@@ -1,4 +1,4 @@
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import analyticsColors from 'assets/css/new/stats/modern.json'
 import { useSatisfiedOrBreachedTicketsTimeSeries } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedTicketsTimeSeries'

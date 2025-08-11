@@ -5,7 +5,7 @@ import copy from 'copy-to-clipboard'
 import { Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Badge, ColorType, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

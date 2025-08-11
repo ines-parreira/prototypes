@@ -9,7 +9,7 @@ import UserDropdownItem from '../UserDropdownItem'
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: ({ children }: { children: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),

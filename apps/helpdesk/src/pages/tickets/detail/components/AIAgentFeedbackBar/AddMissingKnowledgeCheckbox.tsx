@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { CheckBoxField } from '@gorgias/merchant-ui-kit'
+import { CheckBoxField } from '@gorgias/axiom'
 
 import css from './AddMissingKnowledgeCheckbox.less'
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Badge, IconButton } from '@gorgias/merchant-ui-kit'
+import { Badge, IconButton } from '@gorgias/axiom'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'

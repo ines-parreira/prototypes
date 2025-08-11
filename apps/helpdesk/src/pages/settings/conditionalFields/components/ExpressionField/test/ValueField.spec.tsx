@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/merchant-ui-kit'
+import { SelectField } from '@gorgias/axiom'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { CustomTypeDefinitionNumber } from 'custom-fields/types'
@@ -21,10 +21,10 @@ import { ValueField } from '../ValueField'
 
 jest.mock('custom-fields/components/MultiLevelSelect')
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             SelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>,
 )

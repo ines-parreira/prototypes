@@ -1,6 +1,6 @@
 import React, { memo, useMemo, useState } from 'react'
 
-import { Avatar, Button, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Avatar, Button, Tooltip } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 import Modal from 'pages/common/components/modal/Modal'

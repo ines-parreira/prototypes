@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import _throttle from 'lodash/throttle'
 import { useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'

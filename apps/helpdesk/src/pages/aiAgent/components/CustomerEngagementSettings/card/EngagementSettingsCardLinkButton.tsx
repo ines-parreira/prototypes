@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import css from './EngagementSettingsCard.less'
 

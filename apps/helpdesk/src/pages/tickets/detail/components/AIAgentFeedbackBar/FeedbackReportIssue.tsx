@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react'
 
-import { Badge, BadgeIcon, Label } from '@gorgias/merchant-ui-kit'
+import { Badge, BadgeIcon, Label } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'

@@ -1,4 +1,4 @@
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { DRILL_DOWN_PER_PAGE } from 'domains/reporting/hooks/useDrillDownData'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

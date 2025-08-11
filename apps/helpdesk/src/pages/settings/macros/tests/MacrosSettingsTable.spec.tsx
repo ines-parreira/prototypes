@@ -15,9 +15,9 @@ import { MacroSortableProperties } from 'models/macro/types'
 
 import { MacrosSettingsTable } from '../MacrosSettingsTable'
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         Tooltip: () => <div>Tooltip</div>,
     } as Record<string, unknown>
 })

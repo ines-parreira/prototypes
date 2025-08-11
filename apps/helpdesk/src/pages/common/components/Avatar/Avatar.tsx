@@ -2,7 +2,7 @@ import React, { CSSProperties, useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { getAvatar, getAvatarFromCache, getInitials } from './utils'
 
@@ -27,7 +27,7 @@ type Props = {
 
 /**
  * @deprecated This component is deprecated and will be removed in future versions.
- * Please use `<Avatar />` from @gorgias/merchant-ui-kit instead.
+ * Please use `<Avatar />` from @gorgias/axiom instead.
  * @date 2025-04-08
  * @type ui-kit-migration
  */

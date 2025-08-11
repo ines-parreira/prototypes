@@ -3,8 +3,8 @@ import { forwardRef, useImperativeHandle, useRef } from 'react'
 import cn from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
+import { Badge, ColorType, Tooltip } from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
-import { Badge, ColorType, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './PriorityLabel.less'
 

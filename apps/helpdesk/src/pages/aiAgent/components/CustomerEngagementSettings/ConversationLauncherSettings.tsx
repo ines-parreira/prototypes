@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import { Button, CheckBoxField, Label } from '@gorgias/merchant-ui-kit'
+import { Button, CheckBoxField, Label } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTimeout } from '@repo/hooks'
 import cn from 'classnames'
 
-import { Badge, LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, LoadingSpinner, Tooltip } from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'

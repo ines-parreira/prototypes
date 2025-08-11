@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

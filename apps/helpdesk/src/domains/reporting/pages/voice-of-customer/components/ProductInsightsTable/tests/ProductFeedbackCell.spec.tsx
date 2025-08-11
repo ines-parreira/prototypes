@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTopIntentPerProduct } from 'domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct'
@@ -17,7 +17,7 @@ const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct')
 const useTopIntentPerProductMock = assumeMock(useTopIntentPerProduct)
 
-jest.mock('@gorgias/merchant-ui-kit')
+jest.mock('@gorgias/axiom')
 const SkeletonMock = assumeMock(Skeleton)
 
 const renderWithTable = (ui: ReactNode) => {

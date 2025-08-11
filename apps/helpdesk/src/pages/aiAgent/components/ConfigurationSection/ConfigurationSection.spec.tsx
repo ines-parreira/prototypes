@@ -7,7 +7,7 @@ import { ConfigurationSection } from './ConfigurationSection'
 // Mock CSS module
 jest.mock('./ConfigurationSection.less', () => ({}))
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     __esModule: true,
     Badge: ({
         children,

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div data-testid="skeleton" />,
 }))
 

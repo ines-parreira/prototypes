@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { Badge, IconButton, Label, Tooltip } from '@gorgias/axiom'
 import { BusinessHoursList } from '@gorgias/helpdesk-types'
-import { Badge, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import SourceIcon from 'pages/common/components/SourceIcon'

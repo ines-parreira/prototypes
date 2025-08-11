@@ -53,7 +53,7 @@ jest.mock(
     () => 'div',
 )
 jest.mock('pages/common/forms/input/IconInput', () => 'span')
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: 'div',
 }))
 

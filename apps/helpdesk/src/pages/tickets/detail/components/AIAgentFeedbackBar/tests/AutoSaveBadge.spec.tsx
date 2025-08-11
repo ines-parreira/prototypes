@@ -7,9 +7,9 @@ import AutoSaveBadge from '../AutoSaveBadge'
 
 jest.useFakeTimers()
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         LoadingSpinner: () => <div>Spinner</div>,
         Tooltip: () => <div>Tooltip</div>,
     }

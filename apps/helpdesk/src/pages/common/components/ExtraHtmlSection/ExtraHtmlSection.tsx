@@ -1,4 +1,4 @@
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import { ExtraHTMLDto } from 'models/helpCenter/types'
 

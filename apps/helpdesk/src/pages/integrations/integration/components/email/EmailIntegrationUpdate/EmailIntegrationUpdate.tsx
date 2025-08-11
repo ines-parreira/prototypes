@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react'
 import { Map } from 'immutable'
 import { Col, Container } from 'reactstrap'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

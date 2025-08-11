@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import classNames from 'classnames'
 
-import { Badge, Box, Button, Separator } from '@gorgias/merchant-ui-kit'
+import { Badge, Box, Button, Separator } from '@gorgias/axiom'
 
 import {
     ModalBodyWrapper,

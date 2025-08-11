@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button, Separator } from '@gorgias/merchant-ui-kit'
+import { Button, Separator } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegrationDisplayName } from 'state/integrations/helpers'

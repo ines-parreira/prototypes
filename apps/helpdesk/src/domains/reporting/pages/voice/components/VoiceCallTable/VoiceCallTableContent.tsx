@@ -3,7 +3,7 @@ import React, { UIEventHandler, useMemo, useState } from 'react'
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import {

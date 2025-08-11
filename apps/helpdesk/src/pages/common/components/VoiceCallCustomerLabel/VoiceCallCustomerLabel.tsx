@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import { isEmpty } from 'lodash'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import { useCustomerDetails } from 'pages/tickets/detail/components/TicketVoiceCall/hooks'

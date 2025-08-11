@@ -1,6 +1,6 @@
 import { useWidthBasedOnScreen } from '@repo/hooks'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { useTagsDistribution } from 'domains/reporting/hooks/support-performance/useTagsDistribution'
 import {

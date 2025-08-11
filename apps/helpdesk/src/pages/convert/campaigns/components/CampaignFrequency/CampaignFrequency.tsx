@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import MaximumCampaignDisplayed from 'pages/convert/campaigns/components/MaximumCampaignDisplayed'
 import TimeBetweenCampaigns from 'pages/convert/campaigns/components/TimeBetweenCampaigns'

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { isAxiosError } from 'axios'
 import { Redirect } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'

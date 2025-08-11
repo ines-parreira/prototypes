@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { CheckBoxField, Label } from '@gorgias/merchant-ui-kit'
+import { CheckBoxField, Label } from '@gorgias/axiom'
 
 import {
     INITIAL_FORM_VALUES,

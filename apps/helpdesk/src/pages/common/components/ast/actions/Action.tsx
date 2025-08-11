@@ -11,7 +11,7 @@ import { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Card, CardBody } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import Errors from 'pages/common/components/ast/Errors'
 import { computeLeftPadding } from 'pages/common/components/ast/utils'

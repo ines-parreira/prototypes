@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { CampaignCreatePayload } from 'models/convert/campaign/types'

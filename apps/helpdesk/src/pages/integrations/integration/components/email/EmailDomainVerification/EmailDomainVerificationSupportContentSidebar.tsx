@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { SelectField } from '@gorgias/merchant-ui-kit'
+import { SelectField } from '@gorgias/axiom'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'

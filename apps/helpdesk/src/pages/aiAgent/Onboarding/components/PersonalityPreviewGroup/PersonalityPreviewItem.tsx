@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
 

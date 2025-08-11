@@ -12,8 +12,8 @@ import VoiceQueueList from '../VoiceQueueList'
 
 jest.mock('pages/history')
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual('@gorgias/merchant-ui-kit'),
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <div>Skeleton</div>,
 }))
 

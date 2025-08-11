@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import cn from 'classnames'
 
+import { Avatar } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
-import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { formatNumber } from 'domains/reporting/pages/common/utils'
 import css from 'domains/reporting/pages/convert/components/CampaignTableStats/CampaignTableStats.less'

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 import Button from 'pages/common/components/button/Button'

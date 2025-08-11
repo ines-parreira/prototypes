@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { Components } from 'react-virtuoso'
 
+import { CheckBoxField, Tooltip } from '@gorgias/axiom'
 import { TicketTranslationCompact } from '@gorgias/helpdesk-types'
-import { CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

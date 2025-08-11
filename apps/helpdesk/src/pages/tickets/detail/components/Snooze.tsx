@@ -3,7 +3,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import cn from 'classnames'
 import { Moment } from 'moment'
 
-import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

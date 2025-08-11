@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useOrderBy from 'hooks/useOrderBy'

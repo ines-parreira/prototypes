@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/PerformanceTip.less'
 import { sanitizeHtmlDefault } from 'utils/html'

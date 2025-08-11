@@ -7,7 +7,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'

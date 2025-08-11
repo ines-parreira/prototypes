@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import css from './MigrationQuickSummary.less'
 

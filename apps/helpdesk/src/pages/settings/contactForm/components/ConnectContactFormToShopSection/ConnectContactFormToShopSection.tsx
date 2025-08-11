@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'

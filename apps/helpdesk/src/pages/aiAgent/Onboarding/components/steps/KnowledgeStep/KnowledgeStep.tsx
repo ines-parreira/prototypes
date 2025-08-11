@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { storeConfigurationKeys } from 'models/aiAgent/queries'

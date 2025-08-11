@@ -7,7 +7,7 @@ import { useTicket } from '../../hooks/useTicket'
 import { TicketDetail } from '../TicketDetail'
 import { TicketHeader } from '../TicketHeader'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     LoadingSpinner: () => <div>LoadingSpinner</div>,
 }))
 

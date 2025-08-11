@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@repo/hooks'
 import { useParams } from 'react-router'
 
-import { Banner, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Banner, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

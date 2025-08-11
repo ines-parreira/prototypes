@@ -6,7 +6,7 @@ import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { Selector } from 'reselect'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

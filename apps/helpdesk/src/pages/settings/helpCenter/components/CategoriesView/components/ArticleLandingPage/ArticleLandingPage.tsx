@@ -4,7 +4,7 @@ import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import { Container } from 'reactstrap'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'

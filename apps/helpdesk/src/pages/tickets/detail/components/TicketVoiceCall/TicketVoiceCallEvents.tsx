@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 
+import { Skeleton } from '@gorgias/axiom'
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useListVoiceCallEvents } from 'models/voiceCall/queries'

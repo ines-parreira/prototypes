@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import { Tooltip } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import {
     TicketChannel,

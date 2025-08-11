@@ -25,9 +25,9 @@ jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries',
 )
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         Skeleton: () => <div data-testid="skeleton" />,
     } as Record<string, unknown>
 })

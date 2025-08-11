@@ -7,7 +7,7 @@ import _uniqueId from 'lodash/uniqueId'
 import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
 import { InputProps } from 'reactstrap/lib/Input'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from 'pages/common/forms/DEPRECATED_InputField.less'
 import Errors from 'pages/common/forms/Errors'

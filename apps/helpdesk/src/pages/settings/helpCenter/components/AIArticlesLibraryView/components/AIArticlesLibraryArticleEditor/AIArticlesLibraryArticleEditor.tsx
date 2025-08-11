@@ -7,7 +7,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AILibraryArticleItem, LocaleCode } from 'models/helpCenter/types'

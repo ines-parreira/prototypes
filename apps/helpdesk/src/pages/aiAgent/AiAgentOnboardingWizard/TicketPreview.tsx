@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { Avatar, Button, Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Avatar, Button, Skeleton, Tooltip } from '@gorgias/axiom'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import {

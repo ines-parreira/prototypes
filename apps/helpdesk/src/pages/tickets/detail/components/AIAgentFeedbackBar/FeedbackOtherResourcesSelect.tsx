@@ -6,8 +6,8 @@ import React, {
     useState,
 } from 'react'
 
+import { Badge, BadgeIcon, Label, Tooltip } from '@gorgias/axiom'
 import { Tag } from '@gorgias/helpdesk-types'
-import { Badge, BadgeIcon, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'

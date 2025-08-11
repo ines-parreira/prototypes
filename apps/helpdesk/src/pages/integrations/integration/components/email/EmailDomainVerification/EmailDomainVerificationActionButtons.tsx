@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { OutlookIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

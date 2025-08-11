@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import _isEqual from 'lodash/isEqual'
 import _omit from 'lodash/omit'
 
-import { Button, IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton, Tooltip } from '@gorgias/axiom'
 
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'

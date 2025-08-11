@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
+import { Label } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-client'
-import { Label } from '@gorgias/merchant-ui-kit'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 

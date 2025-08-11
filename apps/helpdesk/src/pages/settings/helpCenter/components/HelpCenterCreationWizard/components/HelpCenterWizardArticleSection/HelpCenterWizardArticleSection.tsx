@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Skeleton, Tooltip } from '@gorgias/axiom'
 
 import {
     ArticleTemplateType,

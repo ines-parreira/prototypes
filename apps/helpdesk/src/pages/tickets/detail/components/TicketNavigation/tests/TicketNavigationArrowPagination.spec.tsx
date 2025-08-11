@@ -3,7 +3,7 @@ import React, { ComponentProps } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -22,9 +22,9 @@ jest.mock('core/flags', () => ({
 }))
 const mockUseFlag = useFlag as jest.Mock
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         Tooltip: ({ children }: ComponentProps<typeof Tooltip>) => {
             return <div aria-label="tooltip mock">{children}</div>
         },

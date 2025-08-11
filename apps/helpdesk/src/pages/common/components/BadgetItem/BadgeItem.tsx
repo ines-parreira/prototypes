@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { Badge } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from './BadgeItem.less'
 

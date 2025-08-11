@@ -2,7 +2,7 @@ import React, { Dispatch } from 'react'
 
 import { Table } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import {
     BigCommerceAvailablePaymentOptionsData,

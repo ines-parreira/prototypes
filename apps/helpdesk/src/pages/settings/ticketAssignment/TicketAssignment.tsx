@@ -5,7 +5,7 @@ import { List } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import { Col, Row } from 'reactstrap'
 
-import { Button, CheckBoxField, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, CheckBoxField, Label, Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'

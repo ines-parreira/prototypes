@@ -1,4 +1,4 @@
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { KpiIcon } from 'domains/reporting/pages/common/icons/KpiIcon'
 import css from 'domains/reporting/pages/dashboards/DashboardsModal/ChartIcon.less'

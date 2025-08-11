@@ -55,12 +55,12 @@ import { RootState, StoreDispatch } from 'state/types'
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
+        }) as typeof import('@gorgias/axiom'),
 )
 jest.mock('pages/common/components/Paginations')
 const numberedPaginationMock = assumeMock(NumberedPagination)

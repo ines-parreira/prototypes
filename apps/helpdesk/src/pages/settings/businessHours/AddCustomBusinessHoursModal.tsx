@@ -1,9 +1,9 @@
+import { Button } from '@gorgias/axiom'
 import {
     BusinessHoursCreate,
     queryKeys,
     useCreateBusinessHours,
 } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { appQueryClient } from 'api/queryClient'
 import { FormSubmitButton } from 'core/forms'

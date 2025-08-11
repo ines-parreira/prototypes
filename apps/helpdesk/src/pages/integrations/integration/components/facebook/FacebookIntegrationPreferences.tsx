@@ -8,7 +8,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Form } from 'reactstrap'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,

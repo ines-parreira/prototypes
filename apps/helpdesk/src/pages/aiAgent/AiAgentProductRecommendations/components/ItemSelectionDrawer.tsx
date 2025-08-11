@@ -7,7 +7,7 @@ import {
     CheckBoxField,
     IconButton,
     LoadingSpinner,
-} from '@gorgias/merchant-ui-kit'
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { Drawer } from 'pages/common/components/Drawer'

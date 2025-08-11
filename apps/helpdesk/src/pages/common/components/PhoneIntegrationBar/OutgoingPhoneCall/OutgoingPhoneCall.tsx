@@ -1,6 +1,6 @@
 import { Call } from '@twilio/voice-sdk'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { useCallStatus } from 'hooks/integrations/phone/useCallStatus'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'

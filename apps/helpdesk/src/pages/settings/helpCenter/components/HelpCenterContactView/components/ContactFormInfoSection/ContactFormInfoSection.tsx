@@ -4,7 +4,7 @@ import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'

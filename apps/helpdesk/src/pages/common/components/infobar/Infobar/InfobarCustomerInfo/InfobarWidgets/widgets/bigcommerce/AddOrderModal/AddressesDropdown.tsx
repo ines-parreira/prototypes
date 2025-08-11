@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, Tooltip } from '@gorgias/axiom'
 
 import { BigCommerceCustomerAddress } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

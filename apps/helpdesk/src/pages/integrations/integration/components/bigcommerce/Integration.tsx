@@ -3,7 +3,7 @@ import React, { FormEvent, useCallback } from 'react'
 import { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'

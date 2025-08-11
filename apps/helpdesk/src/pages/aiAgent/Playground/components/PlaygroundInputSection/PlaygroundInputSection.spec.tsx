@@ -135,7 +135,7 @@ jest.mock('pages/common/forms/input/TextInput', () => ({
     ),
 }))
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: ({ children }: any) => <>{children}</>,
 }))
 

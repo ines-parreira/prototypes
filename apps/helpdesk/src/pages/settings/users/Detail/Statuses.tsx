@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 import Button from 'pages/common/components/button/Button'

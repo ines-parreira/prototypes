@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

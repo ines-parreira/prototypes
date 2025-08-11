@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import {
     AiSalesAgentChart,

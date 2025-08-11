@@ -1,8 +1,8 @@
+import { Button } from '@gorgias/axiom'
 import {
     CreateVoiceQueue,
     useCreateVoiceQueues,
 } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'
 import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'

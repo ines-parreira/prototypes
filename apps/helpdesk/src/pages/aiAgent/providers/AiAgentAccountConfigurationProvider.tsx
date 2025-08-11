@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Redirect } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'

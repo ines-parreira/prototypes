@@ -1,8 +1,8 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
+import { Avatar } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
-import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import { useFlag } from 'core/flags'
 import * as predicates from 'models/ticket/predicates'
@@ -10,7 +10,7 @@ import { getAvatar } from 'pages/common/components/Avatar/utils'
 
 import { AVATAR_SIZE, MessageAvatar } from '../MessageAvatar'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Avatar: jest.fn(() => null),
 }))
 

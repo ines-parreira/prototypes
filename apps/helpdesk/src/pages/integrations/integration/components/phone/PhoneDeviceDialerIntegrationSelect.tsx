@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { PhoneIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'

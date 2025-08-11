@@ -5,8 +5,8 @@ import { fromJS } from 'immutable'
 import _truncate from 'lodash/truncate'
 import { Badge } from 'reactstrap'
 
+import { Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
 import { TicketMessage } from '@gorgias/helpdesk-types'
-import { Button, LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { ActionTemplate, ActionTemplateExecution } from 'config'
 import { ContentType } from 'models/api/types'

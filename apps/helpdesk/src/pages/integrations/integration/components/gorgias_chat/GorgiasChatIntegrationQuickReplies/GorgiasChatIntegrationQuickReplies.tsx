@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import {

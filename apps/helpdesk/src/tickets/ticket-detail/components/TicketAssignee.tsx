@@ -1,8 +1,8 @@
 import cn from 'classnames'
 import { Emoji } from 'emoji-mart'
 
+import { Avatar } from '@gorgias/axiom'
 import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
-import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

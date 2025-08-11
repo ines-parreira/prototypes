@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { ColorType } from '@gorgias/merchant-ui-kit'
+import { ColorType } from '@gorgias/axiom'
 
 import { AlertBannerProps } from 'AlertBanners'
 

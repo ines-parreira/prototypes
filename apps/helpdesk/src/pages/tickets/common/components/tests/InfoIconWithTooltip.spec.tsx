@@ -11,7 +11,7 @@ jest.mock(
 )
 
 // Mocking the Tooltip component
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: ({ children }: { children: ReactNode }) => (
         <div data-testid="tooltip">{children}</div>
     ),

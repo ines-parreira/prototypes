@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useInterval } from '@repo/hooks'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 

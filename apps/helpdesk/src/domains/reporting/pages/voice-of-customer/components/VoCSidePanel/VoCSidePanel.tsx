@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { TabNavigation } from '@gorgias/merchant-ui-kit'
+import { TabNavigation } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { ProductHeader } from 'domains/reporting/pages/voice-of-customer/components/ProductHeader'

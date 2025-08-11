@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import cn from 'classnames'
 
-import { Badge, CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Badge, CheckBoxField, Skeleton } from '@gorgias/axiom'
 
 import {
     AutomateEarlyAccessPlan,

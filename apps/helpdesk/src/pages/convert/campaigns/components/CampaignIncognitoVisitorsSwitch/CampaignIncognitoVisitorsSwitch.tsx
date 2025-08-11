@@ -4,7 +4,7 @@ import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
 import _intersection from 'lodash/intersection'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { CONVERT_SHOPIFY_TRIGGERS } from 'pages/convert/campaigns/constants/triggers'

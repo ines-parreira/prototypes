@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Badge, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Badge, Skeleton } from '@gorgias/axiom'
 
 import css from './EngagementSettingsCard.less'
 

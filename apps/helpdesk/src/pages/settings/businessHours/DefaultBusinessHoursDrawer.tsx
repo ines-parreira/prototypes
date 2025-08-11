@@ -2,12 +2,12 @@ import { useRef } from 'react'
 
 import { useIsMounted } from '@repo/hooks'
 
+import { Button, IconButton, Label } from '@gorgias/axiom'
 import {
     AccountSettingsItem,
     ListAccountSettings200DataItem,
 } from '@gorgias/helpdesk-types'
 import { validateUpdateAccountSettingBody } from '@gorgias/helpdesk-validators'
-import { Button, IconButton, Label } from '@gorgias/merchant-ui-kit'
 
 import { Drawer } from 'components/Drawer/Drawer'
 import { Form, FormField, FormSubmitButton, toFormErrors } from 'core/forms'

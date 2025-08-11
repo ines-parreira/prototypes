@@ -951,7 +951,7 @@ describe('TrialManageWorkflow', () => {
                 name: 'Opt Out',
             })
             // The button should be in a loading state - this means the UI shows a spinner or loading indicator
-            // Since the exact implementation depends on the Button component from merchant-ui-kit, we just check that it exists
+            // Since the exact implementation depends on the Button component from axiom, we just check that it exists
             expect(confirmOptOutButton).toBeInTheDocument()
         })
 

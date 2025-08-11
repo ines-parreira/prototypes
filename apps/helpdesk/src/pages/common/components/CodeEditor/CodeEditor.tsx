@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 

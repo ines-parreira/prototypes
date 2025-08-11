@@ -4,7 +4,7 @@ import { EditorState, Modifier } from 'draft-js'
 import ReactPlayer from 'react-player'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'

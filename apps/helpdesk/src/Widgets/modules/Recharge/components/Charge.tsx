@@ -12,7 +12,7 @@ import _groupBy from 'lodash/groupBy'
 import _lowerCase from 'lodash/lowerCase'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType } from '@gorgias/axiom'
 
 import { LineItem } from 'constants/integrations/types/shopify'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'

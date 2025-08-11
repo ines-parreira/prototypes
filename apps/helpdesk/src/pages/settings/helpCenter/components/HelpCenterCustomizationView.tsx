@@ -5,7 +5,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormGroup } from 'reactstrap'
 import isURL, { IsURLOptions } from 'validator/lib/isURL'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { Cadence, Plan, ProductType } from 'models/billing/types'
 import { getPlanPriceFormatted, getProductLabel } from 'models/billing/utils'

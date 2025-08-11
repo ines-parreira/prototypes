@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 
 import AutoQASkeleton from '../AutoQASkeleton'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div> Skeleton</div>,
 }))
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { getRGB } from 'gorgias-design-system/utils'

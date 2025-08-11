@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'

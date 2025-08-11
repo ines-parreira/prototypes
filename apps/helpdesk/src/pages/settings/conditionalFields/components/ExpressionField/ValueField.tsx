@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode } from 'react'
 
+import { SelectField } from '@gorgias/axiom'
 import { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
-import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'

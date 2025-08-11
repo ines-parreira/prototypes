@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import {
     AiAgentOnboardingWizardStep,

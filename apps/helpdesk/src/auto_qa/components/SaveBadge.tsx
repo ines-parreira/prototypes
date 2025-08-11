@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Badge, LoadingSpinner } from '@gorgias/axiom'
 
 import type { SaveState } from '../hooks/useSaveState'
 

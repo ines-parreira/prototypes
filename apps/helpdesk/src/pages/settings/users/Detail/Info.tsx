@@ -1,6 +1,6 @@
 import { useDebouncedValue } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { useInviteAgent } from 'hooks/agents/useInviteAgent'
 import Button from 'pages/common/components/button/Button'

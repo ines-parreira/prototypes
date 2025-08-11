@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'

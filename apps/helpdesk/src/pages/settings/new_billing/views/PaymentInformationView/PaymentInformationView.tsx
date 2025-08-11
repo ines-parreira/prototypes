@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AutomatePlan, Cadence, HelpdeskPlan } from 'models/billing/types'

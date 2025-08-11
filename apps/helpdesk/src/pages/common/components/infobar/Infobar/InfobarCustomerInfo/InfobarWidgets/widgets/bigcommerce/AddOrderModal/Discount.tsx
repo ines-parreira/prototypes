@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Label, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Label, LoadingSpinner } from '@gorgias/axiom'
 
 import {
     BigCommerceActionType,

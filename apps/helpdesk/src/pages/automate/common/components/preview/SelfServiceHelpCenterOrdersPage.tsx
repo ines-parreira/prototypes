@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import { HelpCenter } from 'models/helpCenter/types'

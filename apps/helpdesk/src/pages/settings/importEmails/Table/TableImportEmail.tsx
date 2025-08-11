@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'

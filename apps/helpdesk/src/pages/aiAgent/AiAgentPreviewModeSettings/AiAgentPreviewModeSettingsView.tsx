@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StoreConfiguration } from 'models/aiAgent/types'

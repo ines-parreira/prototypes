@@ -11,7 +11,7 @@ import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import actionsIcon from 'assets/img/icons/guidance-actions.svg'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'

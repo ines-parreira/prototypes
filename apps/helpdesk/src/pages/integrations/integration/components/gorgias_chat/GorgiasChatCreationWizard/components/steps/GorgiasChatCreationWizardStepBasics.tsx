@@ -5,7 +5,7 @@ import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

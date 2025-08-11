@@ -57,7 +57,7 @@ const devServer = {
                 __dirname,
                 'node_modules',
                 '@gorgias',
-                'merchant-ui-kit',
+                'axiom',
                 'dist',
                 'assets',
             ),
@@ -173,7 +173,7 @@ const config = {
             new rspack.CopyRspackPlugin({
                 patterns: [
                     {
-                        from: 'node_modules/@gorgias/merchant-ui-kit/dist/assets/icons.svg',
+                        from: 'node_modules/@gorgias/axiom/dist/assets/icons.svg',
                         to: 'icons.[contenthash].svg',
                     },
                 ],

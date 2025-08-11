@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { LoadingSpinner, ToggleField } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner, ToggleField } from '@gorgias/axiom'
 
 import { Label } from 'gorgias-design-system/Input/Label'
 import { HandoverCustomizationChatOfflineSettingsFormValues } from 'pages/aiAgent/types'

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
-import { Banner, Button } from '@gorgias/merchant-ui-kit'
+import { Banner, Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

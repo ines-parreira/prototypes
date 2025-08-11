@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 
 import RecordsTableSkeleton from '../RecordsTableSkeleton'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div> Skeleton</div>,
 }))
 

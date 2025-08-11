@@ -2,8 +2,8 @@ import React, { useCallback } from 'react'
 
 import classNames from 'classnames'
 
+import { CheckBoxField, LoadingSpinner } from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
-import { CheckBoxField, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { Form } from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'

@@ -1,8 +1,8 @@
+import { Banner, CheckBoxField, ToggleField } from '@gorgias/axiom'
 import {
     CustomRecordingType,
     UpdateAllPhoneIntegrationSettings,
 } from '@gorgias/helpdesk-types'
-import { Banner, CheckBoxField, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
 import { AlertType } from 'pages/common/components/Alert/Alert'

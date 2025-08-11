@@ -17,7 +17,7 @@ import { ContentState, EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import createSingleLinePlugin from 'draft-js-single-line-plugin'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'

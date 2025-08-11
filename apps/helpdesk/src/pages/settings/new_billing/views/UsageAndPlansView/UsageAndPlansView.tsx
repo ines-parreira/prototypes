@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'

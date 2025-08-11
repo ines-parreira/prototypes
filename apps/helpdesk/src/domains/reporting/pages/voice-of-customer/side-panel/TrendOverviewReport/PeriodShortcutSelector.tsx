@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {

@@ -1,4 +1,4 @@
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { FinancialStatus } from 'constants/integrations/types/shopify'
 

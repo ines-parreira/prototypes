@@ -2,14 +2,8 @@ import { useRef } from 'react'
 
 import { TableVirtuoso, VirtuosoHandle } from 'react-virtuoso'
 
+import { Badge, IconButton, Label, Skeleton, Tooltip } from '@gorgias/axiom'
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
-import {
-    Badge,
-    IconButton,
-    Label,
-    Skeleton,
-    Tooltip,
-} from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

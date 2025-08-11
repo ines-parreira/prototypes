@@ -1,6 +1,6 @@
 import { CountryCode } from 'libphonenumber-js'
 
-import { TextField } from '@gorgias/merchant-ui-kit'
+import { TextField } from '@gorgias/axiom'
 
 import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
 import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'

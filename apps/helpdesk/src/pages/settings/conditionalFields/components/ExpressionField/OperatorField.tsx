@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 
+import { SelectField } from '@gorgias/axiom'
 import { ExpressionOperator } from '@gorgias/helpdesk-queries'
-import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import { useFormContext } from 'core/forms'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
+import { LoadingSpinner } from '@gorgias/axiom'
 import { ListUsersParams } from '@gorgias/helpdesk-queries'
 import { User } from '@gorgias/helpdesk-types'
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'

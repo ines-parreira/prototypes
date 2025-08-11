@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import { PhoneIntegration } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'

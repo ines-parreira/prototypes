@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import { Placement } from '@floating-ui/react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'
 

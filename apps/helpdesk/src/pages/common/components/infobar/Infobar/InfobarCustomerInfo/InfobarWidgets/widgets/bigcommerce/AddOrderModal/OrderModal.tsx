@@ -10,7 +10,7 @@ import React, {
 import classnames from 'classnames'
 import { Row } from 'reactstrap'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -1,16 +1,10 @@
 import { useEffect } from 'react'
 
+import { Banner, Button, Label, TextField, ToggleField } from '@gorgias/axiom'
 import {
     PhoneRingingBehaviour,
     VoiceQueueTargetScope,
 } from '@gorgias/helpdesk-queries'
-import {
-    Banner,
-    Button,
-    Label,
-    TextField,
-    ToggleField,
-} from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'

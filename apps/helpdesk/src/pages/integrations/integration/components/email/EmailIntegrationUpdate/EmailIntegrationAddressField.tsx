@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 
-import { Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Label, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

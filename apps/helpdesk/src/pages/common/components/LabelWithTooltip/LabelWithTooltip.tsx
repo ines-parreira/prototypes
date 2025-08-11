@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 type TooltipProps = ComponentProps<typeof Tooltip>
 

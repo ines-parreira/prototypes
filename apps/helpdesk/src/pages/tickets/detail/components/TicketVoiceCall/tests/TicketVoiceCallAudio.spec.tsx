@@ -14,7 +14,7 @@ import VoiceCallAudio from '../VoiceCallAudio'
 
 jest.mock('../VoiceCallAudio', () => jest.fn(() => null))
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div> Loading...</div>,
 }))
 jest.mock(

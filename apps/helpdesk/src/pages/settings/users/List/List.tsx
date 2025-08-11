@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,4 +1,4 @@
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { useListRecordings } from 'models/voiceCall/queries'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'

@@ -1,5 +1,5 @@
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import { TooltipData } from 'domains/reporting/pages/types'

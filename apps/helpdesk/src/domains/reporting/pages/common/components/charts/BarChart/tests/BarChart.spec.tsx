@@ -15,12 +15,12 @@ import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomToolti
 import { ticketsCreatedDataItem } from 'fixtures/chart'
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
+        }) as typeof import('@gorgias/axiom'),
 )
 jest.mock('domains/reporting/pages/common/useCustomTooltip')
 const useCustomTooltipMock = assumeMock(useCustomTooltip)

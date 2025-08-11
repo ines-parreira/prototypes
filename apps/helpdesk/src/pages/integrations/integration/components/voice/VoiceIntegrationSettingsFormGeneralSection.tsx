@@ -1,11 +1,11 @@
 import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
+import { Label } from '@gorgias/axiom'
 import {
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
 } from '@gorgias/helpdesk-queries'
-import { Label } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

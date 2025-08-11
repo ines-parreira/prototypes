@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import classNames from 'classnames'
 
-import { LoadingSpinner, Skeleton } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner, Skeleton } from '@gorgias/axiom'
 
 import css from './TopQuestionCard.less'
 

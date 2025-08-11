@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import classnames from 'classnames'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/MetricCard.less'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'

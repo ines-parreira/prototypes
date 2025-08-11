@@ -12,7 +12,7 @@ import {
     Form as ReactStrapForm,
 } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

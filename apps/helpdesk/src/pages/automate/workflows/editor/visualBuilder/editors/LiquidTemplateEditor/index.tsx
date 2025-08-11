@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 
 import _uniq from 'lodash/uniq'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {

@@ -3,7 +3,7 @@ import { useMemo, useRef } from 'react'
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { Button, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { Accordion } from 'components/Accordion/Accordion'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'

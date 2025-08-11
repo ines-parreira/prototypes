@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { humanize } from 'business/format'
 import SourceIcon from 'pages/common/components/SourceIcon'

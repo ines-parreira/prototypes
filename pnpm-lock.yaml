@@ -276,8 +276,8 @@ importers:
         specifier: 0.1.14
         version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.40.1
+        version: 0.40.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -332,9 +332,6 @@ importers:
       '@gorgias/knowledge-service-validators':
         specifier: catalog:rest-api-sdk
         version: 0.2.22
-      '@gorgias/merchant-ui-kit':
-        specifier: ^0.40.0
-        version: 0.40.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/realtime':
         specifier: ^0.20.0
         version: 0.20.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -2734,8 +2731,13 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.5.0':
-    resolution: {integrity: sha512-ASnZBT8kduWD7s5xdV2Sl54yFWxAH4j/mxr912c3oG/eB2+ZiZJjIjgim9h6B7NlcnX3Luc5mqmeLWpmHZ974A==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.5.0/9539277b1da3651af8c359bc41613cb246db044c}
+  '@gorgias/axiom@0.40.1':
+    resolution: {integrity: sha512-i/iWMqW53qkez8qVGWZod1IuCrnCNlFO5A0WQBP5zM+Mwk0gaf6AMPNvzRpso1gR3ZDu1MBggUUY0yhNy8T61A==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.40.1/930464789be05452ced17fcedfc83e71986106d6}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: ^17
+      react-dom: ^17
+      reactstrap: ^8.9.0
 
   '@gorgias/branding-assets@0.2.1':
     resolution: {integrity: sha512-NxxSjkJ5xguwXqYpQwEuxoz1eEnJLMlfzRbTTk+cbQxucGyazUsterz0mdTXru2d/yd6iUnPAvZ1Q45s/mjJWg==, tarball: https://npm.pkg.github.com/download/@gorgias/branding-assets/0.2.1/78d49790593f16706d120f57cb71e8362e9080a3}
@@ -2839,14 +2841,6 @@ packages:
 
   '@gorgias/knowledge-service-validators@0.2.22':
     resolution: {integrity: sha512-PUKQInDvRd6wzKnpb307GJb+sQJoE+Rv6EYd+P8auOuEOazslFfKXPdOEFlxAMr84GqcK/PZap5qdhoR4tbEpw==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.22/38f68763ea8162f5fedd3edb0116fd72fe45e239}
-
-  '@gorgias/merchant-ui-kit@0.40.0':
-    resolution: {integrity: sha512-0m05VzbDOdAV8JFK0DYWR83Ey16yPL5UYb9lnFSANaTU7kSWsanM8lF4PcWQK8fs+n4yCdjC67wu1UnezVb/gA==, tarball: https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.40.0/a62fedeb75937d6bad80112dddd6d93b45efbf21}
-    engines: {node: '>=18'}
-    peerDependencies:
-      react: ^17
-      react-dom: ^17
-      reactstrap: ^8.9.0
 
   '@gorgias/realtime@0.20.0':
     resolution: {integrity: sha512-Dl3O7qMV1oR/vFdNLyKVsTntn7dKI/9klhCyEshX4cviVlXeOx0w4rw06CHataDhamebiOgst5pDV76kVKmmng==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.20.0/108f2dfcd9783a3b6ad1537320f7c779ff43c2fe}
@@ -13358,7 +13352,17 @@ snapshots:
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.5.0': {}
+  '@gorgias/axiom@0.40.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+    dependencies:
+      '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@gorgias/design-tokens': 0.10.6
+      classnames: 2.5.1
+      downshift: 9.0.9(react@18.2.0)
+      lodash-es: 4.17.21
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-loading-skeleton: 3.5.0(react@18.2.0)
+      reactstrap: 8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
   '@gorgias/branding-assets@0.2.1': {}
 
@@ -13579,19 +13583,6 @@ snapshots:
       ajv-formats: 3.0.1(ajv@8.17.1)
       immer: 10.1.1
       json-schema: 0.4.0
-
-  '@gorgias/merchant-ui-kit@0.40.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
-    dependencies:
-      '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@gorgias/axiom': 0.5.0
-      '@gorgias/design-tokens': 0.10.6
-      classnames: 2.5.1
-      downshift: 9.0.9(react@18.2.0)
-      lodash-es: 4.17.21
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-loading-skeleton: 3.5.0(react@18.2.0)
-      reactstrap: 8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
   '@gorgias/realtime@0.20.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:

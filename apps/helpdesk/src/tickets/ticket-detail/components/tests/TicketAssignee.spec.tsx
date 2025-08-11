@@ -2,14 +2,14 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Emoji } from 'emoji-mart'
 
+import { Avatar } from '@gorgias/axiom'
 import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
-import { Avatar } from '@gorgias/merchant-ui-kit'
 
 import { useFlag } from 'core/flags'
 
 import { TicketAssignee } from '../TicketAssignee'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Avatar: jest.fn(() => <div />),
 }))
 

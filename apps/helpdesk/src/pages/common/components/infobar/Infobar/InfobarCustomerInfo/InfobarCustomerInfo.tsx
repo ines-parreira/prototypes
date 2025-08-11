@@ -4,7 +4,7 @@ import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { Separator } from '@gorgias/merchant-ui-kit'
+import { Separator } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

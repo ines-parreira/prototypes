@@ -8,10 +8,8 @@ import { submitCustomer } from 'state/customers/actions'
 
 import CustomerNote from '../CustomerNote'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual<typeof import('@gorgias/merchant-ui-kit')>(
-        '@gorgias/merchant-ui-kit',
-    ),
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual<typeof import('@gorgias/axiom')>('@gorgias/axiom'),
     LoadingSpinner: () => <div>SpinnerMock</div>,
 }))
 

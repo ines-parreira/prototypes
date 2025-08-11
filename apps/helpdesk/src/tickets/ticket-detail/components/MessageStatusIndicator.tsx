@@ -2,8 +2,8 @@ import { memo, useState } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
+import { Tooltip } from '@gorgias/axiom'
 import { TicketMessage } from '@gorgias/helpdesk-types'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { SourceType } from 'models/ticket/types'
 import { isInternalNote } from 'tickets/common/utils'

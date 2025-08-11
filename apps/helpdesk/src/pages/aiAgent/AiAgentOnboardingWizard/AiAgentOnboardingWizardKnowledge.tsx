@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'

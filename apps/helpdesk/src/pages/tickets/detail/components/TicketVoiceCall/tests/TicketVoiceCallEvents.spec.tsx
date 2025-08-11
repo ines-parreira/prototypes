@@ -10,7 +10,7 @@ import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
 
 const useListVoiceCallEventsSpy = jest.spyOn(queries, 'useListVoiceCallEvents')
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div> Loading</div>,
 }))
 

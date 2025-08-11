@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import css from './LegacyPlanBadge.less'
 

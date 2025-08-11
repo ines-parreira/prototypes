@@ -11,7 +11,7 @@ import {
 import { fromJS, Map } from 'immutable'
 import { Bar } from 'react-chartjs-2'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/charts/Chart.less'
 import { ChartLegend } from 'domains/reporting/pages/common/components/charts/ChartLegend'

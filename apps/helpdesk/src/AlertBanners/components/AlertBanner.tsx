@@ -1,10 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 
-import {
-    Banner,
-    BannerFillStyle,
-    BannerVariant,
-} from '@gorgias/merchant-ui-kit'
+import { Banner, BannerFillStyle, BannerVariant } from '@gorgias/axiom'
 
 import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { sanitizeHtmlDefault } from 'utils/html'
@@ -26,7 +22,7 @@ export type AlertBannerProps = {
 } & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
 
 /**
- * @deprecated This component is being phased out. Please use `<Banner variant="full" />` from `@gorgias/merchant-ui-kit` instead.
+ * @deprecated This component is being phased out. Please use `<Banner variant="full" />` from `@gorgias/axiom` instead.
  * @date 2024-03-05
  * @type ui-kit-migration
  */

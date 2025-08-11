@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import SectionHeader from '../../common/components/SectionHeader/SectionHeader'
 import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'

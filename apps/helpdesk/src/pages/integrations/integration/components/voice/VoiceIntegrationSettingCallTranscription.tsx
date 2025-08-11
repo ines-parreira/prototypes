@@ -1,4 +1,4 @@
-import { Banner, ToggleField } from '@gorgias/merchant-ui-kit'
+import { Banner, ToggleField } from '@gorgias/axiom'
 
 import { FormField } from 'core/forms'
 

@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import classNames from 'classnames'
 import { Handle, NodeProps, Position } from 'reactflow'
 
-import { Badge, Label } from '@gorgias/merchant-ui-kit'
+import { Badge, Label } from '@gorgias/axiom'
 
 import {
     useVisualBuilderNodeProps,

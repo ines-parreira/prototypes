@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import GenericStoreIcon from 'assets/img/icons/generic-store.svg'
 import PageHeader from 'pages/common/components/PageHeader'

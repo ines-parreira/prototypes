@@ -3,7 +3,7 @@ import { forwardRef } from 'react'
 import classNames from 'classnames'
 import { NavLink } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {

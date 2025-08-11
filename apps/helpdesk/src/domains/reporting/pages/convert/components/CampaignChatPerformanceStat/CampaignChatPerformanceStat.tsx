@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { TooltipItem } from 'chart.js'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'

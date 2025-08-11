@@ -6,7 +6,7 @@ import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import { getConfigByName } from 'config/views'

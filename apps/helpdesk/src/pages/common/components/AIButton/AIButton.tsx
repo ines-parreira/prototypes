@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import type { ComponentProps } from 'react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import css from './AIButton.less'
 

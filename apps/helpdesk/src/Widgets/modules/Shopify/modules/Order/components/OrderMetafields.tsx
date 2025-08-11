@@ -1,6 +1,6 @@
+import { Skeleton } from '@gorgias/axiom'
 import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
 import { ShopifyMetafield } from '@gorgias/helpdesk-types'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {

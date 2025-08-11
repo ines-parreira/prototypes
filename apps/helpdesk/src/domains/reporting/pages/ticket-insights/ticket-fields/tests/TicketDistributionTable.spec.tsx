@@ -27,12 +27,12 @@ jest.mock('domains/reporting/hooks/ticket-insights/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             Tooltip: () => <div />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
+        }) as typeof import('@gorgias/axiom'),
 )
 
 describe('<TicketDistributionTable>', () => {

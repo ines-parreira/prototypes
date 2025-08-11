@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import Button, { ButtonSize } from 'pages/common/components/button/Button'

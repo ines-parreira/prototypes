@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { Link, useParams } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

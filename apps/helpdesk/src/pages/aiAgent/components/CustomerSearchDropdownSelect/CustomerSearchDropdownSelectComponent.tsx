@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 
 import classnames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { CustomerList } from 'models/aiAgentPlayground/types'
 import IconInput from 'pages/common/forms/input/IconInput'

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/BigNumberMetric.less'
 

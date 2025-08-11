@@ -7,7 +7,7 @@ import React, {
 
 import classnames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import css from './DropdownBody.less'
 

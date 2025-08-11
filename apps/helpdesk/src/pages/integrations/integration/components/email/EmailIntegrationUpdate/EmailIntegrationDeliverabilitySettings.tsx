@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import _capitalize from 'lodash/capitalize'
 import { Link } from 'react-router-dom'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import { GmailIntegration, OutlookIntegration } from 'models/integration/types'

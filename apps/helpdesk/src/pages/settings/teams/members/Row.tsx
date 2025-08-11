@@ -3,7 +3,7 @@ import React, { Component, SyntheticEvent } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { Member } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'

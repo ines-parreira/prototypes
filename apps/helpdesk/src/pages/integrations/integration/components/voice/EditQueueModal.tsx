@@ -1,9 +1,9 @@
+import { Banner, Button } from '@gorgias/axiom'
 import {
     UpdateVoiceQueue,
     useUpdateVoiceQueue,
     VoiceQueue,
 } from '@gorgias/helpdesk-queries'
-import { Banner, Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'

@@ -9,7 +9,7 @@ import React, {
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useFlag from 'core/flags/hooks/useFlag'

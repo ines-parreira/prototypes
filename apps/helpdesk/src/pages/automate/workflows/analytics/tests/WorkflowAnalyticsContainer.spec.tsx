@@ -19,7 +19,7 @@ jest.mock('common/segment', () => ({
     },
 }))
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div data-testid="skeleton">Loading...</div>,
 }))
 

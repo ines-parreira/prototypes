@@ -16,8 +16,8 @@ import { fromJS } from 'immutable'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
+import { IconButton, Tooltip } from '@gorgias/axiom'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
-import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

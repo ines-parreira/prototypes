@@ -2,13 +2,13 @@ import { useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 
+import { Button, Label, Skeleton } from '@gorgias/axiom'
 import {
     BusinessHours,
     BusinessHoursConfig,
     useGetBusinessHoursDetails,
     useListAccountSettings,
 } from '@gorgias/helpdesk-queries'
-import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'

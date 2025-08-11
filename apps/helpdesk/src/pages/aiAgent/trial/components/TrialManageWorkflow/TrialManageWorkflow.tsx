@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'

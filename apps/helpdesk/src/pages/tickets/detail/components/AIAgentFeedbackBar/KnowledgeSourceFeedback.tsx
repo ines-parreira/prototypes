@@ -2,7 +2,7 @@ import { MouseEvent } from 'react'
 
 import cn from 'classnames'
 
-import { IconButton, Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

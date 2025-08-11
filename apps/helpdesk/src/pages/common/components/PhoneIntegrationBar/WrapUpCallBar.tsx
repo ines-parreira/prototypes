@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useWrapUpTime from 'pages/common/components/PhoneIntegrationBar/useWrapUpTime'

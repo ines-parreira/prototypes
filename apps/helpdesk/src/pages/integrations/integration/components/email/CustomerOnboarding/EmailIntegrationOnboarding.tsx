@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
+import { Button } from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

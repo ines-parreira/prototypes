@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
+import { Badge } from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-types'
-import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'

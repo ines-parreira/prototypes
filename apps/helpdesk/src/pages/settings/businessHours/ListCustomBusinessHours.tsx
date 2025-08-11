@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react'
 
+import { Button, Skeleton } from '@gorgias/axiom'
 import {
     ListBusinessHoursOrderBy,
     OrderDirection,
     useListBusinessHours,
 } from '@gorgias/helpdesk-queries'
-import { Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import Navigation from 'pages/common/components/Navigation/Navigation'

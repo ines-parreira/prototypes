@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import css from './CardHeaderYotpoReviewStatistics.less'
 

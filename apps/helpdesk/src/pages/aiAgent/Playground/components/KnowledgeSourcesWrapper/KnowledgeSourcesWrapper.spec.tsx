@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
@@ -23,7 +23,7 @@ jest.mock('../../hooks/useFeedbackPolling')
 jest.mock(
     '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData',
 )
-jest.mock('@gorgias/merchant-ui-kit')
+jest.mock('@gorgias/axiom')
 
 const mockUseFeedbackPolling = jest.mocked(useFeedbackPolling)
 const mockUseEnrichFeedbackData = jest.mocked(useEnrichFeedbackData)

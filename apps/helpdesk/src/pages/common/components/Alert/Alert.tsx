@@ -7,7 +7,7 @@ import React, {
 
 import classnames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import autoAwesomeIcon from 'assets/img/icons/auto_awesome.svg'
 import closeIcon from 'assets/img/icons/close.svg'
@@ -50,7 +50,7 @@ type Props = {
 } & HTMLAttributes<HTMLDivElement>
 
 /**
- * @deprecated This component is being phased out. Please use `<Banner variant="inline" />` from `@gorgias/merchant-ui-kit` instead.
+ * @deprecated This component is being phased out. Please use `<Banner variant="inline" />` from `@gorgias/axiom` instead.
  * @date 2024-03-05
  * @type ui-kit-migration
  */

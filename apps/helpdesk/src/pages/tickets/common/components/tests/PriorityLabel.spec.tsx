@@ -4,7 +4,7 @@ import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { PriorityLabel } from '../PriorityLabel'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Badge: ({ children, className, type, ref }: any) => (
         <div
             data-testid="badge"

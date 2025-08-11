@@ -1,4 +1,4 @@
-import { Badge, ColorType, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType, Tooltip } from '@gorgias/axiom'
 
 import { EditingStateEnum } from '../../constants'
 

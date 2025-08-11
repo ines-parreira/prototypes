@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { RootNodeProvider } from '@gorgias/merchant-ui-kit'
+import { RootNodeProvider } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 
@@ -12,9 +12,9 @@ import UIKitRootNodeProvider from '../UIKitRootNodeProvider'
 jest.mock('appNode')
 const useAppNodeMock = assumeMock(useAppNode)
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         RootNodeProvider: jest.fn(() => null),
     } as Record<string, unknown>
 })

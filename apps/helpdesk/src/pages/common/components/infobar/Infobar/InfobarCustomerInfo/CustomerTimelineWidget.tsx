@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-queries'
-import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'

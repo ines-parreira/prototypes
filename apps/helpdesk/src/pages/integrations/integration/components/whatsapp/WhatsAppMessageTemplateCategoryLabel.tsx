@@ -1,4 +1,4 @@
-import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType } from '@gorgias/axiom'
 
 import { WhatsAppMessageTemplateCategory } from 'models/whatsAppMessageTemplates/types'
 

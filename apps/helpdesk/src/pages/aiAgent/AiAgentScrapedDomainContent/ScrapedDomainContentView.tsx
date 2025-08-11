@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
-import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

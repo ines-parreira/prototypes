@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import { EmailProvider } from 'models/integration/constants'
 import { EmailIntegration } from 'models/integration/types'

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { Magento2Integration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

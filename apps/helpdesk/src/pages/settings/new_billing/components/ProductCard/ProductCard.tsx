@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Plan, ProductType } from 'models/billing/types'

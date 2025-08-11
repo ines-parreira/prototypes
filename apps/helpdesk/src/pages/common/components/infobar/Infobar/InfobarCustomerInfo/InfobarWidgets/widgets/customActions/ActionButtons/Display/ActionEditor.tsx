@@ -2,7 +2,7 @@ import React, { FormEvent, useCallback } from 'react'
 
 import { get as _get } from 'lodash'
 
-import { Button, Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {

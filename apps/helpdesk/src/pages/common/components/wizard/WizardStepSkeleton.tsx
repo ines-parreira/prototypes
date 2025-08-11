@@ -2,7 +2,7 @@ import { useRef } from 'react'
 
 import { isObject } from 'lodash'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { StoreNameDropdown } from '../../../integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import { FormState } from '../infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/useCustomerSyncForm'

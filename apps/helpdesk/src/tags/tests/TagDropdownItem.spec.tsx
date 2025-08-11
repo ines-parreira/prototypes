@@ -6,7 +6,7 @@ import { tags } from 'fixtures/tag'
 
 import TagDropdownItem from '../TagDropdownItem'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: ({ children }: { children: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),

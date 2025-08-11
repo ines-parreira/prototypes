@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { IconButton } from '@gorgias/axiom'
 
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 

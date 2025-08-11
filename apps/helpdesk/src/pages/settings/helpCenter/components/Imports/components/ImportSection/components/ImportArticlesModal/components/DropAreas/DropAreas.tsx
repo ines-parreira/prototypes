@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { FetchedProvidersState } from '../../../../types'
 

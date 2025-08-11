@@ -1,7 +1,7 @@
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
 import {
@@ -13,8 +13,8 @@ import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge/Tre
 jest.mock('domains/reporting/pages/common/components/TrendBadge/TrendBadge')
 const TrendBadgeMock = assumeMock(TrendBadge)
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual('@gorgias/merchant-ui-kit'),
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Skeleton: jest.fn().mockImplementation((props) => <div {...props} />),
 }))
 

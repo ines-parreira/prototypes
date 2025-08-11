@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Badge, Banner } from '@gorgias/merchant-ui-kit'
+import { Badge, Banner } from '@gorgias/axiom'
 
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'

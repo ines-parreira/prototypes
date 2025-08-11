@@ -6,7 +6,7 @@ import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 import { Button, Form } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { getFinalCancelOrderPayload } from 'business/shopify/order'
 import { aggregateMaximumRefundableByGateway } from 'business/shopify/refund'

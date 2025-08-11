@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useRef, useState } from 'react'
 
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { IconButton } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/ActionMenu.less'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

@@ -9,7 +9,7 @@ import React, {
 import { useMouseRelease } from '@repo/hooks'
 import cn from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'

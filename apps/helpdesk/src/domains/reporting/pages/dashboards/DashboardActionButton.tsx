@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, Tooltip } from '@gorgias/axiom'
 
 import { DashboardsPageActions } from 'domains/reporting/pages/dashboards/DashboardsPageActions'
 import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'

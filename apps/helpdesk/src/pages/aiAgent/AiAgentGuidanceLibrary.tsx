@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'

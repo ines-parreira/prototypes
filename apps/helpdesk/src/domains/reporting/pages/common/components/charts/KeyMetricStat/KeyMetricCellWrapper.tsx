@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCellWrapper.less'
 import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'

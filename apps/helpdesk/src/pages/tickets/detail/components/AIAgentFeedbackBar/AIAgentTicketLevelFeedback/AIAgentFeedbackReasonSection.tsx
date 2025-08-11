@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useDebouncedCallback } from '@repo/hooks'
 
+import { Label, Tooltip } from '@gorgias/axiom'
 import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'

@@ -1,6 +1,6 @@
 import cs from 'classnames'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import shopifyLogo from 'assets/img/icons/shopifyStore.svg'
 import {

@@ -2,12 +2,8 @@ import React, { ComponentProps } from 'react'
 
 import classnames from 'classnames'
 
+import { SelectField, SelectFieldRawOption, Skeleton } from '@gorgias/axiom'
 import { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
-import {
-    SelectField,
-    SelectFieldRawOption,
-    Skeleton,
-} from '@gorgias/merchant-ui-kit'
 
 import { Form, FormField } from 'core/forms'
 import Button from 'pages/common/components/button/Button'

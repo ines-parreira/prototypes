@@ -24,8 +24,8 @@ jest.mock('react-router-dom', () => ({
 
 const mockIconButtonRender = jest.fn()
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual('@gorgias/merchant-ui-kit'),
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     IconButton: React.forwardRef<HTMLButtonElement, any>((props, ref) => {
         mockIconButtonRender(props, ref)
         return (

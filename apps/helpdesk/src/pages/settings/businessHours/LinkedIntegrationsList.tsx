@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 
 import _flatten from 'lodash/flatten'
 
-import { Box, Label } from '@gorgias/merchant-ui-kit'
+import { Box, Label } from '@gorgias/axiom'
 
 import useInfiniteListBusinessHoursIntegrations from 'hooks/businessHours/useInfiniteListBusinessHoursIntegrations'
 import { useNotify } from 'hooks/useNotify'

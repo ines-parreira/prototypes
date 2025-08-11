@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { zip } from 'lodash'
 import FroalaEditorComponentType from 'react-froala-wysiwyg'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LocaleCode } from 'models/helpCenter/types'

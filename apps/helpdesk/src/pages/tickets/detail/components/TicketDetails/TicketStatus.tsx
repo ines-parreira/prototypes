@@ -1,4 +1,4 @@
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'

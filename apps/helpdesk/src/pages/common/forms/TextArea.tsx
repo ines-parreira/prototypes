@@ -12,7 +12,7 @@ import React, {
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import Caption from 'pages/common/forms/Caption/Caption'
 

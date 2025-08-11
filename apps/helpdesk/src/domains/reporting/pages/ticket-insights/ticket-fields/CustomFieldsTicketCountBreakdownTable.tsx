@@ -3,7 +3,7 @@ import React, { UIEventHandler, useEffect, useMemo, useState } from 'react'
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountPerCustomFields } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'

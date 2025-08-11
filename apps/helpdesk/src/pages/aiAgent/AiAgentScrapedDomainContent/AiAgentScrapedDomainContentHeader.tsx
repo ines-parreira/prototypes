@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
 

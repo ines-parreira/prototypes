@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import { ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'

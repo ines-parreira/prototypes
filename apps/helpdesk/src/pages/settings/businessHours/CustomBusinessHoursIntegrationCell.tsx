@@ -1,5 +1,5 @@
+import { Label } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
-import { Label } from '@gorgias/merchant-ui-kit'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
 

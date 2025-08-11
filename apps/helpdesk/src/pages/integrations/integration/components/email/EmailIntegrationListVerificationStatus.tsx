@@ -1,5 +1,5 @@
+import { Badge } from '@gorgias/axiom'
 import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
-import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { OutlookIntegration } from 'models/integration/types'
 

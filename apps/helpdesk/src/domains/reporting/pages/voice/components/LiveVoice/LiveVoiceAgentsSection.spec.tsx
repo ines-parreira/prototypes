@@ -7,7 +7,7 @@ import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 
 import LiveVoiceAgentsSection from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div>Skeleton</div>,
 }))
 jest.mock('@gorgias/helpdesk-queries')

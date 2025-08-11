@@ -22,19 +22,19 @@ import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             Tooltip: () => <div />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
+        }) as typeof import('@gorgias/axiom'),
 )
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModalTrigger.tsx')
 const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
 }))
 

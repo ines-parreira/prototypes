@@ -52,7 +52,7 @@ jest.mock('components/Popover', () => {
     return { Popover }
 })
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: ({ children }: any) => <div data-testid="tooltip">{children}</div>,
 }))
 

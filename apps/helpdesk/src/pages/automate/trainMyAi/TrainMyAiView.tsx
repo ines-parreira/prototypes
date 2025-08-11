@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { Link, useParams } from 'react-router-dom'
 
-import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Badge, LoadingSpinner } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import {

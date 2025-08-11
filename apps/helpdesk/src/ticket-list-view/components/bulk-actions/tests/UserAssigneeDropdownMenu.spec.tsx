@@ -21,7 +21,7 @@ const mockUseListUsers = useListUsers as jest.Mock
 jest.mock('search/useSearch')
 const mockUseSearch = useSearch as jest.Mock
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     LoadingSpinner: () => 'SpinnerMock',
 }))
 jest.mock(

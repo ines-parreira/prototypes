@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ThemeProvider as UIKitThemeProvider } from '@gorgias/merchant-ui-kit'
+import { ThemeProvider as UIKitThemeProvider } from '@gorgias/axiom'
 
 import ThemeContext from './ThemeContext'
 import useThemeContext from './useThemeContext'

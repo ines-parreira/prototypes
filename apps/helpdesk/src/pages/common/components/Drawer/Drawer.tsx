@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import ReactDOM from 'react-dom'
 import { Container } from 'reactstrap'
 
-import { IconButton, ShortcutKey, Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, ShortcutKey, Tooltip } from '@gorgias/axiom'
 
 import Loader from '../Loader/Loader'
 

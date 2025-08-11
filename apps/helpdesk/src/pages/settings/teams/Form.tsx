@@ -16,8 +16,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import { Button, IconButton, LoadingSpinner } from '@gorgias/axiom'
 import { Team } from '@gorgias/helpdesk-queries'
-import { Button, IconButton, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

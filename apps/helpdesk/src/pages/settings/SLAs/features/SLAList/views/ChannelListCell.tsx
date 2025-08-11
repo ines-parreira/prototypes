@@ -1,6 +1,6 @@
 import React, { PropsWithRef, useMemo } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell, {

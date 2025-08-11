@@ -1,6 +1,6 @@
 import React, { FormEvent, useRef, useState } from 'react'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import Button from 'pages/common/components/button/Button'

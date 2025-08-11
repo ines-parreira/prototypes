@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'

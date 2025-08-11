@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { Emoji } from 'emoji-mart'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { Item } from 'components/Dropdown'
 import { Team } from 'models/team/types'

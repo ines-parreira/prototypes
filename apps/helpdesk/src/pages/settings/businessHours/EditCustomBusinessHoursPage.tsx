@@ -1,11 +1,11 @@
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { Banner, Button } from '@gorgias/axiom'
 import {
     BusinessHoursDetails,
     useGetBusinessHoursDetails,
 } from '@gorgias/helpdesk-queries'
-import { Banner, Button } from '@gorgias/merchant-ui-kit'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'

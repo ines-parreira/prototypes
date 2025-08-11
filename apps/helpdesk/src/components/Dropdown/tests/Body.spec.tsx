@@ -8,7 +8,7 @@ import Body from '../Body'
 import Context from '../Context'
 import focusOnNextItem from '../focusOnNextItem'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     LoadingSpinner: () => 'SpinnerMock',
 }))
 

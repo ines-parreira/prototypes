@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
 import PageHeader from 'pages/common/components/PageHeader'

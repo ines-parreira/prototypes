@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import Button, { ButtonSize } from 'pages/common/components/button/Button'

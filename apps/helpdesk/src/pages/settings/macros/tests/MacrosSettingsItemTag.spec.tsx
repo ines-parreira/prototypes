@@ -2,13 +2,13 @@ import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { MacrosSettingsItemTag } from '../MacrosSettingsItemTag'
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         Tooltip: ({ children }: ComponentProps<typeof Tooltip>) => (
             <div>{children}</div>
         ),

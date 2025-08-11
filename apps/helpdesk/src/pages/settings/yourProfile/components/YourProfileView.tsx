@@ -11,20 +11,14 @@ import moment from 'moment-timezone'
 import { Link } from 'react-router-dom'
 import { Form, FormGroup, FormText } from 'reactstrap'
 
+import { Avatar, Button, Label, SelectField, ToggleField } from '@gorgias/axiom'
+import type { SelectFieldOption } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import {
     UpdateUserBody,
     UserSetting,
     UserSettingType,
 } from '@gorgias/helpdesk-types'
-import {
-    Avatar,
-    Button,
-    Label,
-    SelectField,
-    ToggleField,
-} from '@gorgias/merchant-ui-kit'
-import type { SelectFieldOption } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UploadType } from 'common/types'

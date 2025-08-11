@@ -2,7 +2,7 @@ import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'

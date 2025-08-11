@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import keymap from 'config/shortcuts'
 import useShortcuts from 'hooks/useShortcuts'

@@ -4,7 +4,7 @@ import Fuse from 'fuse.js'
 import { Map } from 'immutable'
 import { Container } from 'reactstrap'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import Segmented from 'pages/common/components/Segmented'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'

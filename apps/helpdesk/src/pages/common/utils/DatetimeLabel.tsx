@@ -2,7 +2,7 @@ import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 import { UncontrolledTooltipProps } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'

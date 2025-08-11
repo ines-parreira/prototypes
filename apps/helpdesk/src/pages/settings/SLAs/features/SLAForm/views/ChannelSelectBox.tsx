@@ -7,7 +7,7 @@ import React, {
     useState,
 } from 'react'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { Channel } from 'models/channel/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

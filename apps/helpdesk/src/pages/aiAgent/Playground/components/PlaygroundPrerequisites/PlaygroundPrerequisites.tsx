@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 

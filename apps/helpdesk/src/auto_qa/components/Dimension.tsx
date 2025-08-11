@@ -2,8 +2,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
+import { Tooltip } from '@gorgias/axiom'
 import { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'
 import { logEvent, SegmentEvent } from 'common/segment'

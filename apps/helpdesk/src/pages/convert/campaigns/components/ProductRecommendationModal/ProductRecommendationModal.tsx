@@ -1,6 +1,6 @@
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import Button from 'pages/common/components/button/Button'

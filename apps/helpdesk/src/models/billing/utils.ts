@@ -1,7 +1,7 @@
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
-import { ColorType } from '@gorgias/merchant-ui-kit'
+import { ColorType } from '@gorgias/axiom'
 
 import {
     AutomateEarlyAccessPlan,

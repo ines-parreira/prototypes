@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'

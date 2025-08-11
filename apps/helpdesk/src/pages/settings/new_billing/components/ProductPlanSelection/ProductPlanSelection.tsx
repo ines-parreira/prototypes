@@ -2,8 +2,8 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
+import { Tooltip } from '@gorgias/axiom'
 import { CustomerSummary } from '@gorgias/helpdesk-types'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

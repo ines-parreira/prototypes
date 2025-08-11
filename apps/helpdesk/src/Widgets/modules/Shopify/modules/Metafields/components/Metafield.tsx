@@ -2,6 +2,7 @@ import React, { createRef, useContext } from 'react'
 
 import { isArray, map, startCase, truncate } from 'lodash'
 
+import { Tooltip } from '@gorgias/axiom'
 import {
     DimensionShopifyMetafieldData,
     MoneyShopifyMetafield,
@@ -11,7 +12,6 @@ import {
     WeightShopifyMetafieldData,
 } from '@gorgias/helpdesk-queries'
 import { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { DateAndTimeFormatting } from 'constants/datetime'

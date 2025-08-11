@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { MetricPerChannelQueryHook } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'

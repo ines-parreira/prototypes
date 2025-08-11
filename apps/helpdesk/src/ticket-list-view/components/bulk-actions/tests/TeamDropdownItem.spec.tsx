@@ -10,7 +10,7 @@ jest.mock('emoji-mart')
 const mockEmojiMart = assumeMock(Emoji)
 mockEmojiMart.mockReturnValue(<div>mockEmojiMart</div>)
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: ({ children }: { children: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),

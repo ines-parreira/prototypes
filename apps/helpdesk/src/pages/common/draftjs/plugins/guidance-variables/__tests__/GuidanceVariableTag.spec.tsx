@@ -13,7 +13,7 @@ jest.mock('../utils', () => ({
     parseGuidanceVariable: jest.fn(),
 }))
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: jest.fn(({ children, target }) => (
         <div data-testid="tooltip" data-target={target}>
             {children}

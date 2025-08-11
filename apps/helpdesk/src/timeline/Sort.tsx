@@ -6,7 +6,7 @@ import {
     IconButton,
     SelectField,
     SelectFieldTriggerProps,
-} from '@gorgias/merchant-ui-kit'
+} from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

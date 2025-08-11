@@ -7,7 +7,7 @@ import { itemCustomization } from '../Item'
 import { OrderContext } from '../Order'
 
 // Mock Badge component
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     __esModule: true,
     ColorType: {
         Warning: 'warning',

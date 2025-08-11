@@ -3,8 +3,8 @@ import React from 'react'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
+import { SelectField } from '@gorgias/axiom'
 import { ExpressionOperator } from '@gorgias/helpdesk-queries'
-import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import { useFormContext } from 'core/forms'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
@@ -16,10 +16,10 @@ import {
 import { OperatorField } from '../OperatorField'
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             SelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>,
 )

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
 import { useDeleteVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'

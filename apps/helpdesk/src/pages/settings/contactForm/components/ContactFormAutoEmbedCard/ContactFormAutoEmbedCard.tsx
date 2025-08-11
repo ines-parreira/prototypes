@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

@@ -3,12 +3,12 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/merchant-ui-kit'
+import { SelectField } from '@gorgias/axiom'
 
 import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
 import SupportContentLearnMore from '../SupportContentLearnMore'
 
-jest.mock('@gorgias/merchant-ui-kit')
+jest.mock('@gorgias/axiom')
 jest.mock('../SupportContentLearnMore')
 jest.mock('../useDomainVerification')
 

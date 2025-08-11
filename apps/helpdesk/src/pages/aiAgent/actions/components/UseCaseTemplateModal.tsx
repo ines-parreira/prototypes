@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { Button, Chip, Label, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Button, Chip, Label, Skeleton } from '@gorgias/axiom'
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm-neutral.svg'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'

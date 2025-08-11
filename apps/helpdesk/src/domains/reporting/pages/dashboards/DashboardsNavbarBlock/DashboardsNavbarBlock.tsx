@@ -9,7 +9,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { Navigation } from 'components/Navigation/Navigation'

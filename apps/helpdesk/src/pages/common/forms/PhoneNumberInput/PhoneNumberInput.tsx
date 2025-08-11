@@ -21,7 +21,7 @@ import {
 } from 'libphonenumber-js'
 import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { countries } from 'config/countries'
 import Button from 'pages/common/components/button/Button'

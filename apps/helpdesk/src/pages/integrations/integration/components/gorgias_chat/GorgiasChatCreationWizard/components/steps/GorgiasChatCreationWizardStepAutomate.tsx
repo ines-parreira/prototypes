@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
-import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

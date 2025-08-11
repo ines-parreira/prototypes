@@ -3,6 +3,7 @@ import React from 'react'
 import { useCallbackRef, useElementSize, useId } from '@repo/hooks'
 import cn from 'classnames'
 
+import { Tooltip } from '@gorgias/axiom'
 import {
     CustomField,
     ObjectType,
@@ -10,7 +11,6 @@ import {
     TicketCompactCustomFieldsAnyOf,
     useListCustomFields,
 } from '@gorgias/helpdesk-queries'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'

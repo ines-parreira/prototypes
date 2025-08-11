@@ -3,7 +3,7 @@ import React, { Component, ContextType, ReactNode } from 'react'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType } from '@gorgias/axiom'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'

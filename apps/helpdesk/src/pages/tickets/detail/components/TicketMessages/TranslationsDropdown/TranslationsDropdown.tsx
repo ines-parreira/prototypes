@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useId } from '@repo/hooks'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from './TranslationsDropdown.less'
 

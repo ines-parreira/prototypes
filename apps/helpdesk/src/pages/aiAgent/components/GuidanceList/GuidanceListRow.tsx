@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { IconButton, ToggleField } from '@gorgias/merchant-ui-kit'
+import { IconButton, ToggleField } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'

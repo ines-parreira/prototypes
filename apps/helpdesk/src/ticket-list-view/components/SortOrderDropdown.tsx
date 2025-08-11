@@ -2,8 +2,8 @@ import { useRef, useState } from 'react'
 
 import cn from 'classnames'
 
+import { Tooltip } from '@gorgias/axiom'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
+import { Button, ToggleField, Tooltip } from '@gorgias/axiom'
 import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-types'
-import { Button, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'

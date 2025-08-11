@@ -2,11 +2,8 @@ import { useContext } from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 
+import { Theme, ThemeContext as UIKitThemeContext } from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
-import {
-    Theme,
-    ThemeContext as UIKitThemeContext,
-} from '@gorgias/merchant-ui-kit'
 
 import AppThemeContext from '../ThemeContext'
 import ThemeProvider from '../ThemeProvider'

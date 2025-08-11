@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { useAutomateMetricsTrend } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'

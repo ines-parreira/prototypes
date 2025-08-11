@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 
-import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType } from '@gorgias/axiom'
 
 import { humanizeString } from 'utils'
 import { CardCustomization } from 'Widgets/modules/Template/modules/Card'

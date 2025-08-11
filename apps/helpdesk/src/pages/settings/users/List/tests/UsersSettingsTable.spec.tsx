@@ -3,9 +3,9 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
+import { LoadingSpinner } from '@gorgias/axiom'
 import { ListUsersParams } from '@gorgias/helpdesk-queries'
 import { User } from '@gorgias/helpdesk-types'
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
@@ -17,7 +17,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { UsersSettingsItem } from '../UsersSettingsItem'
 import { UsersSettingsTable } from '../UsersSettingsTable'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     LoadingSpinner: jest.fn(() => <div data-testid="loading-spinner" />),
 }))
 

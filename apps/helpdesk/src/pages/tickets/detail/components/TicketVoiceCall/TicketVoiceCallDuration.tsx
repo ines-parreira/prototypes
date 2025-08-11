@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 import { useInterval } from '@repo/hooks'
 
+import { Badge } from '@gorgias/axiom'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
-import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { VoiceCall } from 'models/voiceCall/types'
 import {

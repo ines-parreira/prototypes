@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import _some from 'lodash/some'
 import { Form } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/types'

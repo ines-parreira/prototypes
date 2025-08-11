@@ -1,10 +1,7 @@
 import React, { useMemo } from 'react'
 
+import { SelectField, type SelectFieldTriggerProps } from '@gorgias/axiom'
 import { RequirementType } from '@gorgias/helpdesk-queries'
-import {
-    SelectField,
-    type SelectFieldTriggerProps,
-} from '@gorgias/merchant-ui-kit'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {

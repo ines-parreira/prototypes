@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import _truncate from 'lodash/truncate'
 import { Link } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import {

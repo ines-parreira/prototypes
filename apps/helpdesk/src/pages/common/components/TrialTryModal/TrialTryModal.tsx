@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button, CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import Modal from 'pages/common/components/modal/Modal'

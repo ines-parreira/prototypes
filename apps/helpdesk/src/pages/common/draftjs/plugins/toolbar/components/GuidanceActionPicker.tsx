@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import actionsIconDisabled from 'assets/img/icons/guidance-actions-disabled.svg'
 import actionsIcon from 'assets/img/icons/guidance-actions.svg'

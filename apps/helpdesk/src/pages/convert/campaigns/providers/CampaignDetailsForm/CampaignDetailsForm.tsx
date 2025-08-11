@@ -8,7 +8,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 import _trim from 'lodash/trim'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'

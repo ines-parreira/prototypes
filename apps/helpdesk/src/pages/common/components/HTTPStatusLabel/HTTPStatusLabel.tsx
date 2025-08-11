@@ -1,6 +1,6 @@
 import HTTPStatus from 'httpstatus'
 
-import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType } from '@gorgias/axiom'
 
 type Props = {
     hasNoRequest?: boolean

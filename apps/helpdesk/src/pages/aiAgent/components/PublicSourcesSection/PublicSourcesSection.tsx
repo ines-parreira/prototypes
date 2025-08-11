@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'

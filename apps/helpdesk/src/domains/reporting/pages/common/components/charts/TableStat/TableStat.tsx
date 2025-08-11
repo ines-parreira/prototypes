@@ -9,7 +9,7 @@ import moment from 'moment-timezone'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Table } from 'reactstrap'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Tooltip } from '@gorgias/axiom'
 
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'

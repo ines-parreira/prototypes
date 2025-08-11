@@ -4,7 +4,7 @@ import _get from 'lodash/get'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { SharedDimension } from 'domains/reporting/pages/convert/clients/constants'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'

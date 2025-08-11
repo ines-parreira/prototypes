@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'

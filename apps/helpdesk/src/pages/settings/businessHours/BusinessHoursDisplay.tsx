@@ -1,12 +1,12 @@
 import cn from 'classnames'
 
+import { Badge } from '@gorgias/axiom'
 import { useListAccountSettings } from '@gorgias/helpdesk-queries'
 import {
     BusinessHoursConfig,
     BusinessHoursTimeframe,
     Timezone,
 } from '@gorgias/helpdesk-types'
-import { Badge } from '@gorgias/merchant-ui-kit'
 
 import BusinessHoursScheduleDisplay from './BusinessHoursScheduleDisplay'
 

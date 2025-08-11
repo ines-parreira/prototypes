@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { useCheckHelpCenterWithSubdomainExists } from 'models/helpCenter/queries'
 import {

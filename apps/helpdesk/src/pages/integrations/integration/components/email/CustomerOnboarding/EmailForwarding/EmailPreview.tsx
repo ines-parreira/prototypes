@@ -2,7 +2,7 @@ import React from 'react'
 
 import cn from 'classnames'
 
-import { Tag } from '@gorgias/merchant-ui-kit'
+import { Tag } from '@gorgias/axiom'
 
 import css from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding.less'
 

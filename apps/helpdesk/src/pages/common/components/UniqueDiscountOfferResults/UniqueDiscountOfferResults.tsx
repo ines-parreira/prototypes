@@ -13,7 +13,7 @@ import pluralize from 'pluralize'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'

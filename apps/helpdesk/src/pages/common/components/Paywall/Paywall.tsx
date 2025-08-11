@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import Lightbox from 'react-images'
 import { Col, Row } from 'reactstrap'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { PaywallConfig } from 'config/paywalls'
 import { PLAN_NAME_TO_BADGE_COLOR } from 'models/billing/utils'

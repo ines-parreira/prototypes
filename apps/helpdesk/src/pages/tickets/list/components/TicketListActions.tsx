@@ -11,8 +11,8 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
+import { Button, IconButton } from '@gorgias/axiom'
 import { JobType } from '@gorgias/helpdesk-queries'
-import { Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { Popover } from 'components/Popover'

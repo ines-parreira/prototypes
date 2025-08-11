@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
+import { Button } from '@gorgias/axiom'
 import { VoiceQueue } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 import SettingsContent from 'pages/settings/SettingsContent'

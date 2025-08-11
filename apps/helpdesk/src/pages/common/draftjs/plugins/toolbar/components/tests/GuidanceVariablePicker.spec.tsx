@@ -42,7 +42,7 @@ jest.mock('../GuidanceVariableDropdown', () => {
     )
 })
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     Tooltip: jest.fn(({ children }) => (
         <div data-testid="tooltip">{children}</div>
     )),

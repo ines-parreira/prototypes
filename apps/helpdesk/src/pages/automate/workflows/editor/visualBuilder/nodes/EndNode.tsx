@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react'
 
 import { NodeProps } from 'reactflow'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import {
     endNodeActionIconByAction,

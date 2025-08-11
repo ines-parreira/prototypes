@@ -3,7 +3,7 @@ import { ComponentProps, useState } from 'react'
 import { action } from '@storybook/addon-actions'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { OptOutModal } from './OptOutModal'
 

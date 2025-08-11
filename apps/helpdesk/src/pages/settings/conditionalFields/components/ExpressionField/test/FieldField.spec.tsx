@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/merchant-ui-kit'
+import { SelectField } from '@gorgias/axiom'
 
 import { useFormContext } from 'core/forms'
 import { SUPPORTED_UI_DATA_TYPE_VALUES } from 'custom-fields/constants'
@@ -17,10 +17,10 @@ import { EXPRESSION_OPERATORS_BY_UI_DATA_TYPE } from 'pages/settings/conditional
 import { FieldField } from '../FieldField'
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             SelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>,
 )

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import Button from 'pages/common/components/button/Button'
 

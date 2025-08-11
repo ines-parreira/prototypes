@@ -5,7 +5,7 @@ import { List } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 import { Button, Form } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import googleLogo from 'assets/img/integrations/google.svg'
 import microsoftLogo from 'assets/img/integrations/microsoft.svg'

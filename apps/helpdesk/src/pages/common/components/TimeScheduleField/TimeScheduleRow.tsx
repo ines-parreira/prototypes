@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 
 import { get } from 'lodash'
 
-import { Box, IconButton } from '@gorgias/merchant-ui-kit'
+import { Box, IconButton } from '@gorgias/axiom'
 
 import { FormField, useFormContext } from 'core/forms'
 import SelectDropdownField from 'pages/common/forms/SelectDropdownField'

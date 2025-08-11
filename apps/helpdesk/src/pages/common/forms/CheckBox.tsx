@@ -11,7 +11,7 @@ import React, {
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import Caption from './Caption/Caption'
 
@@ -97,7 +97,7 @@ function CheckBox(
 
 /**
  * @deprecated This component is deprecated and will be removed in future versions.
- * Please use `<CheckboxField />` from @gorgias/merchant-ui-kit instead.
+ * Please use `<CheckboxField />` from @gorgias/axiom instead.
  * @date 2025-04-01
  * @type ui-kit-migration
  */

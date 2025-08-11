@@ -1,4 +1,4 @@
-import { Banner, Button } from '@gorgias/merchant-ui-kit'
+import { Banner, Button } from '@gorgias/axiom'
 
 import {
     IngestionLogStatus,

@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 
+import { Skeleton } from '@gorgias/axiom'
 import {
     PhoneRingingBehaviour,
     useGetVoiceQueue,
 } from '@gorgias/helpdesk-queries'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import {
     getInboundDisplayStatus,

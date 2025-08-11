@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distributions'

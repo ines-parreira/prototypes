@@ -13,7 +13,7 @@ import { Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Badge, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import {

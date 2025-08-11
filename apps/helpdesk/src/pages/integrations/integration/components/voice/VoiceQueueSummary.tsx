@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import CollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/CollapsibleDetails'
 

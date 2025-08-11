@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { noop } from 'lodash'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

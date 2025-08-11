@@ -31,12 +31,12 @@ import { mockStore } from 'utils/testing'
 const rafControl = mockRequestAnimationFrame()
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             Tooltip: () => <div />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
+        }) as typeof import('@gorgias/axiom'),
 )
 
 jest.mock('domains/reporting/state/ui/stats/ticketInsightsSlice')

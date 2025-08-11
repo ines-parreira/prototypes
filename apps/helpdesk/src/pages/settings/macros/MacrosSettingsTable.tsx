@@ -2,8 +2,8 @@ import { ComponentProps, useCallback, useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router-dom'
 
+import { LoadingSpinner } from '@gorgias/axiom'
 import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'

@@ -1,8 +1,8 @@
+import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 import {
     IntegrationType,
     IntegrationWithBusinessHoursAndStore,
 } from '@gorgias/helpdesk-types'
-import { Button, CheckBoxField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { Icon } from 'AlertBanners/components/Icon'
 import { AlertBannerTypes } from 'AlertBanners/types'

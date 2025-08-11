@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 
-import { Badge, LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, LoadingSpinner, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,4 +1,4 @@
-import { IconButton, Label } from '@gorgias/merchant-ui-kit'
+import { IconButton, Label } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'

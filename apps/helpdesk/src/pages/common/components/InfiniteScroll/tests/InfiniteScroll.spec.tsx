@@ -2,11 +2,11 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
-import type { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import type { LoadingSpinner } from '@gorgias/axiom'
 
 import InfiniteScroll from '../InfiniteScroll'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     LoadingSpinner: ({ size }: ComponentProps<typeof LoadingSpinner>) => (
         <div>
             SpinnerMock

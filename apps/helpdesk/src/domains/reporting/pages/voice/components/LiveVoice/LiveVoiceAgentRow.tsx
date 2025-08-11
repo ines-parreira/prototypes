@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { useInterval } from '@repo/hooks'
 import classNames from 'classnames'
 
+import { Tooltip } from '@gorgias/axiom'
 import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
 import {

@@ -1,11 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/merchant-ui-kit'
+import { SelectField } from '@gorgias/axiom'
 
 import SelectDropdownField from '../SelectDropdownField'
 
-jest.mock('@gorgias/merchant-ui-kit')
+jest.mock('@gorgias/axiom')
 
 const SelectFieldMock = assumeMock(SelectField)
 SelectFieldMock.mockReturnValue(<div>Mocked SelectField</div>)

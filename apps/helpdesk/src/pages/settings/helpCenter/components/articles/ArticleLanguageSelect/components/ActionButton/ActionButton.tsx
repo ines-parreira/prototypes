@@ -1,6 +1,6 @@
 import { useId } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 

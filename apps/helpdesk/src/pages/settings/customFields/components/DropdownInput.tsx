@@ -2,8 +2,8 @@ import { memo, useCallback, useState } from 'react'
 
 import uniqueId from 'lodash/uniqueId'
 
+import { Label, Tooltip } from '@gorgias/axiom'
 import { CreateCustomField } from '@gorgias/helpdesk-types'
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     DROPDOWN_NESTING_DELIMITER,

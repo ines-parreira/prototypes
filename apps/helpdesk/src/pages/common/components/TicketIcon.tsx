@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { TicketStatus } from 'business/types/ticket'
 import type { ChannelLike } from 'models/channel/types'

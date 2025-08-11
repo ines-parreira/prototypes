@@ -3,7 +3,7 @@ import React, { Dispatch, useRef, useState } from 'react'
 import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { OrderStatusList } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'

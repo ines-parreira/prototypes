@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useHistory, useParams } from 'react-router'
 
-import { Banner, Button, ToggleField } from '@gorgias/merchant-ui-kit'
+import { Banner, Button, ToggleField } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

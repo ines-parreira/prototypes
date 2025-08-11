@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'

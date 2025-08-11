@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
-import { Button, Separator } from '@gorgias/merchant-ui-kit'
+import { Button, Separator } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'

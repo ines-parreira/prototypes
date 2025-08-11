@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import actionsIcon from 'assets/img/icons/guidance-actions.svg'
 import { GuidanceArticle } from 'pages/aiAgent/types'

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import { RootNodeProvider } from '@gorgias/merchant-ui-kit'
+import { RootNodeProvider } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 

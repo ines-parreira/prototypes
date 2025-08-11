@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

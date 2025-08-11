@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { logEvent } from 'common/segment'
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
@@ -24,9 +24,9 @@ jest.mock('utils/file')
 jest.mock('state/notifications/actions')
 jest.mock('domains/reporting/models/stat/resources')
 jest.mock('common/segment')
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         Tooltip: ({
             children,
             ...otherProps

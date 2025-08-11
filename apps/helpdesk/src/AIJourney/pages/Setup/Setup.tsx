@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { Button } from 'AIJourney/components'
 import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'

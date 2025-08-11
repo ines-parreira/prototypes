@@ -1,8 +1,8 @@
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
+import { Box, Label, Tooltip } from '@gorgias/axiom'
 import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
-import { Box, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'

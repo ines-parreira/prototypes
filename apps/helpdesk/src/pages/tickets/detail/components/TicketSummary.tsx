@@ -2,8 +2,8 @@ import React, { forwardRef, useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 
+import { Badge, Button, IconButton } from '@gorgias/axiom'
 import { TicketSummary } from '@gorgias/helpdesk-types'
-import { Badge, Button, IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'

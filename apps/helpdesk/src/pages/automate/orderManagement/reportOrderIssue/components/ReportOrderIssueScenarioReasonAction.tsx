@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH } from 'models/selfServiceConfiguration/constants'

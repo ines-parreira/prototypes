@@ -1,4 +1,4 @@
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { IconButton } from '@gorgias/axiom'
 
 import { CustomField } from 'custom-fields/types'
 import InputField from 'pages/common/forms/input/InputField'

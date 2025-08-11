@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 
 import { Link, useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import {
     UpdateVoiceQueue,
     useGetVoiceQueue,
     useUpdateVoiceQueue,
 } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'
 import Loader from 'pages/common/components/Loader/Loader'

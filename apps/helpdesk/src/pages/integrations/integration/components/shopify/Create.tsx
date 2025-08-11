@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react'
 
 import { Col, Container, Form, Row } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'

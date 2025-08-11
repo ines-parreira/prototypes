@@ -9,7 +9,7 @@ import React, {
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Label, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Label, LoadingSpinner } from '@gorgias/axiom'
 
 import Caption from './Caption/Caption'
 
@@ -33,7 +33,7 @@ type Props = {
 
 /**
  * @deprecated This component is deprecated and will be removed in future versions.
- * Please use `<ToggleField />` from @gorgias/merchant-ui-kit instead.
+ * Please use `<ToggleField />` from @gorgias/axiom instead.
  * @date 2025-03-25
  * @type ui-kit-migration
  */

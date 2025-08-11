@@ -2,7 +2,7 @@ import React, { forwardRef, HTMLProps, MouseEvent, ReactNode } from 'react'
 
 import classNames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import css from 'pages/common/components/table/cells/BodyCell.less'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'

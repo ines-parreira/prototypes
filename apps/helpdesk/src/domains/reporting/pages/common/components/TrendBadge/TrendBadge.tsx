@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { getTrendColorFromSign } from 'domains/reporting/pages/common/components/TrendBadge/helper'
 import css from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge.less'

@@ -7,7 +7,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
 
-import { LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

@@ -3,7 +3,7 @@ import React, { RefObject, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import Editor from 'draft-js-plugins-editor'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'

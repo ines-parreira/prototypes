@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { Label } from '@gorgias/axiom'
 import { RequirementType } from '@gorgias/helpdesk-queries'
-import { Label } from '@gorgias/merchant-ui-kit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { OBJECT_TYPES } from 'custom-fields/constants'

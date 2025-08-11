@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react'
 import classnames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'

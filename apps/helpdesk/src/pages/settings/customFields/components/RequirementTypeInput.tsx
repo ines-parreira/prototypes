@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { RequirementType } from 'custom-fields/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'

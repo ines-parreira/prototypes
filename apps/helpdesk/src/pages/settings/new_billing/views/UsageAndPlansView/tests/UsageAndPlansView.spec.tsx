@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import * as uiKit from '@gorgias/merchant-ui-kit'
+import * as uiKit from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -44,10 +44,10 @@ jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
 
 // Mock ui-kit as an ES module to enable spying
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
         __esModule: true,
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
     } as Record<string, unknown>
 })
 

@@ -3,7 +3,7 @@ import React, { createRef, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router-dom'
 
-import { Button, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

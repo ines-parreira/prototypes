@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { ReplaceItemNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'

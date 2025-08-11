@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import cn from 'classnames'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'

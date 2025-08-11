@@ -1,6 +1,6 @@
 import { Col, Row } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { validLocaleCode } from 'models/helpCenter/utils'
 import Caption from 'pages/common/forms/Caption/Caption'

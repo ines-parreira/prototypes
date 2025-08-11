@@ -10,7 +10,7 @@ import {
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { FILTER_VALUE_PLACEHOLDER } from './constants'
 

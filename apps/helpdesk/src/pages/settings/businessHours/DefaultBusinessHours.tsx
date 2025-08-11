@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 
+import { IconButton } from '@gorgias/axiom'
 import {
     queryKeys,
     useListAccountSettings,
     useUpdateAccountSetting,
 } from '@gorgias/helpdesk-queries'
 import { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
-import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { useAppNode } from 'appNode'
 import { Drawer } from 'components/Drawer/Drawer'

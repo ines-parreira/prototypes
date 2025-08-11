@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+import { Badge, ColorType } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'

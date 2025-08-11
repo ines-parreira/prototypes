@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { IconButton } from '@gorgias/axiom'
 
 import { Integration } from 'models/integration/types'
 

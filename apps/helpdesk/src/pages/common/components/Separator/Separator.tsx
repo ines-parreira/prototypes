@@ -10,7 +10,7 @@ interface SeparatorProps {
 
 /**
  * @deprecated This component is deprecated and will be removed in future versions.
- * Please use `<Separator />` from @gorgias/merchant-ui-kit instead.
+ * Please use `<Separator />` from @gorgias/axiom instead.
  * @date 2025-08-06
  * @type ui-kit-migration
  */

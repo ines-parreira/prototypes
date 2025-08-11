@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button, Separator } from '@gorgias/merchant-ui-kit'
+import { Button, Separator } from '@gorgias/axiom'
 
 import { StoreIntegration } from '../../../../models/integration/types'
 import Dropdown from '../dropdown/Dropdown'

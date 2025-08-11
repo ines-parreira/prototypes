@@ -12,11 +12,11 @@ import _get from 'lodash/get'
 import _pickBy from 'lodash/pickBy'
 import { connect, ConnectedProps } from 'react-redux'
 
+import { Badge } from '@gorgias/axiom'
 import {
     StoreMapping,
     useGetStoreMappingsByAccountId,
 } from '@gorgias/helpdesk-queries'
-import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { BASIC_OPERATORS, UNARY_OPERATORS } from 'config'
 import { RootState } from 'state/types'

@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo } from 'react'
 
 import { Map } from 'immutable'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'

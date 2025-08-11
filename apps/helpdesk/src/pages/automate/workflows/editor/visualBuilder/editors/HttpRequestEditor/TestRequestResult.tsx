@@ -4,7 +4,7 @@ import { JSONPath } from 'jsonpath-plus'
 import _isString from 'lodash/isString'
 import _noop from 'lodash/noop'
 
-import { Badge, Label } from '@gorgias/merchant-ui-kit'
+import { Badge, Label } from '@gorgias/axiom'
 
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'

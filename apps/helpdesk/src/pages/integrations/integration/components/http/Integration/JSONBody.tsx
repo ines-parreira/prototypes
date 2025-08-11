@@ -4,7 +4,7 @@ import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
 import { FormGroup, FormText, Label } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { HTTPForm } from 'models/integration/types'
 import Select from 'pages/common/components/ast/widget/ReactSelect'

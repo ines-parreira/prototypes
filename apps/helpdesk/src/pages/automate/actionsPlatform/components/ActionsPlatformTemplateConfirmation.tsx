@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 
-import { Banner, Button, CheckBoxField } from '@gorgias/merchant-ui-kit'
+import { Banner, Button, CheckBoxField } from '@gorgias/axiom'
 
 import {
     isReusableLLMPromptCallNodeType,

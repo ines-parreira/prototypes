@@ -2,8 +2,8 @@ import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
+import { Tooltip } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

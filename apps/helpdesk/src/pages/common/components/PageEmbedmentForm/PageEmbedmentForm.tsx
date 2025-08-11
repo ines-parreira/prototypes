@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, Tooltip } from '@gorgias/axiom'
 
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'

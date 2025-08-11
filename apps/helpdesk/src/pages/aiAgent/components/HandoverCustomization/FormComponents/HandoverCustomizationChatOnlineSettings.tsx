@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 
 import cn from 'classnames'
 
-import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { HandoverCustomizationChatOnlineSettingsFields } from 'pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOnlineSettingsFields'

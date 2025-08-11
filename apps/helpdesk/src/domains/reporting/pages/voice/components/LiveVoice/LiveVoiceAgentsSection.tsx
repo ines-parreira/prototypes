@@ -1,6 +1,6 @@
+import { Skeleton } from '@gorgias/axiom'
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 import { ListLiveCallQueueAgentsParams } from '@gorgias/helpdesk-types'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'

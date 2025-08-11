@@ -2,7 +2,7 @@ import { ComponentProps, ReactNode, useRef } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from './IconTooltip.less'
 

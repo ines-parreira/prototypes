@@ -4,7 +4,7 @@ import { useEffectOnce } from '@repo/hooks'
 import cn from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.png'
 import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.png'

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { ThemeContext } from '@gorgias/merchant-ui-kit'
+import { ThemeContext } from '@gorgias/axiom'
 
 import PhoneBarContainer from './PhoneBarContainer'
 

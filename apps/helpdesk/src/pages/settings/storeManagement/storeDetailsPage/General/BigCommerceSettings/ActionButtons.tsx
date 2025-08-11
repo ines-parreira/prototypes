@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import css from './BigCommerceSettings.less'
 

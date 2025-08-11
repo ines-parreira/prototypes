@@ -1,6 +1,6 @@
+import { Skeleton } from '@gorgias/axiom'
 import { useListShopifyCustomerMetafields } from '@gorgias/helpdesk-queries'
 import { ShopifyMetafield } from '@gorgias/helpdesk-types'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { Metafield } from 'Widgets/modules/Shopify/modules/Metafields'
 

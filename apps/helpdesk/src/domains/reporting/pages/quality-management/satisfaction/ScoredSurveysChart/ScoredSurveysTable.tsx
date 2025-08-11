@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import {
     ScoredSurveyDataKey,

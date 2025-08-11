@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
 
+import { Tooltip } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'domains/reporting/pages/common/components/charts/GaugeChart.less'
 import Legend from 'domains/reporting/pages/common/components/charts/Legend'

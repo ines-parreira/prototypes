@@ -2,7 +2,7 @@ import React, { ReactNode, useContext } from 'react'
 
 import { Map } from 'immutable'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import CopyButton from 'components/CopyButton/CopyButton'

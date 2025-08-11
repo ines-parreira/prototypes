@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { ShortcutKey, Tooltip } from '@gorgias/merchant-ui-kit'
+import { ShortcutKey, Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import {

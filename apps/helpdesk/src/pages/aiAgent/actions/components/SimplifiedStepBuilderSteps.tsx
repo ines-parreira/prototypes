@@ -3,7 +3,7 @@ import React, { Dispatch, useCallback, useMemo, useRef, useState } from 'react'
 import _isEqual from 'lodash/isEqual'
 import { Node } from 'reactflow'
 
-import { Label, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Label, Skeleton } from '@gorgias/axiom'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'

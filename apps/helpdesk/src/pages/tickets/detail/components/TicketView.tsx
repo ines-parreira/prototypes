@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
 
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { IconButton } from '@gorgias/axiom'
 
 import { Drawer } from 'components/Drawer/Drawer'
 import { FeatureFlagKey } from 'config/featureFlags'

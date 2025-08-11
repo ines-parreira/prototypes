@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import { NodeProps } from 'reactflow'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import { useStoreTrackstarContext } from 'pages/aiAgent/actions/providers/StoreTrackstarContext'

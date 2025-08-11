@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import css from './CampaignWithNoReply.less'
 

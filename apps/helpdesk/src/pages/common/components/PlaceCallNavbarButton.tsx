@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import {

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

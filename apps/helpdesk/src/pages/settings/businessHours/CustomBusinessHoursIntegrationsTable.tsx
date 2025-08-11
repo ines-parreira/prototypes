@@ -3,17 +3,11 @@ import { useMemo, useState } from 'react'
 import { useDebouncedValue } from '@repo/hooks'
 import cn from 'classnames'
 
+import { Badge, Banner, Box, CheckBoxField, Skeleton } from '@gorgias/axiom'
 import {
     ListIntegrationsForBusinessHoursOrderBy,
     useListIntegrationsForBusinessHours,
 } from '@gorgias/helpdesk-queries'
-import {
-    Badge,
-    Banner,
-    Box,
-    CheckBoxField,
-    Skeleton,
-} from '@gorgias/merchant-ui-kit'
 
 import { FormField, useFormContext } from 'core/forms'
 import { OrderDirection } from 'models/api/types'

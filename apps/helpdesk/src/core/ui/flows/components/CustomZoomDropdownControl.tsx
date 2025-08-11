@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react'
 
 import { useReactFlow, useViewport } from 'reactflow'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

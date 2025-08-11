@@ -7,7 +7,7 @@ import React, {
 
 import { fromJS, List, Map } from 'immutable'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 

@@ -7,7 +7,7 @@ import _uniqueId from 'lodash/uniqueId'
 import { connect, ConnectedProps } from 'react-redux'
 import { Form, Label, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
 import Button, { type ButtonProps } from 'pages/common/components/button/Button'

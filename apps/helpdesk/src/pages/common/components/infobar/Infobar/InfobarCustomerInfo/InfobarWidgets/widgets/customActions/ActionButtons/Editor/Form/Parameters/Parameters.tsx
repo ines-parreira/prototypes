@@ -3,7 +3,7 @@ import React, { memo, useCallback, useMemo } from 'react'
 import debounce from 'lodash/debounce'
 import { ulid } from 'ulidx'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import {
     OnChangeAction,

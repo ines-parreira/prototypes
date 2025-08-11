@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import {
     TicketChannel,
@@ -39,9 +39,9 @@ const integrationMap = fromJS(integrationJsObject)
 const mockStore = configureMockStore()
 const store = mockStore({})
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
+jest.mock('@gorgias/axiom', () => {
     return {
-        ...jest.requireActual('@gorgias/merchant-ui-kit'),
+        ...jest.requireActual('@gorgias/axiom'),
         Tooltip: () => 'TooltipMock',
         Badge: jest.fn(({ children }) => <div>{children}</div>),
     } as Record<string, unknown>

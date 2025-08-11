@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Col, Collapse, Container, Row } from 'reactstrap'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { ProductDetails } from 'models/ticket/types'
 import StarRating from 'pages/common/components/StarRating'

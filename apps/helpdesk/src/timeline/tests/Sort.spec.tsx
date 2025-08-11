@@ -14,7 +14,7 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
+jest.mock('@gorgias/axiom', () => ({
     IconButton: React.forwardRef(
         (props: any, ref: React.Ref<HTMLButtonElement>) => (
             <button {...props} ref={ref} data-testid="icon-button" />

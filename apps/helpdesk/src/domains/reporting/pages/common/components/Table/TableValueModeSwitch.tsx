@@ -1,6 +1,6 @@
 import { ComponentProps, useRef } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import * as ToggleButton from 'pages/common/components/ToggleButton'

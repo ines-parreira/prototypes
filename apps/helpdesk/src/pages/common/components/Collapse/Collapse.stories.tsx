@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import Collapse from './Collapse'
 

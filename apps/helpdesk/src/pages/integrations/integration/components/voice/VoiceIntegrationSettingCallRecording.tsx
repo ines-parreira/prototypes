@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form'
 
+import { Label, ToggleField } from '@gorgias/axiom'
 import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
-import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'
 import { RECORDING_NOTIFICATION_MAX_DURATION } from 'models/integration/constants'

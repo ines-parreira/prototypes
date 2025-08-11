@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useReactFlow } from 'reactflow'
 
-import { IconButton } from '@gorgias/merchant-ui-kit'
+import { IconButton } from '@gorgias/axiom'
 
 export function CustomFitViewControl(): React.JSX.Element {
     const { fitView } = useReactFlow()

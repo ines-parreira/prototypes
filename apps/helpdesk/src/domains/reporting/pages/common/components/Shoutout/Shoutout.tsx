@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import isNil from 'lodash/isNil'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/Shoutout/Shoutout.less'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'

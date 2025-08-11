@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import chatIcon from 'assets/img/icons/channels/chat.svg'
 import contactFormIcon from 'assets/img/icons/channels/contact-form.svg'

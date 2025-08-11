@@ -1,4 +1,4 @@
-import { Banner } from '@gorgias/merchant-ui-kit'
+import { Banner } from '@gorgias/axiom'
 
 import { usePhoneNumberCapabilities } from 'hooks/integrations/phone/usePhoneNumberCapabilities'
 import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'

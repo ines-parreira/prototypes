@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { countriesRequiringState, Country } from 'config/countries'
 import InputField from 'pages/common/forms/input/InputField'

@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 
-import { SelectField } from '@gorgias/merchant-ui-kit'
+import { SelectField } from '@gorgias/axiom'
 
 import { useFormContext } from 'core/forms'
 import {

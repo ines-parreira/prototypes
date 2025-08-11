@@ -2,8 +2,8 @@ import { ReactNode } from 'react'
 
 import cn from 'classnames'
 
+import { LoadingSpinner } from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-queries'
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

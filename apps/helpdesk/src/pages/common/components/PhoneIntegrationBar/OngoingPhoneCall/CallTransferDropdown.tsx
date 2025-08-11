@@ -3,6 +3,7 @@ import { ComponentProps, useState } from 'react'
 import { Call } from '@twilio/voice-sdk'
 import { get } from 'lodash'
 
+import { Button } from '@gorgias/axiom'
 import {
     ListUsersRelationshipsItem,
     useListUsers,
@@ -10,7 +11,6 @@ import {
     VoiceCallTransferReceiverType,
     VoiceCallTransferType,
 } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { AgentWithStatus } from 'config/types/user'

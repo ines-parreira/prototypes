@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
+import { Label } from '@gorgias/axiom'
 import { Tag, TicketTag } from '@gorgias/helpdesk-types'
-import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'

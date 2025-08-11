@@ -15,7 +15,7 @@ type Props = {
 
 /**
  * @deprecated This component is deprecated and will be removed in future versions.
- * Please use `<ShortcutKey />` from @gorgias/merchant-ui-kit instead.
+ * Please use `<ShortcutKey />` from @gorgias/axiom instead.
  * @date 2025-04-02
  * @type ui-kit-migration
  */

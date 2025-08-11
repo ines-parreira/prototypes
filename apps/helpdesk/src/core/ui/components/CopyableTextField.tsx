@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useCopyToClipboard } from '@repo/hooks'
 
-import { Button, TextField, TextFieldProps } from '@gorgias/merchant-ui-kit'
+import { Button, TextField, TextFieldProps } from '@gorgias/axiom'
 
 export type CopyableTextFieldProps = TextFieldProps & {
     onCopy?: (value: string) => void

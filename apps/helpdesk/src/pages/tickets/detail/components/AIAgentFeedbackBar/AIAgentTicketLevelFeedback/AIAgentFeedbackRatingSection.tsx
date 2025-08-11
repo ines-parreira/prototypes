@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 
 import cn from 'classnames'
 
+import { BadgeIcon, Button } from '@gorgias/axiom'
 import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
-import { BadgeIcon, Button } from '@gorgias/merchant-ui-kit'
 
 import AutoSaveBadge from '../AutoSaveBadge'
 import { AutoSaveState, FeedbackRating } from '../types'

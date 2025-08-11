@@ -7,7 +7,7 @@ import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
 import { FORM_CONTENT_TYPE } from 'config'

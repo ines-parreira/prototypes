@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Button, IconButton, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

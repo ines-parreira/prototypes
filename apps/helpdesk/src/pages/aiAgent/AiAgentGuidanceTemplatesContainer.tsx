@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { AiAgentGuidanceTemplatesView } from './AiAgentGuidanceTemplatesView'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'

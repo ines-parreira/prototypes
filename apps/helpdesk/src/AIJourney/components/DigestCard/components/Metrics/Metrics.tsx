@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'

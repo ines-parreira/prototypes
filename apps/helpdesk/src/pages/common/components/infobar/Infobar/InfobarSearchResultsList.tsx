@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { Card, CardBody, CardTitle } from 'reactstrap'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import { Customer } from 'models/customer/types'
 import { PickedCustomerWithHighlights } from 'models/search/types'

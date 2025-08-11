@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FormSubmitButton } from 'core/forms'
 import FormActions from 'core/forms/components/FormActions'

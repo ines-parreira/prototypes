@@ -8,12 +8,12 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { TagsTrendChart } from 'domains/reporting/pages/ticket-insights/tags/TagsTrendChart'
 
 jest.mock(
-    '@gorgias/merchant-ui-kit',
+    '@gorgias/axiom',
     () =>
         ({
-            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            ...jest.requireActual('@gorgias/axiom'),
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit'),
+        }) as typeof import('@gorgias/axiom'),
 )
 
 jest.mock('domains/reporting/hooks/ticket-insights/useTagsTimeSeries')

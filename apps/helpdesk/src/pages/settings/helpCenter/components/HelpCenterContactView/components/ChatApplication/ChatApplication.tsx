@@ -5,7 +5,7 @@ import { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Label } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,

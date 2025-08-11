@@ -14,7 +14,7 @@ import {
 } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
-import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { DateAndTimeFormatting } from 'constants/datetime'

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import css from './SearchResultsLoadingContent.less'
 

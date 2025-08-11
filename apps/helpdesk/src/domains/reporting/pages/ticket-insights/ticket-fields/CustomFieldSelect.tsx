@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
+import { Skeleton } from '@gorgias/axiom'
 import { ListCustomFieldsParams } from '@gorgias/helpdesk-client'
-import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'

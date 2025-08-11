@@ -5,7 +5,7 @@ import { fromJS, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import { Form, FormGroup } from 'reactstrap'
 
-import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import {

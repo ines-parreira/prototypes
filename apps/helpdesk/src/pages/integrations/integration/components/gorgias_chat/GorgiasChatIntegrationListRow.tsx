@@ -5,7 +5,7 @@ import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, NavLink } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
 import dotNeutral from 'assets/img/icons/dot-neutral.svg'

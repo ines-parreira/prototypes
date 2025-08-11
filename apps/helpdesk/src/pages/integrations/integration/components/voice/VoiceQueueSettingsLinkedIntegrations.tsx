@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
+import { Button, Label } from '@gorgias/axiom'
 import { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
-import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Badge } from '@gorgias/merchant-ui-kit'
+import { Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
 import { COMMON_NAV_LINK_PROPS } from 'domains/reporting/pages/common/components/StatsNav/StatsNav.utils'

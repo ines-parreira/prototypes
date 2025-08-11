@@ -15,7 +15,7 @@ import {
     useReactFlow,
 } from 'reactflow'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import { useSearchParam } from 'hooks/useSearchParam'

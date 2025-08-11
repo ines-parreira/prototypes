@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 import css from 'domains/reporting/pages/common/AgentAvatar.less'

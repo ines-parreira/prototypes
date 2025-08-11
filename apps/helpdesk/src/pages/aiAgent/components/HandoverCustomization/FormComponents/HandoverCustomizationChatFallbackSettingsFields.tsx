@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/axiom'
 
 import {
     getGorgiasChatLanguageByCode,

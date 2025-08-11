@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { ToggleField } from '@gorgias/merchant-ui-kit'
+import { ToggleField } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

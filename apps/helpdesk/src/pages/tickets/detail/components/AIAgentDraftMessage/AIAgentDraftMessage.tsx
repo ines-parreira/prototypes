@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { fromJS } from 'immutable'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

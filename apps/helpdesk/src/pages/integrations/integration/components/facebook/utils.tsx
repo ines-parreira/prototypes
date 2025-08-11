@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { HelpdeskPlan } from 'models/billing/types'

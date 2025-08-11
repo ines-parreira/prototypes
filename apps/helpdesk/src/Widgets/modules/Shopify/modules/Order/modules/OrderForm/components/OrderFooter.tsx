@@ -3,7 +3,7 @@ import React, { ChangeEvent } from 'react'
 import { Map } from 'immutable'
 import { Col, Container, FormGroup, FormText, Input, Row } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label } from '@gorgias/axiom'
 
 import {
     getRefundAmount,

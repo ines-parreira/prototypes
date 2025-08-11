@@ -17,7 +17,7 @@ import {
     Label as ReactStrapLabel,
 } from 'reactstrap'
 
-import { Label, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

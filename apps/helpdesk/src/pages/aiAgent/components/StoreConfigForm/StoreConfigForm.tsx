@@ -13,7 +13,7 @@ import { List } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 // Absolute Imports
 import { SentryTeam } from 'common/const/sentryTeamNames'

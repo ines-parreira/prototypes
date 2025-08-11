@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import { Tag } from 'models/aiAgent/types'
 import IconButton from 'pages/common/components/button/IconButton'

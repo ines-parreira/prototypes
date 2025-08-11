@@ -3,14 +3,14 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { ScoredSurveyDataKey } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { OrderDirection } from 'models/api/types'
 
-jest.mock('@gorgias/merchant-ui-kit', () => {
-    const actual = jest.requireActual('@gorgias/merchant-ui-kit')
+jest.mock('@gorgias/axiom', () => {
+    const actual = jest.requireActual('@gorgias/axiom')
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return {
         ...actual,

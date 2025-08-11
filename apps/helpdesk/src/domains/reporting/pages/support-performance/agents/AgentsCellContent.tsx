@@ -3,7 +3,7 @@ import { PropsWithRef } from 'react'
 import classNames from 'classnames'
 import _isNil from 'lodash/isNil'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Skeleton } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 import { StatsFilters } from 'domains/reporting/models/stat/types'

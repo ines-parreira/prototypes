@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { logEvent, SegmentEvent } from 'common/segment'

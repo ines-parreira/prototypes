@@ -2,8 +2,8 @@ import { useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 
+import { Button, Label, Skeleton } from '@gorgias/axiom'
 import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
-import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

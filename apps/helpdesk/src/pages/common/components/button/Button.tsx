@@ -214,7 +214,7 @@ const BaseButton = (
  */
 
 /**
- * @deprecated This component is being phased out. Please use `Button` from `@gorgias/merchant-ui-kit` instead.
+ * @deprecated This component is being phased out. Please use `Button` from `@gorgias/axiom` instead.
  * @date 2024-03-04
  * @type ui-kit-migration
  */
