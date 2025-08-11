@@ -122,12 +122,26 @@ pnpm dev:local
 
 The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should work out of the box for both proxy and local development.
 
+### Running the shared worker
+
+1. In proxy mode, without a local backend, use this command:
+
+```bash
+pnpm --filter @repo/helpdesk dev:workers:proxy
+```
+
+2. If you have a local backend:
+
+```bash
+pnpm --filter @repo/helpdesk serve:sharedWorker
+```
+
 ### Storybook
 
 Start the Storybook with:
 
 ```bash
-pnpm storybook:dev
+pnpm --filter @repo/helpdesk storybook:dev
 ```
 
 #### Story Guidelines
@@ -157,9 +171,12 @@ Tokens are provided by the `@gorgias/design-tokens` package.
 ### General testing
 
 ```bash
-pnpm test
-pnpm typecheck  # Only type-check
-pnpm jest   # Only unit tests
+pnpm test:all  # all tests
+pnpm test:helpdesk  # tests of the helpdesk
+pnpm test:affected  # run tests affected by changes w.r.t. main branch
+pnpm typecheck:all  # Only type-check
+pnpm typecheck:helpdesk  # Only type-check on the helpdesk
+pnpm typecheck:affected  # Only type-check on affected files
 ```
 
 ## CI/CD Workflow
@@ -240,17 +257,18 @@ Due to performance concerns, we use [Oxlint](https://oxc.rs/docs/guide/usage/lin
 
 For Neovim users, Oxlint should work [out of the box](https://github.com/neovim/nvim-lspconfig/pull/3586).
 
-If you't editor doesn't support Oxc yet, please use the `pnpm oxlint:watch` command to run it in watch mode while developping. It will run Oxlint with the --fix flag on the files you've changed.
+If you't editor doesn't support Oxc yet, please use the `pnpm oxlint:watch` command to run it in watch mode while developing. It will run Oxlint with the --fix flag on the files you've changed.
 
 ### Running Linting
 
 ```bash
-pnpm lint
+pnpm lint:helpdesk  # run lint on the helpdesk, including deprecation checks
+pnpm lint:code:all  # run lint everywhere
 ```
 
 ### Adding Linting rules
 
-New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint/oxlint.base.json) file. The changes will be applied automatically when you run `pnpm lint` via the `prelint` script.
+New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint/oxlint.base.json) file. You need to run `pnpm oxlint:bridge` to apply the changes.
 
 ## Debugging tools
 
@@ -293,7 +311,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-1. **From the UI toggle (recommended)**  
+1. **From the UI toggle (recommended)**
    When ReactScan is loaded, a small floating toolbar appears in the bottom-right corner of the screen during development. You can use the toggle switch in this UI to enable or disable it in real time — no need to reload the page or touch any code.
 
 2. **Via DevTools using localStorage**
@@ -310,7 +328,7 @@ localStorage.setItem(
 location.reload()
 ```
 
-3. **Permanently by editing the code**  
+3. **Permanently by editing the code**
    In `src/main/init/index.tsx`, you can change the `enabled` option to `true`:
 
 ```ts
