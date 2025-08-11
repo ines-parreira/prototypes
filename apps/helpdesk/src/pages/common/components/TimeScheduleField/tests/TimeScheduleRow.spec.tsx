@@ -115,4 +115,30 @@ describe('TimeScheduleRow', () => {
             ).not.toBeInTheDocument()
         })
     })
+
+    it('should allow 00:00 as to time even with late from time', () => {
+        render(
+            <Form
+                onValidSubmit={jest.fn()}
+                defaultValues={{
+                    business_hours_config: {
+                        business_hours: [
+                            {
+                                days: '1',
+                                from_time: '23:30',
+                                to_time: '00:00',
+                            },
+                        ],
+                    },
+                }}
+            >
+                <TimeScheduleRow {...props} />
+                <FormField name="someField" type="checkbox" />
+            </Form>,
+        )
+
+        expect(
+            screen.queryByText('To time must be greater than From time'),
+        ).not.toBeInTheDocument()
+    })
 })

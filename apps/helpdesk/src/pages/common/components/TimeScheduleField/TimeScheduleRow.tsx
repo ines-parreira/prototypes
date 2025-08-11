@@ -40,7 +40,11 @@ export default function TimeScheduleRow({
     const fromTime = watch(`${namePrefix}.from_time`)
 
     useEffect(() => {
-        if (toTime < fromTime) {
+        // Handle midnight edge case: 00:00 should be treated as midnight of next day (24:00)
+        const isToTimeMidnight = toTime === '00:00'
+        const isValidTimeRange = isToTimeMidnight || toTime > fromTime
+
+        if (!isValidTimeRange) {
             setError(
                 `${namePrefix}.to_time`,
                 {

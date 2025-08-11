@@ -302,6 +302,45 @@ describe('integrations helpers', () => {
                 helpers.isAccountDuringBusinessHours(businessHoursSettings),
             ).toEqual(expected)
         })
+
+        it('should handle midnight (00:00) as to_time for overnight business hours', () => {
+            // Business hours from 22:00 to 00:00 (end of current day)
+            const businessHoursSettings = {
+                id: 2,
+                type: AccountSettingType.BusinessHours,
+                data: {
+                    business_hours: [
+                        {
+                            days: '1', // Monday only
+                            from_time: '22:00',
+                            to_time: '00:00', // end of Monday (23:59:59.999)
+                        },
+                    ],
+                    timezone: 'UTC',
+                },
+            } as AccountSettingBusinessHours
+
+            // Test 23:00 on Monday (should be true)
+            const mondayAt23 = moment('2022-11-21T23:00:00+00:00')
+            jest.spyOn(moment, 'tz').mockImplementation(() => mondayAt23)
+            expect(
+                helpers.isAccountDuringBusinessHours(businessHoursSettings),
+            ).toEqual(true)
+
+            // Test 23:59 on Monday (should be true - nearly end of day)
+            const mondayAt2359 = moment('2022-11-21T23:59:00+00:00')
+            jest.spyOn(moment, 'tz').mockImplementation(() => mondayAt2359)
+            expect(
+                helpers.isAccountDuringBusinessHours(businessHoursSettings),
+            ).toEqual(true)
+
+            // Test 00:00 on Tuesday (should be false - different day)
+            const tuesdayAt00 = moment('2022-11-22T00:00:00+00:00')
+            jest.spyOn(moment, 'tz').mockImplementation(() => tuesdayAt00)
+            expect(
+                helpers.isAccountDuringBusinessHours(businessHoursSettings),
+            ).toEqual(false)
+        })
     })
 
     describe('isWellKnownEcomIntegrationIdMisMatch', () => {

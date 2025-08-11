@@ -115,11 +115,17 @@ export function isAccountDuringBusinessHours(
             const [toTimeHours, toTimeMinutes] = toTimeString
                 .split(':')
                 .map((value) => parseInt(value, 10))
-            const toTime = moment
+            let toTime = moment
                 .tz(timezone)
                 .hours(toTimeHours)
                 .minutes(toTimeMinutes)
                 .seconds(0)
+
+            // Handle midnight edge case: if to_time is 00:00,
+            // it means end of the current day (23:59:59.999)
+            if (toTimeString === '00:00') {
+                toTime = toTime.endOf('day')
+            }
 
             return now.isBetween(fromTime, toTime, 'seconds', '[]') // [] means inclusive
         },
