@@ -173,7 +173,7 @@ describe('AiAgentExternalSourceArticlesView', () => {
             headerType: HeaderType.URL,
         })
 
-        expect(screen.getByText('Single page URL')).toBeInTheDocument()
+        expect(screen.getByText('URL')).toBeInTheDocument()
     })
 
     it('should fetch and display articles', () => {

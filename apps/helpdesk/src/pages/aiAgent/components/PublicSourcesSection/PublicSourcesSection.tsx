@@ -229,7 +229,7 @@ export const PublicSourcesSection = ({
     return (
         <div className={css.container}>
             <div>
-                <Label className={css.title}>Single page URLs</Label>
+                <Label className={css.title}>URLs</Label>
                 <div className={css.description}>
                     Add up to 10 URLs for AI Agent to use as knowledge. Only
                     content from each page is used—subpages and media are

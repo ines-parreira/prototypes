@@ -355,9 +355,7 @@ const AiAgentExternalSourceArticlesView = ({
             syncTriggered={syncTriggered}
             syncStoreDomainStatus={polledSyncStatus}
             title={
-                headerType === HeaderType.ExternalDocument
-                    ? 'Document'
-                    : 'Single page URL'
+                headerType === HeaderType.ExternalDocument ? 'Document' : 'URL'
             }
             pageType={headerType}
             latestSync={createdDatetime}

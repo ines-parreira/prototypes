@@ -296,7 +296,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         renderComponent({})
 
-        expect(screen.getByText('Single page URLs')).toBeInTheDocument()
+        expect(screen.getByText('URLs')).toBeInTheDocument()
     })
 
     it('should call handleFormUpdate when help center select is changed', () => {

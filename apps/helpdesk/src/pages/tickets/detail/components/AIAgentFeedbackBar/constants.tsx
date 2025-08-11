@@ -74,10 +74,10 @@ export const KNOWLEDGE_SOURCE_TYPE = {
     },
     website: { icon: KnowledgeSourceTypeIcon.language, label: 'Store website' },
     macro: { icon: KnowledgeSourceTypeIcon.bolt, label: 'Macro' },
-    link: { icon: KnowledgeSourceTypeIcon.link, label: 'Public URL' },
+    link: { icon: KnowledgeSourceTypeIcon.link, label: 'URL' },
     external_snippet: {
         icon: KnowledgeSourceTypeIcon.attach_file,
-        label: 'External file',
+        label: 'Document',
     },
     order: { icon: KnowledgeSourceTypeIcon.shopify, label: 'Order' },
     product: { icon: KnowledgeSourceTypeIcon.shopify, label: 'Product' },

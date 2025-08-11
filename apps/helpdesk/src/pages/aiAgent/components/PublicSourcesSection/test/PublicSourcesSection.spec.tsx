@@ -96,7 +96,7 @@ describe('<PublicSourcesSection />', () => {
     it('should render component', () => {
         renderComponent()
 
-        expect(screen.getByText('Single page URLs')).toBeInTheDocument()
+        expect(screen.getByText('URLs')).toBeInTheDocument()
     })
 
     it('should add new item when add URL clicked', () => {
