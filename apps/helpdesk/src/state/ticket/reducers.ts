@@ -272,6 +272,11 @@ export default function reducer(
             return state.set('assignee_user', fromJS(assigneeUser))
         }
 
+        case types.SET_PRIORITY: {
+            const priority = action.args?.get('priority') || null
+            return state.set('priority', priority)
+        }
+
         case types.SET_TEAM: {
             const assigneeTeam = action.args?.get('assignee_team') || null // we want null if undefined
             return state.set('assignee_team', fromJS(assigneeTeam))

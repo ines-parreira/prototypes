@@ -293,6 +293,67 @@ describe('ticket actions', () => {
                 )
         })
 
+        it('should handle priority updates correctly', () => {
+            mockServer
+                .onPut(endpointMatchers.ticket1)
+                .reply(200, { data: { id: 1 } })
+
+            store = mockStore({
+                ticket: fromJS({
+                    id: 1,
+                    priority: 'normal',
+                }),
+            })
+
+            return store
+                .dispatch(actions.ticketPartialUpdate({ priority: 'high' }))
+                .then(() => {
+                    const actions = store.getActions()
+                    const setPriorityAction = actions.find(
+                        (action) => action.type === 'setPriority',
+                    )
+                    const partialUpdateStartAction = actions.find(
+                        (action) =>
+                            action.type === 'TICKET_PARTIAL_UPDATE_START',
+                    )
+
+                    expect(setPriorityAction).toBeDefined()
+                    expect(setPriorityAction.args.get('priority')).toBe('high')
+                    expect(partialUpdateStartAction).toBeDefined()
+                })
+        })
+
+        it('should handle priority update errors and restore previous priority', () => {
+            mockServer
+                .onPut(endpointMatchers.ticket1)
+                .reply(400, { message: 'Bad request' })
+
+            store = mockStore({
+                ticket: fromJS({
+                    id: 1,
+                    priority: 'normal',
+                }),
+            })
+
+            return store
+                .dispatch(actions.ticketPartialUpdate({ priority: 'high' }))
+                .then(() => {
+                    const actions = store.getActions()
+                    const setPriorityActions = actions.filter(
+                        (action) => action.type === 'setPriority',
+                    )
+
+                    // Should have two setPriority actions: one for 'high', one for 'normal' (restore)
+                    expect(setPriorityActions).toHaveLength(2)
+                    expect(setPriorityActions[0].args.get('priority')).toBe(
+                        'high',
+                    )
+                    expect(setPriorityActions[1].args.get('priority')).toBe(
+                        'normal',
+                    )
+                })
+        })
+
         it('success', () => {
             mockServer
                 .onPut(endpointMatchers.ticket1)
@@ -530,6 +591,16 @@ describe('ticket actions', () => {
         return store
             .dispatch(actions.setSubject('new title'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('setPriority()', () => {
+        store.dispatch(actions.setPriority('high'))
+        expect(store.getActions()[0].args.get('priority')).toBe('high')
+    })
+
+    it('setPriority() with null', () => {
+        store.dispatch(actions.setPriority(null))
+        expect(store.getActions()[0].args.get('priority')).toBe(null)
     })
 
     it('deleteMessage()', () => {

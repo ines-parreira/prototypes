@@ -8,7 +8,11 @@ import { Moment } from 'moment'
 import { dismissNotification } from 'reapop'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
-import { Macro as MacroModel, Tag } from '@gorgias/helpdesk-types'
+import {
+    Macro as MacroModel,
+    Tag,
+    TicketPriority,
+} from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import {
@@ -210,6 +214,12 @@ export const ticketPartialUpdate =
             args,
         })
 
+        let previousPriority = ticket.get('priority')
+
+        if (args.priority) {
+            dispatch(setPriority(args.priority as TicketPriority))
+        }
+
         return client
             .put<Ticket>(`/api/tickets/${ticketId}/`, {
                 ...args,
@@ -227,6 +237,7 @@ export const ticketPartialUpdate =
                 },
                 (error: AxiosError) => {
                     void dispatch(triggerTicketFieldsRefreshAndInvalidation())
+                    dispatch(setPriority(previousPriority as TicketPriority))
                     return dispatch({
                         type: types.TICKET_PARTIAL_UPDATE_ERROR,
                         error,
@@ -390,6 +401,14 @@ export const setTrashed =
                     }),
                 )
             }
+        })
+    }
+
+export const setPriority =
+    (priority: TicketPriority | null) => (dispatch: StoreDispatch) => {
+        dispatch({
+            type: types.SET_PRIORITY,
+            args: fromJS({ priority }),
         })
     }
 
@@ -1145,9 +1164,9 @@ export const displayAuditLogEvents =
         const generators = [client.getTicketEvents(ticketId)]
 
         /*
-                                          The ticket API does not return the satisfaction survey id when the survey is not scored.
-                                          If the satisfactionSurveyId is missing, search for the un-scored survey using the /api/satisfaction-surveys API.
-                                        */
+            The ticket API does not return the satisfaction survey id when the survey is not scored.
+            If the satisfactionSurveyId is missing, search for the un-scored survey using the /api/satisfaction-surveys API.
+        */
         const surveyId =
             satisfactionSurveyId ||
             (await client.getSatisfactionSurvey(ticketId))?.id

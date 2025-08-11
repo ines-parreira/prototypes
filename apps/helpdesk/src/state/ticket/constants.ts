@@ -33,6 +33,7 @@ export const SET_STATUS = 'setStatus'
 export const SET_SUBJECT = 'setSubject'
 export const SET_TEAM = 'setTeamAssignee'
 export const SNOOZE_TICKET = 'snoozeTicket'
+export const SET_PRIORITY = 'setPriority'
 
 export const SET_AGENT = 'setAssignee'
 export const SET_SPAM_START = 'setSpamStart'

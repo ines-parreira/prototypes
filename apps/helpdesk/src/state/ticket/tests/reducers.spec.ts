@@ -470,6 +470,35 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
+    it('should handle SET_PRIORITY', () => {
+        expect(
+            reducer(initialState, {
+                type: types.SET_PRIORITY,
+                args: fromJS({
+                    priority: 'high',
+                }),
+            }).get('priority'),
+        ).toBe('high')
+
+        // set to null
+        expect(
+            reducer(initialState, {
+                type: types.SET_PRIORITY,
+                args: fromJS({
+                    priority: null,
+                }),
+            }).get('priority'),
+        ).toBeNull()
+
+        // set to undefined (should default to null)
+        expect(
+            reducer(initialState, {
+                type: types.SET_PRIORITY,
+                args: fromJS({}),
+            }).get('priority'),
+        ).toBeNull()
+    })
+
     it('should handle SET_CUSTOMER', () => {
         expect(
             reducer(initialState, {
