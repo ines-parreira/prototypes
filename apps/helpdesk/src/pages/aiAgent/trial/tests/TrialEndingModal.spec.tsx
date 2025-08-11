@@ -618,7 +618,9 @@ describe('TrialEndingModal', () => {
 
         it('should call onRequestTrialExtension when Request Trial Extension is clicked', async () => {
             const user = userEvent.setup()
-            const mockOnRequestTrialExtension = jest.fn()
+            const mockOnRequestTrialExtension = jest
+                .fn()
+                .mockResolvedValue(true)
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
                 createMockShoppingAssistantTrialFlow({

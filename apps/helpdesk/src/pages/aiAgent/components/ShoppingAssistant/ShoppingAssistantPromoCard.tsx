@@ -103,10 +103,6 @@ export const ShoppingAssistantPromoCard: React.FC<
         case PromoCardVariant.AdminTrial:
             variantComponent = (
                 <>
-                    <TrialTryModal
-                        {...trialModalProps.newTrialUpgradePlanModal}
-                        isOpen={trialFlow.isTrialModalOpen}
-                    />
                     <AdminTrial
                         className={className}
                         promoContent={promoContent}
@@ -149,6 +145,10 @@ export const ShoppingAssistantPromoCard: React.FC<
                 {...trialModalProps.trialFinishSetupModal}
                 isOpen={trialFlow.isTrialFinishSetupModalOpen}
                 onClose={trialFlow.closeTrialFinishSetupModal}
+            />
+            <TrialTryModal
+                {...trialModalProps.newTrialUpgradePlanModal}
+                isOpen={trialFlow.isTrialModalOpen}
             />
             {sharedContent}
         </>

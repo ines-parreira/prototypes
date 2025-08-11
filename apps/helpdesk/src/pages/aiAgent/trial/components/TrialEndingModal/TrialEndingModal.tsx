@@ -48,11 +48,24 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
         setIsModalDismissed(true)
     }, [])
 
+    const onUpgradeClick = useCallback(() => {
+        openTrialUpgradeModal()
+        dismissModal()
+    }, [openTrialUpgradeModal, dismissModal])
+
+    const onRequestTrialExtensionClick = useCallback(() => {
+        onRequestTrialExtension().then((isSent) => {
+            if (isSent) {
+                dismissModal()
+            }
+        })
+    }, [onRequestTrialExtension, dismissModal])
+
     const primaryAction =
         isOptedOut && isShoppingAssistantDuringTrialEnabled
             ? {
                   label: 'Upgrade Now',
-                  onClick: openTrialUpgradeModal,
+                  onClick: onUpgradeClick,
               }
             : {
                   label: 'Dismiss',
@@ -63,7 +76,7 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
         isOptedOut && isShoppingAssistantDuringTrialEnabled
             ? {
                   label: 'Request Trial Extension',
-                  onClick: onRequestTrialExtension,
+                  onClick: onRequestTrialExtensionClick,
               }
             : undefined
 
