@@ -297,22 +297,6 @@ describe('TicketDetailContainer component', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should have new ticket title', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockedStore}>
-                    <TicketDetailContainer {...minProps} />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: '/foo/:ticketId',
-                route: '/foo/new',
-            },
-        )
-
-        expect(document.title).toEqual('New ticket')
-    })
-
     it('should fetch customer details from url', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>

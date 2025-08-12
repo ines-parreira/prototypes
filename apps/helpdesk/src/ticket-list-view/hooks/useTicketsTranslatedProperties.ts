@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import {
     useGetCurrentUser,
     useListTicketTranslations,
+    UserLanguagePreferencesSetting,
     UserSettingType,
 } from '@gorgias/helpdesk-queries'
 import {
@@ -13,7 +14,6 @@ import {
     ListTicketTranslations200,
     TicketTranslationCompact,
     UserPreferencesSetting,
-    UserSetting,
 } from '@gorgias/helpdesk-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -23,20 +23,9 @@ type TicketPropertiesTranslationsParams = {
     ticket_ids: number[]
 }
 
-type CurrentUserPreferenceSettings = UserPreferencesSetting & {
-    data: UserPreferencesSetting['data'] & {
-        'language-preferences'?: {
-            primary?: string
-        }
-    }
-}
-
 export type CurrentUser = GetCurrentUserResult & {
     data: GetCurrentUserResult['data'] & {
-        settings: (
-            | Exclude<UserSetting, UserPreferencesSetting>
-            | CurrentUserPreferenceSettings
-        )[]
+        settings: (UserPreferencesSetting | UserLanguagePreferencesSetting)[]
     }
 }
 
@@ -59,14 +48,14 @@ export function useTicketsTranslatedProperties({
 
     const preferredLanguage = useMemo(() => {
         const preferences = currentUser?.data?.settings.find(
-            (setting) => setting.type === UserSettingType.Preferences,
-        ) as CurrentUserPreferenceSettings
+            (setting) => setting.type === UserSettingType.LanguagePreferences,
+        ) as UserLanguagePreferencesSetting | undefined
 
         if (!preferences) {
             return currentUser?.data?.language
         }
 
-        return preferences?.data?.['language-preferences']?.primary
+        return preferences?.data?.primary
     }, [currentUser])
 
     // So that the tanstack query cache is as stable as possible
@@ -90,24 +79,12 @@ export function useTicketsTranslatedProperties({
         },
     )
 
-    // Placeholder translations since we cannot yet generate real ones
-    // Swap this instead of the translationsMap to tests the UI
-    // const placeholderTranslationsMap = useMemo(
-    //     () =>
-    //         stableTicketIds.reduce<TranslationMap>((acc, ticketId) => {
-    //             acc[ticketId] = {
-    //                 excerpt: 'Translated excerpt of the ticket',
-    //                 subject: 'Translated subject of the ticket',
-    //                 ticket_id: ticketId,
-    //                 ticket_translation_id: `${ticketId}-translation`,
-    //             }
-    //             return acc
-    //         }, {}),
-    //     [stableTicketIds],
-    // )
-
-    const invalidateTicketTranslatedProperties = useCallback(
-        (ticketIds: number[]) => {
+    /**
+     * The Backend invalidate the translated subject when the user updates the subject in the application
+     * This function is used to optimistically remove the translated subject from the cache
+     */
+    const removeTicketTranslatedSubject = useCallback(
+        (ticketId: number) => {
             const queryCache = queryClient.getQueryCache()
 
             // tickets translations keys have the following shape:
@@ -128,8 +105,8 @@ export function useTicketsTranslatedProperties({
                         return false
                     }
 
-                    return queryParams.queryParams.ticket_ids.some((ticketId) =>
-                        ticketIds.includes(ticketId),
+                    return queryParams.queryParams.ticket_ids.some(
+                        (id) => id === ticketId,
                     )
                 })
 
@@ -143,14 +120,30 @@ export function useTicketsTranslatedProperties({
                     ) => {
                         if (!oldData) return oldData
 
+                        const ticketTranslation = oldData.data.data.find(
+                            (ticket) => ticket.ticket_id === ticketId,
+                        )
+
+                        if (!ticketTranslation) return oldData
+
+                        const otherTicketTranslations =
+                            oldData.data.data.filter(
+                                (ticket) => ticket.ticket_id !== ticketId,
+                            )
+
+                        const newTicketTranslation = {
+                            ...ticketTranslation,
+                            subject: null,
+                        }
+
                         return {
                             ...oldData,
                             data: {
                                 ...oldData.data,
-                                data: oldData.data.data.filter(
-                                    (ticket) =>
-                                        !ticketIds.includes(ticket.ticket_id),
-                                ),
+                                data: [
+                                    ...otherTicketTranslations,
+                                    newTicketTranslation,
+                                ],
                             },
                         }
                     },
@@ -177,12 +170,12 @@ export function useTicketsTranslatedProperties({
     if (!hasMessagesTranslations) {
         return {
             translationMap: {},
-            invalidateTicketTranslatedProperties,
+            removeTicketTranslatedSubject,
         }
     }
 
     return {
         translationMap,
-        invalidateTicketTranslatedProperties,
+        removeTicketTranslatedSubject,
     }
 }

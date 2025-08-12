@@ -658,6 +658,7 @@ describe('<TicketHeader />', () => {
                     screen.getByDisplayValue('Translated Subject in French'),
                 ).toBeInTheDocument()
             })
+            expect(document.title).toEqual('Translated Subject in French')
         })
 
         it('should display original subject when no translation is available', async () => {
@@ -682,6 +683,7 @@ describe('<TicketHeader />', () => {
                     screen.getByDisplayValue('Original English Subject'),
                 ).toBeInTheDocument()
             })
+            expect(document.title).toEqual('Original English Subject')
         })
 
         it('should show translate icon when translation is available', async () => {

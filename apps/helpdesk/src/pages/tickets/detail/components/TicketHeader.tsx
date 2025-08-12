@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 
+import { useTitle } from '@repo/hooks'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import moment, { Moment } from 'moment-timezone'
@@ -90,7 +91,7 @@ const TicketHeader = ({
     const setPriorityFlagEnabled = useFlag(
         FeatureFlagKey.TicketAllowPriorityUsage,
     )
-    const { translationMap, invalidateTicketTranslatedProperties } =
+    const { translationMap, removeTicketTranslatedSubject } =
         useTicketsTranslatedProperties({
             ticket_ids: [ticket.get('id')],
         })
@@ -295,12 +296,13 @@ const TicketHeader = ({
 
     const handleSubjectChange = (subject: string) => {
         dispatch(setSubject(subject))
-        invalidateTicketTranslatedProperties([ticket.get('id')])
+        removeTicketTranslatedSubject(ticket.get('id'))
     }
 
     const hasTranslation = !!translationMap[ticket.get('id')]?.subject
     const translatedSubject = translationMap[ticket.get('id')]?.subject
-    const title = translatedSubject || ticket.get('subject')
+    const title = translatedSubject ?? ticket.get('subject') ?? 'New ticket'
+    useTitle(title)
     const resizableEditableTitlePadding = isMouseOver || isFocused ? 27 : 20
 
     return (

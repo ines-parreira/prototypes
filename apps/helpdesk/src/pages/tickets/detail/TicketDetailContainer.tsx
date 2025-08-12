@@ -1,12 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import {
-    useAsyncFn,
-    useEffectOnce,
-    useKey,
-    usePrevious,
-    useTitle,
-} from '@repo/hooks'
+import { useAsyncFn, useEffectOnce, useKey, usePrevious } from '@repo/hooks'
 import { fromJS, List, Map } from 'immutable'
 import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
@@ -173,9 +167,6 @@ export const TicketDetailContainer = ({
         (ticketIdParam !== 'new' && !ticket.get('id')) ||
         (ticketIdParam === 'new' && ticket.get('id')) ||
         ticket.getIn(['_internal', 'loading', 'fetchTicket'])
-
-    const title = ticket.get('id') ? ticket.get('subject') : 'New ticket'
-    useTitle(isLoading ? undefined : title)
 
     const isLoadingPhoneTicketData = useMemo(
         () =>

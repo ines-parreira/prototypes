@@ -9,6 +9,7 @@ import {
     mockListTicketTranslationsHandler,
     mockTicketTranslationCompact,
 } from '@gorgias/helpdesk-mocks'
+import { UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
@@ -28,7 +29,7 @@ const server = setupServer()
 
 const preferences = {
     id: 1,
-    type: 'preferences',
+    type: UserSettingType.Preferences,
     data: {
         available: true,
         date_format: 'en_GB',
@@ -36,17 +37,22 @@ const preferences = {
         prefill_best_macro: false,
         show_macros: false,
         show_macros_suggestions: true,
-        'language-preferences': {
-            primary: 'en',
-            proficient: [],
-        },
+    },
+}
+
+const languagePreferences = {
+    id: 1,
+    type: UserSettingType.LanguagePreferences,
+    data: {
+        primary: 'en',
+        proficient: [],
     },
 }
 
 const mockGetCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
     HttpResponse.json({
         ...data,
-        settings: [preferences],
+        settings: [preferences, languagePreferences],
     } as CurrentUser['data']),
 )
 const mockListTicketTranslations = mockListTicketTranslationsHandler()
@@ -269,8 +275,8 @@ describe('useTicketsTranslatedProperties', () => {
             })
         })
 
-        describe('invalidateTicketTranslatedProperties', () => {
-            it('should provide invalidateTicketTranslatedProperties function', async () => {
+        describe('removeTicketTranslatedSubject', () => {
+            it('should provide removeTicketTranslatedSubject function', async () => {
                 const { result } = renderHook(
                     () => useTicketsTranslatedProperties({ ticket_ids: [123] }),
                     {
@@ -280,13 +286,12 @@ describe('useTicketsTranslatedProperties', () => {
 
                 await waitFor(() => {
                     expect(
-                        typeof result.current
-                            .invalidateTicketTranslatedProperties,
+                        typeof result.current.removeTicketTranslatedSubject,
                     ).toBe('function')
                 })
             })
 
-            it('should invalidate specific ticket translations from cache', async () => {
+            it('should optimistically update specific ticket subject in cache', async () => {
                 const mockTranslation1 = mockTicketTranslationCompact()
                 const mockTranslation2 = {
                     ...mockTicketTranslationCompact(),
@@ -320,19 +325,22 @@ describe('useTicketsTranslatedProperties', () => {
                     })
                 })
 
-                // Invalidate ticket 123
                 act(() => {
-                    result.current.invalidateTicketTranslatedProperties([123])
+                    result.current.removeTicketTranslatedSubject(123)
                 })
 
                 await waitFor(() => {
                     expect(result.current.translationMap).toEqual({
+                        123: {
+                            ...mockTranslation1,
+                            subject: null,
+                        },
                         456: mockTranslation2,
                     })
                 })
             })
 
-            it('should handle invalidation when no translations exist in cache', async () => {
+            it('should handle optimistic update when no translations exist in cache', async () => {
                 const { result } = renderHook(
                     () => useTicketsTranslatedProperties({ ticket_ids: [] }),
                     {
@@ -344,17 +352,18 @@ describe('useTicketsTranslatedProperties', () => {
                     expect(result.current.translationMap).toEqual({})
                 })
 
-                // This should not throw an error
                 expect(() => {
                     act(() => {
-                        result.current.invalidateTicketTranslatedProperties([
-                            123,
-                        ])
+                        result.current.removeTicketTranslatedSubject(123)
                     })
                 }).not.toThrow()
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({})
+                })
             })
 
-            it('should handle invalidation with empty ticket IDs array', async () => {
+            it('should handle optimistic update for non-existent ticket ID', async () => {
                 const mockTranslation = mockTicketTranslationCompact()
 
                 const { handler } = mockListTicketTranslationsHandler(
@@ -379,9 +388,8 @@ describe('useTicketsTranslatedProperties', () => {
                     })
                 })
 
-                // Invalidate with empty array - should not affect existing translations
                 act(() => {
-                    result.current.invalidateTicketTranslatedProperties([])
+                    result.current.removeTicketTranslatedSubject(999)
                 })
 
                 await waitFor(() => {
@@ -391,7 +399,7 @@ describe('useTicketsTranslatedProperties', () => {
                 })
             })
 
-            it('should handle multiple ticket invalidations', async () => {
+            it('should handle multiple optimistic subject updates', async () => {
                 const mockTranslation1 = mockTicketTranslationCompact()
                 const mockTranslation2 = {
                     ...mockTicketTranslationCompact(),
@@ -435,16 +443,25 @@ describe('useTicketsTranslatedProperties', () => {
                     })
                 })
 
-                // Invalidate tickets 123 and 789
                 act(() => {
-                    result.current.invalidateTicketTranslatedProperties([
-                        123, 789,
-                    ])
+                    result.current.removeTicketTranslatedSubject(123)
+                })
+
+                act(() => {
+                    result.current.removeTicketTranslatedSubject(789)
                 })
 
                 await waitFor(() => {
                     expect(result.current.translationMap).toEqual({
+                        123: {
+                            ...mockTranslation1,
+                            subject: null,
+                        },
                         456: mockTranslation2,
+                        789: {
+                            ...mockTranslation3,
+                            subject: null,
+                        },
                     })
                 })
             })
