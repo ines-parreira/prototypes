@@ -8,11 +8,16 @@ alwaysApply: true
 - Run tests with `pnpm test:all` for all packages
 - Run tests with `pnpm test:affected` for all affected packages
 - Run tests with `pnpm test:helpdesk` for the helpdesk app
+- Run tests for a specific path with `pnpm test:helpdesk <path>`
+- Update the snapshots with `pnpm test:helpdesk -u` for the helpdesk app
+- Update the snapshots with `pnpm test:all -u` for all packages
+- Update the snapshots with `pnpm test:affected -u` for all affected packages
+- Update the snapshots for a specific path with `pnpm test:helpdesk <path> -u`
 
 # Linting
 
+- Lint code with `pnpm lint:helpdesk` for the helpdesk app
 - Lint code with `pnpm lint:code:all` for all packages
-- Lint code with `pnpm lint:code:helpdesk` for the helpdesk app
 - Lint code with `pnpm lint:code:affected` for all affected packages
 
 # Formatting
