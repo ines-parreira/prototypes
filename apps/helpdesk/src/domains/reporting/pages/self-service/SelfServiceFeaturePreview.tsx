@@ -1,5 +1,6 @@
+import { Button } from '@gorgias/axiom'
+
 import css from 'domains/reporting/pages/self-service/SelfServiceStatsPage.less'
-import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
 type Props = {

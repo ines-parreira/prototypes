@@ -2,12 +2,13 @@ import React, { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import css from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsEmptyState.less'
 import { PAGE_TITLE_AI_AGENT } from 'domains/reporting/pages/self-service/constants'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import { assetsUrl } from 'utils'
 

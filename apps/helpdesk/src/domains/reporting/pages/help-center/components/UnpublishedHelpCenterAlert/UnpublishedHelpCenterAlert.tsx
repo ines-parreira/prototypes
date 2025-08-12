@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 
 const HELP_CENTER_SETTINGS_PATH = '/app/settings/help-center'
 

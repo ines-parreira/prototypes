@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import icon from 'assets/img/help-center/no-help-center-icon.png'
 import css from 'domains/reporting/pages/help-center/components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState.less'
 import { HELP_CENTER_STATS_TEST_IDS } from 'domains/reporting/pages/help-center/pages/tests/constants'
-import Button from 'pages/common/components/button/Button'
 
 const HELP_CENTER_SETTINGS_PATH = '/app/settings/help-center'
 

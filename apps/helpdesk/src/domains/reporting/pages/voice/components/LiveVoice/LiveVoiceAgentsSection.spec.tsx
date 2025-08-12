@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
@@ -7,9 +5,6 @@ import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 
 import LiveVoiceAgentsSection from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
 
-jest.mock('@gorgias/axiom', () => ({
-    Skeleton: () => <div>Skeleton</div>,
-}))
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
@@ -41,7 +36,7 @@ describe('LiveVoiceAgentsSection', () => {
 
         renderComponent()
 
-        expect(screen.getAllByText('Skeleton').length).toBeGreaterThan(0)
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
         expect(
             screen.queryByText('LiveVoiceAgentsList'),
         ).not.toBeInTheDocument()

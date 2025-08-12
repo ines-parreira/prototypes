@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useRestrictedReportsConfig } from 'domains/reporting/hooks/dashboards/useRestrictedReportsConfig'
 import { ChartsDefaultFrame } from 'domains/reporting/pages/dashboards/ChartsDefaultFrame'
@@ -14,7 +16,6 @@ import {
     ReportsModalConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { getChildrenIds } from 'domains/reporting/pages/dashboards/utils'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

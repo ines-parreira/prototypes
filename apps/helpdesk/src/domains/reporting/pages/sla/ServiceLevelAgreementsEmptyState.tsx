@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import icon from 'domains/reporting/assets/img/no-slas-icon.png'
 import css from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState.less'
-import Button from 'pages/common/components/button/Button'
 import ImageContainer from 'pages/common/components/EmptyState/ImageContainer'
 import PageHeader from 'pages/common/components/PageHeader'
 

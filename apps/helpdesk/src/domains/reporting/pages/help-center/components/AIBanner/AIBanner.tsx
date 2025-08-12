@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import css from 'domains/reporting/pages/help-center/components/AIBanner/AIBanner.less'
-import Button from 'pages/common/components/button/Button'
 
 type AIBannerProps = {
     helpCenterId: number

@@ -2,6 +2,8 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import css from 'domains/reporting/pages/convert/components/RequestABTest/RequestABTest.less'
 import RequestABTestModal from 'domains/reporting/pages/convert/components/RequestABTestModal'
 import ViewABTestModal from 'domains/reporting/pages/convert/components/ViewABTestModal'
@@ -15,7 +17,6 @@ import {
     GorgiasChatIntegration,
     IntegrationType,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import { useCreateABTest } from 'pages/convert/abTests/hooks/useCreateABTest'
 import { useUpdateABTest } from 'pages/convert/abTests/hooks/useUpdateABTest'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'

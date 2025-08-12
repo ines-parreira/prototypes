@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
 import {
@@ -17,7 +19,6 @@ import {
 import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
 import { getDashboardPath } from 'domains/reporting/pages/dashboards/utils'
 import { useNotify } from 'hooks/useNotify'
-import Button from 'pages/common/components/button/Button'
 
 export const DASHBOARD_CTA = 'Add Charts'
 

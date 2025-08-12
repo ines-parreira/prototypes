@@ -1,4 +1,4 @@
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import { useDrillDownQueryWithoutLimit } from 'domains/reporting/hooks/useDrillDownData'
@@ -14,7 +14,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useRunningJobs } from 'jobs'
 import { JobContext, JobType } from 'models/job/types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'

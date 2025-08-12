@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 
 import moment from 'moment'
 
+import { Button } from '@gorgias/axiom'
+
 import css from 'domains/reporting/pages/convert/components/RequestABTestModal/RequestABTestModal.less'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

@@ -1,6 +1,7 @@
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAiSalesAgentOverviewReportData from 'domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
-import Button from 'pages/common/components/button/Button'
 import { saveZippedFiles } from 'utils/file'
 
 export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download Data'

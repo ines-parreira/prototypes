@@ -152,18 +152,18 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   </div>
                   <button
                     aria-disabled="false"
-                    class="wrapper ghost primary small"
+                    class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                     title="Add Filter"
                     type="button"
                   >
                     <i
                       aria-hidden="true"
-                      class="material-icons icon small"
+                      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                     >
                       add
                     </i>
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                        
                       Add Filter
@@ -921,18 +921,18 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         </div>
                         <button
                           aria-disabled="false"
-                          class="wrapper ghost primary small"
+                          class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                           title="Add Filter"
                           type="button"
                         >
                           <i
                             aria-hidden="true"
-                            class="material-icons icon small"
+                            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                           >
                             add
                           </i>
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                              
                             Add Filter
@@ -1806,18 +1806,18 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       </div>
                       <button
                         aria-disabled="false"
-                        class="wrapper ghost primary small"
+                        class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                         title="Add Filter"
                         type="button"
                       >
                         <i
                           aria-hidden="true"
-                          class="material-icons icon small"
+                          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                         >
                           add
                         </i>
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                            
                           Add Filter
@@ -2628,18 +2628,18 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         </div>
                         <button
                           aria-disabled="false"
-                          class="wrapper ghost primary small"
+                          class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                           title="Add Filter"
                           type="button"
                         >
                           <i
                             aria-hidden="true"
-                            class="material-icons icon small"
+                            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                           >
                             add
                           </i>
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                              
                             Add Filter
@@ -3513,18 +3513,18 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       </div>
                       <button
                         aria-disabled="false"
-                        class="wrapper ghost primary small"
+                        class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                         title="Add Filter"
                         type="button"
                       >
                         <i
                           aria-hidden="true"
-                          class="material-icons icon small"
+                          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                         >
                           add
                         </i>
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                            
                           Add Filter
@@ -4335,18 +4335,18 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         </div>
                         <button
                           aria-disabled="false"
-                          class="wrapper ghost primary small"
+                          class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                           title="Add Filter"
                           type="button"
                         >
                           <i
                             aria-hidden="true"
-                            class="material-icons icon small"
+                            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                           >
                             add
                           </i>
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                              
                             Add Filter
@@ -5220,18 +5220,18 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       </div>
                       <button
                         aria-disabled="false"
-                        class="wrapper ghost primary small"
+                        class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                         title="Add Filter"
                         type="button"
                       >
                         <i
                           aria-hidden="true"
-                          class="material-icons icon small"
+                          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                         >
                           add
                         </i>
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                            
                           Add Filter
@@ -6038,18 +6038,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   </div>
                   <button
                     aria-disabled="false"
-                    class="wrapper ghost primary small"
+                    class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                     title="Add Filter"
                     type="button"
                   >
                     <i
                       aria-hidden="true"
-                      class="material-icons icon small"
+                      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                     >
                       add
                     </i>
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                        
                       Add Filter
@@ -6786,18 +6786,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   </div>
                   <button
                     aria-disabled="false"
-                    class="wrapper ghost primary small"
+                    class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                     title="Add Filter"
                     type="button"
                   >
                     <i
                       aria-hidden="true"
-                      class="material-icons icon small"
+                      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                     >
                       add
                     </i>
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                        
                       Add Filter
@@ -7551,18 +7551,18 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   </div>
                   <button
                     aria-disabled="false"
-                    class="wrapper ghost primary small"
+                    class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                     title="Add Filter"
                     type="button"
                   >
                     <i
                       aria-hidden="true"
-                      class="material-icons icon small"
+                      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                     >
                       add
                     </i>
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                        
                       Add Filter
@@ -8316,18 +8316,18 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   </div>
                   <button
                     aria-disabled="false"
-                    class="wrapper ghost primary small"
+                    class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                     title="Add Filter"
                     type="button"
                   >
                     <i
                       aria-hidden="true"
-                      class="material-icons icon small"
+                      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                     >
                       add
                     </i>
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                        
                       Add Filter

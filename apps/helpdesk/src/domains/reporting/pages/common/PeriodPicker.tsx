@@ -4,6 +4,8 @@ import moment, { Moment } from 'moment-timezone'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap'
 
+import { Button, type ButtonProps } from '@gorgias/axiom'
+
 import {
     DateTimeFormatMapper,
     DateTimeFormatType,
@@ -16,7 +18,6 @@ import {
     periodPickerMaxSpanDays,
 } from 'domains/reporting/pages/common/utils'
 import { getDefaultSetOfRanges } from 'domains/reporting/pages/constants'
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import { getTimezone } from 'state/currentUser/selectors'
 import { RootState } from 'state/types'
 import {
@@ -43,7 +44,7 @@ export type Props = {
     startDatetime: Moment
     userTimezone?: string | null
     onOpen?: () => void
-    toggleProps?: Partial<ButtonProps>
+    toggleProps?: Pick<ButtonProps, 'fillStyle'>
     dateRanges?: { [label: string]: [Moment, Moment] }
     pickerV2Styles?: boolean
     rangesOnLeft?: boolean
@@ -205,9 +206,9 @@ export const PeriodPickerContainer = ({
             <Button
                 intent="secondary"
                 isDisabled={isDisabled}
-                {...toggleProps}
                 leadingIcon={CALENDAR_ICON}
                 trailingIcon="arrow_drop_down"
+                {...toggleProps}
             >
                 {label}
             </Button>

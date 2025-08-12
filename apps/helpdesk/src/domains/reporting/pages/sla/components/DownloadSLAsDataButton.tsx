@@ -1,5 +1,6 @@
+import { Button } from '@gorgias/axiom'
+
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
-import Button from 'pages/common/components/button/Button'
 
 export const DOWNLOAD_BUTTON_TITLE = 'Download SLAs Data'
 

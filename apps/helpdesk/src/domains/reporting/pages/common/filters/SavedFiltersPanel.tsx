@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 
 import { Card } from '@gorgias/analytics-ui-kit'
+import { Button } from '@gorgias/axiom'
 import {
     useCreateAnalyticsFilter,
     useDeleteAnalyticsFilter,
@@ -45,7 +46,6 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'

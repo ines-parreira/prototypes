@@ -5,92 +5,116 @@ exports[`<SkeletonLoader /> should render 1`] = `
   <div
     class="row"
   >
-    <span
-      aria-busy="true"
-      aria-live="polite"
-      class="container icon"
+    <div
+      aria-label="Loading"
     >
       <span
-        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
-        style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        aria-busy="true"
+        aria-live="polite"
+        class="container icon"
       >
-        ‌
+        <span
+          class="react-loading-skeleton ui-skeleton-skeleton-ee26"
+          style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        >
+          ‌
+        </span>
+        <br />
       </span>
-      <br />
-    </span>
-    <span
-      aria-busy="true"
-      aria-live="polite"
-      class="container line"
+    </div>
+    <div
+      aria-label="Loading"
     >
       <span
-        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
-        style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        aria-busy="true"
+        aria-live="polite"
+        class="container line"
       >
-        ‌
+        <span
+          class="react-loading-skeleton ui-skeleton-skeleton-ee26"
+          style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        >
+          ‌
+        </span>
+        <br />
       </span>
-      <br />
-    </span>
+    </div>
   </div>
   <div
     class="row"
   >
-    <span
-      aria-busy="true"
-      aria-live="polite"
-      class="container icon"
+    <div
+      aria-label="Loading"
     >
       <span
-        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
-        style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        aria-busy="true"
+        aria-live="polite"
+        class="container icon"
       >
-        ‌
+        <span
+          class="react-loading-skeleton ui-skeleton-skeleton-ee26"
+          style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        >
+          ‌
+        </span>
+        <br />
       </span>
-      <br />
-    </span>
-    <span
-      aria-busy="true"
-      aria-live="polite"
-      class="container line"
+    </div>
+    <div
+      aria-label="Loading"
     >
       <span
-        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
-        style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        aria-busy="true"
+        aria-live="polite"
+        class="container line"
       >
-        ‌
+        <span
+          class="react-loading-skeleton ui-skeleton-skeleton-ee26"
+          style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        >
+          ‌
+        </span>
+        <br />
       </span>
-      <br />
-    </span>
+    </div>
   </div>
   <div
     class="row"
   >
-    <span
-      aria-busy="true"
-      aria-live="polite"
-      class="container icon"
+    <div
+      aria-label="Loading"
     >
       <span
-        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
-        style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        aria-busy="true"
+        aria-live="polite"
+        class="container icon"
       >
-        ‌
+        <span
+          class="react-loading-skeleton ui-skeleton-skeleton-ee26"
+          style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        >
+          ‌
+        </span>
+        <br />
       </span>
-      <br />
-    </span>
-    <span
-      aria-busy="true"
-      aria-live="polite"
-      class="container line"
+    </div>
+    <div
+      aria-label="Loading"
     >
       <span
-        class="react-loading-skeleton ui-skeleton-skeleton-ee26"
-        style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        aria-busy="true"
+        aria-live="polite"
+        class="container line"
       >
-        ‌
+        <span
+          class="react-loading-skeleton ui-skeleton-skeleton-ee26"
+          style="--animation-duration: 1.3s; height: 24px; border-radius: 4px;"
+        >
+          ‌
+        </span>
+        <br />
       </span>
-      <br />
-    </span>
+    </div>
   </div>
 </div>
 `;

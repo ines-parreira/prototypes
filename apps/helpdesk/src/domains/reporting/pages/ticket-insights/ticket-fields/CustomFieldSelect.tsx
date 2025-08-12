@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Skeleton } from '@gorgias/axiom'
+import { Button, Skeleton } from '@gorgias/axiom'
 import { ListCustomFieldsParams } from '@gorgias/helpdesk-client'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -14,7 +14,6 @@ import {
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

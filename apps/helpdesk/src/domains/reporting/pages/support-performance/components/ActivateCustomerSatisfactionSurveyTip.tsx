@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import MetricTip from 'domains/reporting/pages/support-performance/components/MetricTip'
-import Button from 'pages/common/components/button/Button'
 
 export const SATISFACTION_SURVEYS_SETTINGS_PATH =
     '/app/settings/satisfaction-surveys'

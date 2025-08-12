@@ -137,23 +137,23 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
             <div>
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons icon medium"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
                   calendar_today
                 </i>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Feb 3, 2021
                 </span>
                 <i
                   aria-hidden="true"
-                  class="material-icons icon medium"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
                   arrow_drop_down
                 </i>
@@ -406,23 +406,23 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <div>
             <button
               aria-disabled="false"
-              class="wrapper fill secondary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
               type="button"
             >
               <i
                 aria-hidden="true"
-                class="material-icons icon medium"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
               >
                 calendar_today
               </i>
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Feb 3, 2021
               </span>
               <i
                 aria-hidden="true"
-                class="material-icons icon medium"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
               >
                 arrow_drop_down
               </i>
@@ -1334,23 +1334,23 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <div>
             <button
               aria-disabled="false"
-              class="wrapper fill secondary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
               type="button"
             >
               <i
                 aria-hidden="true"
-                class="material-icons icon medium"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
               >
                 calendar_today
               </i>
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Feb 3, 2021
               </span>
               <i
                 aria-hidden="true"
-                class="material-icons icon medium"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
               >
                 arrow_drop_down
               </i>
@@ -1465,11 +1465,11 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           </div>
           <button
             aria-disabled="false"
-            class="wrapper fill primary medium"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Go to article recommendation
             </span>
@@ -1527,11 +1527,11 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           </div>
           <button
             aria-disabled="false"
-            class="wrapper fill primary medium"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Go to Order Management
             </span>
@@ -1581,11 +1581,11 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           </div>
           <button
             aria-disabled="false"
-            class="wrapper fill primary medium"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Go to Order Management
             </span>

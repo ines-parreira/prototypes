@@ -1,11 +1,10 @@
-import { Skeleton } from '@gorgias/axiom'
+import { Button, Skeleton } from '@gorgias/axiom'
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 import { ListLiveCallQueueAgentsParams } from '@gorgias/helpdesk-types'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
-import Button from 'pages/common/components/button/Button'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

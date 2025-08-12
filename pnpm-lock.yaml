@@ -276,8 +276,8 @@ importers:
         specifier: 0.1.14
         version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
-        specifier: ^0.40.1
-        version: 0.40.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        specifier: ^0.41.0
+        version: 0.41.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -2731,8 +2731,8 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.40.1':
-    resolution: {integrity: sha512-i/iWMqW53qkez8qVGWZod1IuCrnCNlFO5A0WQBP5zM+Mwk0gaf6AMPNvzRpso1gR3ZDu1MBggUUY0yhNy8T61A==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.40.1/930464789be05452ced17fcedfc83e71986106d6}
+  '@gorgias/axiom@0.41.0':
+    resolution: {integrity: sha512-lRu2uNNfFTfhzqYCEX7IXAhWvxRJThhJxsvpxPX6tiDXBdp6F8bG6lqB2ShGH7VllfwCaRnBBCqRhsK1KorAfw==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.41.0/01e226528d7ce450a5f1cca14b23dffee960feee}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -13232,7 +13232,7 @@ snapshots:
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.40.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.41.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens': 0.10.6
