@@ -1,0 +1,55 @@
+{
+    "name": "@repo/tickets",
+    "version": "1.0.0",
+    "description": "Tickets domain",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "jest",
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=2 --testTimeout=10000 --silent --forceExit",
+        "test:watch": "jest --watch",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "react": "catalog:react",
+        "react-dom": "catalog:react"
+    },
+    "devDependencies": {
+        "@jest/expect": "catalog:jest",
+        "@repo/jest-config": "workspace:*",
+        "@repo/testing": "workspace:*",
+        "@repo/tsconfigs": "workspace:*",
+        "@swc/core": "catalog:jest",
+        "@swc/jest": "catalog:jest",
+        "@testing-library/dom": "catalog:testing-library",
+        "@testing-library/jest-dom": "catalog:testing-library",
+        "@testing-library/react": "catalog:testing-library",
+        "@testing-library/user-event": "catalog:testing-library",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/jest": "catalog:jest",
+        "@types/jsdom": "catalog:jest",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "@types/testing-library__jest-dom": "catalog:jest",
+        "jest": "catalog:jest",
+        "jest-environment-jsdom": "catalog:jest",
+        "jest-fixed-jsdom": "catalog:jest",
+        "jest-immutable-matchers": "catalog:jest",
+        "jest-junit": "catalog:jest",
+        "jest-launchdarkly-mock": "catalog:jest",
+        "jest-matcher-utils": "catalog:jest",
+        "jest-mock": "catalog:jest",
+        "lodash": "catalog:lodash",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "swc_mut_cjs_exports": "catalog:jest",
+        "typescript": "catalog:typescript"
+    }
+}

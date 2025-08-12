@@ -137,6 +137,7 @@ const mergedConfig = mergeConfigs([
 
 const outDirs = [
     'apps/helpdesk',
+    'domains/tickets',
     'configs/typescript',
     'configs/jest',
     'core/hooks',
