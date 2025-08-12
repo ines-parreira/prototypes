@@ -13,6 +13,8 @@ import {
     useJourneyConfiguration,
     useJourneys,
 } from 'AIJourney/queries'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
@@ -23,6 +25,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import {
     EnableDiscountField,
+    JourneyMessageInstructionsField,
     MaximumDiscountField,
     MessagesToSendField,
     MessageWithDiscountCodeField,
@@ -36,6 +39,9 @@ export const Setup = () => {
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
     const [isVisible, setIsVisible] = useState(true)
+    const customInstructionEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCustomInstructions,
+    )
 
     const { currentIntegration, isLoading: isLoadingIntegrations } =
         useIntegrations(shopName)
@@ -96,6 +102,8 @@ export const Setup = () => {
     const [phoneNumberValue, setPhoneNumberValue] = useState<
         NewPhoneNumber | undefined
     >(currentPhoneNumber)
+    const [journeyMessageInstructions, setJourneyMessageInstructions] =
+        useState<string>('')
 
     useEffect(() => {
         if (journeyParams) {
@@ -112,6 +120,14 @@ export const Setup = () => {
             )
         }
     }, [journeyParams, currentPhoneNumber])
+
+    useEffect(() => {
+        if (abandonedCartJourney?.message_instructions) {
+            setJourneyMessageInstructions(
+                abandonedCartJourney.message_instructions,
+            )
+        }
+    }, [abandonedCartJourney])
 
     const handleDiscountToggle = () => {
         setIsDiscountEnabled((prev) => !prev)
@@ -146,6 +162,7 @@ export const Setup = () => {
                 params: {
                     store_integration_id: currentIntegration.id,
                     store_name: currentIntegration.name,
+                    message_instructions: journeyMessageInstructions || null,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: numberOfMessageValue - 1,
@@ -183,6 +200,7 @@ export const Setup = () => {
         discountCodeThresholdValue: isDiscountEnabled
             ? discountCodeThreshold
             : undefined,
+        journeyMessageInstructions,
     })
 
     const handleContinue = async () => {
@@ -259,6 +277,14 @@ export const Setup = () => {
                     value={discountCodeThreshold}
                     numberOfMessages={numberOfMessageValue}
                     onChange={setDiscountCodeThreshold}
+                />
+            )}
+
+            {customInstructionEnabled && (
+                <JourneyMessageInstructionsField
+                    value={journeyMessageInstructions}
+                    onChange={setJourneyMessageInstructions}
+                    maxLength={2000}
                 />
             )}
 

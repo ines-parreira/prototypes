@@ -1,4 +1,5 @@
 export { EnableDiscountField } from './EnableDiscount/EnableDiscount'
+export { JourneyMessageInstructionsField } from './JourneyMessageInstructions/JourneyMessageInstructions'
 export { MaximumDiscountField } from './MaximumDiscount/MaximumDiscount'
 export { MessagesToSendField } from 'AIJourney/pages/Setup/fields/MessagesToSend/MessagesToSend'
 export { MessageWithDiscountCodeField } from './MessageWithDiscountCode/MessageWithDiscountCode'

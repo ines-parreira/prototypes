@@ -21,6 +21,7 @@ type UseJourneyActionsParams = {
     discountValue?: string
     phoneNumberValue?: NewPhoneNumber
     discountCodeThresholdValue?: number
+    journeyMessageInstructions?: string
 }
 
 export const useJourneyUpdateHandler = ({
@@ -32,6 +33,7 @@ export const useJourneyUpdateHandler = ({
     discountValue,
     phoneNumberValue,
     discountCodeThresholdValue,
+    journeyMessageInstructions,
 }: UseJourneyActionsParams) => {
     const dispatch = useAppDispatch()
     const updateJourney = useUpdateJourney()
@@ -74,6 +76,8 @@ export const useJourneyUpdateHandler = ({
                     journeyId: abandonedCartJourney.id,
                     params: {
                         state: journeyState ?? JourneyStatusEnum.Active,
+                        message_instructions:
+                            journeyMessageInstructions || null,
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),
                 }
@@ -98,6 +102,7 @@ export const useJourneyUpdateHandler = ({
             discountValue,
             phoneNumberValue,
             discountCodeThresholdValue,
+            journeyMessageInstructions,
             updateJourney,
             dispatch,
         ],

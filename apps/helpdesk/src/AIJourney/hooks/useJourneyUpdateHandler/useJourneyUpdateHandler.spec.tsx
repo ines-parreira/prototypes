@@ -44,6 +44,7 @@ describe('useJourneyUpdateHandler', () => {
             followUpValue: 3,
             isDiscountEnabled: true,
             discountValue: '10',
+            journeyMessageInstructions: 'Test instructions',
             phoneNumberValue: {
                 phone_number: '+1234567890',
                 integrations: [{ type: 'sms', id: 'sms-id' }],
@@ -68,6 +69,7 @@ describe('useJourneyUpdateHandler', () => {
             journeyId: 'journey-id',
             params: {
                 state: 'active',
+                message_instructions: 'Test instructions',
             },
             journeyConfigs: {
                 max_follow_up_messages: 3,

@@ -1,0 +1,20 @@
+@import (reference) '~css/typography';
+
+:local {
+    .journeyMessageInstructionsField {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+        width: 100%;
+    }
+
+    .characterCount {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        text-align: right;
+
+        &.characterCountWarning {
+            color: var(--feedback-warning);
+        }
+    }
+}

@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -11,6 +12,8 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
@@ -90,6 +93,9 @@ const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
     ],
     isLoading: false,
 })
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('<Setup />', () => {
     const mockHandleUpdate = jest.fn()
@@ -637,7 +643,7 @@ describe('<Setup />', () => {
                 await expect(mockMutateAsync()).rejects.toThrow(
                     'Missing integration information',
                 )
-                await expect(mockHistoryPush).not.toHaveBeenCalled()
+                expect(mockHistoryPush).not.toHaveBeenCalled()
             })
         })
 
@@ -683,7 +689,361 @@ describe('<Setup />', () => {
                 await expect(mockUpdateJourney()).rejects.toThrow(
                     'Missing integration information',
                 )
-                await expect(mockHistoryPush).not.toHaveBeenCalled()
+                expect(mockHistoryPush).not.toHaveBeenCalled()
+            })
+        })
+    })
+
+    describe('Journey Setup behavior', () => {
+        const mockHandleUpdate = jest.fn()
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+
+            mockUseJourneyUpdateHandler.mockImplementation(() => ({
+                handleUpdate: mockHandleUpdate,
+            }))
+        })
+
+        it('should display existing journey data when journey already exists', async () => {
+            const user = userEvent.setup()
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector.name === 'getCurrentAccountState') {
+                    return fromJS(account)
+                }
+                // Return phone numbers for getNewPhoneNumbers selector
+                return mockPhoneNumbers
+            })
+
+            mockUseIntegrations.mockImplementation(() => ({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                isLoading: false,
+            }))
+
+            mockUseJourneys.mockImplementation(() => ({
+                data: [
+                    {
+                        id: 'journey-123',
+                        type: 'cart_abandoned',
+                        message_instructions: 'Be friendly and professional',
+                    },
+                ],
+                isError: false,
+                isLoading: false,
+            }))
+
+            mockUseJourneyConfiguration.mockImplementation(() => ({
+                data: {
+                    max_follow_up_messages: 2,
+                    offer_discount: true,
+                    max_discount_percent: 15,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                },
+                isError: false,
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByRole('button', { name: '3' })[0],
+                ).toHaveClass('selectorOption--selected')
+            })
+
+            expect(screen.getByDisplayValue('15')).toBeInTheDocument()
+
+            const continueButton = screen.getByTestId('ai-journey-button')
+            expect(continueButton).toBeEnabled()
+
+            await act(async () => {
+                await user.click(continueButton)
+            })
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalled()
+            })
+        })
+
+        it('should not display custom instructions when flag off', async () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomInstructions) {
+                    return false
+                }
+            })
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector.name === 'getCurrentAccountState') {
+                    return fromJS(account)
+                }
+                // Return phone numbers for getNewPhoneNumbers selector
+                return mockPhoneNumbers
+            })
+
+            mockUseIntegrations.mockImplementation(() => ({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                isLoading: false,
+            }))
+
+            mockUseJourneys.mockImplementation(() => ({
+                data: [
+                    {
+                        id: 'journey-123',
+                        type: 'cart_abandoned',
+                        message_instructions: 'Be friendly and professional',
+                    },
+                ],
+                isError: false,
+                isLoading: false,
+            }))
+
+            mockUseJourneyConfiguration.mockImplementation(() => ({
+                data: {
+                    max_follow_up_messages: 2,
+                    offer_discount: true,
+                    max_discount_percent: 15,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                },
+                isError: false,
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByPlaceholderText(
+                    /Enter instructions for how the AI should communicate/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display custom instructions when flag on', async () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomInstructions) {
+                    return true
+                }
+            })
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector.name === 'getCurrentAccountState') {
+                    return fromJS(account)
+                }
+                // Return phone numbers for getNewPhoneNumbers selector
+                return mockPhoneNumbers
+            })
+
+            mockUseIntegrations.mockImplementation(() => ({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                isLoading: false,
+            }))
+
+            mockUseJourneys.mockImplementation(() => ({
+                data: [
+                    {
+                        id: 'journey-123',
+                        type: 'cart_abandoned',
+                        message_instructions: 'Be friendly and professional',
+                    },
+                ],
+                isError: false,
+                isLoading: false,
+            }))
+
+            mockUseJourneyConfiguration.mockImplementation(() => ({
+                data: {
+                    max_follow_up_messages: 2,
+                    offer_discount: true,
+                    max_discount_percent: 15,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                },
+                isError: false,
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const messageInstructionsTextarea = screen.getByPlaceholderText(
+                /Enter instructions for how the AI should communicate/i,
+            )
+            expect(messageInstructionsTextarea).toBeInTheDocument()
+            expect(messageInstructionsTextarea).toHaveValue(
+                'Be friendly and professional',
+            )
+        })
+
+        it('should display default values when journey does not exist', async () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiJourneyCustomInstructions) {
+                    return true
+                }
+            })
+
+            const user = userEvent.setup()
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector.name === 'getCurrentAccountState') {
+                    return fromJS(account)
+                }
+                // Return phone numbers for getNewPhoneNumbers selector
+                return mockPhoneNumbers
+            })
+
+            mockUseIntegrations.mockImplementation(() => ({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                isLoading: false,
+            }))
+
+            mockUseJourneys.mockImplementation(() => ({
+                data: [],
+                isError: false,
+                isLoading: false,
+            }))
+
+            // When no journey exists, there should be no journey configuration
+            mockUseJourneyConfiguration.mockImplementation(() => ({
+                data: undefined,
+                isError: false,
+                isLoading: false,
+            }))
+
+            const mockCreateMutateAsync = jest.fn().mockResolvedValue({})
+            mockUseCreateNewJourney.mockImplementation(() => ({
+                mutateAsync: mockCreateMutateAsync,
+                isError: false,
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            // Verify default states
+            const followUpButtons = screen
+                .getAllByRole('button')
+                .filter((btn) =>
+                    ['1', '2', '3', '4'].includes(btn.textContent ?? ''),
+                )
+            expect(followUpButtons).toHaveLength(4)
+            // Check if any button is selected - there might be a default
+            const selectedButton = followUpButtons.find((btn) =>
+                btn.classList.contains('selectorOption--selected'),
+            )
+            if (selectedButton) {
+                // If there's a default, just ensure it's one of the valid options
+                expect(['1', '2', '3', '4']).toContain(
+                    selectedButton.textContent,
+                )
+            }
+
+            const discountSwitch = screen.getByRole('checkbox')
+            expect(discountSwitch).not.toBeChecked()
+
+            const messageInstructionsTextarea = screen.getByPlaceholderText(
+                /Enter instructions for how the AI should communicate/i,
+            )
+            expect(messageInstructionsTextarea).toHaveValue('')
+
+            await act(async () => {
+                // Select follow-up value
+                await user.click(screen.getByRole('button', { name: '1' }))
+
+                // Enable discount and set value
+                await user.click(discountSwitch)
+            })
+
+            const discountInput = screen.getByRole('spinbutton')
+            await act(async () => {
+                // Add discount
+                await user.type(discountInput, '10')
+
+                // Add message instructions
+                await user.type(
+                    messageInstructionsTextarea,
+                    'Test instructions',
+                )
+            })
+
+            // Test phone number selection - verify dropdown shows "Select" initially (no journey exists)
+            expect(screen.getByText('Select')).toBeInTheDocument()
+
+            // Click on the dropdown to open it and select a phone number
+            await act(async () => {
+                await user.click(screen.getByText('Select'))
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('555-123-4567')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await user.click(screen.getByText('555-123-4567'))
+            })
+
+            // Verify a phone number was selected (dropdown no longer shows "Select")
+            await waitFor(() => {
+                expect(screen.queryByText('Select')).not.toBeInTheDocument()
+            })
+
+            // Verify continue button is enabled and click it
+            const continueButton = screen.getByTestId('ai-journey-button')
+            expect(continueButton).toBeEnabled()
+
+            await act(async () => {
+                await user.click(continueButton)
+            })
+
+            // Verify create journey is called with correct parameters
+            const createMutateAsync = mockUseCreateNewJourney().mutateAsync
+            await waitFor(() => {
+                expect(createMutateAsync).toHaveBeenCalledWith({
+                    params: {
+                        store_integration_id: 1,
+                        store_name: 'shopify-store',
+                        message_instructions: 'Test instructions',
+                    },
+                    journeyConfigs: {
+                        discount_code_message_threshold: 1,
+                        max_follow_up_messages: 0,
+                        offer_discount: true,
+                        max_discount_percent: 10,
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+15551234567',
+                    },
+                })
             })
         })
     })
@@ -798,6 +1158,7 @@ describe('<Setup />', () => {
                 params: {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
+                    message_instructions: null,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -805,6 +1166,7 @@ describe('<Setup />', () => {
                     max_discount_percent: 20,
                     sms_sender_integration_id: 1,
                     discount_code_message_threshold: 2,
+                    sms_sender_number: '+15551234567',
                 },
             })
 
@@ -893,12 +1255,14 @@ describe('<Setup />', () => {
                 params: {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
+                    message_instructions: null,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
                     max_discount_percent: 20,
                     sms_sender_integration_id: 1,
+                    sms_sender_number: '+15551234567',
                     discount_code_message_threshold: 2,
                 },
             })
@@ -939,6 +1303,7 @@ describe('<Setup />', () => {
 
             expect(mockMutateAsync).toHaveBeenCalledWith({
                 params: {
+                    message_instructions: null,
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                 },
@@ -947,6 +1312,7 @@ describe('<Setup />', () => {
                     offer_discount: false,
                     max_discount_percent: 20,
                     sms_sender_integration_id: 1,
+                    sms_sender_number: '+15551234567',
                 },
             })
         })

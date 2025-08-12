@@ -31,6 +31,7 @@ export enum FeatureFlagKey {
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
     AiAgentVariablesAndActionsInGuidance = 'ai-agent-variables-and-actions-in-guidance',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
+    AiJourneyCustomInstructions = 'ai-journey-custom-instructions',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
