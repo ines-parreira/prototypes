@@ -112,6 +112,8 @@ describe('TableImportEmail', () => {
 
             expect(screen.getByText('50% COMPLETED')).toBeInTheDocument()
             expect(screen.getByText('75% COMPLETED')).toBeInTheDocument()
+            expect(screen.getByText('25% COMPLETED')).toBeInTheDocument()
+            expect(screen.getByText('80% COMPLETED')).toBeInTheDocument()
         })
     })
 

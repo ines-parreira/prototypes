@@ -80,7 +80,7 @@ describe('utils', () => {
 
         describe('In Progress Status', () => {
             it('displays in progress badge with percentage', () => {
-                const result = getStatusBadge('in_progress', 50)
+                const result = getStatusBadge('in-progress', 50)
 
                 render(<div>{result}</div>)
 
@@ -88,8 +88,8 @@ describe('utils', () => {
             })
 
             it('shows different progress percentages correctly', () => {
-                const result25 = getStatusBadge('in_progress', 25)
-                const result75 = getStatusBadge('in_progress', 75)
+                const result25 = getStatusBadge('in-progress', 25)
+                const result75 = getStatusBadge('in-progress', 75)
 
                 render(<div>{result25}</div>)
                 expect(screen.getByText('25% COMPLETED')).toBeInTheDocument()
@@ -99,7 +99,7 @@ describe('utils', () => {
             })
 
             it('handles zero progress percentage', () => {
-                const result = getStatusBadge('in_progress', 0)
+                const result = getStatusBadge('in-progress', 0)
 
                 render(<div>{result}</div>)
 
@@ -107,7 +107,7 @@ describe('utils', () => {
             })
 
             it('handles full progress percentage', () => {
-                const result = getStatusBadge('in_progress', 100)
+                const result = getStatusBadge('in-progress', 100)
 
                 render(<div>{result}</div>)
 

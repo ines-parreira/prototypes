@@ -1,37 +1,55 @@
 import { useMemo, useState } from 'react'
 
-import { useListImports } from '@gorgias/helpdesk-queries'
-import { ImportStatus as ApiImportStatus } from '@gorgias/helpdesk-types'
+import { queryKeys, useListImports } from '@gorgias/helpdesk-queries'
+import { ListImportsOrderBy } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 
-import { ImportItem, ImportStatus } from '../types'
+import { ImportItem } from '../types'
 
 const PAGE_SIZE = 8
-const START_PAGE = 1
-
-const mapApiStatusToImportStatus = (
-    apiStatus: ApiImportStatus,
-): ImportStatus => {
-    switch (apiStatus) {
-        case ApiImportStatus.Completed:
-            return 'completed'
-        case ApiImportStatus.Failed:
-            return 'failed'
-        case ApiImportStatus.InProgress:
-            return 'in_progress'
-        default:
-            return 'in_progress'
-    }
-}
+const REFETCH_INTERVAL = 60000 // 1 minute
 
 export const useTableImport = () => {
     const [sortOrder, setSortOrder] = useState<OrderDirection>(
         OrderDirection.Asc,
     )
-    const [page, setPage] = useState<number>(START_PAGE)
+    const [cursor, setCursor] = useState<string | undefined>()
 
-    const { data: response, isLoading, isError } = useListImports()
+    const orderBy =
+        sortOrder === OrderDirection.Asc
+            ? ListImportsOrderBy.StatusDesc
+            : ListImportsOrderBy.StatusAsc
+
+    const importListingQueryKey = queryKeys.integrations.listImports({
+        limit: PAGE_SIZE,
+        order_by: orderBy,
+        cursor,
+    })
+
+    const {
+        data: response,
+        isLoading,
+        isError,
+    } = useListImports(
+        {
+            limit: PAGE_SIZE,
+            order_by: orderBy,
+            cursor,
+        },
+        {
+            query: {
+                staleTime: 0,
+                queryKey: importListingQueryKey,
+                enabled: true,
+                refetchInterval: REFETCH_INTERVAL,
+                select: (data) => ({
+                    importList: data?.data?.data || [],
+                    meta: data?.data?.meta,
+                }),
+            },
+        },
+    )
 
     const handleSortToggle = () => {
         setSortOrder(
@@ -39,50 +57,36 @@ export const useTableImport = () => {
                 ? OrderDirection.Desc
                 : OrderDirection.Asc,
         )
+        setCursor(undefined) // Reset cursor when sorting changes
     }
 
     const importList: ImportItem[] = useMemo(() => {
-        if (!response?.data?.data) {
+        if (!response?.importList) {
             return []
         }
 
-        const mappedItems: ImportItem[] = response.data.data.map(
-            (apiImport) => ({
-                id: apiImport.id.toString(),
-                email: apiImport.provider_identifier,
-                emailCount: apiImport.stats?.total_tickets_created || 0,
-                import_window_start: apiImport.import_window_start,
-                import_window_end: apiImport.import_window_end,
-                status: mapApiStatusToImportStatus(apiImport.status),
-                progressPercentage: apiImport.progress_percentage,
-                provider: apiImport.provider,
-            }),
-        )
+        return response?.importList?.sort((a, b) => {
+            // it happens that the alphabetical order of statuses is the
+            // reverse of the one we want (completed, failed, in_progress).
+            // The 2nd order is always ascending email alphabetical.
+            const statusComparison = a.status.localeCompare(b.status)
+            if (statusComparison !== 0)
+                return sortOrder === OrderDirection.Asc
+                    ? -statusComparison
+                    : statusComparison
+            return a.provider_identifier.localeCompare(b.provider_identifier)
+        })
+    }, [response?.importList, sortOrder])
 
-        return mappedItems
-            .sort((a, b) => {
-                // it happens that the alphabetical order of statuses is the
-                // reverse of the one we want (completed, failed, in_progress).
-                // The 2nd order is always ascending email alphabetical.
-                const statusComparison = a.status.localeCompare(b.status)
-                if (statusComparison !== 0)
-                    return sortOrder === OrderDirection.Asc
-                        ? -statusComparison
-                        : statusComparison
-                return a.email.localeCompare(b.email)
-            })
-            .slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-    }, [response, page, sortOrder])
+    const hasNextItems = Boolean(response?.meta?.next_cursor)
+    const hasPrevItems = Boolean(response?.meta?.prev_cursor)
 
-    const totalItems = response?.data?.data?.length || 0
-    const hasNextItems = totalItems > page * PAGE_SIZE
-    const hasPrevItems = page > 1
     const fetchNextItems = () => {
-        setPage(page + 1)
+        setCursor(response?.meta?.next_cursor ?? undefined)
     }
 
     const fetchPrevItems = () => {
-        setPage(page - 1)
+        setCursor(response?.meta?.prev_cursor ?? undefined)
     }
 
     return {

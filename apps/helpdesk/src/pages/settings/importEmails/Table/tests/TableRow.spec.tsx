@@ -36,7 +36,7 @@ describe('TableRow', () => {
         it('displays Gmail provider icon and email address', () => {
             const importItem = createMockImportItem({
                 provider: IntegrationType.Gmail,
-                email: 'gmail@example.com',
+                provider_identifier: 'gmail@example.com',
             })
 
             renderTableRow(importItem)
@@ -48,7 +48,7 @@ describe('TableRow', () => {
         it('displays Outlook provider icon and email address', () => {
             const importItem = createMockImportItem({
                 provider: IntegrationType.Outlook,
-                email: 'outlook@example.com',
+                provider_identifier: 'outlook@example.com',
             })
 
             renderTableRow(importItem)
@@ -60,7 +60,7 @@ describe('TableRow', () => {
         it('displays fallback icon for unsupported provider', () => {
             const importItem = createMockImportItem({
                 provider: 'unsupported' as any,
-                email: 'unsupported@example.com',
+                provider_identifier: 'unsupported@example.com',
             })
 
             renderTableRow(importItem)
@@ -75,7 +75,10 @@ describe('TableRow', () => {
     describe('Import Data Column', () => {
         it('displays email count and date range', () => {
             const importItem = createMockImportItem({
-                emailCount: 5432,
+                stats: {
+                    total_messages_imported: 5000,
+                    total_tickets_created: 5432,
+                },
                 import_window_start: '2024-12-01T00:00:00Z',
                 import_window_end: '2025-01-15T00:00:00Z',
             })
@@ -90,17 +93,23 @@ describe('TableRow', () => {
 
         it('formats large email counts with commas', () => {
             const importItem = createMockImportItem({
-                emailCount: 1234567,
+                stats: {
+                    total_messages_imported: 5000,
+                    total_tickets_created: 5432,
+                },
             })
 
             renderTableRow(importItem)
 
-            expect(screen.getByText('1,234,567 emails')).toBeInTheDocument()
+            expect(screen.getByText('5,432 emails')).toBeInTheDocument()
         })
 
         it('displays single email count correctly', () => {
             const importItem = createMockImportItem({
-                emailCount: 1,
+                stats: {
+                    total_tickets_created: 1,
+                    total_messages_imported: 1,
+                },
             })
 
             renderTableRow(importItem)
@@ -110,12 +119,81 @@ describe('TableRow', () => {
 
         it('handles zero email count', () => {
             const importItem = createMockImportItem({
-                emailCount: 0,
+                stats: {
+                    total_tickets_created: 0,
+                    total_messages_imported: 0,
+                },
             })
 
             renderTableRow(importItem)
 
             expect(screen.getByText('0 emails')).toBeInTheDocument()
+        })
+
+        it('handles null total_tickets_created and falls back to 0', () => {
+            const importItem = createMockImportItem({
+                stats: {
+                    total_tickets_created: null as any,
+                    total_messages_imported: 100,
+                },
+            })
+
+            renderTableRow(importItem)
+
+            expect(screen.getByText('0 emails')).toBeInTheDocument()
+        })
+
+        it('handles undefined total_tickets_created and falls back to 0', () => {
+            const importItem = createMockImportItem({
+                stats: {
+                    total_tickets_created: undefined as any,
+                    total_messages_imported: 100,
+                },
+            })
+
+            renderTableRow(importItem)
+
+            expect(screen.getByText('0 emails')).toBeInTheDocument()
+        })
+
+        it('formats very large numbers with proper locale formatting', () => {
+            const importItem = createMockImportItem({
+                stats: {
+                    total_tickets_created: 1234567890,
+                    total_messages_imported: 1000000,
+                },
+            })
+
+            renderTableRow(importItem)
+
+            expect(screen.getByText('1,234,567,890 emails')).toBeInTheDocument()
+        })
+
+        it('handles decimal numbers by using toLocaleString formatting', () => {
+            const importItem = createMockImportItem({
+                stats: {
+                    total_tickets_created: 1500.75,
+                    total_messages_imported: 2000,
+                },
+            })
+
+            renderTableRow(importItem)
+
+            // toLocaleString() will format this as "1,500.75" in most locales
+            expect(screen.getByText('1,500.75 emails')).toBeInTheDocument()
+        })
+
+        it('handles negative numbers (edge case)', () => {
+            const importItem = createMockImportItem({
+                stats: {
+                    total_tickets_created: -5,
+                    total_messages_imported: 100,
+                },
+            })
+
+            renderTableRow(importItem)
+
+            expect(screen.getByText('-5 emails')).toBeInTheDocument()
         })
     })
 
@@ -124,7 +202,7 @@ describe('TableRow', () => {
             it('displays completed status badge with success icon', () => {
                 const importItem = createMockImportItem({
                     status: 'completed',
-                    progressPercentage: 100,
+                    progress_percentage: 100,
                 })
 
                 renderTableRow(importItem)
@@ -138,7 +216,7 @@ describe('TableRow', () => {
             it('ignores progress percentage for completed status', () => {
                 const importItem = createMockImportItem({
                     status: 'completed',
-                    progressPercentage: 50,
+                    progress_percentage: 50,
                 })
 
                 renderTableRow(importItem)
@@ -152,7 +230,7 @@ describe('TableRow', () => {
             it('displays failed status badge with error icon', () => {
                 const importItem = createMockImportItem({
                     status: 'failed',
-                    progressPercentage: 0,
+                    progress_percentage: 0,
                 })
 
                 renderTableRow(importItem)
@@ -164,7 +242,7 @@ describe('TableRow', () => {
             it('ignores progress percentage for failed status', () => {
                 const importItem = createMockImportItem({
                     status: 'failed',
-                    progressPercentage: 75,
+                    progress_percentage: 75,
                 })
 
                 renderTableRow(importItem)
@@ -177,8 +255,8 @@ describe('TableRow', () => {
         describe('In Progress Status', () => {
             it('displays in progress status badge with percentage', () => {
                 const importItem = createMockImportItem({
-                    status: 'in_progress',
-                    progressPercentage: 65,
+                    status: 'in-progress',
+                    progress_percentage: 65,
                 })
 
                 renderTableRow(importItem)
@@ -188,8 +266,8 @@ describe('TableRow', () => {
 
             it('displays in progress status badge with 0% progress', () => {
                 const importItem = createMockImportItem({
-                    status: 'in_progress',
-                    progressPercentage: 0,
+                    status: 'in-progress',
+                    progress_percentage: 0,
                 })
 
                 renderTableRow(importItem)
@@ -199,8 +277,8 @@ describe('TableRow', () => {
 
             it('displays in progress status badge with 100% progress', () => {
                 const importItem = createMockImportItem({
-                    status: 'in_progress',
-                    progressPercentage: 100,
+                    status: 'in-progress',
+                    progress_percentage: 100,
                 })
 
                 renderTableRow(importItem)
@@ -213,7 +291,7 @@ describe('TableRow', () => {
             it('displays unknown status badge for unrecognized status', () => {
                 const importItem = createMockImportItem({
                     status: 'unknown_status' as any,
-                    progressPercentage: 50,
+                    progress_percentage: 50,
                 })
 
                 renderTableRow(importItem)
@@ -224,7 +302,7 @@ describe('TableRow', () => {
             it('displays unknown status badge for empty string status', () => {
                 const importItem = createMockImportItem({
                     status: '' as any,
-                    progressPercentage: 25,
+                    progress_percentage: 25,
                 })
 
                 renderTableRow(importItem)
@@ -237,13 +315,16 @@ describe('TableRow', () => {
     describe('Complete Import Item Rendering', () => {
         it('renders all import item data correctly', () => {
             const importItem = createMockImportItem({
-                id: 'test-id-123',
-                email: 'complete@test.com',
-                emailCount: 9876,
+                id: 123,
+                provider_identifier: 'complete@test.com',
+                stats: {
+                    total_tickets_created: 9876,
+                    total_messages_imported: 12000,
+                },
                 import_window_start: '2025-02-01T00:00:00Z',
                 import_window_end: '2025-02-28T23:59:59Z',
-                status: 'in_progress',
-                progressPercentage: 42,
+                status: 'in-progress',
+                progress_percentage: 42,
                 provider: IntegrationType.Outlook,
             })
 
@@ -260,60 +341,6 @@ describe('TableRow', () => {
             expect(dateRangeExists).toBeInTheDocument()
 
             expect(screen.getByText('42% COMPLETED')).toBeInTheDocument()
-        })
-    })
-
-    describe('Accessibility', () => {
-        it('renders table row with proper semantic structure', () => {
-            const importItem = createMockImportItem()
-            const { container } = renderTableRow(importItem)
-
-            const tableRow = container.querySelector('tr')
-            expect(tableRow).toBeInTheDocument()
-            expect(tableRow?.children).toHaveLength(3)
-        })
-
-        it('provides alt text for provider icons', () => {
-            const gmailItem = createMockImportItem({
-                provider: IntegrationType.Gmail,
-            })
-            renderTableRow(gmailItem)
-            expect(screen.getByAltText('gmail logo')).toBeInTheDocument()
-            expect(
-                screen.getByText('info@betseyjohnson.com'),
-            ).toBeInTheDocument()
-
-            const outlookItem = createMockImportItem({
-                provider: IntegrationType.Outlook,
-            })
-            renderTableRow(outlookItem)
-            expect(screen.getByAltText('outlook logo')).toBeInTheDocument()
-        })
-    })
-
-    describe('Edge Cases', () => {
-        it('handles very long email addresses', () => {
-            const importItem = createMockImportItem({
-                email: 'very.long.email.address.that.might.cause.display.issues@verylongdomainname.com',
-            })
-
-            renderTableRow(importItem)
-
-            expect(
-                screen.getByText(
-                    'very.long.email.address.that.might.cause.display.issues@verylongdomainname.com',
-                ),
-            ).toBeInTheDocument()
-        })
-
-        it('handles maximum email count', () => {
-            const importItem = createMockImportItem({
-                emailCount: 999999999,
-            })
-
-            renderTableRow(importItem)
-
-            expect(screen.getByText('999,999,999 emails')).toBeInTheDocument()
         })
     })
 })

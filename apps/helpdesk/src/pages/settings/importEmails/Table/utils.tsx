@@ -1,10 +1,8 @@
 import { Badge, LoadingSpinner } from '@gorgias/axiom'
-import { ImportProvider } from '@gorgias/helpdesk-types'
+import { ImportProvider, ImportStatus } from '@gorgias/helpdesk-types'
 
 import gmailIcon from 'assets/img/integrations/gmail.svg'
 import officeIcon from 'assets/img/integrations/office.svg'
-
-import { ImportStatus } from '../types'
 
 import css from '../ImportEmail.less'
 
@@ -68,7 +66,7 @@ export const getStatusBadge = (
                     FAILED
                 </Badge>
             )
-        case 'in_progress':
+        case 'in-progress':
             return (
                 <Badge type="light-warning">
                     <LoadingSpinner size="small" className={css.spinner} />

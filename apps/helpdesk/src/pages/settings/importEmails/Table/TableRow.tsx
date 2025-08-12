@@ -24,7 +24,9 @@ export const TableRow = ({ importItem }: TableRowProps) => {
                 className={css.noCursor}
             >
                 {getProviderIcon(importItem.provider)}
-                <span className={css.emailColumn}>{importItem.email}</span>
+                <span className={css.emailColumn}>
+                    {importItem.provider_identifier}
+                </span>
             </BodyCell>
             <BodyCell
                 width={COLUMN_WIDTHS.importData}
@@ -32,7 +34,11 @@ export const TableRow = ({ importItem }: TableRowProps) => {
                 className={css.noCursor}
             >
                 <div className={css.importStats}>
-                    <span>{importItem.emailCount.toLocaleString()} emails</span>
+                    <span>
+                        {importItem.stats?.total_tickets_created?.toLocaleString() ||
+                            0}{' '}
+                        emails
+                    </span>
                     <p>
                         {getDateRange(
                             importItem.import_window_start,
@@ -48,7 +54,7 @@ export const TableRow = ({ importItem }: TableRowProps) => {
             >
                 {getStatusBadge(
                     importItem.status,
-                    importItem.progressPercentage,
+                    importItem.progress_percentage,
                 )}
             </BodyCell>
         </TableBodyRow>

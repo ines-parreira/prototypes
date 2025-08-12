@@ -1,14 +1,18 @@
-import { ImportProvider } from '@gorgias/helpdesk-types'
-
-export type ImportStatus = 'completed' | 'failed' | 'in_progress'
+import {
+    ImportProvider,
+    ImportStats,
+    ImportStatus,
+} from '@gorgias/helpdesk-types'
 
 export type ImportItem = {
-    id: string
-    email: string
-    emailCount: number
-    import_window_start: string
+    id: number
+    created_at: string
     import_window_end: string
-    status: ImportStatus
-    progressPercentage: number
+    import_window_start: string
+    progress_percentage: number
     provider: ImportProvider
+    provider_identifier: string
+    stats: ImportStats
+    status: ImportStatus
+    updated_at: string
 }
