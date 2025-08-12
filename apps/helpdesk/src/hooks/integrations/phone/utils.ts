@@ -13,6 +13,11 @@ import {
     VoiceAppErrorCode,
 } from 'business/twilio'
 import {
+    desktopNotify,
+    requestNotificationPermission,
+} from 'common/notifications'
+import { FeatureFlagKey } from 'config/featureFlags'
+import {
     acceptCall,
     cancelCall,
     declineCall,
@@ -31,6 +36,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { StoreDispatch } from 'state/types'
 import { isProduction } from 'utils/environment'
 import { reportError } from 'utils/errors'
+import { getLDClient } from 'utils/launchDarkly'
 
 import * as utils from './utils'
 
@@ -171,7 +177,7 @@ export function handleDeviceEvents(
         void utils.refreshToken(device)
     })
 
-    device.on(Device.EventName.Incoming, (call: Call) => {
+    device.on(Device.EventName.Incoming, async (call: Call) => {
         if (device.isBusy) {
             reportError(
                 new Error('Incoming call for agent already in a call'),
@@ -194,6 +200,18 @@ export function handleDeviceEvents(
         actions.setCall(call)
 
         utils.handleCallEvents(call, dispatch, actions)
+
+        const ld = getLDClient()
+        const hasDesktopNotifications = ld.variation(
+            FeatureFlagKey.DesktopNotifications,
+        )
+        if (hasDesktopNotifications) {
+            const hasPermission = await requestNotificationPermission()
+            if (hasPermission) {
+                const callSid = getCallSid(call)
+                desktopNotify(callSid, 'Incoming call')
+            }
+        }
     })
 }
 

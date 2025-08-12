@@ -10,6 +10,10 @@ import {
     VoiceAppError,
     VoiceAppErrorCode,
 } from 'business/twilio'
+import {
+    desktopNotify,
+    requestNotificationPermission,
+} from 'common/notifications'
 import * as api from 'hooks/integrations/phone/api'
 import * as utils from 'hooks/integrations/phone/utils'
 import {
@@ -31,14 +35,18 @@ import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
 import * as envUtils from 'utils/environment'
 import { reportError } from 'utils/errors'
-import * as LDUtils from 'utils/launchDarkly'
+import { getLDClient } from 'utils/launchDarkly'
 
+jest.mock('common/notifications')
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')
 jest.mock('services/activityTracker')
 jest.mock('api/queryClient')
+jest.mock('utils/launchDarkly', () => ({ getLDClient: jest.fn() }))
 
-const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
+const getLDClientMock = getLDClient as jest.Mock
+const requestNotificationPermissionMock =
+    requestNotificationPermission as jest.Mock
 
 const dispatch = jest.fn()
 const device = {
@@ -293,8 +301,16 @@ describe('handleDeviceEvents', () => {
         const refreshToken = jest.spyOn(utils, 'refreshToken')
         const handleCallEvents = jest.spyOn(utils, 'handleCallEvents')
 
+        let variation: jest.Mock
+
         beforeAll(() => {
             handleDeviceEvents(device as Device, dispatch, actions)
+        })
+
+        beforeEach(() => {
+            variation = jest.fn(() => false)
+            getLDClientMock.mockReturnValue({ variation })
+            requestNotificationPermissionMock.mockReturnValue(true)
         })
 
         it('should handle Device.EventName.Registered event', () => {
@@ -413,6 +429,46 @@ describe('handleDeviceEvents', () => {
             )
         })
 
+        it('should handle Device.EventName.Incoming event with desktop notifications enabled', async () => {
+            variation.mockReturnValue(true)
+
+            const call = {
+                direction: Call.CallDirection.Incoming,
+                parameters: {
+                    From: '123',
+                },
+                customParameters: fromJS({
+                    call_sid: '123',
+                }),
+                on: jest.fn(),
+            } as unknown as Call
+
+            device.emit(Device.EventName.Incoming, call)
+
+            expect(sendSocketEvent).toHaveBeenCalledWith({
+                type: TwilioSocketEventType.CallIncoming,
+                data: {
+                    id: '287e7e8b7dab338ad09de87eb69d0bc0fb82b6a0db4387628cb43d7b07323bf9',
+                    call_sid: '123',
+                },
+            })
+
+            expect(actions.setIsRinging).toHaveBeenCalledWith(true)
+            expect(actions.setCall).toHaveBeenCalledWith(call)
+            expect(handleCallEvents).toHaveBeenCalledWith(
+                call,
+                dispatch,
+                actions,
+            )
+
+            await waitFor(() => {
+                expect(desktopNotify).toHaveBeenCalledWith(
+                    '123',
+                    'Incoming call',
+                )
+            })
+        })
+
         it('should handle Device.EventName.Incoming event when the device is busy', () => {
             const call = {
                 direction: Call.CallDirection.Incoming,
@@ -428,9 +484,6 @@ describe('handleDeviceEvents', () => {
                 emit: jest.fn(),
             } as unknown as Call
 
-            getLDClientSpy.mockReturnValueOnce({
-                variation: () => true,
-            } as any)
             ;(device as EventEmitter & { isBusy: boolean }).isBusy = true
             device.emit(Device.EventName.Incoming, call)
 
