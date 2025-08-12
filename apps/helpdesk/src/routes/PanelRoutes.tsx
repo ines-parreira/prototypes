@@ -92,7 +92,7 @@ export default function PanelRoutes() {
                         <OnboardingPanel key="onboarding-panel" />
                     </Route>
                     <Route exact path="/app/ticket/:ticketId">
-                        <TicketDetailWithInfobar />
+                        <TicketDetailWithInfobar key="ticket-detail-with-infobar" />
                     </Route>
                     <Route exact path="/app/views/:viewId?">
                         <TicketsListPanel key={`ticket-list-panel-${viewId}`} />
@@ -106,6 +106,7 @@ export default function PanelRoutes() {
                         />
                         <Handle />
                         <TicketDetailWithInfobar
+                            key="ticket-detail-with-infobar"
                             onToggleUnread={onToggleUnread}
                         />
                     </Route>
