@@ -15,6 +15,14 @@
         padding: 0 var(--layout-spacing-xs);
     }
 
+    .storeSelector {
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .storeSelectorButton {
+        background-color: transparent !important;
+    }
+
     .stickyPromoCard {
         position: sticky;
         margin-bottom: -24px;
@@ -66,5 +74,23 @@
 
     .descriptionIcon {
         margin-right: var(--layout-spacing-xxs);
+    }
+
+    // Make single direct-link items like "Test" look like section headings
+    .sectionItemHeading {
+        font-weight: 600;
+        color: var(--color-text-secondary);
+    }
+
+    .statusIndicator {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .statusIcon {
+        margin-left: auto;
+        margin-bottom: 1px;
     }
 }

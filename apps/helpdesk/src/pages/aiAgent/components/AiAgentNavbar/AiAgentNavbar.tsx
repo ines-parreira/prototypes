@@ -14,6 +14,7 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { ShoppingAssistantPromoCard } from '../ShoppingAssistant/ShoppingAssistantPromoCard'
+import { ActionDrivenNavigation } from './ActionDrivenNavigation'
 import { AiAgentNavbarSectionBlock } from './AiAgentNavbarSectionBlock'
 import { useAiAgentNavbarSections } from './useAiAgentNavbarSections'
 import { getSectionKeyFromStoreIntegration } from './utils'
@@ -40,6 +41,21 @@ export const AiAgentNavbar = () => {
         storeIntegrations.length === 0
     ) {
         return <Navbar activeContent={ActiveContent.AiAgent} title="AI Agent" />
+    }
+
+    if (isActionDrivenAiAgentNavigationEnabled) {
+        return (
+            <Navbar activeContent={ActiveContent.AiAgent} title="AI Agent">
+                <div className={css.container}>
+                    <div className={css.scrollableContent}>
+                        <ActionDrivenNavigation />
+                    </div>
+                    <div className={css.stickyPromoCard}>
+                        <ShoppingAssistantPromoCard className={css.promoCard} />
+                    </div>
+                </div>
+            </Navbar>
+        )
     }
 
     return (

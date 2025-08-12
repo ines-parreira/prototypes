@@ -15,6 +15,11 @@ export default function StoreManagementStoreSelector() {
         (integration) => integration.id === Number(id),
     )
 
+    // Don't render if stores array is empty or no matching store is found
+    if (stores.length === 0 || !selected) {
+        return null
+    }
+
     const onChange = (selectedStore: number) => {
         const currentPath = location.pathname
         // preserve sub-routes ( /settings or /channels)

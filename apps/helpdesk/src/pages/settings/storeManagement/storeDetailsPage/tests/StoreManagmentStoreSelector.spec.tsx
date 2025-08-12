@@ -68,7 +68,9 @@ describe('StoreManagementStoreSelector', () => {
         render(<StoreManagementStoreSelector />)
 
         const dropdownButton = screen.getByRole('button')
-        await user.click(dropdownButton)
+        await act(async () => {
+            await user.click(dropdownButton)
+        })
 
         const dropdownOptions = screen.getAllByRole('option')
         expect(dropdownOptions).toHaveLength(3)

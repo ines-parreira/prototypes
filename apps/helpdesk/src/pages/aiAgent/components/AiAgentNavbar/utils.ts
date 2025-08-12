@@ -9,3 +9,5 @@ export const getSectionKeyFromStoreIntegration = (
 ): SectionKey => {
     return `${integration.type}:${getShopNameFromStoreIntegration(integration)}`
 }
+
+export type NavigationChannelType = 'chat' | 'email'

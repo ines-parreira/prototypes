@@ -3,19 +3,93 @@
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xxs);
+        min-width: 0;
+        width: 100%;
     }
 
     .button {
         max-width: 200px;
+        min-width: 0;
+        width: 100%;
     }
 
     .buttonTextContent {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 100%;
     }
 
     .fakeIcon {
         width: 20px;
+    }
+
+    .statusDotButton {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .statusDotDropdown {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-left: auto;
+    }
+
+    .buttonContainer {
+        /* Override merchant-ui-kit button styles for proper text truncation */
+        :global(.ui-button-content-a432) {
+            width: 100%;
+            min-width: 0;
+        }
+    }
+
+    .buttonContainerFullWidth {
+        width: 100%;
+    }
+
+    .fullWidth {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .dropdownIcon {
+        flex-shrink: 0;
+    }
+
+    .integrationIcon {
+        flex-shrink: 0;
+    }
+
+    .inlineStoreContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .inlineStoreContainerFullWidth {
+        width: 100%;
+    }
+
+    .inlineStoreContent {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .inlineStoreName {
+        font-size: var(--font-size-md);
+        color: var(--text-color-primary);
+    }
+
+    .statusDotInline {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
     }
 }

@@ -43,6 +43,10 @@ jest.mock('common/notifications/components/Button', () => ({
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
 
+jest.mock('../ActionDrivenNavigation', () => ({
+    ActionDrivenNavigation: () => <div>ActionDrivenNavigation</div>,
+}))
+
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
         <NavBarProvider>{children}</NavBarProvider>
@@ -265,7 +269,12 @@ describe('<AiAgentNavbar />', () => {
         })
 
         it('should render ai agent navbar with actions internal platform', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ActionsInternalPlatform) {
+                    return true
+                }
+                return false
+            })
 
             const { queryByText } = renderNavbar({
                 store: {
@@ -281,6 +290,86 @@ describe('<AiAgentNavbar />', () => {
             })
 
             expect(queryByText('Actions platform')).toBeInTheDocument()
+        })
+
+        describe('ActionDrivenAiAgentNavigation feature flag', () => {
+            it('should render ActionDrivenNavigation when feature flag is enabled', () => {
+                mockUseFlag.mockImplementation((flag) => {
+                    if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
+                        return true
+                    }
+                    return false
+                })
+
+                const { queryByText } = renderNavbar({
+                    store: {
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    },
+                })
+
+                expect(
+                    queryByText('ActionDrivenNavigation'),
+                ).toBeInTheDocument()
+                expect(queryByText('Overview')).not.toBeInTheDocument()
+            })
+
+            it('should render regular navigation when feature flag is disabled', () => {
+                mockUseFlag.mockImplementation((flag) => {
+                    if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
+                        return false
+                    }
+                    return false
+                })
+
+                const { queryByText } = renderNavbar({
+                    store: {
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    },
+                })
+
+                expect(
+                    queryByText('ActionDrivenNavigation'),
+                ).not.toBeInTheDocument()
+                expect(queryByText('Overview')).toBeInTheDocument()
+            })
+
+            it('should not render the regular navbar sections when feature flag is enabled', () => {
+                mockUseFlag.mockImplementation((flag) => {
+                    if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
+                        return true
+                    }
+                    return false
+                })
+
+                const { queryByText } = renderNavbar({
+                    store: {
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                    },
+                })
+
+                expect(queryByText('teststore1')).not.toBeInTheDocument()
+                expect(queryByText('teststore2')).not.toBeInTheDocument()
+                expect(queryByText('Optimize')).not.toBeInTheDocument()
+                expect(queryByText('Knowledge')).not.toBeInTheDocument()
+            })
         })
     })
 })

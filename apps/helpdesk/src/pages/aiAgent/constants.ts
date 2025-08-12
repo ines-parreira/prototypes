@@ -25,6 +25,13 @@ export const STRATEGY = 'Strategy'
 export const CUSTOMER_ENGAGEMENT = 'Customer Engagement'
 export const PRODUCT_RECOMMENDATIONS = 'Product Recommendations'
 export const ANALYTICS = 'Analytics'
+export const ANALYZE = 'Analyze'
+export const TRAIN = 'Train'
+export const DEPLOY = 'Deploy'
+export const OVERVIEW = 'Overview'
+export const AI_FEEDBACK = 'AI Feedback'
+export const CHAT = 'Chat'
+export const EMAIL = 'Email'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500

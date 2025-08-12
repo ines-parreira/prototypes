@@ -385,6 +385,7 @@ describe('useAiAgentNavigation', () => {
                     {
                         route: '/app/ai-agent/shopify/my-shop/sales/product-recommendations',
                         title: PRODUCT_RECOMMENDATIONS,
+                        exact: true,
                     },
                 ]),
             )
