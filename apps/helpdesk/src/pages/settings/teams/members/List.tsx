@@ -6,6 +6,8 @@ import { connect, ConnectedProps } from 'react-redux'
 import { NavLink, RouteComponentProps } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Col, Container } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { CursorDirection, OrderDirection } from 'models/api/types'
 import {
     addTeamMember,
@@ -20,7 +22,6 @@ import {
     Team,
     TeamSortableProperties,
 } from 'models/team/types'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'

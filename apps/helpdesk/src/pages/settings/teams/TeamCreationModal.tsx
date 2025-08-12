@@ -12,7 +12,7 @@ import { useAsyncFn, usePrevious } from '@repo/hooks'
 import { BaseEmoji, EmojiData, emojiIndex } from 'emoji-mart'
 import { Map } from 'immutable'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -20,7 +20,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { createTeam } from 'models/team/resources'
 import { Team } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import Button from 'pages/common/components/button/Button'
 import Dropdown, {
     DropdownContext,
 } from 'pages/common/components/dropdown/Dropdown'

@@ -1,9 +1,8 @@
 import { useDebouncedValue } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { useInviteAgent } from 'hooks/agents/useInviteAgent'
-import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 
 import { AgentState } from './types'

@@ -1,9 +1,8 @@
 import { useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
-import Button from 'pages/common/components/button/Button'
 
 import { navigateBackToUserList } from './constants'
 import { DeleteModal } from './DeleteModal'

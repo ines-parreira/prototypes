@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -18,7 +19,6 @@ import {
     TeamSortableProperties,
 } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
