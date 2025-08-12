@@ -1,9 +1,12 @@
 import { useMemo } from 'react'
 
+import { LoadingSpinner } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
-import { UserSettingType } from '@gorgias/helpdesk-types'
+import {
+    UserLanguagePreferencesSetting,
+    UserSettingType,
+} from '@gorgias/helpdesk-types'
 
-import { DEFAULT_PREFERENCES } from 'config'
 import { UserRole } from 'config/types/user'
 
 import { YourProfileView } from './components/YourProfileView'
@@ -12,21 +15,20 @@ import { ApplicationUserPreferencesSettings, CurrentUser } from './types'
 function YourProfileContainer() {
     const { data: currentUser } = useGetCurrentUser<CurrentUser>()
 
-    const preferences = useMemo(() => {
-        if (!currentUser || !currentUser.data?.settings) {
-            return DEFAULT_PREFERENCES as Partial<
-                ApplicationUserPreferencesSettings['data']
-            >
-        }
+    const settingsPreferences = useMemo(() => {
+        if (!currentUser || !currentUser.data?.settings) return
 
-        const settingsPreferences = currentUser.data.settings.find(
+        return currentUser.data.settings.find(
             (setting) => setting.type === UserSettingType.Preferences,
         ) as ApplicationUserPreferencesSettings
+    }, [currentUser])
 
-        return {
-            ...DEFAULT_PREFERENCES,
-            ...(settingsPreferences?.data || {}),
-        } as Partial<ApplicationUserPreferencesSettings['data']>
+    const languagePreferences = useMemo(() => {
+        if (!currentUser || !currentUser.data?.settings) return
+
+        return currentUser.data.settings.find(
+            (setting) => setting.type === UserSettingType.LanguagePreferences,
+        ) as UserLanguagePreferencesSetting
     }, [currentUser])
 
     const isGorgiasAgent = useMemo(
@@ -49,13 +51,26 @@ function YourProfileContainer() {
     )
 
     if (!currentUser?.data) {
-        return <div>Loading...</div>
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                    width: '100%',
+                }}
+            >
+                <LoadingSpinner />
+            </div>
+        )
     }
 
     return (
         <YourProfileView
             currentUser={currentUserProfileInfo}
-            preferences={preferences}
+            settingsPreferences={settingsPreferences}
+            languagePreferences={languagePreferences}
             isGorgiasAgent={isGorgiasAgent}
         />
     )

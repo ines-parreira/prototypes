@@ -1,24 +1,16 @@
-import { SyntheticEvent, useCallback, useMemo, useState } from 'react'
+import { SyntheticEvent, useCallback, useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import _merge from 'lodash/merge'
-import _omit from 'lodash/omit'
-import _pick from 'lodash/pick'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
 import { Link } from 'react-router-dom'
 import { Form, FormGroup, FormText } from 'reactstrap'
 
 import { Avatar, Button, Label, SelectField, ToggleField } from '@gorgias/axiom'
-import type { SelectFieldOption } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
-import {
-    UpdateUserBody,
-    UserSetting,
-    UserSettingType,
-} from '@gorgias/helpdesk-types'
+import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UploadType } from 'common/types'
@@ -39,14 +31,9 @@ import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 
-import {
-    useUpdateCurrentUserProfile,
-    useUpdateCurrentUserProfilePicture,
-} from '../hooks/useUpdateCurrentUserProfile'
-import {
-    useCreateCurrentUserProfileSettings,
-    useUpdateCurrentUserProfileSettings,
-} from '../hooks/useUpdateCurrentUserProfileSettings'
+import { useUpdateCurrentUserProfilePicture } from '../hooks/useUpdateCurrentUserProfile'
+import { useYourProfileForm } from '../hooks/useYourProfileForm'
+import { useYourProfileMutations } from '../hooks/useYourProfileMutations'
 import { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
 import ForwardingCallsPreferences from './ForwardingCallsPreferences'
 
@@ -71,74 +58,61 @@ const timezoneToOptionMap = new global.Map(
     ]),
 )
 
-type DefaultFormValues = {
-    name: string
-    email: string
-    bio: string
-    timezone: string
-    language: string
-    password_confirmation: string
-    meta: { profile_picture_url: string | null }
-}
-
-const defaultContent: DefaultFormValues = {
-    name: '',
-    email: '',
-    password_confirmation: '',
-    bio: '',
-    timezone: '',
-    language: '',
-    meta: { profile_picture_url: null },
-}
-
-const defaultPreferences = {
-    ['language-preferences']: {
-        primary: undefined,
-        proficient: [] as string[],
-    },
-}
-
 type YourProfileViewFunctionalProps = {
     currentUser: Partial<CurrentUser['data']>
-    preferences: Partial<ApplicationUserPreferencesSettings['data']>
+    settingsPreferences?: ApplicationUserPreferencesSettings
+    languagePreferences?: UserLanguagePreferencesSetting
     isGorgiasAgent: boolean
 }
 
 export function YourProfileView({
     currentUser,
-    preferences,
+    settingsPreferences,
+    languagePreferences,
     isGorgiasAgent,
 }: YourProfileViewFunctionalProps) {
     const hasMessagesTranslations = useFlag(FeatureFlagKey.MessagesTranslations)
     const queryClient = useQueryClient()
-    const { mutateAsync: updateCurrentUser } = useUpdateCurrentUserProfile()
     const { mutateAsync: updateCurrentUserProfilePicture } =
         useUpdateCurrentUserProfilePicture()
-    const { mutateAsync: updateCurrentUserSettings } =
-        useUpdateCurrentUserProfileSettings()
-    const { mutateAsync: createCurrentUserSettings } =
-        useCreateCurrentUserProfileSettings()
 
-    const [isFormDirty, setIsFormDirty] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const {
+        isFormDirty,
+        setIsFormDirty,
+        isLoading,
+        setIsLoading,
+        formValues,
+        setFormValues,
+        defaultFormValues,
+        handleInputChange,
+        handlePreferenceChange,
+        handlePrimaryLanguageChange,
+        handleProficientLanguagesChange,
+    } = useYourProfileForm({
+        currentUser,
+        settingsPreferences,
+        languagePreferences,
+    })
+
+    const {
+        handleLanguagePreferenceSubmit,
+        handleSettingsPreferenceSubmit,
+        handleUserInfoSubmit,
+    } = useYourProfileMutations({
+        formValues,
+        defaultFormValues,
+        languagePreferences,
+        settingsPreferences,
+        isGorgiasAgent,
+    })
+
     const theme = useTheme()
     const setTheme = useSetTheme()
 
-    const defaultFormValues = useMemo(() => {
-        return _merge(defaultContent, {
-            ...currentUser,
-            preferences: {
-                ...defaultPreferences,
-                ...preferences,
-            },
-        })
-    }, [currentUser, preferences])
-
-    const [formValues, setFormValues] = useState(() => defaultFormValues)
-
-    const hasChangedEmail = useMemo(() => {
-        return formValues.email !== defaultFormValues.email
-    }, [formValues.email, defaultFormValues.email])
+    const hasChangedEmail = useMemo(
+        () => formValues.email !== defaultFormValues.email,
+        [formValues.email, defaultFormValues.email],
+    )
 
     const handleSubmit = useCallback(
         async (event?: SyntheticEvent) => {
@@ -157,47 +131,11 @@ export function YourProfileView({
                 })
             }
 
-            const includedKeys = Object.keys(
-                _omit(defaultContent, [
-                    'id',
-                    'preferences',
-                    'settings',
-                    'meta',
-                    'language',
-                    ...(isGorgiasAgent ? ['bio', 'email', 'name'] : []),
-                ]),
-            )
-
-            const normalizedValues = _pick(
-                formValues,
-                includedKeys,
-            ) as UpdateUserBody
-
-            const existingPreferences = currentUser.settings?.find(
-                (setting) => setting.type === UserSettingType.Preferences,
-            )
-
-            const newPreferences = hasMessagesTranslations
-                ? formValues.preferences
-                : _omit(formValues.preferences, ['language-preferences'])
-
             try {
                 await Promise.all([
-                    updateCurrentUser(normalizedValues),
-                    existingPreferences
-                        ? updateCurrentUserSettings({
-                              id: existingPreferences.id,
-                              data: {
-                                  type: UserSettingType.Preferences,
-                                  data: newPreferences,
-                              } as unknown as UserSetting,
-                          })
-                        : createCurrentUserSettings({
-                              data: {
-                                  type: UserSettingType.Preferences,
-                                  data: newPreferences,
-                              } as unknown as UserSetting,
-                          }),
+                    handleUserInfoSubmit(),
+                    handleSettingsPreferenceSubmit(),
+                    handleLanguagePreferenceSubmit(),
                 ])
             } catch {}
 
@@ -211,22 +149,13 @@ export function YourProfileView({
         [
             formValues,
             defaultFormValues,
-            isGorgiasAgent,
-            currentUser,
-            updateCurrentUser,
-            updateCurrentUserSettings,
-            createCurrentUserSettings,
+            handleUserInfoSubmit,
+            handleSettingsPreferenceSubmit,
+            handleLanguagePreferenceSubmit,
             queryClient,
-            hasMessagesTranslations,
+            setIsLoading,
+            setIsFormDirty,
         ],
-    )
-
-    const handleInputChange = useCallback(
-        (name: string, value: string) => {
-            setFormValues({ ...formValues, [name]: value })
-            setIsFormDirty(true)
-        },
-        [formValues],
     )
 
     const handleProfilePictureChange = useCallback(
@@ -247,7 +176,12 @@ export function YourProfileView({
                 queryKey: [queryKeys.account.getCurrentUser()],
             })
         },
-        [formValues, updateCurrentUserProfilePicture, queryClient],
+        [
+            formValues,
+            updateCurrentUserProfilePicture,
+            queryClient,
+            setFormValues,
+        ],
     )
 
     const handleThemeChange = useCallback(
@@ -258,26 +192,6 @@ export function YourProfileView({
             })
         },
         [setTheme],
-    )
-
-    const handlePreferenceChange = useCallback(
-        (
-            preferenceKey: string,
-            value:
-                | boolean
-                | string
-                | Record<string, string | string[] | undefined>,
-        ) => {
-            setFormValues({
-                ...formValues,
-                preferences: {
-                    ...formValues.preferences,
-                    [preferenceKey]: value,
-                },
-            })
-            setIsFormDirty(true)
-        },
-        [formValues],
     )
 
     const translationLanguageOptions = useMemo(
@@ -293,21 +207,9 @@ export function YourProfileView({
     const primarySelectedOption = useMemo(
         () =>
             translationLanguageOptions.find(
-                (option) =>
-                    option.value ===
-                    formValues.preferences?.['language-preferences']?.primary,
+                (option) => option.value === formValues.preferences?.primary,
             ),
         [translationLanguageOptions, formValues.preferences],
-    )
-
-    const handlePrimaryLanguageChange = useCallback(
-        (language: SelectFieldOption) => {
-            handlePreferenceChange('language-preferences', {
-                ...(formValues.preferences?.['language-preferences'] ?? {}),
-                primary: language.value,
-            })
-        },
-        [formValues.preferences, handlePreferenceChange],
     )
 
     const proficientLanguagesOptions = useMemo(
@@ -321,23 +223,12 @@ export function YourProfileView({
 
     const proficientSelectedOptions = useMemo(
         () =>
-            (formValues.preferences?.['language-preferences']?.proficient.map(
-                (value) =>
-                    proficientLanguagesOptions.find(
-                        (option) => option.value === value,
-                    ),
+            (formValues.preferences?.proficient?.map((value) =>
+                proficientLanguagesOptions.find(
+                    (option) => option.value === value,
+                ),
             ) as Option[]) ?? ([] as Option[]),
         [formValues.preferences, proficientLanguagesOptions],
-    )
-
-    const handleProficientLanguagesChange = useCallback(
-        (options: Option[]) => {
-            handlePreferenceChange('language-preferences', {
-                ...(formValues.preferences?.['language-preferences'] ?? {}),
-                proficient: options.map((option) => option.value),
-            })
-        },
-        [formValues.preferences, handlePreferenceChange],
     )
 
     return (
