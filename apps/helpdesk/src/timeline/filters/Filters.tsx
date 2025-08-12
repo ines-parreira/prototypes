@@ -47,6 +47,11 @@ const Filters = ({
                                 ...prev.type,
                                 [value]: !prev.type[value],
                             },
+                            status: {
+                                open: true,
+                                closed: true,
+                                snooze: true,
+                            },
                         }))
                     }}
                 />
