@@ -249,4 +249,303 @@ describe('CreateImportModal', () => {
             expect(screen.getByRole('dialog')).toBeInTheDocument()
         })
     })
+
+    describe('URL redirection', () => {
+        let originalLocation: Location
+
+        beforeEach(() => {
+            originalLocation = window.location
+            delete (window as any).location
+            window.location = {
+                ...originalLocation,
+                href: '',
+                origin: 'https://app.gorgias.com',
+            } as Location
+
+            mockUseEmailIntegrations.mockReturnValue([
+                { provider: 'gmail', email: 'test@gmail.com' },
+            ])
+        })
+
+        afterEach(() => {
+            window.location = originalLocation
+        })
+
+        it('should redirect to OAuth URL with correct parameters when form is submitted', async () => {
+            const user = userEvent.setup()
+            render(<CreateImportModal {...defaultProps} />)
+
+            // Click on email select input - use label to find the field
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+
+            // Select email from dropdown
+            await user.click(screen.getByText('test@gmail.com'))
+
+            // Click on timeframe input
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+
+            // Select timeframe from date picker
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+            await user.click(submitButton)
+
+            expect(window.location.href).toContain(
+                '/integrations/gmail/auth/import/oauth-redirect',
+            )
+            expect(window.location.href).toContain(
+                'provider_address=test%40gmail.com',
+            )
+            expect(window.location.href).toContain('import_window_start=')
+            expect(window.location.href).toContain('import_window_end=')
+        })
+
+        it('should construct URL with correct provider from email format', async () => {
+            const user = userEvent.setup()
+            mockUseEmailIntegrations.mockReturnValue([
+                { provider: 'outlook', email: 'support@outlook.com' },
+            ])
+
+            render(<CreateImportModal {...defaultProps} />)
+
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+            await user.click(screen.getByText('support@outlook.com'))
+
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+            await user.click(submitButton)
+
+            expect(window.location.href).toContain(
+                '/integrations/outlook/auth/import/oauth-redirect',
+            )
+            expect(window.location.href).toContain(
+                'provider_address=support%40outlook.com',
+            )
+        })
+
+        it('should parse timeframe correctly and set import window parameters', async () => {
+            const user = userEvent.setup()
+            render(<CreateImportModal {...defaultProps} />)
+
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+            await user.click(screen.getByText('test@gmail.com'))
+
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+            await user.click(submitButton)
+
+            const urlParams = new URLSearchParams(
+                window.location.href.split('?')[1],
+            )
+            expect(urlParams.has('import_window_start')).toBe(true)
+            expect(urlParams.has('import_window_end')).toBe(true)
+
+            const startDate = urlParams.get('import_window_start')
+            const endDate = urlParams.get('import_window_end')
+            expect(startDate).toBeTruthy()
+            expect(endDate).toBeTruthy()
+            // Dates should be in YYYY-MM-DD format
+            expect(startDate).toMatch(/\d{4}-\d{2}-\d{2}/)
+            expect(endDate).toMatch(/\d{4}-\d{2}-\d{2}/)
+        })
+
+        it('should call onClose after successful submission', async () => {
+            const user = userEvent.setup()
+            const onCloseMock = jest.fn()
+            render(
+                <CreateImportModal {...defaultProps} onClose={onCloseMock} />,
+            )
+
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+            await user.click(screen.getByText('test@gmail.com'))
+
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+            await user.click(submitButton)
+
+            await waitFor(() => {
+                expect(onCloseMock).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        it('should show error message when URL construction fails', async () => {
+            const user = userEvent.setup()
+
+            mockUseEmailIntegrations.mockReturnValue([
+                { provider: undefined, email: 'invalid' },
+            ])
+
+            render(<CreateImportModal {...defaultProps} />)
+
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+            await user.click(screen.getByText('invalid'))
+
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+
+            jest.spyOn(URL.prototype, 'toString').mockImplementationOnce(() => {
+                throw new Error('URL construction failed')
+            })
+
+            await user.click(submitButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'There was an error during import creation.',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Please try again.'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should reset form fields after successful submission', async () => {
+            const user = userEvent.setup()
+            render(<CreateImportModal {...defaultProps} />)
+
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+            await user.click(screen.getByText('test@gmail.com'))
+
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            // Verify form has values before submission
+            const timeframeInput = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            ) as HTMLInputElement
+            expect(timeframeInput.value).toContain('2025')
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+            await user.click(submitButton)
+
+            // Verify onClose was called after successful submission
+            await waitFor(() => {
+                expect(defaultProps.onClose).toHaveBeenCalled()
+            })
+        })
+
+        it('should disable submit button during form submission', async () => {
+            const user = userEvent.setup()
+            render(<CreateImportModal {...defaultProps} />)
+
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+            await user.click(screen.getByText('test@gmail.com'))
+
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+
+            expect(submitButton).not.toHaveAttribute('aria-disabled', 'true')
+
+            await user.click(submitButton)
+        })
+
+        it('should handle different timeframe formats correctly', async () => {
+            const user = userEvent.setup()
+            render(<CreateImportModal {...defaultProps} />)
+
+            const emailLabel = screen.getByText('Email address')
+            const emailSelect =
+                emailLabel.parentElement?.querySelector('div[role="button"]') ||
+                emailLabel.nextElementSibling
+            await user.click(emailSelect as HTMLElement)
+            await user.click(screen.getByText('test@gmail.com'))
+
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 12 months')
+            await user.click(timeframeOption)
+
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+            await user.click(submitButton)
+
+            expect(window.location.href).toContain('import_window_start=')
+            expect(window.location.href).toContain('import_window_end=')
+        })
+    })
 })

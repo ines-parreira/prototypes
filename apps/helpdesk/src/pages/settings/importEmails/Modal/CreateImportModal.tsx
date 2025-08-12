@@ -29,18 +29,19 @@ const CreateImportModal = ({ isOpen, onClose }: CreateImportModalProps) => {
         setIsFormSubmitting(true)
         setImportCreationError(false)
         try {
-            await new Promise<void>((resolve, reject) => {
-                const shouldResolve = false
-
-                setTimeout(() => {
-                    if (shouldResolve) {
-                        resolve()
-                    } else {
-                        reject(new Error('Simulated rejection'))
-                    }
-                }, 3000)
-            })
-
+            const [provider, addr] = email.split('/')
+            const redirectUrl = new URL(
+                '/integrations/' + provider + '/auth/import/oauth-redirect',
+                window.location.origin,
+            )
+            redirectUrl.searchParams.set('provider_address', addr)
+            const import_window: string[] = timeframe.split(' to ')
+            redirectUrl.searchParams.set(
+                'import_window_start',
+                import_window[0],
+            )
+            redirectUrl.searchParams.set('import_window_end', import_window[1])
+            window.location.href = redirectUrl.toString()
             setEmail('')
             setTimeframe('')
 

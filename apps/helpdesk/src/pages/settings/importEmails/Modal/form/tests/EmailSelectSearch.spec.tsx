@@ -230,7 +230,7 @@ describe('EmailSelectSearch', () => {
                 await user.click(emailOption)
             })
 
-            expect(setEmail).toHaveBeenCalledWith('support@gmail.com')
+            expect(setEmail).toHaveBeenCalledWith('gmail/support@gmail.com')
         })
 
         it('calls setEmail with correct email for different providers', async () => {
@@ -249,7 +249,7 @@ describe('EmailSelectSearch', () => {
             const outlookOption = screen.getByText('sales@outlook.com')
             await user.click(outlookOption)
 
-            expect(setEmail).toHaveBeenCalledWith('sales@outlook.com')
+            expect(setEmail).toHaveBeenCalledWith('outlook/sales@outlook.com')
         })
 
         it('closes dropdown after selection', async () => {
@@ -358,7 +358,7 @@ describe('EmailSelectSearch', () => {
                 await user.click(dropdownOption)
             })
 
-            expect(setEmail).toHaveBeenCalledWith('support@gmail.com')
+            expect(setEmail).toHaveBeenCalledWith('gmail/support@gmail.com')
         })
 
         it('renders correctly with single email option', async () => {

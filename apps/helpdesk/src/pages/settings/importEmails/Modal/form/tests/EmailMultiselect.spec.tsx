@@ -129,7 +129,7 @@ describe('EmailMultiselect', () => {
             const gmailOption = screen.getByText('support@gmail.com')
             await user.click(gmailOption)
 
-            expect(setEmail).toHaveBeenCalledWith('support@gmail.com')
+            expect(setEmail).toHaveBeenCalledWith('gmail/support@gmail.com')
         })
 
         it('shows "Add new email" option in dropdown', async () => {
