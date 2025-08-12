@@ -14,6 +14,12 @@ export default defineConfig({
                     type: 'feature-flag cleanup initiative',
                     date: '2025-02-10',
                 },
+                {
+                    pkgName: 'reactstrap',
+                    imports: ['Button'],
+                    type: 'ui-kit-migration',
+                    date: '2025-08-12',
+                },
             ],
         },
     },
