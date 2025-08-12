@@ -3,11 +3,11 @@ import React, { useMemo } from 'react'
 import classnames from 'classnames'
 import { List } from 'immutable'
 
+import { Button } from '@gorgias/axiom'
 import { ListTagsOrderBy, Tag } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ORDER_BY, OrderBy } from 'models/tag/types'
-import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { getSelectAll, makeGetSelectedTagMeta } from 'state/tags/selectors'
 

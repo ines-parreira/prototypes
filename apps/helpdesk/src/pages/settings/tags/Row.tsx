@@ -4,11 +4,11 @@ import classNames from 'classnames'
 import { Map } from 'immutable'
 import { Form } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
 import { Tag, TagDecoration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ColorPicker from 'pages/common/components/ColorPicker/ColorPicker'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

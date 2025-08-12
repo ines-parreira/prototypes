@@ -1,4 +1,5 @@
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 export const getPluralOrSingular = (

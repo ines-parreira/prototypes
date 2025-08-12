@@ -7,6 +7,7 @@ import { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Form, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
 import {
     CursorPaginationMeta,
     ListTagsOrderBy,
@@ -22,7 +23,6 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import { CursorDirection } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
 import { OrderBy, OrderByOrderDir } from 'models/tag/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
