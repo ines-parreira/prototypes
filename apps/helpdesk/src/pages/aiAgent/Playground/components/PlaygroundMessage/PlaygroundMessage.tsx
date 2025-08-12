@@ -11,8 +11,8 @@ import {
     PlaygroundMessage as PlaygroundMessageType,
     ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
+import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
@@ -191,7 +191,9 @@ const MessageContainer = ({
             <div>
                 {isAiAgentSender ? (
                     <Avatar
-                        size={36}
+                        isAgent={isAiAgentSender}
+                        isAIAgent={isAiAgentSender}
+                        name={sender}
                         url={aiAgentAvatarSrc}
                         className={css.messageAvatar}
                     />

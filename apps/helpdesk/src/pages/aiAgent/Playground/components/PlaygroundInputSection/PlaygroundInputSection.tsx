@@ -323,9 +323,7 @@ export const PlaygroundInputSection = ({
                         onNewConversation()
                         setHasMessageBeenSent(false)
                     }}
-                    isDisabled={
-                        !formValues.message.trim() && !hasMessageBeenSent
-                    }
+                    isDisabled={!hasMessageBeenSent}
                 >
                     Reset
                 </Button>

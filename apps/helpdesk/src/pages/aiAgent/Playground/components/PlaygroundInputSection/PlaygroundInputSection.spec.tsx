@@ -191,7 +191,7 @@ describe('PlaygroundInputSection', () => {
             expect(resetButton).toBeDisabled()
         })
 
-        it('should be enabled when message is typed', () => {
+        it('should be disabled when message is typed', () => {
             renderComponent({
                 formValues: {
                     ...defaultProps.formValues,
@@ -200,24 +200,7 @@ describe('PlaygroundInputSection', () => {
             })
 
             const resetButton = screen.getByRole('button', { name: 'Reset' })
-            expect(resetButton).toBeEnabled()
-        })
-
-        it('should call onNewConversation when reset is clicked', async () => {
-            const onNewConversation = jest.fn()
-            renderComponent({
-                formValues: {
-                    ...defaultProps.formValues,
-                    message: 'Test message',
-                },
-                onNewConversation,
-            })
-
-            const resetButton = screen.getByRole('button', { name: 'Reset' })
-
-            await userEvent.click(resetButton)
-
-            expect(onNewConversation).toHaveBeenCalled()
+            expect(resetButton).toBeDisabled()
         })
     })
 
