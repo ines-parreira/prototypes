@@ -1,5 +1,6 @@
 import { LoadingSpinner } from '@gorgias/axiom'
 
+import { AnalyticsBarChart } from 'AIJourney/components/AnalyticsBarChart/AnalyticsBarChart'
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
@@ -8,9 +9,13 @@ import css from './AnalyticsData.less'
 
 type AnalyticsDataProps = {
     data: MetricProps[]
+    period: {
+        start: string
+        end: string
+    }
 }
 
-export const AnalyticsData = ({ data }: AnalyticsDataProps) => {
+export const AnalyticsData = ({ data, period }: AnalyticsDataProps) => {
     return (
         <div className={css.journeyData}>
             {data?.map((metric, index) => {
@@ -35,6 +40,12 @@ export const AnalyticsData = ({ data }: AnalyticsDataProps) => {
                                     <div className={css.metricValue}>
                                         <b>{formattedValue}</b>
                                     </div>
+                                    <AnalyticsBarChart
+                                        period={period}
+                                        data={metric.series ?? []}
+                                        currency={metric.currency}
+                                        metricFormat={metric.metricFormat}
+                                    />
                                 </div>
                                 <div className={css.trendBadge}>
                                     <TrendBadge

@@ -34,9 +34,14 @@ type AnalyticsCardProps = {
     currentIntegration?: Integration
     abandonedCartJourney: Omit<JourneyApiDTO, 'created_datetime'>
     totalSent?: string
+    period: {
+        start: string
+        end: string
+    }
 }
 
 export const AnalyticsCard = ({
+    period,
     analyticsData,
     journeyConfigurations,
     integrationId,
@@ -120,7 +125,7 @@ export const AnalyticsCard = ({
                     <EmptyState />
                 ) : (
                     <>
-                        <AnalyticsData data={analyticsData} />
+                        <AnalyticsData data={analyticsData} period={period} />
                         {!isDiscountEnabled && (
                             <DiscountCard totalRevenue={totalRevenue} />
                         )}

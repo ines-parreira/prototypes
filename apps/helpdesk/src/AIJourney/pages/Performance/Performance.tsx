@@ -136,12 +136,12 @@ export const Performance = () => {
             filteredUpcomingJourneys = []
     }
 
-    const metrics = useAIJourneyKpis(
+    const { metrics } = useAIJourneyKpis(
         integrationId?.toString(),
         namespacedShopName,
     )
 
-    const journeyMetrics = useAIJourneyKpis(
+    const { metrics: journeyMetrics, period } = useAIJourneyKpis(
         integrationId?.toString(),
         namespacedShopName,
         abandonedCartJourney?.id,
@@ -232,6 +232,7 @@ export const Performance = () => {
                 {abandonedCartJourney &&
                     filteredUserJourneys.map(() => (
                         <AnalyticsCard
+                            period={period}
                             analyticsData={journeyMetrics}
                             journeyConfigurations={journeyParams}
                             integrationId={integrationId}

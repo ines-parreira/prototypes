@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
-import moment from 'moment'
 
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -10,7 +10,6 @@ import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourney
 import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
 import { useAIJourneyKpis } from './useAIJourneyKpis'
 
-jest.mock('moment')
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('hooks/useAppSelector')
 jest.mock('../useAIJourneyConversionRate/useAIJourneyConversionRate')
@@ -19,20 +18,12 @@ jest.mock('../useAIJourneyTotalOrders/useAIJourneyTotalOrders')
 jest.mock('../useClickThroughRate/useClickThroughRate')
 
 describe('useAIJourneyKpis', () => {
-    const mockMoment = moment as jest.MockedFunction<typeof moment>
     const mockUseAppSelector = useAppSelector as jest.Mock
     const mockUseAIJourneyGmvInfluenced = useAIJourneyGmvInfluenced as jest.Mock
     const mockUseAIJourneyTotalOrders = useAIJourneyTotalOrders as jest.Mock
     const mockUseAIJourneyConversionRate =
         useAIJourneyConversionRate as jest.Mock
     const mockUseClickThroughRate = useClickThroughRate as jest.Mock
-
-    const mockMomentInstance = {
-        subtract: jest.fn().mockReturnThis(),
-        startOf: jest.fn().mockReturnThis(),
-        endOf: jest.fn().mockReturnThis(),
-        format: jest.fn(),
-    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -41,9 +32,7 @@ describe('useAIJourneyKpis', () => {
             userTimezone: 'America/New_York',
         })
 
-        mockMoment.mockReturnValue(mockMomentInstance as any)
-        mockMomentInstance.format.mockReturnValueOnce('2024-01-01T00:00:00Z')
-        mockMomentInstance.format.mockReturnValueOnce('2024-01-29T23:59:59Z')
+        jest.useFakeTimers().setSystemTime(new Date('2024-01-01T00:00:00Z'))
 
         mockUseAIJourneyGmvInfluenced.mockReturnValue({
             label: 'GMV',
@@ -63,33 +52,30 @@ describe('useAIJourneyKpis', () => {
     it('should return KPIs in correct order', () => {
         const { result } = renderHook(() => useAIJourneyKpis('123', 'shopName'))
 
-        expect(result.current).toHaveLength(4)
-        expect(result.current[0]).toEqual({ label: 'GMV', value: '1000' })
-        expect(result.current[1]).toEqual({
+        expect(result.current.metrics).toHaveLength(4)
+        expect(result.current.metrics[0]).toEqual({
+            label: 'GMV',
+            value: '1000',
+        })
+        expect(result.current.metrics[1]).toEqual({
             label: 'Total Orders',
             value: '50',
         })
-        expect(result.current[2]).toEqual({
+        expect(result.current.metrics[2]).toEqual({
             label: 'Conversion Rate',
             value: '5%',
         })
-        expect(result.current[3]).toEqual({ label: 'CTR', value: '10%' })
-    })
-
-    it('should create filters with 30 days period', () => {
-        renderHook(() => useAIJourneyKpis('123', 'shopName'))
-
-        expect(mockMoment).toHaveBeenCalledTimes(2)
-        expect(mockMomentInstance.subtract).toHaveBeenCalledWith(30, 'days')
-        expect(mockMomentInstance.startOf).toHaveBeenCalledWith('day')
-        expect(mockMomentInstance.endOf).toHaveBeenCalledWith('day')
+        expect(result.current.metrics[3]).toEqual({
+            label: 'CTR',
+            value: '10%',
+        })
     })
 
     it('should call all KPI hooks with correct parameters', () => {
         const expectedFilters = {
             period: {
-                start_datetime: '2024-01-01T00:00:00Z',
-                end_datetime: '2024-01-29T23:59:59Z',
+                start_datetime: '2023-12-04T00:00:00Z',
+                end_datetime: '2024-01-01T23:59:59Z',
             },
         }
 
@@ -99,24 +85,28 @@ describe('useAIJourneyKpis', () => {
             '123',
             'America/New_York',
             expectedFilters,
+            ReportingGranularity.Week,
             undefined,
         )
         expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             expectedFilters,
+            ReportingGranularity.Week,
             undefined,
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             expectedFilters,
+            ReportingGranularity.Week,
             undefined,
         )
         expect(mockUseClickThroughRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             expectedFilters,
+            ReportingGranularity.Week,
             'shopName',
             undefined,
         )
@@ -136,24 +126,28 @@ describe('useAIJourneyKpis', () => {
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             undefined,
         )
         expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             undefined,
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             undefined,
         )
         expect(mockUseClickThroughRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             'shopName',
             undefined,
         )
@@ -173,44 +167,30 @@ describe('useAIJourneyKpis', () => {
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             'journey-id',
         )
         expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             'journey-id',
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             'journey-id',
         )
         expect(mockUseClickThroughRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             'shopName',
             'journey-id',
         )
-    })
-
-    it('should memoize filters correctly', () => {
-        const { rerender } = renderHook(() =>
-            useAIJourneyKpis('123', 'shopName'),
-        )
-
-        // Clear the mocks after first render
-        jest.clearAllMocks()
-        mockUseAppSelector.mockReturnValue({
-            userTimezone: 'America/New_York',
-        })
-
-        // Rerender without changing dependencies
-        rerender()
-
-        // moment should not be called again due to memoization
-        expect(mockMoment).not.toHaveBeenCalled()
     })
 })

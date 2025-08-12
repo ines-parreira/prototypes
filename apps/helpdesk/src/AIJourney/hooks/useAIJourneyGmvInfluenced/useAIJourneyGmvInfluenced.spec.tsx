@@ -1,11 +1,18 @@
 import { renderHook } from '@testing-library/react'
 
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import {
+    TimeSeriesDataItem,
+    useTimeSeries,
+} from 'domains/reporting/hooks/useTimeSeries'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { useAIJourneyGmvInfluenced } from './useAIJourneyGmvInfluenced'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
+jest.mock('domains/reporting/hooks/useTimeSeries')
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 jest.mock(
     'domains/reporting/models/queryFactories/ai-sales-agent/metrics',
@@ -38,9 +45,18 @@ describe('useAIJourneyGmvInfluenced', () => {
             data: undefined,
             isFetching: true,
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -53,9 +69,18 @@ describe('useAIJourneyGmvInfluenced', () => {
             data: undefined,
             isFetching: false,
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.value).toBe(0)
@@ -69,9 +94,18 @@ describe('useAIJourneyGmvInfluenced', () => {
             },
             isFetching: false,
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.value).toBe(1000)
@@ -85,11 +119,74 @@ describe('useAIJourneyGmvInfluenced', () => {
             },
             isFetching: false,
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced('123', mockUserTimezone, mockFilters),
+            useAIJourneyGmvInfluenced(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.value).toBe(1000)
+    })
+
+    it('should return the series', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: {
+                value: 1000,
+                prevValue: 0,
+            },
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
+            const measures = args.measures[0]
+            if (measures === AiSalesAgentOrdersMeasure.Gmv) {
+                return {
+                    data: [
+                        [
+                            {
+                                dateTime: '2025-07-03',
+                                value: 100,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
+                            },
+                            {
+                                dateTime: '2025-07-10',
+                                value: 10,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
+                            },
+                        ],
+                    ] satisfies TimeSeriesDataItem[][],
+                    isFetching: false,
+                }
+            }
+        })
+
+        const { result } = renderHook(() =>
+            useAIJourneyGmvInfluenced(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
+        )
+
+        expect(result.current.series).toEqual([
+            {
+                dateTime: '2025-07-03',
+                label: 'AiSalesAgentOrders.gmv',
+                value: 100,
+            },
+            {
+                dateTime: '2025-07-10',
+                label: 'AiSalesAgentOrders.gmv',
+                value: 10,
+            },
+        ])
     })
 })

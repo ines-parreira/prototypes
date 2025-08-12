@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -22,6 +24,7 @@ export type MetricProps = {
     label: string
     value: number
     prevValue?: number | null | undefined
+    series?: TimeSeriesDataItem[]
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat: MetricTrendFormat
     currency?: string
@@ -35,12 +38,12 @@ export const useAIJourneyKpis = (
     customStartDate?: string,
     customEndDate?: string,
 ) => {
+    const granularity = ReportingGranularity.Week
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
     const filters: filterType = useMemo(() => {
         const start_datetime =
             customStartDate ??
-            moment().subtract(30, 'days').startOf('day').format()
-
+            moment().subtract(28, 'days').startOf('day').format()
         const end_datetime = customEndDate ?? moment().endOf('day').format()
 
         return {
@@ -55,27 +58,37 @@ export const useAIJourneyKpis = (
         integrationId,
         userTimezone,
         filters,
+        granularity,
         journeyId,
     )
     const totalOrders = useAIJourneyTotalOrders(
         integrationId,
         userTimezone,
         filters,
+        granularity,
         journeyId,
     )
     const conversionRate = useAIJourneyConversionRate(
         integrationId,
         userTimezone,
         filters,
+        granularity,
         journeyId,
     )
     const clickThroughRate = useClickThroughRate(
         integrationId,
         userTimezone,
         filters,
+        granularity,
         shopName,
         journeyId,
     )
 
-    return [gmvInfluenced, totalOrders, conversionRate, clickThroughRate]
+    return {
+        period: {
+            start: filters.period.start_datetime,
+            end: filters.period.end_datetime,
+        },
+        metrics: [gmvInfluenced, totalOrders, conversionRate, clickThroughRate],
+    }
 }

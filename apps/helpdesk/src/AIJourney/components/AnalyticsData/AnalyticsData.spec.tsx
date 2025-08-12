@@ -20,6 +20,10 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone,
 )
 
+const period = {
+    start: '1970-01-01T00:00:00+00:00',
+    end: '1970-01-01T00:00:00+00:00',
+}
 const data = [
     {
         label: 'Total Revenue',
@@ -76,7 +80,7 @@ describe('<AnalyticsData />', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
-                    <AnalyticsData data={data} />{' '}
+                    <AnalyticsData data={data} period={period} />{' '}
                 </Provider>
             </QueryClientProvider>,
         )
@@ -90,7 +94,7 @@ describe('<AnalyticsData />', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
-                    <AnalyticsData data={data} />
+                    <AnalyticsData data={data} period={period} />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -103,7 +107,7 @@ describe('<AnalyticsData />', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
-                    <AnalyticsData data={data} />
+                    <AnalyticsData data={data} period={period} />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -127,7 +131,7 @@ describe('<AnalyticsData />', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
-                    <AnalyticsData data={loadingData} />
+                    <AnalyticsData data={loadingData} period={period} />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -143,7 +147,7 @@ describe('<AnalyticsData />', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
-                    <AnalyticsData data={[]} />
+                    <AnalyticsData data={[]} period={period} />
                 </Provider>
             </QueryClientProvider>,
         )

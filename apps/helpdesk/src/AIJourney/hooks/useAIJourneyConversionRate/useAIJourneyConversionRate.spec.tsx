@@ -1,10 +1,18 @@
 import { renderHook } from '@testing-library/react'
 
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import {
+    TimeSeriesDataItem,
+    useTimeSeries,
+} from 'domains/reporting/hooks/useTimeSeries'
+import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import { useAIJourneyConversionRate } from './useAIJourneyConversionRate'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
+jest.mock('domains/reporting/hooks/useTimeSeries')
 
 describe('useAIJourneyConversionRate', () => {
     const mockUserTimezone = 'America/New_York'
@@ -19,26 +27,90 @@ describe('useAIJourneyConversionRate', () => {
     })
 
     it('should calculate conversion rate correctly', () => {
-        ;(useMetricTrend as jest.Mock).mockImplementation((currentQuery) => {
-            if (currentQuery.queryType === 'order') {
+        ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
+            const measures = args.measures[0]
+            if (measures === AiSalesAgentOrdersMeasure.Count) {
                 return {
                     data: { value: 20, prevValue: 10 },
                     isFetching: false,
                 }
             }
-            return {
-                data: { value: 100, prevValue: 100 },
-                isFetching: false,
+
+            if (measures === AiSalesAgentConversationsMeasure.Count) {
+                return {
+                    data: { value: 50, prevValue: 50 },
+                    isFetching: false,
+                }
+            }
+        })
+        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
+            const measures = args.measures[0]
+            if (measures === AiSalesAgentOrdersMeasure.Count) {
+                return {
+                    data: [
+                        [
+                            {
+                                dateTime: '2025-07-03',
+                                value: 10,
+                                label: AiSalesAgentOrdersMeasure.Count,
+                            },
+                            {
+                                dateTime: '2025-07-10',
+                                value: 20,
+                                label: AiSalesAgentOrdersMeasure.Count,
+                            },
+                        ],
+                    ] satisfies TimeSeriesDataItem[][],
+                    isFetching: false,
+                }
+            }
+
+            if (measures === AiSalesAgentConversationsMeasure.Count) {
+                return {
+                    data: [
+                        [
+                            {
+                                dateTime: '2025-07-03',
+                                value: 50,
+                                label: AiSalesAgentConversationsMeasure.Count,
+                            },
+                            {
+                                dateTime: '2025-07-10',
+                                value: 50,
+                                label: AiSalesAgentConversationsMeasure.Count,
+                            },
+                        ],
+                    ] satisfies TimeSeriesDataItem[][],
+                    isFetching: false,
+                }
             }
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
-        expect(result.current.value).toBe(100)
+        expect(result.current.value).toBe(40)
+        expect(result.current.prevValue).toBe(20)
         expect(result.current.isLoading).toBe(false)
         expect(result.current.label).toBe('Conversion rate')
+        expect(result.current.series).toEqual([
+            {
+                dateTime: '2025-07-03',
+                label: 'AiSalesAgentOrders.count',
+                value: 20,
+            },
+            {
+                dateTime: '2025-07-10',
+                label: 'AiSalesAgentOrders.count',
+                value: 40,
+            },
+        ])
     })
 
     it('should handle loading state correctly', () => {
@@ -54,9 +126,18 @@ describe('useAIJourneyConversionRate', () => {
                 isFetching: true,
             }
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.value).toBe(0)
@@ -76,9 +157,18 @@ describe('useAIJourneyConversionRate', () => {
                 isFetching: false,
             }
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.value).toBe(0)
@@ -91,9 +181,18 @@ describe('useAIJourneyConversionRate', () => {
                 isFetching: false,
             }
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.value).toBe(0)
@@ -112,9 +211,18 @@ describe('useAIJourneyConversionRate', () => {
                 isFetching: false,
             }
         })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate('123', mockUserTimezone, mockFilters),
+            useAIJourneyConversionRate(
+                '123',
+                mockUserTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current.value).toBe(100)

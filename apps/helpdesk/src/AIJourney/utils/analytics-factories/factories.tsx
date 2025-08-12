@@ -21,9 +21,14 @@ import {
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilterOperator,
+    ReportingGranularity,
     ReportingQuery,
+    TimeSeriesQuery,
 } from 'domains/reporting/models/types'
-import { statsFiltersToReportingFilters } from 'domains/reporting/utils/reporting'
+import {
+    getFilterDateRange,
+    statsFiltersToReportingFilters,
+} from 'domains/reporting/utils/reporting'
 
 export const aiJourneyGmvInfluencedQueryFactory = (
     integrationId: string,
@@ -67,6 +72,30 @@ export const aiJourneyGmvInfluencedQueryFactory = (
             ...journeyFilter,
         ],
         timezone,
+    }
+}
+
+export const aiJourneyGmvInfluencedTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
+    return {
+        ...aiJourneyGmvInfluencedQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentOrdersDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
     }
 }
 
@@ -117,6 +146,30 @@ export const aiJourneyTotalNumberOfOrderQueryFactory = (
     }
 }
 
+export const aiJourneyTotalNumberOfOrderTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
+    return {
+        ...aiJourneyTotalNumberOfOrderQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentOrdersDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+    }
+}
+
 export const aiJourneyTotalNumberOfSalesConversationsQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
@@ -154,6 +207,30 @@ export const aiJourneyTotalNumberOfSalesConversationsQueryFactory = (
             ...journeyFilter,
         ],
         timezone,
+    }
+}
+
+export const aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyTotalNumberOfSalesConversationsQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
     }
 }
 
@@ -196,6 +273,30 @@ export const aiJourneyUniqClicksQueryFactory = (
             ...journeyIdFilter,
         ],
         timezone,
+    }
+}
+
+export const aiJourneyUniqClicksTimeSeriesQuery = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    shopName: string,
+    journeyId?: string,
+): TimeSeriesQuery<ConvertTrackingEventsCube> => {
+    return {
+        ...aiJourneyUniqClicksQueryFactory(
+            filters,
+            timezone,
+            shopName,
+            journeyId,
+        ),
+        timeDimensions: [
+            {
+                dimension: ConvertTrackingEventsDimension.CreatedDatetime,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
     }
 }
 

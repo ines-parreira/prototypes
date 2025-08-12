@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { AnalyticsBarChart, DataArrayType } from './AnalyticsBarChart'
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+
+import { AnalyticsBarChart } from './AnalyticsBarChart'
 
 jest.mock('../Tooltip/Tooltip', () => ({
     Tooltip: ({ date, info }: { date: string; info: string }) => (
@@ -13,84 +15,95 @@ jest.mock('../Tooltip/Tooltip', () => ({
 }))
 
 describe('<AnalyticsBarChart />', () => {
-    const dataArray = [
+    const data = [
         {
-            dateRange: {
-                startDate: '2025-07-09T00:00:00Z',
-                endDate: '2025-07-14T23:59:59Z',
-            },
-            value: [
-                {
-                    label: 'Total Revenue',
-                    value: 15,
-                    prevValue: null,
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'currency',
-                    currency: 'USD',
-                    isLoading: false,
-                },
-                {
-                    label: 'Total Orders',
-                    value: 10,
-                    prevValue: 0,
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'decimal-precision-1',
-                    isLoading: false,
-                },
-                {
-                    label: 'Conversion rate',
-                    value: 20,
-                    prevValue: 0,
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'percent',
-                    isLoading: false,
-                },
-                {
-                    label: 'Click Through Rate',
-                    value: 30,
-                    prevValue: 0,
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'percent',
-                    currency: 'USD',
-                    isLoading: false,
-                },
-            ],
+            dateTime: '2023-07-03',
+            value: 10,
         },
-    ] as DataArrayType[]
+        {
+            dateTime: '2023-07-10',
+            value: 0,
+        },
+        {
+            dateTime: '2023-07-17',
+            value: 15,
+        },
+        {
+            dateTime: '2023-07-24',
+            value: 22,
+        },
+    ] as TimeSeriesDataItem[]
 
     it('renders the correct number of bars', () => {
         const { container } = render(
-            <AnalyticsBarChart dataArray={dataArray} metricIndex={1} />,
+            <AnalyticsBarChart
+                data={data}
+                metricFormat={'currency'}
+                currency={'USD'}
+                period={{ start: '2023-07-03', end: '2023-07-26' }}
+            />,
         )
         const bars = container.querySelectorAll('.bar')
-        expect(bars.length).toBe(dataArray.length)
+        expect(bars.length).toBe(data.length)
     })
 
     it('shows tooltip on bar hover', async () => {
         const { container } = render(
-            <AnalyticsBarChart dataArray={dataArray} metricIndex={1} />,
+            <AnalyticsBarChart
+                data={data}
+                metricFormat={'currency'}
+                currency={'USD'}
+                period={{ start: '2023-07-03', end: '2023-07-26' }}
+            />,
         )
         const bars = container.querySelectorAll('.bar')
-        await userEvent.hover(bars[0])
+
+        await act(async () => {
+            await userEvent.hover(bars[0])
+        })
         expect(screen.getByTestId('tooltip')).toBeInTheDocument()
-        expect(screen.getByText('Jul 9 - Jul 14')).toBeInTheDocument()
-        expect(screen.getByText('10')).toBeInTheDocument()
+        expect(screen.getByText('Jul 3 - Jul 9')).toBeInTheDocument()
+        expect(screen.getByText('$10')).toBeInTheDocument()
+        await act(async () => {
+            await userEvent.unhover(bars[0])
+        })
+
+        await act(async () => {
+            await userEvent.hover(bars[3])
+        })
+        expect(screen.getByTestId('tooltip')).toBeInTheDocument()
+        expect(screen.getByText('Jul 24 - Jul 26')).toBeInTheDocument()
+        expect(screen.getByText('$22')).toBeInTheDocument()
     })
 
     it('hides tooltip when not hovering', async () => {
         const { container } = render(
-            <AnalyticsBarChart dataArray={dataArray} metricIndex={1} />,
+            <AnalyticsBarChart
+                data={data}
+                metricFormat={'currency'}
+                currency={'USD'}
+                period={{ start: '2023-07-03', end: '2023-07-26' }}
+            />,
         )
         const bars = container.querySelectorAll('.bar')
-        await userEvent.hover(bars[0])
+        await act(async () => {
+            await userEvent.hover(bars[0])
+        })
         expect(screen.getByTestId('tooltip')).toBeInTheDocument()
-        await userEvent.unhover(bars[0])
+        await act(async () => {
+            await userEvent.unhover(bars[0])
+        })
         expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
     })
 
     it('returns empty array when dataArray is empty', () => {
         const { container } = render(
-            <AnalyticsBarChart dataArray={[]} metricIndex={0} />,
+            <AnalyticsBarChart
+                data={[]}
+                currency={'USD'}
+                metricFormat={'currency'}
+                period={{ start: '2023-07-03', end: '2023-07-26' }}
+            />,
         )
 
         const bars = container.querySelectorAll('.bar')

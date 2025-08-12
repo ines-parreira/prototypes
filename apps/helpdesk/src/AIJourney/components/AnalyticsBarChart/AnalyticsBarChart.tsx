@@ -3,56 +3,66 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import moment from 'moment'
 
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
-import { formatMetricValue } from 'domains/reporting/pages/common/utils'
+import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import {
+    formatMetricValue,
+    MetricTrendFormat,
+} from 'domains/reporting/pages/common/utils'
 
 import { Tooltip } from '../Tooltip/Tooltip'
 
 import css from './AnalyticsBarChart.less'
 
-export type DataArrayType = {
-    dateRange: {
-        startDate: string
-        endDate: string
-    }
-    value: MetricProps[]
-}
-
 type AnalyticsBarChartProps = {
-    dataArray: DataArrayType[]
-    metricIndex: number // Add this prop to know which metric to display
+    data: TimeSeriesDataItem[]
+    metricFormat: MetricTrendFormat
+    currency?: string
+    period: {
+        start: string
+        end: string
+    }
 }
 
 export const AnalyticsBarChart = ({
-    dataArray,
-    metricIndex,
+    data,
+    metricFormat,
+    currency,
+    period,
 }: AnalyticsBarChartProps) => {
     const [hoveredBar, setHoveredBar] = useState<number | null>(null)
 
     const transformedData = useMemo(() => {
-        if (!dataArray.length) return []
+        if (!data.length) {
+            return []
+        }
 
-        return dataArray.map((item) => {
-            const metricValue = item.value[metricIndex]?.value || 0
+        return data.map((item, index) => {
+            const metricValue = item.value ?? 0
+            const nextStartDate = data[index + 1]?.dateTime
+            let endDate: string
+            if (nextStartDate) {
+                endDate = moment(nextStartDate)
+                    .subtract(1, 'day')
+                    .format('MMM D')
+            } else {
+                endDate = moment(period.end).format('MMM D')
+            }
+
             return {
-                dateRange: {
-                    startDate: item.dateRange.startDate,
-                    endDate: item.dateRange.endDate,
-                    formatted: `${moment(item.dateRange.startDate).format('MMM D')} - ${moment(item.dateRange.endDate).format('MMM D')}`,
-                },
+                formattedDate: `${moment(item.dateTime).format('MMM D')} - ${endDate}`,
                 formattedValue: formatMetricValue(
                     metricValue,
-                    item.value[metricIndex].metricFormat,
+                    metricFormat,
                     undefined,
-                    item.value[metricIndex].currency,
+                    currency,
                 ),
                 value: metricValue,
             }
         })
-    }, [dataArray, metricIndex])
+    }, [data, metricFormat, currency, period.end])
 
-    const highestValue = Math.max(...transformedData.map((v) => v.value || 0))
-    const lowestValue = Math.min(...transformedData.map((v) => v.value || 0))
+    const highestValue = Math.max(...transformedData.map((v) => v.value ?? 0))
+    const lowestValue = Math.min(...transformedData.map((v) => v.value ?? 0))
 
     const getBarHeightFactor = (
         value: number,
@@ -62,9 +72,13 @@ export const AnalyticsBarChart = ({
         const TOP_FACTOR = 1
         const BOTTOM_FACTOR = 0.2
 
-        if (highestValue === 0) return BOTTOM_FACTOR
+        if (highestValue === 0) {
+            return BOTTOM_FACTOR
+        }
 
-        if (highestValue === lowestValue) return TOP_FACTOR
+        if (highestValue === lowestValue) {
+            return TOP_FACTOR
+        }
 
         return (
             TOP_FACTOR +
@@ -95,7 +109,7 @@ export const AnalyticsBarChart = ({
                     />
                     {hoveredBar === barIndex && (
                         <Tooltip
-                            date={data.dateRange.formatted}
+                            date={data.formattedDate}
                             info={data.formattedValue}
                         />
                     )}

@@ -1,11 +1,18 @@
 import { renderHook } from '@testing-library/react'
 
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import {
+    TimeSeriesDataItem,
+    useTimeSeries,
+} from 'domains/reporting/hooks/useTimeSeries'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { totalNumberOfOrderQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import { useAIJourneyTotalOrders } from './useAIJourneyTotalOrders'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
+jest.mock('domains/reporting/hooks/useTimeSeries')
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 
 describe('useAIJourneyTotalOrders', () => {
@@ -28,11 +35,38 @@ describe('useAIJourneyTotalOrders', () => {
             data: { value: 100, prevValue: 50 },
             isFetching: false,
         }))
+        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
+            const measures = args.measures[0]
+            if (measures === AiSalesAgentOrdersMeasure.Count) {
+                return {
+                    data: [
+                        [
+                            {
+                                dateTime: '2025-07-03',
+                                value: 1,
+                                label: AiSalesAgentOrdersMeasure.Count,
+                            },
+                            {
+                                dateTime: '2025-07-10',
+                                value: 0,
+                                label: AiSalesAgentOrdersMeasure.Count,
+                            },
+                        ],
+                    ] satisfies TimeSeriesDataItem[][],
+                    isFetching: false,
+                }
+            }
+        })
 
         const userTimezone = 'America/New_York'
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalOrders('123', userTimezone, mockFilters),
+            useAIJourneyTotalOrders(
+                '123',
+                userTimezone,
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current).toEqual({
@@ -42,6 +76,18 @@ describe('useAIJourneyTotalOrders', () => {
             metricFormat: 'decimal-precision-1',
             prevValue: 50,
             value: 100,
+            series: [
+                {
+                    dateTime: '2025-07-03',
+                    label: 'AiSalesAgentOrders.count',
+                    value: 1,
+                },
+                {
+                    dateTime: '2025-07-10',
+                    label: 'AiSalesAgentOrders.count',
+                    value: 0,
+                },
+            ],
         })
     })
 
@@ -50,9 +96,23 @@ describe('useAIJourneyTotalOrders', () => {
             data: undefined,
             isFetching: true,
         }))
+        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
+            const measures = args.measures[0]
+            if (measures === AiSalesAgentOrdersMeasure.Count) {
+                return {
+                    data: undefined,
+                    isFetching: true,
+                }
+            }
+        })
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalOrders('123', 'UTC', mockFilters),
+            useAIJourneyTotalOrders(
+                '123',
+                'UTC',
+                mockFilters,
+                ReportingGranularity.Week,
+            ),
         )
 
         expect(result.current).toEqual({
@@ -62,6 +122,7 @@ describe('useAIJourneyTotalOrders', () => {
             metricFormat: 'decimal-precision-1',
             prevValue: 0,
             value: 0,
+            series: [],
         })
     })
 })

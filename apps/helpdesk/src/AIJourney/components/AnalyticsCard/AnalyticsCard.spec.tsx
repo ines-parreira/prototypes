@@ -28,6 +28,10 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone,
 )
 
+const period = {
+    start: '1970-01-01T00:00:00+00:00',
+    end: '1970-01-01T00:00:00+00:00',
+}
 const data = [
     {
         label: 'Revenue',
@@ -100,6 +104,7 @@ describe('<AnalyticsCard />', () => {
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <AnalyticsCard
+                        period={period}
                         analyticsData={data}
                         abandonedCartJourney={mockAbandonedCartJourney}
                         journeyConfigurations={{
@@ -123,6 +128,7 @@ describe('<AnalyticsCard />', () => {
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <AnalyticsCard
+                        period={period}
                         analyticsData={data}
                         abandonedCartJourney={{
                             ...mockAbandonedCartJourney,
@@ -146,6 +152,7 @@ describe('<AnalyticsCard />', () => {
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <AnalyticsCard
+                        period={period}
                         analyticsData={data}
                         abandonedCartJourney={{
                             ...mockAbandonedCartJourney,
