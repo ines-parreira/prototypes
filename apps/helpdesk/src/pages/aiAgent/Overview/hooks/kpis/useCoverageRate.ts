@@ -5,8 +5,10 @@ import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAuto
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { customFieldsTicketTotalCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
@@ -17,6 +19,7 @@ import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/Automat
 export const useCoverageRate = (
     filters: StatsFilters,
     timezone: string,
+    integrationIds?: string[],
 ): KpiMetric => {
     const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
@@ -27,11 +30,31 @@ export const useCoverageRate = (
             filters,
             timezone,
             customFieldId: outcomeCustomFieldId,
+            additionalFilters:
+                integrationIds && integrationIds.length > 0
+                    ? [
+                          {
+                              member: TicketMessagesMember.IntegrationChannelPair,
+                              operator: ReportingFilterOperator.Equals,
+                              values: integrationIds,
+                          },
+                      ]
+                    : undefined,
         }),
         customFieldsTicketTotalCountQueryFactory({
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
             customFieldId: outcomeCustomFieldId,
+            additionalFilters:
+                integrationIds && integrationIds.length > 0
+                    ? [
+                          {
+                              member: TicketMessagesMember.IntegrationChannelPair,
+                              operator: ReportingFilterOperator.Equals,
+                              values: integrationIds,
+                          },
+                      ]
+                    : undefined,
         }),
     )
 

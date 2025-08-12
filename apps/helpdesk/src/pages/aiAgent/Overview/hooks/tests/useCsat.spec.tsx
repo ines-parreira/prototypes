@@ -6,7 +6,6 @@ import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMet
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
@@ -17,9 +16,12 @@ jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
 
 jest.mock('models/aiAgent/queries')
-const useGetStoresConfigurationForAccountMock = assumeMock(
-    useGetStoresConfigurationForAccount,
+
+jest.mock('pages/aiAgent/hooks/useStoreConfigurationForAccount')
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
 )
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 
 describe('useCsat', () => {
     const aiAgentUserId = 4000
@@ -41,29 +43,68 @@ describe('useCsat', () => {
         }),
     } as RootState
 
-    const renderUseCsat = (filters: StatsFilters, timezone: string) =>
-        renderHook(() => useCsat(filters, timezone, aiAgentUserId), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
+    beforeEach(() => {
+        // Mock useStoreConfigurationForAccount hook
+        const { useStoreConfigurationForAccount } = jest.requireMock(
+            'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+        )
+        useStoreConfigurationForAccount.mockReturnValue({
+            isLoading: false,
+            storeConfigurations: [],
         })
 
-    it('useCsat return correct metric data when the query resolves', () => {
-        useGetStoresConfigurationForAccountMock.mockReturnValue({
-            isLoading: false,
-            data: {
-                storeConfigurations: [
-                    {
-                        emailChannelDeactivatedDatetime: null,
-                        storeName: 'My Phone Integration 1',
-                    },
-                    {
-                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
-                        storeName: 'My Phone Integration 2',
-                    },
-                ],
+        // Mock useGetCustomTicketsFieldsDefinitionData hook
+        const { useGetCustomTicketsFieldsDefinitionData } = jest.requireMock(
+            'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+        )
+        useGetCustomTicketsFieldsDefinitionData.mockReturnValue({
+            intentCustomFieldId: 1,
+            outcomeCustomFieldId: 2,
+            sentimentCustomFieldId: 3,
+        })
+
+        // Mock useCustomFieldDefinitions hook
+        const { useCustomFieldDefinitions } = jest.requireMock(
+            'custom-fields/hooks/queries/useCustomFieldDefinitions',
+        )
+        useCustomFieldDefinitions.mockReturnValue({
+            data: { data: [] },
+        })
+    })
+
+    const renderUseCsat = (
+        filters: StatsFilters,
+        timezone: string,
+        integrationIds?: string[],
+    ) =>
+        renderHook(
+            () => useCsat(filters, timezone, aiAgentUserId, integrationIds),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
             },
-        } as any)
+        )
+
+    it('useCsat return correct metric data when the query resolves', () => {
+        const { useStoreConfigurationForAccount } = jest.requireMock(
+            'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+        )
+        useStoreConfigurationForAccount.mockReturnValue({
+            isLoading: false,
+            storeConfigurations: [
+                {
+                    emailChannelDeactivatedDatetime: null,
+                    storeName: 'My Phone Integration 1',
+                },
+                {
+                    emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                    storeName: 'My Phone Integration 2',
+                },
+            ],
+        })
 
         useMultipleMetricsTrendsMock.mockReturnValue({
             data: {
@@ -92,21 +133,22 @@ describe('useCsat', () => {
     })
 
     it('useCsat should be hidden when all store have an emailChannelDeactivatedDatetime', () => {
-        useGetStoresConfigurationForAccountMock.mockReturnValue({
+        const { useStoreConfigurationForAccount } = jest.requireMock(
+            'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+        )
+        useStoreConfigurationForAccount.mockReturnValue({
             isLoading: false,
-            data: {
-                storeConfigurations: [
-                    {
-                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
-                        storeName: 'My Phone Integration 1',
-                    },
-                    {
-                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
-                        storeName: 'My Phone Integration 2',
-                    },
-                ],
-            },
-        } as any)
+            storeConfigurations: [
+                {
+                    emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                    storeName: 'My Phone Integration 1',
+                },
+                {
+                    emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                    storeName: 'My Phone Integration 2',
+                },
+            ],
+        })
 
         useMultipleMetricsTrendsMock.mockReturnValue({
             data: {
@@ -124,21 +166,22 @@ describe('useCsat', () => {
     })
 
     it('useCsat should not be hidden when some store have a null emailChannelDeactivatedDatetime', () => {
-        useGetStoresConfigurationForAccountMock.mockReturnValue({
+        const { useStoreConfigurationForAccount } = jest.requireMock(
+            'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+        )
+        useStoreConfigurationForAccount.mockReturnValue({
             isLoading: false,
-            data: {
-                storeConfigurations: [
-                    {
-                        emailChannelDeactivatedDatetime: null,
-                        storeName: 'My Phone Integration 1',
-                    },
-                    {
-                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
-                        storeName: 'My Phone Integration 2',
-                    },
-                ],
-            },
-        } as any)
+            storeConfigurations: [
+                {
+                    emailChannelDeactivatedDatetime: null,
+                    storeName: 'My Phone Integration 1',
+                },
+                {
+                    emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                    storeName: 'My Phone Integration 2',
+                },
+            ],
+        })
 
         useMultipleMetricsTrendsMock.mockReturnValue({
             data: {
@@ -162,22 +205,22 @@ describe('useCsat', () => {
     ])(
         'should return loading state when analytics loading $analyticsLoading and store integrations loading $storeIntegrationsLoading',
         ({ storeIntegrationsLoading, analyticsLoading }) => {
-            useGetStoresConfigurationForAccountMock.mockReturnValue({
+            const { useStoreConfigurationForAccount } = jest.requireMock(
+                'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+            )
+            useStoreConfigurationForAccount.mockReturnValue({
                 isLoading: storeIntegrationsLoading,
-                data: {
-                    storeConfigurations: [
-                        {
-                            emailChannelDeactivatedDatetime: null,
-                            storeName: 'My Phone Integration 1',
-                        },
-                        {
-                            emailChannelDeactivatedDatetime:
-                                '2025-02-25T11:17:10Z',
-                            storeName: 'My Phone Integration 2',
-                        },
-                    ],
-                },
-            } as any)
+                storeConfigurations: [
+                    {
+                        emailChannelDeactivatedDatetime: null,
+                        storeName: 'My Phone Integration 1',
+                    },
+                    {
+                        emailChannelDeactivatedDatetime: '2025-02-25T11:17:10Z',
+                        storeName: 'My Phone Integration 2',
+                    },
+                ],
+            })
 
             useMultipleMetricsTrendsMock.mockReturnValue({
                 isFetching: analyticsLoading,
@@ -197,4 +240,88 @@ describe('useCsat', () => {
             })
         },
     )
+
+    it('should return correct metric when integrationIds are provided', () => {
+        const integrationIds = ['integration1', 'integration2']
+        const { useStoreConfigurationForAccount } = jest.requireMock(
+            'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+        )
+        useStoreConfigurationForAccount.mockReturnValue({
+            isLoading: false,
+            storeConfigurations: [
+                {
+                    emailChannelDeactivatedDatetime: null,
+                    storeName: 'My Store',
+                },
+            ],
+        })
+
+        useMultipleMetricsTrendsMock.mockReturnValue({
+            data: {
+                'TicketSatisfactionSurveyEnriched.avgSurveyScore': {
+                    value: 4.2,
+                    prevValue: 4.0,
+                },
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderUseCsat(filters, timezone, integrationIds)
+
+        expect(result.current).toEqual({
+            'data-candu-id': 'ai-agent-overview-kpi-csat',
+            title: 'CSAT',
+            hint: {
+                title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
+            },
+            metricFormat: 'decimal-precision-1',
+            value: 4.2,
+            prevValue: 4.0,
+            isLoading: false,
+            hidden: false,
+        })
+    })
+
+    it('should handle empty store configurations', () => {
+        const { useStoreConfigurationForAccount } = jest.requireMock(
+            'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+        )
+        useStoreConfigurationForAccount.mockReturnValue({
+            isLoading: false,
+            storeConfigurations: [],
+        })
+
+        useMultipleMetricsTrendsMock.mockReturnValue({
+            data: {
+                'TicketSatisfactionSurveyEnriched.avgSurveyScore': {
+                    value: 3.8,
+                    prevValue: 3.9,
+                },
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderUseCsat(filters, timezone)
+
+        expect(result.current.hidden).toBe(true)
+    })
+
+    it('should handle undefined store configurations', () => {
+        const { useStoreConfigurationForAccount } = jest.requireMock(
+            'pages/aiAgent/hooks/useStoreConfigurationForAccount',
+        )
+        useStoreConfigurationForAccount.mockReturnValue({
+            isLoading: false,
+            storeConfigurations: undefined,
+        })
+
+        useMultipleMetricsTrendsMock.mockReturnValue({
+            data: {},
+            isFetching: false,
+        } as any)
+
+        const { result } = renderUseCsat(filters, timezone)
+
+        expect(result.current.hidden).toBe(true)
+    })
 })

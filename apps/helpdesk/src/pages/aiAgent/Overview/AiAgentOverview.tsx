@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -29,12 +30,21 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { PendingTasksSectionConnected } from './components/PendingTasksSection/PendingTasksSectionConnected'
 
 export const AiAgentOverview = () => {
+    const { shopName, shopType } = useParams<{
+        shopName: string
+        shopType: string
+    }>()
+
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const hasResourceSection =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
 
+    // If shopname is not provided, we don't want to take into account the feature flag
+    // as the latter is supposed to render the page only for the shopname provided
+    const isActionDrivenAiAgentNavigationEnabled =
+        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation] && !!shopName
     const isShoppingAssistantTrialImprovement =
         useFlags()[FeatureFlagKey.ShoppingAssistantTrialImprovement]
 
@@ -50,7 +60,10 @@ export const AiAgentOverview = () => {
     })
 
     useEffectOnce(() => {
-        logEvent(SegmentEvent.AiAgentOverviewPageView)
+        logEvent(SegmentEvent.AiAgentOverviewPageView, {
+            shopName,
+            shopType,
+        })
     })
 
     const accountDomain = currentAccount.get('domain')
@@ -59,7 +72,7 @@ export const AiAgentOverview = () => {
         useThankYouModal()
 
     const { canSeeTrialCTA, canBookDemo, hasAnyTrialStarted } =
-        useShoppingAssistantTrialAccess()
+        useShoppingAssistantTrialAccess(shopName)
 
     const { storeActivations } = useStoreActivations()
 
@@ -103,13 +116,20 @@ export const AiAgentOverview = () => {
     const hasNoOnboardedStores = useHasNoOnboardedStores()
 
     return (
-        <AiAgentOverviewLayout>
-            <Title
-                firstName={currentUser.get('firstname')}
-                activationButton={
-                    hasNoOnboardedStores ? null : activationButton
-                }
-            />
+        <AiAgentOverviewLayout
+            shopName={shopName}
+            isActionDrivenAiAgentNavigationEnabled={
+                isActionDrivenAiAgentNavigationEnabled
+            }
+        >
+            {!isActionDrivenAiAgentNavigationEnabled && (
+                <Title
+                    firstName={currentUser.get('firstname')}
+                    activationButton={
+                        hasNoOnboardedStores ? null : activationButton
+                    }
+                />
+            )}
 
             {/* TODO: [AIFLY-547] remove this when the trial improvement is enabled */}
             {!isShoppingAssistantTrialImprovement && (
@@ -144,11 +164,20 @@ export const AiAgentOverview = () => {
                 isOnNewPlan={isOnNewPlan}
                 showActivationModal={showActivationModal}
                 showEarlyAccessModal={showEarlyAccessModal}
+                shopName={shopName}
+                isActionDrivenAiAgentNavigationEnabled={
+                    isActionDrivenAiAgentNavigationEnabled
+                }
             />
-            <PendingTasksSectionConnected />
+            <PendingTasksSectionConnected
+                shopName={shopName}
+                isActionDrivenAiAgentNavigationEnabled={
+                    isActionDrivenAiAgentNavigationEnabled
+                }
+            />
             {hasResourceSection && (
                 <>
-                    <Separator />
+                    {!isActionDrivenAiAgentNavigationEnabled && <Separator />}
                     <ResourcesSection />
                 </>
             )}

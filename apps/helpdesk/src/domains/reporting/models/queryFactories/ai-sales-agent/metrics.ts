@@ -119,6 +119,7 @@ export const gmvUSDInfluencedQueryFactory = (
 export const gmvInfluencedQueryFactory = (
     filters: StatsFilters,
     timezone: string,
+    integrationIds?: string[],
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
     measures: [AiSalesAgentOrdersMeasure.Gmv],
     dimensions: [AiSalesAgentOrdersDimension.Currency],
@@ -128,6 +129,15 @@ export const gmvInfluencedQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
+        ...(integrationIds && integrationIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentOrdersDimension.IntegrationId,
+                      operator: ReportingFilterOperator.In,
+                      values: integrationIds,
+                  },
+              ]
+            : []),
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
             filters,

@@ -20,7 +20,7 @@ export default function BigNumberMetric({
     trendBadge,
 }: Props) {
     if (isLoading) {
-        return <Skeleton height={32} />
+        return <Skeleton height={32} width={100} />
     }
 
     return (

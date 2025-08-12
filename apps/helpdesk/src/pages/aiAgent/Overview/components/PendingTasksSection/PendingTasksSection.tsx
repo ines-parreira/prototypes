@@ -31,6 +31,7 @@ type Props = {
     isFetched: boolean
     pendingTasks: Task[]
     completedTasks: Task[]
+    isActionDrivenAiAgentNavigationEnabled?: boolean
 }
 
 export const PendingTasksSection = ({
@@ -41,6 +42,7 @@ export const PendingTasksSection = ({
     isLoading,
     isFetched,
     pendingTasks,
+    isActionDrivenAiAgentNavigationEnabled,
 }: Props) => {
     const [isPendingTasksExpanded, setIsPendingTasksExpanded] = useState(false)
 
@@ -76,30 +78,40 @@ export const PendingTasksSection = ({
                 <div className={css.titleContainer}>
                     <CardTitle>
                         <div className={css.title}>
-                            Setup your store
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.titleIcon,
-                                )}
-                            >
-                                auto_awesome
-                            </i>
+                            {isActionDrivenAiAgentNavigationEnabled ? (
+                                <>Complete AI Agent setup</>
+                            ) : (
+                                <>
+                                    Setup your store
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.titleIcon,
+                                        )}
+                                    >
+                                        auto_awesome
+                                    </i>
+                                </>
+                            )}
                         </div>
                     </CardTitle>
                 </div>
-                {stores.length > 1 && (
-                    <StorePicker
-                        stores={stores}
-                        selectedStore={selectedStore}
-                        onStoreChange={onStoreChange}
+                {stores.length > 1 &&
+                    !isActionDrivenAiAgentNavigationEnabled && (
+                        <StorePicker
+                            stores={stores}
+                            selectedStore={selectedStore}
+                            onStoreChange={onStoreChange}
+                        />
+                    )}
+                {!isActionDrivenAiAgentNavigationEnabled && (
+                    <PendingTasksCompletionBar
+                        isLoading={isLoadingState}
+                        totalTasks={pendingTasks.length + completedTasks.length}
+                        totalTasksCompleted={completedTasks?.length}
                     />
                 )}
-                <PendingTasksCompletionBar
-                    isLoading={isLoadingState}
-                    totalTasks={pendingTasks.length + completedTasks.length}
-                    totalTasksCompleted={completedTasks?.length}
-                />
+
                 {!allTasksCompleted || isLoading ? (
                     <>
                         <div className={css.pendingTasksContainer}>

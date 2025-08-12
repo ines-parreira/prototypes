@@ -384,6 +384,13 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         <Switch>
             <AiAgentAccountConfigurationProvider>
                 <AiAgentStoreConfigurationProvider>
+                    {isActionDrivenAiAgentNavigationEnabled && (
+                        <Route
+                            path={`${path}/overview`}
+                            exact
+                            component={AiAgentOverview}
+                        />
+                    )}
                     <Route
                         path={`${path}`}
                         exact
@@ -982,7 +989,6 @@ function AiAgentContent() {
                     <ActionsPlatformEditStepViewContainer />
                 )}
             </Route>
-
             <Route
                 path={aiAgentRoutes.overview}
                 component={withUserRoleRequired(AiAgentOverview, AGENT_ROLE)}

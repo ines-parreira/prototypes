@@ -10,8 +10,8 @@ import { RootState } from 'state/types'
 
 import { useCurrency } from '../useCurrency'
 
-const renderUseCurrency = (store: Store) => {
-    return renderHook(() => useCurrency(), {
+const renderUseCurrency = (store: Store, integrationId?: number) => {
+    return renderHook(() => useCurrency(integrationId), {
         wrapper: ({ children }) => (
             <Provider store={store}>{children}</Provider>
         ),
@@ -95,6 +95,117 @@ describe('useCurrency', () => {
             })
 
             const { result } = renderUseCurrency(store)
+            expect(result.current).toEqual({
+                currency: 'USD',
+                isCurrencyUSD: true,
+            })
+        })
+    })
+
+    describe('when integrationId is provided', () => {
+        it('should return specific integration currency when integration exists', () => {
+            const store = createStore((state) => state as RootState, {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            meta: {
+                                currency: 'EUR',
+                            },
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            meta: {
+                                currency: 'JPY',
+                            },
+                        },
+                    ],
+                }),
+            })
+
+            const { result } = renderUseCurrency(store, 2)
+            expect(result.current).toEqual({
+                currency: 'JPY',
+                isCurrencyUSD: false,
+            })
+        })
+
+        it('should return specific integration currency USD when integration has USD', () => {
+            const store = createStore((state) => state as RootState, {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            meta: {
+                                currency: 'EUR',
+                            },
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            meta: {
+                                currency: 'USD',
+                            },
+                        },
+                    ],
+                }),
+            })
+
+            const { result } = renderUseCurrency(store, 2)
+            expect(result.current).toEqual({
+                currency: 'USD',
+                isCurrencyUSD: true,
+            })
+        })
+
+        it('should fallback to default behavior when integration does not exist', () => {
+            const store = createStore((state) => state as RootState, {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            meta: {
+                                currency: 'EUR',
+                            },
+                        },
+                    ],
+                }),
+            })
+
+            const { result } = renderUseCurrency(store, 999)
+            expect(result.current).toEqual({
+                currency: 'EUR',
+                isCurrencyUSD: false,
+            })
+        })
+
+        it('should fallback to default behavior when integration has no currency', () => {
+            const store = createStore((state) => state as RootState, {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            meta: {
+                                currency: 'EUR',
+                            },
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            meta: {
+                                currency: undefined,
+                            },
+                        },
+                    ],
+                }),
+            })
+
+            const { result } = renderUseCurrency(store, 2)
             expect(result.current).toEqual({
                 currency: 'USD',
                 isCurrencyUSD: true,

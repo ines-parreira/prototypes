@@ -22,21 +22,32 @@ type Store = {
 
 const expireIn1Hour = 3_600 * 1_000
 
+interface PendingTasksSectionConnectedProps {
+    shopName?: string
+    isActionDrivenAiAgentNavigationEnabled?: boolean
+}
+
 /**
  * To ease the incremental implementation of the PendingTasksSection component
  * we decided to split the component with a connected version of it
  * to decouple data fetching and presentation logic and ease implementation of it in storybook
  * */
-export const PendingTasksSectionConnected = () => {
+export const PendingTasksSectionConnected = ({
+    shopName: propShopName,
+    isActionDrivenAiAgentNavigationEnabled,
+}: PendingTasksSectionConnectedProps = {}) => {
     const rawStores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)
     const accountId = useAppSelector(getCurrentAccountId)
 
     const { search } = useLocation()
     const shopName = useMemo(() => {
+        if (propShopName) {
+            return propShopName
+        }
         const urlParams = new URLSearchParams(search)
         return urlParams.get('shopName')
-    }, [search])
+    }, [search, propShopName])
 
     const stores = useMemo(
         () =>
@@ -99,6 +110,9 @@ export const PendingTasksSectionConnected = () => {
             isFetched={isFetched}
             pendingTasks={pendingTasks}
             completedTasks={completedTasks}
+            isActionDrivenAiAgentNavigationEnabled={
+                isActionDrivenAiAgentNavigationEnabled
+            }
         />
     )
 }

@@ -7,7 +7,7 @@ import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { MemoryRouter, useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
@@ -50,7 +50,11 @@ jest.mock(
         TrialManageWorkflow: () => <div>Trial-Manage-Workflow</div>,
     }),
 )
-jest.mock('react-router')
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+    useLocation: jest.fn(),
+}))
 jest.mock('pages/aiAgent/Overview/hooks/useThankYouModal')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
 jest.mock('models/billing/queries')
@@ -89,7 +93,9 @@ const mockUseShoppingAssistantTrialAccess =
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseEarlyAccessAutomatePlan = assumeMock(useEarlyAccessAutomatePlan)
 const useLocationMock = assumeMock(useLocation)
+const useParamsMock = assumeMock(useParams)
 useLocationMock.mockReturnValue(defaultLocation)
+useParamsMock.mockReturnValue({ shopName: undefined, shopType: undefined })
 
 const rootState = AiAgentOverviewRootStateFixture.start()
     .with2ShopifyIntegrations()
@@ -109,11 +115,13 @@ const defaultStore = {
 
 const renderComponent = () => {
     return render(
-        <Provider store={mockStore(defaultStore)}>
-            <QueryClientProvider client={queryClient}>
-                <AiAgentOverview />
-            </QueryClientProvider>
-        </Provider>,
+        <MemoryRouter>
+            <Provider store={mockStore(defaultStore)}>
+                <QueryClientProvider client={queryClient}>
+                    <AiAgentOverview />
+                </QueryClientProvider>
+            </Provider>
+        </MemoryRouter>,
     )
 }
 
@@ -185,6 +193,10 @@ describe('AiAgentOverview', () => {
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(logEventMock).toHaveBeenCalledWith(
             segment.SegmentEvent.AiAgentOverviewPageView,
+            {
+                shopName: undefined,
+                shopType: undefined,
+            },
         )
     })
 
@@ -540,11 +552,13 @@ describe('AiAgentOverview', () => {
             })
 
             rerender(
-                <Provider store={mockStore(defaultStore)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AiAgentOverview />
-                    </QueryClientProvider>
-                </Provider>,
+                <MemoryRouter>
+                    <Provider store={mockStore(defaultStore)}>
+                        <QueryClientProvider client={queryClient}>
+                            <AiAgentOverview />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
             )
 
             // Should not be visible

@@ -11,6 +11,8 @@ import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -24,6 +26,9 @@ const useMetricTrendMock = assumeMock(useMetricTrend)
 
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 const useCurrencyMock = assumeMock(useCurrency)
+
+jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
+const gmvInfluencedQueryFactoryMock = assumeMock(gmvInfluencedQueryFactory)
 
 jest.useFakeTimers()
 
@@ -67,6 +72,13 @@ describe('useGmvInfluenced', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+        })
+
+        gmvInfluencedQueryFactoryMock.mockReturnValue({
+            measures: [AiSalesAgentOrdersMeasure.Gmv],
+            dimensions: [],
+            filters: [],
+            timeDimensions: [],
         })
     })
 
@@ -217,5 +229,39 @@ describe('useGmvInfluenced', () => {
         )
 
         expect(result.current.hidden).toBe(false)
+    })
+
+    it('should pass integrationIds to useCurrency and useMetricTrend correctly', () => {
+        const integrationIds = [123, 456]
+        useCurrencyMock.mockReturnValue({
+            currency: 'USD',
+            isCurrencyUSD: true,
+        })
+        useMetricTrendMock.mockReturnValue({
+            data: {
+                value: 12000,
+                prevValue: 10000,
+            },
+            isFetching: false,
+            isError: false,
+        })
+
+        renderHook(
+            () =>
+                useGmvInfluenced({
+                    ...useGmvInfluencedInput,
+                    integrationIds,
+                }),
+            {
+                wrapper,
+            },
+        )
+
+        expect(useCurrencyMock).toHaveBeenCalledWith(123)
+        expect(gmvInfluencedQueryFactoryMock).toHaveBeenCalledWith(
+            useGmvInfluencedInput.filters,
+            useGmvInfluencedInput.timezone,
+            ['123', '456'],
+        )
     })
 })

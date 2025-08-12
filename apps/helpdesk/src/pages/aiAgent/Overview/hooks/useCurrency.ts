@@ -8,7 +8,9 @@ export const CURRENCY_USD = 'USD'
 /**
  * Get the common currency of all the Shopify Integrations, or USD is no common currency.
  */
-export const useCurrency = (): { currency: string; isCurrencyUSD: boolean } => {
+export const useCurrency = (
+    integrationId?: number,
+): { currency: string; isCurrencyUSD: boolean } => {
     const shopifyIntegrations = useShopifyIntegrations() as ShopifyIntegration[]
 
     const currencies = Array.from(
@@ -16,6 +18,19 @@ export const useCurrency = (): { currency: string; isCurrencyUSD: boolean } => {
             shopifyIntegrations.map((integration) => integration.meta.currency),
         ),
     )
+
+    if (integrationId) {
+        const integration = shopifyIntegrations.find(
+            (integration) => integration.id === integrationId,
+        )
+
+        if (integration && integration.meta.currency) {
+            return {
+                currency: integration.meta.currency,
+                isCurrencyUSD: integration.meta.currency === CURRENCY_USD,
+            }
+        }
+    }
 
     return useMemo(() => {
         if (currencies.length === 0) {

@@ -27,15 +27,17 @@ import css from './KpiSection.less'
 const KpiContainer = ({
     isLoading = false,
     metrics,
+    isActionDrivenAiAgentNavigationEnabled,
 }: {
     isLoading?: boolean
     metrics?: KpiMetric[]
+    isActionDrivenAiAgentNavigationEnabled?: boolean
 }) => {
     if (isLoading || !metrics?.length) {
         return (
             <div className={css.kpiContainer}>
                 <Kpi isLoading />
-                <Kpi isLoading />
+                {!isActionDrivenAiAgentNavigationEnabled && <Kpi isLoading />}
                 <Kpi isLoading />
                 <Kpi isLoading />
             </div>
@@ -73,12 +75,16 @@ const Kpis = ({
     isOnNewPlan,
     showEarlyAccessModal,
     showActivationModal,
+    shopName,
+    isActionDrivenAiAgentNavigationEnabled,
 }: {
     aiAgentType?: AiAgentType
     aiAgentUserId: number
     isOnNewPlan: boolean
     showEarlyAccessModal: () => void
     showActivationModal: () => void
+    shopName?: string
+    isActionDrivenAiAgentNavigationEnabled?: boolean
 }) => {
     const { automationRateFilters, filters } = useMemo(() => {
         const start_datetime = moment()
@@ -114,20 +120,33 @@ const Kpis = ({
         isOnNewPlan,
         showEarlyAccessModal,
         showActivationModal,
+        shopName,
+        isActionDrivenAiAgentNavigationEnabled,
     })
 
-    return <KpiContainer metrics={metrics} />
+    return (
+        <KpiContainer
+            metrics={metrics}
+            isActionDrivenAiAgentNavigationEnabled={
+                isActionDrivenAiAgentNavigationEnabled
+            }
+        />
+    )
 }
 
 type Props = {
     isOnNewPlan: boolean
     showEarlyAccessModal: () => void
     showActivationModal: () => void
+    shopName?: string
+    isActionDrivenAiAgentNavigationEnabled?: boolean
 }
 export const KpiSection = ({
     isOnNewPlan,
     showEarlyAccessModal,
     showActivationModal,
+    shopName,
+    isActionDrivenAiAgentNavigationEnabled,
 }: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const aiAgentUserId = useAIAgentUserId()
@@ -162,7 +181,12 @@ export const KpiSection = ({
                     </div>
                 </div>
 
-                <KpiContainer isLoading />
+                <KpiContainer
+                    isLoading
+                    isActionDrivenAiAgentNavigationEnabled={
+                        isActionDrivenAiAgentNavigationEnabled
+                    }
+                />
             </OverviewCard>
         )
     }
@@ -201,6 +225,10 @@ export const KpiSection = ({
                 showActivationModal={showActivationModal}
                 showEarlyAccessModal={showEarlyAccessModal}
                 isOnNewPlan={isOnNewPlan}
+                shopName={shopName}
+                isActionDrivenAiAgentNavigationEnabled={
+                    isActionDrivenAiAgentNavigationEnabled
+                }
             />
         </OverviewCard>
     )

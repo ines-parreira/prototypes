@@ -17,6 +17,7 @@ export const useGmvInfluenced = ({
     isOnNewPlan,
     showEarlyAccessModal,
     showActivationModal,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
@@ -24,19 +25,27 @@ export const useGmvInfluenced = ({
     isOnNewPlan: boolean
     showEarlyAccessModal: () => void
     showActivationModal: () => void
+    integrationIds?: number[]
 }): KpiMetric => {
     const hasAnalytics = useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
 
-    const { currency } = useCurrency()
+    const { currency } = useCurrency(
+        integrationIds?.[0] ? integrationIds[0] : undefined,
+    )
 
     const { data, isFetching } = useMetricTrend(
-        gmvInfluencedQueryFactory(filters, timezone),
+        gmvInfluencedQueryFactory(
+            filters,
+            timezone,
+            integrationIds?.map((id) => id.toString()),
+        ),
         gmvInfluencedQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
             timezone,
+            integrationIds?.map((id) => id.toString()),
         ),
     )
 

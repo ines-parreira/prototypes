@@ -9,11 +9,13 @@ import { KpiMetric } from 'pages/aiAgent/Overview/types'
 export const useAiAgentAutomationRate = (
     filters: StatsFilters,
     timezone: string,
+    integrationIds?: string[],
 ): KpiMetric => {
     const allTickets = useAllTickets(filters, timezone)
     const aiAgentTicketNoHandover = useAiAgentTicketNoHandover(
         filters,
         timezone,
+        integrationIds,
     )
 
     const result = getAiAgentCoverageRate({

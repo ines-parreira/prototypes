@@ -54,6 +54,7 @@ export const getAiAgentNavigationRoutes = (
 
         // AI Agent routes
         main: basePath,
+        perShopOverview: `${basePath}/overview`,
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
         knowledge: `${basePath}/knowledge`,
@@ -167,6 +168,12 @@ const useNavigationItems = (
     return useMemo<NavigationItem[]>(
         () =>
             [
+                isActionDrivenAiAgentNavigationEnabled && {
+                    route: routes.perShopOverview,
+                    title: 'Overview',
+                    dataCanduId: 'ai-agent-navbar-overview',
+                    exact: true,
+                },
                 isAiAgentOptimizeTabEnabled && {
                     route: isActionDrivenAiAgentNavigationEnabled
                         ? routes.intents

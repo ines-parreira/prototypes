@@ -3,6 +3,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import { customFieldsTicketTotalCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
@@ -20,6 +22,13 @@ const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate')
 const useAiAgentAutomationRateMock = assumeMock(useAiAgentAutomationRate)
 
+jest.mock(
+    'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount',
+)
+const customFieldsTicketTotalCountQueryFactoryMock = assumeMock(
+    customFieldsTicketTotalCountQueryFactory,
+)
+
 const timezone = 'UTC'
 const filters: StatsFilters = {
     period: {
@@ -36,6 +45,13 @@ describe('useCoverageRate', () => {
             data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
+
+        customFieldsTicketTotalCountQueryFactoryMock.mockReturnValue({
+            measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+            dimensions: [],
+            filters: [],
+            timeDimensions: [],
+        })
     })
 
     it.each([
@@ -229,5 +245,131 @@ describe('useCoverageRate', () => {
                 isLoading: false,
             })
         })
+    })
+
+    it('should pass integrationIds to customFieldsTicketTotalCountQueryFactory correctly', () => {
+        const integrationIds = ['123', '456']
+
+        useMultipleMetricsTrendsMock.mockReturnValue({
+            data: {
+                'TicketCustomFieldsEnriched.ticketCustomFieldsTicketCount': {
+                    value: 3.1,
+                    prevValue: 3.5,
+                },
+                'TicketEnriched.ticketCount': {
+                    value: 2,
+                    prevValue: 1,
+                },
+            },
+            isFetching: false,
+            isError: false,
+        } as any)
+
+        useAutomationRateTrendMock.mockReturnValue({
+            isFetching: false,
+            data: {
+                value: 0.1234,
+                prevValue: 0,
+            },
+            isError: false,
+        } as any)
+
+        useAiAgentAutomationRateMock.mockReturnValue({
+            isLoading: false,
+            value: 0.1235,
+            prevValue: 0,
+        })
+
+        renderHook(() => useCoverageRate(filters, timezone, integrationIds))
+
+        expect(
+            customFieldsTicketTotalCountQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                additionalFilters: [
+                    {
+                        member: 'TicketMessagesEnriched.integrationChannelPair',
+                        operator: 'equals',
+                        values: ['123', '456'],
+                    },
+                ],
+            }),
+        )
+
+        expect(
+            customFieldsTicketTotalCountQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.objectContaining({
+                    period: expect.objectContaining({
+                        start_datetime: expect.any(String),
+                        end_datetime: expect.any(String),
+                    }),
+                }),
+                additionalFilters: [
+                    {
+                        member: 'TicketMessagesEnriched.integrationChannelPair',
+                        operator: 'equals',
+                        values: ['123', '456'],
+                    },
+                ],
+            }),
+        )
+    })
+
+    it('should not pass additionalFilters when integrationIds is undefined', () => {
+        useMultipleMetricsTrendsMock.mockReturnValue({
+            data: {
+                'TicketCustomFieldsEnriched.ticketCustomFieldsTicketCount': {
+                    value: 3.1,
+                    prevValue: 3.5,
+                },
+                'TicketEnriched.ticketCount': {
+                    value: 2,
+                    prevValue: 1,
+                },
+            },
+            isFetching: false,
+            isError: false,
+        } as any)
+
+        useAutomationRateTrendMock.mockReturnValue({
+            isFetching: false,
+            data: {
+                value: 0.1234,
+                prevValue: 0,
+            },
+            isError: false,
+        } as any)
+
+        useAiAgentAutomationRateMock.mockReturnValue({
+            isLoading: false,
+            value: 0.1235,
+            prevValue: 0,
+        })
+
+        renderHook(() => useCoverageRate(filters, timezone))
+
+        expect(
+            customFieldsTicketTotalCountQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                additionalFilters: undefined,
+            }),
+        )
+
+        expect(
+            customFieldsTicketTotalCountQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filters: expect.objectContaining({
+                    period: expect.objectContaining({
+                        start_datetime: expect.any(String),
+                        end_datetime: expect.any(String),
+                    }),
+                }),
+                additionalFilters: undefined,
+            }),
+        )
     })
 })

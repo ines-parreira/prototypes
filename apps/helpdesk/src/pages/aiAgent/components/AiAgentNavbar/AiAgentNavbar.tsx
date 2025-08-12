@@ -31,6 +31,9 @@ export const AiAgentNavbar = () => {
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,
     )
+    const isActionDrivenAiAgentNavigationEnabled = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
 
     if (
         (!hasAutomate && !hasAiAgentPreview) ||
@@ -48,13 +51,15 @@ export const AiAgentNavbar = () => {
                         value={sections}
                         onValueChange={handleNavigationStateChange}
                     >
-                        <Navigation.SectionItem
-                            as={NavLink}
-                            to={aiAgentRoutes.overview}
-                            data-candu-id="ai-agent-navbar-overview"
-                        >
-                            Overview
-                        </Navigation.SectionItem>
+                        {!isActionDrivenAiAgentNavigationEnabled && (
+                            <Navigation.SectionItem
+                                as={NavLink}
+                                to={aiAgentRoutes.overview}
+                                data-candu-id="ai-agent-navbar-overview"
+                            >
+                                Overview
+                            </Navigation.SectionItem>
+                        )}
                         {isActionsInternalPlatformEnabled && (
                             <Navigation.SectionItem
                                 as={NavLink}
