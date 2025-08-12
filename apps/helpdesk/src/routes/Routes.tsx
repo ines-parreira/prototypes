@@ -67,6 +67,7 @@ import {
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportunities'
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import { AiAgentPlaygroundContainer } from 'pages/aiAgent/Playground/AiAgentPlaygroundContainer'
@@ -642,6 +643,16 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                         )}
                                     />
                                 )}
+                            </AiAgentErrorBoundary>
+                            <AiAgentErrorBoundary
+                                section="ai-agent-opportunities"
+                                team={SentryTeam.CONVAI_KNOWLEDGE}
+                            >
+                                <Route
+                                    path={`${path}/opportunities`}
+                                    exact
+                                    component={AiAgentOpportunities}
+                                />
                             </AiAgentErrorBoundary>
                             <AiAgentErrorBoundary
                                 section="ai-agent-products"

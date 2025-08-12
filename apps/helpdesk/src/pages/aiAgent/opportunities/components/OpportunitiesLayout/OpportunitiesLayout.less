@@ -1,0 +1,49 @@
+:local {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        background: transparent;
+    }
+
+    .layout {
+        display: flex;
+        flex: 1;
+        gap: var(--layout-spacing-xs);
+        height: 100%;
+        width: 100%;
+        padding: var(--layout-spacing-xs);
+        padding-left: 0;
+    }
+}
+
+// Alternative: Use @supports to ensure CSS is valid and increase specificity
+@supports (selector(:has(*))) {
+    :global {
+        html body:has([data-ai-opportunities]) {
+            [class*='contentInfobar'] {
+                padding: 0 !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                overflow: visible !important;
+            }
+
+            [class='container'] {
+                padding-right: 0 !important;
+                padding-bottom: 0 !important;
+                overflow: visible !important;
+            }
+
+            .axiom [class*='App--content'] {
+                background: var(--navigation-background) !important;
+            }
+
+            .axiom [class*='App--container'] {
+                padding: 0 !important;
+            }
+        }
+    }
+}

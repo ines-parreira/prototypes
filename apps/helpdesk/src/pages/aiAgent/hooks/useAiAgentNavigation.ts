@@ -11,6 +11,7 @@ import {
     GENERAL,
     GUIDANCE,
     KNOWLEDGE,
+    OPPORTUNITIES,
     OPTIMIZE,
     PREVIEW,
     PRODUCT_RECOMMENDATIONS,
@@ -118,6 +119,7 @@ export const getAiAgentNavigationRoutes = (
             `${basePath}/optimize/${intentId}`,
         intents: `${basePath}/intents`,
         intentsWithId: (intentId: string) => `${basePath}/intents/${intentId}`,
+        opportunities: `${basePath}/opportunities`,
         products: `${basePath}/products`,
         productsDetail: (productId: number) =>
             `${basePath}/products/${productId}`,
@@ -160,6 +162,8 @@ const useNavigationItems = (
     const isActionDrivenAiAgentNavigationEnabled =
         flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
+    const isOpportunitiesEnabled = flags[FeatureFlagKey.SurfaceOpportunities]
+
     return useMemo<NavigationItem[]>(
         () =>
             [
@@ -169,6 +173,12 @@ const useNavigationItems = (
                         : routes.optimize,
                     title: OPTIMIZE,
                     dataCanduId: 'ai-agent-navbar-optimize',
+                    exact: false,
+                },
+                isOpportunitiesEnabled && {
+                    route: routes.opportunities,
+                    title: OPPORTUNITIES,
+                    dataCanduId: 'ai-agent-navbar-opportunities',
                     exact: false,
                 },
                 {
@@ -263,6 +273,7 @@ const useNavigationItems = (
             isAiShoppingAssistantProductRecommendationsEnabled,
             isShoppingAssitantDeactivationEnforced,
             isActionDrivenAiAgentNavigationEnabled,
+            isOpportunitiesEnabled,
             routes,
         ],
     )

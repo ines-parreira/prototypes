@@ -1,0 +1,44 @@
+@import '~css/typography';
+@import '~css/util';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+
+:local {
+    .containerContent {
+        display: flex;
+        flex: 1;
+        flex-shrink: 0;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        border-radius: var(--sm-12, 12px);
+        border: 1px solid var(--neutral-grey-2, #eee);
+        background: var(--neutral-grey-0, #fff);
+        box-shadow:
+            74px 82px 31px 0 rgba(0, 0, 0, 0),
+            48px 53px 28px 0 rgba(0, 0, 0, 0.01),
+            27px 30px 24px 0 rgba(0, 0, 0, 0.03),
+            12px 13px 18px 0 rgba(0, 0, 0, 0.04),
+            3px 3px 10px 0 rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+
+        .header {
+            width: 100%;
+            padding: var(--layout-spacing-s);
+            border-bottom: 1px solid var(--neutral-grey-2);
+        }
+
+        .title {
+            .heading-subsection-regular();
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .contentBody {
+            padding: var(--layout-spacing-s);
+            display: flex;
+            flex: 1;
+            background: var(--neutral-grey-0) !important;
+        }
+    }
+}
