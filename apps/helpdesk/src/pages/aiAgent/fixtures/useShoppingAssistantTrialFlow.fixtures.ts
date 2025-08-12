@@ -1,0 +1,32 @@
+import { UseShoppingAssistantTrialFlowReturn } from '../trial/hooks/useShoppingAssistantTrialFlow'
+
+export const getUseShoppingAssistantTrialFlowFixture = (
+    props?: Partial<UseShoppingAssistantTrialFlowReturn>,
+): UseShoppingAssistantTrialFlowReturn => ({
+    startTrial: jest.fn(),
+    revampStartTrial: jest.fn(),
+    isLoading: false,
+    isTrialModalOpen: false,
+    isTrialFinishSetupModalOpen: false,
+    isSuccessModalOpen: false,
+    isManageTrialModalOpen: false,
+    isUpgradePlanModalOpen: false,
+    isTrialRequestModalOpen: false,
+    closeTrialUpgradeModal: jest.fn(),
+    onDismissTrialUpgradeModal: jest.fn(),
+    onDismissUpgradePlanModal: jest.fn(),
+    closeSuccessModal: jest.fn(),
+    closeManageTrialModal: jest.fn(),
+    openTrialUpgradeModal: jest.fn(),
+    onConfirmTrial: jest.fn(),
+    openManageTrialModal: jest.fn(),
+    openUpgradePlanModal: jest.fn(),
+    closeUpgradePlanModal: jest.fn(),
+    closeTrialFinishSetupModal: jest.fn(),
+    openTrialFinishSetupModal: jest.fn(),
+    openTrialRequestModal: jest.fn(),
+    closeTrialRequestModal: jest.fn(),
+    onRequestTrialExtension: jest.fn().mockResolvedValue(false),
+    closeAllTrialModals: jest.fn(),
+    ...props,
+})

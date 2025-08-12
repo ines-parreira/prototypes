@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 import { useSecondaryCTA } from '../hooks/useSecondaryCTA'
@@ -25,33 +26,8 @@ beforeEach(() => {
     jest.clearAllMocks()
 })
 
-const createMockTrialFlow = (overrides = {}) => ({
-    startTrial: jest.fn(),
-    revampStartTrial: jest.fn(),
-    isLoading: false,
-    isTrialModalOpen: false,
-    isTrialFinishSetupModalOpen: false,
-    isSuccessModalOpen: false,
-    isManageTrialModalOpen: false,
-    isUpgradePlanModalOpen: false,
-    isTrialRequestModalOpen: false,
-    closeTrialUpgradeModal: jest.fn(),
-    onDismissTrialUpgradeModal: jest.fn(),
-    onDismissUpgradePlanModal: jest.fn(),
-    closeSuccessModal: jest.fn(),
-    closeManageTrialModal: jest.fn(),
-    openTrialUpgradeModal: jest.fn(),
-    onConfirmTrial: jest.fn(),
-    openManageTrialModal: jest.fn(),
-    openUpgradePlanModal: jest.fn(),
-    closeUpgradePlanModal: jest.fn(),
-    closeTrialFinishSetupModal: jest.fn(),
-    openTrialFinishSetupModal: jest.fn(),
-    openTrialRequestModal: jest.fn(),
-    closeTrialRequestModal: jest.fn(),
-    onRequestTrialExtension: jest.fn(),
-    ...overrides,
-})
+const createMockTrialFlow = (overrides = {}) =>
+    getUseShoppingAssistantTrialFlowFixture(overrides)
 
 const createMockTrialAccess = (overrides = {}) => ({
     canNotifyAdmin: false,

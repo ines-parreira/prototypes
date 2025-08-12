@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { usePrimaryCTA } from '../hooks/usePrimaryCTA'
@@ -49,33 +50,8 @@ const createMockTrialAccess = (overrides = {}) => ({
 })
 
 // Helper function to create complete UseShoppingAssistantTrialFlowReturn mock objects
-const createMockTrialFlow = (overrides = {}) => ({
-    startTrial: jest.fn(),
-    revampStartTrial: jest.fn(),
-    isLoading: false,
-    isTrialModalOpen: false,
-    isTrialFinishSetupModalOpen: false,
-    isSuccessModalOpen: false,
-    isManageTrialModalOpen: false,
-    isUpgradePlanModalOpen: false,
-    isTrialRequestModalOpen: false,
-    closeTrialUpgradeModal: jest.fn(),
-    onDismissTrialUpgradeModal: jest.fn(),
-    onDismissUpgradePlanModal: jest.fn(),
-    closeSuccessModal: jest.fn(),
-    closeManageTrialModal: jest.fn(),
-    openTrialUpgradeModal: jest.fn(),
-    onConfirmTrial: jest.fn(),
-    openManageTrialModal: jest.fn(),
-    openUpgradePlanModal: jest.fn(),
-    closeUpgradePlanModal: jest.fn(),
-    closeTrialFinishSetupModal: jest.fn(),
-    openTrialFinishSetupModal: jest.fn(),
-    openTrialRequestModal: jest.fn(),
-    closeTrialRequestModal: jest.fn(),
-    onRequestTrialExtension: jest.fn(),
-    ...overrides,
-})
+const createMockTrialFlow = (overrides = {}) =>
+    getUseShoppingAssistantTrialFlowFixture(overrides)
 
 // Helper function to create complete TrialMetrics mock objects
 const createMockTrialMetrics = (overrides = {}) => ({

@@ -37,6 +37,7 @@ export const TrialProgressModals = ({
         openTrialUpgradeModal,
         closeUpgradePlanModal,
         onRequestTrialExtension,
+        closeAllTrialModals,
     } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
@@ -52,9 +53,8 @@ export const TrialProgressModals = ({
             type: 'upgraded',
         })
         await upgradePlanAsync()
-        closeManageTrialModal()
-        closeUpgradePlanModal()
-    }, [upgradePlanAsync, closeManageTrialModal, closeUpgradePlanModal])
+        closeAllTrialModals()
+    }, [upgradePlanAsync, closeAllTrialModals])
 
     const trialModalProps = useTrialModalProps({
         storeName,

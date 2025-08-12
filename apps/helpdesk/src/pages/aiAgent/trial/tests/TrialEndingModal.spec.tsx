@@ -1,11 +1,12 @@
 import { assumeMock } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment'
 
 import { useFlag } from 'core/flags'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
@@ -71,33 +72,11 @@ const mockUseShoppingAssistantTrialFlow = assumeMock(
     useShoppingAssistantTrialFlow,
 )
 
-const createMockShoppingAssistantTrialFlow = (overrides = {}) => ({
-    startTrial: jest.fn(),
-    revampStartTrial: jest.fn(),
-    isLoading: false,
-    isTrialModalOpen: false,
-    isTrialFinishSetupModalOpen: false,
-    isSuccessModalOpen: false,
-    isManageTrialModalOpen: false,
-    isUpgradePlanModalOpen: false,
-    isTrialRequestModalOpen: false,
-    closeTrialUpgradeModal: jest.fn(),
-    onDismissTrialUpgradeModal: jest.fn(),
-    onDismissUpgradePlanModal: jest.fn(),
-    closeSuccessModal: jest.fn(),
-    closeManageTrialModal: jest.fn(),
-    openTrialUpgradeModal: jest.fn(),
-    onConfirmTrial: jest.fn(),
-    openManageTrialModal: jest.fn(),
-    openUpgradePlanModal: jest.fn(),
-    closeUpgradePlanModal: jest.fn(),
-    closeTrialFinishSetupModal: jest.fn(),
-    openTrialFinishSetupModal: jest.fn(),
-    openTrialRequestModal: jest.fn(),
-    closeTrialRequestModal: jest.fn(),
-    onRequestTrialExtension: jest.fn().mockResolvedValue(true),
-    ...overrides,
-})
+const createMockShoppingAssistantTrialFlow = (overrides = {}) =>
+    getUseShoppingAssistantTrialFlowFixture({
+        onRequestTrialExtension: jest.fn().mockResolvedValue(true),
+        ...overrides,
+    })
 
 const createMockStoreActivations = (overrides = {}) => ({
     storeActivations: {},
@@ -594,13 +573,13 @@ describe('TrialEndingModal', () => {
             ).toBeInTheDocument()
         })
 
-        it('should call openTrialUpgradeModal when Upgrade Now is clicked', async () => {
+        it('should call openUpgradePlanModal when Upgrade Now is clicked', async () => {
             const user = userEvent.setup()
-            const mockOpenTrialUpgradeModal = jest.fn()
+            const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
                 createMockShoppingAssistantTrialFlow({
-                    openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+                    openUpgradePlanModal: mockOpenUpgradePlanModal,
                 }),
             )
 
@@ -611,9 +590,12 @@ describe('TrialEndingModal', () => {
             )
 
             const upgradeButton = screen.getByText('Upgrade Now')
-            await user.click(upgradeButton)
 
-            expect(mockOpenTrialUpgradeModal).toHaveBeenCalled()
+            await act(async () => {
+                await user.click(upgradeButton)
+            })
+
+            expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })
 
         it('should call onRequestTrialExtension when Request Trial Extension is clicked', async () => {

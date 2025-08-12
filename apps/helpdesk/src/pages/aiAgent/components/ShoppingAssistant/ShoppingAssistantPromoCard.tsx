@@ -61,7 +61,10 @@ export const ShoppingAssistantPromoCard: React.FC<
     }
 
     const sharedContent = isShoppingAssistantDuringTrialEnabled ? (
-        <TrialEndedModal storeName={shopName} />
+        <>
+            <TrialEndedModal storeName={shopName} />
+            <TrialProgressModals storeName={shopName} />
+        </>
     ) : null
     const { variant } = promoContent
 
@@ -79,7 +82,6 @@ export const ShoppingAssistantPromoCard: React.FC<
                         className={className}
                         promoContent={promoContent}
                     />
-                    <TrialProgressModals storeName={shopName} />
                 </>
             )
             break
@@ -95,7 +97,6 @@ export const ShoppingAssistantPromoCard: React.FC<
                         className={className}
                         promoContent={promoContent}
                     />
-                    <TrialProgressModals storeName={shopName} />
                 </>
             )
             break
@@ -103,6 +104,10 @@ export const ShoppingAssistantPromoCard: React.FC<
         case PromoCardVariant.AdminTrial:
             variantComponent = (
                 <>
+                    <TrialTryModal
+                        {...trialModalProps.newTrialUpgradePlanModal}
+                        isOpen={trialFlow.isTrialModalOpen}
+                    />
                     <AdminTrial
                         className={className}
                         promoContent={promoContent}
@@ -145,10 +150,6 @@ export const ShoppingAssistantPromoCard: React.FC<
                 {...trialModalProps.trialFinishSetupModal}
                 isOpen={trialFlow.isTrialFinishSetupModalOpen}
                 onClose={trialFlow.closeTrialFinishSetupModal}
-            />
-            <TrialTryModal
-                {...trialModalProps.newTrialUpgradePlanModal}
-                isOpen={trialFlow.isTrialModalOpen}
             />
             {sharedContent}
         </>

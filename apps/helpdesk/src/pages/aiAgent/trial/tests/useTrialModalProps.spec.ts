@@ -15,6 +15,7 @@ import {
 } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import {
@@ -83,32 +84,8 @@ const getTrialEndTime = (remainingDays: number): string => {
     return moment().add(remainingDays, 'days').toISOString()
 }
 
-const defaultMockUseShoppingAssistantTrialFlow = {
-    openManageTrialModal: jest.fn(),
-    openUpgradePlanModal: jest.fn(),
-    openTrialUpgradeModal: jest.fn(),
-    closeManageTrialModal: jest.fn(),
-    closeTrialUpgradeModal: jest.fn(),
-    closeUpgradePlanModal: jest.fn(),
-    closeSuccessModal: jest.fn(),
-    startTrial: jest.fn(),
-    onConfirmTrial: jest.fn(),
-    isLoading: false,
-    isTrialModalOpen: false,
-    isSuccessModalOpen: false,
-    isManageTrialModalOpen: false,
-    isUpgradePlanModalOpen: false,
-    onDismissTrialUpgradeModal: jest.fn(),
-    onDismissUpgradePlanModal: jest.fn(),
-    revampStartTrial: jest.fn(),
-    isTrialFinishSetupModalOpen: false,
-    closeTrialFinishSetupModal: jest.fn(),
-    openTrialFinishSetupModal: jest.fn(),
-    isTrialRequestModalOpen: false,
-    openTrialRequestModal: jest.fn(),
-    closeTrialRequestModal: jest.fn(),
-    onRequestTrialExtension: jest.fn(),
-}
+const defaultMockUseShoppingAssistantTrialFlow =
+    getUseShoppingAssistantTrialFlowFixture()
 
 describe('useTrialModalProps', () => {
     function renderHookWithRouter<T>(

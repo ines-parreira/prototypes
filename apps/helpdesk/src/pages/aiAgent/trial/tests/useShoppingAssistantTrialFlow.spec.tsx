@@ -234,6 +234,38 @@ describe('useShoppingAssistantTrialFlow', () => {
                 'ShoppingAssistantTrialFinishSetupModal',
             )
         })
+
+        it('should close all trial modals when closeAllTrialModals is called', () => {
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                    }),
+                { wrapper },
+            )
+
+            act(() => {
+                result.current.closeAllTrialModals()
+            })
+
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialUpgradeModal',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantUpgradeModal',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantSuccessModal',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantManageTrialModal',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialFinishSetupModal',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledTimes(5)
+        })
     })
 
     describe('startTrial functionality', () => {

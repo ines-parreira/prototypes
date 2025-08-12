@@ -59,6 +59,7 @@ export type UseShoppingAssistantTrialFlowReturn = {
     openTrialRequestModal: () => void
     closeTrialRequestModal: () => void
     onRequestTrialExtension: () => Promise<boolean>
+    closeAllTrialModals: () => void
 }
 
 export const useShoppingAssistantTrialFlow = ({
@@ -254,6 +255,14 @@ export const useShoppingAssistantTrialFlow = ({
         })
     }
 
+    const closeAllTrialModals = () => {
+        trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
+        upgradeModal.closeModal(UPGRADE_MODAL_NAME)
+        successModal.closeModal(SUCCESS_MODAL_NAME)
+        manageTrialModal.closeModal(MANAGE_TRIAL_MODAL_NAME)
+        trialFinishSetupModal.closeModal(TRIAL_FINISH_SETUP_MODAL_NAME)
+    }
+
     return {
         startTrial,
         revampStartTrial,
@@ -285,5 +294,6 @@ export const useShoppingAssistantTrialFlow = ({
         openTrialRequestModal,
         closeTrialRequestModal,
         onRequestTrialExtension,
+        closeAllTrialModals,
     }
 }

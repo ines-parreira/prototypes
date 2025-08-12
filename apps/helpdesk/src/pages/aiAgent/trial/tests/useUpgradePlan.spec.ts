@@ -50,6 +50,7 @@ describe('useUpgradePlan', () => {
     const mockMutate = jest.fn()
     const mockMutateAsync = jest.fn()
     const mockUpgradeSalesSubscriptionMutateAsync = jest.fn()
+    const mockReload = jest.fn()
 
     const mockMutationResult = {
         mutate: mockMutate,
@@ -72,6 +73,13 @@ describe('useUpgradePlan', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         jest.useFakeTimers()
+
+        Object.defineProperty(window, 'location', {
+            writable: true,
+            value: {
+                reload: mockReload,
+            },
+        })
 
         useAppDispatchMock.mockReturnValue(mockDispatch)
         useActivationMock.mockReturnValue({
@@ -211,6 +219,16 @@ describe('useUpgradePlan', () => {
                     status: NotificationStatus.Success,
                 }),
             )
+        })
+
+        it('should reload the window', () => {
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const onSuccess = mutationOptions.onSuccess
+            onSuccess()
+
+            expect(mockReload).toHaveBeenCalledTimes(1)
         })
     })
 

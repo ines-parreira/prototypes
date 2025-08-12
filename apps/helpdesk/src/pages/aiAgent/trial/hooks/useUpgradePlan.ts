@@ -31,6 +31,7 @@ export const useUpgradePlan = () => {
                     status: NotificationStatus.Success,
                 }),
             )
+            window.location.reload()
         },
         onError: () => {
             void dispatch(

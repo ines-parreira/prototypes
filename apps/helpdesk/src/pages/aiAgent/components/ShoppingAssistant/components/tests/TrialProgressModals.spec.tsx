@@ -7,6 +7,7 @@ import { SegmentEvent } from 'common/segment/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
@@ -140,32 +141,7 @@ describe('TrialProgressModals', () => {
     const defaultMockValues = {
         currentAccount: { get: jest.fn().mockReturnValue('test-domain.com') },
         storeActivations: {} as Record<string, any>,
-        shoppingAssistantTrialFlow: {
-            startTrial: jest.fn(),
-            revampStartTrial: jest.fn(),
-            isLoading: false,
-            isTrialModalOpen: false,
-            isTrialFinishSetupModalOpen: false,
-            isSuccessModalOpen: false,
-            isManageTrialModalOpen: false,
-            isUpgradePlanModalOpen: false,
-            isTrialRequestModalOpen: false,
-            closeTrialUpgradeModal: jest.fn(),
-            onDismissTrialUpgradeModal: jest.fn(),
-            onDismissUpgradePlanModal: jest.fn(),
-            closeSuccessModal: jest.fn(),
-            closeManageTrialModal: jest.fn(),
-            openTrialUpgradeModal: jest.fn(),
-            onConfirmTrial: jest.fn(),
-            openManageTrialModal: jest.fn(),
-            openUpgradePlanModal: jest.fn(),
-            closeUpgradePlanModal: jest.fn(),
-            closeTrialFinishSetupModal: jest.fn(),
-            openTrialFinishSetupModal: jest.fn(),
-            openTrialRequestModal: jest.fn(),
-            closeTrialRequestModal: jest.fn(),
-            onRequestTrialExtension: jest.fn().mockResolvedValue(false),
-        },
+        shoppingAssistantTrialFlow: getUseShoppingAssistantTrialFlowFixture(),
         upgradePlan: {
             upgradePlan: jest.fn(),
             upgradePlanAsync: jest.fn(),
@@ -551,11 +527,7 @@ describe('TrialProgressModals', () => {
             await waitFor(() => {
                 expect(
                     defaultMockValues.shoppingAssistantTrialFlow
-                        .closeManageTrialModal,
-                ).toHaveBeenCalled()
-                expect(
-                    defaultMockValues.shoppingAssistantTrialFlow
-                        .closeUpgradePlanModal,
+                        .closeAllTrialModals,
                 ).toHaveBeenCalled()
             })
         })

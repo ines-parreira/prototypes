@@ -24,7 +24,7 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
     const { remainingDaysFloat, trialEndDatetime, optedOutDatetime } =
         useTrialEnding(storeName)
     const accountDomain = currentAccount.get('domain')
-    const { openTrialUpgradeModal, onRequestTrialExtension } =
+    const { openUpgradePlanModal, onRequestTrialExtension } =
         useShoppingAssistantTrialFlow({
             accountDomain,
             storeActivations,
@@ -49,9 +49,9 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
     }, [])
 
     const onUpgradeClick = useCallback(() => {
-        openTrialUpgradeModal()
+        openUpgradePlanModal()
         dismissModal()
-    }, [openTrialUpgradeModal, dismissModal])
+    }, [openUpgradePlanModal, dismissModal])
 
     const onRequestTrialExtensionClick = useCallback(() => {
         onRequestTrialExtension().then((isSent) => {

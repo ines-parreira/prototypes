@@ -13,6 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { useEarlyAccessModalState } from 'pages/aiAgent/Activation/hooks/useEarlyAccessModalState'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
@@ -108,32 +109,7 @@ describe('useShoppingAssistantPromoCard', () => {
             meta: { ...shopifyIntegration.meta, shop_name: 'second-shop' },
         },
     ]
-    const mockTrialFlow = {
-        startTrial: jest.fn(),
-        isLoading: false,
-        isTrialModalOpen: false,
-        isSuccessModalOpen: false,
-        isManageTrialModalOpen: false,
-        isUpgradePlanModalOpen: false,
-        closeTrialUpgradeModal: jest.fn(),
-        onDismissTrialUpgradeModal: jest.fn(),
-        onDismissUpgradePlanModal: jest.fn(),
-        closeSuccessModal: jest.fn(),
-        closeManageTrialModal: jest.fn(),
-        openTrialUpgradeModal: jest.fn(),
-        onConfirmTrial: jest.fn(),
-        openManageTrialModal: jest.fn(),
-        openUpgradePlanModal: jest.fn(),
-        closeUpgradePlanModal: jest.fn(),
-        revampStartTrial: jest.fn(),
-        isTrialFinishSetupModalOpen: false,
-        closeTrialFinishSetupModal: jest.fn(),
-        openTrialFinishSetupModal: jest.fn(),
-        isTrialRequestModalOpen: false,
-        openTrialRequestModal: jest.fn(),
-        closeTrialRequestModal: jest.fn(),
-        onRequestTrialExtension: jest.fn(),
-    }
+    const mockTrialFlow = getUseShoppingAssistantTrialFlowFixture()
     const baseTrialAccess = {
         canSeeTrialCTA: false,
         canBookDemo: false,
