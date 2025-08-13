@@ -35,16 +35,12 @@ type RealtimeAppProviderProps = {
 
 const REALTIME_CONNECTIVITY_BANNER_INSTANCE_ID = 'realtime-connectivity-banner'
 
+const REALTIME_ERROR_THRESHOLD = 20
+
 const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
     const isCatchPNErrorsEnabled = useFlag(FeatureFlagKey.CatchPNErrors)
     const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime)
-    const { enabled: isErrorThresholdEnabled, threshold } = useFlag(
-        FeatureFlagKey.PubnNubRealtimeErrorThreshold,
-        {
-            enabled: false,
-            threshold: 0,
-        },
-    )
+
     const { addBanner, removeBanner } = useBanners()
 
     const displayRealtimeConnectivityBanner = useCallback(() => {
@@ -69,7 +65,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
     }, [addBanner])
 
     const { incrementErrorCount, resetErrorCount } = useErrorThreshold(
-        threshold,
+        REALTIME_ERROR_THRESHOLD,
         displayRealtimeConnectivityBanner,
     )
 
@@ -89,7 +85,6 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
         (status: RealtimeStatus, pnSdkVersion?: string) => {
             status.category === 'PNNetworkIssuesCategory' &&
                 isRealtimeEnabled &&
-                isErrorThresholdEnabled &&
                 incrementErrorCount()
 
             let message: undefined | string
@@ -115,12 +110,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
                     extra: { status: toPlainObject(status) },
                 })
         },
-        [
-            isRealtimeEnabled,
-            isErrorThresholdEnabled,
-            isCatchPNErrorsEnabled,
-            incrementErrorCount,
-        ],
+        [isRealtimeEnabled, isCatchPNErrorsEnabled, incrementErrorCount],
     )
 
     const handleReconnectStatus = useCallback(() => {
@@ -133,7 +123,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
 
     useUpdateEffect(() => {
         resetErrorCount()
-    }, [isRealtimeEnabled, isErrorThresholdEnabled, threshold, resetErrorCount])
+    }, [isRealtimeEnabled, resetErrorCount])
 
     return (
         <RealtimeProvider

@@ -68,8 +68,6 @@ describe('RealtimeAppProvider', () => {
                     return true
                 case FeatureFlagKey.PubNubRealtime:
                     return true
-                case FeatureFlagKey.PubnNubRealtimeErrorThreshold:
-                    return { enabled: true, threshold: 3 }
                 default:
                     return false
             }
@@ -223,30 +221,6 @@ describe('RealtimeAppProvider', () => {
         expect(mockIncrementErrorCount).not.toHaveBeenCalled()
     })
 
-    it('should not increment error count when error threshold is disabled', () => {
-        const mockIncrementErrorCount = jest.fn()
-        mockUseErrorThreshold.mockReturnValueOnce({
-            incrementErrorCount: mockIncrementErrorCount,
-            resetErrorCount: jest.fn(),
-        })
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.PubnNubRealtimeErrorThreshold) {
-                return { enabled: false, threshold: 3 }
-            }
-            return true
-        })
-
-        render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
-
-        MockRealtimeProvider.mock.calls[0][0].onErrorStatus({
-            statusCode: '400',
-            operation: 'foo',
-            category: 'PNNetworkIssuesCategory',
-        })
-
-        expect(mockIncrementErrorCount).not.toHaveBeenCalled()
-    })
-
     it('should add a banner when the error threshold is reached and log an event', () => {
         const mockAddBanner = jest.fn()
         mockUseBanners.mockReturnValue({
@@ -315,19 +289,7 @@ describe('RealtimeAppProvider', () => {
         )
     })
 
-    it.each([
-        ['PubNubRealtime disabled', false, { enabled: true, threshold: 3 }],
-        [
-            'PubnNubRealtimeErrorThreshold threshold changed',
-            true,
-            { enabled: true, threshold: 5 },
-        ],
-        [
-            'PubnNubRealtimeErrorThreshold enabled changed',
-            true,
-            { enabled: false, threshold: 3 },
-        ],
-    ])('should reset error count when %s', (_, realtimeFF, thresholdFF) => {
+    it('should reset error count when realtime is disabled', () => {
         const mockResetErrorCount = jest.fn()
         mockUseErrorThreshold.mockReturnValue({
             incrementErrorCount: jest.fn(),
@@ -340,12 +302,9 @@ describe('RealtimeAppProvider', () => {
 
         mockUseFlag.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.PubNubRealtime) {
-                return realtimeFF
+                return false
             }
-            if (flag === FeatureFlagKey.PubnNubRealtimeErrorThreshold) {
-                return thresholdFF
-            }
-            return false
+            return true
         })
 
         rerender(<RealtimeAppProvider>foo</RealtimeAppProvider>)

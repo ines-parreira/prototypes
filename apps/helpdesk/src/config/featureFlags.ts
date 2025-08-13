@@ -137,7 +137,6 @@ export enum FeatureFlagKey {
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     PubNubRealtime = 'pubnub-realtime',
-    PubnNubRealtimeErrorThreshold = 'linear.task_SUPXP-3551.error-threshold',
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
     ReportingExtendFieldAndTag = 'reporting-extend-field-and-tag-reporting',
