@@ -1,13 +1,9 @@
 import { CustomFieldValue } from 'custom-fields/types'
 
-import { CHOICE_VALUES_SYMBOL } from './constants'
-
-// CHOICE_VALUES_SYMBOL prevents an admin to accidentally override the key of leaf values
-// While the use of a Set removes duplicate end values
-export type ChoicesTree = {
-    [key: string]: ChoicesTree
-    [CHOICE_VALUES_SYMBOL]: Set<CustomFieldValue>
-}
+export type ChoicesTree = Map<
+    string,
+    { value: CustomFieldValue; children: ChoicesTree }
+>
 
 export type SearchResults = {
     label: string
