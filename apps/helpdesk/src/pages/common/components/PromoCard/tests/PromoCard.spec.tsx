@@ -520,7 +520,7 @@ describe('PromoCard', () => {
             })
         })
 
-        it('should show close button only when video ends', async () => {
+        it('should show close button when video starts', async () => {
             render(
                 <PromoCard>
                     <PromoCard.Media>
@@ -551,7 +551,7 @@ describe('PromoCard', () => {
             // Initially, close button should not be visible
             expect(
                 screen.queryByRole('button', { name: /close video modal/i }),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
 
             // Simulate video ending
             const video = screen.getByRole('dialog').querySelector('video')
@@ -752,7 +752,7 @@ describe('PromoCard', () => {
                     screen.queryByRole('button', {
                         name: /close video modal/i,
                     }),
-                ).not.toBeInTheDocument()
+                ).toBeInTheDocument()
             })
         })
 

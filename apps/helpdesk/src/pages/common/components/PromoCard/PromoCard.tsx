@@ -483,17 +483,15 @@ const VideoModal = ({ videoUrl, ctaButton }: VideoModalProps) => {
                 className={css.videoModalContent}
                 onClick={(e) => e.stopPropagation()}
             >
-                {showCTA && (
-                    <IconButton
-                        className={css.videoModalClose}
-                        onClick={handleCloseModal}
-                        aria-label="Close video modal"
-                        icon="close"
-                        intent="secondary"
-                        fillStyle="ghost"
-                        size="small"
-                    />
-                )}
+                <IconButton
+                    className={css.videoModalClose}
+                    onClick={handleCloseModal}
+                    aria-label="Close video modal"
+                    icon="close"
+                    intent="secondary"
+                    fillStyle="ghost"
+                    size="small"
+                />
                 <video
                     src={videoUrl}
                     className={css.video}
