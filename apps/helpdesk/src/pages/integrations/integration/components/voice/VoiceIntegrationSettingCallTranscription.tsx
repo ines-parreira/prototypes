@@ -1,30 +1,36 @@
-import { Banner, ToggleField } from '@gorgias/axiom'
+import { useState } from 'react'
+
+import { Banner } from '@gorgias/axiom'
 
 import { FormField } from 'core/forms'
+import NewToggleField from 'pages/common/forms/NewToggleField'
 
-import css from './VoiceIntegrationSettingCallTranscription.less'
-
-function VoiceIntegrationSettingCallTranscription() {
+function VoiceIntegrationSettingCallTranscription_DEPRECATED() {
+    const [isBannerVisible, setIsBannerVisible] = useState(true)
     return (
-        <div className={css.container}>
-            <Banner type="info">
-                Transcriptions are available in English, French, German, and
-                Spanish; summaries are in English only.
-            </Banner>
-            <div className={css.sectionData}>
-                <FormField
-                    name="meta.preferences.transcribe.recordings"
-                    field={ToggleField}
-                    label="Call recording"
-                />
-                <FormField
-                    name="meta.preferences.transcribe.voicemails"
-                    field={ToggleField}
-                    label="Voicemail"
-                />
-            </div>
-        </div>
+        <>
+            {isBannerVisible && (
+                <Banner
+                    type="info"
+                    isClosable={true}
+                    onClose={() => setIsBannerVisible(false)}
+                >
+                    Transcriptions are available in English, French, German, and
+                    Spanish; summaries are in English only.
+                </Banner>
+            )}
+            <FormField
+                name="meta.preferences.transcribe.recordings"
+                field={NewToggleField}
+                label="Call recording"
+            />
+            <FormField
+                name="meta.preferences.transcribe.voicemails"
+                field={NewToggleField}
+                label="Voicemail"
+            />
+        </>
     )
 }
 
-export default VoiceIntegrationSettingCallTranscription
+export default VoiceIntegrationSettingCallTranscription_DEPRECATED

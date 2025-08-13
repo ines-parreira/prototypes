@@ -4,8 +4,8 @@ import { FormField } from 'core/forms'
 import Accordion from 'pages/common/components/accordion/Accordion'
 
 import VoiceIntegrationSettingCallbackRequests from './VoiceIntegrationSettingCallbackRequests'
-import VoiceIntegrationSettingCallRecording from './VoiceIntegrationSettingCallRecording'
-import VoiceIntegrationSettingCallTranscription from './VoiceIntegrationSettingCallTranscription'
+import VoiceIntegrationSettingCallRecording_DEPRECATED from './VoiceIntegrationSettingCallRecording_DEPRECATED'
+import VoiceIntegrationSettingCallTranscription_DEPRECATED from './VoiceIntegrationSettingCallTranscription_DEPRECATED'
 import VoiceIntegrationSettingDistributionBehavior from './VoiceIntegrationSettingDistributionBehavior'
 import VoiceIntegrationSettingVoicemail from './VoiceIntegrationSettingVoicemail'
 import VoiceMessageField from './VoiceMessageField'
@@ -55,13 +55,13 @@ function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
                     subtitle={'Call recording'}
                     description={'Toggle call recordings on / off'}
                 >
-                    <VoiceIntegrationSettingCallRecording />
+                    <VoiceIntegrationSettingCallRecording_DEPRECATED />
                 </VoiceSettingAccordionItem>
                 <VoiceSettingAccordionItem
                     subtitle={'Call transcription'}
                     description={'Toggle automatic call transcription on / off'}
                 >
-                    <VoiceIntegrationSettingCallTranscription />
+                    <VoiceIntegrationSettingCallTranscription_DEPRECATED />
                 </VoiceSettingAccordionItem>
             </Accordion>
         </div>

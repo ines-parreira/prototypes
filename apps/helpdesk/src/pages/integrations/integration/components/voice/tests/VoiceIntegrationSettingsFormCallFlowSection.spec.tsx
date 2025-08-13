@@ -13,12 +13,13 @@ const FormFieldMock = assumeMock(FormField).mockImplementation(
 jest.mock('../VoiceIntegrationSettingVoicemail', () => () => (
     <div>VoiceIntegrationSettingVoicemail</div>
 ))
-jest.mock('../VoiceIntegrationSettingCallRecording', () => () => (
+jest.mock('../VoiceIntegrationSettingCallRecording_DEPRECATED', () => () => (
     <div>VoiceIntegrationSettingCallRecording</div>
 ))
-jest.mock('../VoiceIntegrationSettingCallTranscription', () => () => (
-    <div>VoiceIntegrationSettingCallTranscription</div>
-))
+jest.mock(
+    '../VoiceIntegrationSettingCallTranscription_DEPRECATED',
+    () => () => <div>VoiceIntegrationSettingCallTranscription</div>,
+)
 jest.mock('../VoiceIntegrationSettingDistributionBehavior', () => () => (
     <div>VoiceIntegrationSettingDistributionBehavior</div>
 ))
