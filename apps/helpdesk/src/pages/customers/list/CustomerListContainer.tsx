@@ -4,10 +4,11 @@ import { useTitle } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { useRouteMatch } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { EntityType } from 'models/view/types'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'

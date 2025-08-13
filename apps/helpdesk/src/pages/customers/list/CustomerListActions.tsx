@@ -13,8 +13,9 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { withAppNode, WithAppNodeProps } from 'appNode'
-import Button from 'pages/common/components/button/Button'
 import shortcutManager from 'services/shortcutManager/index'
 import { bulkDeleteCustomer } from 'state/customers/actions'
 import { RootState } from 'state/types'
