@@ -487,6 +487,132 @@ describe('StoreSelector', () => {
         })
     })
 
+    describe('hideSelectedFromDropdown prop', () => {
+        it('hides selected store from dropdown when hideSelectedFromDropdown is true', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    hideSelectedFromDropdown
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(1) // Only BigCommerce should be visible
+                expect(options[0]).toHaveTextContent('BigCommerce Store')
+
+                const hasShopifyOption = options.some((option) =>
+                    option.textContent?.includes('Shopify Store'),
+                )
+                expect(hasShopifyOption).toBe(false)
+            })
+        })
+
+        it('shows all stores in dropdown when hideSelectedFromDropdown is false', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    hideSelectedFromDropdown={false}
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2) // Both stores should be visible
+                expect(options[0]).toHaveTextContent('Shopify Store')
+                expect(options[1]).toHaveTextContent('BigCommerce Store')
+            })
+        })
+
+        it('shows all stores in dropdown when hideSelectedFromDropdown is not provided', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2) // Both stores should be visible by default
+                expect(options[0]).toHaveTextContent('Shopify Store')
+                expect(options[1]).toHaveTextContent('BigCommerce Store')
+            })
+        })
+
+        it('works correctly with withAllOption and hideSelectedFromDropdown', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    withAllOption
+                    hideSelectedFromDropdown
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2) // All Stores + BigCommerce
+                expect(options[0]).toHaveTextContent('All Stores')
+                expect(options[1]).toHaveTextContent('BigCommerce Store')
+
+                const hasShopifyOption = options.some((option) =>
+                    option.textContent?.includes('Shopify Store'),
+                )
+                expect(hasShopifyOption).toBe(false)
+            })
+        })
+
+        it('shows all integrations when no store is selected and hideSelectedFromDropdown is true', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={undefined}
+                    onChange={mockOnChange}
+                    hideSelectedFromDropdown
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2) // All stores should be visible when nothing is selected
+                expect(options[0]).toHaveTextContent('Shopify Store')
+                expect(options[1]).toHaveTextContent('BigCommerce Store')
+            })
+        })
+    })
+
     describe('single store behavior', () => {
         const mockSingleIntegration = [mockShopifyIntegration]
 

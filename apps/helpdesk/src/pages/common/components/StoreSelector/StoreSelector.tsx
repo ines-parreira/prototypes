@@ -29,6 +29,8 @@ type BaseProps = {
     // When only one store, render without button styles
     singleStoreInline?: boolean
     buttonClassName?: ClassValue
+    // Hide the selected store from the dropdown options
+    hideSelectedFromDropdown?: boolean
 }
 
 type PropsWithAllOption = BaseProps & {
@@ -71,6 +73,7 @@ export default function StoreSelector({
     fullWidth = false,
     singleStoreInline = false,
     buttonClassName,
+    hideSelectedFromDropdown = false,
 }: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const targetRef = useRef<HTMLButtonElement | null>(null)
@@ -220,29 +223,37 @@ export default function StoreSelector({
                             <Separator />
                         </>
                     )}
-                    {integrations.map((integration) => (
-                        <DropdownItem
-                            key={integration.id}
-                            option={{
-                                label: integration.name,
-                                value: integration.id,
-                            }}
-                            onClick={() => onChange(integration.id)}
-                            shouldCloseOnSelect
-                        >
-                            <span className={css.spacer}>
-                                <IntegrationIcon kind={integration.type} />
-                                {integration.name}
-                                {shouldShowActiveStatus && (
-                                    <StatusIndicator
-                                        integration={integration}
-                                        getStatusIndicator={getStatusIndicator}
-                                        className={css.statusDotDropdown}
-                                    />
-                                )}
-                            </span>
-                        </DropdownItem>
-                    ))}
+                    {integrations
+                        .filter(
+                            (integration) =>
+                                !hideSelectedFromDropdown ||
+                                integration.id !== selected?.id,
+                        )
+                        .map((integration) => (
+                            <DropdownItem
+                                key={integration.id}
+                                option={{
+                                    label: integration.name,
+                                    value: integration.id,
+                                }}
+                                onClick={() => onChange(integration.id)}
+                                shouldCloseOnSelect
+                            >
+                                <span className={css.spacer}>
+                                    <IntegrationIcon kind={integration.type} />
+                                    {integration.name}
+                                    {shouldShowActiveStatus && (
+                                        <StatusIndicator
+                                            integration={integration}
+                                            getStatusIndicator={
+                                                getStatusIndicator
+                                            }
+                                            className={css.statusDotDropdown}
+                                        />
+                                    )}
+                                </span>
+                            </DropdownItem>
+                        ))}
                 </DropdownBody>
             </Dropdown>
         </>

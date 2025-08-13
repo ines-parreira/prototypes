@@ -49,6 +49,7 @@ export const ActionDrivenNavigation = () => {
                     fullWidth
                     singleStoreInline
                     buttonClassName={css.storeSelectorButton}
+                    hideSelectedFromDropdown
                 />
             </div>
 
