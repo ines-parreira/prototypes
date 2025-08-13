@@ -68,7 +68,7 @@ export const useShoppingAssistantPromoCard = (
         variant === PromoCardVariant.LeadTrialProgress
 
     const { description, shouldShowDescriptionIcon } = useTrialDescription(
-        trialAccess,
+        trialAccess.canNotifyAdmin,
         trialMetrics,
         isTrialProgress,
     )

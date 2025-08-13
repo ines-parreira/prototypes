@@ -1,14 +1,12 @@
 import { useMemo } from 'react'
 
-import { ShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
-
 import {
     SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
     SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD,
 } from '../constants/shoppingAssistant'
 
 export const useTrialDescription = (
-    trialAccess: ShoppingAssistantTrialAccess,
+    canNotifyAdmin: boolean,
     trialMetrics: {
         gmvInfluenced: string
         gmvInfluencedRate: number
@@ -24,7 +22,7 @@ export const useTrialDescription = (
     return useMemo(() => {
         if (!isTrialProgress) {
             let description = 'Go beyond automation and grow revenue by 1.5%.'
-            if (trialAccess.canNotifyAdmin) {
+            if (canNotifyAdmin) {
                 description = `Try AI Agent's shopping assistant capabilities for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days.`
             }
 
@@ -34,18 +32,10 @@ export const useTrialDescription = (
             }
         }
 
-        const isInTrial =
-            trialAccess.hasCurrentStoreTrialStarted ||
-            trialAccess.hasAnyTrialStarted
-
-        const isOptedOut =
-            trialAccess.hasCurrentStoreTrialOptedOut ||
-            trialAccess.hasAnyTrialOptedOut
-
         const gmvAboveThreshold =
             gmvInfluencedRate >
             SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
-        const shouldShow = isInTrial && (isOptedOut || gmvAboveThreshold)
+        const shouldShow = isTrialProgress && gmvAboveThreshold
 
         return {
             description:
@@ -55,7 +45,7 @@ export const useTrialDescription = (
             shouldShowDescriptionIcon: shouldShow,
         }
     }, [
-        trialAccess,
+        canNotifyAdmin,
         gmvInfluenced,
         gmvInfluencedRate,
         isLoading,

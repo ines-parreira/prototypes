@@ -3,31 +3,10 @@ import { renderHook } from '@testing-library/react'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { useTrialDescription } from '../hooks/useTrialDescription'
 
-const createMockTrialAccess = (overrides = {}) => ({
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasCurrentStoreTrialStarted: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasAnyTrialOptedOut: false,
-    hasCurrentStoreTrialExpired: false,
-    hasAnyTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasAnyTrialActive: false,
-    isAdminUser: false,
-    isLoading: false,
-    ...overrides,
-})
-
 describe('useTrialDescription', () => {
     it('shows GMV influenced when in trial and opted out', () => {
-        const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialStarted: true,
-            hasAnyTrialStarted: true,
-            hasCurrentStoreTrialOptedOut: true,
-        })
+        const canNotifyAdmin = false
+        const isTrialProgress = true
 
         const trialMetrics = {
             gmvInfluenced: '$1,000',
@@ -36,7 +15,7 @@ describe('useTrialDescription', () => {
         }
 
         const { result } = renderHook(() =>
-            useTrialDescription(trialAccess, trialMetrics, true),
+            useTrialDescription(canNotifyAdmin, trialMetrics, isTrialProgress),
         )
 
         expect(result.current.description).toBe('$1,000 GMV influenced')
@@ -44,10 +23,8 @@ describe('useTrialDescription', () => {
     })
 
     it('shows GMV influenced when in trial and GMV rate above threshold', () => {
-        const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialStarted: true,
-            hasAnyTrialStarted: false,
-        })
+        const canNotifyAdmin = false
+        const isTrialProgress = true
 
         const trialMetrics = {
             gmvInfluenced: '$500',
@@ -56,7 +33,7 @@ describe('useTrialDescription', () => {
         }
 
         const { result } = renderHook(() =>
-            useTrialDescription(trialAccess, trialMetrics, true),
+            useTrialDescription(canNotifyAdmin, trialMetrics, isTrialProgress),
         )
 
         expect(result.current.description).toBe('$500 GMV influenced')
@@ -64,10 +41,8 @@ describe('useTrialDescription', () => {
     })
 
     it('shows empty description when in trial but GMV rate below threshold and not opted out', () => {
-        const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialStarted: true,
-            hasAnyTrialStarted: false,
-        })
+        const canNotifyAdmin = false
+        const isTrialProgress = true
 
         const trialMetrics = {
             gmvInfluenced: '$100',
@@ -76,7 +51,7 @@ describe('useTrialDescription', () => {
         }
 
         const { result } = renderHook(() =>
-            useTrialDescription(trialAccess, trialMetrics, true),
+            useTrialDescription(canNotifyAdmin, trialMetrics, isTrialProgress),
         )
 
         expect(result.current.description).toBe('')
@@ -84,10 +59,8 @@ describe('useTrialDescription', () => {
     })
 
     it('shows empty description when metrics are loading', () => {
-        const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialStarted: true,
-            hasAnyTrialStarted: false,
-        })
+        const canNotifyAdmin = false
+        const isTrialProgress = true
 
         const trialMetrics = {
             gmvInfluenced: '$1,000',
@@ -96,7 +69,7 @@ describe('useTrialDescription', () => {
         }
 
         const { result } = renderHook(() =>
-            useTrialDescription(trialAccess, trialMetrics, true),
+            useTrialDescription(canNotifyAdmin, trialMetrics, isTrialProgress),
         )
 
         expect(result.current.description).toBe('')
@@ -104,10 +77,8 @@ describe('useTrialDescription', () => {
     })
 
     it('shows default description when not in trial', () => {
-        const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialStarted: false,
-            hasAnyTrialStarted: false,
-        })
+        const canNotifyAdmin = false
+        const isTrialProgress = false
 
         const trialMetrics = {
             gmvInfluenced: '$0',
@@ -116,7 +87,7 @@ describe('useTrialDescription', () => {
         }
 
         const { result } = renderHook(() =>
-            useTrialDescription(trialAccess, trialMetrics, false),
+            useTrialDescription(canNotifyAdmin, trialMetrics, isTrialProgress),
         )
 
         expect(result.current.description).toBe(
@@ -126,9 +97,8 @@ describe('useTrialDescription', () => {
     })
 
     it('shows trial duration description when user can notify admin', () => {
-        const trialAccess = createMockTrialAccess({
-            canNotifyAdmin: true,
-        })
+        const canNotifyAdmin = true
+        const isTrialProgress = false
 
         const trialMetrics = {
             gmvInfluenced: '$0',
@@ -137,7 +107,7 @@ describe('useTrialDescription', () => {
         }
 
         const { result } = renderHook(() =>
-            useTrialDescription(trialAccess, trialMetrics, false),
+            useTrialDescription(canNotifyAdmin, trialMetrics, isTrialProgress),
         )
 
         expect(result.current.description).toBe(
