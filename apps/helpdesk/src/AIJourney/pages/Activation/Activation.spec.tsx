@@ -593,6 +593,7 @@ describe('<Activation />', () => {
                     id: 'product-1',
                     title: 'First Product',
                     image: 'image1.jpg',
+                    status: 'active',
                     variants: [{ id: 'variant-1', price: '10.00' }],
                 },
             ]
@@ -631,6 +632,7 @@ describe('<Activation />', () => {
                     id: 'product-2',
                     title: 'Second Product',
                     image: 'image2.jpg',
+                    status: 'active',
                     variants: [{ id: 'variant-2', price: '20.00' }],
                 },
             ]

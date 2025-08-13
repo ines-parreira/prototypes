@@ -52,8 +52,8 @@ export const Activation = () => {
         useListProducts(
             currentIntegration?.id ?? 0,
             !!currentIntegration?.id,
-            { limit: 5 },
-            { refetchOnWindowFocus: false, refetchOnMount: true },
+            { limit: 50 },
+            { refetchOnWindowFocus: false, refetchOnMount: false },
         )
 
     const products = useMemo(() => {
@@ -62,8 +62,10 @@ export const Activation = () => {
             [] as IntegrationDataItem<Product>[],
         )
         return (data || [])
+            .filter((item) => item.data.status === 'active')
             .filter((item) => !!item.data.image && !!item.data.title)
             .map((item) => item.data)
+            .splice(0, 5) as Product[]
     }, [integrationItems])
 
     useEffect(() => {
