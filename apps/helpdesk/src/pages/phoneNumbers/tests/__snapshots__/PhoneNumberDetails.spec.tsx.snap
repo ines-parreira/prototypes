@@ -53,19 +53,20 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
             >
               <button
                 aria-disabled="false"
-                class="wrapper copy-phone-number-button copyButton fill secondary medium"
+                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
-                <span
-                  class="content"
+                <i
+                  aria-hidden="true"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
-                  <i
-                    class="material-icons mr-2"
-                  >
-                    file_copy
-                  </i>
+                  file_copy
+                </i>
+                <span
+                  class="ui-button-content-a432"
+                >
                   Copy
                 </span>
               </button>
@@ -218,11 +219,11 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Save changes
           </span>
@@ -304,19 +305,20 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
             >
               <button
                 aria-disabled="false"
-                class="wrapper copy-phone-number-button copyButton fill secondary medium"
+                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
-                <span
-                  class="content"
+                <i
+                  aria-hidden="true"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
-                  <i
-                    class="material-icons mr-2"
-                  >
-                    file_copy
-                  </i>
+                  file_copy
+                </i>
+                <span
+                  class="ui-button-content-a432"
+                >
                   Copy
                 </span>
               </button>
@@ -499,11 +501,11 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Save changes
           </span>
@@ -585,19 +587,20 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
             >
               <button
                 aria-disabled="false"
-                class="wrapper copy-phone-number-button copyButton fill secondary medium"
+                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
-                <span
-                  class="content"
+                <i
+                  aria-hidden="true"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
-                  <i
-                    class="material-icons mr-2"
-                  >
-                    file_copy
-                  </i>
+                  file_copy
+                </i>
+                <span
+                  class="ui-button-content-a432"
+                >
                   Copy
                 </span>
               </button>
@@ -775,11 +778,11 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Save changes
           </span>
@@ -861,19 +864,20 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
             >
               <button
                 aria-disabled="false"
-                class="wrapper copy-phone-number-button copyButton fill secondary medium"
+                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
-                <span
-                  class="content"
+                <i
+                  aria-hidden="true"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
-                  <i
-                    class="material-icons mr-2"
-                  >
-                    file_copy
-                  </i>
+                  file_copy
+                </i>
+                <span
+                  class="ui-button-content-a432"
+                >
                   Copy
                 </span>
               </button>
@@ -1056,11 +1060,11 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Save changes
           </span>
@@ -1142,19 +1146,20 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
             >
               <button
                 aria-disabled="false"
-                class="wrapper copy-phone-number-button copyButton fill secondary medium"
+                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
-                <span
-                  class="content"
+                <i
+                  aria-hidden="true"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
-                  <i
-                    class="material-icons mr-2"
-                  >
-                    file_copy
-                  </i>
+                  file_copy
+                </i>
+                <span
+                  class="ui-button-content-a432"
+                >
                   Copy
                 </span>
               </button>
@@ -1356,11 +1361,11 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Save changes
           </span>
@@ -1442,19 +1447,20 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
             >
               <button
                 aria-disabled="false"
-                class="wrapper copy-phone-number-button copyButton fill secondary medium"
+                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
-                <span
-                  class="content"
+                <i
+                  aria-hidden="true"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
-                  <i
-                    class="material-icons mr-2"
-                  >
-                    file_copy
-                  </i>
+                  file_copy
+                </i>
+                <span
+                  class="ui-button-content-a432"
+                >
                   Copy
                 </span>
               </button>
@@ -1607,11 +1613,11 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Save changes
           </span>
@@ -1693,19 +1699,20 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
             >
               <button
                 aria-disabled="false"
-                class="wrapper copy-phone-number-button copyButton fill secondary medium"
+                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
-                <span
-                  class="content"
+                <i
+                  aria-hidden="true"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                 >
-                  <i
-                    class="material-icons mr-2"
-                  >
-                    file_copy
-                  </i>
+                  file_copy
+                </i>
+                <span
+                  class="ui-button-content-a432"
+                >
                   Copy
                 </span>
               </button>
@@ -1888,11 +1895,11 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Save changes
           </span>

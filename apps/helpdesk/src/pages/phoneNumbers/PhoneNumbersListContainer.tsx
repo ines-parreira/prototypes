@@ -4,11 +4,12 @@ import { useAsyncFn, useCallbackRef } from '@repo/hooks'
 import { isEmpty } from 'lodash'
 import { Container, Row } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import history from 'pages/history'

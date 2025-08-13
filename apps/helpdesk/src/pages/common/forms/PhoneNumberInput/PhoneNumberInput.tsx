@@ -21,10 +21,9 @@ import {
 } from 'libphonenumber-js'
 import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import { countries } from 'config/countries'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -206,6 +205,7 @@ const PhoneNumberInput = (
                     {(inputGroupContext) => (
                         <Button
                             className={css.button}
+                            isDisabled={disabled}
                             intent="secondary"
                             onClick={() => {
                                 inputGroupContext?.setIsFocused(true)

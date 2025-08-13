@@ -478,9 +478,9 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             }
 
             const { getByText } = renderWithUpload(message)
-            expect(getByText('Upload File').closest('button')).toHaveClass(
-                'isDisabled',
-            )
+            expect(
+                getByText('Upload File').closest('button'),
+            ).toBeAriaDisabled()
         })
     })
 })

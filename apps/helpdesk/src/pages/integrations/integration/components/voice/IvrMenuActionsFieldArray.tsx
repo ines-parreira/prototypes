@@ -1,12 +1,13 @@
 import classnames from 'classnames'
 import { produce } from 'immer'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     IvrForwardCallMenuAction,
     IvrMenuAction,
     IvrMenuActionType,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 
 import IvrMenuActionField from './IvrMenuActionField'
 
@@ -72,8 +73,12 @@ const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
                 )
             })}
             {value.length < 9 && (
-                <Button intent="secondary" onClick={addAction}>
-                    <i className="material-icons mr-2">add</i>Add option
+                <Button
+                    intent="secondary"
+                    onClick={addAction}
+                    leadingIcon="add"
+                >
+                    Add option
                 </Button>
             )}
         </div>

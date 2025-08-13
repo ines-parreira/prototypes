@@ -15,6 +15,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { countryOptions } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasApiError } from 'models/api/types'
@@ -24,7 +26,6 @@ import {
     updateNewPhoneNumber,
 } from 'models/phoneNumber/resources'
 import { NewPhoneNumber, PhoneCountry } from 'models/phoneNumber/types'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import { SelectableOption } from 'pages/common/forms/SelectField/types'
@@ -193,10 +194,8 @@ export function PhoneNumberDetails({ phoneNumber }: Props) {
                                     )}
                                     data-clipboard-target="#phone-number"
                                     intent="secondary"
+                                    leadingIcon="file_copy"
                                 >
-                                    <i className="material-icons mr-2">
-                                        file_copy
-                                    </i>
                                     {isPhoneNumberCopied ? 'Copied!' : 'Copy'}
                                 </Button>
                             </InputGroupAddon>

@@ -2,7 +2,8 @@ import { useRef } from 'react'
 
 import classnames from 'classnames'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import Caption from 'pages/common/forms/Caption/Caption'
 import { replaceAttachmentURL } from 'utils'
 
