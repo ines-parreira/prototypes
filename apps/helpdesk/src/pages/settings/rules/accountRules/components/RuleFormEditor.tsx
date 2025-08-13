@@ -5,11 +5,12 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Nav, Navbar } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { createRule, deleteRule, updateRule } from 'models/rule/resources'
 import { ErrorsCollector } from 'pages/common/components/ast/Errors'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import history from 'pages/history'

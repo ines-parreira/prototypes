@@ -1,8 +1,9 @@
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
+import { Button } from '@gorgias/axiom'
+
 import { THEME_NAME } from 'core/theme'
-import Button from 'pages/common/components/button/Button'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { AutoReplyReturnSettings } from 'state/rules/types'
 

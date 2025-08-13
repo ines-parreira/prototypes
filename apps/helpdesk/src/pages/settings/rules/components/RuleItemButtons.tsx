@@ -1,4 +1,5 @@
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import css from './RuleItemButtons.less'

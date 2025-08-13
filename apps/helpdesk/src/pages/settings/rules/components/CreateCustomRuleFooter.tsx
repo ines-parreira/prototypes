@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import css from './CreateCustomRuleFooter.less'
 

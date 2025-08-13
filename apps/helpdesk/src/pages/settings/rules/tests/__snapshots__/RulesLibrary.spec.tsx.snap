@@ -66,11 +66,11 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill secondary medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Create Custom Rule
             </span>
@@ -165,11 +165,11 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill secondary medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Create Custom Rule
             </span>

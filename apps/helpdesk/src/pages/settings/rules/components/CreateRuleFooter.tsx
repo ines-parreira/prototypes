@@ -1,7 +1,8 @@
 import classnames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import ruleTemplates from 'assets/img/presentationals/rule-templates.png'
-import Button from 'pages/common/components/button/Button'
 
 import TrackedRuleLibraryLink, { Source } from './TrackedRuleLibraryLink'
 

@@ -263,25 +263,25 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
     <div>
       <button
         aria-disabled="false"
-        class="wrapper fill primary medium"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
         form="rule-form"
         id="rule-item-save"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Update rule
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="wrapper ml-3 fill secondary medium"
+        class="ui-button-wrapper-a432 ml-3 ui-button-fill-a432 ui-button-secondary-a432"
         id="rule-item-duplicate"
         type="submit"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Duplicate rule
         </span>

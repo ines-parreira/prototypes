@@ -316,25 +316,25 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
           <div>
             <button
               aria-disabled="true"
-              class="wrapper fill primary medium isDisabled"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
               form="rule-form"
               id="rule-item-save"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Update rule
               </span>
             </button>
             <button
               aria-disabled="true"
-              class="wrapper ml-3 fill secondary medium isDisabled"
+              class="ui-button-wrapper-a432 ml-3 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
               id="rule-item-duplicate"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Duplicate rule
               </span>
@@ -681,25 +681,25 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
           <div>
             <button
               aria-disabled="true"
-              class="wrapper fill primary medium isDisabled"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
               form="rule-form"
               id="rule-item-save"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Update rule
               </span>
             </button>
             <button
               aria-disabled="true"
-              class="wrapper ml-3 fill secondary medium isDisabled"
+              class="ui-button-wrapper-a432 ml-3 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
               id="rule-item-duplicate"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Duplicate rule
               </span>
@@ -1032,13 +1032,13 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
           <div>
             <button
               aria-disabled="true"
-              class="wrapper fill primary medium isDisabled"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
               form="rule-form"
               id="rule-item-save"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Create rule
               </span>
@@ -1065,11 +1065,11 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
           >
             <button
               aria-disabled="false"
-              class="wrapper cardButton fill primary medium"
+              class="ui-button-wrapper-a432 cardButton ui-button-fill-a432 ui-button-primary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Browse Templates
               </span>

@@ -1,7 +1,8 @@
 import classnames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import Button from 'pages/common/components/button/Button'
 import { assetsUrl } from 'utils'
 
 import { ManagedRuleModalProps } from '../InstallRuleModalBody'
