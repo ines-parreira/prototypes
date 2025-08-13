@@ -162,6 +162,73 @@ export const getAiAgentSuccessRate = ({
     }
 }
 
+// AI AGENT AUTOMATION RATE: AI Agent automated interactions as a percentage using same denominator as overall automation rate
+export const getAIAgentAutomationRateTrend = (
+    isFetching: boolean,
+    isError: boolean,
+    aiAgentAutomatedInteractions: TrendData,
+    billableTicketsExcludingAIAgent: TrendData,
+) => {
+    return {
+        isFetching,
+        isError,
+        data: {
+            value: automationRate(
+                aiAgentAutomatedInteractions?.value,
+                billableTicketsExcludingAIAgent?.value,
+                // For AI Agent, we don't subtract auto responders from the AI Agent interactions
+                // since AI Agent interactions don't overlap with auto responders
+                0,
+            ),
+            prevValue: automationRate(
+                aiAgentAutomatedInteractions?.prevValue,
+                billableTicketsExcludingAIAgent?.prevValue,
+                0,
+            ),
+        },
+    }
+}
+
+// AI AGENT AUTOMATION RATE WITH UNFILTERED DENOMINATOR
+export const getAIAgentAutomationRateUnfilteredDenominatorTrend = ({
+    isFetching,
+    isError,
+    aiAgentAutomatedInteractions,
+    allAutomatedInteractions,
+    allAutomatedInteractionsByAutoResponders,
+    billableTicketsCount,
+}: {
+    isFetching: boolean
+    isError: boolean
+    aiAgentAutomatedInteractions: TrendData
+    allAutomatedInteractions: TrendData
+    allAutomatedInteractionsByAutoResponders: TrendData
+    billableTicketsCount: TrendData
+}) => {
+    return {
+        isFetching,
+        isError,
+        data: {
+            value: automationRateUnfilteredDenominator({
+                filteredAutomatedInteractions:
+                    aiAgentAutomatedInteractions?.value,
+                allAutomatedInteractions: allAutomatedInteractions?.value,
+                allAutomatedInteractionsByAutoResponders:
+                    allAutomatedInteractionsByAutoResponders?.value,
+                billableTicketsCount: billableTicketsCount?.value,
+            }),
+            prevValue: automationRateUnfilteredDenominator({
+                filteredAutomatedInteractions:
+                    aiAgentAutomatedInteractions?.prevValue,
+                allAutomatedInteractions: allAutomatedInteractions?.prevValue,
+                allAutomatedInteractionsByAutoResponders:
+                    allAutomatedInteractionsByAutoResponders?.prevValue,
+                billableTicketsCount: billableTicketsCount?.prevValue,
+            }),
+        },
+    }
+}
+
 // COVERAGE_RATE: #tickets with outcome field excluding tickets with Other::No reply intents  / # tickets from channels where AI agent can be enabled excluding Other::No reply intent
 export const getAiAgentCoverageRate = ({
     isFetching,

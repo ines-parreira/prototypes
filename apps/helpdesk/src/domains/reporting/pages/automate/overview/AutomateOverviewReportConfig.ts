@@ -1,4 +1,6 @@
 import { fetchFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
+import { fetchAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
+import { fetchAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { fetchAIAgentInteractionsDatasetBySkillTimeSeries } from 'domains/reporting/hooks/automate/useAIAgentInteractionsBySkillTimeSeries'
 import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { fetchAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
@@ -9,9 +11,11 @@ import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgen
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
     AI_AGENT_AUTOMATED_INTERACTIONS_LABEL,
-    AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP,
+    AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP as AI_AGENT_BAR_CHART_TOOLTIP,
     AIAgentAutomatedInteractionsGraphBar,
 } from 'domains/reporting/pages/automate/overview/charts/AIAgentAutomatedInteractionsGraphBar'
+import { AIAgentAutomatedInteractionsKPIChart } from 'domains/reporting/pages/automate/overview/charts/AIAgentAutomatedInteractionsKPIChart'
+import { AIAgentAutomationRateKPIChart } from 'domains/reporting/pages/automate/overview/charts/AIAgentAutomationRateKPIChart'
 import { AutomatedInteractionsGraphChart } from 'domains/reporting/pages/automate/overview/charts/AutomatedInteractionsGraphChart'
 import { AutomatedInteractionsKPIChart } from 'domains/reporting/pages/automate/overview/charts/AutomatedInteractionsKPIChart'
 import { AutomatedInteractionsPerFeatureGraphChart } from 'domains/reporting/pages/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
@@ -43,12 +47,18 @@ import {
 } from 'domains/reporting/services/automateOverviewReportingService'
 import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/AutomationRateMetric'
 import {
+    AI_AGENT_AUTOMATED_INTERACTIONS_COUNT_LABEL,
+    AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP,
+    AI_AGENT_AUTOMATION_RATE_LABEL,
+    AI_AGENT_AUTOMATION_RATE_TOOLTIP,
     AUTOMATED_INTERACTION_TOOLTIP,
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
     COST_SAVED,
     DECREASE_IN_FIRST_RESPONSE,
     DECREASE_IN_RESOLUTION_TIME,
+    OVERALL_AUTOMATED_INTERACTIONS_LABEL,
+    OVERALL_AUTOMATION_RATE_LABEL,
     TIME_SAVED_BY_AGENTS,
 } from 'pages/automate/automate-metrics/constants'
 import { COST_SAVED_TOOLTIP } from 'pages/automate/automate-metrics/CostSavedMetric'
@@ -68,6 +78,8 @@ export enum AutomateOverviewChart {
     AutomatedInteractionsGraphChart = 'automated_interactions_graph_chart',
     AutomatedInteractionsPerFeatureGraphChart = 'automated_interactions_per_feature_graph_chart',
     AIAgentAutomatedInteractionsGraphBar = 'ai_agent_automated_interactions_graph_bar',
+    AIAgentAutomationRateKPIChart = 'ai_agent_automation_rate_kpichart',
+    AIAgentAutomatedInteractionsKPIChart = 'ai_agent_automated_interactions_kpichart',
 }
 
 export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
@@ -78,7 +90,7 @@ export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
         charts: {
             [AutomateOverviewChart.AutomationRateKPIChart]: {
                 chartComponent: AutomationRateKPIChart,
-                label: AUTOMATION_RATE_LABEL,
+                label: OVERALL_AUTOMATION_RATE_LABEL,
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
@@ -91,7 +103,7 @@ export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
             },
             [AutomateOverviewChart.AutomatedInteractionsKPIChart]: {
                 chartComponent: AutomatedInteractionsKPIChart,
-                label: AUTOMATED_INTERACTIONS_LABEL,
+                label: OVERALL_AUTOMATED_INTERACTIONS_LABEL,
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
@@ -100,6 +112,32 @@ export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
                     },
                 ],
                 description: AUTOMATED_INTERACTION_TOOLTIP.title,
+                chartType: ChartType.Card,
+            },
+            [AutomateOverviewChart.AIAgentAutomationRateKPIChart]: {
+                chartComponent: AIAgentAutomationRateKPIChart,
+                label: AI_AGENT_AUTOMATION_RATE_LABEL,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAIAgentAutomationRateTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description: AI_AGENT_AUTOMATION_RATE_TOOLTIP.title,
+                chartType: ChartType.Card,
+            },
+            [AutomateOverviewChart.AIAgentAutomatedInteractionsKPIChart]: {
+                chartComponent: AIAgentAutomatedInteractionsKPIChart,
+                label: AI_AGENT_AUTOMATED_INTERACTIONS_COUNT_LABEL,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAIAgentAutomatedInteractionsTrend,
+                        metricFormat: 'integer',
+                    },
+                ],
+                description: AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP.title,
                 chartType: ChartType.Card,
             },
             [AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar]: {
@@ -121,7 +159,7 @@ export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
                         ],
                     },
                 ],
-                description: AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP.title,
+                description: AI_AGENT_BAR_CHART_TOOLTIP.title,
                 chartType: ChartType.Graph,
             },
             [AutomateOverviewChart.AutomationCostSavedKPIChart]: {

@@ -6,6 +6,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useLast28daysForAutomateRedirect } from 'domains/reporting/hooks/automate/useLast28daysForAutomateRedirect'
@@ -45,6 +46,9 @@ export default function AutomateOverviewContent() {
         useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
     const isAutomateAIAgentInteractionsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateAIAgentInteractions]
+    const isActionDrivenAiAgentNavigationEnabled: boolean | undefined = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
@@ -141,10 +145,14 @@ export default function AutomateOverviewContent() {
                 <DashboardSection
                     title="Performance"
                     titleExtra={
-                        <TipsToggle
-                            isVisible={!!areTipsVisible}
-                            onClick={() => setAreTipsVisible(!areTipsVisible)}
-                        />
+                        !isActionDrivenAiAgentNavigationEnabled && (
+                            <TipsToggle
+                                isVisible={!!areTipsVisible}
+                                onClick={() =>
+                                    setAreTipsVisible(!areTipsVisible)
+                                }
+                            />
+                        )
                     }
                 >
                     <DashboardGridCell size={6}>
@@ -161,6 +169,26 @@ export default function AutomateOverviewContent() {
                             config={AutomateOverviewReportConfig}
                         />
                     </DashboardGridCell>
+                    {isActionDrivenAiAgentNavigationEnabled && (
+                        <>
+                            <DashboardGridCell size={6}>
+                                <DashboardComponent
+                                    chart={
+                                        AutomateOverviewChart.AIAgentAutomationRateKPIChart
+                                    }
+                                    config={AutomateOverviewReportConfig}
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell size={6}>
+                                <DashboardComponent
+                                    chart={
+                                        AutomateOverviewChart.AIAgentAutomatedInteractionsKPIChart
+                                    }
+                                    config={AutomateOverviewReportConfig}
+                                />
+                            </DashboardGridCell>
+                        </>
+                    )}
                 </DashboardSection>
                 <DashboardSection title="Impact">
                     <DashboardGridCell size={6}>

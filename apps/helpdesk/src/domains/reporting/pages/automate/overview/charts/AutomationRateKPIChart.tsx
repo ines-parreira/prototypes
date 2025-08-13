@@ -1,5 +1,7 @@
 import { useLocalStorage } from '@repo/hooks'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { AAO_TIPS_VISIBILITY_KEY } from 'domains/reporting/pages/automate/overview/constants'
@@ -10,6 +12,9 @@ export const AutomationRateKPIChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
+    const isActionDrivenAiAgentNavigationEnabled: boolean | undefined = useFlag(
+        FeatureFlagKey.ActionDrivenAiAgentNavigation,
+    )
     const [areTipsVisible] = useLocalStorage(AAO_TIPS_VISIBILITY_KEY, true)
     const { statsFilters, userTimezone } = useAutomateFilters()
     const automationRateTrend = useAutomationRateTrend(
@@ -20,7 +25,7 @@ export const AutomationRateKPIChart = ({
     return (
         <AutomationRateMetric
             trend={automationRateTrend}
-            showTips={areTipsVisible}
+            showTips={areTipsVisible && !isActionDrivenAiAgentNavigationEnabled}
             dashboard={dashboard}
             chartId={chartId}
         />

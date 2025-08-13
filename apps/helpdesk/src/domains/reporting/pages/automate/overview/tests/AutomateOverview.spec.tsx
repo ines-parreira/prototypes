@@ -12,8 +12,12 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
+import { useAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
+import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
+import { useAIAgentInteractionsBySkillTimeSeries } from 'domains/reporting/hooks/automate/useAIAgentInteractionsBySkillTimeSeries'
 import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
@@ -149,6 +153,29 @@ const BarChartMock = assumeMock(BarChart)
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeForAccountMock = assumeMock(useAiAgentTypeForAccount)
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+jest.mock(
+    'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend',
+)
+const useAIAgentAutomatedInteractionsTrendMock = assumeMock(
+    useAIAgentAutomatedInteractionsTrend,
+)
+
+jest.mock('domains/reporting/hooks/automate/useAIAgentAutomationRateTrend')
+const useAIAgentAutomationRateTrendMock = assumeMock(
+    useAIAgentAutomationRateTrend,
+)
+
+jest.mock(
+    'domains/reporting/hooks/automate/useAIAgentInteractionsBySkillTimeSeries',
+)
+const useAIAgentInteractionsBySkillTimeSeriesMock = assumeMock(
+    useAIAgentInteractionsBySkillTimeSeries,
+)
+
 describe('<AutomateOverview />', () => {
     function getIntegration(id: number, type: IntegrationType) {
         return {
@@ -283,6 +310,7 @@ describe('<AutomateOverview />', () => {
             [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
             [FeatureFlagKey.AutomateAIAgentInteractions]: true,
         })
+        ;(useFlag as jest.Mock).mockReturnValue(false)
 
         useFilteredAutomatedInteractionsMock.mockReturnValue(
             automatedInteractionTrend,
@@ -322,6 +350,37 @@ describe('<AutomateOverview />', () => {
             aiAgentType: 'mixed',
             isLoading: false,
         })
+
+        useAIAgentAutomatedInteractionsTrendMock.mockReturnValue({
+            data: {
+                value: 1234,
+                prevValue: 1000,
+            },
+            isFetching: false,
+            isError: false,
+        })
+
+        useAIAgentAutomationRateTrendMock.mockReturnValue({
+            data: {
+                value: 0.4567,
+                prevValue: 0.4123,
+            },
+            isFetching: false,
+            isError: false,
+        })
+
+        useAIAgentInteractionsBySkillTimeSeriesMock.mockReturnValue({
+            data: {
+                'AI Agent Support': [
+                    [{ dateTime: '2022-02-02T12:45:33.122', value: 23 }],
+                ],
+                'AI Agent Sales': [
+                    [{ dateTime: '2022-02-02T12:45:33.122', value: 15 }],
+                ],
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
     })
 
     it('should display paywall', () => {
@@ -1053,6 +1112,83 @@ describe('<AutomateOverview />', () => {
             )
 
             expect(TimeSavedByAgentsKPIChartMock).toHaveBeenCalled()
+        })
+    })
+
+    describe('AI Agent KPI Charts', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
+                [FeatureFlagKey.AutomateAIAgentInteractions]: true,
+            })
+        })
+
+        it('should render AI Agent KPI charts when ActionDrivenAiAgentNavigation flag is enabled', () => {
+            ;(useFlag as jest.Mock).mockReturnValue(true)
+
+            const { getByText } = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(getByText('AI Agent automation rate')).toBeInTheDocument()
+
+            // There are two elements with this text - the KPI chart and the bar chart
+            const aiAgentInteractionElements = screen.getAllByText(
+                'AI Agent automated interactions',
+            )
+            expect(aiAgentInteractionElements).toHaveLength(2)
+        })
+
+        it('should not render AI Agent KPI charts when ActionDrivenAiAgentNavigation flag is disabled', () => {
+            ;(useFlag as jest.Mock).mockReturnValue(false)
+
+            const { queryByText } = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                queryByText('AI Agent automation rate'),
+            ).not.toBeInTheDocument()
+            expect(
+                queryByText('AI Agent automated interactions KPI'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide tips toggle when ActionDrivenAiAgentNavigation flag is enabled', () => {
+            ;(useFlag as jest.Mock).mockReturnValue(true)
+
+            const { queryByText } = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(queryByText(/Show tips/)).not.toBeInTheDocument()
+            expect(queryByText(/Hide tips/)).not.toBeInTheDocument()
+        })
+
+        it('should show tips toggle when ActionDrivenAiAgentNavigation flag is disabled', () => {
+            ;(useFlag as jest.Mock).mockReturnValue(false)
+
+            const { getByText } = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(getByText(/Hide tips/)).toBeInTheDocument()
         })
     })
 })
