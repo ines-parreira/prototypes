@@ -1,0 +1,24 @@
+:local {
+    .item {
+        padding: var(--layout-spacing-xs);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+        flex: 1 0 0;
+
+        &:hover {
+            background-color: var(--neutral-grey-2);
+        }
+    }
+}
+
+.axiom :local {
+    .item {
+        color: var(--content-neutral-default);
+
+        :hover {
+            background-color: var(--hover-default);
+        }
+    }
+}
