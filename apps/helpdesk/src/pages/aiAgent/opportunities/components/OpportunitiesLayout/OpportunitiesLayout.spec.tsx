@@ -12,19 +12,28 @@ describe('OpportunitiesLayout', () => {
         expect(screen.getByText('Opportunities')).toBeInTheDocument()
     })
 
-    it('should render sidebar with correct content', () => {
+    it('should render sidebar with mock opportunities', () => {
         render(<OpportunitiesLayout />)
 
         expect(screen.getByText('Available opportunities')).toBeInTheDocument()
-        expect(screen.getByText('0 items')).toBeInTheDocument()
+        expect(screen.getByText('4 items')).toBeInTheDocument()
+        expect(
+            screen.getByText("What's your return policy?"),
+        ).toBeInTheDocument()
     })
 
-    it('should render content with empty state', () => {
+    it('should render content with selected opportunity details', () => {
         render(<OpportunitiesLayout />)
 
-        expect(screen.getByText('No opportunities yet')).toBeInTheDocument()
+        // First opportunity should be selected by default
+        // Check for the heading in the details section
+        const headings = screen.getAllByRole('heading', {
+            name: 'Fill knowledge gap',
+        })
+        expect(headings.length).toBeGreaterThan(0)
+
         expect(
-            screen.getByText(/AI Agent will start finding opportunities/),
+            screen.getByText(/Review and approve this AI-generated Guidance/),
         ).toBeInTheDocument()
     })
 

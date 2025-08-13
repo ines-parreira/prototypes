@@ -1,12 +1,23 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { OpportunitiesSidebar } from './OpportunitiesSidebar'
 
 describe('OpportunitiesSidebar', () => {
+    const mockOnSelectOpportunity = jest.fn()
+
+    beforeEach(() => {
+        mockOnSelectOpportunity.mockClear()
+    })
+
     it('should render sidebar header with title', () => {
-        render(<OpportunitiesSidebar />)
+        render(
+            <OpportunitiesSidebar
+                onSelectOpportunity={mockOnSelectOpportunity}
+            />,
+        )
 
         const title = screen.getByRole('heading', {
             name: 'Available opportunities',
@@ -15,14 +26,35 @@ describe('OpportunitiesSidebar', () => {
         expect(title).toHaveClass('title')
     })
 
-    it('should render empty state when no items', () => {
-        render(<OpportunitiesSidebar />)
+    it('should render opportunity cards with mock data', () => {
+        render(
+            <OpportunitiesSidebar
+                onSelectOpportunity={mockOnSelectOpportunity}
+            />,
+        )
 
-        expect(screen.getByText('0 items')).toBeInTheDocument()
+        // Should show item count
+        expect(screen.getByText('4 items')).toBeInTheDocument()
+
+        // Should render the opportunity cards
+        expect(
+            screen.getByText("What's your return policy?"),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('How do I access my store account?'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('How can I apply a discount?'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Topic')).toBeInTheDocument()
     })
 
     it('should have proper structure with header and content sections', () => {
-        const { container } = render(<OpportunitiesSidebar />)
+        const { container } = render(
+            <OpportunitiesSidebar
+                onSelectOpportunity={mockOnSelectOpportunity}
+            />,
+        )
 
         const sidebar = container.querySelector('.sidebar')
         expect(sidebar).toBeInTheDocument()
@@ -34,11 +66,57 @@ describe('OpportunitiesSidebar', () => {
         expect(containerContent).toBeInTheDocument()
     })
 
-    it('should render empty state in content container', () => {
-        const { container } = render(<OpportunitiesSidebar />)
+    it('should call onSelectOpportunity with first opportunity on mount', async () => {
+        render(
+            <OpportunitiesSidebar
+                onSelectOpportunity={mockOnSelectOpportunity}
+            />,
+        )
 
-        const emptyState = container.querySelector('.emptyState')
-        expect(emptyState).toBeInTheDocument()
-        expect(emptyState).toHaveTextContent('0 items')
+        await waitFor(() => {
+            expect(mockOnSelectOpportunity).toHaveBeenCalledWith({
+                id: '1',
+                title: "What's your return policy?",
+                type: 'FILL_KNOWLEDGE_GAP',
+            })
+        })
+    })
+
+    it('should call onSelectOpportunity when a card is clicked', async () => {
+        const user = userEvent.setup()
+        render(
+            <OpportunitiesSidebar
+                onSelectOpportunity={mockOnSelectOpportunity}
+            />,
+        )
+
+        const secondCard = screen
+            .getByText('How do I access my store account?')
+            .closest('div[class*="card"]')
+
+        if (secondCard) {
+            await user.click(secondCard)
+        }
+
+        await waitFor(() => {
+            expect(mockOnSelectOpportunity).toHaveBeenCalledWith({
+                id: '2',
+                title: 'How do I access my store account?',
+                type: 'FILL_KNOWLEDGE_GAP',
+            })
+        })
+    })
+
+    it('should show first card as selected by default', () => {
+        render(
+            <OpportunitiesSidebar
+                onSelectOpportunity={mockOnSelectOpportunity}
+            />,
+        )
+
+        const firstCard = screen
+            .getByText("What's your return policy?")
+            .closest('div[class*="card"]')
+        expect(firstCard).toHaveClass('cardSelected')
     })
 })

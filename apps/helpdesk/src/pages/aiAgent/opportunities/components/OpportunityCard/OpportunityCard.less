@@ -1,0 +1,67 @@
+@import '~css/typography';
+@import '~css/util';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+
+:local {
+    .card {
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-s);
+        align-items: center;
+        // gap: var(--layout-spacing-xxs);
+        flex-shrink: 0;
+        border-radius: var(--layout-spacing-xs);
+        border: 1px solid transparent;
+        background: var(--neutral-grey-0);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .cardHovered {
+        background: var(--neutral-grey-1);
+    }
+
+    .cardSelected {
+        border: 1px solid var(--neutral-grey-2);
+        background: var(--neutral-grey-1);
+    }
+
+    .cardSelectedHovered {
+        border: 1px solid var(--neutral-grey-2);
+        background: var(--neutral-grey-2);
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .title {
+        .body-semibold();
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 200px;
+    }
+
+    .infoSection {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        width: 100%;
+    }
+
+    .infoIcon {
+        color: var(--neutral-grey-5);
+        flex-shrink: 0;
+    }
+
+    .infoText {
+        .body-regular();
+        font-size: 12px;
+        color: var(--neutral-grey-5);
+    }
+}

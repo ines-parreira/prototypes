@@ -32,7 +32,7 @@
     .containerContent {
         flex: 1;
         width: 100%;
-        padding: 16px 20px;
+        padding: var(--layout-spacing-xs);
         overflow-y: auto;
         background: var(--neutral-grey-0) !important;
     }
@@ -40,5 +40,20 @@
     .emptyState {
         .caption-regular();
         color: var(--neutral-grey-6);
+    }
+
+    .itemCount {
+        .caption-regular();
+        color: var(--neutral-grey-6);
+        padding: var(--layout-spacing-s);
+        padding-top: var(--layout-spacing-xs);
+        padding-left: var(--layout-spacing-xs);
+        margin: 0;
+    }
+
+    .cardsContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 }

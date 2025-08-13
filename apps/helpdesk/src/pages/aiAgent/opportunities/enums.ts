@@ -1,0 +1,4 @@
+export enum OpportunityType {
+    FILL_KNOWLEDGE_GAP = 'FILL_KNOWLEDGE_GAP',
+    RESOLVE_CONFLICT = 'RESOLVE_CONFLICT',
+}
