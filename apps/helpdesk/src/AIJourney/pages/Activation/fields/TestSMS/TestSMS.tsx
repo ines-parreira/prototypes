@@ -5,7 +5,7 @@ import css from './TestSMS.less'
 type TestSMSProps = {
     value?: string
     onChange?: (value: string) => void
-    onActionClick?: () => void
+    onActionClick?: () => Promise<void>
 }
 
 export const TestSMSField = ({

@@ -10,7 +10,7 @@ import css from './InputAction.less'
 type InputActionProps = {
     value?: string
     onChange?: (value: string) => void
-    onActionClick?: () => void
+    onActionClick?: () => Promise<void>
 }
 
 const createUnderscores = (count: number): string => {

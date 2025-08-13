@@ -170,7 +170,7 @@ describe('<Activation />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <Activation />
+                        <Activation delaySendingSMSms={0} />
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,
@@ -406,17 +406,19 @@ describe('<Activation />', () => {
                 await userEvent.click(button)
             })
 
-            expect(mockDispatch).toHaveBeenCalledTimes(1)
-            expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
+            waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalledTimes(1)
+                expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
 
-            expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
-                phoneNumber: '+11234567890',
-                journeyId: 'journey-123',
-                product: {
-                    product_id: '6694863569105',
-                    variant_id: '39924461306065',
-                    price: 3310,
-                },
+                expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
+                    phoneNumber: '+11234567890',
+                    journeyId: 'journey-123',
+                    product: {
+                        product_id: '6694863569105',
+                        variant_id: '39924461306065',
+                        price: 3310,
+                    },
+                })
             })
         })
 
@@ -449,17 +451,19 @@ describe('<Activation />', () => {
                 await userEvent.click(button)
             })
 
-            expect(mockDispatch).toHaveBeenCalledTimes(1)
-            expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
+            waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalledTimes(1)
+                expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
 
-            expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
-                phoneNumber: '+11234567890',
-                journeyId: 'journey-123',
-                product: {
-                    price: 25,
-                    product_id: '1',
-                    variant_id: '39923189874897',
-                },
+                expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
+                    phoneNumber: '+11234567890',
+                    journeyId: 'journey-123',
+                    product: {
+                        price: 25,
+                        product_id: '1',
+                        variant_id: '39923189874897',
+                    },
+                })
             })
         })
 

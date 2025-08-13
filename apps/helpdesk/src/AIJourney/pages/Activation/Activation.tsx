@@ -21,7 +21,12 @@ import { ProductSelectField, TestSMSField } from './fields'
 
 import css from './Activation.less'
 
-export const Activation = () => {
+type ActivationProps = {
+    // Allow to override the delay for sending the SMS
+    // This is useful for testing purposes
+    delaySendingSMSms?: number
+}
+export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
     const history = useHistory()
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
@@ -118,6 +123,10 @@ export const Activation = () => {
                     price: Number(selectedProduct.variants[0]?.price),
                 },
             })
+            // Add a delay to allow the SMS to be sent
+            await new Promise((resolve) =>
+                setTimeout(resolve, delaySendingSMSms),
+            )
 
             void dispatch(
                 notify({
