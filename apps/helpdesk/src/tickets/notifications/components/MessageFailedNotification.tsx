@@ -8,7 +8,11 @@ type Props = {
     notification: Notification<TicketPayload>
 } & ContentProps
 
-const MessageFailedNotification = ({ notification, ...props }: Props) => {
+const MessageFailedNotification = ({
+    notification,
+    onClick,
+    ...props
+}: Props) => {
     const { customer, ticket } = notification.payload
 
     return (
@@ -18,6 +22,7 @@ const MessageFailedNotification = ({ notification, ...props }: Props) => {
             title="Message not delivered"
             url={`/app/ticket/${ticket.id}`}
             onClick={() => {
+                onClick?.()
                 logEvent(SegmentEvent.FailedMessageNotification, {
                     ticketId: ticket.id,
                 })

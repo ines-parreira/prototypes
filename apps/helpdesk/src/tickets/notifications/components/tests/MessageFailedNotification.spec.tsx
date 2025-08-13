@@ -90,8 +90,7 @@ describe('<MessageFailedNotification />', () => {
             <MessageFailedNotification notification={notification} />,
         )
 
-        const notificationLink = container.querySelector('.container')!
-        await user.click(notificationLink)
+        await user.click(container.firstElementChild!)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.FailedMessageNotification,
@@ -99,5 +98,20 @@ describe('<MessageFailedNotification />', () => {
                 ticketId: notification.payload.ticket.id,
             },
         )
+    })
+
+    it('should call onClick when notification is clicked', async () => {
+        const user = userEvent.setup()
+        const mockOnClick = jest.fn()
+        const { container } = render(
+            <MessageFailedNotification
+                notification={notification}
+                onClick={mockOnClick}
+            />,
+        )
+
+        await user.click(container.firstElementChild!)
+
+        expect(mockOnClick).toHaveBeenCalled()
     })
 })
