@@ -5,13 +5,14 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
 } from 'business/shopify/lineItem'
 import { formatPrice } from 'business/shopify/number'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import css from './OrderLineItemRow.less'

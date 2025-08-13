@@ -87,24 +87,24 @@ exports[`<OrderLineItemRow/> should render 1`] = `
       >
         <button
           aria-disabled="true"
-          class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnUp ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▲
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnDown ui-button-fill-a432 ui-button-secondary-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▼
           </span>
@@ -208,24 +208,24 @@ exports[`<OrderLineItemRow/> should render for multi-currency order 1`] = `
       >
         <button
           aria-disabled="true"
-          class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnUp ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▲
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnDown ui-button-fill-a432 ui-button-secondary-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▼
           </span>
@@ -338,24 +338,24 @@ exports[`<OrderLineItemRow/> should render with discounted price 1`] = `
       >
         <button
           aria-disabled="true"
-          class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnUp ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▲
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnDown ui-button-fill-a432 ui-button-secondary-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▼
           </span>
@@ -468,24 +468,24 @@ exports[`<OrderLineItemRow/> should render with the zero quantity 1`] = `
       >
         <button
           aria-disabled="false"
-          class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnUp ui-button-fill-a432 ui-button-secondary-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▲
           </span>
         </button>
         <button
           aria-disabled="true"
-          class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
+          class="ui-button-wrapper-a432 focusable quantityBtn quantityBtnDown ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
           tabindex="0"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             ▼
           </span>

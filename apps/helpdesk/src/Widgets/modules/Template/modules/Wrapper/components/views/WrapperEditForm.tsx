@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import ColorField from 'pages/common/forms/ColorField'
 
 export const SUBMIT_TEXT = 'Submit'

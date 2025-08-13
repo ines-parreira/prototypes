@@ -1,9 +1,8 @@
 import React, { FormEvent, useRef, useState } from 'react'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
 import FileField from 'pages/common/forms/FileField'
