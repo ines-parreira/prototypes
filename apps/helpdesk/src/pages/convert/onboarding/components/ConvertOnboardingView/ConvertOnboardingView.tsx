@@ -5,6 +5,8 @@ import classnames from 'classnames'
 import { useLocation, useParams } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -13,7 +15,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { bundleKeys } from 'models/convert/bundle/queries'
 import { BundleStatus } from 'models/convert/bundle/types'
 import { IntegrationType } from 'models/integration/constants'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import {
     NavigatedSuccessModalLocationState,

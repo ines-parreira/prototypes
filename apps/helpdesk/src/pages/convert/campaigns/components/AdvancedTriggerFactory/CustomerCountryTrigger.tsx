@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { countries } from 'config/countries'
-import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'

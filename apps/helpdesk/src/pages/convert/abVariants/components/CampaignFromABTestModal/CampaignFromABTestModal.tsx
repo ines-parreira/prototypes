@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { CampaignCreatePayload } from 'models/convert/campaign/types'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

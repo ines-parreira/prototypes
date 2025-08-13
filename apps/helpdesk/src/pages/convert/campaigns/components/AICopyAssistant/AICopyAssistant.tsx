@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
 import { CampaignSuggestCopyResponse } from 'models/convert/campaign/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import Button from 'pages/common/components/button/Button'
 import { VerticalTextCarousel } from 'pages/common/components/VerticalTextCarousel/VerticalTextCarousel'
 import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'

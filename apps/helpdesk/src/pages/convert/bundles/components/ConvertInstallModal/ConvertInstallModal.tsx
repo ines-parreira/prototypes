@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Map } from 'immutable'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
 import {
     BundleActionResponse,
@@ -10,7 +12,6 @@ import {
     BundleStatus,
 } from 'models/convert/bundle/types'
 import { IntegrationType } from 'models/integration/constants'
-import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'

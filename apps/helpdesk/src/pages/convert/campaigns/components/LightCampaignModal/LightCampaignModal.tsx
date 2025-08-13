@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
-import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'

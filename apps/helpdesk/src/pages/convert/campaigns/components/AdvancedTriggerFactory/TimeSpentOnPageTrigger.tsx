@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import InputField from 'pages/common/forms/input/InputField'
 
 import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'

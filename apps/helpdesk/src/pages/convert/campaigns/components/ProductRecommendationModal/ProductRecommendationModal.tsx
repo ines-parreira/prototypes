@@ -1,9 +1,8 @@
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'

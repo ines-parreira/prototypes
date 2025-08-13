@@ -2,9 +2,10 @@ import React, { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { useModalManager } from 'hooks/useModalManager'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import CampaignFromABTestModal from 'pages/convert/abVariants/components/CampaignFromABTestModal'
 import VariantsList from 'pages/convert/abVariants/components/VariantsList'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'

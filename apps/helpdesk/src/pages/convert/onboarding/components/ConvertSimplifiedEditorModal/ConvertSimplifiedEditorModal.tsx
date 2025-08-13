@@ -4,7 +4,7 @@ import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Badge, BadgeIcon } from '@gorgias/axiom'
+import { Badge, BadgeIcon, Button } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -17,7 +17,6 @@ import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { GorgiasChatIntegration } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

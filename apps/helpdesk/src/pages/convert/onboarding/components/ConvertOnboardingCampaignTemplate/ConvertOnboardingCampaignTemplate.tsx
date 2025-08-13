@@ -2,8 +2,9 @@ import React, { useMemo, useState } from 'react'
 
 import { Map } from 'immutable'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import {
     CampaignTemplate,
     CampaignTemplateLabelType,

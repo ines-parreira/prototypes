@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import PageHeader from 'pages/common/components/PageHeader'
 import CampaignLibrarySection from 'pages/convert/campaigns/components/CampaignLibrarySection'
 import TemplateNotFoundBanner from 'pages/convert/campaigns/components/TemplateNotFoundBanner'

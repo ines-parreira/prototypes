@@ -4,6 +4,8 @@ import { List } from 'immutable'
 import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -13,7 +15,6 @@ import {
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'

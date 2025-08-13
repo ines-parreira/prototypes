@@ -2,7 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 
 import { produce } from 'immer'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     DAYS_OPTIONS,

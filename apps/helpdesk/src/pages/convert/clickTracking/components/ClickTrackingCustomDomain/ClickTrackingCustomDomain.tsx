@@ -4,9 +4,10 @@ import { useAsyncFn } from '@repo/hooks'
 import { AxiosError } from 'axios'
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { CustomDomain as CustomDomainEntity } from 'models/clickTracking/types'
-import Button from 'pages/common/components/button/Button'
 import { ConnectionStatus } from 'pages/common/components/ConnectionStatus'
 import Loader from 'pages/common/components/Loader/Loader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

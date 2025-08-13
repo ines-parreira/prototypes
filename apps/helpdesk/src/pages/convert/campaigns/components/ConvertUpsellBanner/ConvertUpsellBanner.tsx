@@ -1,4 +1,5 @@
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import { assetsUrl } from 'utils'
 
 import css from './ConvertUpsellBanner.less'

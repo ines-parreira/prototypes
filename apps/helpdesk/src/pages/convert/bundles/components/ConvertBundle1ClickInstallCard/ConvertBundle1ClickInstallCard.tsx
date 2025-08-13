@@ -3,6 +3,8 @@ import React, { useMemo } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import {
@@ -10,7 +12,6 @@ import {
     BundleInstallationMethodResponse,
     BundleStatus,
 } from 'models/convert/bundle/types'
-import Button from 'pages/common/components/button/Button'
 import { transformBundleError } from 'pages/convert/common/utils/transformBundleError'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

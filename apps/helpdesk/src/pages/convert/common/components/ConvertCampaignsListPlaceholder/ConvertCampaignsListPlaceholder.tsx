@@ -3,9 +3,10 @@ import React, { useCallback, useMemo } from 'react'
 import { Map } from 'immutable'
 import { Container } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { CampaignListOptions as CampaignListOptionsParams } from 'models/convert/campaign/types'
-import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import { toJS } from 'utils'
 

@@ -3,9 +3,8 @@ import { useCallback, useMemo, useState } from 'react'
 import { useDismissFlag, useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
 import { ABVariantModalType } from 'pages/convert/abVariants/types/enums'

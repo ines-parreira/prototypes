@@ -2,7 +2,7 @@ import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -125,7 +125,7 @@ describe('<GeneralSettingsView />', () => {
             mutateAsync: jest.fn(),
             isLoading: true,
         } as any)
-        const { container } = render(
+        render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
                     <GeneralSettingsView />
@@ -133,7 +133,7 @@ describe('<GeneralSettingsView />', () => {
             </QueryClientProvider>,
         )
         expect(
-            container.getElementsByClassName('spinner')[0],
+            screen.getByRole('button', { name: /Loading/ }),
         ).toBeInTheDocument()
     })
 

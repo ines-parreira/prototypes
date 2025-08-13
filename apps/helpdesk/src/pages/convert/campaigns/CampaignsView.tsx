@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { Link, useParams } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -14,7 +14,6 @@ import {
     CampaignListOptions as CampaignListOptionsParams,
 } from 'models/convert/campaign/types'
 import { IntegrationType } from 'models/integration/constants'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,

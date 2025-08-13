@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import toInteger from 'lodash/toInteger'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
