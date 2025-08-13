@@ -73,7 +73,7 @@ const TrialOptOutModal = ({
                 dispatch(
                     notify({
                         message:
-                            "Your plan won't be upgraded when the trial ends, and you'll lose access to AI Agent's sales skills.",
+                            "Your plan won't be upgraded when the trial ends, and you'll lose access to Shopping Assistant.",
                         status: NotificationStatus.Success,
                     }),
                 )
