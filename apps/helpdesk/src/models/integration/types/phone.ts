@@ -3,6 +3,7 @@ import {
     Integration as ApiIntegration,
     VoiceQueueWaitMusicLibrary,
 } from '@gorgias/helpdesk-queries'
+import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { PhoneFunction } from 'business/twilio'
 
@@ -35,6 +36,7 @@ export type PhoneIntegrationMeta = {
     wait_music?: LocalWaitMusicPreferences
     recording_notification?: VoiceMessage
     send_calls_to_voicemail?: boolean
+    flow?: CallRoutingFlow
 }
 
 export enum PhoneRingingBehaviour {

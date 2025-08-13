@@ -11,10 +11,12 @@ import { PHONE_INTEGRATION_BASE_URL } from './constants'
 
 type Props = {
     integration?: PhoneIntegration
+    shouldUseNewRoutes?: boolean
 }
 
 export default function VoiceIntegrationSecondaryNavigation({
     integration,
+    shouldUseNewRoutes = false,
 }: Props): JSX.Element | null {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
 
@@ -41,6 +43,19 @@ export default function VoiceIntegrationSecondaryNavigation({
 
     const integrationId: number = integration.id
     const baseURL = `/app/settings/channels/${IntegrationType.Phone}/${integrationId}`
+
+    if (shouldUseNewRoutes) {
+        return (
+            <SecondaryNavbar>
+                <NavLink to={`${baseURL}/preferences`} exact>
+                    General
+                </NavLink>
+                <NavLink to={`${baseURL}/flow`} exact>
+                    Call Flow
+                </NavLink>
+            </SecondaryNavbar>
+        )
+    }
 
     const isIvr = integration.meta?.function === PhoneFunction.Ivr
 

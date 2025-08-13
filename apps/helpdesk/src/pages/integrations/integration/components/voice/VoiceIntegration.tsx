@@ -9,6 +9,8 @@ import {
 
 import { Button } from '@gorgias/axiom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     IntegrationType,
@@ -31,11 +33,13 @@ import {
 import { getDefaultRoutes } from '../../utils/defaultRoutes'
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'
 import VoiceIntegrationDetails from './VoiceIntegrationDetails'
+import VoiceIntegrationFlowPage from './VoiceIntegrationFlowPage'
 import VoiceIntegrationOnboarding from './VoiceIntegrationOnboarding/VoiceIntegrationOnboarding'
 import VoiceIntegrationQueueRoutes from './VoiceIntegrationQueueRoutes'
 import VoiceIntegrationSettingsPage from './VoiceIntegrationSettingsPage'
 
 export default function VoiceIntegration() {
+    const useExtendedCallFlows = useFlag(FeatureFlagKey.ExtendedCallFlows)
     const { integrationId } = useParams<{ integrationId: string }>()
 
     const { pathname: path } = useLocation<LocationState>()
@@ -60,6 +64,44 @@ export default function VoiceIntegration() {
     const isQueuePage = !!queuePathMatch?.params.queueId
 
     const routes = getDefaultRoutes(baseURL, phoneIntegrations)
+
+    const integrationOldRoutes = currentIntegration && (
+        <>
+            {isStandardIntegration ? (
+                <Route path={`${baseURL}/:integrationId/preferences`} exact>
+                    <VoiceIntegrationSettingsPage />
+                </Route>
+            ) : (
+                <>
+                    <Route path={`${baseURL}/:integrationId/preferences`} exact>
+                        <VoiceIntegrationIVRPreferences
+                            integration={currentIntegration}
+                        />
+                    </Route>
+                    <Route path={`${baseURL}/:integrationId/voicemail`} exact>
+                        <VoiceIntegrationVoicemail
+                            integration={currentIntegration}
+                        />
+                    </Route>
+                    <Route path={`${baseURL}/:integrationId/ivr`} exact>
+                        <VoiceIntegrationIvr integration={currentIntegration} />
+                    </Route>
+                </>
+            )}
+        </>
+    )
+    const integrationNewRoutes = currentIntegration && (
+        <>
+            <Route path={`${baseURL}/:integrationId/preferences`} exact>
+                <VoiceIntegrationSettingsPage />
+            </Route>
+            <Route path={`${baseURL}/:integrationId/flow`} exact>
+                <VoiceIntegrationFlowPage />
+            </Route>
+        </>
+    )
+    const shouldUseNewRoutes =
+        useExtendedCallFlows && !!currentIntegration?.meta?.flow
 
     return (
         <div className="full-width">
@@ -89,52 +131,17 @@ export default function VoiceIntegration() {
                 </Route>
             </PageHeader>
 
-            {!isStandardIntegration && !isQueuePage && (
+            {(!isStandardIntegration || shouldUseNewRoutes) && !isQueuePage && (
                 <VoiceIntegrationSecondaryNavigation
                     integration={currentIntegration}
+                    shouldUseNewRoutes={shouldUseNewRoutes}
                 />
             )}
 
             <Switch>
-                {currentIntegration && (
-                    <>
-                        {isStandardIntegration ? (
-                            <Route
-                                path={`${baseURL}/:integrationId/preferences`}
-                                exact
-                            >
-                                <VoiceIntegrationSettingsPage />
-                            </Route>
-                        ) : (
-                            <>
-                                <Route
-                                    path={`${baseURL}/:integrationId/preferences`}
-                                    exact
-                                >
-                                    <VoiceIntegrationIVRPreferences
-                                        integration={currentIntegration}
-                                    />
-                                </Route>
-                                <Route
-                                    path={`${baseURL}/:integrationId/voicemail`}
-                                    exact
-                                >
-                                    <VoiceIntegrationVoicemail
-                                        integration={currentIntegration}
-                                    />
-                                </Route>
-                                <Route
-                                    path={`${baseURL}/:integrationId/ivr`}
-                                    exact
-                                >
-                                    <VoiceIntegrationIvr
-                                        integration={currentIntegration}
-                                    />
-                                </Route>
-                            </>
-                        )}
-                    </>
-                )}
+                {shouldUseNewRoutes
+                    ? integrationNewRoutes
+                    : integrationOldRoutes}
                 <Route path={routes.integrations} exact>
                     <PhoneIntegrationsList type={IntegrationType.Phone} />
                 </Route>
