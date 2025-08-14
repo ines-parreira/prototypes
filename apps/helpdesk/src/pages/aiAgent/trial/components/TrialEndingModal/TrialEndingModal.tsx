@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import { Tooltip } from '@gorgias/axiom'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,6 +10,11 @@ import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModa
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import {
+    canRequestTrialExtension,
+    COOLDOWN_WAIT_HOURS,
+    markTrialExtensionRequested,
+} from 'pages/aiAgent/trial/utils/trialExtensionUtils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 const TRIAL_ENDING_TOMORROW_DISMISSED_KEY =
@@ -35,6 +42,9 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
         false,
     )
 
+    const canRequestExtension = canRequestTrialExtension()
+    const secondaryButtonId =
+        'shopping-assistant-request-trial-extension-button-on-trial-ending'
     const isOptedOut = !!optedOutDatetime
 
     const [isModalDismissed, setIsModalDismissed] = useState(
@@ -54,8 +64,13 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
     }, [openUpgradePlanModal, dismissModal])
 
     const onRequestTrialExtensionClick = useCallback(() => {
+        if (!canRequestTrialExtension()) {
+            return
+        }
+
         onRequestTrialExtension().then((isSent) => {
             if (isSent) {
+                markTrialExtensionRequested()
                 dismissModal()
             }
         })
@@ -77,6 +92,8 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
             ? {
                   label: 'Request Trial Extension',
                   onClick: onRequestTrialExtensionClick,
+                  isDisabled: !canRequestExtension,
+                  id: secondaryButtonId,
               }
             : undefined
 
@@ -89,14 +106,27 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
     }
 
     return (
-        <TrialManageModal
-            title={trialEndingModal.title}
-            description={trialEndingModal.description}
-            advantages={trialEndingModal.advantages}
-            secondaryDescription={trialEndingModal.secondaryDescription}
-            onClose={dismissModal}
-            primaryAction={primaryAction}
-            secondaryAction={secondaryAction}
-        />
+        <>
+            <TrialManageModal
+                title={trialEndingModal.title}
+                description={trialEndingModal.description}
+                advantages={trialEndingModal.advantages}
+                secondaryDescription={trialEndingModal.secondaryDescription}
+                onClose={dismissModal}
+                primaryAction={primaryAction}
+                secondaryAction={secondaryAction}
+            />
+            {secondaryAction && !canRequestExtension && (
+                <Tooltip
+                    target={secondaryButtonId}
+                    placement="top"
+                    disabled={canRequestExtension}
+                >
+                    Trial extension request was already sent within the last{' '}
+                    {COOLDOWN_WAIT_HOURS}
+                    hours. Please wait before requesting again.
+                </Tooltip>
+            )}
+        </>
     )
 }

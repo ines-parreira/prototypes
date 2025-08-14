@@ -12,6 +12,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import css from './TrialManageModal.less'
 
 type Action = {
+    id?: string
     label: string
     isLoading?: boolean
     isDisabled?: boolean
@@ -90,6 +91,7 @@ export const TrialManageModal = ({
                 <ModalFooter className={css.footer}>
                     {secondaryAction && (
                         <Button
+                            id={secondaryAction.id}
                             onClick={secondaryAction.onClick}
                             fillStyle="ghost"
                             intent="secondary"

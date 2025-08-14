@@ -1,9 +1,16 @@
 import { memo, useCallback } from 'react'
 
+import { Tooltip } from '@gorgias/axiom'
+
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
+import {
+    canRequestTrialExtension,
+    COOLDOWN_WAIT_HOURS,
+    markTrialExtensionRequested,
+} from 'pages/aiAgent/trial/utils/trialExtensionUtils'
 import { OptOutModal } from 'pages/common/components/OptOutModal/OptOutModal'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -17,6 +24,7 @@ const FEATURES = [
 ]
 const TITLE = 'Opt out of upgrade?'
 const SECONDARY_ACTION = 'Request Trial Extension'
+const SECONDARY_ACTION_TOOLTIP = `Trial extension request was already sent within the last ${COOLDOWN_WAIT_HOURS} hours. Please wait before requesting again.`
 const DESTRUCTIVE_ACTION = 'Opt Out Anyway'
 
 const Intro = memo(() => {
@@ -62,6 +70,9 @@ const TrialOptOutModal = ({
 }: TrialOptOutModalProps) => {
     const dispatch = useAppDispatch()
     const optOutMutation = useOptOutSalesTrialUpgradeMutation()
+    const secondaryButtonId =
+        'shopping-assistant-request-trial-extension-button'
+    const canRequestExtension = canRequestTrialExtension()
 
     const onOptOutClick = useCallback(() => {
         logEvent(SegmentEvent.TrialOptOutModalClicked, {
@@ -82,8 +93,13 @@ const TrialOptOutModal = ({
     }, [optOutMutation, onClose, dispatch])
 
     const onRequestTrialExtensionClick = useCallback(() => {
+        if (!canRequestTrialExtension()) {
+            return
+        }
+
         onRequestTrialExtension().then((isSent) => {
             if (isSent) {
+                markTrialExtensionRequested()
                 onClose()
             }
         })
@@ -110,7 +126,15 @@ const TrialOptOutModal = ({
                 <FeaturesList />
             </OptOutModal.Body>
             <OptOutModal.Actions>
-                <OptOutModal.SecondaryAction>
+                {!canRequestExtension && (
+                    <Tooltip target={secondaryButtonId} placement="top">
+                        {SECONDARY_ACTION_TOOLTIP}
+                    </Tooltip>
+                )}
+                <OptOutModal.SecondaryAction
+                    id={secondaryButtonId}
+                    isDisabled={!canRequestExtension}
+                >
                     {SECONDARY_ACTION}
                 </OptOutModal.SecondaryAction>
                 <OptOutModal.DestructiveAction id="shopping-assistant-opt-out">

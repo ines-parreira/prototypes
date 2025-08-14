@@ -5,17 +5,27 @@ import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
+import * as trialExtensionUtils from 'pages/aiAgent/trial/utils/trialExtensionUtils'
 
 import TrialOptOutModal from '../TrialOptOutModal'
 
 jest.mock('common/segment/segment')
 jest.mock('hooks/useAppDispatch')
 jest.mock('models/aiAgent/queries')
+jest.mock('pages/aiAgent/trial/utils/trialExtensionUtils')
 
 const mockLogEvent = logEvent as jest.Mock
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockUseOptOutSalesTrialUpgradeMutation =
     useOptOutSalesTrialUpgradeMutation as jest.Mock
+const mockCanRequestTrialExtension = jest.spyOn(
+    trialExtensionUtils,
+    'canRequestTrialExtension',
+)
+const mockMarkTrialExtensionRequested = jest.spyOn(
+    trialExtensionUtils,
+    'markTrialExtensionRequested',
+)
 
 describe('TrialOptOutModal', () => {
     const mockOnClose = jest.fn()
@@ -38,6 +48,8 @@ describe('TrialOptOutModal', () => {
         jest.clearAllMocks()
         mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseOptOutSalesTrialUpgradeMutation.mockReturnValue(mockMutation)
+        mockCanRequestTrialExtension.mockReturnValue(true)
+        mockMarkTrialExtensionRequested.mockImplementation(() => {})
     })
 
     describe('when modal is open', () => {
@@ -212,6 +224,52 @@ describe('TrialOptOutModal', () => {
             })
 
             expect(mockOnClose).not.toHaveBeenCalled()
+        })
+
+        it('should be disabled when trial extension cannot be requested', () => {
+            mockCanRequestTrialExtension.mockReturnValue(false)
+            render(<TrialOptOutModal {...defaultProps} />)
+
+            const requestButton = screen.getByRole('button', {
+                name: 'Request Trial Extension',
+            })
+
+            expect(requestButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should show tooltip when button is disabled', async () => {
+            const userEventSetup = user.setup()
+            mockCanRequestTrialExtension.mockReturnValue(false)
+            render(<TrialOptOutModal {...defaultProps} />)
+
+            const requestButton = screen.getByRole('button', {
+                name: /request trial extension/i,
+            })
+
+            await userEventSetup.hover(requestButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Trial extension request was already sent within the last 24 hours. Please wait before requesting again.',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should call markTrialExtensionRequested when extension request succeeds', async () => {
+            const userEventSetup = user.setup()
+            mockOnRequestTrialExtension.mockResolvedValue(true)
+            render(<TrialOptOutModal {...defaultProps} />)
+
+            const requestButton = screen.getByRole('button', {
+                name: 'Request Trial Extension',
+            })
+            await userEventSetup.click(requestButton)
+
+            await waitFor(() => {
+                expect(mockMarkTrialExtensionRequested).toHaveBeenCalled()
+            })
         })
     })
 

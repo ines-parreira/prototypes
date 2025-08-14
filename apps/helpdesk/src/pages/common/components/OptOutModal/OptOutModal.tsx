@@ -114,13 +114,25 @@ const Actions = ({ children }: ActionsProps) => {
 
 interface SecondaryActionProps {
     children: React.ReactNode
+    id?: string
+    isDisabled?: boolean
 }
 
-const SecondaryAction = ({ children }: SecondaryActionProps) => {
+const SecondaryAction = ({
+    children,
+    id,
+    isDisabled,
+}: SecondaryActionProps) => {
     const { onDismiss } = useOptOutModalContext()
 
     return (
-        <Button onClick={onDismiss} fillStyle="ghost" intent="secondary">
+        <Button
+            onClick={onDismiss}
+            fillStyle="ghost"
+            intent="secondary"
+            id={id}
+            isDisabled={isDisabled}
+        >
             {children}
         </Button>
     )

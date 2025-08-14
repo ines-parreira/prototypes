@@ -51,9 +51,15 @@ jest.mock(
                     <button onClick={primaryAction?.onClick}>
                         {primaryAction?.label}
                     </button>
-                    <button onClick={secondaryAction?.onClick}>
-                        {secondaryAction?.label}
-                    </button>
+                    {secondaryAction && (
+                        <button
+                            onClick={secondaryAction?.onClick}
+                            disabled={secondaryAction?.isDisabled}
+                            id={secondaryAction?.id}
+                        >
+                            {secondaryAction?.label}
+                        </button>
+                    )}
                     <button onClick={onClose}>Close</button>
                 </div>
             ),
@@ -620,6 +626,44 @@ describe('TrialEndingModal', () => {
             await user.click(extensionButton)
 
             expect(mockOnRequestTrialExtension).toHaveBeenCalled()
+        })
+
+        it('should disable extension button and not call onRequestTrialExtension when extension cannot be requested due to cooldown', async () => {
+            // Set up localStorage BEFORE any component rendering to simulate a recent extension request
+            const recentTimestamp = moment().valueOf()
+            localStorageMock.getItem.mockImplementation((key) => {
+                if (key === 'ai-agent-trial-extension-requested-timestamp') {
+                    return recentTimestamp.toString()
+                }
+                return null
+            })
+
+            const mockOnRequestTrialExtension = jest
+                .fn()
+                .mockResolvedValue(true)
+
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                createMockShoppingAssistantTrialFlow({
+                    onRequestTrialExtension: mockOnRequestTrialExtension,
+                }),
+            )
+
+            renderWithStoreAndQueryClientProvider(
+                <TrialEndingModal
+                    storeName={mockStoreConfiguration.storeName}
+                />,
+            )
+
+            const extensionButton = screen.getByText('Request Trial Extension')
+
+            // The button should be disabled due to cooldown
+            expect(extensionButton).toBeDisabled()
+
+            // Even if we try to click it, the function should not be called
+            const user = userEvent.setup()
+            await user.click(extensionButton)
+
+            expect(mockOnRequestTrialExtension).not.toHaveBeenCalled()
         })
     })
 })
