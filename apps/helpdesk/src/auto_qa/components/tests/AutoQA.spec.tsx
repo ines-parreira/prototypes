@@ -3,8 +3,6 @@ import { render } from '@testing-library/react'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -39,12 +37,8 @@ jest.mock(
         ),
 )
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = useFlag as jest.Mock
-
 describe('AutoQA', () => {
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
         useHasAgentPrivilegesMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(true)
         useAppSelectorMock.mockReturnValue({ id: 1, status: TicketStatus.Open })
@@ -157,7 +151,6 @@ describe('AutoQA', () => {
     })
 
     it('should render Unauthorized when SimplifyAiAgentFeedbackCollection is enabled and has no agent privileges', () => {
-        useFlagMock.mockReturnValue(true)
         useHasAgentPrivilegesMock.mockReturnValue(false)
 
         const { getByText } = render(<AutoQA />)
@@ -169,16 +162,6 @@ describe('AutoQA', () => {
 
     // Tests for newSaveBadgeState logic
     describe('saveBadgeState logic', () => {
-        beforeEach(() => {
-            // Enable SimplifyAiAgentFeedbackCollection for all these tests
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.SimplifyAiAgentFeedbackCollection) {
-                    return true
-                }
-                return false
-            })
-        })
-
         it('should set AutoSaveBadge state to SAVED when saveState is saved', () => {
             useAutoQAMock.mockReturnValue({
                 changeHandlers: [],

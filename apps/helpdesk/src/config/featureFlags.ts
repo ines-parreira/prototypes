@@ -164,7 +164,6 @@ export enum FeatureFlagKey {
     /** https://app.launchdarkly.com/projects/default/flags/ai-shopping-assistant-enforce-deactivation/targeting?env=test&env=production&env=staging&selected-env=staging */
     ShoppingAssistantTrialImprovement = 'linear.project_post-ga-shopping-assistant-trial-improvement',
     ShoppingAssistantEnforceDeactivation = 'ai-shopping-assistant-enforce-deactivation',
-    SimplifyAiAgentFeedbackCollection = 'linear.project_simplify-ai-agent-feedback-collection.enable_feedback_collection',
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
     OnlyShowReasoningWhileImpersonating = 'linear.project_surface-ai-reasoning-in-ticket.only-show-reasoning-while-impersonating',
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',

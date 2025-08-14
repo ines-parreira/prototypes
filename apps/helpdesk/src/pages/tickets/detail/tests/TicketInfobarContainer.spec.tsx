@@ -10,7 +10,6 @@ import thunk from 'redux-thunk'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
@@ -46,9 +45,6 @@ jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
 jest.mock('auto_qa', () => ({
     AutoQA: () => <div>AutoQA Component</div>,
 }))
-
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = useFlag as jest.Mock
 
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
@@ -150,7 +146,6 @@ describe('<TicketInfobarContainer />', () => {
                 role: { name: UserRole.BasicAgent },
             }),
         )
-        useFlagMock.mockReturnValue(false)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
         getHasAutomateMock.mockReturnValue(true)
         useHasAIAgentMock.mockReturnValue(true)
@@ -353,27 +348,7 @@ describe('<TicketInfobarContainer />', () => {
         expect(mockedChangeActiveTab).not.toHaveBeenCalled()
     })
 
-    it('should not render AUTO_QA tab when SimplifyAiAgentFeedbackCollection is disabled', () => {
-        useFlagMock.mockReturnValue(false)
-        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
-
-        const autoQATab = screen.queryByText(AUTO_QA_TAB.LABEL)
-
-        expect(autoQATab).not.toBeInTheDocument()
-    })
-
-    it('should render AUTO_QA tab when SimplifyAiAgentFeedbackCollection is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+    it('should render AUTO_QA tab', () => {
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
 
         renderWithRouter(
@@ -392,7 +367,6 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should call changeActive tab and render AUTO_QA content when AUTO_QA tab is clicked', () => {
-        useFlagMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
 
         renderWithRouter(
@@ -432,7 +406,6 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should render AUTO_QA content when activeTab is AutoQA and feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
         mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AutoQA)
 
@@ -447,23 +420,6 @@ describe('<TicketInfobarContainer />', () => {
         )
 
         expect(screen.getByText('AutoQA Component')).toBeInTheDocument()
-    })
-
-    it('should not render AUTO_QA content when activeTab is AutoQA but feature flag is disabled', () => {
-        useFlagMock.mockReturnValue(false)
-
-        mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AutoQA)
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
-        expect(screen.queryByText('AutoQA Component')).not.toBeInTheDocument()
     })
 
     it('should render Infobar when activeTab is CustomerInformation', () => {

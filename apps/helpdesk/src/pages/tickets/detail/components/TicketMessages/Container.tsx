@@ -91,10 +91,6 @@ export class Container extends Component<Props> {
         const hasTicketThreadRevamp =
             !!flags?.[FeatureFlagKey.TicketThreadRevamp]
 
-        const isSimplifiedFeedbackCollectionEnabled =
-            !!flags?.[FeatureFlagKey.SimplifyAiAgentFeedbackCollection] &&
-            isTicketAfterFeedbackCollectionPeriod
-
         const showAiReasoning =
             !!flags?.[FeatureFlagKey.ShowAiReasoningInTicket]
 
@@ -266,7 +262,7 @@ export class Container extends Component<Props> {
                             />
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
-                                (isSimplifiedFeedbackCollectionEnabled ? (
+                                (isTicketAfterFeedbackCollectionPeriod ? (
                                     showAiReasoning &&
                                     message.id &&
                                     (isImpersonated ||

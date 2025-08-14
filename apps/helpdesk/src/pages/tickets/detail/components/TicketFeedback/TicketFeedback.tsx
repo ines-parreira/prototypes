@@ -4,8 +4,6 @@ import { Button } from '@gorgias/axiom'
 
 import { AutoQA } from 'auto_qa'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -30,9 +28,6 @@ export default function TicketFeedback() {
     const ticketId = ticket.get('id')
     const isAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
-    const isSimplifiedFeedbackCollectionEnabled =
-        useFlag(FeatureFlagKey.SimplifyAiAgentFeedbackCollection) &&
-        isAfterFeedbackCollectionPeriod
 
     const handleClickBack = useCallback(() => {
         dispatch(changeTicketMessage({ message: undefined }))
@@ -49,7 +44,7 @@ export default function TicketFeedback() {
         )
     }
 
-    if (isSimplifiedFeedbackCollectionEnabled) {
+    if (isAfterFeedbackCollectionPeriod) {
         return <AIAgentSimplifiedFeedback key={ticketId} />
     }
 

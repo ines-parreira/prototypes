@@ -11,8 +11,6 @@ import { TicketStatus } from 'business/types/ticket'
 import { SegmentEvent } from 'common/segment'
 import { logEvent, logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -83,9 +81,6 @@ export const TicketInfobarContainer = ({
     const hasAIAgent = useHasAIAgent()
     const isAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
-    const isSimplifiedFeedbackCollectionEnabled =
-        useFlag(FeatureFlagKey.SimplifyAiAgentFeedbackCollection) &&
-        isAfterFeedbackCollectionPeriod
 
     const { onFeedbackTabOpened } = useFeedbackTracking({
         ticketId: ticket.id,
@@ -217,12 +212,8 @@ export const TicketInfobarContainer = ({
     const showAIAgentContent = useMemo(
         () =>
             isAIAgentTabSelected &&
-            (isSimplifiedFeedbackCollectionEnabled ? hasAIAgent : true),
-        [
-            isAIAgentTabSelected,
-            hasAIAgent,
-            isSimplifiedFeedbackCollectionEnabled,
-        ],
+            (isAfterFeedbackCollectionPeriod ? hasAIAgent : true),
+        [isAIAgentTabSelected, hasAIAgent, isAfterFeedbackCollectionPeriod],
     )
 
     const isAutoQATabSelected = useMemo(
@@ -230,8 +221,8 @@ export const TicketInfobarContainer = ({
         [activeTab],
     )
     const showAutoQATabContent = useMemo(
-        () => isAutoQATabSelected && isSimplifiedFeedbackCollectionEnabled,
-        [isSimplifiedFeedbackCollectionEnabled, isAutoQATabSelected],
+        () => isAutoQATabSelected && isAfterFeedbackCollectionPeriod,
+        [isAfterFeedbackCollectionPeriod, isAutoQATabSelected],
     )
 
     const isCustomerInfoTabSelected = useMemo(
@@ -257,14 +248,14 @@ export const TicketInfobarContainer = ({
             {hasAutomate && (
                 <Navbar
                     className={classNames(css.navbar, {
-                        [css.noPadding]: isSimplifiedFeedbackCollectionEnabled,
+                        [css.noPadding]: isAfterFeedbackCollectionPeriod,
                     })}
                 >
                     <div
                         className={classNames(css.link, {
                             [css.active]: isCustomerInfoTabSelected,
                             [css.withoutSpaceBetween]:
-                                isSimplifiedFeedbackCollectionEnabled,
+                                isAfterFeedbackCollectionPeriod,
                         })}
                         onClick={() =>
                             handleChangeTab(
@@ -272,24 +263,24 @@ export const TicketInfobarContainer = ({
                             )
                         }
                     >
-                        {isSimplifiedFeedbackCollectionEnabled && (
+                        {isAfterFeedbackCollectionPeriod && (
                             <i className="icon material-icons">
                                 {CUSTOMER_DETAILS_TAB.ICON}
                             </i>
                         )}
-                        {isSimplifiedFeedbackCollectionEnabled
+                        {isAfterFeedbackCollectionPeriod
                             ? CUSTOMER_DETAILS_TAB.LABEL
                             : CUSTOMER_DETAILS_TAB_OLD_LABEL}
                     </div>
                     {!isEditWidgetPage &&
-                        (isSimplifiedFeedbackCollectionEnabled
+                        (isAfterFeedbackCollectionPeriod
                             ? hasAIAgent
                             : true) && (
                             <div
                                 className={classNames(css.link, {
                                     [css.active]: isAIAgentTabSelected,
                                     [css.withoutSpaceBetween]:
-                                        isSimplifiedFeedbackCollectionEnabled,
+                                        isAfterFeedbackCollectionPeriod,
                                 })}
                                 onClick={() =>
                                     handleChangeTab(
@@ -297,36 +288,33 @@ export const TicketInfobarContainer = ({
                                     )
                                 }
                             >
-                                {isSimplifiedFeedbackCollectionEnabled && (
+                                {isAfterFeedbackCollectionPeriod && (
                                     <i className="icon material-icons md-1">
                                         {AI_FEEDBACK_TAB.ICON}
                                     </i>
                                 )}
-                                {isSimplifiedFeedbackCollectionEnabled
+                                {isAfterFeedbackCollectionPeriod
                                     ? AI_FEEDBACK_TAB.LABEL
                                     : AI_FEEDBACK_TAB_OLD_LABEL}
                             </div>
                         )}
-                    {!isEditWidgetPage &&
-                        isSimplifiedFeedbackCollectionEnabled && (
-                            <div
-                                className={classNames(css.link, {
-                                    [css.active]: isAutoQATabSelected,
-                                    [css.withoutSpaceBetween]:
-                                        isSimplifiedFeedbackCollectionEnabled,
-                                })}
-                                onClick={() =>
-                                    handleChangeTab(
-                                        TicketAIAgentFeedbackTab.AutoQA,
-                                    )
-                                }
-                            >
-                                <i className="icon material-icons">
-                                    {AUTO_QA_TAB.ICON}
-                                </i>
-                                {AUTO_QA_TAB.LABEL}
-                            </div>
-                        )}
+                    {!isEditWidgetPage && isAfterFeedbackCollectionPeriod && (
+                        <div
+                            className={classNames(css.link, {
+                                [css.active]: isAutoQATabSelected,
+                                [css.withoutSpaceBetween]:
+                                    isAfterFeedbackCollectionPeriod,
+                            })}
+                            onClick={() =>
+                                handleChangeTab(TicketAIAgentFeedbackTab.AutoQA)
+                            }
+                        >
+                            <i className="icon material-icons">
+                                {AUTO_QA_TAB.ICON}
+                            </i>
+                            {AUTO_QA_TAB.LABEL}
+                        </div>
+                    )}
                 </Navbar>
             )}
 

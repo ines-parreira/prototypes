@@ -18,7 +18,6 @@ import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
-import { getLDClient } from 'utils/launchDarkly'
 
 import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
@@ -93,11 +92,6 @@ jest.mock('tickets/ticket-detail/components/MessageHeader', () => ({
     MessageHeader: jest.fn(() => <p>MessageHeader</p>),
 }))
 
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
-    ReturnType<typeof getLDClient>['allFlags']
->
-
 const defaultStore: Partial<RootState> = {
     currentAccount: fromJS(account),
     currentUser: fromJS(user),
@@ -137,9 +131,6 @@ describe('TicketMessages', () => {
     } as unknown as ComponentProps<typeof TicketMessages>
 
     beforeEach(() => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false,
-        })
         getSelectedAIMessageMock.mockReturnValue({
             ticket_id: 1,
             id: messageFeedback.messageId,

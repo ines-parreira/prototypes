@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
 import cn from 'classnames'
 import moment from 'moment'
@@ -9,8 +9,6 @@ import { Badge, Tooltip } from '@gorgias/axiom'
 import { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
@@ -33,9 +31,6 @@ export default function AutoQA() {
         useAutoQA(ticket.id)
     const isAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
-    const isSimplifiedFeedbackCollectionEnabled =
-        useFlag(FeatureFlagKey.SimplifyAiAgentFeedbackCollection) &&
-        isAfterFeedbackCollectionPeriod
 
     const lastUpdatedString = useMemo(
         () => moment(lastUpdated).calendar(),
@@ -61,7 +56,7 @@ export default function AutoQA() {
         return newState
     }, [saveState])
 
-    if (!hasAgentPrivileges && isSimplifiedFeedbackCollectionEnabled) {
+    if (!hasAgentPrivileges && isAfterFeedbackCollectionPeriod) {
         return (
             <div className={css.container}>
                 <TicketListInfo
@@ -92,7 +87,7 @@ export default function AutoQA() {
                     </Tooltip>
                     <Badge type={'magenta'}>BETA</Badge>
                 </div>
-                {isSimplifiedFeedbackCollectionEnabled ? (
+                {isAfterFeedbackCollectionPeriod ? (
                     <AutoSaveBadge
                         state={newSaveBadgeState}
                         updatedAt={

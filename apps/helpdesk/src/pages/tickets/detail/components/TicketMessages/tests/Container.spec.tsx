@@ -92,7 +92,6 @@ jest.mock('../Avatar', () => ({ Avatar: () => <div>New Avatar</div> }))
 describe('Container', () => {
     const flags = {
         [FeatureFlagKey.TicketThreadRevamp]: false,
-        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false,
     }
     const props = {
         id: 'some-header',
@@ -228,7 +227,6 @@ describe('Container', () => {
     it('should render AiAgentReasoning when showAiReasoning feature flag is true and message is from AI agent', () => {
         // AI reasoning has priority over simplified banner
         const aiAgentFlags = {
-            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
             [FeatureFlagKey.ShowAiReasoningInTicket]: true,
         }
 
@@ -246,7 +244,6 @@ describe('Container', () => {
 
     it('should render SimplifiedAIAgentBanner when showAiReasoning feature flag is false and message is from AI agent', () => {
         const aiAgentFlags = {
-            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
             [FeatureFlagKey.ShowAiReasoningInTicket]: false,
         }
 
@@ -285,7 +282,6 @@ describe('Container', () => {
                 <Container
                     {...baseAiAgentProps}
                     flags={{
-                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
                         [FeatureFlagKey.ShowAiReasoningInTicket]: true,
                         [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: true,
                     }}
@@ -301,7 +297,6 @@ describe('Container', () => {
                 <Container
                     {...baseAiAgentProps}
                     flags={{
-                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
                         [FeatureFlagKey.ShowAiReasoningInTicket]: true,
                         [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: true,
                     }}
@@ -318,7 +313,6 @@ describe('Container', () => {
                 <Container
                     {...baseAiAgentProps}
                     flags={{
-                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
                         [FeatureFlagKey.ShowAiReasoningInTicket]: true,
                         [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: false,
                     }}
@@ -332,7 +326,6 @@ describe('Container', () => {
                 <Container
                     {...baseAiAgentProps}
                     flags={{
-                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
                         [FeatureFlagKey.ShowAiReasoningInTicket]: true,
                         [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: false,
                     }}
@@ -348,7 +341,6 @@ describe('Container', () => {
                 <Container
                     {...baseAiAgentProps}
                     flags={{
-                        [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
                         [FeatureFlagKey.ShowAiReasoningInTicket]: true,
                     }}
                     isImpersonated={false}
