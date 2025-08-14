@@ -3,6 +3,6 @@
     "compilerOptions": {
         "baseUrl": "."
     },
-    "include": ["assets.d.ts", "src/**/*", "jest.config.ts"],
+    "include": ["src/**/*", "jest.config.ts"],
     "exclude": ["node_modules"]
 }

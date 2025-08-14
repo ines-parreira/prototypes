@@ -61,7 +61,6 @@ export default function App({ children }: Props) {
             emailMigrationBanner: false,
         },
     )
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
 
     useApplyTheme()
     useAppShortcuts()
@@ -83,7 +82,6 @@ export default function App({ children }: Props) {
                 axiom: hasAxiomMigration && isAxiomEnabled,
                 classic: theme.resolvedName === THEME_NAME.Classic,
                 globalNav: hasGlobalNav,
-                uiVisionMilestone1: hasUIVisionMS1,
             })}
         >
             <UIKitRootNodeProvider>

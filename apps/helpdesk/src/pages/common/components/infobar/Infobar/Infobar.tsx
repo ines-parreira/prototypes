@@ -1,7 +1,6 @@
 import { KeyboardEvent, useEffect, useMemo, useState } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
-import { InfobarTicketDetails } from '@repo/tickets'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { useLocation } from 'react-router-dom'
@@ -9,8 +8,6 @@ import { useLocation } from 'react-router-dom'
 import { Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Customer } from 'models/customer/types'
@@ -60,7 +57,6 @@ export const Infobar = ({
     widgets,
     isOnNewLayout,
 }: Props) => {
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
     const location = useLocation()
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
@@ -239,7 +235,6 @@ export const Infobar = ({
             })}
         >
             <div className={css.infobarContent}>
-                {hasUIVisionMS1 && <InfobarTicketDetails />}
                 <div className={css.infobarSearchWrapper}>
                     <Search
                         className={css.infobarSearch}
