@@ -32,12 +32,12 @@ exports[`<PrefillMacroAlert /> should render alert 1`] = `
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper p-0 ghost destructive medium right"
+                  class="ui-button-wrapper-a432 p-0 ui-button-ghost-a432 ui-button-destructive-a432"
                   color="secondary"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     <i
                       class="material-icons pr-1 md-2"
@@ -50,12 +50,12 @@ exports[`<PrefillMacroAlert /> should render alert 1`] = `
                 <div>
                   <button
                     aria-disabled="false"
-                    class="wrapper p-0 ghost primary medium right"
+                    class="ui-button-wrapper-a432 p-0 ui-button-ghost-a432 ui-button-primary-a432"
                     color="primary"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons-round md-2"

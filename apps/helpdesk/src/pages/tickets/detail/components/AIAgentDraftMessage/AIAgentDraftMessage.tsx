@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { fromJS } from 'immutable'
 
-import { Skeleton } from '@gorgias/axiom'
+import { Button, Skeleton } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -10,7 +10,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import { TicketMessage } from 'models/ticket/types'
-import Button from 'pages/common/components/button/Button'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import {
     applyMacro,

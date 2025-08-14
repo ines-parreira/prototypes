@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 
+import { Button } from '@gorgias/axiom'
+
 import { useTheme } from 'core/theme'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { MacroAction } from 'models/macroAction/types'
 import { TicketMessage } from 'models/ticket/types'
-import Button from 'pages/common/components/button/Button'
 import { setInTicketSuggestionState } from 'state/ticket/actions'
 
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'

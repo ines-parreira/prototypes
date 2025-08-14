@@ -1,7 +1,6 @@
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 type Props = {

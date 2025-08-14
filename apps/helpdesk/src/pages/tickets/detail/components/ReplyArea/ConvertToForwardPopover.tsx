@@ -1,10 +1,11 @@
 import classnames from 'classnames'
 import { Popover, PopoverBody } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import {
     setShowConvertToForwardPopover,
     setSourceExtra,

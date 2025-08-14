@@ -11,14 +11,13 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
-import Button from 'pages/common/components/button/Button'
 import Tip from 'pages/common/components/tip/Tip'
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
 import RichField from 'pages/common/forms/RichField/RichField'

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'
-
-import Button from 'pages/common/components/button/Button'
 
 import { PreviewPopover } from './PreviewPopover'
 

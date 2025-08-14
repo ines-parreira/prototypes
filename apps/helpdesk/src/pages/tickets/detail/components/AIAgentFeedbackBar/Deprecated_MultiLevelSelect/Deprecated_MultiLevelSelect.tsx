@@ -2,7 +2,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'

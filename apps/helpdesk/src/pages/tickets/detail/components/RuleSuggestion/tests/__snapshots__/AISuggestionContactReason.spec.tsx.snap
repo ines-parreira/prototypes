@@ -156,28 +156,28 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  1`]
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Change reason
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons icon small"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                 >
                   check_circle
                 </i>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Confirm
                 </span>
@@ -265,28 +265,28 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  2`]
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Change reason
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons icon small"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                 >
                   check_circle
                 </i>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Confirm
                 </span>
@@ -370,28 +370,28 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  3`]
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Change reason
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons icon small"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                 >
                   check_circle
                 </i>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Confirm
                 </span>
@@ -479,28 +479,28 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  4`]
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Change reason
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons icon small"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                 >
                   check_circle
                 </i>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Confirm
                 </span>
@@ -588,28 +588,28 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  5`]
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Change reason
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary small"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons icon small"
+                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
                 >
                   check_circle
                 </i>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Confirm
                 </span>

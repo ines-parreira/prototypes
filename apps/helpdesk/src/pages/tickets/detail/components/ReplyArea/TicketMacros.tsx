@@ -16,6 +16,7 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
@@ -24,7 +25,6 @@ import { UserRole } from 'config/types/user'
 import { useDeleteMacro } from 'hooks/macros'
 import useAppSelector from 'hooks/useAppSelector'
 import { Filters } from 'models/macro/types'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import MacroList from 'pages/tickets/common/macros/components/MacroList'

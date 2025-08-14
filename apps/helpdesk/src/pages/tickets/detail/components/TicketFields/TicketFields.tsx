@@ -3,6 +3,7 @@ import { memo, useEffect, useMemo, useState } from 'react'
 import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
 import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
 import { getWrappedElementCount } from 'common/utils'
@@ -13,7 +14,6 @@ import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/
 import { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { setHasAttemptedToCloseTicket } from 'state/ticket/actions'
 import {

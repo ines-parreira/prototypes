@@ -2,11 +2,11 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
+import { Button } from '@gorgias/axiom'
 import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
 import { Item } from 'components/Dropdown'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import { TagDropdownMenu } from 'tags'
 

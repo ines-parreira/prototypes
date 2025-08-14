@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
 import {
     useGetVoiceCallRecordingTranscription,
     VoiceCallRecordingTranscriptionSpeakersItem,
@@ -10,7 +11,6 @@ import {
 
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 
 import TranscriptionReply from './TranscriptionReply'
 

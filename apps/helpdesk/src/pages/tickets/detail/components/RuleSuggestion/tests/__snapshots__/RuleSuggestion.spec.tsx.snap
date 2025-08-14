@@ -78,11 +78,11 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
           >
             <button
               aria-disabled="false"
-              class="wrapper fill secondary small"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Install Rule
               </span>
@@ -90,11 +90,11 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="wrapper fill primary small"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Apply Rule & Send
             </span>
@@ -194,11 +194,11 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
       >
         <button
           aria-disabled="false"
-          class="wrapper ghost secondary medium"
+          class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-secondary-a432"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Expand
             <i
@@ -292,11 +292,11 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
           >
             <button
               aria-disabled="false"
-              class="wrapper fill secondary small"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Install Rule
               </span>
@@ -304,11 +304,11 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
           </div>
           <button
             aria-disabled="false"
-            class="wrapper fill primary small"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Apply Rule & Send
             </span>

@@ -2,13 +2,14 @@ import React, { useCallback, useState } from 'react'
 
 import { AxiosError } from 'axios'
 
+import { Button } from '@gorgias/axiom'
+
 import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import client from 'models/api/resources'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify as notifyAction } from 'state/notifications/actions'

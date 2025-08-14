@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { Collapse } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { Ticket } from 'models/ticket/types'
-import Button from 'pages/common/components/button/Button'
 import { createInputId } from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
 import { updateCustomFieldState } from 'state/ticket/actions'
 

@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { AutoQA } from 'auto_qa'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -7,7 +9,6 @@ import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
 import AIAgentSimplifiedFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback'

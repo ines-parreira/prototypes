@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import { Tooltip } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import {
     TicketChannel,
@@ -24,7 +24,6 @@ import {
 import { RuleAction, RuleType } from 'models/rule/types'
 import { ActionStatus, Ticket } from 'models/ticket/types'
 import { actionsConfig } from 'pages/common/components/ast/actions/config'
-import Button from 'pages/common/components/button/Button'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'

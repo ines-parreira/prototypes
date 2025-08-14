@@ -10,11 +10,12 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
 
+import { Button, type ButtonComponentProps } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import { submitSetting } from 'state/currentUser/actions'
 import { getCurrentUser, getPreferences } from 'state/currentUser/selectors'
 import { getTicket } from 'state/ticket/selectors'
@@ -25,7 +26,7 @@ type Stages = 'info' | 'prompt'
 type ButtonsProps = {
     label: string
     onClick: () => void
-    buttonsProp?: Omit<ButtonProps, 'children'>
+    buttonsProp?: Omit<ButtonComponentProps, 'children'>
 }
 interface StageProp {
     content: ReactElement

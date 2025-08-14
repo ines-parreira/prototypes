@@ -1,9 +1,10 @@
+import { Button } from '@gorgias/axiom'
+
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
-import Button from 'pages/common/components/button/Button'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 import {
     changeTicketMessage,

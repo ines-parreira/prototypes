@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -14,7 +16,6 @@ import {
     SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
 import { TicketMessage } from 'models/ticket/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'

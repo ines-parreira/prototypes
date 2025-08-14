@@ -1,7 +1,8 @@
+import { Button } from '@gorgias/axiom'
+
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import { Filters } from 'models/macro/types'
-import Button from 'pages/common/components/button/Button'
 import { RootState } from 'state/types'
 import { hasRole } from 'utils'
 
