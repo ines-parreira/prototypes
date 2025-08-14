@@ -124,6 +124,7 @@ describe('useShoppingAssistantPromoCard', () => {
         hasCurrentStoreTrialOptedOut: false,
         hasCurrentStoreTrialStarted: false,
         isAdminUser: false,
+        isLoading: false,
     }
 
     beforeEach(() => {
@@ -1779,6 +1780,86 @@ describe('useShoppingAssistantPromoCard', () => {
                     result.current?.promoCardContent?.secondaryButton,
                 ).toBeUndefined()
             })
+        })
+    })
+
+    describe('isLoading property', () => {
+        it('should return false when both trialMetrics and trialAccess are not loading', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                canSeeTrialCTA: true,
+                isLoading: false,
+            })
+            mockUseTrialMetrics.mockReturnValue({
+                gmvInfluenced: '$1,250',
+                gmvInfluencedRate: 0.3,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.isLoading).toBe(false)
+        })
+
+        it('should return true when trialMetrics is loading', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                canSeeTrialCTA: true,
+                isLoading: false,
+            })
+            mockUseTrialMetrics.mockReturnValue({
+                gmvInfluenced: '$1,250',
+                gmvInfluencedRate: 0.3,
+                isLoading: true,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.isLoading).toBe(true)
+        })
+
+        it('should return true when trialAccess is loading', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                canSeeTrialCTA: true,
+                isLoading: true,
+            })
+            mockUseTrialMetrics.mockReturnValue({
+                gmvInfluenced: '$1,250',
+                gmvInfluencedRate: 0.3,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.isLoading).toBe(true)
         })
     })
 })

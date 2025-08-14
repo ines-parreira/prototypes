@@ -49,14 +49,17 @@ export const ShoppingAssistantPromoCard: React.FC<
         storeName: shopName,
     })
 
-    const { promoCardContent: promoContent, trialFlow } =
-        useShoppingAssistantPromoCard(
-            shopName,
-            allShopifyIntegrations,
-            routeShopName,
-        )
+    const {
+        promoCardContent: promoContent,
+        trialFlow,
+        isLoading,
+    } = useShoppingAssistantPromoCard(
+        shopName,
+        allShopifyIntegrations,
+        routeShopName,
+    )
 
-    if (!promoContent) {
+    if (isLoading || !promoContent) {
         return null
     }
 

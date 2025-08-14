@@ -31,6 +31,7 @@ export const useShoppingAssistantPromoCard = (
 ): {
     promoCardContent: PromoCardContent | null
     trialFlow: ReturnType<typeof useShoppingAssistantTrialFlow>
+    isLoading: boolean
 } => {
     const account = useAppSelector(getCurrentAccountState)
     const accountDomain = account.get('domain')
@@ -150,5 +151,9 @@ export const useShoppingAssistantPromoCard = (
         }
     }, [trialAccess, promoCardContent])
 
-    return { promoCardContent, trialFlow }
+    return {
+        promoCardContent,
+        trialFlow,
+        isLoading: !!(trialMetrics.isLoading || trialAccess.isLoading),
+    }
 }

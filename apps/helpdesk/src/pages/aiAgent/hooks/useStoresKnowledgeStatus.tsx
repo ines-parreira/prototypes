@@ -14,7 +14,7 @@ export const useStoresKnowledgeStatus = ({
     const {
         data: knowledgeStatus,
         error,
-        isLoading: isKnowledgeStatusLoading,
+        isInitialLoading: isKnowledgeStatusLoading,
     } = useGetKnowledgeStatus({
         refetchOnWindowFocus: false,
         enabled,
