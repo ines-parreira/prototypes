@@ -237,86 +237,88 @@ const useTrialUpgradePlanModal =
         )
     }
 
-const useNewTrialUpgradePlanModal =
-    (): TrialModalProps['newTrialUpgradePlanModal'] => {
-        const planDetails = usePlanDetails()
-        const currentAccount = useAppSelector(getCurrentAccountState)
-        const accountDomain = currentAccount.get('domain')
-        const { storeActivations } = useStoreActivations()
+const useNewTrialUpgradePlanModal = (
+    storeName?: string,
+): TrialModalProps['newTrialUpgradePlanModal'] => {
+    const planDetails = usePlanDetails()
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { storeActivations } = useStoreActivations({ storeName })
 
-        const allShopifyIntegrations = useAppSelector(
-            getShopifyIntegrationsSortedByName,
-        )
+    const allShopifyIntegrations = useAppSelector(
+        getShopifyIntegrationsSortedByName,
+    )
 
-        const isMultiStore = allShopifyIntegrations.length > 1
+    const isMultiStore = allShopifyIntegrations.length > 1
 
-        const {
+    const {
+        revampStartTrial,
+        onDismissTrialUpgradeModal,
+        closeTrialUpgradeModal,
+    } = useShoppingAssistantTrialFlow({
+        accountDomain,
+        storeActivations,
+    })
+    return useMemo(
+        () => ({
+            ...createPlanModalData(
+                'Unlock new AI Agent skills at no extra cost',
+                planDetails,
+                {
+                    current: 'Keep current plan',
+                    new: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                },
+                false,
+                isMultiStore,
+            ),
+            title: 'Unlock new AI Agent skills at no extra cost',
+            subtitle:
+                "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
+            primaryAction: {
+                label: 'Start trial now',
+                onClick: revampStartTrial,
+            },
+            secondaryAction: {
+                label: 'No, thanks',
+                onClick: onDismissTrialUpgradeModal,
+            },
+            onClose: closeTrialUpgradeModal,
+        }),
+        [
+            planDetails,
             revampStartTrial,
             onDismissTrialUpgradeModal,
             closeTrialUpgradeModal,
-        } = useShoppingAssistantTrialFlow({
-            accountDomain,
-            storeActivations,
-        })
-        return useMemo(
-            () => ({
-                ...createPlanModalData(
-                    'Unlock new AI Agent skills at no extra cost',
-                    planDetails,
-                    {
-                        current: 'Keep current plan',
-                        new: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
-                    },
-                    false,
-                    isMultiStore,
-                ),
-                title: 'Unlock new AI Agent skills at no extra cost',
-                subtitle:
-                    "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
-                primaryAction: {
-                    label: 'Start trial now',
-                    onClick: revampStartTrial,
-                },
-                secondaryAction: {
-                    label: 'No, thanks',
-                    onClick: onDismissTrialUpgradeModal,
-                },
-                onClose: closeTrialUpgradeModal,
-            }),
-            [
-                planDetails,
-                revampStartTrial,
-                onDismissTrialUpgradeModal,
-                closeTrialUpgradeModal,
-                isMultiStore,
-            ],
-        )
-    }
+            isMultiStore,
+        ],
+    )
+}
 
-const useTrialFinishSetupModal =
-    (): TrialModalProps['trialFinishSetupModal'] => {
-        const currentAccount = useAppSelector(getCurrentAccountState)
-        const accountDomain = currentAccount.get('domain')
-        const { storeActivations } = useStoreActivations()
+const useTrialFinishSetupModal = (
+    storeName?: string,
+): TrialModalProps['trialFinishSetupModal'] => {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { storeActivations } = useStoreActivations({ storeName })
 
-        const { closeTrialFinishSetupModal } = useShoppingAssistantTrialFlow({
-            accountDomain,
-            storeActivations,
-        })
-        return useMemo(
-            () => ({
-                title: 'Ready. Set. Grow. Your 14-days trial starts now.',
-                subtitle: "Let's unlock its full potential.",
-                content:
-                    'Just two simple steps to increase conversions and make the most of your trial.',
-                primaryAction: {
-                    label: 'Finish setup',
-                    onClick: closeTrialFinishSetupModal,
-                },
-            }),
-            [closeTrialFinishSetupModal],
-        )
-    }
+    const { closeTrialFinishSetupModal } = useShoppingAssistantTrialFlow({
+        accountDomain,
+        storeActivations,
+    })
+    return useMemo(
+        () => ({
+            title: 'Ready. Set. Grow. Your 14-days trial starts now.',
+            subtitle: "Let's unlock its full potential.",
+            content:
+                'Just two simple steps to increase conversions and make the most of your trial.',
+            primaryAction: {
+                label: 'Finish setup',
+                onClick: closeTrialFinishSetupModal,
+            },
+        }),
+        [closeTrialFinishSetupModal],
+    )
+}
 
 const useTrialActivatedModal = () => ({
     title: 'Trial activated',
@@ -621,7 +623,7 @@ const useTrialEndingModal = (
 const useTrialRequestModal = (storeName?: string) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
-    const { storeActivations } = useStoreActivations()
+    const { storeActivations } = useStoreActivations({ storeName })
 
     const { closeTrialRequestModal } = useShoppingAssistantTrialFlow({
         accountDomain,
@@ -657,8 +659,8 @@ export const useTrialModalProps = ({
     const trialMetrics = useTrialMetrics()
     const upgradePlanModal = useUpgradePlanModal()
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
-    const newTrialUpgradePlanModal = useNewTrialUpgradePlanModal()
-    const trialFinishSetupModal = useTrialFinishSetupModal()
+    const newTrialUpgradePlanModal = useNewTrialUpgradePlanModal(storeName)
+    const trialFinishSetupModal = useTrialFinishSetupModal(storeName)
     const trialActivatedModal = useTrialActivatedModal()
     const trialStartedBanner = useTrialStartedBanner(
         trialMetrics,

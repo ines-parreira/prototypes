@@ -75,6 +75,7 @@ export const useShoppingAssistantTrialAccess = (
 
     const { storeActivations, isFetchLoading } = useStoreActivations({
         storeName: currentStoreName,
+        withChatIntegrationsStatus: true,
     })
     const currentStore = currentStoreName
         ? storeActivations[currentStoreName]
