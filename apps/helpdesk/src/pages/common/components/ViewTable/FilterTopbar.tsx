@@ -377,10 +377,6 @@ export const FilterTopbar = ({
         FeatureFlagKey.FilterViewsByTicketFields,
     )
 
-    const areCustomerSatisfactionQaFiltersInViewsEnabled = useFlag(
-        FeatureFlagKey.EnableCustomerSatisfactionQaFiltersInViews,
-    )
-
     const isAIAgentFeedbackFilterEnabled = useFlag(
         FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
     )
@@ -403,13 +399,6 @@ export const FilterTopbar = ({
                     }
 
                     const fieldName: string = field.get('name')
-                    if (
-                        !areCustomerSatisfactionQaFiltersInViewsEnabled &&
-                        (fieldName === ViewField.CSATScore ||
-                            fieldName === ViewField.QAScore)
-                    ) {
-                        return false
-                    }
 
                     if (
                         fieldName === ViewField.Priority &&
@@ -441,7 +430,6 @@ export const FilterTopbar = ({
                 .sortBy((field) => field.get('title')),
         [
             config,
-            areCustomerSatisfactionQaFiltersInViewsEnabled,
             hasPriorityFilteringEnabled,
             isFilterViewsByStoreEnabled,
             isSearch,
