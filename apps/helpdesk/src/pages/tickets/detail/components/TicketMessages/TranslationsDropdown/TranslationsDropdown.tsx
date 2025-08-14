@@ -5,9 +5,21 @@ import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import { Tooltip } from '@gorgias/axiom'
 
+import { useTicketMessageTranslationDisplay } from '../TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
+
 import css from './TranslationsDropdown.less'
 
-export function TranslationsDropdown() {
+type TranslationsDropdownProps = {
+    messageId: number
+}
+
+export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
+    const {
+        getTicketMessageTranslationDisplay,
+        setTicketMessageTranslationDisplay,
+    } = useTicketMessageTranslationDisplay()
+    const displayedContent = getTicketMessageTranslationDisplay(messageId)
+
     const [isTranslationsDropdownOpen, setTranslationsDropdownOpen] =
         useState(false)
     const id = useId()
@@ -40,18 +52,38 @@ export function TranslationsDropdown() {
 
                 <DropdownMenu right className={css.menuWrapper}>
                     <ul className={css.translationsList}>
-                        <TranslationsItem onClick={() => {}}>
-                            <span className={css.icon}>
-                                <i className="material-icons">translate</i>
-                            </span>
-                            <span className={css.label}>See translation</span>
-                        </TranslationsItem>
-                        <TranslationsItem onClick={() => {}}>
-                            <span className={css.icon}>
-                                <i className="material-icons">undo</i>
-                            </span>
-                            <span className={css.label}>See original</span>
-                        </TranslationsItem>
+                        {displayedContent === 'original' && (
+                            <TranslationsItem
+                                onClick={() =>
+                                    setTicketMessageTranslationDisplay(
+                                        messageId,
+                                        'translated',
+                                    )
+                                }
+                            >
+                                <span className={css.icon}>
+                                    <i className="material-icons">translate</i>
+                                </span>
+                                <span className={css.label}>
+                                    See translation
+                                </span>
+                            </TranslationsItem>
+                        )}
+                        {displayedContent === 'translated' && (
+                            <TranslationsItem
+                                onClick={() =>
+                                    setTicketMessageTranslationDisplay(
+                                        messageId,
+                                        'original',
+                                    )
+                                }
+                            >
+                                <span className={css.icon}>
+                                    <i className="material-icons">undo</i>
+                                </span>
+                                <span className={css.label}>See original</span>
+                            </TranslationsItem>
+                        )}
                         <TranslationsItem onClick={() => {}}>
                             <span className={css.icon}>
                                 <i className="material-icons">loop</i>

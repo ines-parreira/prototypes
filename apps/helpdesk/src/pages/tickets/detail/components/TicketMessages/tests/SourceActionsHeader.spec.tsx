@@ -1,8 +1,16 @@
 import { ReactElement } from 'react'
 
 import { useDebouncedValue, useElementSize } from '@repo/hooks'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { setupServer } from 'msw/node'
 
+import {
+    mockGetCurrentUserHandler,
+    mockTicketMessageTranslation,
+} from '@gorgias/helpdesk-mocks'
+
+import { appQueryClient } from 'api/queryClient'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -11,6 +19,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
 import { Source, TicketMessage } from 'models/ticket/types'
 import * as infobarActions from 'state/infobar/actions'
+import { useTicketMessageTranslation } from 'tickets/core/hooks/useTicketMessageTranslation'
 
 import SourceActionsHeader from '../SourceActionsHeader'
 
@@ -26,6 +35,9 @@ jest.mock('models/ticket/predicates', () => ({
 }))
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(),
+}))
+jest.mock('tickets/core/hooks/useTicketMessageTranslation', () => ({
+    useTicketMessageTranslation: jest.fn(),
 }))
 jest.mock(
     '../CollapsedSourceActions/CollapsedSourceActions',
@@ -65,10 +77,33 @@ const mockUseElementSize = jest.mocked(useElementSize)
 const mockIsTicketMessageDeleted = jest.mocked(isTicketMessageDeleted)
 const mockExecuteAction = jest.mocked(infobarActions.executeAction)
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseTicketMessageTranslation = jest.mocked(useTicketMessageTranslation)
 
 type MessageOverrides = Partial<TicketMessage> & {
     source?: Source | Partial<Source> | null
 }
+
+const mockGetCurrentUser = mockGetCurrentUserHandler()
+
+const localHandlers = [mockGetCurrentUser.handler]
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+beforeEach(() => {
+    server.use(...localHandlers)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const createMessage = (overrides: MessageOverrides = {}): TicketMessage =>
     ({
@@ -84,6 +119,8 @@ const createMessage = (overrides: MessageOverrides = {}): TicketMessage =>
         source: { type: TicketMessageSourceType.FacebookComment },
         ...overrides,
     }) as TicketMessage
+
+const ticketMessageTranslation = mockTicketMessageTranslation()
 
 describe('SourceActionsHeader', () => {
     const mockDispatch = jest.fn()
@@ -104,33 +141,44 @@ describe('SourceActionsHeader', () => {
         mockIsTicketMessageDeleted.mockReturnValue(false)
         mockExecuteAction.mockReturnValue(mockActionObject as any)
         mockUseFlag.mockReturnValue(false)
+        mockUseTicketMessageTranslation.mockReturnValue(undefined)
     })
 
     it('returns null for no source', () => {
         const { container } = render(
-            <SourceActionsHeader
-                message={createMessage({ source: null } as MessageOverrides)}
-            />,
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader
+                    message={createMessage({
+                        source: null,
+                    } as MessageOverrides)}
+                />
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toBeNull()
     })
 
     it('returns null for no source type', () => {
         const { container } = render(
-            <SourceActionsHeader
-                message={createMessage({
-                    source: { from: undefined, to: undefined } as Source,
-                })}
-            />,
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader
+                    message={createMessage({
+                        source: { from: undefined, to: undefined } as Source,
+                    })}
+                />
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toBeNull()
     })
 
     it('returns null for duplicated message', () => {
         const { container } = render(
-            <SourceActionsHeader
-                message={createMessage({ meta: { is_duplicated: true } })}
-            />,
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader
+                    message={createMessage({
+                        meta: { is_duplicated: true },
+                    })}
+                />
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toBeNull()
     })
@@ -138,7 +186,9 @@ describe('SourceActionsHeader', () => {
     it('returns null for deleted message', () => {
         mockIsTicketMessageDeleted.mockReturnValue(true)
         const { container } = render(
-            <SourceActionsHeader message={createMessage()} />,
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader message={createMessage()} />
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toBeNull()
     })
@@ -155,9 +205,13 @@ describe('SourceActionsHeader', () => {
                 sourceType === TicketMessageSourceType.FacebookComment,
             )
             render(
-                <SourceActionsHeader
-                    message={createMessage({ source: { type: sourceType } })}
-                />,
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader
+                        message={createMessage({
+                            source: { type: sourceType },
+                        })}
+                    />
+                </QueryClientProvider>,
             )
 
             if (showHide) {
@@ -175,7 +229,11 @@ describe('SourceActionsHeader', () => {
         [500, false],
     ])('collapses actions when width is %d', (width, collapsed) => {
         mockUseElementSize.mockReturnValue([width, 300])
-        render(<SourceActionsHeader message={createMessage()} />)
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader message={createMessage()} />
+            </QueryClientProvider>,
+        )
 
         if (collapsed)
             expect(screen.getByText('collapsed-actions')).toBeInTheDocument()
@@ -190,7 +248,11 @@ describe('SourceActionsHeader', () => {
         [350, false],
     ])('collapses intents when width is %d', (width, collapsed) => {
         mockUseElementSize.mockReturnValue([width, 300])
-        render(<SourceActionsHeader message={createMessage()} />)
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader message={createMessage()} />
+            </QueryClientProvider>,
+        )
 
         if (collapsed)
             expect(
@@ -206,14 +268,16 @@ describe('SourceActionsHeader', () => {
         'handles Instagram %s action',
         (action, hiddenDatetime, expectedAction) => {
             render(
-                <SourceActionsHeader
-                    message={createMessage({
-                        source: {
-                            type: TicketMessageSourceType.InstagramComment,
-                        },
-                        meta: { hidden_datetime: hiddenDatetime },
-                    })}
-                />,
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader
+                        message={createMessage({
+                            source: {
+                                type: TicketMessageSourceType.InstagramComment,
+                            },
+                            meta: { hidden_datetime: hiddenDatetime },
+                        })}
+                    />
+                </QueryClientProvider>,
             )
 
             fireEvent.click(
@@ -237,14 +301,16 @@ describe('SourceActionsHeader', () => {
         'handles Facebook %s action',
         (action, hiddenDatetime, expectedAction) => {
             render(
-                <SourceActionsHeader
-                    message={createMessage({
-                        source: {
-                            type: TicketMessageSourceType.FacebookComment,
-                        },
-                        meta: { hidden_datetime: hiddenDatetime },
-                    })}
-                />,
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader
+                        message={createMessage({
+                            source: {
+                                type: TicketMessageSourceType.FacebookComment,
+                            },
+                            meta: { hidden_datetime: hiddenDatetime },
+                        })}
+                    />
+                </QueryClientProvider>,
             )
 
             fireEvent.click(
@@ -263,9 +329,11 @@ describe('SourceActionsHeader', () => {
 
     it('does not show actions for agent messages', () => {
         render(
-            <SourceActionsHeader
-                message={createMessage({ from_agent: true })}
-            />,
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader
+                    message={createMessage({ from_agent: true })}
+                />
+            </QueryClientProvider>,
         )
         expect(screen.queryByTitle(/hide|unhide/i)).not.toBeInTheDocument()
         expect(screen.queryByText('intents-feedback')).not.toBeInTheDocument()
@@ -274,11 +342,15 @@ describe('SourceActionsHeader', () => {
     it('shows private reply for Instagram with modern helpdesk', () => {
         mockUseAppSelector.mockReturnValue(false)
         render(
-            <SourceActionsHeader
-                message={createMessage({
-                    source: { type: TicketMessageSourceType.InstagramComment },
-                })}
-            />,
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader
+                    message={createMessage({
+                        source: {
+                            type: TicketMessageSourceType.InstagramComment,
+                        },
+                    })}
+                />
+            </QueryClientProvider>,
         )
         expect(screen.getByText('private-reply')).toBeInTheDocument()
     })
@@ -286,11 +358,15 @@ describe('SourceActionsHeader', () => {
     it('hides private reply for Instagram with legacy helpdesk', () => {
         mockUseAppSelector.mockReturnValue(true)
         render(
-            <SourceActionsHeader
-                message={createMessage({
-                    source: { type: TicketMessageSourceType.InstagramComment },
-                })}
-            />,
+            <QueryClientProvider client={appQueryClient}>
+                <SourceActionsHeader
+                    message={createMessage({
+                        source: {
+                            type: TicketMessageSourceType.InstagramComment,
+                        },
+                    })}
+                />
+            </QueryClientProvider>,
         )
         expect(screen.queryByText('private-reply')).not.toBeInTheDocument()
     })
@@ -298,26 +374,72 @@ describe('SourceActionsHeader', () => {
     describe('MessagesTranslations feature flag', () => {
         it('does not render TranslationsDropdown when feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
-            render(<SourceActionsHeader message={createMessage()} />)
+            mockUseTicketMessageTranslation.mockReturnValue(
+                ticketMessageTranslation,
+            )
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
 
             expect(
                 screen.queryByLabelText('Translate message'),
             ).not.toBeInTheDocument()
         })
 
-        it('renders TranslationsDropdown when feature flag is enabled', () => {
+        it('renders TranslationsDropdown when feature flag is enabled and message has translation', () => {
             mockUseFlag.mockReturnValue(true)
-            render(<SourceActionsHeader message={createMessage()} />)
+            mockUseTicketMessageTranslation.mockReturnValue(
+                ticketMessageTranslation,
+            )
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
 
             expect(
                 screen.getByLabelText('Translate message'),
             ).toBeInTheDocument()
         })
 
-        it('applies correct CSS class when feature flag is enabled', () => {
+        it("doesn't render TranslationsDropdown when feature flag is enabled and message has no translation", () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(undefined)
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.queryByLabelText('Translate message'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('applies correct CSS class when feature flag is enabled and message has translation', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(
+                ticketMessageTranslation,
+            )
             const { container } = render(
-                <SourceActionsHeader message={createMessage()} />,
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
+
+            const widgetsDiv = container.querySelector('.widgets')
+            expect(widgetsDiv).toHaveClass('hasMessageTranslation')
+        })
+
+        it('applies hasMessageTranslation CSS class when feature flag is enabled, regardless of translation hook result', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(undefined)
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
             )
 
             const widgetsDiv = container.querySelector('.widgets')
@@ -327,17 +449,26 @@ describe('SourceActionsHeader', () => {
         it('does not apply hasMessageTranslation CSS class when feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
             const { container } = render(
-                <SourceActionsHeader message={createMessage()} />,
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
             )
 
             const widgetsDiv = container.querySelector('.widgets')
             expect(widgetsDiv).not.toHaveClass('hasMessageTranslation')
         })
 
-        it('disables action collapse behavior when feature flag is enabled', () => {
+        it('disables action collapse behavior when feature flag is enabled and message has translation', () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(
+                ticketMessageTranslation,
+            )
             mockUseElementSize.mockReturnValue([300, 300])
-            render(<SourceActionsHeader message={createMessage()} />)
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
 
             expect(
                 screen.queryByText('collapsed-actions'),
@@ -345,33 +476,93 @@ describe('SourceActionsHeader', () => {
             expect(screen.getByTitle(/hide|unhide/i)).toBeInTheDocument()
         })
 
-        it('disables intents collapse behavior when feature flag is enabled', () => {
+        it('disables action collapse behavior when feature flag is enabled, regardless of translation hook result', () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(undefined)
+            mockUseElementSize.mockReturnValue([300, 300])
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.queryByText('collapsed-actions'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('disables intents collapse behavior when feature flag is enabled and message has translation', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(
+                ticketMessageTranslation,
+            )
             mockUseElementSize.mockReturnValue([250, 300])
-            render(<SourceActionsHeader message={createMessage()} />)
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByText('intents-feedback')).toBeInTheDocument()
+        })
+
+        it('disables intents collapse behavior when feature flag is enabled, regardless of translation hook result', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(undefined)
+            mockUseElementSize.mockReturnValue([250, 300])
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
 
             expect(screen.getByText('intents-feedback')).toBeInTheDocument()
         })
 
         it('renders PrivateReply when feature flag is enabled and conditions are met', () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(
+                ticketMessageTranslation,
+            )
             render(
-                <SourceActionsHeader
-                    message={createMessage({
-                        source: {
-                            type: TicketMessageSourceType.FacebookComment,
-                        },
-                    })}
-                />,
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader
+                        message={createMessage({
+                            source: {
+                                type: TicketMessageSourceType.FacebookComment,
+                            },
+                        })}
+                    />
+                </QueryClientProvider>,
             )
 
             expect(screen.getByText('private-reply')).toBeInTheDocument()
         })
 
-        it('applies correct CSS classes to hide/unhide button when feature flag is enabled', () => {
+        it('applies correct CSS classes to hide/unhide button when feature flag is enabled and message has translation', () => {
             mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(
+                ticketMessageTranslation,
+            )
             const { container } = render(
-                <SourceActionsHeader message={createMessage()} />,
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
+
+            const hideButton = container.querySelector(
+                '.visibilityButton.hasMessageTranslation',
+            )
+            expect(hideButton).toBeInTheDocument()
+        })
+
+        it('applies hasMessageTranslation CSS class to hide/unhide button when feature flag is enabled, regardless of translation hook result', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseTicketMessageTranslation.mockReturnValue(undefined)
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
             )
 
             const hideButton = container.querySelector(
@@ -381,11 +572,44 @@ describe('SourceActionsHeader', () => {
         })
 
         it('calls useFlag with correct feature flag key', () => {
-            render(<SourceActionsHeader message={createMessage()} />)
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={createMessage()} />
+                </QueryClientProvider>,
+            )
 
             expect(mockUseFlag).toHaveBeenCalledWith(
                 FeatureFlagKey.MessagesTranslations,
             )
+        })
+
+        it('calls useTicketMessageTranslation with correct parameters', () => {
+            const message = createMessage({ id: 123, ticket_id: 456 })
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={message} />
+                </QueryClientProvider>,
+            )
+
+            expect(mockUseTicketMessageTranslation).toHaveBeenCalledWith({
+                ticketId: 456,
+                messageId: 123,
+            })
+        })
+
+        it('calls useTicketMessageTranslation even when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            const message = createMessage({ id: 789, ticket_id: 101 })
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <SourceActionsHeader message={message} />
+                </QueryClientProvider>,
+            )
+
+            expect(mockUseTicketMessageTranslation).toHaveBeenCalledWith({
+                ticketId: 101,
+                messageId: 789,
+            })
         })
     })
 })

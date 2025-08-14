@@ -1,32 +1,22 @@
 import { useCallback, useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { isNumber } from 'lodash'
 
+import { useListTicketTranslations } from '@gorgias/helpdesk-queries'
 import {
-    useGetCurrentUser,
-    useListTicketTranslations,
-    UserLanguagePreferencesSetting,
-    UserSettingType,
-} from '@gorgias/helpdesk-queries'
-import {
-    GetCurrentUserResult,
     HttpResponse,
     ListTicketTranslations200,
     TicketTranslationCompact,
-    UserPreferencesSetting,
 } from '@gorgias/helpdesk-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
-type TicketPropertiesTranslationsParams = {
-    ticket_ids: number[]
-}
+import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLanguage'
 
-export type CurrentUser = GetCurrentUserResult & {
-    data: GetCurrentUserResult['data'] & {
-        settings: (UserPreferencesSetting | UserLanguagePreferencesSetting)[]
-    }
+type TicketPropertiesTranslationsParams = {
+    ticket_ids: (number | undefined)[]
 }
 
 type TranslationMap = Record<number, TicketTranslationCompact>
@@ -44,36 +34,29 @@ export function useTicketsTranslatedProperties({
     const queryClient = useQueryClient()
     const hasMessagesTranslations = useFlag(FeatureFlagKey.MessagesTranslations)
 
-    const { data: currentUser } = useGetCurrentUser<CurrentUser>()
-
-    const preferredLanguage = useMemo(() => {
-        const preferences = currentUser?.data?.settings.find(
-            (setting) => setting.type === UserSettingType.LanguagePreferences,
-        ) as UserLanguagePreferencesSetting | undefined
-
-        if (!preferences) {
-            return currentUser?.data?.language
-        }
-
-        return preferences?.data?.primary
-    }, [currentUser])
+    const { primary } = useCurrentUserPreferredLanguage()
 
     // So that the tanstack query cache is as stable as possible
     const stableTicketIds = useMemo(
-        () => ticket_ids.sort((a, b) => a - b),
+        /**
+         * We filter out undefined values and sort the array to make the query cache as stable as possible
+         * This is needed since the component where the useTicketsTranslatedProperties hook is used
+         * don't always have ticket_ids (Ticket header in the new ticket page for example)
+         */
+        () => ticket_ids.filter(isNumber).sort((a, b) => a - b),
         [ticket_ids],
     )
 
     const { data: translations } = useListTicketTranslations(
         {
-            language: preferredLanguage as string,
+            language: primary as string,
             ticket_ids: stableTicketIds,
         },
         {
             query: {
                 enabled:
                     hasMessagesTranslations &&
-                    Boolean(preferredLanguage) &&
+                    Boolean(primary) &&
                     stableTicketIds.length > 0,
             },
         },

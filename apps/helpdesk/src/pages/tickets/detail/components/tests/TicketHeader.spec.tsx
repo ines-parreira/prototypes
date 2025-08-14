@@ -17,6 +17,7 @@ import {
     mockListTicketTranslationsHandler,
     mockTicketTranslationCompact,
 } from '@gorgias/helpdesk-mocks'
+import { UserSettingType } from '@gorgias/helpdesk-queries'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -160,17 +161,21 @@ const preferences = {
         prefill_best_macro: false,
         show_macros: false,
         show_macros_suggestions: true,
-        'language-preferences': {
-            primary: 'en',
-            proficient: [],
-        },
+    },
+}
+
+const languagePreferences = {
+    type: UserSettingType.LanguagePreferences,
+    data: {
+        primary: 'en',
+        proficient: ['fr'],
     },
 }
 
 const mockGetCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
     HttpResponse.json({
         ...data,
-        settings: [preferences],
+        settings: [preferences, languagePreferences],
     } as any),
 )
 const mockListTicketTranslations = mockListTicketTranslationsHandler()

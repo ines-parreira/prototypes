@@ -60,6 +60,7 @@ import { getSourceTypeOfResponse } from 'state/ticket/utils'
 import { updateCursor } from 'state/tickets/actions'
 import { RootState } from 'state/types'
 import { getActiveView } from 'state/views/selectors'
+import { useGenerateTicketTranslations } from 'tickets/core/hooks/useGenerateTicketTranslations'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { isMacOs } from 'utils/platform'
 
@@ -136,6 +137,19 @@ export const TicketDetailContainer = ({
     const { temporaryId } = useDraftMessages(ticketIdParam === 'new')
 
     useDraftTicketActivityTracking(temporaryId)
+
+    const { generateTicketTranslations, shouldGenerateTicketTranslations } =
+        useGenerateTicketTranslations({
+            ticketId: ticket.get('id'),
+            ticketLanguage: ticket.get('language'),
+            ticketMessages: ticket.get('messages')?.toJS() ?? [],
+        })
+
+    useEffect(() => {
+        if (shouldGenerateTicketTranslations) {
+            generateTicketTranslations()
+        }
+    }, [ticket, shouldGenerateTicketTranslations, generateTicketTranslations])
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam

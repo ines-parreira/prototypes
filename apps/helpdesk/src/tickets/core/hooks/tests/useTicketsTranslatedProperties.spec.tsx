@@ -1,8 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { act } from 'react-dom/test-utils'
 
 import {
     mockGetCurrentUserHandler,
@@ -14,10 +13,8 @@ import { UserSettingType } from '@gorgias/helpdesk-types'
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
 
-import {
-    CurrentUser,
-    useTicketsTranslatedProperties,
-} from '../useTicketsTranslatedProperties'
+import { CurrentUser } from '../useCurrentUserPreferredLanguage'
+import { useTicketsTranslatedProperties } from '../useTicketsTranslatedProperties'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
@@ -41,11 +38,10 @@ const preferences = {
 }
 
 const languagePreferences = {
-    id: 1,
     type: UserSettingType.LanguagePreferences,
     data: {
         primary: 'en',
-        proficient: [],
+        proficient: ['fr'],
     },
 }
 
@@ -124,7 +120,9 @@ describe('useTicketsTranslatedProperties', () => {
         })
 
         it('should fetch and return translations when user has language preferences', async () => {
-            const mockTranslation = mockTicketTranslationCompact()
+            const mockTranslation = mockTicketTranslationCompact({
+                ticket_id: 123,
+            })
             const { handler } = mockListTicketTranslationsHandler(
                 async ({ data }) =>
                     HttpResponse.json({
@@ -145,35 +143,6 @@ describe('useTicketsTranslatedProperties', () => {
                 expect(result.current.translationMap).toEqual({
                     123: mockTranslation,
                 })
-            })
-        })
-
-        it('should use fallback language when user has no language preferences', async () => {
-            const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
-                HttpResponse.json({
-                    ...data,
-                    language: 'en',
-                    settings: [],
-                } as CurrentUser['data']),
-            )
-            server.use(handler)
-
-            const waitForListTicketTranslationsRequest =
-                mockListTicketTranslations.waitForRequest(server)
-
-            renderHook(
-                () => useTicketsTranslatedProperties({ ticket_ids: [1] }),
-                {
-                    wrapper,
-                },
-            )
-
-            await waitForListTicketTranslationsRequest(async (request) => {
-                const url = new URL(request.url)
-                const ticketIds = url.searchParams.get('ticket_ids')
-                expect(ticketIds).toBe('1')
-                const language = url.searchParams.get('language')
-                expect(language).toBe('en')
             })
         })
 
@@ -219,14 +188,15 @@ describe('useTicketsTranslatedProperties', () => {
         })
 
         it('should handle multiple tickets with translations', async () => {
-            const mockTranslation1 = mockTicketTranslationCompact()
-            const mockTranslation2 = {
-                ...mockTicketTranslationCompact(),
+            const mockTranslation1 = mockTicketTranslationCompact({
+                ticket_id: 123,
+            })
+            const mockTranslation2 = mockTicketTranslationCompact({
                 ticket_id: 456,
                 ticket_translation_id: '456-translation',
                 subject: 'Translated subject 2',
                 excerpt: 'Translated excerpt 2',
-            }
+            })
 
             const { handler } = mockListTicketTranslationsHandler(
                 async ({ data }) =>
@@ -292,12 +262,13 @@ describe('useTicketsTranslatedProperties', () => {
             })
 
             it('should optimistically update specific ticket subject in cache', async () => {
-                const mockTranslation1 = mockTicketTranslationCompact()
-                const mockTranslation2 = {
-                    ...mockTicketTranslationCompact(),
+                const mockTranslation1 = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                })
+                const mockTranslation2 = mockTicketTranslationCompact({
                     ticket_id: 456,
                     ticket_translation_id: '456-translation',
-                }
+                })
 
                 const { handler } = mockListTicketTranslationsHandler(
                     async ({ data }) =>
@@ -325,7 +296,7 @@ describe('useTicketsTranslatedProperties', () => {
                     })
                 })
 
-                act(() => {
+                await act(async () => {
                     result.current.removeTicketTranslatedSubject(123)
                 })
 
@@ -352,11 +323,11 @@ describe('useTicketsTranslatedProperties', () => {
                     expect(result.current.translationMap).toEqual({})
                 })
 
-                expect(() => {
-                    act(() => {
+                await act(async () => {
+                    expect(() => {
                         result.current.removeTicketTranslatedSubject(123)
-                    })
-                }).not.toThrow()
+                    }).not.toThrow()
+                })
 
                 await waitFor(() => {
                     expect(result.current.translationMap).toEqual({})
@@ -364,7 +335,9 @@ describe('useTicketsTranslatedProperties', () => {
             })
 
             it('should handle optimistic update for non-existent ticket ID', async () => {
-                const mockTranslation = mockTicketTranslationCompact()
+                const mockTranslation = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                })
 
                 const { handler } = mockListTicketTranslationsHandler(
                     async ({ data }) =>
@@ -388,7 +361,7 @@ describe('useTicketsTranslatedProperties', () => {
                     })
                 })
 
-                act(() => {
+                await act(async () => {
                     result.current.removeTicketTranslatedSubject(999)
                 })
 
@@ -400,17 +373,17 @@ describe('useTicketsTranslatedProperties', () => {
             })
 
             it('should handle multiple optimistic subject updates', async () => {
-                const mockTranslation1 = mockTicketTranslationCompact()
-                const mockTranslation2 = {
-                    ...mockTicketTranslationCompact(),
+                const mockTranslation1 = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                })
+                const mockTranslation2 = mockTicketTranslationCompact({
                     ticket_id: 456,
                     ticket_translation_id: '456-translation',
-                }
-                const mockTranslation3 = {
-                    ...mockTicketTranslationCompact(),
+                })
+                const mockTranslation3 = mockTicketTranslationCompact({
                     ticket_id: 789,
                     ticket_translation_id: '789-translation',
-                }
+                })
 
                 const { handler } = mockListTicketTranslationsHandler(
                     async ({ data }) =>
@@ -443,11 +416,11 @@ describe('useTicketsTranslatedProperties', () => {
                     })
                 })
 
-                act(() => {
+                await act(async () => {
                     result.current.removeTicketTranslatedSubject(123)
                 })
 
-                act(() => {
+                await act(async () => {
                     result.current.removeTicketTranslatedSubject(789)
                 })
 

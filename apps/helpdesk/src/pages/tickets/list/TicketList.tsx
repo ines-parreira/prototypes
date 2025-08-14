@@ -36,7 +36,7 @@ import {
     hasActiveView as getHasActiveView,
     getSelectedItemsIds,
 } from 'state/views/selectors'
-import { useTicketsTranslatedProperties } from 'ticket-list-view/hooks/useTicketsTranslatedProperties'
+import { useTicketsTranslatedProperties } from 'tickets/core/hooks/useTicketsTranslatedProperties'
 import { compactInteger } from 'utils'
 
 const TicketList = () => {

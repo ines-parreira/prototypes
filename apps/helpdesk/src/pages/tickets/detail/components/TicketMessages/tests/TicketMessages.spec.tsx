@@ -29,6 +29,31 @@ import {
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import TicketMessages from '../TicketMessages'
 
+// Mock the TicketMessageTranslationProvider to avoid QueryClient issues
+jest.mock(
+    '../TicketMessagesTranslationDisplay/TicketMessageTranslationDisplayProvider',
+    () => ({
+        TicketMessageTranslationDisplayProvider: ({
+            children,
+        }: {
+            children: React.ReactNode
+        }) => (
+            <div data-testid="ticket-message-translation-provider">
+                {children}
+            </div>
+        ),
+    }),
+)
+
+// Mock the withMessageTranslations HOC to avoid QueryClient issues
+jest.mock(
+    '../TicketMessagesTranslationDisplay/withMessageTranslations',
+    () => ({
+        withMessageTranslations: (Component: React.ComponentType<any>) =>
+            Component,
+    }),
+)
+
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('state/ticket/selectors')
 jest.mock('common/segment/segment', () => ({

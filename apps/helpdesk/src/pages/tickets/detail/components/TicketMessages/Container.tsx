@@ -24,6 +24,7 @@ import AIAgentMessageEvents from './AIAgentMessageEvents'
 import { AiAgentReasoning } from './AiAgentReasoning'
 import { Avatar } from './Avatar'
 import Footer from './Footer'
+import { withMessageTranslations } from './TicketMessagesTranslationDisplay/withMessageTranslations'
 
 import css from './Container.less'
 
@@ -31,6 +32,7 @@ const classNames = classNamesBind.bind(css)
 
 type Props = {
     className?: string
+    ticketId: number
     message: TicketMessage
     // Ideally we only want to pass the messages but as this is a hotfix I'll only add those and not deprecate the sole message object
     // https://linear.app/gorgias/issue/AUTIN-1944/handover-close-snooze-icons-dont-appear-in-the-ticket-ui
@@ -308,4 +310,4 @@ export class Container extends Component<Props> {
     }
 }
 
-export default withLDConsumer()(Container)
+export default withLDConsumer()(withMessageTranslations(Container))

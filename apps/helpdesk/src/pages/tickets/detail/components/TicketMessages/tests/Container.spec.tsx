@@ -27,6 +27,20 @@ const customer = fromJS({
     },
 })
 
+// Mock the withMessageTranslations HOC
+jest.mock(
+    '../TicketMessagesTranslationDisplay/withMessageTranslations',
+    () => ({
+        withMessageTranslations: (Component: React.ComponentType<any>) =>
+            Component,
+    }),
+)
+
+// Mock the LaunchDarkly consumer
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    withLDConsumer: (Component: React.ComponentType<any>) => Component,
+}))
+
 jest.mock(
     'pages/common/components/Avatar/Avatar',
     () =>
@@ -82,6 +96,7 @@ describe('Container', () => {
     }
     const props = {
         id: 'some-header',
+        ticketId: 123,
         hasCursor: false,
         message,
         messages: [message],

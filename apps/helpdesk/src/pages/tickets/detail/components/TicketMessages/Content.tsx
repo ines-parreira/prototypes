@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 
 import classNames from 'classnames'
 import ReactPlayer from 'react-player'

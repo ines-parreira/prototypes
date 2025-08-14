@@ -13,6 +13,7 @@ import type { TicketMessage } from 'models/ticket/types'
 import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
 import { getIsCurrentHelpdeskLegacy } from 'state/billing/selectors'
 import * as infobarActions from 'state/infobar/actions'
+import { useTicketMessageTranslation } from 'tickets/core/hooks/useTicketMessageTranslation'
 
 import CollapsedSourceActions from './CollapsedSourceActions/CollapsedSourceActions'
 import IntentsFeedback from './IntentsFeedback/IntentsFeedback'
@@ -27,6 +28,10 @@ type Props = {
 
 export default function SourceActionsHeader({ message, containerRef }: Props) {
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
+    const translation = useTicketMessageTranslation({
+        ticketId: message.ticket_id,
+        messageId: message.id,
+    })
     const dispatch = useAppDispatch()
 
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
@@ -107,13 +112,24 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
             ? toggleInstagramHideComment(shouldHide)
             : toggleFacebookHideComment(shouldHide)
 
+    const showIntentsFeedback = !fromAgent && !collapseIntents
+    const showTranslationsDropdown =
+        hasMessagesTranslation && !!translation && message.id
+    const showPrivateReply = showHideAction && showPrivateReplyAction
+
     return (
         <div
             className={cn(css.widgets, {
                 [css.hasMessageTranslation]: hasMessagesTranslation,
+                [css.hideSourceActions]:
+                    !showIntentsFeedback &&
+                    !showTranslationsDropdown &&
+                    !showPrivateReply,
             })}
         >
-            {hasMessagesTranslation && <TranslationsDropdown />}
+            {hasMessagesTranslation && !!translation && message.id && (
+                <TranslationsDropdown messageId={message.id} />
+            )}
             {!fromAgent && !collapseIntents && (
                 <IntentsFeedback message={message} />
             )}
