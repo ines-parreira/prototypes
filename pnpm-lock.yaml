@@ -383,6 +383,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^1.9.7
         version: 1.9.7(react-redux@7.2.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)(redux@4.0.5))(react@18.2.0)
+      '@repo/tickets':
+        specifier: workspace:*
+        version: link:../../domains/tickets
       '@sentry/react':
         specifier: 7.119.1
         version: 7.119.1(react@18.2.0)
