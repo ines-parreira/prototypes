@@ -12,7 +12,7 @@ import { useTimelineFilters } from '../filters/hooks/useTimelineFilters'
 import { NoResults } from '../NoResults'
 import { Sort } from '../Sort'
 import { SortedTicketList } from '../SortedTicketList'
-import { Timeline } from '../Timeline'
+import Timeline from '../Timeline'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),

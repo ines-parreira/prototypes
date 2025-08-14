@@ -18,12 +18,12 @@ type Props = {
     containerRef?: React.RefObject<HTMLDivElement>
 }
 
-export function Timeline({
+const Timeline = ({
     ticketId = 0,
     shopperId,
     onLoaded,
     containerRef,
-}: Props) {
+}: Props) => {
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
     const { items, isLoading } = useTimelineData(shopperId ?? undefined)
 
