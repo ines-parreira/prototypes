@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { Link, useParams } from 'react-router-dom'
 
-import { Badge, LoadingSpinner } from '@gorgias/axiom'
+import { Badge, Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import {
@@ -15,7 +15,6 @@ import { useGetHelpCenter } from 'models/helpCenter/queries'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import Paywall from 'pages/common/components/Paywall/Paywall'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
