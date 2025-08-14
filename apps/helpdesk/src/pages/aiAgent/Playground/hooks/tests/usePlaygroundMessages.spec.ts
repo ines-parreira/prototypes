@@ -291,10 +291,10 @@ describe('usePlaygroundMessages hook', () => {
                         accountId: 456,
                         testModeSessionId: 'session-123',
                         aiAgentExecutionId: 'exec-123',
-                        type: TestSessionLogType.AI_AGENT_INSIGHT,
+                        type: TestSessionLogType.AI_AGENT_REPLY,
                         createdDatetime: '2023-03-15T12:00:00Z',
                         data: {
-                            message: 'Insight message',
+                            message: 'Reply message',
                             isSalesOpportunity: false,
                             isSalesDiscount: false,
                             isSalesOpportunityFieldId: null,
@@ -315,14 +315,12 @@ describe('usePlaygroundMessages hook', () => {
             // Trigger re-render with new test session logs
             rerender()
 
-            // Should have insight message + placeholder
+            // Should have reply message + placeholder
             expect(result.current.messages.length).toBe(2)
-            expect(result.current.messages[0].type).toBe(
-                MessageType.INTERNAL_NOTE,
-            )
+            expect(result.current.messages[0].type).toBe(MessageType.MESSAGE)
             expect(
                 (result.current.messages[0] as { content: string }).content,
-            ).toBe('Insight message')
+            ).toBe('Reply message')
             expect(result.current.messages[1].type).toBe(
                 MessageType.PLACEHOLDER,
             )
@@ -435,10 +433,10 @@ describe('usePlaygroundMessages hook', () => {
                         accountId: 456,
                         testModeSessionId: 'session-123',
                         aiAgentExecutionId: 'exec-123',
-                        type: TestSessionLogType.AI_AGENT_INSIGHT,
+                        type: TestSessionLogType.AI_AGENT_REPLY,
                         createdDatetime: '2023-03-15T12:00:00Z',
                         data: {
-                            message: 'Insight message',
+                            message: 'First reply message',
                             isSalesOpportunity: false,
                             isSalesDiscount: false,
                             isSalesOpportunityFieldId: null,
@@ -458,7 +456,7 @@ describe('usePlaygroundMessages hook', () => {
 
             rerender()
 
-            // Should have insight message + placeholder
+            // Should have reply message + placeholder
             expect(result.current.messages.length).toBe(2)
 
             // Add a new log but keep the old one too
@@ -474,7 +472,7 @@ describe('usePlaygroundMessages hook', () => {
                         type: TestSessionLogType.AI_AGENT_REPLY,
                         createdDatetime: '2023-03-15T12:01:00Z',
                         data: {
-                            message: 'Reply message',
+                            message: 'Second reply message',
                             isSalesOpportunity: false,
                             isSalesDiscount: false,
                             isSalesOpportunityFieldId: null,
@@ -494,19 +492,17 @@ describe('usePlaygroundMessages hook', () => {
 
             rerender()
 
-            // Should only add the new message, not duplicate the insight
+            // Should only add the new message, not duplicate the first reply
             expect(result.current.messages.length).toBe(3)
-            expect(result.current.messages[0].type).toBe(
-                MessageType.INTERNAL_NOTE,
-            )
+            expect(result.current.messages[0].type).toBe(MessageType.MESSAGE)
             expect(result.current.messages[1].type).toBe(MessageType.MESSAGE)
             expect(
                 (result.current.messages[0] as { content: string }).content,
-            ).toBe('Insight message')
+            ).toBe('First reply message')
             expect(result.current.messages[1].type).toBe(MessageType.MESSAGE)
             expect(
                 (result.current.messages[1] as { content: string }).content,
-            ).toBe('Reply message')
+            ).toBe('Second reply message')
         })
 
         it('should handle null response from handleAiAgentTestSessionLog', async () => {

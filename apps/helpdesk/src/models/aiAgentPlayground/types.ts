@@ -299,7 +299,6 @@ export type TestSessionLogData = {
 export enum TestSessionLogType {
     AI_AGENT_REPLY = 'ai-agent-reply',
     AI_AGENT_EXECUTION_FINISHED = 'ai-agent-execution-finished',
-    AI_AGENT_INSIGHT = 'ai-agent-insight',
 }
 
 export type TestSessionLog = {

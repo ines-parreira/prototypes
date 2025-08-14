@@ -454,34 +454,6 @@ describe('playground-handler.utils', () => {
     describe('handleAiAgentTestSessionLog', () => {
         const testDatetime = '2023-03-15T12:00:00Z'
 
-        it('should return internal note for AI_AGENT_INSIGHT type', () => {
-            const log: TestSessionLog = {
-                id: '123',
-                accountId: 456,
-                testModeSessionId: 'session-123',
-                aiAgentExecutionId: 'exec-123',
-                type: TestSessionLogType.AI_AGENT_INSIGHT,
-                createdDatetime: testDatetime,
-                data: {
-                    message: 'Insight message',
-                    isSalesOpportunity: false,
-                    isSalesDiscount: false,
-                    isSalesOpportunityFieldId: null,
-                    isSalesDiscountFieldId: null,
-                    outcome: TicketOutcome.CLOSE,
-                },
-            }
-
-            const result = handleAiAgentTestSessionLog(log)
-
-            expect(result).toEqual({
-                sender: AI_AGENT_SENDER,
-                type: MessageType.INTERNAL_NOTE,
-                content: 'Insight message',
-                createdDatetime: testDatetime,
-            })
-        })
-
         it('should return support message for AI_AGENT_REPLY type with no sales opportunity', () => {
             const log: TestSessionLog = {
                 id: '123',

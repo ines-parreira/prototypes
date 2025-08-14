@@ -35,6 +35,7 @@ import { getStoreConfigurationFixture } from '../../../fixtures/storeConfigurati
 import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
+import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
 import { PlaygroundChat } from './PlaygroundChat'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
@@ -77,6 +78,18 @@ jest.mock(
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
 }))
+
+jest.mock('../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper', () => ({
+    __esModule: true,
+    default: jest.fn(({ children }: any) => (
+        <div data-testid="knowledge-sources-wrapper">{children}</div>
+    )),
+}))
+
+const MockKnowledgeSourcesWrapper =
+    KnowledgeSourcesWrapper as jest.MockedFunction<
+        typeof KnowledgeSourcesWrapper
+    >
 
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockedUsePlaygroundMessages = jest.mocked(usePlaygroundMessages)
@@ -130,6 +143,7 @@ const renderComponent = () => {
 
 describe('PlaygroundChat', () => {
     beforeEach(() => {
+        MockKnowledgeSourcesWrapper.mockClear()
         mockedUsePlaygroundMessages.mockReturnValue(
             defaultUsePlaygroundMessagesProps,
         )
@@ -591,6 +605,112 @@ describe('PlaygroundChat', () => {
             expect(screen.getByText('Error Message')).toBeInTheDocument()
         })
 
+        it('should render KnowledgeSourcesWrapper for AI agent messages with executionId', () => {
+            const executionId = 'test-execution-123'
+            mockedUsePlaygroundMessages.mockReturnValue({
+                ...defaultUsePlaygroundMessagesProps,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'AI Response',
+                        createdDatetime: '2021-09-01T00:00:00Z',
+                        executionId,
+                    },
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.TICKET_EVENT,
+                        outcome: TicketOutcome.CLOSE,
+                        createdDatetime: '2021-09-01T00:00:00Z',
+                    },
+                ],
+            })
+
+            renderComponent()
+
+            // Verify the message is rendered
+            expect(screen.getByText('AI Response')).toBeInTheDocument()
+
+            // Verify KnowledgeSourcesWrapper is rendered
+            expect(
+                screen.getByTestId('knowledge-sources-wrapper'),
+            ).toBeInTheDocument()
+
+            // Verify KnowledgeSourcesWrapper was called with correct props
+            expect(MockKnowledgeSourcesWrapper).toHaveBeenCalled()
+            expect(MockKnowledgeSourcesWrapper).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    executionId,
+                    storeConfiguration: getStoreConfigurationFixture(),
+                    onFeedbackPollingStop: expect.any(Function),
+                    outcome: TicketOutcome.CLOSE,
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should pass correct outcome to KnowledgeSourcesWrapper when HANDOVER', () => {
+            const executionId = 'test-execution-123'
+            mockedUsePlaygroundMessages.mockReturnValue({
+                ...defaultUsePlaygroundMessagesProps,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'AI Response with handover',
+                        createdDatetime: '2021-09-01T00:00:00Z',
+                        executionId,
+                    },
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.TICKET_EVENT,
+                        outcome: TicketOutcome.HANDOVER,
+                        createdDatetime: '2021-09-01T00:00:00Z',
+                    },
+                ],
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText('AI Response with handover'),
+            ).toBeInTheDocument()
+
+            expect(MockKnowledgeSourcesWrapper).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    executionId,
+                    outcome: TicketOutcome.HANDOVER,
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should not render KnowledgeSourcesWrapper when message has no executionId', () => {
+            mockedUsePlaygroundMessages.mockReturnValue({
+                ...defaultUsePlaygroundMessagesProps,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'AI Response without execution',
+                        createdDatetime: '2021-09-01T00:00:00Z',
+                        // No executionId
+                    },
+                ],
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText('AI Response without execution'),
+            ).toBeInTheDocument()
+
+            expect(MockKnowledgeSourcesWrapper).not.toHaveBeenCalled()
+            expect(
+                screen.queryByTestId('knowledge-sources-wrapper'),
+            ).not.toBeInTheDocument()
+        })
+
         it('should call onSendMessage with default email when no customer selected', () => {
             mockedUsePlaygroundForm.mockReturnValue({
                 ...defaultUsePlaygroundFormProps,
@@ -722,20 +842,85 @@ describe('PlaygroundChat', () => {
             )
         })
 
-        it('should call onNewConversation when component unmounts', () => {
-            const onNewConversation = jest.fn()
+        it('should handle onFeedbackPollingStop callback', () => {
+            const mockStopFn = jest.fn()
+
             mockedUsePlaygroundMessages.mockReturnValue({
                 ...defaultUsePlaygroundMessagesProps,
-                onNewConversation,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'AI Response',
+                        createdDatetime: '2021-09-01T00:00:00Z',
+                        executionId: 'test-execution-123',
+                    },
+                ],
+            })
+
+            renderComponent()
+
+            expect(MockKnowledgeSourcesWrapper).toHaveBeenCalled()
+
+            const onFeedbackPollingStop =
+                MockKnowledgeSourcesWrapper.mock.calls[0]?.[0]
+                    ?.onFeedbackPollingStop
+
+            expect(typeof onFeedbackPollingStop).toBe('function')
+            if (onFeedbackPollingStop) {
+                onFeedbackPollingStop(mockStopFn)
+            }
+
+            // The stop function should be stored in the ref and will be called during unmount/new conversation
+            expect(mockStopFn).not.toHaveBeenCalled()
+        })
+
+        it('should stop feedback polling when component unmounts', () => {
+            const executionId = 'test-execution-123'
+            const mockStopFn = jest.fn()
+            const mockOnNewConversation = jest.fn()
+            const mockClearForm = jest.fn()
+
+            mockedUsePlaygroundMessages.mockReturnValue({
+                ...defaultUsePlaygroundMessagesProps,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'AI Response',
+                        createdDatetime: '2021-09-01T00:00:00Z',
+                        executionId,
+                    },
+                ],
+                onNewConversation: mockOnNewConversation,
+            })
+
+            mockedUsePlaygroundForm.mockReturnValue({
+                ...defaultUsePlaygroundFormProps,
+                formValues: {
+                    message: '',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                },
+                clearForm: mockClearForm,
             })
 
             const { unmount } = renderComponent()
 
-            expect(onNewConversation).not.toHaveBeenCalled()
+            const onFeedbackPollingStop =
+                MockKnowledgeSourcesWrapper.mock.calls[0]?.[0]
+                    ?.onFeedbackPollingStop
+
+            // Call it with our mock stop function to simulate feedback polling being active
+            if (onFeedbackPollingStop) {
+                onFeedbackPollingStop(mockStopFn)
+            }
 
             unmount()
 
-            expect(onNewConversation).toHaveBeenCalledTimes(1)
+            // Verify cleanup functions were called
+            expect(mockOnNewConversation).toHaveBeenCalled()
+            expect(mockClearForm).toHaveBeenCalled()
+            expect(mockStopFn).toHaveBeenCalled()
         })
     })
 

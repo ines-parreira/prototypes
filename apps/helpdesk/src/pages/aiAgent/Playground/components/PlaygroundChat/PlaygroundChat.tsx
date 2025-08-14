@@ -52,7 +52,6 @@ export const PlaygroundChat = ({
     currentUserFirstName,
 }: Props) => {
     const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
-    const isNewDesignEnabled = useFlag(FeatureFlagKey.PlaygroundNewDesign)
 
     const messageContainerRef = useRef<HTMLDivElement>(null)
     const [channel, setChannel] = useState<PlaygroundChannels>(
@@ -256,51 +255,45 @@ export const PlaygroundChat = ({
                     {messages.length === 0 ? (
                         <PlaygroundInitialContent />
                     ) : (
-                        messages.map((message, index) =>
-                            message.type === MessageType.INTERNAL_NOTE &&
-                            isNewDesignEnabled ? null : (
-                                <div key={index}>
-                                    <PlaygroundMessageComponent
-                                        message={message}
-                                        key={index}
-                                        channel={channel}
-                                        withAnimation
-                                    >
-                                        {message.type === MessageType.MESSAGE &&
-                                            message.executionId &&
-                                            isNewDesignEnabled && (
-                                                <KnowledgeSourcesWrapper
-                                                    executionId={
-                                                        message.executionId
-                                                    }
-                                                    storeConfiguration={
-                                                        storeData
-                                                    }
-                                                    onFeedbackPollingStop={(
-                                                        stopFn,
-                                                    ) => {
-                                                        feedbackPollingStopRef.current =
-                                                            stopFn
-                                                    }}
-                                                    // we get the outcome from the ticket event message
-                                                    outcome={(() => {
-                                                        const ticketEventMessage =
-                                                            messages.find(
-                                                                (m) =>
-                                                                    m.type ===
-                                                                    MessageType.TICKET_EVENT,
-                                                            )
-                                                        return ticketEventMessage?.type ===
-                                                            MessageType.TICKET_EVENT
-                                                            ? ticketEventMessage.outcome
-                                                            : undefined
-                                                    })()}
-                                                />
-                                            )}
-                                    </PlaygroundMessageComponent>
-                                </div>
-                            ),
-                        )
+                        messages.map((message, index) => (
+                            <div key={index}>
+                                <PlaygroundMessageComponent
+                                    message={message}
+                                    key={index}
+                                    channel={channel}
+                                    withAnimation
+                                >
+                                    {message.type === MessageType.MESSAGE &&
+                                        message.executionId && (
+                                            <KnowledgeSourcesWrapper
+                                                executionId={
+                                                    message.executionId
+                                                }
+                                                storeConfiguration={storeData}
+                                                onFeedbackPollingStop={(
+                                                    stopFn,
+                                                ) => {
+                                                    feedbackPollingStopRef.current =
+                                                        stopFn
+                                                }}
+                                                // we get the outcome from the ticket event message
+                                                outcome={(() => {
+                                                    const ticketEventMessage =
+                                                        messages.find(
+                                                            (m) =>
+                                                                m.type ===
+                                                                MessageType.TICKET_EVENT,
+                                                        )
+                                                    return ticketEventMessage?.type ===
+                                                        MessageType.TICKET_EVENT
+                                                        ? ticketEventMessage.outcome
+                                                        : undefined
+                                                })()}
+                                            />
+                                        )}
+                                </PlaygroundMessageComponent>
+                            </div>
+                        ))
                     )}
                 </div>
             </div>

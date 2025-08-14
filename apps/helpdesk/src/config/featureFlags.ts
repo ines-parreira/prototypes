@@ -180,5 +180,4 @@ export enum FeatureFlagKey {
     ShowReturnsStatusForOrders = 'linear.project_shopify_orders.show_returns',
     DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',
     ShowShopifyCustomerMetafields = 'linear.project_shopify-customer-ui-add-customer-metadata-widget_show_metafields',
-    PlaygroundNewDesign = 'playground-new-design',
 }
