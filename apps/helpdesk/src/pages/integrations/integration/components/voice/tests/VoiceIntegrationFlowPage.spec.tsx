@@ -15,6 +15,12 @@ import VoiceIntegrationFlowPage from '../VoiceIntegrationFlowPage'
 jest.mock('pages/common/components/Loader/Loader', () => () => (
     <div>Loading...</div>
 ))
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/VoiceFlow',
+    () => ({
+        VoiceFlow: () => <div>VoiceFlow</div>,
+    }),
+)
 
 const server = setupServer()
 
@@ -62,7 +68,7 @@ describe('VoiceIntegrationFlowPage', () => {
         renderComponent()
 
         await waitFor(() => {
-            expect(screen.getByText('flow')).toBeInTheDocument()
+            expect(screen.getByText('VoiceFlow')).toBeInTheDocument()
         })
     })
 

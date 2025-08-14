@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Edge, Handle, Node, Position } from 'reactflow'
+import { Edge, Node } from 'reactflow'
 
-import { Background, Flow } from '../index'
+import { ActionLabel, Background, Flow, NodeWrapper, StepCard } from '../index'
 import { CustomControls } from './CustomControls'
 
 const meta: Meta<typeof Flow> = {
@@ -16,18 +16,19 @@ type Story = StoryObj<typeof Flow>
 const defaultNodes: Node[] = [
     {
         id: 'node-1',
-        type: 'input',
+        type: 'inputNode',
         position: { x: 0, y: 50 },
         data: { label: 'Start Node' },
     },
     {
         id: 'node-2',
+        type: 'stepNode',
         position: { x: 0, y: 250 },
         data: { label: 'Processing Node' },
     },
     {
         id: 'node-3',
-        type: 'output',
+        type: 'outputNode',
         position: { x: 0, y: 450 },
         data: { label: 'End Node' },
     },
@@ -141,9 +142,9 @@ export const WithCustomNodes: Story = {
                             alignItems: 'center',
                         }}
                     >
-                        <Handle type="source" position={Position.Top} />
-                        <div>{data.label}</div>
-                        <Handle type="target" position={Position.Bottom} />
+                        <NodeWrapper>
+                            <div>{data.label}</div>
+                        </NodeWrapper>
                     </div>
                 )
             },
@@ -157,6 +158,53 @@ export const WithCustomNodes: Story = {
                         d={`M${sourceX},${sourceY} C${(sourceX + targetX) / 2},${sourceY} ${(sourceX + targetX) / 2},${targetY} ${targetX},${targetY}`}
                         style={{ stroke: 'red', strokeWidth: 2, fill: 'none' }}
                     />
+                )
+            },
+        },
+    },
+}
+
+export const WithActionLabelAndStepCardNodes: Story = {
+    render: (args) => (
+        <div style={{ height: '400px', width: '100%' }}>
+            <Flow {...args}>
+                <Background />
+                <CustomControls />
+            </Flow>
+        </div>
+    ),
+    args: {
+        nodes: defaultNodes,
+        edges: defaultEdges,
+        nodeTypes: {
+            inputNode: ({ data }: { data: { label: string } }) => {
+                return (
+                    <NodeWrapper>
+                        <ActionLabel
+                            label={data.label}
+                            icon={<i className={'material-icons'}>start</i>}
+                        />
+                    </NodeWrapper>
+                )
+            },
+            outputNode: ({ data }: { data: { label: string } }) => {
+                return (
+                    <NodeWrapper>
+                        <ActionLabel
+                            label={data.label}
+                            icon={<i className={'material-icons'}>stop</i>}
+                        />
+                    </NodeWrapper>
+                )
+            },
+            stepNode: ({ data }: { data: { label: string } }) => {
+                return (
+                    <NodeWrapper>
+                        <StepCard
+                            title={data.label}
+                            description={'This is a random description'}
+                        />
+                    </NodeWrapper>
                 )
             },
         },
