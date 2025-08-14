@@ -7,10 +7,11 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Table } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import GorgiasApi from 'services/gorgiasApi'

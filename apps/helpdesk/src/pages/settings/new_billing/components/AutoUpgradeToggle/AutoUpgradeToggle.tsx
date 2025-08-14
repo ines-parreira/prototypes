@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import { useLocation } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import { Plan, ProductType } from 'models/billing/types'
@@ -12,7 +12,6 @@ import {
     getPlanUnitsPerCadence,
     isEnterprise,
 } from 'models/billing/utils'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'

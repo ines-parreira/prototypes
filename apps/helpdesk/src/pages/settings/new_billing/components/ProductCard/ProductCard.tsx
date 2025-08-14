@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Plan, ProductType } from 'models/billing/types'
@@ -16,7 +16,6 @@ import {
     isTrial,
 } from 'models/billing/utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import {
     getCheapestProductPrices,
     getCurrentHelpdeskCadence,

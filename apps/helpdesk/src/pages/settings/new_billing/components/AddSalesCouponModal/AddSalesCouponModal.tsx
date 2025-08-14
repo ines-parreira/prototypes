@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { getBillingStateQuery } from 'models/billing/queries'
 import { addSalesCoupon, deleteSalesCoupon } from 'models/billing/resources'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

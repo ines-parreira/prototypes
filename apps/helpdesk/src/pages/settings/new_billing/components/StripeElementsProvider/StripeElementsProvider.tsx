@@ -3,10 +3,9 @@ import React, { useEffect } from 'react'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe, Stripe } from '@stripe/stripe-js'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { useTheme } from 'core/theme'
-import Button from 'pages/common/components/button/Button'
 import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 
 type StripeElementsProviderProps = {

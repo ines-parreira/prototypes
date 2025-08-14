@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { Modal, ModalFooter } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -14,7 +14,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Plan } from 'models/billing/types'
 import { isEnterprise } from 'models/billing/utils'
-import Button from 'pages/common/components/button/Button'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import {
     BILLING_BASE_PATH,

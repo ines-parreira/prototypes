@@ -1,6 +1,7 @@
 import { useFormState } from 'react-hook-form'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import { FormSubmitButtonError } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButtonError'
 
 export function FormSubmitButton({

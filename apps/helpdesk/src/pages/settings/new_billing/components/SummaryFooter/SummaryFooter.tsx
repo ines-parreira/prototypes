@@ -3,8 +3,9 @@ import React, { useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import {

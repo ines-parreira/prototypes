@@ -10,7 +10,7 @@ exports[`<AutomateSubscriptionModal /> should display image 1`] = `
 
 exports[`<AutomateSubscriptionModal /> should display loader 1`] = `
 <span
-  class="content"
+  class="ui-button-content-a432"
 >
   I am sure
 </span>
@@ -646,11 +646,11 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Cancel
                 </span>
@@ -658,11 +658,11 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
               <div>
                 <button
                   aria-disabled="true"
-                  class="wrapper fill primary medium isDisabled"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     I am sure
                   </span>

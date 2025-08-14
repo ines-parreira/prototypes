@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment-timezone'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap'
 
-import { Button, type ButtonProps } from '@gorgias/axiom'
+import { Button, type ButtonFillStyle } from '@gorgias/axiom'
 
 import {
     DateTimeFormatMapper,
@@ -44,7 +44,7 @@ export type Props = {
     startDatetime: Moment
     userTimezone?: string | null
     onOpen?: () => void
-    toggleProps?: Pick<ButtonProps, 'fillStyle'>
+    toggleProps?: { fillStyle?: ButtonFillStyle }
     dateRanges?: { [label: string]: [Moment, Moment] }
     pickerV2Styles?: boolean
     rangesOnLeft?: boolean

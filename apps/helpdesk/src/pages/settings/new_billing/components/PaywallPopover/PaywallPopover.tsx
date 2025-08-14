@@ -2,8 +2,9 @@ import React, { ReactNode, RefObject } from 'react'
 
 import { Popover, PopoverBody } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
-import Button from 'pages/common/components/button/Button'
 
 type Props = {
     featureName: string

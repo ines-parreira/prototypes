@@ -2,14 +2,13 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 import { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, HelpdeskPlan, Plan, ProductType } from 'models/billing/types'
 import { getProductLabel, isStarterTier } from 'models/billing/utils'
-import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
 import { handleConvertProductRemoved } from 'pages/settings/new_billing/utils/handleConvertProductRemoved'

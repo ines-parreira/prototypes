@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { AutomatePlan, Cadence, Plan, ProductType } from 'models/billing/types'
-import Button from 'pages/common/components/button/Button'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 
 import css from './AutomateSubscriptionModal.less'

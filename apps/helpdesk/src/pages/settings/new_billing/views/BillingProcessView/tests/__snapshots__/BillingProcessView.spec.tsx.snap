@@ -101,11 +101,11 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost destructive small"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-destructive-a432 ui-button-small-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Cancel auto-renewal
                   </span>
@@ -251,12 +251,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="wrapper addProduct ghost primary small"
+                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                   id="add-product-automation"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     <i
                       class="material-icons"
@@ -293,12 +293,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="wrapper addProduct ghost primary small"
+                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                   id="add-product-voice"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     <i
                       class="material-icons"
@@ -335,12 +335,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="wrapper addProduct ghost primary small"
+                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                   id="add-product-sms"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     <i
                       class="material-icons"
@@ -377,12 +377,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="wrapper addProduct ghost primary small"
+                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
                   id="add-product-convert"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     <i
                       class="material-icons"
@@ -520,12 +520,12 @@ exports[`UsageAndPlansView should render 1`] = `
             >
               <button
                 aria-disabled="true"
-                class="wrapper button fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 id="update-subscription"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Update Subscription
                 </span>

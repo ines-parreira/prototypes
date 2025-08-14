@@ -1,7 +1,8 @@
 import classNames from 'classnames'
 import { ModalFooter, ModalHeader } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
 import ROICalculator from './ROICalculator/ROICalculator'

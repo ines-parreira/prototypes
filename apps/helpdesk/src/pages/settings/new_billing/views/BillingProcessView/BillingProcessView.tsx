@@ -4,6 +4,8 @@ import _capitalize from 'lodash/capitalize'
 import { useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
+import { Button } from '@gorgias/axiom'
+
 import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,7 +17,6 @@ import {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { isEnterprise } from 'models/billing/utils'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'

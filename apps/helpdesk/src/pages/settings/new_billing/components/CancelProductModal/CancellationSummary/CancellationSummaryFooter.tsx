@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-import Button from '../../../../../common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import Disclaimer from '../UI/Disclaimer'
 
 import css from './CancellationSummaryFooter.less'
