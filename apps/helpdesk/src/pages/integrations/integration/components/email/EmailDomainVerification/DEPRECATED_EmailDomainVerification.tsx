@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,7 +12,6 @@ import {
     OutlookIntegration,
 } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentUser } from 'state/currentUser/selectors'

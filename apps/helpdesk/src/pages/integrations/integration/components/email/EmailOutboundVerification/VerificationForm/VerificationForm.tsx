@@ -3,10 +3,11 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { Form, FormGroup, Label } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { states } from 'config/states'
 import { states as countries } from 'fixtures/states'
 import { SenderInformation } from 'models/singleSenderVerification/types'
-import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 

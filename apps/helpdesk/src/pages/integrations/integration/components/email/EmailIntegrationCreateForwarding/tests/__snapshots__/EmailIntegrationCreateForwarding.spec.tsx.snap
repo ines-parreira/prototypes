@@ -70,13 +70,13 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           >
             <button
               aria-disabled="false"
-              class="wrapper fill primary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
               data-clipboard-target="#forwarding-email"
               id="copy-forwarding-email"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 <i
                   class="material-icons mr-2"
@@ -100,11 +100,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
         >
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Google Groups logo"
@@ -117,11 +117,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Outlook logo"
@@ -134,11 +134,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Office 365 logo"
@@ -151,11 +151,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Microsoft Exchange logo"
@@ -168,11 +168,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Zoho Mail logo"
@@ -196,12 +196,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
       </div>
       <button
         aria-disabled="false"
-        class="wrapper fill primary medium"
-        color="primary"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
         type="submit"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Verify email forwarding
         </span>
@@ -281,13 +280,13 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           >
             <button
               aria-disabled="false"
-              class="wrapper fill primary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
               data-clipboard-target="#forwarding-email"
               id="copy-forwarding-email"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 <i
                   class="material-icons mr-2"
@@ -311,11 +310,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
         >
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Google Groups logo"
@@ -328,11 +327,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Outlook logo"
@@ -345,11 +344,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Office 365 logo"
@@ -362,11 +361,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Microsoft Exchange logo"
@@ -379,11 +378,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="wrapper forwardingCard fill secondary medium"
+            class="ui-button-wrapper-a432 forwardingCard ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="Zoho Mail logo"
@@ -407,12 +406,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
       </div>
       <button
         aria-disabled="false"
-        class="wrapper fill primary medium"
-        color="primary"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
         type="submit"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Verify email forwarding
         </span>

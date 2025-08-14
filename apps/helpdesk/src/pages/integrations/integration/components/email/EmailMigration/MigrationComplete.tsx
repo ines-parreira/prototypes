@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import migrationCompleteIcon from 'assets/img/integrations/email-migration-complete.svg'
-import Button from 'pages/common/components/button/Button'
 
 import css from './MigrationComplete.less'
 

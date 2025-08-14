@@ -14,12 +14,13 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import exchange from 'assets/img/integrations/exchange.svg'
 import groups from 'assets/img/integrations/google-groups.svg'
 import office from 'assets/img/integrations/office.svg'
 import outlook from 'assets/img/integrations/outlook.svg'
 import zoho from 'assets/img/integrations/zoho.svg'
-import Button from 'pages/common/components/button/Button'
 
 import { IntegrationType } from '../../../../../../models/integration/types'
 import { sendVerificationEmail } from '../../../../../../state/integrations/actions'
@@ -165,7 +166,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                 </div>
 
                 <Button
-                    color="primary"
+                    intent="primary"
                     type="submit"
                     isDisabled={isLoading}
                     onClick={this._onSubmit}

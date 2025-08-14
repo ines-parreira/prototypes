@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 
 import { FormGroup, Label } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
 import { useUpdateEmailIntegrationDomain } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,7 +16,6 @@ import {
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -83,7 +83,7 @@ export default function EmailDomainVerificationForm({ integration }: Props) {
 
             <Button
                 type="submit"
-                color="primary"
+                intent="primary"
                 isLoading={isLoading}
                 onClick={() => {
                     updateDomain({

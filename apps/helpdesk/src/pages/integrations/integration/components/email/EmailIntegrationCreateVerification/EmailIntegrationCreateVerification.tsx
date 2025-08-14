@@ -12,8 +12,9 @@ import {
     Button as ReactstrapButton,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -169,12 +170,9 @@ export class EmailIntegrationCreateVerification extends Component<
                             />
                             <Button
                                 type="submit"
-                                color="primary"
+                                intent="primary"
                                 isDisabled={this.state.isDisabled}
-                                className={classNames({
-                                    'btn-loading':
-                                        this.state.isVerificationLoading,
-                                })}
+                                isLoading={this.state.isVerificationLoading}
                             >
                                 Verify your integration
                             </Button>

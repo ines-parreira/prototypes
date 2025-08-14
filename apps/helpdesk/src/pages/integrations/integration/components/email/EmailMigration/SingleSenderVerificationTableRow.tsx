@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { isEmpty } from 'lodash'
 
+import { Button } from '@gorgias/axiom'
+
 import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import { SenderInformation } from 'models/singleSenderVerification/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 

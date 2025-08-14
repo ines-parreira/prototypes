@@ -1,9 +1,10 @@
 import { useHistory } from 'react-router-dom'
 import { Col } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailMigrationInboundVerification } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import useClipboard from 'pages/common/hooks/useClipboard'

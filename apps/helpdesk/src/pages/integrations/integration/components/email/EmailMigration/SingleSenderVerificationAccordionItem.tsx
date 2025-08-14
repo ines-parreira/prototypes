@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 
 import { Card } from '@gorgias/analytics-ui-kit'
+import { Button } from '@gorgias/axiom'
 
 import {
     EmailMigrationOutboundVerification,
@@ -10,7 +11,6 @@ import {
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import Button from 'pages/common/components/button/Button'
 
 import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
 import SingleSenderVerificationTable from './SingleSenderVerificationTable'

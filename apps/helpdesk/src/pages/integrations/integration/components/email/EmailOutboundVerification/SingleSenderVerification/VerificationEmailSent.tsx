@@ -5,6 +5,8 @@ import { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { EmailProvider } from 'models/integration/constants'
 import { resendVerificationEmail } from 'models/singleSenderVerification/resources'
@@ -13,7 +15,6 @@ import {
     VerificationStatus,
 } from 'models/singleSenderVerification/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

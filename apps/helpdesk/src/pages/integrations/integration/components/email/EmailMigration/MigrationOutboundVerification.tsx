@@ -5,10 +5,11 @@ import { AxiosError } from 'axios'
 import { useHistory } from 'react-router-dom'
 import { Col } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchMigrationDomains } from 'models/integration/resources/email'
 import { EmailMigrationOutboundVerification } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

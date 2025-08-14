@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { isEmpty } from 'lodash'
 
 import { Card } from '@gorgias/analytics-ui-kit'
+import { Button } from '@gorgias/axiom'
 import { EmailDomain } from '@gorgias/helpdesk-queries'
 
 import { EmailProvider } from 'models/integration/constants'
@@ -12,7 +13,6 @@ import {
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import Button from 'pages/common/components/button/Button'
 
 import RecordsTable from '../EmailDomainVerification/components/RecordsTable'
 import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
