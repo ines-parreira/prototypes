@@ -109,6 +109,7 @@ jest.mock('pages/common/components/button/Button', () => ({
         isDisabled,
         intent,
         leadingIcon,
+        id,
         ...props
     }: any) => (
         <button
@@ -116,6 +117,7 @@ jest.mock('pages/common/components/button/Button', () => ({
             disabled={isDisabled}
             data-intent={intent}
             data-leading-icon={leadingIcon}
+            id={id}
             {...props}
         >
             {children}
@@ -136,7 +138,36 @@ jest.mock('pages/common/forms/input/TextInput', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
-    Tooltip: ({ children }: any) => <>{children}</>,
+    Tooltip: ({ children, target, placement, offset }: any) => (
+        <div
+            data-testid={`tooltip-${target}`}
+            data-placement={placement}
+            data-offset={offset}
+        >
+            {children}
+        </div>
+    ),
+}))
+
+jest.mock('services/shortcutManager', () => ({
+    __esModule: true,
+    default: {
+        getActionKeys: jest.fn(() => 'Cmd+Enter'),
+    },
+}))
+
+jest.mock('config/shortcuts', () => ({
+    __esModule: true,
+    default: {
+        TicketDetailContainer: {
+            actions: {
+                SUBMIT_TICKET: {
+                    key: 'mod+enter',
+                    description: 'Send message.',
+                },
+            },
+        },
+    },
 }))
 
 const queryClient = mockQueryClient()
@@ -229,6 +260,27 @@ describe('PlaygroundInputSection', () => {
             await userEvent.click(sendButton)
 
             expect(onSendMessage).toHaveBeenCalled()
+        })
+
+        it('should show tooltip with keyboard shortcut when button is enabled', () => {
+            renderComponent({
+                isDisabled: false,
+            })
+
+            const tooltip = screen.getByTestId('tooltip-send-button')
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent('Cmd+Enter')
+            expect(tooltip).toHaveAttribute('data-placement', 'top')
+            expect(tooltip).toHaveAttribute('data-offset', '0, 4px')
+        })
+
+        it('should not show tooltip when button is disabled', () => {
+            renderComponent({
+                isDisabled: true,
+            })
+
+            const tooltip = screen.queryByTestId('tooltip-send-button')
+            expect(tooltip).not.toBeInTheDocument()
         })
     })
 

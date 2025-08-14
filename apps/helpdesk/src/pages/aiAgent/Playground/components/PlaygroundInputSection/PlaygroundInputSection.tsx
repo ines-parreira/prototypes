@@ -12,11 +12,13 @@ import { useParams } from 'react-router'
 import { Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import keymap from 'config/shortcuts'
 import useFlag from 'core/flags/hooks/useFlag'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
+import shortcutManager from 'services/shortcutManager'
 
 import {
     PLAYGROUND_PROMPT_CONTENT,
@@ -316,6 +318,17 @@ export const PlaygroundInputSection = ({
                 >
                     Send
                 </Button>
+                {!isDisabled && (
+                    <Tooltip
+                        placement="top"
+                        target="send-button"
+                        offset="0, 4px"
+                    >
+                        {shortcutManager.getActionKeys(
+                            keymap.TicketDetailContainer.actions.SUBMIT_TICKET,
+                        )}
+                    </Tooltip>
+                )}
                 <Button
                     intent="secondary"
                     leadingIcon="refresh"
