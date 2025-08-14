@@ -274,24 +274,24 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper actionButton mr8 fill secondary medium"
+                    class="ui-button-wrapper-a432 actionButton mr8 ui-button-fill-a432 ui-button-secondary-a432"
                     type="button"
                   >
                     <i
                       aria-hidden="true"
-                      class="material-icons icon medium"
+                      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                     >
                       download
                     </i>
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       Download
                     </span>
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper actionButton mr8 fill secondary medium"
+                    class="ui-button-wrapper-a432 actionButton mr8 ui-button-fill-a432 ui-button-secondary-a432"
                     data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03
@@ -313,12 +313,12 @@ abcdefgh16"
                   >
                     <i
                       aria-hidden="true"
-                      class="material-icons icon medium"
+                      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                     >
                       content_copy
                     </i>
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       Copy
                     </span>
@@ -331,17 +331,17 @@ abcdefgh16"
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper actionButton fill secondary medium"
+                      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432"
                       type="button"
                     >
                       <i
                         aria-hidden="true"
-                        class="material-icons icon medium"
+                        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
                       >
                         print
                       </i>
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         Print
                       </span>
@@ -355,11 +355,11 @@ abcdefgh16"
             >
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   I Have Saved My Codes
                 </span>
@@ -549,22 +549,22 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
             >
               <button
                 aria-disabled="true"
-                class="wrapper fill secondary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Back
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <svg
-                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
                   height="22"
                   preserveAspectRatio="xMidYMid meet"
                   role="status"
@@ -594,7 +594,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   </span>
                 </svg>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -784,22 +784,22 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
             >
               <button
                 aria-disabled="true"
-                class="wrapper fill secondary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Back
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <svg
-                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
                   height="22"
                   preserveAspectRatio="xMidYMid meet"
                   role="status"
@@ -829,7 +829,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   </span>
                 </svg>
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -1009,22 +1009,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Back
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -1222,22 +1222,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Remind Me Later
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -1411,22 +1411,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Back
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -1600,22 +1600,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Back
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -1797,22 +1797,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Remind Me Later
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -1994,22 +1994,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Remind Me Later
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -2204,22 +2204,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill secondary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Back
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper fill primary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -2369,11 +2369,11 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             >
               <button
                 aria-disabled="true"
-                class="wrapper fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>
@@ -2523,11 +2523,11 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
             >
               <button
                 aria-disabled="false"
-                class="wrapper fill primary medium"
+                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Continue
                 </span>

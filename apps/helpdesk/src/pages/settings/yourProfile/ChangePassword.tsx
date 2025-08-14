@@ -5,7 +5,8 @@ import classnames from 'classnames'
 import { connect, ConnectedProps } from 'react-redux'
 import { Form } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 import { changePassword } from 'state/currentUser/actions'

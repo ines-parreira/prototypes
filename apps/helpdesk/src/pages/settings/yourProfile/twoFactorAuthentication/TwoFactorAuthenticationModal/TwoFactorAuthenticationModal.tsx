@@ -9,6 +9,8 @@ import React, {
 import { AxiosError } from 'axios'
 import { dismissNotification } from 'reapop'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -24,7 +26,6 @@ import {
     AuthenticatorData,
     RecoveryCode,
 } from 'models/twoFactorAuthentication/types'
-import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'

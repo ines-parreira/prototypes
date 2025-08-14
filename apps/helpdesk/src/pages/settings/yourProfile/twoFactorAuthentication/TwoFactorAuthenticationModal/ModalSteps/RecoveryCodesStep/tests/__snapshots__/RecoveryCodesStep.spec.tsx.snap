@@ -168,24 +168,24 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
     >
       <button
         aria-disabled="false"
-        class="wrapper actionButton mr8 fill secondary medium"
+        class="ui-button-wrapper-a432 actionButton mr8 ui-button-fill-a432 ui-button-secondary-a432"
         type="button"
       >
         <i
           aria-hidden="true"
-          class="material-icons icon medium"
+          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
         >
           download
         </i>
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Download
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="wrapper actionButton mr8 fill secondary medium"
+        class="ui-button-wrapper-a432 actionButton mr8 ui-button-fill-a432 ui-button-secondary-a432"
         data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03
@@ -207,12 +207,12 @@ abcdefgh16"
       >
         <i
           aria-hidden="true"
-          class="material-icons icon medium"
+          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
         >
           content_copy
         </i>
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Copy
         </span>
@@ -225,17 +225,17 @@ abcdefgh16"
       >
         <button
           aria-disabled="false"
-          class="wrapper actionButton fill secondary medium"
+          class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             print
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Print
           </span>

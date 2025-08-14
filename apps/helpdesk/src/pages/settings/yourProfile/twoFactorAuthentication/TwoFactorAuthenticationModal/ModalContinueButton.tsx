@@ -1,4 +1,4 @@
-import Button from '../../../../common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 type OwnProps = {
     currentStep: number

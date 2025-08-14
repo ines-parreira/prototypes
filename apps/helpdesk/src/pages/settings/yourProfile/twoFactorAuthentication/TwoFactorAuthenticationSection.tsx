@@ -2,13 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
-import Button from 'pages/common/components/button/Button'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import css from 'pages/settings/settings.less'
 import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'

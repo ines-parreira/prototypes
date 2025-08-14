@@ -9,8 +9,9 @@ import React, {
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
 
+import { Button } from '@gorgias/axiom'
+
 import { RecoveryCode } from 'models/twoFactorAuthentication/types'
-import Button from 'pages/common/components/button/Button'
 import settingsCss from 'pages/settings/settings.less'
 
 import modalStepsCss from '../ModalSteps.less'
