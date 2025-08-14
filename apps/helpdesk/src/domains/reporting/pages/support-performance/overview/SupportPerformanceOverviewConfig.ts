@@ -1,6 +1,7 @@
 import {
     fetchClosedTicketsTrend,
     fetchCustomerSatisfactionTrend,
+    fetchHumanResponseTimeAfterAiHandoffTrend,
     fetchMedianFirstResponseTimeTrend,
     fetchMedianResolutionTimeTrend,
     fetchMedianResponseTimeTrend,
@@ -13,6 +14,7 @@ import {
     fetchTicketsRepliedTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
+    useHumanResponseTimeAfterAiHandoffTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
     useMedianResponseTimeTrend,
@@ -57,6 +59,7 @@ import {
 import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
@@ -98,6 +101,7 @@ import {
 export enum OverviewMetric {
     CustomerSatisfaction = 'customer_satisfaction',
     MedianFirstResponseTime = 'median_first_response_time',
+    HumanResponseTimeAfterAiHandoff = 'human_response_time_after_ai_handoff',
     MedianResponseTime = 'median_response_time',
     MessagesPerTicket = 'messages_per_ticket',
     MessagesSent = 'messages_sent',
@@ -166,6 +170,20 @@ export const OverviewMetricConfig: Record<
         showMetric: true,
         domain: Domain.Ticket,
         drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+    },
+    [OverviewMetric.HumanResponseTimeAfterAiHandoff]: {
+        showMetric: true,
+        domain: Domain.Ticket,
+        title: 'Human response time after AI handoff',
+        hint: {
+            title: 'First Response Time without AI Agent metrics applied. Median time between last AI Agent message to first human Agent message',
+            link: 'https://link.gorgias.com/svd',
+        },
+        interpretAs: 'less-is-better',
+        metricFormat: 'duration',
+        useTrend: useHumanResponseTimeAfterAiHandoffTrend,
+        fetchTrend: fetchHumanResponseTimeAfterAiHandoffTrend,
+        drillDownQuery: humanResponseTimeAfterAiHandoffDrillDownQueryFactory,
     },
     [OverviewMetric.MedianResolutionTime]: {
         title: MEDIAN_RESOLUTION_TIME_LABEL,

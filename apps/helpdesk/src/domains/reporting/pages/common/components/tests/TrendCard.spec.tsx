@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
@@ -10,6 +10,7 @@ import { TicketChannel } from 'business/types/ticket'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
+    useHumanResponseTimeAfterAiHandoffTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
     useMedianResponseTimeTrend,
@@ -82,6 +83,9 @@ const useMedianFirstResponseTimeTrendMock = assumeMock(
     useMedianFirstResponseTimeTrend,
 )
 const useMedianResponseTimeTrendMock = assumeMock(useMedianResponseTimeTrend)
+const useHumanResponseTimeAfterAiHandoffTrendMock = assumeMock(
+    useHumanResponseTimeAfterAiHandoffTrend,
+)
 const useMedianResolutionTimeTrendMock = assumeMock(
     useMedianResolutionTimeTrend,
 )
@@ -148,6 +152,14 @@ describe('<TrendCard />', () => {
         },
     }
     const medianFirstResponseTimeMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'less-is-better',
+            value,
+            prevValue,
+        },
+    }
+    const humanResponseTimeAfterAiHandoffTrend = {
         ...defaultMetricTrend,
         data: {
             interpretAs: 'less-is-better',
@@ -224,6 +236,9 @@ describe('<TrendCard />', () => {
         )
         useMedianFirstResponseTimeTrendMock.mockReturnValue(
             medianFirstResponseTimeMetricTrend,
+        )
+        useHumanResponseTimeAfterAiHandoffTrendMock.mockReturnValue(
+            humanResponseTimeAfterAiHandoffTrend,
         )
         useMedianResponseTimeTrendMock.mockReturnValue(
             medianResponseTimeMetricTrend,

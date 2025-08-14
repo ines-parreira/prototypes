@@ -39,6 +39,16 @@ export const MetricsBaselinesJSON: Record<MetricName, MetricBaselinePerPlan> = {
         Custom: [35208, 449],
         Free: [37719, 2766],
     },
+    humanResponseTimeAfterAiHandoff: {
+        Advanced: [33852, 1040],
+        Basic: [48371, 4184],
+        Enterprise: [35208, 449],
+        Pro: [37719, 2766],
+
+        Starter: [48371, 4184],
+        Custom: [35208, 449],
+        Free: [37719, 2766],
+    },
     medianResolutionTime: {
         Advanced: [108012, 4636],
         Basic: [387022, 18310],
@@ -103,6 +113,19 @@ export const tips: Record<MetricName, Record<TipQualifier, string[]>> = {
             'High FRT is often correlated to a lower <a href="/app/stats/satisfaction" target="_blank">CSAT</a> - make sure yours doesn’t drop.',
         ],
     },
+    [MetricName.HumanResponseTimeAfterAiHandoff]: {
+        [TipQualifier.LightError]: [
+            'Use <a href="/app/tickets/new/public" target="_blank">Views</a> to organize tickets, and prioritize customer service and triage tickets.',
+            `Use <a href="/app/settings/ticket-assignment" target="_blank">auto-assignment</a> to route tickets to the correct team faster.`,
+            `Create Auto-tag <a href="/app/settings/rules" target="_blank">Rules</a> and route tickets based on channel, language, or other qualities`,
+        ],
+        [TipQualifier.LightSuccess]: [
+            `Use our <a href="/app/automation" target="_blank">AI Agent</a> to its full potential to reduce your FRT.`,
+        ],
+        [TipQualifier.Success]: [
+            'High FRT is often correlated to a lower <a href="/app/stats/satisfaction" target="_blank">CSAT</a> - make sure yours doesn’t drop.',
+        ],
+    },
     [MetricName.MedianResolutionTime]: {
         [TipQualifier.LightError]: [
             `Create <a href="/app/settings/macros" target="_blank">Macros</a> to answer frequently asked questions, and personalize with variables`,
@@ -146,16 +169,16 @@ const getMetricGrader = (metric: MetricName) => {
         case MetricName.CustomerSatisfaction:
             return higherIsBetterGrade
         case MetricName.MedianFirstResponseTime:
-            return lowerIsBetterGrade
         case MetricName.MedianResolutionTime:
-            return lowerIsBetterGrade
         case MetricName.MessagesPerTicket:
+        case MetricName.HumanResponseTimeAfterAiHandoff:
             return lowerIsBetterGrade
     }
 }
 
 export const formatMetricValue = (metric: MetricName, value: number) => {
     switch (metric) {
+        case MetricName.HumanResponseTimeAfterAiHandoff:
         case MetricName.MedianFirstResponseTime:
         case MetricName.MedianResolutionTime:
             return formatDuration(value, 2)

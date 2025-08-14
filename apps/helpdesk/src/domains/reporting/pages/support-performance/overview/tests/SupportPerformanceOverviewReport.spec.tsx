@@ -1,14 +1,14 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
@@ -37,6 +37,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -63,6 +64,9 @@ jest.mock(
         DownloadOverviewData: () => null,
     }),
 )
+
+jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
+const useAiAgentTypeForAccountMock = assumeMock(useAiAgentTypeForAccount)
 
 jest.mock('domains/reporting/pages/common/components/TrendCard')
 const trendCardMock = assumeMock(TrendCard)
@@ -118,6 +122,9 @@ jest.mock(
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
+
 const defaultState = {
     billing: fromJS(billingState),
 }
@@ -130,6 +137,10 @@ describe('<SupportPerformanceOverview />', () => {
             isRouteRestrictedToCurrentUser: () => false,
             isReportRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
+        })
+        useAiAgentTypeForAccountMock.mockReturnValue({
+            aiAgentType: 'mixed',
+            isLoading: false,
         })
         trendCardMock.mockImplementation(({ tip }) => (
             <div>TrendCardMock {tip}</div>
@@ -149,9 +160,16 @@ describe('<SupportPerformanceOverview />', () => {
         ZeroTouchTicketsTrendCardMock.mockImplementation(() => <div />)
         MessagesReceivedTrendCardMock.mockImplementation(() => <div />)
         MedianResponseTimeTrendCardMock.mockImplementation(() => <div />)
-        mockFlags({
-            [FeatureFlagKey.ReportingAgentsTableAverageAndTotal]: true,
-        })
+
+        useFlagMock.mockReturnValue(
+            (flag: FeatureFlagKey, defaultValue: boolean) => {
+                if (flag === FeatureFlagKey.ReportingAgentsTableAverageAndTotal)
+                    return true
+                if (flag === FeatureFlagKey.ReportingHrtAi) return true
+
+                return defaultValue
+            },
+        )
     })
 
     it.each([
@@ -159,6 +177,7 @@ describe('<SupportPerformanceOverview />', () => {
         OverviewMetric.MedianFirstResponseTime,
         OverviewMetric.MedianResolutionTime,
         OverviewMetric.MessagesPerTicket,
+        OverviewMetric.HumanResponseTimeAfterAiHandoff,
     ])(
         'should render customer experience section with TrendCards %#',
         (customerMetricTrend) => {
@@ -177,6 +196,28 @@ describe('<SupportPerformanceOverview />', () => {
             )
         },
     )
+
+    it("doesn't render HRT-AI if AI Agent is not enabled", () => {
+        useAiAgentTypeForAccountMock.mockReturnValue({
+            aiAgentType: undefined,
+            isLoading: false,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceOverviewReport />
+            </Provider>,
+        )
+
+        expect(trendCardMock.mock.calls).not.toContainEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    drillDownMetric:
+                        OverviewMetric.HumanResponseTimeAfterAiHandoff,
+                }),
+            ]),
+        )
+    })
 
     it('should render productivity section with OneTouchTickets TrendCard', () => {
         render(

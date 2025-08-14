@@ -1,5 +1,7 @@
-import { useGridSize, useLocalStorage } from '@repo/hooks'
+import { useGridSize } from '@repo/hooks'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
@@ -9,36 +11,45 @@ import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSec
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { DownloadOverviewData } from 'domains/reporting/pages/support-performance/overview/DownloadOverviewData'
-import {
-    PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
-    STATS_TIPS_VISIBILITY_KEY,
-} from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import { useTipsVisibility } from 'domains/reporting/pages/support-performance/overview/hooks/useTipsVisibility'
+import { PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 
 const WORKLOAD_SECTION_KPI_GRID_CELL_SIZE = 3
 const PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE = 4
+const CX_LAYOUT_BASE = [3, 3, 3, 3, 3]
+const CX_LAYOUT_WITH_HRT_AI = [4, 4, 4, 6, 6]
+
+const useIsHrtAiEnabled = () => {
+    const isFeatureFlagEnabled = useFlag(FeatureFlagKey.ReportingHrtAi, false)
+
+    const { aiAgentType } = useAiAgentTypeForAccount()
+    const isAiAgentEnabled = aiAgentType !== undefined
+
+    return isAiAgentEnabled && isFeatureFlagEnabled
+}
 
 export default function SupportPerformanceOverviewReport() {
-    const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
-        STATS_TIPS_VISIBILITY_KEY,
-        true,
-    )
+    const [areTipsVisible, setAreTipsVisible] = useTipsVisibility()
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
+
+    const isHrtAiEnabled = useIsHrtAiEnabled()
+
+    const customerExperienceLayout = isHrtAiEnabled
+        ? CX_LAYOUT_WITH_HRT_AI
+        : CX_LAYOUT_BASE
 
     return (
         <div className="full-width">
             <StatsPage
                 title={SupportPerformanceOverviewReportConfig.reportName}
-                titleExtra={
-                    <>
-                        <DownloadOverviewData />
-                    </>
-                }
+                titleExtra={<DownloadOverviewData />}
             >
                 <DashboardSection>
                     <DashboardGridCell
@@ -72,13 +83,33 @@ export default function SupportPerformanceOverviewReport() {
                         />
                     }
                 >
-                    <DashboardGridCell size={getGridCellSize(3)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(customerExperienceLayout[0])}
+                    >
                         <DashboardComponent
                             chart={OverviewChart.CustomerSatisfactionTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(3)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(customerExperienceLayout[1])}
+                    >
+                        <DashboardComponent
+                            chart={OverviewChart.MedianResolutionTimeTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(customerExperienceLayout[2])}
+                    >
+                        <DashboardComponent
+                            chart={OverviewChart.MessagesPerTicketTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(customerExperienceLayout[3])}
+                    >
                         <DashboardComponent
                             chart={
                                 OverviewChart.MedianFirstResponseTimeTrendCard
@@ -86,71 +117,67 @@ export default function SupportPerformanceOverviewReport() {
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(3)}>
-                        <DashboardComponent
-                            chart={OverviewChart.MedianResolutionTimeTrendCard}
-                            config={SupportPerformanceOverviewReportConfig}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(3)}>
-                        <DashboardComponent
-                            chart={OverviewChart.MessagesPerTicketTrendCard}
-                            config={SupportPerformanceOverviewReportConfig}
-                        />
-                    </DashboardGridCell>
-                </DashboardSection>
-
-                <DashboardSection title="Workload">
-                    <>
+                    {isHrtAiEnabled && (
                         <DashboardGridCell
-                            size={getGridCellSize(
-                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
-                            )}
+                            size={getGridCellSize(customerExperienceLayout[4])}
                         >
-                            <DashboardComponent
-                                chart={OverviewChart.TicketsCreatedTrendCard}
-                                config={SupportPerformanceOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell
-                            size={getGridCellSize(
-                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
-                            )}
-                        >
-                            <DashboardComponent
-                                chart={OverviewChart.TicketsClosedTrendCard}
-                                config={SupportPerformanceOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell
-                            size={getGridCellSize(
-                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
-                            )}
-                        >
-                            <DashboardComponent
-                                chart={OverviewChart.OpenTicketsTrendCard}
-                                config={SupportPerformanceOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell
-                            size={getGridCellSize(
-                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
-                            )}
-                        >
-                            <DashboardComponent
-                                chart={OverviewChart.MessagesReceivedTrendCard}
-                                config={SupportPerformanceOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell size={12}>
                             <DashboardComponent
                                 chart={
-                                    OverviewChart.TicketsCreatedVsClosedChart
+                                    OverviewChart.HumanResponseTimeAfterAiHandoffCard
                                 }
                                 config={SupportPerformanceOverviewReportConfig}
                             />
                         </DashboardGridCell>
-                    </>
+                    )}
+                </DashboardSection>
+
+                <DashboardSection title="Workload">
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
+                        <DashboardComponent
+                            chart={OverviewChart.TicketsCreatedTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
+                        <DashboardComponent
+                            chart={OverviewChart.TicketsClosedTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
+                        <DashboardComponent
+                            chart={OverviewChart.OpenTicketsTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
+                        <DashboardComponent
+                            chart={OverviewChart.MessagesReceivedTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={12}>
+                        <DashboardComponent
+                            chart={OverviewChart.TicketsCreatedVsClosedChart}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <DashboardComponent
                             chart={OverviewChart.WorkloadPerChannelChart}

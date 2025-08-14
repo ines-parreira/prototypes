@@ -56,6 +56,7 @@ type PerformanceOverviewMetrics = {
         | OverviewMetric.MessagesPerTicket
         | OverviewMetric.MedianResolutionTime
         | OverviewMetric.MedianResponseTime
+        | OverviewMetric.HumanResponseTimeAfterAiHandoff
         | OverviewMetric.MedianFirstResponseTime
         | OverviewMetric.CustomerSatisfaction
         | OverviewMetric.OneTouchTickets

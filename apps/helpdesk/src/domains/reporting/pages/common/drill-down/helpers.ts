@@ -161,6 +161,7 @@ export const getDrillDownQuery = (
         case OverviewMetric.CustomerSatisfaction:
         case OverviewMetric.MedianResponseTime:
         case OverviewMetric.MedianFirstResponseTime:
+        case OverviewMetric.HumanResponseTimeAfterAiHandoff:
         case OverviewMetric.MedianResolutionTime:
         case OverviewMetric.MessagesPerTicket:
         case OverviewMetric.MessagesSent:

@@ -45,6 +45,7 @@ export enum MetricName {
     MedianFirstResponseTime = 'medianFirstResponseTime',
     MedianResolutionTime = 'medianResolutionTime',
     MessagesPerTicket = 'messagesPerTicket',
+    HumanResponseTimeAfterAiHandoff = 'humanResponseTimeAfterAiHandoff',
 }
 
 export const SlaStatusLabel: Record<TicketSLAStatus, string> = {

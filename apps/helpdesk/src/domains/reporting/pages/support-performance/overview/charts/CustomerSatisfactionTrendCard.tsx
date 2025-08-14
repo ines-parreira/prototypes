@@ -1,13 +1,11 @@
-import { useLocalStorage } from '@repo/hooks'
-
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
 import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { ActivateCustomerSatisfactionSurveyTip } from 'domains/reporting/pages/support-performance/components/ActivateCustomerSatisfactionSurveyTip'
 import { SupportPerformanceTip } from 'domains/reporting/pages/support-performance/components/SupportPerformanceTip'
+import { useTipsVisibility } from 'domains/reporting/pages/support-performance/overview/hooks/useTipsVisibility'
 import {
     OverviewMetric,
     OverviewMetricConfig,
-    STATS_TIPS_VISIBILITY_KEY,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { MetricName } from 'domains/reporting/services/constants'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,7 +19,7 @@ export const CustomerSatisfactionTrendCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
+    const [areTipsVisible] = useTipsVisibility()
 
     const surveySettings = useAppSelector(getSurveysSettingsJS)
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(

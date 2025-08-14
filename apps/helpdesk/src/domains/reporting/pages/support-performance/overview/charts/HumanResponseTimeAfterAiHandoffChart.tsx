@@ -8,25 +8,24 @@ import {
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { MetricName } from 'domains/reporting/services/constants'
 
-export const MedianResolutionTimeTrendCard = ({
-    chartId,
-    dashboard,
-}: DashboardChartProps) => {
+const metricConfig =
+    OverviewMetricConfig[OverviewMetric.HumanResponseTimeAfterAiHandoff]
+
+export function HumanResponseTimeAfterAiHandoffChart(
+    dashboardChartProps: DashboardChartProps,
+) {
     const [areTipsVisible] = useTipsVisibility()
 
     return (
         <TrendCard
-            {...OverviewMetricConfig[OverviewMetric.MedianResolutionTime]}
-            chartId={chartId}
-            dashboard={dashboard}
-            drillDownMetric={OverviewMetric.MedianResolutionTime}
+            {...metricConfig}
+            {...dashboardChartProps}
+            drillDownMetric={OverviewMetric.HumanResponseTimeAfterAiHandoff}
             tip={
                 areTipsVisible && (
                     <SupportPerformanceTip
-                        {...OverviewMetricConfig[
-                            OverviewMetric.MedianResolutionTime
-                        ]}
-                        metric={MetricName.MedianResolutionTime}
+                        metric={MetricName.HumanResponseTimeAfterAiHandoff}
+                        {...metricConfig}
                     />
                 )
             }

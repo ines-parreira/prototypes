@@ -4,6 +4,7 @@ import moment from 'moment'
 import {
     fetchClosedTicketsTrend,
     fetchCustomerSatisfactionTrend,
+    fetchHumanResponseTimeAfterAiHandoffTrend,
     fetchMedianFirstResponseTimeTrend,
     fetchMedianResolutionTimeTrend,
     fetchMessagesPerTicketTrend,
@@ -16,6 +17,7 @@ import {
     fetchZeroTouchTicketsTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
+    useHumanResponseTimeAfterAiHandoffTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
     useMessagesPerTicketTrend,
@@ -33,6 +35,7 @@ import useMetricTrend, {
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { medianFirstResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { messagesPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesPerTicket'
@@ -78,6 +81,12 @@ describe('metric trends', () => {
             'useMedianFirstResponseTimeTrend',
             useMedianFirstResponseTimeTrend,
             medianFirstResponseTimeQueryFactory,
+        ],
+
+        [
+            'useHumanResponseTimeAfterAiHandoffTrend',
+            useHumanResponseTimeAfterAiHandoffTrend,
+            humanResponseTimeAfterAiHandoffQueryFactory,
         ],
         [
             'useMedianResolutionTimeTrend',
@@ -157,6 +166,11 @@ describe('metric trends', () => {
             'fetchMedianFirstResponseTimeTrend',
             fetchMedianFirstResponseTimeTrend,
             medianFirstResponseTimeQueryFactory,
+        ],
+        [
+            'fetchHumanResponseTimeAfterAiHandoffTrend',
+            fetchHumanResponseTimeAfterAiHandoffTrend,
+            humanResponseTimeAfterAiHandoffQueryFactory,
         ],
         [
             'fetchMedianResolutionTimeTrend',

@@ -10,6 +10,7 @@ import { TicketChannel } from 'business/types/ticket'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
+    useHumanResponseTimeAfterAiHandoffTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
     useMedianResponseTimeTrend,
@@ -86,6 +87,9 @@ const useCustomerSatisfactionTrendMock = assumeMock(
 const useMedianFirstResponseTimeTrendMock = assumeMock(
     useMedianFirstResponseTimeTrend,
 )
+const useHumanResponseTimeAfterAiHandoffTrendMock = assumeMock(
+    useHumanResponseTimeAfterAiHandoffTrend,
+)
 const useMedianResolutionTimeTrendMock = assumeMock(
     useMedianResolutionTimeTrend,
 )
@@ -161,6 +165,14 @@ describe('<AverageScoreTrend />', () => {
             prevValue,
         },
     }
+    const humanResponseTimeAfterAiHandoffTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'less-is-better',
+            value,
+            prevValue,
+        },
+    }
     const medianResolutionTimeMetricTrend = {
         ...defaultMetricTrend,
         data: {
@@ -221,6 +233,9 @@ describe('<AverageScoreTrend />', () => {
         )
         useMedianFirstResponseTimeTrendMock.mockReturnValue(
             medianFirstResponseTimeMetricTrend,
+        )
+        useHumanResponseTimeAfterAiHandoffTrendMock.mockReturnValue(
+            humanResponseTimeAfterAiHandoffTrend,
         )
         useMedianResolutionTimeTrendMock.mockReturnValue(
             medianResolutionTimeMetricTrend,

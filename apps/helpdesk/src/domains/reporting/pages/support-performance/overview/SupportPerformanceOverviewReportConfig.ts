@@ -10,6 +10,7 @@ import {
     ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { CustomerSatisfactionTrendCard } from 'domains/reporting/pages/support-performance/overview/charts/CustomerSatisfactionTrendCard'
+import { HumanResponseTimeAfterAiHandoffChart } from 'domains/reporting/pages/support-performance/overview/charts/HumanResponseTimeAfterAiHandoffChart'
 import { MedianFirstResponseTimeTrendCard } from 'domains/reporting/pages/support-performance/overview/charts/MedianFirstResponseTimeTrendCard'
 import { MedianResolutionTimeTrendCard } from 'domains/reporting/pages/support-performance/overview/charts/MedianResolutionTimeTrendCard'
 import { MedianResponseTimeTrendCard } from 'domains/reporting/pages/support-performance/overview/charts/MedianResponseTimeTrendCard'
@@ -48,6 +49,7 @@ export enum OverviewChart {
     CustomerSatisfactionTrendCard = 'customer_satisfaction_trend_card',
     MedianResponseTimeTrendCard = 'median_response_time_trend_card',
     MedianFirstResponseTimeTrendCard = 'median_first_response_time_trend_card',
+    HumanResponseTimeAfterAiHandoffCard = 'human_response_time_after_ai_handoff_card',
     MedianResolutionTimeTrendCard = 'median_resolution_time_trend_card',
     MessagesPerTicketTrendCard = 'messages_per_ticket_trend_card',
     TicketsCreatedTrendCard = 'tickets_created_trend_card',
@@ -113,6 +115,29 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                     OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]
                         .hint.title,
                 chartType: ChartType.Card,
+            },
+            [OverviewChart.HumanResponseTimeAfterAiHandoffCard]: {
+                chartType: ChartType.Card,
+                chartComponent: HumanResponseTimeAfterAiHandoffChart,
+                label: OverviewMetricConfig[
+                    OverviewMetric.HumanResponseTimeAfterAiHandoff
+                ].title,
+                description:
+                    OverviewMetricConfig[
+                        OverviewMetric.HumanResponseTimeAfterAiHandoff
+                    ].hint.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.HumanResponseTimeAfterAiHandoff
+                        ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.HumanResponseTimeAfterAiHandoff
+                            ].metricFormat,
+                    },
+                ],
             },
             [OverviewChart.MedianResponseTimeTrendCard]: {
                 chartComponent: MedianResponseTimeTrendCard,
