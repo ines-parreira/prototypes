@@ -9,7 +9,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
-import { PRODUCT_RECOMMENDATIONS } from '../constants'
+import { PRODUCT_RECOMMENDATIONS, SALES } from '../constants'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
@@ -83,7 +83,7 @@ export const AiAgentProductRecommendationsPromote = () => {
     return (
         <AiAgentLayout
             shopName={shopName}
-            title={PRODUCT_RECOMMENDATIONS}
+            title={SALES}
             className={css.container}
         >
             <Link to={routes.productRecommendations}>

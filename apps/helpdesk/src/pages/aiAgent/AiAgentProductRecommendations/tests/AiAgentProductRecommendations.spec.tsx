@@ -118,7 +118,7 @@ describe('AiAgentProductRecommendations', () => {
 
         expect(
             screen.queryByText(
-                'Layout Mock - Shop: test-shop, Title: Product Recommendations',
+                'Layout Mock - Shop: test-shop, Title: Shopping Assistant',
             ),
         ).toBeInTheDocument()
         expect(screen.queryByText('Promote products')).toBeInTheDocument()
@@ -180,7 +180,7 @@ describe('AiAgentProductRecommendations', () => {
 
         expect(
             screen.queryByText(
-                'Layout Mock - Shop: test-shop, Title: Product Recommendations',
+                'Layout Mock - Shop: test-shop, Title: Shopping Assistant',
             ),
         ).toBeInTheDocument()
         expect(screen.queryByText('Promote products')).toBeInTheDocument()

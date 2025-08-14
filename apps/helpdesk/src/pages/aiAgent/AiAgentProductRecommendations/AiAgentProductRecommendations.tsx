@@ -7,7 +7,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { assetsUrl } from 'utils'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
-import { PRODUCT_RECOMMENDATIONS } from '../constants'
+import { SALES } from '../constants'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 
 import css from './AiAgentProductRecommendations.less'
@@ -26,7 +26,7 @@ export const AiAgentProductRecommendations = () => {
     return (
         <AiAgentLayout
             shopName={shopName}
-            title={PRODUCT_RECOMMENDATIONS}
+            title={SALES}
             className={css.container}
         >
             <div className={css.card}>
