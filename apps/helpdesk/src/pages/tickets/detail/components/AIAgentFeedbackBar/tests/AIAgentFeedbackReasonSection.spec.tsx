@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
+import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
 import { AIAgentFeedbackReasonSection } from '../AIAgentTicketLevelFeedback/AIAgentFeedbackReasonSection'
 import { AiAgentBadInteractionReason } from '../types'
@@ -95,7 +95,7 @@ describe('AIAgentFeedbackReasonSection', () => {
     })
 
     it('should initialize with values from badInteractionReasons prop', () => {
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -136,7 +136,7 @@ describe('AIAgentFeedbackReasonSection', () => {
     })
 
     it('should show selected values in placeholder when values are selected', () => {
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -209,7 +209,7 @@ describe('AIAgentFeedbackReasonSection', () => {
 
     it('should handle removing existing selections', async () => {
         const user = userEvent.setup()
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -249,7 +249,7 @@ describe('AIAgentFeedbackReasonSection', () => {
 
     it('should handle adding new selection when existing selections are present', async () => {
         const user = userEvent.setup()
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -334,7 +334,7 @@ describe('AIAgentFeedbackReasonSection', () => {
     })
 
     it('should not update values when loading mutations are present and there are no pending choices', () => {
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -376,7 +376,7 @@ describe('AIAgentFeedbackReasonSection', () => {
     })
 
     it('should render tooltip when values are selected', () => {
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -423,7 +423,7 @@ describe('AIAgentFeedbackReasonSection', () => {
     })
 
     it('should return early from useEffect when pendingChoicesRef is not null', () => {
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,
@@ -458,7 +458,7 @@ describe('AIAgentFeedbackReasonSection', () => {
             select.dispatchEvent(event)
         })
 
-        const newBadInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const newBadInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 ...badInteractionReasons[0],
                 feedbackValue: AiAgentBadInteractionReason.HALLUCINATION,
@@ -480,7 +480,7 @@ describe('AIAgentFeedbackReasonSection', () => {
     })
 
     it('should apply selectInputBoxWithValues className when values exist', () => {
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 1,
                 feedbackValue: AiAgentBadInteractionReason.WRONG_KNOWLEDGE,

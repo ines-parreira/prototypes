@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
+import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
@@ -88,7 +88,7 @@ describe('AIAgentFeedbackRatingSection', () => {
     })
 
     it('should set selectedRating from ticketRating prop', () => {
-        const ticketRating: FeedbackExecutionsItemFeedbackItem = {
+        const ticketRating: ArrayItem<FeedbackExecutionsItem['feedback']> = {
             id: 1,
             feedbackValue: FeedbackRating.GOOD,
             objectType: 'TICKET',
@@ -181,7 +181,7 @@ describe('AIAgentFeedbackRatingSection', () => {
 
     it('should not call handleFeedbackChange when clicking the same rating again', () => {
         const handleFeedbackChange = jest.fn()
-        const ticketRating: FeedbackExecutionsItemFeedbackItem = {
+        const ticketRating: ArrayItem<FeedbackExecutionsItem['feedback']> = {
             id: 1,
             feedbackValue: FeedbackRating.GOOD,
             objectType: 'TICKET',
@@ -211,7 +211,7 @@ describe('AIAgentFeedbackRatingSection', () => {
 
     it('should clear badInteractionReasons when clicking Good rating with existing bad reasons', () => {
         const handleFeedbackChange = jest.fn()
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 2,
                 feedbackValue:
@@ -273,7 +273,7 @@ describe('AIAgentFeedbackRatingSection', () => {
 
     it('should not clear badInteractionReasons when clicking non-Good rating', () => {
         const handleFeedbackChange = jest.fn()
-        const badInteractionReasons: FeedbackExecutionsItemFeedbackItem[] = [
+        const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 2,
                 feedbackValue: AiAgentBadInteractionReason.OTHER,
@@ -311,7 +311,7 @@ describe('AIAgentFeedbackRatingSection', () => {
 
     it('should include ticketRating id when provided', () => {
         const handleFeedbackChange = jest.fn()
-        const ticketRating: FeedbackExecutionsItemFeedbackItem = {
+        const ticketRating: ArrayItem<FeedbackExecutionsItem['feedback']> = {
             id: 123,
             feedbackValue: FeedbackRating.BAD,
             objectType: 'TICKET',
@@ -346,7 +346,9 @@ describe('AIAgentFeedbackRatingSection', () => {
     })
 
     it('should update selectedRating when ticketRating prop changes', () => {
-        const initialTicketRating: FeedbackExecutionsItemFeedbackItem = {
+        const initialTicketRating: ArrayItem<
+            FeedbackExecutionsItem['feedback']
+        > = {
             id: 1,
             feedbackValue: FeedbackRating.BAD,
             objectType: 'TICKET',
@@ -374,7 +376,9 @@ describe('AIAgentFeedbackRatingSection', () => {
             'buttonPressed',
         )
 
-        const updatedTicketRating: FeedbackExecutionsItemFeedbackItem = {
+        const updatedTicketRating: ArrayItem<
+            FeedbackExecutionsItem['feedback']
+        > = {
             ...initialTicketRating,
             feedbackValue: FeedbackRating.GOOD,
         }
@@ -465,7 +469,7 @@ describe('AIAgentFeedbackRatingSection', () => {
     })
 
     it('should apply correct CSS classes when rating is selected', () => {
-        const ticketRating: FeedbackExecutionsItemFeedbackItem = {
+        const ticketRating: ArrayItem<FeedbackExecutionsItem['feedback']> = {
             id: 1,
             feedbackValue: FeedbackRating.OK,
             objectType: 'TICKET',
@@ -498,7 +502,7 @@ describe('AIAgentFeedbackRatingSection', () => {
     })
 
     it('should handle ticketRating with null feedbackValue', () => {
-        const ticketRating: FeedbackExecutionsItemFeedbackItem = {
+        const ticketRating: ArrayItem<FeedbackExecutionsItem['feedback']> = {
             id: 1,
             feedbackValue: null,
             objectType: 'TICKET',

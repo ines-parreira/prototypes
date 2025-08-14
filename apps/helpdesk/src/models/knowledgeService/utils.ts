@@ -1,37 +1,14 @@
 import { cloneDeep } from 'lodash'
 
 import {
-    client,
-    FeedbackExecutionsItemFeedbackItem,
-    FeedbackExecutionsItemResourcesItemFeedback,
+    FeedbackExecutionsItem,
+    FeedbackExecutionsItemResourcesItem,
     FeedbackUpsertRequest,
     FindFeedbackParams,
     FindFeedbackResult,
-    setDefaultConfig,
 } from '@gorgias/knowledge-service-client'
 
 import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { isProduction, isStaging } from 'utils/environment'
-import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
-
-export function getKsApiBaseURL(): string {
-    return isProduction()
-        ? `https://knowledge-service.gorgias.help`
-        : isStaging()
-          ? 'https://knowledge-service.gorgias.rehab'
-          : `http://localhost:9500`
-}
-
-export const setKSDefaultConfig = () =>
-    setDefaultConfig(async () => {
-        client.client.interceptors.request.use(gorgiasAppsAuthInterceptor)
-        return {
-            baseURL: getKsApiBaseURL(),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-    })
 
 export const generateUniqueId = (newData: FindFeedbackResult['data']) => {
     let maxId = 0
@@ -89,7 +66,7 @@ export const optimisticallyUpdateFeedback =
                         targetType: 'TICKET',
                         feedbackType: item.feedbackType,
                         feedbackValue: item.feedbackValue,
-                    } as FeedbackExecutionsItemFeedbackItem
+                    } as ArrayItem<FeedbackExecutionsItem['feedback']>
                     const ticketLevelFeedbackExecution =
                         newData.data.executions.find((execution) =>
                             execution.feedback.find(
@@ -154,14 +131,18 @@ export const optimisticallyUpdateFeedback =
                             }
                         } else {
                             suggestedExecution.feedback.push(
-                                newFeedback as FeedbackExecutionsItemFeedbackItem,
+                                newFeedback as ArrayItem<
+                                    FeedbackExecutionsItem['feedback']
+                                >,
                             )
                         }
                         optimisticallyUpdatedFeedback = true
                     }
                     if (!optimisticallyUpdatedFeedback) {
                         newData.data.executions[0]?.feedback.push(
-                            newFeedback as FeedbackExecutionsItemFeedbackItem,
+                            newFeedback as ArrayItem<
+                                FeedbackExecutionsItem['feedback']
+                            >,
                         )
                     }
                     break
@@ -194,7 +175,7 @@ export const optimisticallyUpdateFeedback =
                             resource.feedback.feedbackValue = item.feedbackValue
                         } else {
                             resource.feedback =
-                                newFeedback as FeedbackExecutionsItemResourcesItemFeedback
+                                newFeedback as FeedbackExecutionsItemResourcesItem['feedback']
                         }
                     }
                     break

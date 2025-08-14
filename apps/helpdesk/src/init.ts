@@ -14,8 +14,6 @@ import {
 } from 'chart.js'
 import moment from 'moment-timezone'
 
-import { setDefaultConfig } from '@gorgias/helpdesk-queries'
-
 import './polyfills'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -23,7 +21,6 @@ import { store } from 'common/store'
 import { EditableUserProfile } from 'config/types/user'
 import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
 import { initializeNewReleaseHandler } from 'models/api/resources'
-import { setKSDefaultConfig } from 'models/knowledgeService/utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -41,15 +38,7 @@ import {
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser as identifyHotjarUser } from 'utils/hotjar'
 import { initLaunchDarkly } from 'utils/launchDarkly'
-
-setDefaultConfig({
-    headers: {
-        'X-CSRF-Token': window.CSRF_TOKEN,
-        'X-Gorgias-User-Client': 'web',
-    },
-})
-
-setKSDefaultConfig()
+import { initSDKs } from 'utils/sdk'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default timezone
@@ -99,6 +88,8 @@ export function initApp() {
             serverVersion: window.GORGIAS_RELEASE,
         })
     }
+
+    initSDKs()
 
     // Supply an initial state to redux for faster page loads. See #752
     const state = store.getState() as RootState

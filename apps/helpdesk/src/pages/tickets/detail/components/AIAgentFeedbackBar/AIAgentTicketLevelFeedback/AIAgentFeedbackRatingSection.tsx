@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import cn from 'classnames'
 
 import { BadgeIcon, Button } from '@gorgias/axiom'
-import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
+import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
 import AutoSaveBadge from '../AutoSaveBadge'
 import { AutoSaveState, FeedbackRating } from '../types'
@@ -13,8 +13,8 @@ import css from './AIAgentTicketLevelFeedback.less'
 export type AIAgentFeedbackRatingSectionProps = {
     loadingMutations?: string[]
     lastUpdated?: Date
-    ticketRating?: FeedbackExecutionsItemFeedbackItem
-    badInteractionReasons?: FeedbackExecutionsItemFeedbackItem[]
+    ticketRating?: ArrayItem<FeedbackExecutionsItem['feedback']>
+    badInteractionReasons?: FeedbackExecutionsItem['feedback']
     handleFeedbackChange: (
         data: {
             resourceType: 'TICKET_RATING' | 'TICKET_BAD_INTERACTION_REASON'

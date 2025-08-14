@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import {
     FeedbackExecutionsItem,
-    FeedbackExecutionsItemFeedbackItem,
     FeedbackExecutionsItemResourcesItem,
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-types'
@@ -51,7 +50,7 @@ export type KnowledgeResource = {
     executionId: FeedbackExecutionsItem['executionId']
     resource: FeedbackExecutionsItemResourcesItem
     feedback?:
-        | FeedbackExecutionsItemFeedbackItem
+        | ArrayItem<FeedbackExecutionsItem['feedback']>
         | FeedbackExecutionsItemResourcesItem['feedback']
         | null
     metadata: ResourceMetadata
@@ -59,14 +58,14 @@ export type KnowledgeResource = {
 
 export type SuggestedResource = {
     executionId: FeedbackExecutionsItem['executionId']
-    feedback: FeedbackExecutionsItemFeedbackItem
+    feedback: ArrayItem<FeedbackExecutionsItem['feedback']>
     parsedResource: SuggestedResourceValue
     metadata: ResourceMetadata
 }
 
 export type FreeForm = {
     executionId: FeedbackExecutionsItem['executionId']
-    feedback: FeedbackExecutionsItemFeedbackItem
+    feedback: ArrayItem<FeedbackExecutionsItem['feedback']>
 }
 
 export type AiAgentKnowledgeResourceType =

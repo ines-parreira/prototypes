@@ -9,6 +9,7 @@ import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import * as envUtils from 'utils/environment'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser } from 'utils/hotjar'
+import { initSDKs } from 'utils/sdk'
 
 type fromJSType = typeof fromJS
 
@@ -26,6 +27,7 @@ jest.mock('common/store', () => {
     }
 })
 
+jest.mock('utils/sdk')
 jest.mock('utils/datadog')
 jest.mock('utils/errors')
 jest.mock('utils/launchDarkly')
@@ -161,6 +163,12 @@ describe('init', () => {
                 currentUser: defaultGorgiasState.currentUser,
                 currentAccount: defaultGorgiasState.currentAccount,
             })
+        })
+
+        it('should init sdk libs', () => {
+            initApp()
+
+            expect(initSDKs).toHaveBeenCalled()
         })
     })
 })

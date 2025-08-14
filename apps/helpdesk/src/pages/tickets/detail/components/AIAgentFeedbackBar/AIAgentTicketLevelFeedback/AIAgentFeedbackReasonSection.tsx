@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from '@repo/hooks'
 
 import { Label, Tooltip } from '@gorgias/axiom'
-import { FeedbackExecutionsItemFeedbackItem } from '@gorgias/knowledge-service-types'
+import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
@@ -27,7 +27,7 @@ export type AIAgentFeedbackReasonSectionProps = {
             feedbackValue: string | null
         }[],
     ) => void
-    badInteractionReasons?: FeedbackExecutionsItemFeedbackItem[]
+    badInteractionReasons?: FeedbackExecutionsItem['feedback']
     loadingMutations?: string[]
 }
 export const AIAgentFeedbackReasonSection = ({

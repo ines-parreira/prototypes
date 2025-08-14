@@ -38,3 +38,5 @@ type PickOne<T, F extends keyof T> = Pick<T, F> & {
 }
 
 type XOR<T, K = keyof T> = K extends keyof T ? PickOne<T, K> : never
+
+type ArrayItem<T extends any[]> = T extends (infer U)[] ? U : never
