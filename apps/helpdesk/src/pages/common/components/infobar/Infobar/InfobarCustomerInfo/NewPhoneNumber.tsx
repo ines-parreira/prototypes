@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
+import { Button } from '@gorgias/axiom'
 import {
     LegacyChannelSlug,
     UpdateCustomerBodyChannelsItem,
@@ -10,7 +11,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

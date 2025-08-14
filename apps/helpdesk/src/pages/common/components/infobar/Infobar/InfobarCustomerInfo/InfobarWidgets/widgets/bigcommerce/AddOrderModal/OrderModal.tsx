@@ -10,7 +10,7 @@ import React, {
 import classnames from 'classnames'
 import { Row } from 'reactstrap'
 
-import { Label, Tooltip } from '@gorgias/axiom'
+import { Button, Label, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -34,7 +34,6 @@ import {
     ProductModifiersChangedError,
 } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'

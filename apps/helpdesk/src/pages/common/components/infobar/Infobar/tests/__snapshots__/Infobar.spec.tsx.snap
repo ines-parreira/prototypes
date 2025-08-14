@@ -76,17 +76,17 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
       >
         <button
           aria-disabled="false"
-          class="wrapper fill secondary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             arrow_back
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Back
           </span>
@@ -226,17 +226,17 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
           </p>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               call_merge
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Merge
             </span>
@@ -463,17 +463,17 @@ exports[`<Infobar/> should render search results 1`] = `
       >
         <button
           aria-disabled="false"
-          class="wrapper fill secondary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             arrow_back
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Back
           </span>
@@ -542,17 +542,17 @@ exports[`<Infobar/> should render selected customer 1`] = `
         >
           <button
             aria-disabled="false"
-            class="wrapper selectionBackButton fill secondary medium"
+            class="ui-button-wrapper-a432 selectionBackButton ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               arrow_back
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Back
             </span>
@@ -621,17 +621,17 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
       >
         <button
           aria-disabled="false"
-          class="wrapper fill secondary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             arrow_back
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Back
           </span>
@@ -761,22 +761,22 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
     >
       <button
         aria-disabled="true"
-        class="wrapper mr-2 fill primary medium isDisabled"
+        class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Save changes
         </span>
       </button>
       <button
         aria-disabled="true"
-        class="wrapper fill secondary medium isDisabled"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Cancel
         </span>

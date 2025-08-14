@@ -1,7 +1,8 @@
 import { fromJS, Map } from 'immutable'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { isCurrentlyOnTicket } from 'utils'
 

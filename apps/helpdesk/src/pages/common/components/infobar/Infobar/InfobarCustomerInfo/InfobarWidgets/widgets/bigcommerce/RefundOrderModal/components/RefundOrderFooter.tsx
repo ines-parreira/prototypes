@@ -3,10 +3,9 @@ import React, { Dispatch, useRef, useState } from 'react'
 import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import { OrderStatusList } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'

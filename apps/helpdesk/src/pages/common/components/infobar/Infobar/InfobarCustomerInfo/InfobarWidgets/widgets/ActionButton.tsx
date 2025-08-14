@@ -7,10 +7,9 @@ import _uniqueId from 'lodash/uniqueId'
 import { connect, ConnectedProps } from 'react-redux'
 import { Form, Label, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, type ButtonProps, Tooltip } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

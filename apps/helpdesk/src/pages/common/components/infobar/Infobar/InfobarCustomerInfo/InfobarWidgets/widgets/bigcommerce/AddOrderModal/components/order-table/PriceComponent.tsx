@@ -2,13 +2,12 @@ import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Caption from 'pages/common/forms/Caption/Caption'
 import NumberInput from 'pages/common/forms/input/NumberInput'

@@ -257,22 +257,22 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
     >
       <button
         aria-disabled="false"
-        class="wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Close
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="wrapper fill primary medium"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Apply
         </span>
@@ -524,22 +524,22 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
     >
       <button
         aria-disabled="false"
-        class="wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Close
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="wrapper fill primary medium"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           Apply
         </span>

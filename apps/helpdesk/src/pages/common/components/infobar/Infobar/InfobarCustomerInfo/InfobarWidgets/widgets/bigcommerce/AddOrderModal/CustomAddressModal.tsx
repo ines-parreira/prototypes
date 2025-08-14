@@ -4,13 +4,14 @@ import classNames from 'classnames'
 import { CountryCode } from 'libphonenumber-js'
 import { Form } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     BigCommerceCustomerAddress,
     BigCommerceCustomerAddressType,
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

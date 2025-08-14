@@ -4,7 +4,7 @@ import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { Separator } from '@gorgias/axiom'
+import { Button, Separator } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -12,7 +12,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
-import Button from 'pages/common/components/button/Button'
 import {
     areSourcesReady,
     jsonToWidgets,

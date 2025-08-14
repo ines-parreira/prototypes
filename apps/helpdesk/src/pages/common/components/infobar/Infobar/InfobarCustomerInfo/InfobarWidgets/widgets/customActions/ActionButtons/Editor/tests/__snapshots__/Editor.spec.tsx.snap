@@ -103,11 +103,11 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
     >
       <button
         aria-disabled="false"
-        class="wrapper fill secondary small"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           I am in snapshots
         </span>
@@ -132,11 +132,11 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
     >
       <button
         aria-disabled="false"
-        class="wrapper fill secondary small"
+        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           I am in snapshots too
         </span>

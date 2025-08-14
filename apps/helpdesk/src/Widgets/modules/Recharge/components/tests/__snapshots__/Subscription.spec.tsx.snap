@@ -7,18 +7,18 @@ exports[`Subscription AfterTitle should display only the cancel action because t
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       id="action-button-1"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         block
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <span
           id="action-button-1-tooltip-target"

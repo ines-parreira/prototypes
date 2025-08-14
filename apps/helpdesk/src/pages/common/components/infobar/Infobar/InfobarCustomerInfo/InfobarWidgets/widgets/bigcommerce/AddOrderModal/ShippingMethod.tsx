@@ -2,14 +2,13 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import {
     BigCommerceCart,
     BigCommerceConsignment,
     BigCommerceShippingOption,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Loader from 'pages/common/components/Loader/Loader'
 import RadioFieldSet, {

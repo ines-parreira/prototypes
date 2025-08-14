@@ -7,6 +7,8 @@ import React, {
     useState,
 } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -16,7 +18,6 @@ import {
     BigCommerceRefundType,
     IntegrationType,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import GeneralErrorPopupModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
 import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {

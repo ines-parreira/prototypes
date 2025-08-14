@@ -86,18 +86,18 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       id="action-button-3"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         attach_money
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <span
           id="action-button-3-tooltip-target"
@@ -116,18 +116,18 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       id="action-button-4"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         attach_money
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <span
           id="action-button-4-tooltip-target"
@@ -146,18 +146,18 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       id="action-button-5"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         attach_money
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <span
           id="action-button-5-tooltip-target"
@@ -176,18 +176,18 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       id="action-button-6"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         attach_money
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <span
           id="action-button-6-tooltip-target"
@@ -262,18 +262,18 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       id="action-button-1"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         block
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <span
           id="action-button-1-tooltip-target"
@@ -292,18 +292,18 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
   >
     <button
       aria-disabled="false"
-      class="wrapper actionButton fill secondary small"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       id="action-button-2"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         autorenew
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <span
           id="action-button-2-tooltip-target"

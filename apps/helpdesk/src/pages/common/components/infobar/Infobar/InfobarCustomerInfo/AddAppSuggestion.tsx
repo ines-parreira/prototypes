@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 
 export default function AddAppSuggestion() {
     return (

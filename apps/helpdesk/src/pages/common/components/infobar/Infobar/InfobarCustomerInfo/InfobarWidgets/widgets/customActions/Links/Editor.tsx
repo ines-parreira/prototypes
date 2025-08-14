@@ -8,10 +8,11 @@ import React, {
 
 import { Popover, PopoverBody } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import {
     Link,
     SubmitLink,

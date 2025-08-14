@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Label, LoadingSpinner } from '@gorgias/axiom'
+import { Button, Label, LoadingSpinner } from '@gorgias/axiom'
 
 import {
     BigCommerceActionType,
@@ -10,7 +10,6 @@ import {
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import { getMoneySymbol } from 'utils/getMoneySymbol'

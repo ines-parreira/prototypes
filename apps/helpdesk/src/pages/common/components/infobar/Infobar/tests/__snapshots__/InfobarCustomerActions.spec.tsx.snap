@@ -25,11 +25,11 @@ exports[`InfobarCustomerActions component should not render "set as customer" bu
 >
   <button
     aria-disabled="false"
-    class="wrapper fill secondary medium"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Merge
     </span>
@@ -61,11 +61,11 @@ exports[`InfobarCustomerActions component should render "set as customer" and "m
   </button>
   <button
     aria-disabled="false"
-    class="wrapper fill secondary medium"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Merge
     </span>

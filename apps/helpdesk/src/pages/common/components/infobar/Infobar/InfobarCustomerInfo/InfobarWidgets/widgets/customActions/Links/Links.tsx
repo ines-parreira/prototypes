@@ -2,11 +2,12 @@ import React, { memo, useCallback, useContext, useMemo, useState } from 'react'
 
 import { Collapse } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Source } from 'models/widget/types'
-import Button from 'pages/common/components/button/Button'
 import {
     Link as LinkType,
     SubmitLink,

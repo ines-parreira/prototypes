@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { BigCommerceCustomProduct } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
 import { getMoneySymbol } from 'utils/getMoneySymbol'
