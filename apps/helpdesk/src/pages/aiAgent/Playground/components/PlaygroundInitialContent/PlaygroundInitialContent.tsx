@@ -1,7 +1,6 @@
 import React from 'react'
 
-import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 
 import css from './PlaygroundInitialContent.less'
 
@@ -9,7 +8,7 @@ export const PlaygroundInitialContent = () => {
     return (
         <div className={css.container}>
             <div className={css.avatarContainer}>
-                <Avatar size={48} url={aiAgentAvatarSrc} shape="round" />
+                <Avatar isAIAgent={true} isAgent={true} name="AI Agent" />
             </div>
             <h2 className={css.title}>
                 Ask AI Agent a question your customers may ask

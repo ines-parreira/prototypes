@@ -4,7 +4,6 @@ import classnames from 'classnames'
 
 import { Badge, LoadingSpinner, Skeleton } from '@gorgias/axiom'
 
-import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import error from 'assets/img/icons/error.svg'
 import {
     MessageType,
@@ -188,21 +187,15 @@ const MessageContainer = ({
             })}
             role={role}
         >
-            <div>
+            <div className={css.messageAvatarContainer}>
                 {isAiAgentSender ? (
                     <Avatar
-                        isAgent={isAiAgentSender}
                         isAIAgent={isAiAgentSender}
+                        isAgent={isAiAgentSender}
                         name={sender}
-                        url={aiAgentAvatarSrc}
-                        className={css.messageAvatar}
                     />
                 ) : (
-                    <Avatar
-                        size={36}
-                        name={sender}
-                        className={css.messageAvatar}
-                    />
+                    <Avatar name={sender} className={css.messageAvatar} />
                 )}
             </div>
             <div className={css.messageContentContainer}>
