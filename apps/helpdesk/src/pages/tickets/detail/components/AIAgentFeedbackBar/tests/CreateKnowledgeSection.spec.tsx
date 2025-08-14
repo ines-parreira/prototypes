@@ -1,23 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
 import CreateKnowledgeSection from '../CreateKnowledgeSection'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
-
-jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
-    useAiAgentNavigation: () => ({
-        routes: {
-            guidanceTemplates: '/mock/guidance-templates',
-        },
-    }),
-}))
-
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
 
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
@@ -32,20 +18,17 @@ const mockUseAbilityChecker = jest.mocked(
         .useAbilityChecker,
 )
 
-const shopName = 'MyShop'
 const helpCenterId = 123
 
 const mockIsPassingRulesCheck = jest.fn()
 
 describe('CreateKnowledgeSection', () => {
     const defaultProps = {
-        shopName: shopName,
         helpCenterId: helpCenterId,
         onKnowledgeResourceCreateClick: jest.fn(),
     }
 
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
@@ -79,26 +62,6 @@ describe('CreateKnowledgeSection', () => {
         ).toBeInTheDocument()
     })
 
-    it('should contain correct links in dropdown items', () => {
-        render(<CreateKnowledgeSection {...defaultProps} />)
-
-        const button = screen.getByRole('button', { name: /Create knowledge/i })
-        fireEvent.click(button)
-
-        const guidanceLink = screen.getByText('Create Guidance').closest('a')
-        const articleLink = screen
-            .getByText('Create Help Center article')
-            .closest('a')
-
-        expect(guidanceLink).toHaveAttribute('href', '/mock/guidance-templates')
-        expect(guidanceLink).toHaveAttribute('target', '_blank')
-        expect(articleLink).toHaveAttribute(
-            'href',
-            '/app/settings/help-center/123/articles',
-        )
-        expect(articleLink).toHaveAttribute('rel', 'noreferrer')
-    })
-
     it('should open dropdown and closes it after clicking guidance link', () => {
         render(<CreateKnowledgeSection {...defaultProps} />)
 
@@ -116,8 +79,7 @@ describe('CreateKnowledgeSection', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should call openCreate on create guidance click when enableKnowledgeManagementFromTicketView is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should call openCreate on create guidance click', () => {
         const mockOnKnowledgeResourceCreateClick = jest.fn()
         render(
             <CreateKnowledgeSection
@@ -136,10 +98,7 @@ describe('CreateKnowledgeSection', () => {
             fireEvent.click(guidanceLink)
         }
 
-        expect(guidanceLink.closest('a')).not.toHaveAttribute(
-            'href',
-            '/mock/guidance-templates',
-        )
+        expect(guidanceLink.closest('a')).not.toHaveAttribute('href')
 
         expect(
             useKnowledgeSourceSideBarMocked().openCreate,
@@ -150,8 +109,7 @@ describe('CreateKnowledgeSection', () => {
         )
     })
 
-    it('should call openCreate on create article click when enableKnowledgeManagementFromTicketView is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should call openCreate on create article click', () => {
         const mockOnKnowledgeResourceCreateClick = jest.fn()
         render(
             <CreateKnowledgeSection
@@ -170,10 +128,7 @@ describe('CreateKnowledgeSection', () => {
             fireEvent.click(articleLink)
         }
 
-        expect(articleLink.closest('a')).not.toHaveAttribute(
-            'href',
-            '/app/settings/help-center/123/articles',
-        )
+        expect(articleLink.closest('a')).not.toHaveAttribute('href')
 
         expect(
             useKnowledgeSourceSideBarMocked().openCreate,
@@ -185,7 +140,6 @@ describe('CreateKnowledgeSection', () => {
     })
 
     it('should not display article link when the user does not have sufficient permissions', () => {
-        mockUseFlag.mockReturnValue(true)
         mockIsPassingRulesCheck.mockReturnValue(false)
 
         render(<CreateKnowledgeSection {...defaultProps} />)
@@ -201,11 +155,9 @@ describe('CreateKnowledgeSection', () => {
 
     describe('when helpCenterId is set', () => {
         it('should call onKnowledgeResourceCreateClick with stringified helpCenterId when helpCenterId is set', () => {
-            mockUseFlag.mockReturnValue(true)
             const mockOnKnowledgeResourceCreateClick = jest.fn()
             render(
                 <CreateKnowledgeSection
-                    shopName={shopName}
                     helpCenterId={456}
                     onKnowledgeResourceCreateClick={
                         mockOnKnowledgeResourceCreateClick

@@ -1,7 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
@@ -42,7 +41,6 @@ const mockResource = (overrides = {}) =>
     }) as unknown as KnowledgeResource
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = useFlag as jest.Mock
 
 describe('KnowledgeSourceFeedback', () => {
     const mockOpenPreview = jest.fn()
@@ -59,7 +57,6 @@ describe('KnowledgeSourceFeedback', () => {
             isLoading: false,
             guidanceActions: [],
         })
-        useFlagMock.mockReturnValue(false)
         useKnowledgeSourceSideBarMocked.mockReturnValue({
             selectedResource: null,
             mode: null,
@@ -72,7 +69,14 @@ describe('KnowledgeSourceFeedback', () => {
         mockOpenPreview.mockClear()
     })
     it('renders resource title and icon', () => {
-        render(<KnowledgeSourceFeedback {...defaultProps} />)
+        render(
+            <KnowledgeSourceFeedback
+                {...defaultProps}
+                resource={mockResource({
+                    resource: { resourceType: 'ORDER' },
+                })}
+            />,
+        )
 
         expect(screen.getByText('Test Knowledge Title')).toBeInTheDocument()
         expect(screen.getByText('open_in_new')).toBeInTheDocument()
@@ -94,6 +98,7 @@ describe('KnowledgeSourceFeedback', () => {
                 {...defaultProps}
                 resource={mockResource({
                     metadata: { url: 'https://example.com', isDeleted: true },
+                    resource: { resourceType: 'ORDER' },
                 })}
             />,
         )
@@ -203,15 +208,7 @@ describe('KnowledgeSourceFeedback', () => {
             fireEvent.click(knowledgeSource)
         }
 
-        it('should not call openPreview when feature flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
-            renderComponentAndClickSource(mockResource())
-
-            expect(mockOpenPreview).not.toHaveBeenCalled()
-        })
-
         it('should not call openPreview when resource is deleted', () => {
-            useFlagMock.mockReturnValue(true)
             const deletedResource = mockResource({
                 metadata: {
                     ...defaultResource.metadata,
@@ -223,8 +220,7 @@ describe('KnowledgeSourceFeedback', () => {
             expect(mockOpenPreview).not.toHaveBeenCalled()
         })
 
-        it('should call openPreview when feature flag is enabled and resource type is ARTICLE', () => {
-            useFlagMock.mockReturnValue(true)
+        it('should call openPreview resource type is ARTICLE', () => {
             const resource = mockResource({
                 resource: { resourceType: 'ARTICLE' },
             })
@@ -245,7 +241,6 @@ describe('KnowledgeSourceFeedback', () => {
         })
 
         it('should not call any functions when isMetadataLoading is true', () => {
-            useFlagMock.mockReturnValue(true)
             renderComponentAndClickSource(mockResource(), {
                 isMetadataLoading: true,
             })

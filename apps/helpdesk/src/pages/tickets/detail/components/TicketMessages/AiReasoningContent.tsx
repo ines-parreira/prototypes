@@ -25,7 +25,7 @@ export type AiAgentReasoningContentProps = {
         shopName?: string
         shopType?: string
     } | null
-    enableKnowledgeManagementFromTicketView: boolean
+
     openPreview: (params: {
         id: string
         url: string
@@ -41,7 +41,7 @@ export const AiAgentReasoningContent = ({
     reasoningResources,
     data,
     storeConfiguration,
-    enableKnowledgeManagementFromTicketView,
+
     openPreview,
 }: AiAgentReasoningContentProps) => {
     if (reasoningContent === null) return null
@@ -98,11 +98,9 @@ export const AiAgentReasoningContent = ({
                                 ? resourceData.isDeleted
                                 : false
 
-                        const isLink = enableKnowledgeManagementFromTicketView
-                            ? knowledgeResourceShouldBeLink(
-                                  resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
-                              )
-                            : true
+                        const isLink = knowledgeResourceShouldBeLink(
+                            resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                        )
 
                         // If the resource does not have a title it means that there was no match from the query resources so the ID of the resource is hallucinated
                         if (isDeleted && !resource.resourceTitle) {
@@ -120,9 +118,7 @@ export const AiAgentReasoningContent = ({
                                       if (resourceUrl) {
                                           window.open(resourceUrl, '_blank')
                                       }
-                                  } else if (
-                                      enableKnowledgeManagementFromTicketView
-                                  ) {
+                                  } else {
                                       openPreview({
                                           id: resource.resourceId,
                                           url:

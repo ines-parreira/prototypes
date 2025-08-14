@@ -1,8 +1,5 @@
 import { useRef, useState } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -15,27 +12,19 @@ import { AiAgentKnowledgeResourceTypeEnum } from './types'
 import { getHelpcenterIdAsString } from './utils'
 
 type LinkProps = {
-    href?: string
     text: string
     onClick?: () => void
 }
 
-const LinkInText = ({ href, text, onClick }: LinkProps) => {
+const LinkInText = ({ text, onClick }: LinkProps) => {
     return (
-        <a
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            className={css.dropdownLink}
-            onClick={onClick}
-        >
+        <a className={css.dropdownLink} onClick={onClick}>
             {text}
         </a>
     )
 }
 
 type CreateKnowledgeSectionProps = {
-    shopName: string
     helpCenterId?: number | null
     onKnowledgeResourceCreateClick: (
         resourceType: AiAgentKnowledgeResourceTypeEnum,
@@ -44,39 +33,28 @@ type CreateKnowledgeSectionProps = {
 }
 
 const CreateKnowledgeSection = ({
-    shopName,
     helpCenterId,
     onKnowledgeResourceCreateClick,
 }: CreateKnowledgeSectionProps) => {
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
-    const enableKnowledgeManagementFromTicketView = useFlag(
-        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
-    )
+
     const { isPassingRulesCheck } = useAbilityChecker()
-    const aiAgentNavigation = useAiAgentNavigation({ shopName })
     const { openCreate } = useKnowledgeSourceSideBar()
-    const guidanceLink = aiAgentNavigation.routes.guidanceTemplates
-    const helpCenterArticlesLink = `/app/settings/help-center/${helpCenterId}/articles`
     const canCreateArticle = isPassingRulesCheck(({ can }) =>
         can('create', 'ArticleEntity'),
     )
 
-    const getLinkProps = (
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
-        fallbackHref: string,
-    ) => {
-        return enableKnowledgeManagementFromTicketView
-            ? {
-                  onClick: () => {
-                      onKnowledgeResourceCreateClick(
-                          resourceType,
-                          getHelpcenterIdAsString(helpCenterId),
-                      )
-                      openCreate(resourceType)
-                  },
-              }
-            : { href: fallbackHref }
+    const getLinkProps = (resourceType: AiAgentKnowledgeResourceTypeEnum) => {
+        return {
+            onClick: () => {
+                onKnowledgeResourceCreateClick(
+                    resourceType,
+                    getHelpcenterIdAsString(helpCenterId),
+                )
+                openCreate(resourceType)
+            },
+        }
     }
 
     return (
@@ -114,7 +92,6 @@ const CreateKnowledgeSection = ({
                             text="Create Guidance"
                             {...getLinkProps(
                                 AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
-                                guidanceLink,
                             )}
                         />
                     </DropdownItem>
@@ -131,7 +108,6 @@ const CreateKnowledgeSection = ({
                                 text="Create Help Center article"
                                 {...getLinkProps(
                                     AiAgentKnowledgeResourceTypeEnum.ARTICLE,
-                                    helpCenterArticlesLink,
                                 )}
                             />
                         </DropdownItem>

@@ -4,8 +4,6 @@ import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
@@ -121,9 +119,6 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
     const activeTab = useAppSelector(getActiveTab)
     const dispatch = useAppDispatch()
 
-    const enableKnowledgeManagementFromTicketView = useFlag(
-        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
-    )
     const { openPreview } = useKnowledgeSourceSideBar()
 
     const { onFeedbackTabOpened } = useFeedbackTracking({
@@ -324,9 +319,6 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                     reasoningResources={reasoningResources}
                     data={reasoningMetadata?.data}
                     storeConfiguration={messageAiReasoning?.storeConfiguration}
-                    enableKnowledgeManagementFromTicketView={
-                        enableKnowledgeManagementFromTicketView
-                    }
                     openPreview={openPreview}
                 />
             </div>

@@ -4,8 +4,6 @@ import cn from 'classnames'
 
 import { IconButton, Skeleton, Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
@@ -54,16 +52,11 @@ const KnowledgeSourceFeedback = ({
     isMetadataLoading,
 }: KnowledgeSourceProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
-    const enableKnowledgeManagementFromTicketView = useFlag(
-        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
-    )
+
     const isDeleted = resource.metadata?.isDeleted || false
-    const isLink = enableKnowledgeManagementFromTicketView
-        ? knowledgeResourceShouldBeLink(
-              resource.resource
-                  .resourceType as AiAgentKnowledgeResourceTypeEnum,
-          )
-        : true
+    const isLink = knowledgeResourceShouldBeLink(
+        resource.resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+    )
 
     const href = isLink ? resource.metadata?.url : undefined
 
@@ -91,7 +84,7 @@ const KnowledgeSourceFeedback = ({
             return
         }
 
-        if (!enableKnowledgeManagementFromTicketView || isLink || isDeleted) {
+        if (isLink || isDeleted) {
             return
         }
 

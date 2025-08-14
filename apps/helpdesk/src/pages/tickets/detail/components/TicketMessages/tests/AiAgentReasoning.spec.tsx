@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
@@ -660,16 +659,7 @@ describe('AiAgentReasoning', () => {
             const mockWindowOpen = jest.fn()
             window.open = mockWindowOpen
 
-            // Mock the flag to make resources behave as links
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag ===
-                    FeatureFlagKey.EnableKnowledgeManagementFromTicketView
-                ) {
-                    return false // This will make knowledgeResourceShouldBeLink return true
-                }
-                return false
-            })
+            mockKnowledgeResourceShouldBeLink.mockReturnValue(true)
 
             renderComponent()
             expandComponent()
@@ -700,17 +690,6 @@ describe('AiAgentReasoning', () => {
                 openEdit: jest.fn(),
                 openCreate: jest.fn(),
                 closeModal: jest.fn(),
-            })
-
-            // Mock the flag to enable knowledge management
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag ===
-                    FeatureFlagKey.EnableKnowledgeManagementFromTicketView
-                ) {
-                    return true
-                }
-                return false
             })
 
             mockKnowledgeResourceShouldBeLink.mockReturnValue(false)
@@ -753,15 +732,7 @@ describe('AiAgentReasoning', () => {
                 isLoading: false,
             })
 
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag ===
-                    FeatureFlagKey.EnableKnowledgeManagementFromTicketView
-                ) {
-                    return false
-                }
-                return false
-            })
+            mockKnowledgeResourceShouldBeLink.mockReturnValue(true)
 
             renderComponent()
             expandComponent()

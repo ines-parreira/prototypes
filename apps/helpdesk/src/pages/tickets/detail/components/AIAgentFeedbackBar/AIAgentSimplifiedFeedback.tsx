@@ -354,7 +354,6 @@ const AIAgentSimplifiedFeedback = () => {
                         )}
 
                         <CreateKnowledgeSection
-                            shopName={shopName as string}
                             helpCenterId={storeConfiguration?.helpCenterId}
                             onKnowledgeResourceCreateClick={
                                 onKnowledgeResourceCreateClick

@@ -6,8 +6,6 @@ import { Badge, BadgeIcon, Label, Skeleton } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import useAppSelector from 'hooks/useAppSelector'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
@@ -532,9 +530,6 @@ export const KnowledgeTag = ({
     shopType,
 }: KnowledgeTagProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
-    const enableKnowledgeManagementFromTicketView = useFlag(
-        FeatureFlagKey.EnableKnowledgeManagementFromTicketView,
-    )
 
     if (!choice) {
         return null
@@ -554,14 +549,12 @@ export const KnowledgeTag = ({
     }
 
     const label = choice.displayLabel.split('::').pop()
-    const isLink = enableKnowledgeManagementFromTicketView
-        ? knowledgeResourceShouldBeLink(type)
-        : true
+    const isLink = knowledgeResourceShouldBeLink(type)
 
     const onClick = () => {
         if (!label) return
 
-        if (enableKnowledgeManagementFromTicketView && !isLink) {
+        if (!isLink) {
             openPreview(popoverProps)
         }
     }
