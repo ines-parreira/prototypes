@@ -679,7 +679,7 @@ describe('PromoCard', () => {
             })
         })
 
-        it('should hide CTA when user rewinds video after it ends', async () => {
+        it('should hide CTA when user plays video after it ends', async () => {
             render(
                 <PromoCard>
                     <PromoCard.Media>
@@ -713,12 +713,6 @@ describe('PromoCard', () => {
 
             const video = screen.getByRole('dialog').querySelector('video')!
 
-            // Mock video duration
-            Object.defineProperty(video, 'duration', {
-                writable: true,
-                value: 100,
-            })
-
             // Simulate video ending - CTA should appear
             act(() => {
                 fireEvent.ended(video)
@@ -733,17 +727,12 @@ describe('PromoCard', () => {
                 ).toBeInTheDocument()
             })
 
-            // Simulate user rewinding video (currentTime < duration - 1)
-            Object.defineProperty(video, 'currentTime', {
-                writable: true,
-                value: 50, // Rewound to middle of video
-            })
-
+            // Simulate user playing video again (after rewinding or seeking)
             act(() => {
-                fireEvent.timeUpdate(video)
+                fireEvent.play(video)
             })
 
-            // CTA and close button should be hidden when user rewinds
+            // CTA should be hidden when user plays video, close button should remain
             await waitFor(() => {
                 expect(
                     screen.queryByRole('button', { name: /video end cta/i }),

@@ -454,12 +454,9 @@ const VideoModal = ({ videoUrl, ctaButton }: VideoModalProps) => {
         setShowCTA(true)
     }
 
-    const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-        const video = e.currentTarget
-
-        if (showCTA && video.currentTime < video.duration - 1) {
-            setShowCTA(false)
-        }
+    const handlePlay = () => {
+        // Hide CTA when user starts playing video again (e.g., after rewinding)
+        setShowCTA(false)
     }
 
     const handleClick = () => {
@@ -499,7 +496,7 @@ const VideoModal = ({ videoUrl, ctaButton }: VideoModalProps) => {
                     autoPlay
                     playsInline
                     onEnded={handleVideoEnd}
-                    onTimeUpdate={handleTimeUpdate}
+                    onPlay={handlePlay}
                 />
                 {showCTA && ctaButton && (
                     <div className={css.videoCTAOverlay}>
