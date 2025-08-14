@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React from 'react'
 
 import { Label } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-client'
@@ -18,16 +18,16 @@ export type EmailOption = {
 type EmailMultiselectProps = {
     email: string
     setEmail: (email: string) => void
+    handleProviderChange: (provider: string) => void
+    forwardingProvider: string | null
 }
 
 export const EmailMultiselect = ({
     email,
     setEmail,
+    handleProviderChange,
+    forwardingProvider = null,
 }: EmailMultiselectProps) => {
-    const [forwardingProvider, setForwardingProvider] = useState<
-        'gmail' | 'outlook'
-    >('gmail')
-
     const emailOptions = useEmailIntegrations()
 
     const selectedProvider =
@@ -42,10 +42,6 @@ export const EmailMultiselect = ({
         value: provider,
         label: provider.charAt(0).toUpperCase() + provider.slice(1),
     }))
-
-    const handleProviderChange = (provider: string) => {
-        setForwardingProvider(provider as 'gmail' | 'outlook')
-    }
 
     return (
         <>

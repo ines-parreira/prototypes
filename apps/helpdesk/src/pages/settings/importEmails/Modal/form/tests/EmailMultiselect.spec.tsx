@@ -15,14 +15,20 @@ const mockUseEmailIntegrations = jest.mocked(
     require('../hooks/useEmailIntegrations').useEmailIntegrations,
 )
 
-const renderEmailMultiselect = (email = '') => {
+const renderEmailMultiselect = (email = '', forwardingProvider = 'gmail') => {
     const setEmail = jest.fn()
+    const handleProviderChange = jest.fn()
 
     const utils = renderWithQueryClientProvider(
-        <EmailMultiselect email={email} setEmail={setEmail} />,
+        <EmailMultiselect
+            email={email}
+            setEmail={setEmail}
+            handleProviderChange={handleProviderChange}
+            forwardingProvider={forwardingProvider}
+        />,
     )
 
-    return { ...utils, setEmail }
+    return { ...utils, setEmail, handleProviderChange }
 }
 
 describe('EmailMultiselect', () => {
@@ -129,7 +135,7 @@ describe('EmailMultiselect', () => {
             const gmailOption = screen.getByText('support@gmail.com')
             await user.click(gmailOption)
 
-            expect(setEmail).toHaveBeenCalledWith('gmail/support@gmail.com')
+            expect(setEmail).toHaveBeenCalledWith('support@gmail.com')
         })
 
         it('shows "Add new email" option in dropdown', async () => {
@@ -167,12 +173,13 @@ describe('EmailMultiselect', () => {
 
         it('allows changing the forwarding provider', async () => {
             const user = userEvent.setup()
-            renderEmailMultiselect('hello@company.com')
+            const { handleProviderChange } =
+                renderEmailMultiselect('hello@company.com')
 
             const outlookRadio = screen.getByRole('radio', { name: 'Outlook' })
             await user.click(outlookRadio)
 
-            expect(outlookRadio).toBeChecked()
+            expect(handleProviderChange).toHaveBeenCalledWith('outlook')
         })
 
         it('renders provider label as required', () => {
@@ -285,13 +292,18 @@ describe('EmailMultiselect', () => {
 
         it('maintains provider state when switching between forwarding emails', async () => {
             const user = userEvent.setup()
-            renderEmailMultiselect('hello@company.com')
+            const { handleProviderChange } = renderEmailMultiselect(
+                'hello@company.com',
+                'outlook',
+            )
 
             const outlookRadio = screen.getByRole('radio', { name: 'Outlook' })
-            await user.click(outlookRadio)
             expect(outlookRadio).toBeChecked()
 
-            expect(outlookRadio).toBeChecked()
+            // Click on Gmail to change provider
+            const gmailRadio = screen.getByRole('radio', { name: 'Gmail' })
+            await user.click(gmailRadio)
+            expect(handleProviderChange).toHaveBeenCalledWith('gmail')
         })
     })
 

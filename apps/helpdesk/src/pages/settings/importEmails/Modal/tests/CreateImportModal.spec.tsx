@@ -3,6 +3,8 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { IntegrationType } from '@gorgias/helpdesk-client'
+
 import CreateImportModal from '../CreateImportModal'
 
 jest.mock('../form/hooks/useEmailIntegrations', () => ({
@@ -239,8 +241,11 @@ describe('CreateImportModal', () => {
     describe('Email integrations', () => {
         it('should work with email integrations from API', () => {
             mockUseEmailIntegrations.mockReturnValue([
-                { provider: 'gmail', email: 'support@gmail.com' },
-                { provider: 'outlook', email: 'sales@outlook.com' },
+                { provider: IntegrationType.Gmail, email: 'support@gmail.com' },
+                {
+                    provider: IntegrationType.Outlook,
+                    email: 'sales@outlook.com',
+                },
             ])
 
             render(<CreateImportModal {...defaultProps} />)
@@ -263,7 +268,7 @@ describe('CreateImportModal', () => {
             } as Location
 
             mockUseEmailIntegrations.mockReturnValue([
-                { provider: 'gmail', email: 'test@gmail.com' },
+                { provider: IntegrationType.Gmail, email: 'test@gmail.com' },
             ])
         })
 
@@ -313,7 +318,10 @@ describe('CreateImportModal', () => {
         it('should construct URL with correct provider from email format', async () => {
             const user = userEvent.setup()
             mockUseEmailIntegrations.mockReturnValue([
-                { provider: 'outlook', email: 'support@outlook.com' },
+                {
+                    provider: IntegrationType.Outlook,
+                    email: 'support@outlook.com',
+                },
             ])
 
             render(<CreateImportModal {...defaultProps} />)

@@ -80,13 +80,7 @@ export const EmailSelectSearch = ({
                                         label: option.email,
                                         value: option.email,
                                     }}
-                                    onClick={() =>
-                                        setEmail(
-                                            option.provider +
-                                                '/' +
-                                                option.email,
-                                        )
-                                    }
+                                    onClick={() => setEmail(option.email)}
                                     shouldCloseOnSelect
                                 >
                                     <div className={css.emailOptionContainer}>

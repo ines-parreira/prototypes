@@ -8,6 +8,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import { EmailMultiselect } from './form/EmailMultiselect'
+import { useEmailIntegrations } from './form/hooks/useEmailIntegrations'
 import { TimeFrameField } from './form/TimeFrameField'
 
 import css from './CreateImportModal.less'
@@ -19,28 +20,57 @@ type CreateImportModalProps = {
 
 const CreateImportModal = ({ isOpen, onClose }: CreateImportModalProps) => {
     const [email, setEmail] = useState('')
+    const [forwardingProvider, setForwardingProvider] = useState<
+        'gmail' | 'outlook'
+    >('gmail')
     const [timeframe, setTimeframe] = useState('')
     const [isFormSubmitting, setIsFormSubmitting] = useState(false)
     const [importCreationError, setImportCreationError] = useState(false)
 
+    const emailOptions = useEmailIntegrations()
     const isFormValid = !!(email && timeframe)
+
+    const handleProviderChange = (provider: string) => {
+        setForwardingProvider(provider as 'gmail' | 'outlook')
+    }
 
     const handleSubmit = async () => {
         setIsFormSubmitting(true)
         setImportCreationError(false)
         try {
-            const [provider, addr] = email.split('/')
+            // Find the selected email option to determine the provider
+            const selectedEmailOption = emailOptions.find(
+                (option) => option.email === email,
+            )
+
+            // For forwarding emails (IntegrationType.Email), use the selected forwarding provider
+            // For direct provider emails (Gmail/Outlook), use the provider from the email option
+            let selectedProvider = forwardingProvider
+
+            if (
+                selectedEmailOption &&
+                (selectedEmailOption.provider === 'gmail' ||
+                    selectedEmailOption.provider === 'outlook')
+            ) {
+                selectedProvider = selectedEmailOption.provider
+            }
+
             const redirectUrl = new URL(
-                '/integrations/' + provider + '/auth/import/oauth-redirect',
+                '/integrations/' +
+                    selectedProvider +
+                    '/auth/import/oauth-redirect',
                 window.location.origin,
             )
-            redirectUrl.searchParams.set('provider_address', addr)
+
+            redirectUrl.searchParams.set('provider_address', email)
+
             const import_window: string[] = timeframe.split(' to ')
             redirectUrl.searchParams.set(
                 'import_window_start',
                 import_window[0],
             )
             redirectUrl.searchParams.set('import_window_end', import_window[1])
+
             window.location.href = redirectUrl.toString()
             setEmail('')
             setTimeframe('')
@@ -82,7 +112,12 @@ const CreateImportModal = ({ isOpen, onClose }: CreateImportModalProps) => {
                     </div>
                 )}
                 <form>
-                    <EmailMultiselect email={email} setEmail={setEmail} />
+                    <EmailMultiselect
+                        email={email}
+                        setEmail={setEmail}
+                        handleProviderChange={handleProviderChange}
+                        forwardingProvider={forwardingProvider}
+                    />
                     <TimeFrameField
                         timeframe={timeframe}
                         setTimeframe={setTimeframe}
