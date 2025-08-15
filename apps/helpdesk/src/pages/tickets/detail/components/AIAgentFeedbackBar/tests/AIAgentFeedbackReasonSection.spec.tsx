@@ -58,6 +58,15 @@ jest.mock('custom-fields/components/MultiLevelSelect', () => {
                     <option value="Wrong knowledge used">
                         Wrong knowledge used
                     </option>
+                    <option value="Didn't follow knowledge content">
+                        Didn't follow knowledge content
+                    </option>
+                    <option value="Action not performed">
+                        Action not performed
+                    </option>
+                    <option value="Tone of voice not aligned">
+                        Tone of voice not aligned
+                    </option>
                     <option value="Hallucination">Hallucination</option>
                     <option value="Repetitive messages">
                         Repetitive messages

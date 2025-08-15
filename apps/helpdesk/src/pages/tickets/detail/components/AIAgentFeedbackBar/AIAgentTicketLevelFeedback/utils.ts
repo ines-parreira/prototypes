@@ -7,6 +7,9 @@ export const badInteractionOptions: Record<
     [AiAgentBadInteractionReason.WRONG_KNOWLEDGE]: 'Wrong knowledge used',
     [AiAgentBadInteractionReason.IGNORED_KNOWLEDGE]:
         "Didn't follow knowledge content",
+    [AiAgentBadInteractionReason.ACTION_NOT_PERFORMED]: 'Action not performed',
+    [AiAgentBadInteractionReason.TONE_OF_VOICE_NOT_ALIGNED]:
+        'Tone of voice not aligned',
     [AiAgentBadInteractionReason.HALLUCINATION]: 'Hallucination',
     [AiAgentBadInteractionReason.REPETITIVE_MESSAGES]: 'Repetitive messages',
     [AiAgentBadInteractionReason.SHOULD_NOT_HAND_OVER]: 'Should not hand over',
