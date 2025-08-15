@@ -84,6 +84,7 @@ export const ProductRecommendationRuleCard = ({
             id: product.id.toString(),
             title: product.title,
             img: product.image?.src,
+            status: product.status,
         }))
 
     return (
@@ -95,6 +96,7 @@ export const ProductRecommendationRuleCard = ({
                 disableActions={isFetching || isUpserting}
                 hasImages={true}
                 badge={typeMap[type].badge}
+                type={type}
                 addButton={{
                     label: 'Add products',
                     onClick: () => setIsDrawerOpen(true),
@@ -121,6 +123,7 @@ export const ProductRecommendationRuleCard = ({
                 title="Add products"
                 itemLabelPlural="products"
                 selectedItemIds={productIds}
+                type={type}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
                 items={mapProducts(allProducts)}
@@ -139,6 +142,7 @@ export const ProductRecommendationRuleCard = ({
                 items={mapProducts(selectedProducts)}
                 isOpen={isSeeAllDrawerOpen}
                 hasImages={true}
+                type={type}
                 onClose={() => setIsSeeAllDrawerOpen(false)}
                 onSubmit={onUpsert}
             />

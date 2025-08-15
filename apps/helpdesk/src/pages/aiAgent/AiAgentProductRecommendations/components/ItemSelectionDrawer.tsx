@@ -15,6 +15,8 @@ import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { DraftBadge } from './DraftBadge'
+
 import css from './ItemSelectionDrawer.less'
 
 export const ItemSelectionDrawer = ({
@@ -24,6 +26,7 @@ export const ItemSelectionDrawer = ({
     title,
     selectedItemIds,
     itemLabelPlural,
+    type,
     items,
     pagination,
     onClose,
@@ -36,10 +39,12 @@ export const ItemSelectionDrawer = ({
     title: string
     selectedItemIds: string[]
     itemLabelPlural: string
+    type?: 'promote' | 'exclude'
     items: Array<{
         id: string
         title: string
         img?: string
+        status?: string
     }>
     pagination: {
         hasPrevPage: boolean
@@ -171,6 +176,14 @@ export const ItemSelectionDrawer = ({
                                     <div className={css.itemTitle}>
                                         {item.title}
                                     </div>
+                                    {item.status === 'draft' && (
+                                        <div>
+                                            <DraftBadge
+                                                type={type}
+                                                variant="selection-drawer"
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                     </div>

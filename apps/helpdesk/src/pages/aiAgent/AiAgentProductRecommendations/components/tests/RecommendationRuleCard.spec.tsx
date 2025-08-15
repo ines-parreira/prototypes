@@ -19,6 +19,7 @@ const renderComponent = (
             id: string
             title: string
             img?: string
+            status?: string
         }>
     } = {},
 ) => {
@@ -50,6 +51,7 @@ const renderComponent = (
             disableActions={disableActions}
             hasImages={hasImages}
             badge={{ label: 'Excluded', type: 'light-error' }}
+            type="exclude"
             addButton={{ label: 'Add Products', onClick: mockOnAddButtonClick }}
             itemLabelSingular={itemLabelSingular}
             itemLabelPlural={itemLabelPlural}
@@ -196,5 +198,83 @@ describe('RecommendationRuleCard', () => {
             screen.getAllByRole('button', { name: 'Remove product' }),
         ).toHaveLength(3)
         expect(screen.queryAllByText('Loading...')).toHaveLength(1)
+    })
+
+    it('should render draft badges for products with draft status', () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Active product', status: 'active' },
+                { id: '2', title: 'Draft product', status: 'draft' },
+                { id: '3', title: 'Another draft product', status: 'draft' },
+                { id: '4', title: 'Published product', status: 'published' },
+            ],
+        })
+
+        const draftBadges = screen.getAllByText('Draft')
+        expect(draftBadges).toHaveLength(2)
+
+        const excludedBadges = screen.getAllByText('Excluded')
+        expect(excludedBadges).toHaveLength(2)
+
+        expect(screen.getByText('Active product')).toBeInTheDocument()
+        expect(screen.getByText('Draft product')).toBeInTheDocument()
+        expect(screen.getByText('Another draft product')).toBeInTheDocument()
+        expect(screen.getByText('Published product')).toBeInTheDocument()
+    })
+
+    it('should show draft badge for exclude type', () => {
+        const screen = renderComponent({
+            items: [{ id: '1', title: 'Draft product', status: 'draft' }],
+        })
+
+        const draftBadge = screen.getByText('Draft')
+        expect(draftBadge).toBeInTheDocument()
+    })
+
+    it('should show draft badge for promote type', () => {
+        const screen = renderComponent({
+            items: [{ id: '1', title: 'Draft product', status: 'draft' }],
+        })
+
+        const draftBadge = screen.getByText('Draft')
+        expect(draftBadge).toBeInTheDocument()
+    })
+
+    it('should not render draft badges for products without draft status', () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Active product', status: 'active' },
+                { id: '2', title: 'Published product', status: 'published' },
+                { id: '3', title: 'No status product' },
+            ],
+        })
+
+        const draftBadges = screen.queryAllByText('Draft')
+        expect(draftBadges).toHaveLength(0)
+
+        const excludedBadges = screen.getAllByText('Excluded')
+        expect(excludedBadges).toHaveLength(3)
+    })
+
+    it('should handle mixed status products correctly', () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Draft product 1', status: 'draft' },
+                { id: '2', title: 'Active product', status: 'active' },
+                { id: '3', title: 'Draft product 2', status: 'draft' },
+                { id: '4', title: 'No status product' },
+            ],
+        })
+
+        const draftBadges = screen.getAllByText('Draft')
+        expect(draftBadges).toHaveLength(2)
+
+        const excludedBadges = screen.getAllByText('Excluded')
+        expect(excludedBadges).toHaveLength(2)
+
+        expect(screen.getByText('Draft product 1')).toBeInTheDocument()
+        expect(screen.getByText('Active product')).toBeInTheDocument()
+        expect(screen.getByText('Draft product 2')).toBeInTheDocument()
+        expect(screen.getByText('No status product')).toBeInTheDocument()
     })
 })

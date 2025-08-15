@@ -9,6 +9,8 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
+import { DraftBadge } from './DraftBadge'
+
 import css from './RecommendationRuleCard.less'
 
 export const RecommendationRuleCard = ({
@@ -18,6 +20,7 @@ export const RecommendationRuleCard = ({
     disableActions,
     hasImages,
     badge,
+    type,
     addButton,
     itemLabelSingular,
     itemLabelPlural,
@@ -34,6 +37,7 @@ export const RecommendationRuleCard = ({
         label: string
         type: ColorType
     }
+    type: 'promote' | 'exclude'
     addButton: {
         label: string
         onClick: () => void
@@ -44,6 +48,7 @@ export const RecommendationRuleCard = ({
         id: string
         title: string
         img?: string
+        status?: string
     }>
     onDelete: (id: string) => Promise<void>
     onSeeAllClick: () => void
@@ -115,9 +120,13 @@ export const RecommendationRuleCard = ({
                         )}
                         <div className={css.itemTitle}>{item.title}</div>
                         <div>
-                            <Badge type={badge.type} upperCase={false}>
-                                {badge.label}
-                            </Badge>
+                            {item.status === 'draft' ? (
+                                <DraftBadge type={type} variant="main-list" />
+                            ) : (
+                                <Badge type={badge.type} upperCase={false}>
+                                    {badge.label}
+                                </Badge>
+                            )}
                         </div>
                         <div className={css.iconContainer}>
                             {deletingItemId === item.id && (

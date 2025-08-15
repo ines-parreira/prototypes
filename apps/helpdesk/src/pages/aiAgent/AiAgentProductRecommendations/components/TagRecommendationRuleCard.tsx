@@ -81,6 +81,7 @@ export const TagRecommendationRuleCard = ({
                 disableActions={isFetchingRules || isUpserting}
                 hasImages={false}
                 badge={typeMap[type].badge}
+                type={type}
                 addButton={{
                     label: 'Add tags',
                     onClick: () => setIsDrawerOpen(true),

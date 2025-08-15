@@ -8,6 +8,7 @@ export const SelectedItemsDrawer = ({
     items,
     isOpen,
     hasImages,
+    type,
     onClose,
     onSubmit,
 }: {
@@ -17,9 +18,11 @@ export const SelectedItemsDrawer = ({
         id: string
         title: string
         img?: string
+        status?: string
     }>
     isOpen: boolean
     hasImages: boolean
+    type?: 'promote' | 'exclude'
     onClose: () => void
     onSubmit: (itemsIds: string[]) => Promise<void>
 }) => {
@@ -47,6 +50,7 @@ export const SelectedItemsDrawer = ({
             title={title}
             itemLabelPlural={itemLabelPlural}
             selectedItemIds={items.map((item) => item.id)}
+            type={type}
             onClose={onClose}
             onSubmit={onSubmit}
             items={filteredItems.slice(

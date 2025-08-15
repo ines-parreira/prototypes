@@ -79,6 +79,7 @@ export const VendorRecommendationRuleCard = ({
                 disableActions={isFetchingRules || isUpserting}
                 hasImages={false}
                 badge={typeMap[type].badge}
+                type={type}
                 addButton={{
                     label: 'Add vendors',
                     onClick: () => setIsDrawerOpen(true),
