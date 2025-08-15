@@ -378,6 +378,34 @@ describe('usePrimaryCTA', () => {
         })
     })
 
+    it('returns Hidden variant for expired trial - promo card should not be shown', () => {
+        const props = {
+            trialAccess: createMockTrialAccess({
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialExpired: true,
+                isAdminUser: true,
+            }),
+            trialFlow: createMockTrialFlow(),
+            isDisabled: false,
+            trialMetrics: createMockTrialMetrics(),
+            routeShopName: undefined,
+            firstShopifyIntegration: shopifyIntegration,
+        }
+
+        const { result } = renderHook(() => usePrimaryCTA(props))
+
+        expect(result.current).toEqual({
+            variant: PromoCardVariant.Hidden,
+            button: {
+                label: 'Learn more',
+                href: expect.any(String),
+                target: '_blank',
+                onClick: expect.any(Function),
+                disabled: false,
+            },
+        })
+    })
+
     it('returns Hidden variant with learn more button as default', () => {
         const props = {
             trialAccess: createMockTrialAccess({

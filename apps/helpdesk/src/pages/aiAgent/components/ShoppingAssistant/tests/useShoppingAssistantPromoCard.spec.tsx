@@ -1783,6 +1783,29 @@ describe('useShoppingAssistantPromoCard', () => {
         })
     })
 
+    describe('Expired trial state', () => {
+        it('should return null when trial has started and expired', () => {
+            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialExpired: true,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantPromoCard(
+                        'first-shop',
+                        mockShopifyIntegrations,
+                    ),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.promoCardContent).toBeNull()
+        })
+    })
+
     describe('isLoading property', () => {
         it('should return false when both trialMetrics and trialAccess are not loading', () => {
             mockUseShoppingAssistantTrialAccess.mockReturnValue({

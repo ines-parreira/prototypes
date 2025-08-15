@@ -48,7 +48,9 @@ export const usePrimaryCTA = ({
     const gmvAboveThreshold =
         gmvInfluencedRate > SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
     const isOptedOut = trialAccess.hasCurrentStoreTrialOptedOut
-    const isInTrial = trialAccess.hasCurrentStoreTrialStarted
+    const isInTrial =
+        trialAccess.hasCurrentStoreTrialStarted &&
+        !trialAccess.hasCurrentStoreTrialExpired
 
     const redirectToFirstShopifyIntegration = () => {
         history.push(

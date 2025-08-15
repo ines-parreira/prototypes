@@ -81,7 +81,8 @@ export const useShoppingAssistantPromoCard = (
         trialAccess.canSeeTrialCTA ||
         trialAccess.canBookDemo ||
         trialAccess.canNotifyAdmin ||
-        trialAccess.hasCurrentStoreTrialStarted ||
+        (trialAccess.hasCurrentStoreTrialStarted &&
+            !trialAccess.hasCurrentStoreTrialExpired) ||
         trialAccess.hasAnyTrialStarted
 
     const promoCardContent = useMemo((): PromoCardContent | null => {
