@@ -1,5 +1,5 @@
 {
-    "extends": "@repo/tsconfigs/tsconfig.react.json",
+    "extends": "@repo/config/tsconfig.react.json",
     "compilerOptions": {
         "baseUrl": "."
     },

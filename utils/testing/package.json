@@ -15,30 +15,29 @@
         "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=2 --testTimeout=10000 --silent --forceExit"
     },
     "peerDependencies": {
-        "@testing-library/dom": "catalog:testing-library",
-        "@testing-library/react": "catalog:testing-library",
-        "@testing-library/user-event": "catalog:testing-library",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
         "react": "catalog:react",
         "react-dom": "catalog:react"
     },
     "devDependencies": {
-        "@repo/jest-config": "workspace:*",
-        "@repo/tsconfigs": "workspace:*",
-        "@swc/core": "catalog:jest",
-        "@swc/jest": "catalog:jest",
-        "@testing-library/dom": "catalog:testing-library",
-        "@testing-library/react": "catalog:testing-library",
-        "@testing-library/user-event": "catalog:testing-library",
+        "@repo/config": "workspace:*",
+        "@swc/core": "catalog:test",
+        "@swc/jest": "catalog:test",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
-        "@types/jest": "catalog:jest",
+        "@types/jest": "catalog:test",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
-        "jest": "catalog:jest",
+        "jest": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
-        "swc_mut_cjs_exports": "catalog:jest",
+        "swc_mut_cjs_exports": "catalog:test",
         "typescript": "catalog:typescript"
     }
 }

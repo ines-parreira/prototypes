@@ -3,8 +3,6 @@ import React from 'react'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import '@testing-library/jest-dom/extend-expect'
-
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 import EmailIntegrationModal from '../EmailIntegrationModal'

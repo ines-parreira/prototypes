@@ -1,5 +1,5 @@
 {
-    "extends": "@repo/tsconfigs/tsconfig.common.json",
+    "extends": "@repo/config/tsconfig.common.json",
     "compilerOptions": {
         "baseUrl": "."
     },

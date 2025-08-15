@@ -2,8 +2,6 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import '@testing-library/jest-dom/extend-expect'
-
 import EmailPreview from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailPreview'
 
 describe('<EmailPreview />', () => {

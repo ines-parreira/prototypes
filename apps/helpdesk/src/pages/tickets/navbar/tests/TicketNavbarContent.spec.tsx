@@ -1,9 +1,6 @@
 import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-
-import '@testing-library/jest-dom'
-
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'

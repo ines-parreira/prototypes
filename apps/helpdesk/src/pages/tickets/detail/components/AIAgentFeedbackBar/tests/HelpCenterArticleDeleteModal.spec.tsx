@@ -1,7 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import '@testing-library/jest-dom'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OptionItem } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'

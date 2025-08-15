@@ -1,12 +1,9 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
-
-import '@testing-library/jest-dom/extend-expect'
-
-import { assumeMock, getLastMockCall } from '@repo/testing'
 
 import { Form, FormField, FormSubmitButton } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'

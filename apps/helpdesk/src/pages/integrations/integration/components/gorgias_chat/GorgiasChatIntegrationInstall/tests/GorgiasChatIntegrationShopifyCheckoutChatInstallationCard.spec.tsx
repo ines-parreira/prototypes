@@ -3,8 +3,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Map } from 'immutable'
 
-import '@testing-library/jest-dom'
-
 import useShopifyCheckoutChatInstallation from '../../hooks/useShopifyCheckoutChatInstallation'
 import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from '../GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
 

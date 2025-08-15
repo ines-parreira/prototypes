@@ -7,9 +7,6 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
-
-import '@testing-library/jest-dom'
-
 import { Set } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'

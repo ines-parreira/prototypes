@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom'
 import './mockAudioContext'
 
 import MutationObserver from '@sheerun/mutationobserver-shim'

@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react'
 
-import '@testing-library/jest-dom'
-
 import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 

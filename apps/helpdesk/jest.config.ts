@@ -1,5 +1,4 @@
-import defaultConfig from '@repo/jest-config'
-import type { Config } from 'jest'
+import { type Config, defaultConfig } from '@repo/config/jest'
 
 const config: Config = {
     ...defaultConfig,
@@ -14,7 +13,7 @@ const config: Config = {
     },
     setupFiles: ['jest-launchdarkly-mock', 'construct-style-sheets-polyfill'],
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
-    setupFilesAfterEnv: ['./tests/setup.tsx'],
+    setupFilesAfterEnv: ['./tests/setup.tsx', '@testing-library/jest-dom'],
     testEnvironmentOptions: {
         customExportConditions: ['msw'],
     },

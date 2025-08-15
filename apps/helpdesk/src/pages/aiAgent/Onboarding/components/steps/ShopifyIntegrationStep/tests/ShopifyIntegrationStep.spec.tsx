@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -9,11 +10,6 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-
-import '@testing-library/jest-dom/extend-expect'
-
-import { assumeMock } from '@repo/testing'
-
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreIntegration } from 'models/integration/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'

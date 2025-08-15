@@ -5,7 +5,9 @@ import type { Config } from 'jest'
  * https://jestjs.io/docs/configuration
  */
 
-const config: Config = {
+export type { Config }
+
+export const defaultConfig: Config = {
     // The directory where Jest should store its cached dependency information
     cacheDirectory: '.cache/jest/',
     // Automatically clear mock calls, instances, contexts and results before every test
@@ -73,5 +75,3 @@ const config: Config = {
         ],
     },
 }
-
-export default config

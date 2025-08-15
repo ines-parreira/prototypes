@@ -1,9 +1,7 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
-
-import '@testing-library/jest-dom'
-
-import React from 'react'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'

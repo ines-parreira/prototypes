@@ -1,8 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
-
-import '@testing-library/jest-dom/extend-expect'
-
 import { StaticRouter } from 'react-router-dom'
 
 import { GUIDANCE } from 'pages/aiAgent/constants'

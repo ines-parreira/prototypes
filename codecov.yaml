@@ -33,6 +33,7 @@ ignore:
   - src/utils/launchDarkly.ts
   - src/pages/automate/workflows/utils/testVisualBuilderScaffolding.tsx
   - src/tests/mockedReactFlow.ts
+  - domains/**/index.ts
 
 coverage:
   status:

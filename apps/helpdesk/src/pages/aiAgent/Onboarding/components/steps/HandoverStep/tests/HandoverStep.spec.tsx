@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom/extend-expect'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'

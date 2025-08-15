@@ -2,8 +2,6 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
-import '@testing-library/jest-dom/extend-expect'
-
 import { NewToggleButton } from '../NewToggleButton'
 
 const renderComponent = (

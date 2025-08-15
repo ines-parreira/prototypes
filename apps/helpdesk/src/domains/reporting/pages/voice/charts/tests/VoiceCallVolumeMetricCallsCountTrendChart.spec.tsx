@@ -1,16 +1,12 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-
-import '@testing-library/jest-dom/extend-expect'
-
-import { assumeMock } from '@repo/testing'
-
-import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { VoiceCallVolumeMetricCallsCountTrendChart } from 'domains/reporting/pages/voice/charts/VoiceCallVolumeMetricCallsCountTrendChart'

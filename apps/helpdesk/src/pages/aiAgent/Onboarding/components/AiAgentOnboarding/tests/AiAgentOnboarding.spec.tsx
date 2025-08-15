@@ -1,15 +1,12 @@
 import React from 'react'
 
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 import LD from 'launchdarkly-react-client-sdk'
-
-import '@testing-library/jest-dom/extend-expect'
-
-import { assumeMock, userEvent } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 

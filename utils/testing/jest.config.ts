@@ -1,3 +1,3 @@
-import defaultConfig from '@repo/jest-config'
+import { defaultConfig } from '@repo/config/jest'
 
 export default defaultConfig

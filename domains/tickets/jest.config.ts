@@ -1,5 +1,4 @@
-import defaultConfig from '@repo/jest-config'
-import type { Config } from 'jest'
+import { type Config, defaultConfig } from '@repo/config/jest'
 
 const config: Config = {
     ...defaultConfig,

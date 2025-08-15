@@ -14,7 +14,7 @@
     },
     "peerDependencies": {},
     "devDependencies": {
-        "@repo/tsconfigs": "workspace:*",
+        "@repo/config": "workspace:*",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",

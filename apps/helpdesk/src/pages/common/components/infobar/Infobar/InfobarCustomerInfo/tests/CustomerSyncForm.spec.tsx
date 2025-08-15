@@ -1,9 +1,6 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-
-import '@testing-library/jest-dom/extend-expect'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 

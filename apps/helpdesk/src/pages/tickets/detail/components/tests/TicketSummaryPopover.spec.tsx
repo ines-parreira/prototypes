@@ -2,9 +2,6 @@ import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-
-import '@testing-library/jest-dom'
-
 import useAppSelector from 'hooks/useAppSelector'
 
 import TicketSummaryPopover from '../TicketSummaryPopover'

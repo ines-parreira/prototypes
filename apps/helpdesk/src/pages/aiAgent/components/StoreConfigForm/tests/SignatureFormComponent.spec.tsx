@@ -1,7 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import '@testing-library/jest-dom'
-
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
 
 import { SignatureFormComponent } from '../FormComponents/SignatureFormComponent'

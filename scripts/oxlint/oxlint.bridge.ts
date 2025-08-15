@@ -1,7 +1,9 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
 import { execSync } from 'child_process'
 import deepmerge from 'deepmerge'
-import fs from 'fs'
-import path from 'path'
+import fg from 'fast-glob'
 
 // @ts-ignore These configs are not typed
 import gorgiasBaseConfig from '@gorgias/config/eslint-base'
@@ -135,15 +137,11 @@ const mergedConfig = mergeConfigs([
     oxlintBaseConfig,
 ])
 
-const outDirs = [
-    'apps/helpdesk',
-    'domains/tickets',
-    'configs/typescript',
-    'configs/jest',
-    'core/hooks',
-    'utils/testing',
-    'utils/types',
-]
+const outDirs = fg
+    .globSync('**/.oxlintrc.json', {
+        ignore: ['**/node_modules/**'],
+    })
+    .map(path.dirname)
 
 const outPaths = outDirs.map((dir) =>
     path.resolve(process.cwd(), `${dir}/.oxlintrc.json`),

@@ -1,13 +1,9 @@
-import { screen } from '@testing-library/react'
-
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-
-import '@testing-library/jest-dom/extend-expect'
-
 import { assumeMock } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { VoiceCallTableChart } from 'domains/reporting/pages/voice/charts/VoiceCallTableChart'

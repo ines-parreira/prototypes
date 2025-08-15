@@ -1,0 +1,28 @@
+{
+    "name": "@repo/config",
+    "version": "1.0.0",
+    "description": "Repository wide configuration files.",
+    "private": true,
+    "exports": {
+        "./tsconfig.react.json": "./tsconfig.react.json",
+        "./tsconfig.common.json": "./tsconfig.common.json",
+        "./jest": "./src/jest/config.ts",
+        "./vitest": "./src/vitest/config.ts",
+        "./vitest/setup.ts": "./src/vitest/setup.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "jest-extended": "catalog:test",
+        "jest": "catalog:test",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}
