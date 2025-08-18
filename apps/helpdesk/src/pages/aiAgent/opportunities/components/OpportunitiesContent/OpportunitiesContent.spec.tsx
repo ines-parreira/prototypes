@@ -42,6 +42,12 @@ jest.mock('hooks/useAppSelector', () => ({
 jest.mock('state/ui/helpCenter', () => ({
     getViewLanguage: jest.fn(() => 'en-US'),
 }))
+jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
+    useAiAgentHelpCenter: jest.fn(() => ({
+        default_locale: 'en-US',
+        id: 1,
+    })),
+}))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation')
 jest.mock(
@@ -49,14 +55,34 @@ jest.mock(
 )
 jest.mock('pages/settings/helpCenter/queries')
 
+const mockUseGuidanceCount = jest.fn(() => ({
+    guidanceCount: 0,
+    isLoading: false,
+}))
+
+jest.mock('../../hooks/useGuidanceCount', () => ({
+    useGuidanceCount: () => mockUseGuidanceCount(),
+}))
+
+jest.mock('../../../hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: jest.fn(() => ({
+        routes: {
+            guidance: '/ai-agent/guidance',
+            opportunities: '/ai-agent/opportunities',
+        },
+    })),
+}))
+
 const mockOnValuesChange = jest.fn()
+const mockGuidanceForm = jest.fn()
 
 jest.mock('../../../components/GuidanceForm/GuidanceForm', () => ({
-    GuidanceForm: ({ onValuesChange, initialFields }: any) => {
+    GuidanceForm: (props: any) => {
+        mockGuidanceForm(props)
         React.useEffect(() => {
-            if (onValuesChange && initialFields) {
-                mockOnValuesChange(initialFields)
-                onValuesChange(initialFields)
+            if (props.onValuesChange && props.initialFields) {
+                mockOnValuesChange(props.initialFields)
+                props.onValuesChange(props.initialFields)
             }
         }, [])
         return <div data-testid="guidance-form">Guidance Form</div>
@@ -89,7 +115,6 @@ describe('OpportunitiesContent', () => {
             mutations: { retry: false },
         },
     })
-
     const renderComponent = (props = {}) => {
         const store = mockStore({
             notifications: [],
@@ -108,6 +133,7 @@ describe('OpportunitiesContent', () => {
         jest.clearAllMocks()
         mockCreateGuidanceArticle.mockClear()
         mockOnValuesChange.mockClear()
+        mockGuidanceForm.mockClear()
         mockReviewArticleMutate.mockClear()
         mockMarkArticleAsReviewed.mockClear()
         mockOnArchive.mockClear()
@@ -143,7 +169,7 @@ describe('OpportunitiesContent', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render OpportunityDetails when an opportunity is selected', () => {
+    it('should render opportunity details and action buttons when selected', () => {
         const selectedOpportunity: Opportunity = {
             id: '1',
             title: "What's your return policy?",
@@ -157,17 +183,6 @@ describe('OpportunitiesContent', () => {
         expect(
             screen.getByText(/Review and approve this AI-generated Guidance/),
         ).toBeInTheDocument()
-    })
-
-    it('should show action buttons when opportunity is selected', () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-        }
-
-        renderComponent({ selectedOpportunity })
 
         expect(
             screen.getByRole('button', { name: /Dismiss/i }),
@@ -493,7 +508,6 @@ describe('OpportunitiesContent', () => {
             expect(invalidateQueries).toHaveBeenCalled()
         })
 
-        // Restore original method
         queryClient.invalidateQueries = originalInvalidate
     })
 
@@ -559,5 +573,259 @@ describe('OpportunitiesContent', () => {
         renderComponent({ selectedOpportunity })
 
         expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
+    })
+
+    it('should show tooltip when hovering disabled button at guidance limit', async () => {
+        mockUseGuidanceCount.mockReturnValue({
+            guidanceCount: 100,
+            isLoading: false,
+        })
+
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        expect(approveButton).toHaveAttribute('aria-disabled', 'true')
+
+        await act(async () => {
+            await userEvent.hover(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/You have reached the limit/),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('link', { name: /Guidance/i }),
+            ).toHaveAttribute('href', '/ai-agent/guidance')
+        })
+    })
+
+    it('should disable approve button when guidanceCount is loading', () => {
+        mockUseGuidanceCount.mockReturnValue({
+            guidanceCount: 0,
+            isLoading: true,
+        })
+
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        expect(approveButton).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('should not show tooltip when guidance count is below limit', async () => {
+        mockUseGuidanceCount.mockReturnValue({
+            guidanceCount: 50,
+            isLoading: false,
+        })
+
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        expect(approveButton).not.toHaveAttribute('aria-disabled', 'true')
+
+        await act(async () => {
+            await userEvent.hover(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/You have reached the limit/),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    it('should handle form value changes', () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const formProps = mockGuidanceForm.mock.calls[0][0]
+        const newFormData = {
+            name: 'Updated Title',
+            content: 'Updated Content',
+            isVisible: false,
+        }
+
+        act(() => {
+            formProps.onValuesChange(newFormData)
+        })
+
+        expect(mockOnValuesChange).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'Test opportunity',
+                content: 'Test content',
+                isVisible: true,
+            }),
+        )
+    })
+
+    it('should handle approve when guidance help center has no locale', async () => {
+        const useAiAgentHelpCenter =
+            require('pages/aiAgent/hooks/useAiAgentHelpCenter').useAiAgentHelpCenter
+        useAiAgentHelpCenter.mockReturnValue({
+            default_locale: undefined,
+            id: 1,
+        })
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        mockCreateGuidanceArticle.mockResolvedValueOnce({})
+
+        const store = mockStore({
+            notifications: [],
+        })
+
+        render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <OpportunitiesContent
+                        {...defaultProps}
+                        selectedOpportunity={selectedOpportunity}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+
+        await act(async () => {
+            await userEvent.click(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(mockCreateGuidanceArticle).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    locale: 'en-US',
+                }),
+            )
+        })
+    })
+
+    it('should handle undefined onOpportunityDismissed callback', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        mockCreateGuidanceArticle.mockResolvedValueOnce({})
+
+        renderComponent({
+            selectedOpportunity,
+        })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+
+        await act(async () => {
+            await userEvent.click(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(mockCreateGuidanceArticle).toHaveBeenCalled()
+            expect(mockReviewArticleMutate).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    action: 'archive',
+                    template_key: '1',
+                    reason: 'Created as guidance',
+                },
+            ])
+        })
+    })
+
+    it('should handle dismiss when onOpportunityDismissed is undefined', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({
+            selectedOpportunity,
+            onOpportunityDismissed: undefined,
+        })
+
+        const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
+        act(() => {
+            userEvent.click(dismissButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
+        })
+
+        const confirmButton = screen.getAllByRole('button', {
+            name: /Dismiss/i,
+        })[1]
+        act(() => {
+            userEvent.click(confirmButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Dismiss opportunity?'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    it('should not show tooltip when guidanceCount is still loading', async () => {
+        mockUseGuidanceCount.mockReturnValue({
+            guidanceCount: 100,
+            isLoading: true,
+        })
+
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+
+        await act(async () => {
+            await userEvent.hover(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/You have reached the limit/),
+            ).not.toBeInTheDocument()
+        })
     })
 })

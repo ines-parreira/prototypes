@@ -37,6 +37,9 @@
                 font-size: 20px;
                 padding-right: var(--layout-spacing-xxs);
             }
+            &[aria-disabled='true'] {
+                background-color: var(--neutral-grey-1) !important;
+            }
         }
 
         .headerActions {
@@ -68,6 +71,15 @@
 
         .guidanceFormWrapper {
             width: 100%;
+        }
+
+        .guidanceLink {
+            color: #6bb5ff;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

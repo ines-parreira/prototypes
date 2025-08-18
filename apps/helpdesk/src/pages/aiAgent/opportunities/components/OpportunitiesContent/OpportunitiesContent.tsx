@@ -1,16 +1,14 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { Button } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ArticleTemplateReviewAction } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
-import { GuidanceForm } from 'pages/aiAgent/components/GuidanceForm/GuidanceForm'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import { GuidanceFormFields } from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -25,12 +23,17 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
+import { GuidanceForm } from '../../../components/GuidanceForm/GuidanceForm'
+import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
+import { GuidanceFormFields } from '../../../types'
+import { useGuidanceCount } from '../../hooks/useGuidanceCount'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
 import { OpportunityDetailsCard } from '../OpportunityDetailsCard/OpportunityDetailsCard'
 
 import css from './OpportunitiesContent.less'
 
+const MAX_GUIDANCES = 100
 interface OpportunitiesContentProps {
     selectedOpportunity: Opportunity | null
     shopName: string
@@ -62,6 +65,7 @@ export const OpportunitiesContent = ({
         content: selectedOpportunity?.content || '',
         isVisible: true,
     })
+    const approveButtonRef = useRef<HTMLButtonElement>(null)
 
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
@@ -116,6 +120,15 @@ export const OpportunitiesContent = ({
     const handleCancelArchive = useCallback(() => {
         setIsArchiveModalOpen(false)
     }, [])
+    const { guidanceCount, isLoading: isLoadingGuidanceCount } =
+        useGuidanceCount({
+            guidanceHelpCenterId: helpCenterId,
+        })
+
+    const { routes } = useAiAgentNavigation({ shopName })
+
+    const isApproveDisabled =
+        isLoadingGuidanceCount || guidanceCount >= MAX_GUIDANCES
 
     const onFormValuesChange = (fields: GuidanceFormFields) => {
         setCurrentFormData(fields)
@@ -184,19 +197,56 @@ export const OpportunitiesContent = ({
                         >
                             Dismiss
                         </Button>
-                        <Button
-                            className={css.approveButton}
-                            intent="primary"
-                            onClick={handleApprove}
-                            isLoading={
-                                isLoading ||
-                                reviewArticle.isLoading ||
-                                isGuidanceArticleUpdating
-                            }
+                        <div
+                            style={{
+                                position: 'relative',
+                                display: 'inline-block',
+                            }}
                         >
-                            <i className="material-icons">check</i>
-                            Approve
-                        </Button>
+                            <Button
+                                ref={approveButtonRef}
+                                className={css.approveButton}
+                                intent="primary"
+                                onClick={handleApprove}
+                                isLoading={
+                                    isLoading ||
+                                    reviewArticle.isLoading ||
+                                    isGuidanceArticleUpdating
+                                }
+                                isDisabled={isApproveDisabled}
+                            >
+                                <i className="material-icons">check</i>
+                                Approve
+                            </Button>
+                            {!isLoadingGuidanceCount &&
+                                guidanceCount >= MAX_GUIDANCES &&
+                                approveButtonRef.current && (
+                                    <Tooltip
+                                        placement="top"
+                                        target={approveButtonRef.current}
+                                        trigger={['hover']}
+                                        delay={{ show: 0, hide: 300 }}
+                                        autohide={false}
+                                    >
+                                        <div>
+                                            You have reached the limit for{' '}
+                                            <a
+                                                href={routes.guidance}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={css.guidanceLink}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            >
+                                                Guidance
+                                            </a>
+                                            . To save this Guidance, you delete
+                                            an existing one.
+                                        </div>
+                                    </Tooltip>
+                                )}
+                        </div>
                     </div>
                 )}
             </div>

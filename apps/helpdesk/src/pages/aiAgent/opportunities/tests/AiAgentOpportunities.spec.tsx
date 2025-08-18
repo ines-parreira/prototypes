@@ -72,6 +72,10 @@ jest.mock('models/helpCenter/queries', () => ({
         data: { data: { data: [] } },
         isLoading: false,
     })),
+    useGetHelpCenterArticleList: jest.fn(() => ({
+        data: { meta: { item_count: 5 } },
+        isLoading: false,
+    })),
 }))
 
 jest.mock(
@@ -108,6 +112,16 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     })),
 }))
 
+jest.mock('pages/settings/helpCenter/queries', () => ({
+    useUpsertArticleTemplateReview: jest.fn(() => ({
+        mutate: jest.fn(),
+        isLoading: false,
+    })),
+    aiArticleKeys: {
+        list: jest.fn(() => ['aiArticles']),
+    },
+}))
+
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
     () => ({
@@ -119,18 +133,61 @@ jest.mock(
 )
 
 jest.mock('../../components/GuidanceForm/GuidanceForm', () => ({
-    GuidanceForm: ({ onValuesChange, initialFields }: any) => {
-        React.useEffect(() => {
-            if (onValuesChange && initialFields) {
-                onValuesChange(initialFields)
-            }
-        }, [onValuesChange, initialFields])
+    GuidanceForm: () => {
         return <div>GuidanceForm Mock</div>
     },
 }))
 
+jest.mock('../../hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: jest.fn(() => ({
+        routes: {
+            opportunities: '/ai-agent/opportunities',
+            guidances: '/ai-agent/guidances',
+        },
+    })),
+}))
+
 describe('AiAgentOpportunities', () => {
-    it('should render OpportunitiesLayout', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should render with correct structure and attributes', () => {
+        const { container } = render(
+            <TestWrapper>
+                <AiAgentOpportunities />
+            </TestWrapper>,
+        )
+
+        const layoutElement = document.querySelector('.layout')
+        expect(layoutElement).toBeInTheDocument()
+
+        const wrapper = container.querySelector('[data-ai-opportunities]')
+        expect(wrapper).toBeInTheDocument()
+        expect(wrapper).toHaveAttribute('data-overflow', 'visible')
+    })
+
+    it('should render OpportunitiesSidebar and OpportunitiesContent', () => {
+        const { getByText, getAllByText } = render(
+            <TestWrapper>
+                <AiAgentOpportunities />
+            </TestWrapper>,
+        )
+
+        const opportunities = getAllByText('Opportunities')
+        expect(opportunities).toHaveLength(2)
+        expect(getByText('0 items')).toBeInTheDocument()
+    })
+
+    it('should handle loading state correctly', () => {
+        const {
+            useAiAgentStoreConfigurationContext,
+        } = require('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
+        useAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: null,
+            isLoading: true,
+        })
+
         render(
             <TestWrapper>
                 <AiAgentOpportunities />
@@ -141,15 +198,103 @@ describe('AiAgentOpportunities', () => {
         expect(layoutElement).toBeInTheDocument()
     })
 
-    it('should render with correct data attributes', () => {
-        const { container } = render(
+    it('should pass correct shop name from route params', () => {
+        const { useParams } = require('react-router-dom')
+        useParams.mockReturnValue({ shopName: 'custom-shop' })
+
+        render(
             <TestWrapper>
                 <AiAgentOpportunities />
             </TestWrapper>,
         )
 
-        const wrapper = container.querySelector('[data-ai-opportunities]')
-        expect(wrapper).toBeInTheDocument()
-        expect(wrapper).toHaveAttribute('data-overflow', 'visible')
+        const layoutElement = document.querySelector('.layout')
+        expect(layoutElement).toBeInTheDocument()
+        expect(useParams).toHaveBeenCalled()
+    })
+
+    it('should render correctly with or without articles', () => {
+        const {
+            useHelpCenterAIArticlesLibrary,
+        } = require('pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary')
+        useHelpCenterAIArticlesLibrary.mockReturnValue({
+            articles: [],
+            isLoading: false,
+            markArticleAsReviewed: jest.fn(),
+        })
+
+        const { container: containerEmpty } = render(
+            <TestWrapper>
+                <AiAgentOpportunities />
+            </TestWrapper>,
+        )
+
+        expect(
+            containerEmpty.querySelector('[data-ai-opportunities]'),
+        ).toBeInTheDocument()
+
+        const mockArticles = [
+            {
+                id: '1',
+                title: 'Test Article 1',
+                content: 'Content 1',
+                article_key: 'article-1',
+                article_template_key: 'template-1',
+            },
+        ]
+
+        useHelpCenterAIArticlesLibrary.mockReturnValue({
+            articles: mockArticles,
+            isLoading: false,
+            markArticleAsReviewed: jest.fn(),
+        })
+
+        const { container: containerWithArticles } = render(
+            <TestWrapper>
+                <AiAgentOpportunities />
+            </TestWrapper>,
+        )
+
+        expect(
+            containerWithArticles.querySelector('[data-ai-opportunities]'),
+        ).toBeInTheDocument()
+    })
+
+    it('should handle different configurations and locales', () => {
+        const {
+            useAiAgentStoreConfigurationContext,
+        } = require('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
+        const {
+            useAiAgentHelpCenter,
+        } = require('pages/aiAgent/hooks/useAiAgentHelpCenter')
+        useAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                guidanceHelpCenterId: 42,
+                helpCenterId: 99,
+            },
+            isLoading: false,
+        })
+
+        useAiAgentHelpCenter.mockReturnValue({
+            default_locale: 'fr-FR',
+            id: 42,
+        })
+
+        const mockStore = createMockStore({
+            notifications: [],
+            ui: {
+                helpCenter: {
+                    viewLanguage: 'fr-FR',
+                },
+            },
+        })
+
+        const { container } = render(
+            <TestWrapper store={mockStore}>
+                <AiAgentOpportunities />
+            </TestWrapper>,
+        )
+
+        expect(container.querySelector('.layout')).toBeInTheDocument()
     })
 })
