@@ -90,14 +90,14 @@ export const SORT_OPTIONS: SortOption[] = [
 
 export const SORT_OPTIONS_WITH_ORDERS: SortOption[] = [
     {
-        key: 'updated_datetime',
+        key: 'last_message_datetime',
         order: 'asc',
-        label: SORTABLE_KEY_TO_LABEL['updated_datetime'],
+        label: SORTABLE_KEY_TO_LABEL['last_message_datetime'],
     },
     {
-        key: 'updated_datetime',
+        key: 'last_message_datetime',
         order: 'desc',
-        label: SORTABLE_KEY_TO_LABEL['updated_datetime'],
+        label: SORTABLE_KEY_TO_LABEL['last_message_datetime'],
     },
     {
         key: 'created_datetime',
