@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
-import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeChart.tsx/DragAndResizeChart'
+import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import {
     DashboardChartSchema,
     DashboardChildType,

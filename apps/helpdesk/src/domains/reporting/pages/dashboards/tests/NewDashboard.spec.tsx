@@ -5,7 +5,7 @@ import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilte
 import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
 import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeChart.tsx/DragAndResizeChart'
+import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { NewDashboard } from 'domains/reporting/pages/dashboards/NewDashboard'
 import {
     DashboardChildType,
@@ -22,7 +22,7 @@ jest.mock(
 const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
 
 jest.mock(
-    'domains/reporting/pages/dashboards/DragAndResizeChart.tsx/DragAndResizeChart',
+    'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart',
 )
 const DragAndResizeChartMock = assumeMock(DragAndResizeChart)
 

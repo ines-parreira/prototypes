@@ -7,12 +7,8 @@ import FiltersPanelWrapper, {
 } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeChart.tsx/DragAndResizeChart'
-import {
-    DashboardChild,
-    DashboardChildType,
-    DashboardSchema,
-} from 'domains/reporting/pages/dashboards/types'
+import DragAndResizeDashboardGrid from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
+import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useFiltersFromDashboard'
 
 export type DashboardProps = {
@@ -45,33 +41,7 @@ export const NewDashboard = ({ dashboard, pinnedFilter }: DashboardProps) => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            {renderDashboard(dashboard)}
+            <DragAndResizeDashboardGrid dashboard={dashboard} />
         </>
     )
-}
-
-const renderDashboard = (dashboard: DashboardSchema) => {
-    const renderChildren = (children: DashboardChild[]) =>
-        children.map((child: DashboardChild, index: number) => {
-            const key = `${child.type}-${index}`
-
-            switch (child.type) {
-                case DashboardChildType.Row:
-                    return <div key={key}>{renderChildren(child.children)}</div>
-
-                case DashboardChildType.Section:
-                    return <div key={key}>{renderChildren(child.children)}</div>
-
-                case DashboardChildType.Chart:
-                    return (
-                        <DragAndResizeChart
-                            key={child.config_id}
-                            schema={child}
-                            dashboard={dashboard}
-                        />
-                    )
-            }
-        })
-
-    return renderChildren(dashboard.children)
 }
