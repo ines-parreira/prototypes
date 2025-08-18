@@ -13,6 +13,10 @@ function getGorgiasSSPBaseURL(): string {
     }
 
     if (isStaging()) {
+        // Check if override is set for preview environments
+        if (window.GORGIAS_SELF_SERVICE_PORTAL_URL !== '') {
+            return window.GORGIAS_SELF_SERVICE_PORTAL_URL
+        }
         return 'https://us-east1-b39a.gorgias-staging.chat/ssp'
     }
 

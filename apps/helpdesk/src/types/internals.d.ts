@@ -91,6 +91,8 @@ declare global {
         KNOCK_TOKEN: string
         PUBNUB_PUBLISH_KEY: string
         PUBNUB_SUBSCRIBE_KEY: string
+        GORGIAS_CHAT_CLUSTER_URL: string
+        GORGIAS_SELF_SERVICE_PORTAL_URL: string
     }
 
     function jestSetTimeout(

@@ -8,14 +8,15 @@ import { Client } from './client.generated'
 import OpenAPIDoc from './gorgias-chat-protected-api.openapi.json'
 
 function getGorgiasChatApiBaseUrl(): string {
-    /**
-     * @todo: make it to work for preview environments
-     */
     if (isProduction()) {
         return 'https://us-east1-898b.gorgias.chat'
     }
 
     if (isStaging()) {
+        // Check if override is set for preview environments
+        if (window.GORGIAS_CHAT_CLUSTER_URL !== '') {
+            return window.GORGIAS_CHAT_CLUSTER_URL
+        }
         return 'https://us-east1-b39a.gorgias-staging.chat'
     }
 
