@@ -19,6 +19,7 @@ export enum AiSalesAgentConversationsDimension {
     Outcome = 'AiSalesAgentConversations.outcome',
     Source = 'AiSalesAgentConversations.source',
     JourneyId = 'AiSalesAgentConversations.journeyId',
+    Replied = 'AiSalesAgentConversations.replied',
 }
 
 export enum AiSalesAgentConversationsFilterMember {

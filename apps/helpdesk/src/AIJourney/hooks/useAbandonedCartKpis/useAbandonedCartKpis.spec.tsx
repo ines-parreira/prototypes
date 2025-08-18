@@ -7,9 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
 import { useAIJourneyGmvInfluenced } from '../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourneyResponseRate'
-import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourneyTotalOrders'
-import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
-import { useAIJourneyKpis } from './useAIJourneyKpis'
+import { useAbandonedCartKpis } from './useAbandonedCartKpis'
 
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('hooks/useAppSelector')
@@ -19,13 +17,11 @@ jest.mock('../useAIJourneyTotalOrders/useAIJourneyTotalOrders')
 jest.mock('../useClickThroughRate/useClickThroughRate')
 jest.mock('../useAIJourneyResponseRate/useAIJourneyResponseRate')
 
-describe('useAIJourneyKpis', () => {
+describe('useAbandonedCartKpis', () => {
     const mockUseAppSelector = useAppSelector as jest.Mock
     const mockUseAIJourneyGmvInfluenced = useAIJourneyGmvInfluenced as jest.Mock
-    const mockUseAIJourneyTotalOrders = useAIJourneyTotalOrders as jest.Mock
     const mockUseAIJourneyConversionRate =
         useAIJourneyConversionRate as jest.Mock
-    const mockUseClickThroughRate = useClickThroughRate as jest.Mock
     const mockUseAIJourneyResponseRate = useAIJourneyResponseRate as jest.Mock
 
     beforeEach(() => {
@@ -41,44 +37,33 @@ describe('useAIJourneyKpis', () => {
             label: 'GMV',
             value: '1000',
         })
-        mockUseAIJourneyTotalOrders.mockReturnValue({
-            label: 'Total Orders',
-            value: '50',
-        })
         mockUseAIJourneyConversionRate.mockReturnValue({
             label: 'Conversion Rate',
             value: '5%',
         })
-        mockUseClickThroughRate.mockReturnValue({ label: 'CTR', value: '10%' })
         mockUseAIJourneyResponseRate.mockReturnValue({
-            label: 'Click Through Rate',
-            value: 10,
+            label: 'Response Rate',
+            value: '10%',
         })
     })
 
     it('should return KPIs in correct order', () => {
-        const { result } = renderHook(() => useAIJourneyKpis('123', 'shopName'))
+        const { result } = renderHook(() =>
+            useAbandonedCartKpis('123', 'shopName'),
+        )
 
-        expect(result.current.metrics).toHaveLength(5)
+        expect(result.current.metrics).toHaveLength(3)
         expect(result.current.metrics[0]).toEqual({
             label: 'GMV',
             value: '1000',
         })
         expect(result.current.metrics[1]).toEqual({
-            label: 'Total Orders',
-            value: '50',
-        })
-        expect(result.current.metrics[2]).toEqual({
             label: 'Conversion Rate',
             value: '5%',
         })
-        expect(result.current.metrics[3]).toEqual({
-            label: 'CTR',
+        expect(result.current.metrics[2]).toEqual({
+            label: 'Response Rate',
             value: '10%',
-        })
-        expect(result.current.metrics[4]).toEqual({
-            label: 'Click Through Rate',
-            value: 10,
         })
     })
 
@@ -90,38 +75,28 @@ describe('useAIJourneyKpis', () => {
             },
         }
 
-        renderHook(() => useAIJourneyKpis('123', 'shopName'))
+        renderHook(() => useAbandonedCartKpis('123', 'journey-id'))
 
         expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             expectedFilters,
             ReportingGranularity.Week,
-        )
-        expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
-            '123',
-            'America/New_York',
-            expectedFilters,
-            ReportingGranularity.Week,
+            'journey-id',
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             expectedFilters,
             ReportingGranularity.Week,
-        )
-        expect(mockUseClickThroughRate).toHaveBeenCalledWith(
-            '123',
-            'America/New_York',
-            expectedFilters,
-            ReportingGranularity.Week,
-            'shopName',
+            'journey-id',
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             expectedFilters,
             ReportingGranularity.Week,
+            'journey-id',
         )
     })
 
@@ -130,7 +105,7 @@ describe('useAIJourneyKpis', () => {
             userTimezone: 'Europe/London',
         })
 
-        renderHook(() => useAIJourneyKpis('123', 'shopName'))
+        renderHook(() => useAbandonedCartKpis('123', 'journey-id'))
 
         expect(mockUseAppSelector).toHaveBeenCalledWith(
             getCleanStatsFiltersWithTimezone,
@@ -140,31 +115,54 @@ describe('useAIJourneyKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
-        )
-        expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
-            '123',
-            'Europe/London',
-            expect.any(Object),
-            ReportingGranularity.Week,
+            'journey-id',
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
-        )
-        expect(mockUseClickThroughRate).toHaveBeenCalledWith(
-            '123',
-            'Europe/London',
-            expect.any(Object),
-            ReportingGranularity.Week,
-            'shopName',
+            'journey-id',
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            'journey-id',
+        )
+    })
+
+    it('should call with journeyID correctly', () => {
+        mockUseAppSelector.mockReturnValue({
+            userTimezone: 'Europe/London',
+        })
+
+        renderHook(() => useAbandonedCartKpis('123', 'journey-id'))
+
+        expect(mockUseAppSelector).toHaveBeenCalledWith(
+            getCleanStatsFiltersWithTimezone,
+        )
+        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
+            ReportingGranularity.Week,
+            'journey-id',
+        )
+        expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
+            ReportingGranularity.Week,
+            'journey-id',
+        )
+        expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
+            ReportingGranularity.Week,
+            'journey-id',
         )
     })
 })

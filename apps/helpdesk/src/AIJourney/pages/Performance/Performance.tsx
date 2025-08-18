@@ -8,6 +8,7 @@ import {
     JourneyPlaceholder,
     Selector,
 } from 'AIJourney/components'
+import { useAbandonedCartKpis } from 'AIJourney/hooks/useAbandonedCartKpis/useAbandonedCartKpis'
 import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { useAIJourneyTotalMessages } from 'AIJourney/hooks/useAIJourneyTotalMessages/useAIJourneyTotalMessages'
 import { useIntegrations } from 'AIJourney/providers'
@@ -141,9 +142,8 @@ export const Performance = () => {
         namespacedShopName,
     )
 
-    const { metrics: journeyMetrics, period } = useAIJourneyKpis(
+    const { metrics: journeyMetrics, period } = useAbandonedCartKpis(
         integrationId?.toString(),
-        namespacedShopName,
         abandonedCartJourney?.id,
     )
 

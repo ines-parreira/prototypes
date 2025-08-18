@@ -2,15 +2,14 @@ import { useMemo } from 'react'
 
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import {
+    aiJourneyRepliedMessagesQueryFactory,
+    aiJourneyRepliedMessagesTimeSeriesQuery,
     aiJourneyTotalNumberOfSalesConversationsQueryFactory,
     aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery,
-    aiJourneyUniqClicksQueryFactory,
-    aiJourneyUniqClicksTimeSeriesQuery,
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import { ConvertTrackingEventsMeasure } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -18,31 +17,30 @@ import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { filterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
-export const useClickThroughRate = (
+export const useAIJourneyResponseRate = (
     integrationId: string,
     userTimezone: string,
     filters: filterType,
     granularity: ReportingGranularity,
-    shopName: string,
     journeyId?: string,
 ): MetricProps => {
     const { currency } = useCurrency()
 
-    const { data: totalUniqClicks, isFetching: isFetchingTotalUniqClicks } =
+    const { data: repliedMessagesData, isFetching: isFetchingRepliedMessages } =
         useMetricTrend(
-            aiJourneyUniqClicksQueryFactory(
+            aiJourneyRepliedMessagesQueryFactory(
+                integrationId,
                 filters,
                 userTimezone,
-                shopName,
                 journeyId,
             ),
-            aiJourneyUniqClicksQueryFactory(
+            aiJourneyRepliedMessagesQueryFactory(
+                integrationId,
                 {
                     ...filters,
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
-                shopName,
                 journeyId,
             ),
         )
@@ -68,30 +66,32 @@ export const useClickThroughRate = (
         ),
     )
 
-    const clickThroughRateValue = useMemo(() => {
+    const responseRateValue = useMemo(() => {
         return calculateRatiusToPercentage({
-            numerator: totalUniqClicks?.value,
+            numerator: repliedMessagesData?.value,
             denominator: totalContactsEnrolled?.value,
         })
-    }, [totalUniqClicks, totalContactsEnrolled])
+    }, [repliedMessagesData, totalContactsEnrolled])
 
-    const clickThroughRateValueDataPrevValue = useMemo(() => {
+    const responseRatePrevValue = useMemo(() => {
         return calculateRatiusToPercentage({
-            numerator: totalUniqClicks?.prevValue,
+            numerator: repliedMessagesData?.prevValue,
             denominator: totalContactsEnrolled?.prevValue,
         })
-    }, [totalUniqClicks, totalContactsEnrolled])
+    }, [repliedMessagesData, totalContactsEnrolled])
 
-    const { data: clicksTimeSeries, isFetching: isFetchingClicksSeries } =
-        useTimeSeries(
-            aiJourneyUniqClicksTimeSeriesQuery(
-                filters,
-                userTimezone,
-                granularity,
-                shopName,
-                journeyId,
-            ),
-        )
+    const {
+        data: repliedMessagesTimeSeries,
+        isFetching: isFetchingRepliedMessagesSeries,
+    } = useTimeSeries(
+        aiJourneyRepliedMessagesTimeSeriesQuery(
+            integrationId,
+            filters,
+            userTimezone,
+            granularity,
+            journeyId,
+        ),
+    )
 
     const {
         data: conversationsTimeSeries,
@@ -106,13 +106,13 @@ export const useClickThroughRate = (
         ),
     )
 
-    const clicksTimeSeriesData = useMemo(
+    const ordersTimeSeriesData = useMemo(
         () =>
             getStatsByMeasure(
-                ConvertTrackingEventsMeasure.UniqClicks,
-                clicksTimeSeries,
+                AiSalesAgentConversationsMeasure.Count,
+                repliedMessagesTimeSeries,
             ),
-        [clicksTimeSeries],
+        [repliedMessagesTimeSeries],
     )
 
     const conversationsTimeSeriesData = useMemo(
@@ -124,35 +124,35 @@ export const useClickThroughRate = (
         [conversationsTimeSeries],
     )
 
-    const clickThroughRateTimeSeries = useMemo(() => {
-        if (!clicksTimeSeriesData || !conversationsTimeSeriesData) {
+    const conversionRateTimeSeries = useMemo(() => {
+        if (!ordersTimeSeriesData || !conversationsTimeSeriesData) {
             return []
         }
 
-        return clicksTimeSeriesData.map((clicksData, index) => {
+        return ordersTimeSeriesData.map((ordersData, index) => {
             const conversationsData = conversationsTimeSeriesData[index]
             return {
-                dateTime: clicksData.dateTime,
+                ...ordersData,
                 value: calculateRatiusToPercentage({
-                    numerator: clicksData.value,
+                    numerator: ordersData.value,
                     denominator: conversationsData?.value,
                 }),
             }
         })
-    }, [clicksTimeSeriesData, conversationsTimeSeriesData])
+    }, [ordersTimeSeriesData, conversationsTimeSeriesData])
 
     return {
-        label: 'Click Through Rate',
-        value: clickThroughRateValue,
-        prevValue: clickThroughRateValueDataPrevValue,
-        series: clickThroughRateTimeSeries,
+        label: 'Response Rate',
+        value: responseRateValue,
+        prevValue: responseRatePrevValue,
+        series: conversionRateTimeSeries,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
         currency,
         isLoading:
-            isFetchingTotalUniqClicks ||
+            isFetchingRepliedMessages ||
             isFetchingtotalContactsEnrolled ||
-            isFetchingClicksSeries ||
+            isFetchingRepliedMessagesSeries ||
             isFetchingConversationsSeries,
     }
 }

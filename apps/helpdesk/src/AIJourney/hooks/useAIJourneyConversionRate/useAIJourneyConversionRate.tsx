@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import {
     aiJourneyTotalNumberOfOrderQueryFactory,
     aiJourneyTotalNumberOfOrderTimeSeriesQuery,
@@ -15,19 +16,6 @@ import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 import { filterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
-
-const calculateConversionRate = ({
-    orders,
-    uniqContacts,
-}: {
-    orders: number | undefined | null
-    uniqContacts: number | undefined | null
-}): number => {
-    if (orders && uniqContacts) {
-        return (orders / uniqContacts) * 100
-    }
-    return 0
-}
 
 export const useAIJourneyConversionRate = (
     integrationId: string,
@@ -77,16 +65,16 @@ export const useAIJourneyConversionRate = (
     )
 
     const conversionRateValue = useMemo(() => {
-        return calculateConversionRate({
-            orders: totalOrdersData?.value,
-            uniqContacts: totalContactsEnrolled?.value,
+        return calculateRatiusToPercentage({
+            numerator: totalOrdersData?.value,
+            denominator: totalContactsEnrolled?.value,
         })
     }, [totalOrdersData, totalContactsEnrolled])
 
-    const conversionRateDataPrevValue = useMemo(() => {
-        return calculateConversionRate({
-            orders: totalOrdersData?.prevValue,
-            uniqContacts: totalContactsEnrolled?.prevValue,
+    const conversionRatePrevValue = useMemo(() => {
+        return calculateRatiusToPercentage({
+            numerator: totalOrdersData?.prevValue,
+            denominator: totalContactsEnrolled?.prevValue,
         })
     }, [totalOrdersData, totalContactsEnrolled])
 
@@ -141,9 +129,9 @@ export const useAIJourneyConversionRate = (
             const conversationsData = conversationsTimeSeriesData[index]
             return {
                 ...ordersData,
-                value: calculateConversionRate({
-                    orders: ordersData.value,
-                    uniqContacts: conversationsData?.value,
+                value: calculateRatiusToPercentage({
+                    numerator: ordersData.value,
+                    denominator: conversationsData?.value,
                 }),
             }
         })
@@ -152,7 +140,7 @@ export const useAIJourneyConversionRate = (
     return {
         label: 'Conversion rate',
         value: conversionRateValue,
-        prevValue: conversionRateDataPrevValue,
+        prevValue: conversionRatePrevValue,
         series: conversionRateTimeSeries,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',

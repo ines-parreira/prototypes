@@ -11,8 +11,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
 import { useAIJourneyGmvInfluenced } from '../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourneyResponseRate'
-import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourneyTotalOrders'
-import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
 
 export type filterType = {
     period: {
@@ -32,9 +30,9 @@ export type MetricProps = {
     isLoading: boolean
 }
 
-export const useAIJourneyKpis = (
+export const useAbandonedCartKpis = (
     integrationId: string,
-    shopName: string,
+    journeyId?: string,
     customStartDate?: string,
     customEndDate?: string,
 ) => {
@@ -59,25 +57,15 @@ export const useAIJourneyKpis = (
         userTimezone,
         filters,
         granularity,
+        journeyId,
     )
-    const totalOrders = useAIJourneyTotalOrders(
-        integrationId,
-        userTimezone,
-        filters,
-        granularity,
-    )
+
     const conversionRate = useAIJourneyConversionRate(
         integrationId,
         userTimezone,
         filters,
         granularity,
-    )
-    const clickThroughRate = useClickThroughRate(
-        integrationId,
-        userTimezone,
-        filters,
-        granularity,
-        shopName,
+        journeyId,
     )
 
     const responseRate = useAIJourneyResponseRate(
@@ -85,6 +73,7 @@ export const useAIJourneyKpis = (
         userTimezone,
         filters,
         granularity,
+        journeyId,
     )
 
     return {
@@ -92,12 +81,6 @@ export const useAIJourneyKpis = (
             start: filters.period.start_datetime,
             end: filters.period.end_datetime,
         },
-        metrics: [
-            gmvInfluenced,
-            totalOrders,
-            conversionRate,
-            clickThroughRate,
-            responseRate,
-        ],
+        metrics: [gmvInfluenced, conversionRate, responseRate],
     }
 }

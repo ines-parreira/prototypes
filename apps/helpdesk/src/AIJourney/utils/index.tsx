@@ -25,3 +25,16 @@ export const isValidPhoneNumber = (value?: string): boolean => {
     const digits = value.replace(/\D/g, '')
     return digits.length === 10 && !value.includes('_')
 }
+
+export const calculateRatiusToPercentage = ({
+    numerator,
+    denominator,
+}: {
+    numerator: number | undefined | null
+    denominator: number | undefined | null
+}): number => {
+    if (numerator && denominator) {
+        return (numerator / denominator) * 100
+    }
+    return 0
+}
