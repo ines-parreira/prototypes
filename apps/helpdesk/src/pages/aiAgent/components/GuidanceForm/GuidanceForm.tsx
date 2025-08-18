@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
-import _isEqual from 'lodash/isEqual'
 
 import { ToggleField } from '@gorgias/axiom'
 
@@ -27,6 +26,7 @@ import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { onApiError } from 'state/utils'
+import { parseHtml } from 'utils/html'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { GuidanceFormFields } from '../../types'
@@ -51,6 +51,10 @@ type Props = {
     initialFields?: GuidanceFormFields
     sourceType: 'ai' | 'template' | 'scratch'
     helpCenterId: number
+    hideHeader?: boolean
+    hideFooterButtons?: boolean
+    hideFooterAlerts?: boolean
+    onValuesChange?: (fields: GuidanceFormFields) => void
 }
 
 export const GuidanceForm = ({
@@ -63,6 +67,10 @@ export const GuidanceForm = ({
     sourceType,
     helpCenterId,
     availableActions,
+    hideHeader,
+    hideFooterButtons,
+    hideFooterAlerts,
+    onValuesChange,
 }: Props) => {
     const areActionsInGuidanceEnabled = useFlag<boolean>(
         FeatureFlagKey.AiAgentVariablesAndActionsInGuidance,
@@ -86,6 +94,10 @@ export const GuidanceForm = ({
         setFormState((prevState) => ({ ...prevState, isVisible }))
     }
 
+    useEffect(() => {
+        onValuesChange?.(formState)
+    }, [formState, onValuesChange])
+
     useEffectOnce(() => {
         logEvent(SegmentEvent.AiAgentGuidanceEditorViewed, {
             sourceType,
@@ -107,7 +119,17 @@ export const GuidanceForm = ({
         handleOnTriggerActivateAiAgentNotification,
     } = useAiAgentOnboardingNotification({ shopName })
 
-    const isFormDirty = !_isEqual(initialFormState, formState)
+    // Parse HTML content to compare text content, handling HTML entities like "can't" vs "can&#x27;t"
+    const getTextContent = (html: string): string => {
+        const doc = parseHtml(html)
+        return doc.body.textContent || ''
+    }
+
+    const isFormDirty =
+        initialFormState.name !== formState.name ||
+        getTextContent(initialFormState.content) !==
+            getTextContent(formState.content) ||
+        initialFormState.isVisible !== formState.isVisible
 
     const isSubmitDisabled =
         isLoadingAiGuidances ||
@@ -234,24 +256,28 @@ export const GuidanceForm = ({
 
             <div>
                 <div className={css.content}>
-                    <div className={css.header}>
-                        <BackLink
-                            path={routes.guidance}
-                            label="Back to Guidance"
-                        />
-                        {areActionsInGuidanceEnabled && (
-                            <div>
-                                <a
-                                    href="https://link.gorgias.com/19d8b1"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <i className="material-icons">menu_book</i>{' '}
-                                    Optimize Guidance for AI Agent
-                                </a>
-                            </div>
-                        )}
-                    </div>
+                    {!hideHeader && (
+                        <div className={css.header}>
+                            <BackLink
+                                path={routes.guidance}
+                                label="Back to Guidance"
+                            />
+                            {areActionsInGuidanceEnabled && (
+                                <div>
+                                    <a
+                                        href="https://link.gorgias.com/19d8b1"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i className="material-icons">
+                                            menu_book
+                                        </i>{' '}
+                                        Optimize Guidance for AI Agent
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     <InputField
                         label="Guidance name"
@@ -285,115 +311,119 @@ export const GuidanceForm = ({
                     />
                 </div>
 
-                <div className={css.btnGroup}>
-                    <Button
-                        isDisabled={isSubmitDisabled}
-                        isLoading={isLoading}
-                        onClick={onSave}
-                    >
-                        {actionType === 'update'
-                            ? 'Save Changes'
-                            : 'Create Guidance'}
-                    </Button>
-                    <Button
-                        intent="secondary"
-                        isDisabled={isSubmitDisabled}
-                        isLoading={isLoading}
-                        onClick={onSaveAndTest}
-                    >
-                        {actionType === 'update'
-                            ? 'Save And Test'
-                            : 'Create And Test'}
-                    </Button>
+                {!hideFooterButtons && (
+                    <div className={css.btnGroup}>
+                        <Button
+                            isDisabled={isSubmitDisabled}
+                            isLoading={isLoading}
+                            onClick={onSave}
+                        >
+                            {actionType === 'update'
+                                ? 'Save Changes'
+                                : 'Create Guidance'}
+                        </Button>
+                        <Button
+                            intent="secondary"
+                            isDisabled={isSubmitDisabled}
+                            isLoading={isLoading}
+                            onClick={onSaveAndTest}
+                        >
+                            {actionType === 'update'
+                                ? 'Save And Test'
+                                : 'Create And Test'}
+                        </Button>
 
-                    <Button intent="secondary" onClick={onCancel}>
-                        Cancel
-                    </Button>
+                        <Button intent="secondary" onClick={onCancel}>
+                            Cancel
+                        </Button>
 
-                    {onDelete && (
-                        <div className={css.additionalActions}>
-                            <ConfirmButton
-                                fillStyle="ghost"
-                                intent="destructive"
-                                confirmLabel="Delete"
-                                confirmationButtonIntent="destructive"
-                                confirmationTitle="Delete Guidance?"
-                                onConfirm={handleDelete}
-                                confirmationContent={
-                                    <p>
-                                        Are you sure you want to delete{' '}
-                                        <b>{formState.name}</b> Guidance?
-                                    </p>
-                                }
-                            >
-                                Delete Guidance
-                            </ConfirmButton>
-                        </div>
-                    )}
-                </div>
+                        {onDelete && (
+                            <div className={css.additionalActions}>
+                                <ConfirmButton
+                                    fillStyle="ghost"
+                                    intent="destructive"
+                                    confirmLabel="Delete"
+                                    confirmationButtonIntent="destructive"
+                                    confirmationTitle="Delete Guidance?"
+                                    onConfirm={handleDelete}
+                                    confirmationContent={
+                                        <p>
+                                            Are you sure you want to delete{' '}
+                                            <b>{formState.name}</b> Guidance?
+                                        </p>
+                                    }
+                                >
+                                    Delete Guidance
+                                </ConfirmButton>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
 
-            <div className={css.alertContainer}>
-                {actionType === 'create' && sourceType === 'ai' && (
-                    <Alert type={AlertType.Ai} icon className={css.alert}>
+            {!hideFooterAlerts && (
+                <div className={css.alertContainer}>
+                    {actionType === 'create' && sourceType === 'ai' && (
+                        <Alert type={AlertType.Ai} icon className={css.alert}>
+                            <p>
+                                AI-generated Guidance is crafted from your past
+                                tickets, addressing the most commonly surfaced
+                                scenarios.{' '}
+                                <b>
+                                    Please review it thoroughly to maximize its
+                                    benefits.
+                                </b>
+                            </p>
+                        </Alert>
+                    )}
+                    <Alert type={AlertType.Info} icon className={css.alert}>
                         <p>
-                            AI-generated Guidance is crafted from your past
-                            tickets, addressing the most commonly surfaced
-                            scenarios.{' '}
-                            <b>
-                                Please review it thoroughly to maximize its
-                                benefits.
-                            </b>
+                            Give your AI Agent instructions on how to handle
+                            specific situations.
+                        </p>
+                        <p>
+                            Instructions can be context specific, for example:{' '}
+                            <i>
+                                <ToolbarProvider
+                                    guidanceVariables={[
+                                        {
+                                            name: 'shopify',
+                                            variables: [
+                                                {
+                                                    name: 'Shipping address - Country',
+                                                    value: 'customer.country',
+                                                    category: 'customer',
+                                                },
+                                            ],
+                                        },
+                                    ]}
+                                >
+                                    <b>
+                                        “If{' '}
+                                        <GuidanceVariableTag value="customer.country">
+                                            <span className={css.variable}>
+                                                Shipping address - Country
+                                            </span>
+                                        </GuidanceVariableTag>{' '}
+                                        is from Canada or Australia, let them
+                                        know that prices may differ slightly due
+                                        to currency conversion.”
+                                    </b>
+                                </ToolbarProvider>
+                            </i>
+                        </p>
+                        <p>
+                            Instructions can also be general:{' '}
+                            <i>
+                                <b>
+                                    “Always end by asking if they need more
+                                    help, no matter what they asked.”
+                                </b>
+                            </i>
                         </p>
                     </Alert>
-                )}
-                <Alert type={AlertType.Info} icon className={css.alert}>
-                    <p>
-                        Give your AI Agent instructions on how to handle
-                        specific situations.
-                    </p>
-                    <p>
-                        Instructions can be context specific, for example:{' '}
-                        <i>
-                            <ToolbarProvider
-                                guidanceVariables={[
-                                    {
-                                        name: 'shopify',
-                                        variables: [
-                                            {
-                                                name: 'Shipping address - Country',
-                                                value: 'customer.country',
-                                                category: 'customer',
-                                            },
-                                        ],
-                                    },
-                                ]}
-                            >
-                                <b>
-                                    “If{' '}
-                                    <GuidanceVariableTag value="customer.country">
-                                        <span className={css.variable}>
-                                            Shipping address - Country
-                                        </span>
-                                    </GuidanceVariableTag>{' '}
-                                    is from Canada or Australia, let them know
-                                    that prices may differ slightly due to
-                                    currency conversion.”
-                                </b>
-                            </ToolbarProvider>
-                        </i>
-                    </p>
-                    <p>
-                        Instructions can also be general:{' '}
-                        <i>
-                            <b>
-                                “Always end by asking if they need more help, no
-                                matter what they asked.”
-                            </b>
-                        </i>
-                    </p>
-                </Alert>
-            </div>
+                </div>
+            )}
         </>
     )
 }

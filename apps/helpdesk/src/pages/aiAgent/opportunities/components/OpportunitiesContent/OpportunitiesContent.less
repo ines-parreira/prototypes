@@ -26,6 +26,22 @@
             width: 100%;
             padding: var(--layout-spacing-s);
             border-bottom: 1px solid var(--neutral-grey-2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .approveButton {
+            background-color: var(--main-primary) !important;
+            i {
+                font-size: 20px;
+                padding-right: var(--layout-spacing-xxs);
+            }
+        }
+
+        .headerActions {
+            display: flex;
+            gap: var(--layout-spacing-xs);
         }
 
         .title {
@@ -40,6 +56,18 @@
             flex: 1;
             width: 100%;
             background: var(--neutral-grey-0) !important;
+            overflow-y: auto;
+        }
+
+        .opportunityDetails {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: var(--layout-spacing-m);
+        }
+
+        .guidanceFormWrapper {
+            width: 100%;
         }
     }
 }

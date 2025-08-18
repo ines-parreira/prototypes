@@ -1,0 +1,32 @@
+:local {
+    .card {
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-s);
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: var(--layout-spacing-xs);
+        border: 1px solid transparent;
+        background: var(--neutral-grey-0);
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 4px;
+    }
+
+    .infoSection {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        width: 100%;
+
+        .title {
+            display: flex;
+            align-items: flex-end;
+        }
+    }
+}

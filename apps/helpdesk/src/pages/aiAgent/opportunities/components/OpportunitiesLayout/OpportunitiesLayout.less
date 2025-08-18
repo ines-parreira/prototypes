@@ -5,6 +5,7 @@
         height: 100%;
         width: 100%;
         background: transparent;
+        padding: var(--layout-spacing-xs);
     }
 
     .layout {
@@ -27,7 +28,7 @@
                 border: none !important;
                 border-radius: 0 !important;
                 box-shadow: none !important;
-                background: transparent !important;
+                background: var(--navigation-background) !important;
                 overflow: visible !important;
             }
 
@@ -37,12 +38,13 @@
                 overflow: visible !important;
             }
 
-            .axiom [class*='App--content'] {
+            [class*='App--content'] {
                 background: var(--navigation-background) !important;
             }
 
-            .axiom [class*='App--container'] {
+            [class*='App--container'] {
                 padding: 0 !important;
+                background: var(--navigation-background) !important;
             }
         }
     }

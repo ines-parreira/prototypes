@@ -1,14 +1,133 @@
+// oxlint-disable exhaustive-deps
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import configureStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
+import { notify } from 'state/notifications/actions'
 
 import { OpportunityType } from '../../enums'
-import { Opportunity } from '../OpportunitiesLayout/OpportunitiesLayout'
+import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from './OpportunitiesContent'
 
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn((payload) => ({
+        type: 'NOTIFY',
+        payload,
+    })),
+}))
+
+jest.mock('pages/aiAgent/utils/guidance.utils', () => ({
+    mapGuidanceFormFieldsToGuidanceArticle: jest.fn((formData, locale, id) => ({
+        name: formData.name,
+        content: formData.content,
+        is_visible: formData.isVisible,
+        locale,
+        ai_suggestion_key: id,
+    })),
+}))
+
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: jest.fn(() => 'en-US'),
+}))
+
+jest.mock('state/ui/helpCenter', () => ({
+    getViewLanguage: jest.fn(() => 'en-US'),
+}))
+
+jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation')
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+)
+jest.mock('pages/settings/helpCenter/queries')
+
+const mockOnValuesChange = jest.fn()
+
+jest.mock('../../../components/GuidanceForm/GuidanceForm', () => ({
+    GuidanceForm: ({ onValuesChange, initialFields }: any) => {
+        React.useEffect(() => {
+            if (onValuesChange && initialFields) {
+                mockOnValuesChange(initialFields)
+                onValuesChange(initialFields)
+            }
+        }, [])
+        return <div data-testid="guidance-form">Guidance Form</div>
+    },
+}))
+
+const middlewares = [thunk]
+const mockStore = configureStore(middlewares)
+
 describe('OpportunitiesContent', () => {
+    const mockCreateGuidanceArticle = jest.fn()
+    const mockReviewArticleMutate = jest.fn()
+    const mockMarkArticleAsReviewed = jest.fn()
+    const mockOnArchive = jest.fn()
+    const mockOnPublish = jest.fn()
+
+    const defaultProps = {
+        selectedOpportunity: null,
+        shopName: 'test-shop',
+        helpCenterId: 1,
+        guidanceHelpCenterId: 2,
+        onArchive: mockOnArchive,
+        onPublish: mockOnPublish,
+        markArticleAsReviewed: mockMarkArticleAsReviewed,
+    }
+
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+            mutations: { retry: false },
+        },
+    })
+
+    const renderComponent = (props = {}) => {
+        const store = mockStore({
+            notifications: [],
+        })
+
+        return render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <OpportunitiesContent {...defaultProps} {...props} />
+                </QueryClientProvider>
+            </Provider>,
+        )
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockCreateGuidanceArticle.mockClear()
+        mockOnValuesChange.mockClear()
+        mockReviewArticleMutate.mockClear()
+        mockMarkArticleAsReviewed.mockClear()
+        mockOnArchive.mockClear()
+        mockOnPublish.mockClear()
+        ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
+            createGuidanceArticle: mockCreateGuidanceArticle,
+            isGuidanceArticleUpdating: false,
+        })
+        ;(useGetGuidancesAvailableActions as jest.Mock).mockReturnValue({
+            guidanceActions: [],
+            isLoading: false,
+        })
+        ;(useUpsertArticleTemplateReview as jest.Mock).mockReturnValue({
+            mutate: mockReviewArticleMutate,
+            isLoading: false,
+        })
+    })
+
     it('should render content header with title', () => {
-        render(<OpportunitiesContent selectedOpportunity={null} />)
+        renderComponent()
 
         const title = screen.getByRole('heading', { name: 'Opportunities' })
         expect(title).toBeInTheDocument()
@@ -16,7 +135,7 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should render empty state when no opportunity is selected', () => {
-        render(<OpportunitiesContent selectedOpportunity={null} />)
+        renderComponent()
 
         expect(screen.getByText('No opportunities yet')).toBeInTheDocument()
         expect(
@@ -28,12 +147,11 @@ describe('OpportunitiesContent', () => {
         const selectedOpportunity: Opportunity = {
             id: '1',
             title: "What's your return policy?",
+            content: 'Return policy content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        render(
-            <OpportunitiesContent selectedOpportunity={selectedOpportunity} />,
-        )
+        renderComponent({ selectedOpportunity })
 
         expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
         expect(
@@ -41,57 +159,353 @@ describe('OpportunitiesContent', () => {
         ).toBeInTheDocument()
     })
 
-    it('should have proper content structure', () => {
-        const { container } = render(
-            <OpportunitiesContent selectedOpportunity={null} />,
-        )
+    it('should show action buttons when opportunity is selected', () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
 
-        const containerContent = container.querySelector('.containerContent')
-        expect(containerContent).toBeInTheDocument()
+        renderComponent({ selectedOpportunity })
 
-        const header = container.querySelector('.header')
-        expect(header).toBeInTheDocument()
-
-        const contentBody = container.querySelector('.contentBody')
-        expect(contentBody).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Dismiss/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Approve/i }),
+        ).toBeInTheDocument()
     })
 
-    it('should render OpportunitiesEmptyState inside content body when no selection', () => {
-        const { container } = render(
-            <OpportunitiesContent selectedOpportunity={null} />,
-        )
+    it('should open dismiss modal when dismiss button is clicked', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
 
-        const contentBody = container.querySelector('.contentBody')
-        expect(contentBody).toBeInTheDocument()
+        renderComponent({ selectedOpportunity })
 
-        const emptyStateTitle = screen.getByText('No opportunities yet')
-        expect(contentBody).toContainElement(emptyStateTitle)
+        const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
+
+        act(() => {
+            userEvent.click(dismissButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /Dismissing this opportunity will delete the associated/,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
-    it('should display complete empty state message when no selection', () => {
-        render(<OpportunitiesContent selectedOpportunity={null} />)
+    it('should archive article when confirming dismiss', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
 
-        const description = screen.getByText(
-            /AI Agent will start finding opportunities to improve as/,
-        )
-        expect(description).toBeInTheDocument()
+        renderComponent({ selectedOpportunity })
 
-        const secondLine = screen.getByText(
-            /it learns from conversations with your customers/,
-        )
-        expect(secondLine).toBeInTheDocument()
+        const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
+        act(() => {
+            userEvent.click(dismissButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
+        })
+
+        const confirmButton = screen.getAllByRole('button', {
+            name: /Dismiss/i,
+        })[1]
+        act(() => {
+            userEvent.click(confirmButton)
+        })
+
+        await waitFor(() => {
+            expect(mockReviewArticleMutate).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    action: 'archive',
+                    template_key: '1',
+                    reason: null,
+                },
+            ])
+        })
+    })
+
+    it('should close dismiss modal when cancel button is clicked', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
+        act(() => {
+            userEvent.click(dismissButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
+        })
+
+        const cancelButton = screen.getByRole('button', { name: /Cancel/i })
+        act(() => {
+            userEvent.click(cancelButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Dismiss opportunity?'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    it('should create guidance and archive article when approving', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        mockCreateGuidanceArticle.mockResolvedValueOnce({})
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+
+        await act(async () => {
+            await userEvent.click(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(mockCreateGuidanceArticle).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    name: 'Test opportunity',
+                    content: 'Test content',
+                    is_visible: true,
+                    locale: 'en-US',
+                    ai_suggestion_key: '1',
+                }),
+            )
+        })
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledWith({
+                status: 'success',
+                message: 'Guidance successfully created',
+            })
+        })
+
+        await waitFor(() => {
+            expect(mockReviewArticleMutate).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    action: 'archive',
+                    template_key: '1',
+                    reason: 'Created as guidance',
+                },
+            ])
+        })
+    })
+
+    it('should handle approve failure gracefully', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        mockCreateGuidanceArticle.mockRejectedValueOnce(new Error('API Error'))
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+
+        await act(async () => {
+            await userEvent.click(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(mockCreateGuidanceArticle).toHaveBeenCalled()
+        })
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledWith({
+                status: 'error',
+                message: 'Failed to create guidance. Please try again.',
+            })
+        })
+
+        expect(mockReviewArticleMutate).not.toHaveBeenCalled()
+    })
+
+    it('should show loading state on approve button when creating guidance', () => {
+        ;(useGuidanceArticleMutation as jest.Mock).mockReturnValueOnce({
+            createGuidanceArticle: mockCreateGuidanceArticle,
+            isGuidanceArticleUpdating: true,
+        })
+
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        expect(approveButton).toBeInTheDocument()
+    })
+
+    it('should show loading state when review article is loading', () => {
+        ;(useUpsertArticleTemplateReview as jest.Mock).mockReturnValueOnce({
+            mutate: mockReviewArticleMutate,
+            isLoading: true,
+        })
+
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        expect(approveButton).toBeInTheDocument()
+    })
+
+    it('should update form data when values change', () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        expect(mockOnValuesChange).toHaveBeenCalledWith({
+            name: 'Test opportunity',
+            content: 'Test content',
+            isVisible: true,
+        })
+    })
+
+    it('should handle review article success callback', async () => {
+        renderComponent({
+            selectedOpportunity: {
+                id: '1',
+                title: 'Test',
+                content: 'Test',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            },
+        })
+
+        const onSuccessCallback = (useUpsertArticleTemplateReview as jest.Mock)
+            .mock.calls[0][0].onSuccess
+
+        await onSuccessCallback(null, [
+            null,
+            null,
+            { template_key: 'test-key', action: 'archive' },
+        ])
+
+        await waitFor(() => {
+            expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
+                'test-key',
+                'archive',
+            )
+            expect(mockOnArchive).toHaveBeenCalledWith('test-key')
+        })
+    })
+
+    it('should handle publish action in review success callback', async () => {
+        renderComponent({
+            selectedOpportunity: {
+                id: '1',
+                title: 'Test',
+                content: 'Test',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            },
+        })
+
+        const onSuccessCallback = (useUpsertArticleTemplateReview as jest.Mock)
+            .mock.calls[0][0].onSuccess
+
+        await onSuccessCallback(null, [
+            null,
+            null,
+            { template_key: 'test-key', action: 'publish' },
+        ])
+
+        await waitFor(() => {
+            expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
+                'test-key',
+                'publish',
+            )
+            expect(mockOnPublish).toHaveBeenCalledWith('test-key')
+        })
+    })
+
+    it('should invalidate queries on review error', async () => {
+        const invalidateQueries = jest.fn()
+        const originalInvalidate = queryClient.invalidateQueries
+        queryClient.invalidateQueries = invalidateQueries
+
+        renderComponent({
+            selectedOpportunity: {
+                id: '1',
+                title: 'Test',
+                content: 'Test',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            },
+        })
+
+        const onErrorCallback = (useUpsertArticleTemplateReview as jest.Mock)
+            .mock.calls[0][0].onError
+
+        await onErrorCallback(new Error('Test error'), [
+            null,
+            null,
+            { action: 'archive' },
+        ])
+
+        await waitFor(() => {
+            expect(invalidateQueries).toHaveBeenCalled()
+        })
+
+        // Restore original method
+        queryClient.invalidateQueries = originalInvalidate
     })
 
     it('should render correct details for RESOLVE_CONFLICT type', () => {
         const selectedOpportunity: Opportunity = {
             id: '2',
             title: 'Topic',
+            content: 'Conflict content',
             type: OpportunityType.RESOLVE_CONFLICT,
         }
 
-        render(
-            <OpportunitiesContent selectedOpportunity={selectedOpportunity} />,
-        )
+        renderComponent({ selectedOpportunity })
 
         expect(screen.getByText('Resolve conflict')).toBeInTheDocument()
         expect(
@@ -99,5 +513,51 @@ describe('OpportunitiesContent', () => {
                 /Review and edit your content to resolve this conflict/,
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should pass correct props to GuidanceForm', () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({
+            selectedOpportunity,
+            shopName: 'my-shop',
+            helpCenterId: 123,
+        })
+
+        expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
+    })
+
+    it('should not render action buttons when no opportunity is selected', () => {
+        renderComponent({ selectedOpportunity: null })
+
+        expect(
+            screen.queryByRole('button', { name: /Dismiss/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Approve/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should handle loading state from guidance actions', () => {
+        ;(useGetGuidancesAvailableActions as jest.Mock).mockReturnValueOnce({
+            guidanceActions: [],
+            isLoading: true,
+        })
+
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }
+
+        renderComponent({ selectedOpportunity })
+
+        expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
     })
 })
