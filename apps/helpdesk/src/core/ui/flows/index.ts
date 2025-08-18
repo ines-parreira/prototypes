@@ -14,3 +14,5 @@ export { StepCardActionMenuItem } from './components/StepCardActionMenuItem'
 export { AddStepButton } from './components/AddStepButton'
 export { AddStepMenuItem } from './components/AddStepMenuItem'
 export { NodeWrapper } from './components/NodeWrapper'
+
+export type { ReactFlowInstance } from 'reactflow'

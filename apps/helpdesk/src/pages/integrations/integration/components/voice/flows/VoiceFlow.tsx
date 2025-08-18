@@ -6,10 +6,15 @@ import { VoiceFlowNodeType } from './constants'
 import { EndCallNode } from './nodes/EndCallNode'
 import { IncomingCallNode } from './nodes/IncomingCallNode'
 import { VoiceFlowNode } from './types'
+import { VoiceFlowEdge } from './VoiceFlowEdge'
 
 const nodeTypes = {
     [VoiceFlowNodeType.IncomingCall]: IncomingCallNode,
     [VoiceFlowNodeType.EndCall]: EndCallNode,
+}
+
+const edgeTypes = {
+    default: VoiceFlowEdge,
 }
 
 type VoiceFlowProps = {
@@ -23,6 +28,7 @@ export function VoiceFlow({ nodes, edges }: VoiceFlowProps) {
             nodes={nodes ?? []}
             edges={edges ?? []}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
         >
             <Background />
             <CustomControls />
