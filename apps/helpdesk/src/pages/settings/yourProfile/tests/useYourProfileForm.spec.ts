@@ -72,6 +72,8 @@ describe('useYourProfileForm', () => {
                 meta: { profile_picture_url: 'https://example.com/avatar.jpg' },
                 preferences: {
                     ...DEFAULT_PREFERENCES,
+                    primary: 'en',
+                    proficient: [],
                 },
             })
 
