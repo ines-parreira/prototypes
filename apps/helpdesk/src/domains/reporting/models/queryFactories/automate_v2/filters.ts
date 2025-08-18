@@ -164,7 +164,7 @@ export const aiAgentTicketsFromTicketCustomFieldsDefaultFilters = ({
             ? [
                   {
                       member: TicketMember.CustomFieldToExclude,
-                      operator: ReportingFilterOperator.NotEquals,
+                      operator: ReportingFilterOperator.NotStartsWith,
                       values: addFieldIdToCustomFieldValues(
                           outcomeFieldId || -1,
                           outcomeValuesToExclude,

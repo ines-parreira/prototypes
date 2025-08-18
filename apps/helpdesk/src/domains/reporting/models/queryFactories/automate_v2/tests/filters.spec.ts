@@ -269,7 +269,7 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
             },
             {
                 member: TicketMember.CustomFieldToExclude,
-                operator: ReportingFilterOperator.NotEquals,
+                operator: ReportingFilterOperator.NotStartsWith,
                 values: [`${outcomeFieldId}::handover`],
             },
             {
@@ -385,7 +385,7 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
 
         expect(result).toContainEqual({
             member: TicketMember.CustomFieldToExclude,
-            operator: ReportingFilterOperator.NotEquals,
+            operator: ReportingFilterOperator.NotStartsWith,
             values: ['1::handover', '1::failure'],
         })
     })
@@ -403,7 +403,7 @@ describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
 
         expect(result).toContainEqual({
             member: TicketMember.CustomFieldToExclude,
-            operator: ReportingFilterOperator.NotEquals,
+            operator: ReportingFilterOperator.NotStartsWith,
             values: ['-1::handover', '-1::failure'],
         })
     })
