@@ -18,8 +18,8 @@ export const useTableImport = () => {
 
     const orderBy =
         sortOrder === OrderDirection.Asc
-            ? ListImportsOrderBy.StatusDesc
-            : ListImportsOrderBy.StatusAsc
+            ? ListImportsOrderBy.StatusDescProviderIdentifierAsc
+            : ListImportsOrderBy.StatusAscProviderIdentifierAsc
 
     const importListingQueryKey = queryKeys.integrations.listImports({
         limit: PAGE_SIZE,

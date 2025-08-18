@@ -27,14 +27,14 @@
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
-        "@types/react-dom": "catalog:react",
         "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
         "lodash": "catalog:lodash",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
-        "react-dom": "catalog:react",
         "react": "catalog:react",
+        "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     }

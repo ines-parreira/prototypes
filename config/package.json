@@ -18,8 +18,8 @@
     "devDependencies": {
         "@testing-library/jest-dom": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
-        "jest-extended": "catalog:test",
         "jest": "catalog:test",
+        "jest-extended": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "typescript": "catalog:typescript",

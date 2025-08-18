@@ -25,8 +25,8 @@
     },
     "devDependencies": {
         "@jest/expect": "catalog:test",
-        "@repo/testing": "workspace:*",
         "@repo/config": "workspace:*",
+        "@repo/testing": "workspace:*",
         "@repo/types": "workspace:*",
         "@swc/core": "catalog:test",
         "@swc/jest": "catalog:test",
