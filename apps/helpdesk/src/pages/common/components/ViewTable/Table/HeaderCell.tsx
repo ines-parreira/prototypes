@@ -76,13 +76,12 @@ const HeaderCell = ({
             action === 'sort' &&
             isClickable
         ) {
-            let newDirection = undefined
-            if (orderBy === fieldPath) {
-                if (orderDirection === 'desc') {
-                    newDirection = OrderDirection.Asc
-                }
-            } else {
-                newDirection = OrderDirection.Desc
+            let newDirection: OrderDirection = OrderDirection.Desc
+            if (
+                orderBy === fieldPath &&
+                orderDirection === OrderDirection.Desc
+            ) {
+                newDirection = OrderDirection.Asc
             }
 
             dispatch(
@@ -92,20 +91,11 @@ const HeaderCell = ({
                     fieldPath,
                 }),
             )
-            const params = !!newDirection
-                ? {
-                      orderBy:
-                          `${fieldPath}:${newDirection}` as UpdateViewItemsOrderBy,
-                  }
-                : undefined
             void dispatch(
-                fetchViewItems(
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    params,
-                ),
+                fetchViewItems(undefined, undefined, undefined, undefined, {
+                    orderBy:
+                        `${fieldPath}:${newDirection}` as UpdateViewItemsOrderBy,
+                }),
             )
         }
     }, [

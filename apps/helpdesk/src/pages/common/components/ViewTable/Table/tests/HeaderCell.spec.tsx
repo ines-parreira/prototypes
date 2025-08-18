@@ -220,15 +220,6 @@ describe('ViewTable::Table::HeaderCell', () => {
                 orderBy: `${createdViewField.get('path') as string}:${OrderDirection.Asc}`,
             },
         ],
-        [
-            'when field is the active sorted field',
-            {
-                order_by: createdViewField.get('path'),
-                order_dir: OrderDirection.Asc,
-            },
-            undefined,
-            undefined,
-        ],
     ])(
         'sorts by the field value on click %s and %s %s',
         (_, active, direction, params) => {
@@ -260,36 +251,4 @@ describe('ViewTable::Table::HeaderCell', () => {
             })
         },
     )
-
-    it('should clear sort when field is currently sorted in ascending order', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    views: fromJS({
-                        active: {
-                            order_by: createdViewField.get('path'),
-                            order_dir: OrderDirection.Asc,
-                        },
-                    }),
-                })}
-            >
-                <HeaderCell {...minProps} field={createdViewField} />
-            </Provider>,
-        )
-
-        fireEvent.click(screen.getByText(createdViewField.get('title')))
-
-        expect(fetchViewItemsMock).toHaveBeenCalledWith(
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-        )
-        expect(setOrderDirectionMock).toHaveBeenCalledWith({
-            direction: undefined,
-            fieldPath: createdViewField.get('path'),
-            isEditable: false,
-        })
-    })
 })

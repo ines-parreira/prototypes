@@ -740,10 +740,6 @@ export const fetchActiveViewTickets =
         ) as ValueOf<typeof TicketSearchSortableProperties>
         const viewOrderDir = viewsSelectors.getActiveViewOrderDirection(state)
 
-        const orderBy =
-            viewOrderBy && viewOrderDir
-                ? (`${viewOrderBy}:${viewOrderDir}` as FetchViewItemsOptions['orderBy'])
-                : undefined
         if (!shouldFetchActiveViewTickets) return
         return dispatch(
             fetchViewItems(
@@ -751,7 +747,9 @@ export const fetchActiveViewTickets =
                 null,
                 true,
                 undefined,
-                isDirty && orderBy ? { orderBy } : undefined,
+                isDirty
+                    ? { orderBy: `${viewOrderBy}:${viewOrderDir}` }
+                    : undefined,
             ),
         )
     }
