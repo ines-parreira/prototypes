@@ -4,6 +4,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { allProducts } from '../../tests/data'
+import { ProductRecommendationRuleType } from '../../types'
 import { SelectedItemsDrawer } from '../SelectedItemsDrawer'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -21,6 +22,7 @@ const renderComponent = (
     options: {
         title?: string
         itemLabelPlural?: string
+        ruleType?: ProductRecommendationRuleType
         items?: Array<{
             id: string
             title: string
@@ -33,6 +35,7 @@ const renderComponent = (
     const {
         title = 'All products',
         itemLabelPlural = 'products',
+        ruleType = 'product',
         items = allProducts
             .filter((product) =>
                 [4, 9, 14, 18, 22, 23, 27, 30].includes(product.id),
@@ -50,6 +53,7 @@ const renderComponent = (
         <SelectedItemsDrawer
             title={title}
             itemLabelPlural={itemLabelPlural}
+            ruleType={ruleType}
             items={items}
             isOpen={isOpen}
             hasImages={hasImages}

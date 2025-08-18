@@ -101,6 +101,7 @@ export const VendorRecommendationRuleCard = ({
                 hasImages={false}
                 title="Add vendors"
                 itemLabelPlural="vendors"
+                ruleType="vendor"
                 selectedItemIds={vendors}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
@@ -123,6 +124,7 @@ export const VendorRecommendationRuleCard = ({
             <SelectedItemsDrawer
                 title="All vendors"
                 itemLabelPlural="vendors"
+                ruleType="vendor"
                 items={selectedVendors}
                 isOpen={isSeeAllDrawerOpen}
                 hasImages={false}

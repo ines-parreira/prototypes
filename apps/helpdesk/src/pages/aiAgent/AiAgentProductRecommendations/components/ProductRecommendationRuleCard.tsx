@@ -122,6 +122,7 @@ export const ProductRecommendationRuleCard = ({
                 hasImages={true}
                 title="Add products"
                 itemLabelPlural="products"
+                ruleType="product"
                 selectedItemIds={productIds}
                 type={type}
                 onClose={() => setIsDrawerOpen(false)}
@@ -139,6 +140,7 @@ export const ProductRecommendationRuleCard = ({
             <SelectedItemsDrawer
                 title="All products"
                 itemLabelPlural="products"
+                ruleType="product"
                 items={mapProducts(selectedProducts)}
                 isOpen={isSeeAllDrawerOpen}
                 hasImages={true}

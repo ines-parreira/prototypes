@@ -1,10 +1,12 @@
 import { useState } from 'react'
 
+import { ProductRecommendationRuleType } from '../types'
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 
 export const SelectedItemsDrawer = ({
     title,
     itemLabelPlural,
+    ruleType,
     items,
     isOpen,
     hasImages,
@@ -14,6 +16,7 @@ export const SelectedItemsDrawer = ({
 }: {
     title: string
     itemLabelPlural: string
+    ruleType: ProductRecommendationRuleType
     items: Array<{
         id: string
         title: string
@@ -49,6 +52,7 @@ export const SelectedItemsDrawer = ({
             hasImages={hasImages}
             title={title}
             itemLabelPlural={itemLabelPlural}
+            ruleType={ruleType}
             selectedItemIds={items.map((item) => item.id)}
             type={type}
             onClose={onClose}

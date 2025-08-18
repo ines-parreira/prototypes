@@ -101,6 +101,7 @@ export const TagRecommendationRuleCard = ({
                 hasImages={false}
                 title="Add tags"
                 itemLabelPlural="tags"
+                ruleType="tag"
                 selectedItemIds={tags}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
@@ -123,6 +124,7 @@ export const TagRecommendationRuleCard = ({
             <SelectedItemsDrawer
                 title="All tags"
                 itemLabelPlural="tags"
+                ruleType="tag"
                 items={selectedTags}
                 isOpen={isSeeAllDrawerOpen}
                 hasImages={false}

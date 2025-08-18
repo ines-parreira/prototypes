@@ -15,6 +15,9 @@ import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { ProductRecommendationRuleType } from '../types'
+import { isProductRecommendationConflictError } from '../types/productRecommendationErrors'
+import { formatConflictMessage } from '../utils/formatConflictMessage'
 import { DraftBadge } from './DraftBadge'
 
 import css from './ItemSelectionDrawer.less'
@@ -26,6 +29,7 @@ export const ItemSelectionDrawer = ({
     title,
     selectedItemIds,
     itemLabelPlural,
+    ruleType,
     type,
     items,
     pagination,
@@ -39,6 +43,7 @@ export const ItemSelectionDrawer = ({
     title: string
     selectedItemIds: string[]
     itemLabelPlural: string
+    ruleType: ProductRecommendationRuleType
     type?: 'promote' | 'exclude'
     items: Array<{
         id: string
@@ -246,11 +251,24 @@ export const ItemSelectionDrawer = ({
                                             status: NotificationStatus.Success,
                                         }),
                                     )
-                                } catch {
+                                } catch (error) {
+                                    let errorMessage =
+                                        'Failed to save product recommendations.'
+
+                                    if (
+                                        isProductRecommendationConflictError(
+                                            error,
+                                        )
+                                    ) {
+                                        errorMessage = formatConflictMessage(
+                                            error.response!.data,
+                                            ruleType,
+                                        )
+                                    }
+
                                     void dispatch(
                                         notify({
-                                            message:
-                                                'Failed to save product recommendations.',
+                                            message: errorMessage,
                                             status: NotificationStatus.Error,
                                         }),
                                     )

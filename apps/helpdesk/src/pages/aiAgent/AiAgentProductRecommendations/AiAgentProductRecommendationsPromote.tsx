@@ -14,6 +14,7 @@ import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
 import { VendorRecommendationRuleCard } from './components/VendorRecommendationRuleCard'
+import { ProductRecommendationRuleType } from './types'
 
 import css from './AiAgentProductRecommendations.less'
 
@@ -61,7 +62,7 @@ export const AiAgentProductRecommendationsPromote = () => {
 
     const handleUpsert = async (
         targets: string[],
-        type: 'product' | 'tag' | 'vendor',
+        type: ProductRecommendationRuleType,
     ) =>
         upsertProductRecommendationRules({
             integrationId: integrationId,
