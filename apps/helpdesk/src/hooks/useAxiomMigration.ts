@@ -10,8 +10,8 @@ export function useAxiomMigration() {
     const hasFlag = useFlag(FeatureFlagKey.AxiomMigration)
 
     const [isEnabled, setIsEnabled] = useLocalStorage(
-        'axiom-migration-enabled',
-        true,
+        'axiom-migration-enabled-v2',
+        false,
     )
 
     const onToggle = useCallback(() => {
