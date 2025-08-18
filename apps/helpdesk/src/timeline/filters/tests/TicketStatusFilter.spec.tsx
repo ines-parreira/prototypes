@@ -1,23 +1,23 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { StatusFilter } from '../StatusFilter'
+import { TicketStatusFilter } from '../TicketStatusFilter'
 
 describe('StatusFilter', () => {
     it('should render the filter name', () => {
         render(
-            <StatusFilter
+            <TicketStatusFilter
                 selectedStatus={['open']}
                 toggleSelectedStatus={jest.fn()}
                 isDisabled={false}
             />,
         )
-        expect(screen.getByText('status')).toBeInTheDocument()
+        expect(screen.getByText('ticket status')).toBeInTheDocument()
     })
 
     it('should call toggleSelectedStatus when an option is clicked', () => {
         const toggleSelectedStatus = jest.fn()
         render(
-            <StatusFilter
+            <TicketStatusFilter
                 selectedStatus={['open']}
                 toggleSelectedStatus={toggleSelectedStatus}
                 isDisabled={false}

@@ -8,7 +8,7 @@ import { InteractionFilterType } from '../../types'
 import Filters from '../Filters'
 import { InteractionType } from '../InteractionType'
 import { RangeFilter } from '../RangeFilter'
-import { StatusFilter } from '../StatusFilter'
+import { TicketStatusFilter } from '../TicketStatusFilter'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
@@ -26,16 +26,16 @@ jest.mock('../RangeFilter', () => ({
     )),
 }))
 
-jest.mock('../StatusFilter', () => ({
-    StatusFilter: jest.fn(() => (
-        <div data-testid="StatusFilter">StatusFilter</div>
+jest.mock('../TicketStatusFilter', () => ({
+    TicketStatusFilter: jest.fn(() => (
+        <div data-testid="TicketStatusFilter">TicketStatusFilter</div>
     )),
 }))
 
 const useFlagMock = assumeMock(useFlag)
 const InteractionTypeMock = assumeMock(InteractionType)
 const RangeFilterMock = assumeMock(RangeFilter)
-const StatusFilterMock = assumeMock(StatusFilter)
+const TicketStatusFilterMock = assumeMock(TicketStatusFilter)
 
 describe('Filters', () => {
     const mockSetActiveFilters = jest.fn()
@@ -56,11 +56,11 @@ describe('Filters', () => {
     })
 
     describe('Component rendering', () => {
-        it('should render RangeFilter and StatusFilter by default', () => {
+        it('should render RangeFilter and TicketStatusFilter by default', () => {
             render(<Filters {...defaultProps} />)
 
             expect(screen.getByTestId('RangeFilter')).toBeInTheDocument()
-            expect(screen.getByTestId('StatusFilter')).toBeInTheDocument()
+            expect(screen.getByTestId('TicketStatusFilter')).toBeInTheDocument()
             expect(RangeFilterMock).toHaveBeenCalledWith(
                 {
                     range: defaultProps.rangeFilter,
@@ -68,7 +68,7 @@ describe('Filters', () => {
                 },
                 {},
             )
-            expect(StatusFilterMock).toHaveBeenCalledWith(
+            expect(TicketStatusFilterMock).toHaveBeenCalledWith(
                 {
                     selectedStatus: defaultProps.selectedStatusKeys,
                     toggleSelectedStatus: expect.any(Function),
@@ -219,13 +219,13 @@ describe('Filters', () => {
         })
     })
 
-    describe('StatusFilter toggle behavior', () => {
+    describe('TicketStatusFilter toggle behavior', () => {
         it('should toggle status filter without affecting other filters', () => {
             render(<Filters {...defaultProps} />)
 
-            // Get the toggleSelectedStatus function passed to StatusFilter
+            // Get the toggleSelectedStatus function passed to TicketStatusFilter
             const toggleSelectedStatus =
-                StatusFilterMock.mock.calls[0][0].toggleSelectedStatus
+                TicketStatusFilterMock.mock.calls[0][0].toggleSelectedStatus
 
             // Simulate toggling a status (e.g., 'open')
             toggleSelectedStatus('open')
@@ -264,7 +264,7 @@ describe('Filters', () => {
             render(<Filters {...defaultProps} />)
 
             const toggleSelectedStatus =
-                StatusFilterMock.mock.calls[0][0].toggleSelectedStatus
+                TicketStatusFilterMock.mock.calls[0][0].toggleSelectedStatus
 
             // Test toggling 'closed'
             toggleSelectedStatus('closed')
@@ -327,8 +327,8 @@ describe('Filters', () => {
                 {},
             )
 
-            // Verify StatusFilter props
-            expect(StatusFilterMock).toHaveBeenCalledWith(
+            // Verify TicketStatusFilter props
+            expect(TicketStatusFilterMock).toHaveBeenCalledWith(
                 {
                     selectedStatus: customProps.selectedStatusKeys,
                     toggleSelectedStatus: expect.any(Function),

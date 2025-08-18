@@ -33,8 +33,8 @@ export const INTERACTION_FILTER_OPTIONS: {
     value: InteractionFilterType
     label: string
 }[] = [
-    { value: 'ticket', label: 'Ticket' },
-    { value: 'order', label: 'Order' },
+    { value: 'ticket', label: 'Tickets' },
+    { value: 'order', label: 'Orders' },
 ]
 
 export const SORTABLE_KEYS = [

@@ -23,7 +23,7 @@ export function InteractionType({ selectedType, toggleSelectedType }: Props) {
 
     return (
         <div className={css.customerTimelineFilter}>
-            <FilterName name="interaction status" />
+            <FilterName name="interaction type" />
             <FilterValue
                 ref={ref}
                 optionsLabels={getTypeOptionLabels(selectedType)}

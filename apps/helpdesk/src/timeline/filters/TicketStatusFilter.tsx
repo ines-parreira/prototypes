@@ -18,7 +18,7 @@ type Props = {
     isDisabled: boolean
 }
 
-export function StatusFilter({
+export function TicketStatusFilter({
     selectedStatus,
     toggleSelectedStatus,
     isDisabled,
@@ -28,7 +28,7 @@ export function StatusFilter({
 
     return (
         <div className={css.customerTimelineFilter}>
-            <FilterName name="status" />
+            <FilterName name="ticket status" />
             <FilterValue
                 ref={ref}
                 optionsLabels={getOptionLabels(selectedStatus)}

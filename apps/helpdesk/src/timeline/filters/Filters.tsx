@@ -7,7 +7,7 @@ import { FilterKey, InteractionFilterType, Range } from '../types'
 import { ActiveFilters } from './hooks/useTimelineFilters'
 import { InteractionType } from './InteractionType'
 import { RangeFilter } from './RangeFilter'
-import { StatusFilter } from './StatusFilter'
+import { TicketStatusFilter } from './TicketStatusFilter'
 
 import css from './Filters.less'
 
@@ -57,7 +57,7 @@ const Filters = ({
                 />
             )}
 
-            <StatusFilter
+            <TicketStatusFilter
                 selectedStatus={selectedStatusKeys}
                 toggleSelectedStatus={(value) => {
                     setActiveFilters((prev) => ({

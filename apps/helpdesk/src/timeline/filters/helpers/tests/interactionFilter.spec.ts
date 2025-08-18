@@ -94,14 +94,14 @@ describe('interactionFilter', () => {
             const selectedTypes: InteractionFilterType[] = ['ticket']
             const result = getTypeOptionLabels(selectedTypes)
 
-            expect(result).toEqual(['Ticket'])
+            expect(result).toEqual(['Tickets'])
         })
 
         it('should return order label when only order is selected', () => {
             const selectedTypes: InteractionFilterType[] = ['order']
             const result = getTypeOptionLabels(selectedTypes)
 
-            expect(result).toEqual(['Order'])
+            expect(result).toEqual(['Orders'])
         })
 
         it('should return empty array when no types are selected', () => {
@@ -123,7 +123,7 @@ describe('interactionFilter', () => {
             const selectedTypes = ['ticket'] as InteractionFilterType[]
             const result = getTypeOptionLabels(selectedTypes)
 
-            expect(result).toEqual(['Ticket'])
+            expect(result).toEqual(['Tickets'])
             expect(result).not.toContain(undefined)
         })
 
