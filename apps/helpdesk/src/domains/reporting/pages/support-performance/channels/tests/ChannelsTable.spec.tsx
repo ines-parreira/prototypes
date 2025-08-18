@@ -1,9 +1,8 @@
-import React from 'react'
-
 import { assumeMock, triggerWidthResize } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import { useSortedChannelsWithData } from 'domains/reporting/hooks/support-performance/useSortedChannelsWithData'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { ChannelsCellContent } from 'domains/reporting/pages/support-performance/channels/ChannelsCellContent'
 import { ChannelsHeaderCellContent } from 'domains/reporting/pages/support-performance/channels/ChannelsHeaderCellContent'
 import { ChannelsTable } from 'domains/reporting/pages/support-performance/channels/ChannelsTable'
@@ -29,6 +28,9 @@ jest.mock(
 )
 const ChannelsHeaderCellContentMock = assumeMock(ChannelsHeaderCellContent)
 
+jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
+const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
+
 describe('<ChannelsTable />', () => {
     beforeEach(() => {
         ChannelsCellContentMock.mockImplementation(() => <div />)
@@ -37,6 +39,7 @@ describe('<ChannelsTable />', () => {
             channels: mockChannels,
             isLoading: false,
         })
+        useIsHrtAiEnabledMock.mockReturnValue(true)
     })
 
     it('should render Channels metrics', () => {

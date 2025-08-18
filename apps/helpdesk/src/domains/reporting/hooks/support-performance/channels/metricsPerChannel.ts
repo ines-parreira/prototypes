@@ -6,6 +6,7 @@ import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { medianFirstResponseTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
@@ -39,6 +40,16 @@ export const useMedianResponseTimeMetricPerChannel =
 export const fetchMedianResponseTimeMetricPerChannel = createFetchPerDimension(
     medianResponseTimeMetricPerChannelQueryFactory,
 )
+
+export const useHumanResponseTimeAfterAiHandoffPerChannel =
+    createMetricPerDimensionHook(
+        humanResponseTimeAfterAiHandoffPerChannelQueryFactory,
+    )
+
+export const fetchHumanResponseTimeAfterAiHandoffPerChannel =
+    createFetchPerDimension(
+        humanResponseTimeAfterAiHandoffPerChannelQueryFactory,
+    )
 
 export const useTicketsRepliedMetricPerChannel = createMetricPerDimensionHook(
     ticketsRepliedMetricPerChannelQueryFactory,

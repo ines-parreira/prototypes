@@ -129,6 +129,12 @@ export const saveReport = (
             idField: CHANNEL_DIMENSION,
             metricField: MedianFirstResponseTime,
         },
+        [ChannelsTableColumns.HumanResponseTimeAfterAiHandoff]: {
+            column: ChannelsTableColumns.FirstResponseTime,
+            metricData: data.humanTimeAfterAiHandoffMetricPerChannel,
+            idField: CHANNEL_DIMENSION,
+            metricField: MedianFirstResponseTime,
+        },
         [ChannelsTableColumns.MedianResponseTime]: {
             column: ChannelsTableColumns.MedianResponseTime,
             metricData: data.medianResponseTimeMetricPerChannel,

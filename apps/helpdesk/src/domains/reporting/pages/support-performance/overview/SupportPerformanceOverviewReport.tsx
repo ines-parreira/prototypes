@@ -1,8 +1,7 @@
 import { useGridSize } from '@repo/hooks'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
@@ -17,22 +16,12 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 
 const WORKLOAD_SECTION_KPI_GRID_CELL_SIZE = 3
 const PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE = 4
 const CX_LAYOUT_BASE = [3, 3, 3, 3, 3]
 const CX_LAYOUT_WITH_HRT_AI = [4, 4, 4, 6, 6]
-
-const useIsHrtAiEnabled = () => {
-    const isFeatureFlagEnabled = useFlag(FeatureFlagKey.ReportingHrtAi, false)
-
-    const { aiAgentType } = useAiAgentTypeForAccount()
-    const isAiAgentEnabled = aiAgentType !== undefined
-
-    return isAiAgentEnabled && isFeatureFlagEnabled
-}
 
 export default function SupportPerformanceOverviewReport() {
     const [areTipsVisible, setAreTipsVisible] = useTipsVisibility()

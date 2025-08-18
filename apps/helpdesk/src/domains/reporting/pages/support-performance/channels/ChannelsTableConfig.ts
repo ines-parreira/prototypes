@@ -3,6 +3,7 @@ import {
     useClosedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
     useCustomerSatisfactionMetricPerChannel,
+    useHumanResponseTimeAfterAiHandoffPerChannel,
     useMedianFirstResponseTimeMetricPerChannel,
     useMedianResolutionTimeMetricPerChannel,
     useMedianResponseTimeMetricPerChannel,
@@ -15,6 +16,7 @@ import { usePercentageOfCreatedTicketsMetricPerChannel } from 'domains/reporting
 import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
@@ -40,6 +42,7 @@ import {
     AVERAGE_RESPONSE_TIME_LABEL,
     CHANNEL_COLUMN_LABEL,
     CUSTOMER_SATISFACTION_LABEL,
+    HRT_AI_TIME_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MEDIAN_RESOLUTION_TIME_LABEL,
     MESSAGES_RECEIVED_LABEL,
@@ -61,6 +64,7 @@ export const LeadColumn = ChannelsTableColumns.Channel
 export const columnsOrder: ChannelsTableColumns[] = [
     ChannelsTableColumns.Channel,
     ChannelsTableColumns.TicketsCreated,
+    ChannelsTableColumns.HumanResponseTimeAfterAiHandoff,
     ChannelsTableColumns.CreatedTicketsPercentage,
     ChannelsTableColumns.ClosedTickets,
     ChannelsTableColumns.TicketHandleTime,
@@ -72,6 +76,9 @@ export const columnsOrder: ChannelsTableColumns[] = [
     ChannelsTableColumns.CustomerSatisfaction,
     ChannelsTableColumns.MessagesReceived,
 ]
+export const columnsOrderWithoutHrtAi = columnsOrder.filter(
+    (col) => col !== ChannelsTableColumns.HumanResponseTimeAfterAiHandoff,
+)
 
 export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
     [ChannelsTableColumns.Channel]: CHANNEL_COLUMN_LABEL,
@@ -86,6 +93,7 @@ export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
     [ChannelsTableColumns.MessagesReceived]: MESSAGES_RECEIVED_LABEL,
     [ChannelsTableColumns.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
     [ChannelsTableColumns.MedianResponseTime]: AVERAGE_RESPONSE_TIME_LABEL,
+    [ChannelsTableColumns.HumanResponseTimeAfterAiHandoff]: HRT_AI_TIME_LABEL,
 }
 
 export const ChannelColumnConfig: Record<
@@ -157,6 +165,16 @@ export const ChannelColumnConfig: Record<
         showMetric: true,
         domain: Domain.Ticket,
     },
+    [ChannelsTableColumns.HumanResponseTimeAfterAiHandoff]: {
+        format: 'duration',
+        hint: OverviewMetricConfig[
+            OverviewMetric.HumanResponseTimeAfterAiHandoff
+        ].hint,
+        useMetric: useHumanResponseTimeAfterAiHandoffPerChannel,
+        drillDownQuery: humanResponseTimeAfterAiHandoffDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
+    },
     [ChannelsTableColumns.MedianResponseTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianResponseTime].hint,
@@ -216,8 +234,9 @@ export const ChannelsTableViews: TableSetting<ChannelsTableColumns> = {
     views: [],
 }
 
-const CHANNEL_COLUMN_WIDTH = 240
+export const CHANNEL_COLUMN_WIDTH = 240
 export const MOBILE_CHANNEL_COLUMN_WIDTH = 180
+export const DESKTOP_CHANNEL_COLUMN_WIDTH = 200
 
 export const getColumnWidth = (column: ChannelsTableColumns) => {
     if (isMediumOrSmallScreen()) {
@@ -225,7 +244,11 @@ export const getColumnWidth = (column: ChannelsTableColumns) => {
             ? MOBILE_CHANNEL_COLUMN_WIDTH
             : MOBILE_METRIC_COLUMN_WIDTH
     }
-    return column === LeadColumn ? CHANNEL_COLUMN_WIDTH : METRIC_COLUMN_WIDTH
+    return column === LeadColumn
+        ? CHANNEL_COLUMN_WIDTH
+        : column === ChannelsTableColumns.HumanResponseTimeAfterAiHandoff
+          ? DESKTOP_CHANNEL_COLUMN_WIDTH
+          : METRIC_COLUMN_WIDTH
 }
 
 export const channelsReportTableActiveView = {

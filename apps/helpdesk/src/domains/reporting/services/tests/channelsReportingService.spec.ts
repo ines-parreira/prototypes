@@ -57,6 +57,11 @@ describe('channelsReportingService', () => {
                 TicketMeasure.TicketCount,
                 '1',
             ),
+            humanTimeAfterAiHandoffMetricPerChannel: exampleData(
+                channelA.slug,
+                TicketMessagesMeasure.MedianFirstResponseTime,
+                '69',
+            ),
             percentageOfCreatedTicketsMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
@@ -108,6 +113,7 @@ describe('channelsReportingService', () => {
                 '11',
             ),
         }
+
         saveReport(reportChannels, data, columnsOrder, fileName)
 
         expect(createCsvSpy).toHaveBeenCalledWith([
@@ -115,6 +121,7 @@ describe('channelsReportingService', () => {
             [
                 channelA.slug,
                 '1',
+                '1m 09s',
                 '2%',
                 '3',
                 '4s',

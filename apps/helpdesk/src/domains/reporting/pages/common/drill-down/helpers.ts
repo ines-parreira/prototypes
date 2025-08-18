@@ -238,6 +238,7 @@ export const getDrillDownQuery = (
         case ChannelsTableColumns.TicketsCreated:
         case ChannelsTableColumns.CreatedTicketsPercentage:
         case ChannelsTableColumns.FirstResponseTime:
+        case ChannelsTableColumns.HumanResponseTimeAfterAiHandoff:
         case ChannelsTableColumns.MedianResponseTime:
         case ChannelsTableColumns.MedianResolutionTime:
         case ChannelsTableColumns.TicketsReplied:

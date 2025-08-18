@@ -169,6 +169,7 @@ export type ChannelMetricColumn =
     | ChannelsTableColumns.TicketHandleTime
     | ChannelsTableColumns.FirstResponseTime
     | ChannelsTableColumns.MedianResponseTime
+    | ChannelsTableColumns.HumanResponseTimeAfterAiHandoff
     | ChannelsTableColumns.MedianResolutionTime
     | ChannelsTableColumns.TicketsReplied
     | ChannelsTableColumns.MessagesSent

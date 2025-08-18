@@ -167,6 +167,7 @@ export enum ChannelsTableColumns {
     MessagesReceived = 'channels_messages_received',
     CustomerSatisfaction = 'channels_customer_satisfaction',
     MedianResponseTime = 'channels_median_response_time',
+    HumanResponseTimeAfterAiHandoff = 'human_response_time_after_ai_handoff',
 }
 
 export enum ProductInsightsTableColumns {

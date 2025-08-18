@@ -13,6 +13,7 @@ import {
     useChannelsReportMetrics,
 } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -29,6 +30,9 @@ jest.mock('domains/reporting/hooks/common/useTableReportData')
 const useTableReportDataMock = assumeMock(useTableReportData)
 const useSortedChannelsMock = assumeMock(useSortedChannels)
 const fetchTableReportDataMock = assumeMock(fetchTableReportData)
+
+jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
+const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
 
 describe('useChannelsReportMetrics', () => {
     const periodStart = moment()
@@ -84,6 +88,7 @@ describe('useChannelsReportMetrics', () => {
         messagesSentMetricPerChannel: metricData,
         messagesReceivedMetricPerChannel: metricData,
         customerSatisfactionMetricPerChannel: metricData,
+        humanTimeAfterAiHandoffMetricPerChannel: metricData,
     }
 
     const expectedMetrics: ReturnType<typeof useChannelsReportMetrics> = {
@@ -103,6 +108,7 @@ describe('useChannelsReportMetrics', () => {
             data: expectedMetrics.reportData,
             isFetching: false,
         })
+        useIsHrtAiEnabledMock.mockReturnValue(true)
     })
 
     it('should return channels metrics', () => {

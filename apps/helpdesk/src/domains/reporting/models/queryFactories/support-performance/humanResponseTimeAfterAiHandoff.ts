@@ -17,6 +17,19 @@ export function humanResponseTimeAfterAiHandoffQueryFactory(
 }
 
 // TODO: Implement
+export function humanResponseTimeAfterAiHandoffPerChannelQueryFactory(
+    __statsFilters: StatsFilters,
+    __timezone: string,
+    __sorting?: OrderDirection,
+) {
+    return {
+        measures: [],
+        dimensions: [],
+        filters: [],
+    }
+}
+
+// TODO: Implement
 export function humanResponseTimeAfterAiHandoffDrillDownQueryFactory(
     __statsFilters: StatsFilters,
     __timezone: string,

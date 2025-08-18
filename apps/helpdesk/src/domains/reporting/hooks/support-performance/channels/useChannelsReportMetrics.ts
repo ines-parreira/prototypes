@@ -8,6 +8,7 @@ import {
     fetchClosedTicketsMetricPerChannel,
     fetchCreatedTicketsMetricPerChannel,
     fetchCustomerSatisfactionMetricPerChannel,
+    fetchHumanResponseTimeAfterAiHandoffPerChannel,
     fetchMedianFirstResponseTimeMetricPerChannel,
     fetchMedianResolutionTimeMetricPerChannel,
     fetchMedianResponseTimeMetricPerChannel,
@@ -41,6 +42,7 @@ export type ChannelsReportDataPoints =
     | 'percentageOfCreatedTicketsMetricPerChannel'
     | 'ticketAverageHandleTimePerChannel'
     | 'ticketsRepliedMetricPerChannel'
+    | 'humanTimeAfterAiHandoffMetricPerChannel'
 
 export type ChannelsReportData = Record<
     ChannelsReportDataPoints,
@@ -63,6 +65,10 @@ export const ChannelsMetricsDataSources: TableDataSources<ChannelsReportData> =
         {
             fetchData: fetchMedianFirstResponseTimeMetricPerChannel,
             title: 'medianFirstResponseTimeMetricPerChannel',
+        },
+        {
+            fetchData: fetchHumanResponseTimeAfterAiHandoffPerChannel,
+            title: 'humanTimeAfterAiHandoffMetricPerChannel',
         },
         {
             fetchData: fetchMedianResolutionTimeMetricPerChannel,

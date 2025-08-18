@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
@@ -14,6 +12,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import {
     EditTableColumns,
     SAVE_BUTTON_TEXT,
@@ -66,6 +65,9 @@ const logEventMock = assumeMock(logEvent)
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
+jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
+const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
+
 describe('<AgentsEditColumns>', () => {
     const column = AgentsTableColumn.ClosedTickets
     const columnTitle = TableLabels[AgentsTableColumn.ClosedTickets]
@@ -100,6 +102,7 @@ describe('<AgentsEditColumns>', () => {
 
     beforeEach(() => {
         submitAgentSettingSpy.mockReturnValue(() => Promise.resolve({}))
+        useIsHrtAiEnabledMock.mockReturnValue(true)
     })
 
     it('should render dropdown toggle button', () => {
