@@ -1,5 +1,6 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
+import { NavigationProvider } from '@repo/navigation'
 import { CookiesProvider } from 'react-cookie'
 
 import {
@@ -40,9 +41,13 @@ export default function Main({ children }: Props) {
                                                         path: '/',
                                                     }}
                                                 >
-                                                    <NavBarProvider>
-                                                        <App>{children}</App>
-                                                    </NavBarProvider>
+                                                    <NavigationProvider>
+                                                        <NavBarProvider>
+                                                            <App>
+                                                                {children}
+                                                            </App>
+                                                        </NavBarProvider>
+                                                    </NavigationProvider>
                                                 </CookiesProvider>
                                             </SplitTicketViewProvider>
                                         </AgentActivityProvider>

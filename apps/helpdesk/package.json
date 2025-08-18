@@ -101,6 +101,7 @@
         "@reactflow/controls": "11.1.19",
         "@reactflow/core": "11.8.3",
         "@reduxjs/toolkit": "^1.9.7",
+        "@repo/navigation": "workspace:*",
         "@repo/tickets": "workspace:*",
         "@sentry/react": "7.119.1",
         "@sentry/tracing": "7.119.1",

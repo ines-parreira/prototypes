@@ -1,7 +1,7 @@
 {
-    "name": "@repo/reporting",
+    "name": "@repo/navigation",
     "version": "1.0.0",
-    "description": "Reporting domain.",
+    "description": "All things navigation!",
     "private": true,
     "exports": {
         ".": "./src/index.ts"
