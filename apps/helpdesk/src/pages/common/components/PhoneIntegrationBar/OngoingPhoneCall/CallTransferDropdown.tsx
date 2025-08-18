@@ -74,6 +74,9 @@ export default function CallTransferDropdown({
         {
             limit: 100,
             relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
+            available_first: isTransferToExternalNumberEnabled
+                ? true
+                : undefined,
         },
         {
             http: {

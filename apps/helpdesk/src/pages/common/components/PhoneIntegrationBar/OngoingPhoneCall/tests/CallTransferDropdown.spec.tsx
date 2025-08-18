@@ -365,6 +365,28 @@ describe('CallTransferDropdown', () => {
         expect(unavailableAgent.className).toContain('disabled')
     })
 
+    it('passes all query parameters to list users request', async () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
+                return true
+            }
+            return false
+        })
+
+        const waitForListUsersRequest = mockListUsers.waitForRequest(server)
+
+        renderComponent()
+
+        await waitForListUsersRequest(async (request) => {
+            const url = new URL(request.url)
+            expect(url.searchParams.get('limit')).toBe('100')
+            expect(url.searchParams.get('relationships')).toBe(
+                'availability_status',
+            )
+            expect(url.searchParams.get('available_first')).toBe('true')
+        })
+    })
+
     describe('transfer to external number FF off', () => {
         beforeEach(() => {
             useFlagMock.mockImplementation((flag) => {
@@ -387,6 +409,17 @@ describe('CallTransferDropdown', () => {
             expect(getByText('Agents')).toBeInTheDocument()
             expect(queryByText('Available')).not.toBeInTheDocument()
             expect(queryByText('Unavailable')).not.toBeInTheDocument()
+        })
+
+        it('does not pass available_first parameter', async () => {
+            const waitForListUsersRequest = mockListUsers.waitForRequest(server)
+
+            renderComponent()
+
+            await waitForListUsersRequest(async (request) => {
+                const url = new URL(request.url)
+                expect(url.searchParams.has('available_first')).toBe(false)
+            })
         })
     })
 })
