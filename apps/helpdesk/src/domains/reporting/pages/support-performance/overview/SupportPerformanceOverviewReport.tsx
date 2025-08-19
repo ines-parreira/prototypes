@@ -80,6 +80,18 @@ export default function SupportPerformanceOverviewReport() {
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
+                    {!isHrtAiEnabled && (
+                        <DashboardGridCell
+                            size={getGridCellSize(customerExperienceLayout[3])}
+                        >
+                            <DashboardComponent
+                                chart={
+                                    OverviewChart.MedianFirstResponseTimeTrendCard
+                                }
+                                config={SupportPerformanceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    )}
                     <DashboardGridCell
                         size={getGridCellSize(customerExperienceLayout[1])}
                     >
@@ -96,27 +108,37 @@ export default function SupportPerformanceOverviewReport() {
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell
-                        size={getGridCellSize(customerExperienceLayout[3])}
-                    >
-                        <DashboardComponent
-                            chart={
-                                OverviewChart.MedianFirstResponseTimeTrendCard
-                            }
-                            config={SupportPerformanceOverviewReportConfig}
-                        />
-                    </DashboardGridCell>
                     {isHrtAiEnabled && (
-                        <DashboardGridCell
-                            size={getGridCellSize(customerExperienceLayout[4])}
-                        >
-                            <DashboardComponent
-                                chart={
-                                    OverviewChart.HumanResponseTimeAfterAiHandoffCard
-                                }
-                                config={SupportPerformanceOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
+                        <>
+                            <DashboardGridCell
+                                size={getGridCellSize(
+                                    customerExperienceLayout[3],
+                                )}
+                            >
+                                <DashboardComponent
+                                    chart={
+                                        OverviewChart.MedianFirstResponseTimeTrendCard
+                                    }
+                                    config={
+                                        SupportPerformanceOverviewReportConfig
+                                    }
+                                />
+                            </DashboardGridCell>
+                            <DashboardGridCell
+                                size={getGridCellSize(
+                                    customerExperienceLayout[4],
+                                )}
+                            >
+                                <DashboardComponent
+                                    chart={
+                                        OverviewChart.HumanResponseTimeAfterAiHandoffCard
+                                    }
+                                    config={
+                                        SupportPerformanceOverviewReportConfig
+                                    }
+                                />
+                            </DashboardGridCell>
+                        </>
                     )}
                 </DashboardSection>
 
