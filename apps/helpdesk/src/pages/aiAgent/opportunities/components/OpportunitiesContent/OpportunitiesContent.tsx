@@ -26,6 +26,7 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import { GuidanceForm } from '../../../components/GuidanceForm/GuidanceForm'
 import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
 import { GuidanceFormFields } from '../../../types'
+import { OpportunityType } from '../../enums'
 import { useGuidanceCount } from '../../hooks/useGuidanceCount'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
@@ -187,7 +188,12 @@ export const OpportunitiesContent = ({
     return (
         <div className={css.containerContent}>
             <div className={css.header}>
-                <h3 className={css.title}>Opportunities</h3>
+                <h3 className={css.title}>
+                    {selectedOpportunity?.type ===
+                    OpportunityType.FILL_KNOWLEDGE_GAP
+                        ? 'Fill knowledge gap'
+                        : 'Resolve conflict'}
+                </h3>
                 {selectedOpportunity && (
                     <div className={css.headerActions}>
                         <Button

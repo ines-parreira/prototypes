@@ -5,7 +5,7 @@
 :local {
     .sidebar {
         display: flex;
-        width: 234px;
+        width: 300px;
         height: 100%;
         flex-direction: column;
         align-items: center;
@@ -13,7 +13,12 @@
         border-radius: var(--sm-12, 12px);
         border: 1px solid var(--neutral-grey-2);
         background: var(--neutral-grey-0) !important;
-        box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        box-shadow:
+            74px 82px 31px 0 rgba(0, 0, 0, 0),
+            48px 53px 28px 0 rgba(0, 0, 0, 0.01),
+            27px 30px 24px 0 rgba(0, 0, 0, 0.03),
+            12px 13px 18px 0 rgba(0, 0, 0, 0.04),
+            3px 3px 10px 0 rgba(0, 0, 0, 0.05);
         overflow: hidden;
     }
 
@@ -25,7 +30,7 @@
 
     .title {
         .heading-subsection-semibold();
-        font-size: 14px;
+        font-size: 16px;
         margin: 0;
     }
 

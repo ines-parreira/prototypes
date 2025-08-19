@@ -1,5 +1,7 @@
 import { LoadingSpinner } from '@gorgias/axiom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
@@ -20,6 +22,10 @@ type Props = {
 export const AiAgentGuidanceLibrary = ({ helpCenterId, shopName }: Props) => {
     const { guidanceTemplates } = useGuidanceTemplates()
     const { routes } = useAiAgentNavigation({ shopName })
+
+    const enableGuidanceOpportunities = useFlag(
+        FeatureFlagKey.SurfaceOpportunities,
+    )
 
     const { guidanceAISuggestions, isLoadingAiGuidances } =
         useGuidanceAiSuggestions({
@@ -48,27 +54,28 @@ export const AiAgentGuidanceLibrary = ({ helpCenterId, shopName }: Props) => {
                 </Button>
             </div>
 
-            <div className="mb-4">
-                <h3 className="heading-section-semibold mb-1">
-                    <span className={css.icon}>
-                        <i className="material-icons">auto_awesome</i>
-                    </span>
-                    AI-generated Guidance based on your tickets
-                </h3>
-                {guidanceAISuggestions?.length > 0 && (
-                    <p className={css.subtitle}>
-                        You may already have an existing Guidance addressing one
-                        of these topics. Make sure to double check first before
-                        creating a new one.
-                    </p>
-                )}
-                <GuidanceAiSuggestionsList
-                    guidanceAiSuggestions={guidanceAISuggestions}
-                    shopName={shopName}
-                    showBanner
-                />
-            </div>
-
+            {!enableGuidanceOpportunities && (
+                <div className="mb-4">
+                    <h3 className="heading-section-semibold mb-1">
+                        <span className={css.icon}>
+                            <i className="material-icons">auto_awesome</i>
+                        </span>
+                        AI-generated Guidance based on your tickets
+                    </h3>
+                    {guidanceAISuggestions?.length > 0 && (
+                        <p className={css.subtitle}>
+                            You may already have an existing Guidance addressing
+                            one of these topics. Make sure to double check first
+                            before creating a new one.
+                        </p>
+                    )}
+                    <GuidanceAiSuggestionsList
+                        guidanceAiSuggestions={guidanceAISuggestions}
+                        shopName={shopName}
+                        showBanner
+                    />
+                </div>
+            )}
             <h3 className="heading-section-semibold mb-0">
                 Choose a template and customize it to fit your needs
             </h3>

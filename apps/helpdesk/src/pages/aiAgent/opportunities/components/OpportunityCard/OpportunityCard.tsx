@@ -61,16 +61,16 @@ export const OpportunityCard = ({
             onMouseLeave={() => setIsHovered(false)}
             onClick={onSelect}
         >
-            <div className={css.header}>
-                <span ref={titleCallbackRef} className={css.title}>
-                    {title}
-                </span>
-            </div>
             <div className={css.infoSection}>
                 <i className={classNames('material-icons', css.infoIcon)}>
                     {infoContent.icon}
                 </i>
                 <span className={css.infoText}>{infoContent.text}</span>
+            </div>
+            <div className={css.header}>
+                <span ref={titleCallbackRef} className={css.title}>
+                    {title}
+                </span>
             </div>
             {isTextOverflowing && titleRef && (
                 <Tooltip placement="top" target={titleRef}>

@@ -155,7 +155,9 @@ describe('OpportunitiesContent', () => {
     it('should render content header with title', () => {
         renderComponent()
 
-        const title = screen.getByRole('heading', { name: 'Opportunities' })
+        const title = screen.getByRole('heading', {
+            name: 'No opportunities yet',
+        })
         expect(title).toBeInTheDocument()
         expect(title).toHaveClass('title')
     })
@@ -523,9 +525,7 @@ describe('OpportunitiesContent', () => {
 
         expect(screen.getByText('Resolve conflict')).toBeInTheDocument()
         expect(
-            screen.getByText(
-                /Review and edit your content to resolve this conflict/,
-            ),
+            screen.getByText(/Review and approve this AI-generated Guidance/),
         ).toBeInTheDocument()
     })
 

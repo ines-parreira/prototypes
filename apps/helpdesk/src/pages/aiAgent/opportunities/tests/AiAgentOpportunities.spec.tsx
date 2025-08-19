@@ -175,7 +175,7 @@ describe('AiAgentOpportunities', () => {
         )
 
         const opportunities = getAllByText('Opportunities')
-        expect(opportunities).toHaveLength(2)
+        expect(opportunities).toHaveLength(1)
         expect(getByText('0 items')).toBeInTheDocument()
     })
 

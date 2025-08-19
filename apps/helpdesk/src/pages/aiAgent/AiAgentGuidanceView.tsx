@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useDebouncedValue } from '@repo/hooks'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { LocaleCode } from 'models/helpCenter/types'
@@ -42,6 +44,10 @@ export const AiAgentGuidanceView = ({
     } = useGuidanceArticleMutation({
         guidanceHelpCenterId: helpCenterId,
     })
+
+    const enableGuidanceOpportunities = useFlag(
+        FeatureFlagKey.SurfaceOpportunities,
+    )
 
     const [search, setSearch] = useState('')
 
@@ -205,11 +211,13 @@ export const AiAgentGuidanceView = ({
                 onSearch={setSearch}
                 searchQuery={search}
             />
-            <GuidanceTopRecommendations
-                isLoading={isLoadingAiGuidances}
-                aiGuidances={guidanceAISuggestions}
-                shopName={shopName}
-            />
+            {!enableGuidanceOpportunities && (
+                <GuidanceTopRecommendations
+                    isLoading={isLoadingAiGuidances}
+                    aiGuidances={guidanceAISuggestions}
+                    shopName={shopName}
+                />
+            )}
             <GuidanceList
                 guidanceArticles={guidanceArticles}
                 isLoading={isLoading}

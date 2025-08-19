@@ -50,7 +50,7 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(screen.getByText('Opportunity')).toBeInTheDocument()
             expect(
                 screen.getByText(
                     /Review and approve this AI-generated Guidance/,
@@ -67,7 +67,7 @@ describe('OpportunityDetailsCard', () => {
             )
 
             const heading = screen.getByRole('heading', {
-                name: 'Fill knowledge gap',
+                name: 'Opportunity',
             })
             expect(heading).toBeInTheDocument()
             expect(heading).toHaveClass('title')
@@ -84,7 +84,7 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(screen.getByText('Opportunity')).toBeInTheDocument()
         })
     })
 
@@ -101,10 +101,10 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            expect(screen.getByText('Resolve conflict')).toBeInTheDocument()
+            expect(screen.getByText('Opportunity')).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    /Review and edit your content to resolve this conflict/,
+                    /Review and approve this AI-generated Guidance/,
                 ),
             ).toBeInTheDocument()
         })
@@ -118,7 +118,7 @@ describe('OpportunityDetailsCard', () => {
             )
 
             const heading = screen.getByRole('heading', {
-                name: 'Resolve conflict',
+                name: 'Opportunity',
             })
             expect(heading).toBeInTheDocument()
             expect(heading).toHaveClass('title')
@@ -161,7 +161,7 @@ describe('OpportunityDetailsCard', () => {
             expect(screen.getByText(customDescription)).toBeInTheDocument()
             expect(
                 screen.queryByText(
-                    /Review and edit your content to resolve this conflict/,
+                    /Review and approve this AI-generated Guidance/,
                 ),
             ).not.toBeInTheDocument()
         })
@@ -245,7 +245,7 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(screen.getByText('Opportunity')).toBeInTheDocument()
         })
 
         it('should handle undefined values gracefully', () => {
@@ -257,7 +257,7 @@ describe('OpportunityDetailsCard', () => {
             )
 
             expect(container.querySelector('.container')).toBeInTheDocument()
-            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(screen.getByText('Opportunity')).toBeInTheDocument()
         })
 
         it('should render consistently across different opportunity types', () => {
