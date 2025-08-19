@@ -1,18 +1,9 @@
 @import (reference) '~css/typography';
 
 :local {
-    .orderTicketFields {
-        display: flex;
-        list-style: none;
-        flex-direction: row;
-        padding: 0;
-        margin: 0;
-    }
-
     .cardIconContainer {
         position: relative;
         top: -2px;
-        margin-right: var(--layout-spacing-s);
         width: 24px;
         max-height: 24px;
     }
@@ -34,19 +25,6 @@
         box-shadow: @base-shadow;
         cursor: pointer;
         position: relative;
-
-        &:hover:not(.highlight) {
-            box-shadow: @hover-shadow;
-
-            & .subject {
-                color: var(--main-primary-3);
-            }
-        }
-
-        &.highlight {
-            box-shadow: @highlight-shadow;
-            cursor: default;
-        }
     }
 
     .content {
@@ -66,7 +44,7 @@
         gap: var(--layout-spacing-xs);
         margin-top: var(--layout-spacing-xxs);
         margin-bottom: var(--layout-spacing-xs);
-        font-size: 12px;
+        .body-semibold();
     }
 
     .title {
@@ -75,6 +53,10 @@
         flex-wrap: nowrap;
         gap: var(--layout-spacing-xs);
         overflow: hidden;
+    }
+
+    .date {
+        .caption-regular();
     }
 
     .subject {
@@ -94,6 +76,7 @@
         display: flex;
         list-style: none;
         flex-direction: row;
+        .caption-regular();
         padding: 0;
         margin: 0;
     }

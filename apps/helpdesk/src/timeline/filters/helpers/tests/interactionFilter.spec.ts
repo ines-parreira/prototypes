@@ -26,6 +26,7 @@ describe('interactionFilter', () => {
 
     const mockOrder1: Order = {
         id: 1,
+        name: 'Order #1',
         created_at: '2024-01-01T10:00:00Z',
         line_items: [],
         financial_status: 'paid' as any,
@@ -49,6 +50,7 @@ describe('interactionFilter', () => {
 
     const mockOrder2: Order = {
         id: 2,
+        name: 'Order #2',
         created_at: '2024-01-02T10:00:00Z',
         line_items: [],
         financial_status: 'pending' as any,

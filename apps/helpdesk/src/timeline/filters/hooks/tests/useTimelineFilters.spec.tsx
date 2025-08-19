@@ -58,6 +58,7 @@ const mockSnoozedTicket = createMockTicket({
 
 const mockOrder: Order = {
     id: 1,
+    name: 'Order #1',
     line_items: [],
     financial_status: 'paid' as any,
     fulfillment_status: null,

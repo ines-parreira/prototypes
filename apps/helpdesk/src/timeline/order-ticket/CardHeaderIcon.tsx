@@ -1,4 +1,4 @@
-import css from './OrderTicket.less'
+import css from './OrderCard.less'
 
 type CardHeaderIconProps = {
     src: string

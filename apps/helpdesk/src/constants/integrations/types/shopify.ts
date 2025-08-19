@@ -337,6 +337,7 @@ export type DiscountApplication = {
 
 export type Order = {
     id: number
+    name: string
     line_items: OrderLineItem[]
     financial_status: FinancialStatus
     fulfillment_status: FulfillmentStatus | null

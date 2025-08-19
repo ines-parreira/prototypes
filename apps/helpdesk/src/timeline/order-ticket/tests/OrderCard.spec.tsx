@@ -3,13 +3,13 @@ import { render, screen } from '@testing-library/react'
 import { FinancialStatus, Order } from 'constants/integrations/types/shopify'
 import { shopifyOrderFixture } from 'fixtures/shopify'
 
-import OrderTicketCard from '../OrderTicketCard'
+import OrderCard from '../OrderCard'
 
 type OrderWithName = Order & { name: string; financial_status: FinancialStatus }
 
 const mockOrder: OrderWithName = {
     ...shopifyOrderFixture(),
-    name: 'Order #454374533',
+    name: '#454374533',
     financial_status: FinancialStatus.Paid,
     total_price: '299.99',
 }
@@ -19,25 +19,25 @@ const defaultProps = {
     displayedDate: <span>Jan 1, 2025</span>,
 }
 
-describe('OrderTicketCard', () => {
+describe('OrderCard', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    it('should render the order id', () => {
-        render(<OrderTicketCard {...defaultProps} />)
+    it('should render the order name', () => {
+        render(<OrderCard {...defaultProps} />)
 
-        expect(screen.getByText(mockOrder.id)).toBeInTheDocument()
+        expect(screen.getByText(`Order: ${mockOrder.name}`)).toBeInTheDocument()
     })
 
     it('should render order total price', () => {
-        render(<OrderTicketCard {...defaultProps} />)
+        render(<OrderCard {...defaultProps} />)
 
         expect(screen.getByText('$299.99')).toBeInTheDocument()
     })
 
     it('should render order items count', () => {
-        render(<OrderTicketCard {...defaultProps} />)
+        render(<OrderCard {...defaultProps} />)
 
         expect(
             screen.getByText(`${mockOrder.line_items.length} items`),
@@ -46,22 +46,10 @@ describe('OrderTicketCard', () => {
 
     it('should apply custom className when provided', () => {
         const { container } = render(
-            <OrderTicketCard {...defaultProps} className="custom-class" />,
+            <OrderCard {...defaultProps} className="custom-class" />,
         )
 
         expect(container.firstChild).toHaveClass('custom-class')
-    })
-
-    it('should highlight the card when isHighlighted is true', () => {
-        const { container, rerender } = render(
-            <OrderTicketCard {...defaultProps} isHighlighted={true} />,
-        )
-
-        expect(container.firstChild).toHaveClass('highlight')
-
-        rerender(<OrderTicketCard {...defaultProps} isHighlighted={false} />)
-
-        expect(container.firstChild).not.toHaveClass('highlight')
     })
 
     it('should render order with single item', () => {
@@ -97,9 +85,7 @@ describe('OrderTicketCard', () => {
             ],
         }
 
-        render(
-            <OrderTicketCard {...defaultProps} order={orderWithSingleItem} />,
-        )
+        render(<OrderCard {...defaultProps} order={orderWithSingleItem} />)
 
         expect(screen.getByText('1 items')).toBeInTheDocument()
     })
@@ -110,7 +96,7 @@ describe('OrderTicketCard', () => {
             line_items: [],
         }
 
-        render(<OrderTicketCard {...defaultProps} order={orderWithNoItems} />)
+        render(<OrderCard {...defaultProps} order={orderWithNoItems} />)
 
         expect(screen.getByText('0 items')).toBeInTheDocument()
     })

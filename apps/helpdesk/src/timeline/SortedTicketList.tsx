@@ -2,7 +2,7 @@ import { RefObject, useMemo } from 'react'
 
 import DisplayedDate from './DisplayedDate'
 import * as timelineItem from './helpers/timelineItem'
-import { OrderTicketCard } from './order-ticket'
+import { OrderCard } from './order-ticket'
 import { TicketModal, useTicketModal } from './ticket-modal'
 import { useModalShortcuts } from './ticket-modal/hooks/useModalShortcuts'
 import { TicketListItem } from './TicketListItem'
@@ -45,7 +45,7 @@ export function SortedTicketList({
                         case TimelineItemKind.Order: {
                             return (
                                 <li key={item.order.id}>
-                                    <OrderTicketCard
+                                    <OrderCard
                                         className={css.card}
                                         order={item.order}
                                         displayedDate={DisplayedDate(
