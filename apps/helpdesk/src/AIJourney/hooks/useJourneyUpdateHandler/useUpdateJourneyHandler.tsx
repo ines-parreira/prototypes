@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
+
 import {
     CartAbandonedJourneyConfigurationApiDTO,
     JourneyStatusEnum,
@@ -35,6 +37,8 @@ export const useJourneyUpdateHandler = ({
     discountCodeThresholdValue,
     journeyMessageInstructions,
 }: UseJourneyActionsParams) => {
+    const queryClient = useQueryClient()
+
     const dispatch = useAppDispatch()
     const updateJourney = useUpdateJourney()
 
@@ -82,7 +86,12 @@ export const useJourneyUpdateHandler = ({
                     ...(shouldUpdateConfigs && { journeyConfigs }),
                 }
 
-                return await updateJourney.mutateAsync(requestBody)
+                const updateJourneyMutate =
+                    await updateJourney.mutateAsync(requestBody)
+
+                queryClient.invalidateQueries(['journeys', integrationId])
+
+                return updateJourneyMutate
             } catch (error) {
                 void dispatch(
                     notify({
@@ -105,6 +114,7 @@ export const useJourneyUpdateHandler = ({
             journeyMessageInstructions,
             updateJourney,
             dispatch,
+            queryClient,
         ],
     )
 

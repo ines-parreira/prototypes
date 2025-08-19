@@ -103,7 +103,7 @@ export const Setup = () => {
         NewPhoneNumber | undefined
     >(currentPhoneNumber)
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
-        useState<string>('')
+        useState<string>(abandonedCartJourney?.message_instructions || '')
 
     useEffect(() => {
         if (journeyParams) {

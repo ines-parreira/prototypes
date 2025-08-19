@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
 import { Integration } from '@gorgias/helpdesk-types'
@@ -23,6 +24,24 @@ jest.mock('state/notifications/actions', () => ({
 describe('useJourneyUpdateHandler', () => {
     const mockDispatch = jest.fn()
     const mockMutateAsync = jest.fn()
+
+    let queryClient: QueryClient
+
+    const createWrapper = () => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        })
+
+        return ({ children }: { children: React.ReactNode }) => (
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        )
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -59,7 +78,9 @@ describe('useJourneyUpdateHandler', () => {
             } as unknown as NewPhoneNumber,
         }
 
-        const { result } = renderHook(() => useJourneyUpdateHandler(params))
+        const { result } = renderHook(() => useJourneyUpdateHandler(params), {
+            wrapper: createWrapper(),
+        })
 
         await act(async () => {
             await result.current.handleUpdate()
@@ -109,7 +130,9 @@ describe('useJourneyUpdateHandler', () => {
             } as unknown as NewPhoneNumber,
         }
 
-        const { result } = renderHook(() => useJourneyUpdateHandler(params))
+        const { result } = renderHook(() => useJourneyUpdateHandler(params), {
+            wrapper: createWrapper(),
+        })
 
         await act(async () => {
             await expect(result.current.handleUpdate()).rejects.toThrow(
@@ -132,7 +155,9 @@ describe('useJourneyUpdateHandler', () => {
             abandonedCartJourney: undefined,
         }
 
-        const { result } = renderHook(() => useJourneyUpdateHandler(params))
+        const { result } = renderHook(() => useJourneyUpdateHandler(params), {
+            wrapper: createWrapper(),
+        })
 
         await act(async () => {
             await expect(result.current.handleUpdate()).rejects.toThrow(
