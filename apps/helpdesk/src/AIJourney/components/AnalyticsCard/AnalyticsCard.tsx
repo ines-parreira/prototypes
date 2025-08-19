@@ -76,7 +76,10 @@ export const AnalyticsCard = ({
         [css['analyticsContent--empty']]: isEmpty,
     })
 
-    const { offer_discount: isDiscountEnabled } = journeyConfigurations || {}
+    const {
+        offer_discount: isDiscountEnabled,
+        max_discount_percent: maxDiscount,
+    } = journeyConfigurations || {}
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
@@ -134,7 +137,8 @@ export const AnalyticsCard = ({
             </div>
             {!isEmpty && (
                 <Footer
-                    maxDiscount={journeyConfigurations?.max_discount_percent}
+                    isDiscountEnabled={isDiscountEnabled}
+                    maxDiscount={maxDiscount}
                     totalSent={totalSent}
                 />
             )}

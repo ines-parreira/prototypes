@@ -3,14 +3,19 @@ import { CartAbandonedJourneyConfigurationApiDTO } from '@gorgias/convert-client
 import css from './Footer.less'
 
 type FooterProps = {
+    isDiscountEnabled?: boolean
     maxDiscount?: CartAbandonedJourneyConfigurationApiDTO['max_discount_percent']
     totalSent?: string
 }
 
-export const Footer = ({ maxDiscount, totalSent }: FooterProps) => {
+export const Footer = ({
+    isDiscountEnabled,
+    maxDiscount,
+    totalSent,
+}: FooterProps) => {
     return (
         <div className={css.footer}>
-            {maxDiscount && (
+            {isDiscountEnabled && (
                 <div className={css.discountInfo}>
                     <div className={css.discountInfoIcon}>
                         <i
