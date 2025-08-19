@@ -17,7 +17,7 @@ export function VoiceFlowEdge(props: Props) {
     const isButtonEdge = useMemo(() => {
         const sourceNode = getNode(source)
 
-        return sourceNode && canAddNewStepOnEdge(sourceNode.data)
+        return sourceNode && canAddNewStepOnEdge(sourceNode)
     }, [getNode, source])
 
     return (

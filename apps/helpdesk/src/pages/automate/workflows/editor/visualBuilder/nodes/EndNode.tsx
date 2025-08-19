@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import { Badge } from '@gorgias/axiom'
 
@@ -52,7 +52,7 @@ const EndNode = memo(function EndNode({
     )
 })
 
-export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
+export default function EndNodeWrapper(node: NodeProps<EndNodeType>) {
     const commonProps = useVisualBuilderNodeProps(node)
 
     const { visualBuilderGraph } = useVisualBuilderContext()

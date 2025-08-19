@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -46,7 +46,7 @@ const UpdateShippingAddressNode = memo(function UpdateShippingAddressNode({
 })
 
 export default function UpdateShippingAddressNodeWrapper(
-    node: NodeProps<UpdateShippingAddressNodeType['data']>,
+    node: NodeProps<UpdateShippingAddressNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

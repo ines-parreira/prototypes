@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -47,7 +47,7 @@ const HttpRequestNode = memo(function HttpRequestNode({
 })
 
 export default function HttpRequestNodeWrapper(
-    node: NodeProps<HttpRequestNodeType['data']>,
+    node: NodeProps<HttpRequestNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

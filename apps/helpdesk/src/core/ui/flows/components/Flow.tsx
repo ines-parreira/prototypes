@@ -1,8 +1,8 @@
 import { ComponentProps } from 'react'
 
-import { Edge, Node, ReactFlow } from 'reactflow'
+import { Edge, Node, ReactFlow } from '@xyflow/react'
 
-import 'reactflow/dist/style.css'
+import '@xyflow/react/dist/style.css'
 
 export type FlowProps<TNode extends Node, TEdge extends Edge> = Omit<
     ComponentProps<typeof ReactFlow>,

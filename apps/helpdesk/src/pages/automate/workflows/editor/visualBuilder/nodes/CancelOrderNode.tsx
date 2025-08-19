@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -42,7 +42,7 @@ const CancelOrderNode = memo(function CancelOrderNode({
 })
 
 export default function CancelOrderNodeWrapper(
-    node: NodeProps<CancelOrderNodeType['data']>,
+    node: NodeProps<CancelOrderNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

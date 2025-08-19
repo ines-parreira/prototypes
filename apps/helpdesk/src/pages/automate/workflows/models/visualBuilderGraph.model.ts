@@ -1,3 +1,4 @@
+import { Edge, Node } from '@xyflow/react'
 import _cloneDeep from 'lodash/cloneDeep'
 import _groupBy from 'lodash/groupBy'
 import _isEqual from 'lodash/isEqual'
@@ -6,7 +7,6 @@ import _merge from 'lodash/merge'
 import _omit from 'lodash/omit'
 import _omitBy from 'lodash/omitBy'
 import _setWith from 'lodash/setWith'
-import { Edge, Node } from 'reactflow'
 import { ulid } from 'ulidx'
 
 import { validateHttpHeaderName, validateWebhookURL } from 'utils'

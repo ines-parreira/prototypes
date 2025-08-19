@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Edge, Node } from 'reactflow'
+import { Edge, Node } from '@xyflow/react'
 
 import { ActionLabel, Background, Flow, NodeWrapper, StepCard } from '../index'
 import { CustomControls } from './CustomControls'

@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -40,7 +40,7 @@ const CreateDiscountCodeNode = memo(function CreateDiscountCodeNode({
 })
 
 export default function CreateDiscountCodeNodeWrapper(
-    node: NodeProps<CreateDiscountCodeNodeType['data']>,
+    node: NodeProps<CreateDiscountCodeNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

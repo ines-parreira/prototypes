@@ -4,13 +4,13 @@ import {
     ReactFlowProvider,
     useReactFlow,
     useViewport,
-} from 'reactflow'
+} from '@xyflow/react'
 
 import { CustomControls } from '../CustomControls'
 import { Flow } from '../Flow'
 
-jest.mock('reactflow', () => ({
-    ...jest.requireActual('reactflow'),
+jest.mock('@xyflow/react', () => ({
+    ...jest.requireActual('@xyflow/react'),
     useReactFlow: jest.fn(),
     useViewport: jest.fn(),
     Panel: ({ children, position }: any) => (

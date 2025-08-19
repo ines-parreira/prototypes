@@ -1,11 +1,11 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { ReactFlowProvider, useReactFlow, useViewport } from 'reactflow'
+import { ReactFlowProvider, useReactFlow, useViewport } from '@xyflow/react'
 
 import { CustomControls } from '../CustomControls'
 
-jest.mock('reactflow', () => ({
-    ...jest.requireActual('reactflow'),
+jest.mock('@xyflow/react', () => ({
+    ...jest.requireActual('@xyflow/react'),
     useReactFlow: jest.fn(),
     useViewport: jest.fn(),
     Panel: ({ children, position }: any) => (

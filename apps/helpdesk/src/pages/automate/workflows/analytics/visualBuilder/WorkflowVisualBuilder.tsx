@@ -1,8 +1,7 @@
-import 'reactflow/dist/style.css'
+import '@xyflow/react/dist/style.css'
 
 import React, { Dispatch, useCallback, useMemo } from 'react'
 
-import classNames from 'classnames'
 import {
     ControlButton,
     Controls,
@@ -12,7 +11,8 @@ import {
     ReactFlowProvider,
     useNodesInitialized,
     useReactFlow,
-} from 'reactflow'
+} from '@xyflow/react'
+import classNames from 'classnames'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
@@ -24,7 +24,11 @@ import { TestFlowEditor } from '../../editor/visualBuilder/editors/TestFlowEdito
 import { withVisualBuilderContext } from '../../hooks/useVisualBuilder'
 import { VisualBuilderGraphAction } from '../../hooks/useVisualBuilderGraphReducer'
 import { useWorkflowEditorContext } from '../../hooks/useWorkflowEditor'
-import { VisualBuilderGraph } from '../../models/visualBuilderGraph.types'
+import {
+    VisualBuilderEdge,
+    VisualBuilderGraph,
+    VisualBuilderNode,
+} from '../../models/visualBuilderGraph.types'
 import CustomEdge from './CustomEdge'
 import AnalyticsNode from './nodes/AnalyticsNode'
 import ChannelTriggerNode from './nodes/ChannelTriggerNode'
@@ -82,7 +86,7 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
     }, [visualBuilderGraph.nodes])
 
     const reactFlowOnInit = useCallback(
-        (instance: ReactFlowInstance) => {
+        (instance: ReactFlowInstance<VisualBuilderNode, VisualBuilderEdge>) => {
             const zoomLevel = parseFloat(searchParams || '1.1')
             if (zoomLevel >= 0.1 && zoomLevel <= 1) {
                 instance.zoomTo(zoomLevel)

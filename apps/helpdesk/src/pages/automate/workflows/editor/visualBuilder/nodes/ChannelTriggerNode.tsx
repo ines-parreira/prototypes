@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import { Badge } from '@gorgias/axiom'
 
@@ -40,7 +40,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({
 })
 
 export default function ChannelTriggerNodeWrapper(
-    node: NodeProps<ChannelTriggerNodeType['data']>,
+    node: NodeProps<ChannelTriggerNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

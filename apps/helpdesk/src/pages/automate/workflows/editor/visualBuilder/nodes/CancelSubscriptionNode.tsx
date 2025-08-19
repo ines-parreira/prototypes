@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -46,7 +46,7 @@ const CancelSubscriptionNode = memo(function CancelSubscriptionNode({
 })
 
 export default function CancelSubscriptionNodeWrapper(
-    node: NodeProps<CancelSubscriptionNodeType['data']>,
+    node: NodeProps<CancelSubscriptionNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

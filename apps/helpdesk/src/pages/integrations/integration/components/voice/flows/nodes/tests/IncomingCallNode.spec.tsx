@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import { ReactFlowProvider } from 'reactflow'
+import { ReactFlowProvider } from '@xyflow/react'
 
 import { IncomingCallNode } from '../IncomingCallNode'
 

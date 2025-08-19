@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -47,7 +47,7 @@ const LiquidTemplateNode = memo(function LiquidTemplateNode({
 })
 
 export default function LiquidTemplateNodeWrapper(
-    node: NodeProps<LiquidTemplateNodeType['data']>,
+    node: NodeProps<LiquidTemplateNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

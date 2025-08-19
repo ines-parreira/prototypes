@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
@@ -132,7 +132,7 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
 })
 
 export default function ReusableLLMPromptCallNodeWrapper(
-    node: NodeProps<ReusableLLMPromptCallNodeType['data']>,
+    node: NodeProps<ReusableLLMPromptCallNodeType>,
 ) {
     const { visualBuilderGraph } = useVisualBuilderContext()
 

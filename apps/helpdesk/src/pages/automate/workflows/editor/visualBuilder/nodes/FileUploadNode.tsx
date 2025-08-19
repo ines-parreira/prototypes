@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -48,7 +48,7 @@ const FileUploadNode = memo(function FileUploadNode({
 })
 
 export default function FileUploadNodeWrapper(
-    node: NodeProps<FileUploadNodeType['data']>,
+    node: NodeProps<FileUploadNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -42,7 +42,7 @@ const ReshipForFreeNode = memo(function ReshipForFreeNode({
 })
 
 export default function ReshipForFreeNodeWrapper(
-    node: NodeProps<ReshipForFreeNodeType['data']>,
+    node: NodeProps<ReshipForFreeNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

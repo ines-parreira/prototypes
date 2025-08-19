@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -42,7 +42,7 @@ const RefundOrderNode = memo(function RefundOrderNode({
 })
 
 export default function RefundOrderNodeWrapper(
-    node: NodeProps<RefundOrderNodeType['data']>,
+    node: NodeProps<RefundOrderNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

@@ -1,7 +1,7 @@
 import React, { Dispatch, useCallback, useMemo, useRef, useState } from 'react'
 
+import { Node } from '@xyflow/react'
 import _isEqual from 'lodash/isEqual'
-import { Node } from 'reactflow'
 
 import { Label, Skeleton } from '@gorgias/axiom'
 

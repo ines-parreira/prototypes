@@ -14,7 +14,7 @@ describe('<WorkflowVisualBuilder />', () => {
                 nodes: [nodeHelpers.message()],
             })
 
-            expect(screen.getByText('React Flow mini map')).toBeInTheDocument()
+            expect(screen.getByText('Mini Map')).toBeInTheDocument()
         })
         it('should render template preview with simple scaffolding', () => {
             renderVisualBuilder({

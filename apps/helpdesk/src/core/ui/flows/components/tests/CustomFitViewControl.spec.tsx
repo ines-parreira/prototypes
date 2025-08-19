@@ -1,11 +1,11 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { ReactFlowProvider, useReactFlow } from 'reactflow'
+import { ReactFlowProvider, useReactFlow } from '@xyflow/react'
 
 import { CustomFitViewControl } from '../CustomFitViewControl'
 
-jest.mock('reactflow', () => ({
-    ...jest.requireActual('reactflow'),
+jest.mock('@xyflow/react', () => ({
+    ...jest.requireActual('@xyflow/react'),
     useReactFlow: jest.fn(),
 }))
 

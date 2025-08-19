@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -46,7 +46,7 @@ const SkipChargeNode = memo(function SkipChargeNode({
 })
 
 export default function SkipChargeNodeWrapper(
-    node: NodeProps<SkipChargeNodeType['data']>,
+    node: NodeProps<SkipChargeNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

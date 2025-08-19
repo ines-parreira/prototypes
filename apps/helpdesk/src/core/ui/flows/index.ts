@@ -1,4 +1,4 @@
-export { Background, useReactFlow, ReactFlowProvider } from 'reactflow'
+export { Background, useReactFlow, ReactFlowProvider } from '@xyflow/react'
 
 export { Flow } from './components/Flow'
 export { CustomControls } from './components/CustomControls'
@@ -15,4 +15,4 @@ export { AddStepButton } from './components/AddStepButton'
 export { AddStepMenuItem } from './components/AddStepMenuItem'
 export { NodeWrapper } from './components/NodeWrapper'
 
-export type { ReactFlowInstance } from 'reactflow'
+export type { ReactFlowInstance, Edge } from '@xyflow/react'

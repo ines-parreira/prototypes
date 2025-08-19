@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useReactFlow, useViewport } from 'reactflow'
+import { useReactFlow, useViewport } from '@xyflow/react'
 
 import { IconButton } from '@gorgias/axiom'
 

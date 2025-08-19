@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 
+import { Handle, NodeProps, Position, useNodeId } from '@xyflow/react'
 import classNames from 'classnames'
-import { Handle, NodeProps, Position, useNodeId } from 'reactflow'
 
 import { Badge, Tooltip } from '@gorgias/axiom'
 
@@ -176,7 +176,7 @@ const EndNode = memo(function EndNode({ action, nodeId, edgeProps }: Props) {
     )
 })
 
-export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
+export default function EndNodeWrapper(node: NodeProps<EndNodeType>) {
     const commonProps = useVisualBuilderNodeProps(node)
     const nodeId = useNodeId()
 

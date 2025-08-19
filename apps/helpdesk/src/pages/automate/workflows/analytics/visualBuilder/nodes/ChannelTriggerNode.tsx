@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 
+import { Handle, NodeProps, Position } from '@xyflow/react'
 import classNames from 'classnames'
-import { Handle, NodeProps, Position } from 'reactflow'
 
 import { Badge, Label } from '@gorgias/axiom'
 
@@ -43,7 +43,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({ label }: Props) {
 })
 
 export default function TriggerButtonNodeWrapper(
-    node: NodeProps<ChannelTriggerNodeType['data']>,
+    node: NodeProps<ChannelTriggerNodeType>,
 ) {
     const label = node.data.label
     const commonProps = useVisualBuilderNodeProps(node)

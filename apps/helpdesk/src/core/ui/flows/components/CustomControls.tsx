@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Panel } from 'reactflow'
+import { Panel } from '@xyflow/react'
 
 import { CustomFitViewControl } from './CustomFitViewControl'
 import { CustomZoomDropdownControl } from './CustomZoomDropdownControl'

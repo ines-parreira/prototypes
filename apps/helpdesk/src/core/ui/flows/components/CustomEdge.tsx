@@ -3,7 +3,7 @@ import {
     EdgeLabelRenderer,
     EdgeProps,
     getSmoothStepPath,
-} from 'reactflow'
+} from '@xyflow/react'
 
 import { AddStepButton } from './AddStepButton'
 

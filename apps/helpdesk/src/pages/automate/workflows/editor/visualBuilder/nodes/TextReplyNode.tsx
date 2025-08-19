@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -48,7 +48,7 @@ const TextReplyNode = memo(function TextReplyNode({
 })
 
 export default function TextReplyNodeWrapper(
-    node: NodeProps<TextReplyNodeType['data']>,
+    node: NodeProps<TextReplyNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

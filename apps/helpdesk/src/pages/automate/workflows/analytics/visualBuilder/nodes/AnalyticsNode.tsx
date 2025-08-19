@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 
+import { Handle, NodeProps, Position, useNodeId } from '@xyflow/react'
 import classNames from 'classnames'
-import { Handle, NodeProps, Position, useNodeId } from 'reactflow'
 
 import { Label, Tooltip } from '@gorgias/axiom'
 
@@ -171,9 +171,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
     )
 })
 
-export default function AnalyticsNodeWrapper(
-    node: NodeProps<NodeType['data']>,
-) {
+export default function AnalyticsNodeWrapper(node: NodeProps<NodeType>) {
     const nodeType = node.type as Exclude<
         NonNullable<VisualBuilderNode['type']>,
         | 'channel_trigger'

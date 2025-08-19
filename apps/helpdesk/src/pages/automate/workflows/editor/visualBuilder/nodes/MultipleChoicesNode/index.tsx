@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -48,7 +48,7 @@ const MultipleChoicesNode = memo(function MultipleChoicesNode({
 })
 
 export default function MultipleChoicesNodeWrapper(
-    node: NodeProps<MultipleChoicesNodeType['data']>,
+    node: NodeProps<MultipleChoicesNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

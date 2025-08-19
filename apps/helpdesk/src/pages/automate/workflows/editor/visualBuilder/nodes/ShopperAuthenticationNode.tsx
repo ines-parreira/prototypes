@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -40,7 +40,7 @@ const ShopperAuthenticationNode = memo(function ShopperAuthenticationNode({
 })
 
 export default function ShopperAuthenticationNodeWrapper(
-    node: NodeProps<ShopperAuthenticationNodeType['data']>,
+    node: NodeProps<ShopperAuthenticationNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

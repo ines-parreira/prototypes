@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import useSplitLLMPromptTriggerInputs from 'pages/automate/workflows/hooks/useSplitLLMPromptTriggerInputs'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -47,7 +47,7 @@ const LLMPromptTriggerNode = memo(function LLMPromptTriggerNode({
 })
 
 export default function LLMPromptTriggerNodeWrapper(
-    node: NodeProps<LLMPromptTriggerNodeType['data']>,
+    node: NodeProps<LLMPromptTriggerNodeType>,
 ) {
     const { visualBuilderGraph } = useVisualBuilderContext()
 

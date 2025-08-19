@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import { EdgeProps, Position, ReactFlowProvider } from 'reactflow'
+import { EdgeProps, Position, ReactFlowProvider } from '@xyflow/react'
 
 import { CustomEdge } from '../CustomEdge'
 
 // Mock EdgeLabelRenderer to render children directly instead of using portals
-jest.mock('reactflow', () => ({
-    ...jest.requireActual('reactflow'),
+jest.mock('@xyflow/react', () => ({
+    ...jest.requireActual('@xyflow/react'),
     EdgeLabelRenderer: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="edge-label-renderer">{children}</div>
     ),

@@ -1,4 +1,4 @@
-import 'reactflow/dist/style.css'
+import '@xyflow/react/dist/style.css'
 
 import React, { useCallback } from 'react'
 
@@ -7,7 +7,7 @@ import {
     NodeMouseHandler,
     ReactFlow,
     ReactFlowProvider,
-} from 'reactflow'
+} from '@xyflow/react'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import { VisualBuilderBackground } from 'pages/automate/workflows/editor/visualBuilder/components/VisualBuilderBackground'

@@ -1,4 +1,4 @@
-import { Background } from 'reactflow'
+import { Background } from '@xyflow/react'
 
 import css from './VisualBuilderBackground.less'
 

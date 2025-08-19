@@ -6,7 +6,7 @@ import {
     ReactFlow,
     ReactFlowProvider,
     useReactFlow,
-} from 'reactflow'
+} from '@xyflow/react'
 
 import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 import {

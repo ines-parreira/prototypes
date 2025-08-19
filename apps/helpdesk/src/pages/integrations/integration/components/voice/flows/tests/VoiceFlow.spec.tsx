@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { Edge } from 'reactflow'
+import { Edge } from '@xyflow/react'
 
 import { VoiceFlowNodeType } from '../constants'
 import { VoiceFlowNode } from '../types'

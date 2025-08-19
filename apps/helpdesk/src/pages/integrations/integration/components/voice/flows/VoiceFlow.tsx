@@ -1,4 +1,4 @@
-import { Background, Edge } from 'reactflow'
+import { Background, Edge } from '@xyflow/react'
 
 import { CustomControls, Flow } from 'core/ui/flows'
 

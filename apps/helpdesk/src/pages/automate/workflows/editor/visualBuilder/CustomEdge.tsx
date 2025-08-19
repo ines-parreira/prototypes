@@ -1,4 +1,4 @@
-import { BaseEdge, EdgeProps, getSmoothStepPath } from 'reactflow'
+import { BaseEdge, EdgeProps, getSmoothStepPath } from '@xyflow/react'
 
 export default function CustomEdge(props: EdgeProps) {
     const { sourceX, sourceY, targetX, targetY } = props

@@ -1,7 +1,7 @@
 import React, { MouseEvent, ReactNode, useCallback } from 'react'
 
+import { Handle, Position } from '@xyflow/react'
 import classnames from 'classnames'
-import { Handle, Position } from 'reactflow'
 
 import css from './VisualBuilderNode.less'
 

@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -42,7 +42,7 @@ const EditOrderNoteNode = memo(function EditOrderNoteNode({
 })
 
 export default function EditOrderNoteNodeWrapper(
-    node: NodeProps<EditOrderNoteNodeType['data']>,
+    node: NodeProps<EditOrderNoteNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

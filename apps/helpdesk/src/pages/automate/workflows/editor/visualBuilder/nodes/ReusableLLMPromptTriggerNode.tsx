@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import { Badge } from '@gorgias/axiom'
 
@@ -33,7 +33,7 @@ const ReusableLLMPromptTriggerNode = memo(
 )
 
 export default function ReusableLLMPromptTriggerNodeWrapper(
-    node: NodeProps<ReusableLLMPromptTriggerNodeType['data']>,
+    node: NodeProps<ReusableLLMPromptTriggerNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

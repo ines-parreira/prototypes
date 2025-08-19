@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -48,7 +48,7 @@ const OrderLineItemSelectionNode = memo(function OrderLineItemSelectionNode({
 })
 
 export default function OrderLineItemSelectionNodeWrapper(
-    node: NodeProps<OrderLineItemSelectionNodeType['data']>,
+    node: NodeProps<OrderLineItemSelectionNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

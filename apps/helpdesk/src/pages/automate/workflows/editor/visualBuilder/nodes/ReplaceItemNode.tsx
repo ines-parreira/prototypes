@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -46,7 +46,7 @@ const ReplaceItemNode = memo(function ReplaceItemNode({
 })
 
 export default function ReplaceItemNodeWrapper(
-    node: NodeProps<ReplaceItemNodeType['data']>,
+    node: NodeProps<ReplaceItemNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

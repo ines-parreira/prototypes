@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react'
 
-import { useReactFlow, useViewport } from 'reactflow'
+import { useReactFlow, useViewport } from '@xyflow/react'
 
 import { Button } from '@gorgias/axiom'
 

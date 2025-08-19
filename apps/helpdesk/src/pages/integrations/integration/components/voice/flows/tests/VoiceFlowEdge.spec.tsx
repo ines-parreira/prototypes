@@ -29,9 +29,7 @@ const defaultProps = {
 describe('VoiceFlowEdge', () => {
     it('should render with menu options when canAddNewStepOnEdge is true', () => {
         mockGetNode.mockReturnValue({
-            data: {
-                type: VoiceFlowNodeType.EndCall,
-            },
+            type: VoiceFlowNodeType.EndCall,
         })
 
         render(<VoiceFlowEdge {...defaultProps} />)
@@ -41,9 +39,7 @@ describe('VoiceFlowEdge', () => {
 
     it('should not render with menu options when canAddNewStepOnEdge is false', () => {
         mockGetNode.mockReturnValue({
-            data: {
-                type: VoiceFlowNodeType.IVRMenu,
-            },
+            type: VoiceFlowNodeType.IVRMenu,
         })
 
         render(<VoiceFlowEdge {...defaultProps} />)

@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from 'reactflow'
+import { NodeProps } from '@xyflow/react'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -48,7 +48,7 @@ const AutomatedMessageNode = memo(function AutomatedMessageNode({
 })
 
 export default function AutomatedMessageNodeWrapper(
-    node: NodeProps<AutomatedMessageNodeType['data']>,
+    node: NodeProps<AutomatedMessageNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 
