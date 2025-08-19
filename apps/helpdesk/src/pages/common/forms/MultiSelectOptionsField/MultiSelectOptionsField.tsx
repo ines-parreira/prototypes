@@ -34,6 +34,7 @@ type Props = {
     dropdownMenu?: ComponentType<unknown>
     isCompact?: boolean
     showAllOptions?: boolean
+    dropdownClassName?: string
 }
 
 export default function MultiSelectOptionsField(props: Props) {
@@ -49,6 +50,7 @@ export default function MultiSelectOptionsField(props: Props) {
         caseInsensitive,
         showSymbolOnSpaces,
         className,
+        dropdownClassName,
         isDisabled,
         isCompact,
         hasError,
@@ -262,6 +264,7 @@ export default function MultiSelectOptionsField(props: Props) {
                     onDelete={handleDelete}
                     menu={dropdownMenu}
                     isCompact={isCompact}
+                    dropdownClassName={dropdownClassName}
                 />
             </div>
         </div>

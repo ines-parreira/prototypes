@@ -26,6 +26,7 @@ type Props = {
     onDelete: () => void
     menu?: ComponentType<{ className?: string }>
     isCompact?: boolean
+    dropdownClassName?: string
 }
 
 export default function Dropdown(props: Props) {
@@ -102,7 +103,9 @@ export default function Dropdown(props: Props) {
                         isCompact={isCompact}
                     />
                 </DropdownToggle>
-                <CustomDropdownMenu className={css.options}>
+                <CustomDropdownMenu
+                    className={classnames(css.options, props.dropdownClassName)}
+                >
                     <Menu
                         isLoading={isLoading}
                         options={options}

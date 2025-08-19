@@ -16,6 +16,7 @@ type Props = {
     dropdownMenu?: ComponentType<unknown>
     isCompact?: boolean
     showSymbolOnSpaces?: boolean
+    dropdownClassName?: string
 }
 
 // Deprecated: Use MultiSelectOptionsField instead
@@ -62,6 +63,7 @@ export default class MultiSelectField extends Component<Props> {
                 dropdownMenu={this.props.dropdownMenu}
                 matchInput
                 isCompact={this.props.isCompact}
+                dropdownClassName={this.props.dropdownClassName}
             />
         )
     }
