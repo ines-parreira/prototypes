@@ -231,6 +231,21 @@ const useNavigationItems = (
                                 ? routes.knowledge
                                 : routes.guidance,
                             title: KNOWLEDGE,
+                            items: [
+                                isAiAgentKnowledgeTabEnabled && {
+                                    route: isAiAgentScrapeStoreDomainEnabled
+                                        ? routes.knowledgeSources
+                                        : routes.knowledge,
+                                    title: isAiAgentScrapeStoreDomainEnabled
+                                        ? SOURCES
+                                        : GENERAL,
+                                    exact: !isAiAgentScrapeStoreDomainEnabled,
+                                },
+                                {
+                                    route: routes.guidance,
+                                    title: GUIDANCE,
+                                },
+                            ].filter((x) => !!x) as NavigationItem[],
                         },
                         {
                             route: routes.actions,
@@ -246,11 +261,6 @@ const useNavigationItems = (
                             title: SALES,
                             items: isAiShoppingAssistantEnabled
                                 ? ([
-                                      isAiShoppingAssistantEnabled && {
-                                          route: routes.analytics,
-                                          title: ANALYTICS,
-                                          exact: true,
-                                      },
                                       isAiShoppingAssistantEnabled && {
                                           route: routes.salesStrategy,
                                           title: STRATEGY,
@@ -298,17 +308,19 @@ const useNavigationItems = (
                     title: SETTINGS,
                     dataCanduId: 'ai-agent-navbar-settings',
                     route: routes.settings,
-                    items: [
-                        {
-                            route: routes.configuration(),
-                            title: GENERAL,
-                            exact: true,
-                        },
-                        isGorgiasUser && {
-                            route: routes.previewMode,
-                            title: PREVIEW,
-                        },
-                    ].filter((x) => !!x) as NavigationItem[],
+                    items: isGorgiasUser
+                        ? [
+                              {
+                                  route: routes.configuration(),
+                                  title: GENERAL,
+                                  exact: true,
+                              },
+                              {
+                                  route: routes.previewMode,
+                                  title: PREVIEW,
+                              },
+                          ]
+                        : undefined,
                 },
             ].filter((x) => !!x) as NavigationItem[]
         }

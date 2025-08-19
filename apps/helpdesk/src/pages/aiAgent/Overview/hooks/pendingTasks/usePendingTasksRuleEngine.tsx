@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -8,7 +8,6 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 
 import { runRuleEngine } from './ruleEngine'
 import { SetupAiAgentTask } from './tasks/SetupAiAgent.task'
-import { Task } from './tasks/Task'
 import { useFetchActionsData } from './useFetchActionsData'
 import { useFetchAiAgentPlaygroundExecutionsData } from './useFetchAiAgentPlaygroundExecutionsData'
 import { useFetchAiAgentStoreConfigurationData } from './useFetchAiAgentStoreConfigurationData'
@@ -179,15 +178,6 @@ export const usePendingTasksRuleEngine = ({
 
     const isReady = !!aiAgentStoreConfigurationData
 
-    // Use memo instead of useEffect
-    const [{ completedTasks, pendingTasks }, setTasks] = useState<{
-        completedTasks: Task[]
-        pendingTasks: Task[]
-    }>({
-        completedTasks: [],
-        pendingTasks: [],
-    })
-
     const isActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation, false)
     const isStandaloneMerchant = useFlag(
         FeatureFlagKey.StandaloneHandoverCapabilities,
@@ -203,40 +193,39 @@ export const usePendingTasksRuleEngine = ({
         false,
     )
 
-    useEffect(() => {
-        if (isReady) {
-            setTasks(
-                runRuleEngine(
-                    {
-                        faqHelpCenters: faqHelpCentersData,
-                        aiAgentStoreConfiguration:
-                            aiAgentStoreConfigurationData,
-                        fileIngestion: fileIngestionData,
-                        guidances: guidancesData,
-                        actions: actionsData,
-                        aiAgentPlaygroundExecutions:
-                            aiAgentPlaygroundExecutionsData,
-                        emailIntegrations: emailIntegrationsData,
-                        shopifyIntegration: shopifyPermissionsData,
-                        chatIntegrationsStatus: chatIntegrationsStatusData,
-                        ticketView: ticketViewData,
-                        pageInteractions: pageInteractionsData,
-                        isActivationEnabled,
-                        isAiShoppingAssistantEnabled,
-                        isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
-                        selfServiceChatChannels,
-                        storeKnowledgeStatus: storeKnowledgeStatusData,
-                        alreadyUsedEmailIntegrationsIds,
-                        isStandaloneMerchant,
-                    },
-                    {
-                        aiAgentRoutes: routes,
-                    },
-                ),
-            )
+    // Calculate tasks using useMemo to prevent infinite rerenders
+    const { completedTasks, pendingTasks } = useMemo(() => {
+        if (!isReady) {
+            return { completedTasks: [], pendingTasks: [] }
         }
-        /* eslint-disable react-hooks/exhaustive-deps */
+
+        return runRuleEngine(
+            {
+                faqHelpCenters: faqHelpCentersData,
+                aiAgentStoreConfiguration: aiAgentStoreConfigurationData,
+                fileIngestion: fileIngestionData,
+                guidances: guidancesData,
+                actions: actionsData,
+                aiAgentPlaygroundExecutions: aiAgentPlaygroundExecutionsData,
+                emailIntegrations: emailIntegrationsData,
+                shopifyIntegration: shopifyPermissionsData,
+                chatIntegrationsStatus: chatIntegrationsStatusData,
+                ticketView: ticketViewData,
+                pageInteractions: pageInteractionsData,
+                isActivationEnabled,
+                isAiShoppingAssistantEnabled,
+                isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
+                selfServiceChatChannels,
+                storeKnowledgeStatus: storeKnowledgeStatusData,
+                alreadyUsedEmailIntegrationsIds,
+                isStandaloneMerchant,
+            },
+            {
+                aiAgentRoutes: routes,
+            },
+        )
     }, [
+        isReady,
         aiAgentStoreConfigurationData,
         faqHelpCentersData,
         fileIngestionData,
@@ -254,7 +243,9 @@ export const usePendingTasksRuleEngine = ({
         selfServiceChatChannels,
         storeKnowledgeStatusData,
         alreadyUsedEmailIntegrationsIds,
-    ]) /* eslint-enable react-hooks/exhaustive-deps */
+        isStandaloneMerchant,
+        routes,
+    ])
 
     if (shouldFakeTasks) {
         return {

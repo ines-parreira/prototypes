@@ -20,6 +20,7 @@
         flex: 1 1 0;
         min-width: 0;
         max-width: 100%;
+        text-align: left;
     }
 
     .fakeIcon {
@@ -54,6 +55,7 @@
     .fullWidth {
         width: 100%;
         max-width: 100%;
+        align-items: center;
     }
 
     .dropdownIcon {
@@ -73,17 +75,24 @@
 
     .inlineStoreContainerFullWidth {
         width: 100%;
+        padding: 2px 12px;
     }
 
     .inlineStoreContent {
+        font-weight: 500;
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xxs);
+        min-width: 0;
+        flex: 1;
     }
 
     .inlineStoreName {
         font-size: var(--font-size-md);
         color: var(--text-color-primary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .statusDotInline {
@@ -91,5 +100,13 @@
         height: 8px;
         border-radius: 50%;
         flex-shrink: 0;
+    }
+
+    .dropdownStoreName {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1;
+        min-width: 0;
     }
 }

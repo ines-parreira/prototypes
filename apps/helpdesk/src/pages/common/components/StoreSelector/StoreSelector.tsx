@@ -3,17 +3,19 @@ import React, { useCallback, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { ClassValue } from 'classnames/types'
 
-import { Button, Separator } from '@gorgias/axiom'
+import { Button, Separator, Tooltip } from '@gorgias/axiom'
 
-import dotNeutral from 'assets/img/icons/dot-neutral.svg'
+import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 
 import { StoreIntegration } from '../../../../models/integration/types'
+import { useIsTruncated } from '../../hooks/useIsTruncated'
 import Dropdown from '../dropdown/Dropdown'
 import DropdownBody from '../dropdown/DropdownBody'
 import DropdownItem from '../dropdown/DropdownItem'
 import DropdownSearch from '../dropdown/DropdownSearch'
 import { IntegrationIcon } from '../IntegrationIcon/IntegrationIcon'
+import { TruncatedText } from '../TruncatedText'
 
 import css from './StoreSelector.less'
 
@@ -78,6 +80,18 @@ export default function StoreSelector({
     const [isOpen, setIsOpen] = useState(false)
     const targetRef = useRef<HTMLButtonElement | null>(null)
 
+    const inlineNameRef = useRef<HTMLSpanElement>(null)
+    const buttonNameRef = useRef<HTMLSpanElement>(null)
+
+    const isInlineTruncated = useIsTruncated(
+        inlineNameRef,
+        selected?.name ?? '',
+    )
+    const isButtonTruncated = useIsTruncated(
+        buttonNameRef,
+        selected?.name ?? '',
+    )
+
     const handleClickButton = useCallback(() => {
         setIsOpen((o) => !o)
     }, [])
@@ -93,7 +107,7 @@ export default function StoreSelector({
                 return undefined
             }
 
-            return isActive ? dotSuccess : dotNeutral
+            return isActive ? dotSuccess : dotError
         },
         [shouldShowActiveStatus],
     )
@@ -111,6 +125,8 @@ export default function StoreSelector({
 
     // For single store without button styles, render inline element
     if (showAsInline && selected) {
+        const inlineNameId = `inline-store-${selected.id}`
+
         return (
             <div
                 className={classNames(
@@ -122,9 +138,18 @@ export default function StoreSelector({
                     <div className={css.integrationIcon}>
                         <IntegrationIcon kind={selected.type} />
                     </div>
-                    <span className={css.inlineStoreName}>
+                    <span
+                        ref={inlineNameRef}
+                        id={inlineNameId}
+                        className={css.inlineStoreName}
+                    >
                         {selected.name || ''}
                     </span>
+                    {isInlineTruncated && (
+                        <Tooltip target={inlineNameId} placement="top">
+                            {selected.name}
+                        </Tooltip>
+                    )}
                 </div>
                 {selectedStatusIndicator && (
                     <img
@@ -162,13 +187,22 @@ export default function StoreSelector({
                             <IntegrationIcon kind={selected.type} />
                         </div>
                     )}
-                    <span className={css.buttonTextContent}>
+                    <span
+                        ref={buttonNameRef}
+                        id="button-store-name"
+                        className={css.buttonTextContent}
+                    >
                         {selected === undefined
                             ? 'Select a store'
                             : selected === null
                               ? 'All Stores'
                               : selected?.name || ''}
                     </span>
+                    {isButtonTruncated && selected && selected.name && (
+                        <Tooltip target="button-store-name" placement="top">
+                            {selected.name}
+                        </Tooltip>
+                    )}
                     {selectedStatusIndicator && (
                         <img
                             src={selectedStatusIndicator}
@@ -190,10 +224,11 @@ export default function StoreSelector({
             </Button>
             <Dropdown
                 isOpen={isOpen}
-                placement="bottom-end"
+                placement="bottom-start"
                 target={targetRef}
                 onToggle={setIsOpen}
                 value={selected?.id || null}
+                matchTriggerWidth
             >
                 {withSearch && <DropdownSearch autoFocus />}
                 <DropdownBody>
@@ -241,7 +276,10 @@ export default function StoreSelector({
                             >
                                 <span className={css.spacer}>
                                     <IntegrationIcon kind={integration.type} />
-                                    {integration.name}
+                                    <TruncatedText
+                                        text={integration.name}
+                                        className={css.dropdownStoreName}
+                                    />
                                     {shouldShowActiveStatus && (
                                         <StatusIndicator
                                             integration={integration}

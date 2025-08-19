@@ -7,6 +7,7 @@ import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomate
 import { AAO_TIPS_VISIBILITY_KEY } from 'domains/reporting/pages/automate/overview/constants'
 import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics'
+import { OVERALL_AUTOMATED_INTERACTIONS_LABEL } from 'pages/automate/automate-metrics/constants'
 
 export const AutomatedInteractionsKPIChart = ({
     chartId,
@@ -24,6 +25,11 @@ export const AutomatedInteractionsKPIChart = ({
 
     return (
         <AutomatedInteractionsMetric
+            title={
+                isActionDrivenAiAgentNavigationEnabled
+                    ? OVERALL_AUTOMATED_INTERACTIONS_LABEL
+                    : undefined
+            }
             trend={automatedInteractionTrend}
             showTips={areTipsVisible && !isActionDrivenAiAgentNavigationEnabled}
             dashboard={dashboard}

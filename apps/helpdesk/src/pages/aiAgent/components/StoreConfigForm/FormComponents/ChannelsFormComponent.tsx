@@ -82,6 +82,8 @@ export const ChannelsFormComponent = ({
         useFlags()[FeatureFlagKey.AiAgentChat]
     const isAiAgentSmsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSms]
+    const isActionDrivenNavbarEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
     const isAiAgentActivationEnabled =
         !!useFlags()[FeatureFlagKey.AiAgentActivation]
@@ -140,9 +142,9 @@ export const ChannelsFormComponent = ({
             {isAiAgentChatEnabled &&
                 (section === 'all' || section === 'chat') && (
                     <ConfigurationSection
-                        title="Chat"
+                        title={!isActionDrivenNavbarEnabled ? 'Chat' : ''}
+                        isBeta={!isActionDrivenNavbarEnabled ? true : false}
                         data-candu-id="ai-agent-configuration-chat-settings"
-                        isBeta={true}
                     >
                         {(!isAiAgentActivationEnabled ||
                             hasAiAgentNewActivationXp) && (
@@ -192,7 +194,7 @@ export const ChannelsFormComponent = ({
                 )}
             {!isStandalone && (section === 'all' || section === 'email') && (
                 <ConfigurationSection
-                    title="Email"
+                    title={!isActionDrivenNavbarEnabled ? 'Email' : ''}
                     data-candu-id="ai-agent-configuration-email-settings"
                 >
                     {showToggles && (
@@ -238,7 +240,11 @@ export const ChannelsFormComponent = ({
             {isAiAgentSmsEnabled &&
                 (section === 'sms' || section === 'all') && (
                     <ConfigurationSection
-                        title="Sms for AI Journey"
+                        title={
+                            !isActionDrivenNavbarEnabled
+                                ? 'Sms for AI Journey'
+                                : ''
+                        }
                         data-candu-id="ai-agent-configuration-sms-settings"
                     >
                         {showToggles && (

@@ -50,7 +50,14 @@ export const ConfigurationSection = ({
                 )}
             </div>
             {subtitle && <span className={css.subtitle}>{subtitle}</span>}
-            <div className={classnames(css.content, className)}>{children}</div>
+            <div
+                className={classnames(
+                    title || subtitle ? css.content : undefined,
+                    className,
+                )}
+            >
+                {children}
+            </div>
         </section>
     )
 }

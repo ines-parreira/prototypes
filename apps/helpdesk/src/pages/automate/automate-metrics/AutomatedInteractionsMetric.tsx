@@ -16,11 +16,12 @@ export const AutomatedInteractionsMetric = ({
     showTips,
     chartId,
     dashboard,
+    title,
 }: AutomateMetricProps) => {
     return (
         <MetricCard
             isLoading={automatedInteractionsTrend.isFetching}
-            title={AUTOMATED_INTERACTIONS_LABEL}
+            title={title || AUTOMATED_INTERACTIONS_LABEL}
             hint={AUTOMATED_INTERACTION_TOOLTIP}
             dashboard={dashboard}
             chartId={chartId}

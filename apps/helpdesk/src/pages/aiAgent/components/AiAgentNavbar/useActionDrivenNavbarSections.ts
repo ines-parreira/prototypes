@@ -80,11 +80,15 @@ export const useActionDrivenNavbarSections = () => {
             const activation = storeActivations[storeName]
             if (!activation) return false
 
-            const hasActiveChat = activation?.support?.chat?.enabled
-            const hasActiveEmail = activation?.support?.email?.enabled
-            const hasActiveSales = activation?.sales?.enabled
+            const { configuration } = activation
+            const hasActiveChat = isAiAgentEnabled(
+                configuration.chatChannelDeactivatedDatetime,
+            )
+            const hasActiveEmail = isAiAgentEnabled(
+                configuration.emailChannelDeactivatedDatetime,
+            )
 
-            return hasActiveChat || hasActiveEmail || hasActiveSales
+            return hasActiveChat || hasActiveEmail
         },
         [storeActivations],
     )

@@ -7,4 +7,5 @@ export interface BaseAutomateMetricProps extends DashboardChartProps {
 
 export interface AutomateMetricProps extends BaseAutomateMetricProps {
     showTips?: boolean
+    title?: string
 }

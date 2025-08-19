@@ -22,6 +22,7 @@ export const AutomationRateMetric = ({
     showTips,
     dashboard,
     chartId,
+    title,
 }: AutomateMetricProps) => {
     const automationRateValue = automationRateTrend.data?.value || 0
 
@@ -36,7 +37,7 @@ export const AutomationRateMetric = ({
 
     return (
         <MetricCard
-            title={AUTOMATION_RATE_LABEL}
+            title={title || AUTOMATION_RATE_LABEL}
             hint={AUTOMATION_RATE_TOOLTIP}
             dashboard={dashboard}
             chartId={chartId}

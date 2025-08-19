@@ -357,9 +357,11 @@ export const IntentTableWithDefaultState = ({
 
     const shouldRemoveButtonBorder =
         paginatedIntents &&
-        paginatedIntents?.allIntents.length <= paginatedIntents.perPage
+        paginatedIntents?.allIntents.length <= paginatedIntents.perPage &&
+        paginatedIntents.intents.length !== 0
+
     return (
-        <div>
+        <div className={intentTableCss.chartContainer}>
             <ChartCard
                 title={tableTitle}
                 hint={tableHint}

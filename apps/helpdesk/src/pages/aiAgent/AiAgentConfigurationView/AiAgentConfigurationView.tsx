@@ -98,7 +98,7 @@ export const AiAgentConfigurationView = ({
             className={css.container}
             title={getTitle()}
         >
-            <div>
+            <div className={css.aiAgentConfigurationView}>
                 {integrationNeedMorePermissions && (
                     <div className={css.warningContainer}>
                         <Alert icon type={AlertType.Warning}>

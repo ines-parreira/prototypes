@@ -60,7 +60,9 @@ export const ActionDrivenNavigationItems = ({
                             key={item.title}
                             value={sectionValue}
                         >
-                            <Navigation.SectionTrigger>
+                            <Navigation.SectionTrigger
+                                className={css.sectionTrigger}
+                            >
                                 {item.title}
                                 <Navigation.SectionIndicator />
                             </Navigation.SectionTrigger>
