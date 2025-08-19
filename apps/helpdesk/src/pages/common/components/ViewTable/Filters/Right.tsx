@@ -532,7 +532,6 @@ export class RightContainer extends Component<Props, State> {
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
-                        dropdownClassName={css.feedbackDropdown}
                     />
                 )
             }

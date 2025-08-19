@@ -639,9 +639,9 @@ describe('<Right />', () => {
         )
 
         expect(getByTestId('multi-select-field')).toBeInTheDocument()
-        expect(getByText('Knowledge used - negative')).toBeInTheDocument()
-        expect(getByText('Knowledge used - positive')).toBeInTheDocument()
-        fireEvent.click(getByText('Knowledge used - negative'))
+        expect(getByText('Source found - negative')).toBeInTheDocument()
+        expect(getByText('Source found - positive')).toBeInTheDocument()
+        fireEvent.click(getByText('Source found - negative'))
 
         expect(updateFieldFilterMock).toHaveBeenCalledWith(minProps.index, [
             'KNOWLEDGE_THUMBS_DOWN',
