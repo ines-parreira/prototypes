@@ -263,4 +263,191 @@ describe('ScrapedDomainContentView', () => {
 
         await waitFor(() => expect(image).toHaveClass('loaded'))
     })
+
+    it('renders Navigation component when pagination props are provided', () => {
+        const { container } = setup({
+            hasNextItems: true,
+            hasPrevItems: true,
+            fetchNextItems: mockOnFetchNextItems,
+            fetchPrevItems: mockOnFetchPrevItems,
+        })
+
+        const navigationElement = container.querySelector('.navigation')
+        expect(navigationElement).toBeInTheDocument()
+    })
+
+    it('does not render Navigation component when pagination props are missing', () => {
+        const { container } = setup({
+            fetchNextItems: undefined,
+            fetchPrevItems: undefined,
+        })
+
+        const navigationElement = container.querySelector('.navigation')
+        expect(navigationElement).not.toBeInTheDocument()
+    })
+
+    it('handles error when updating status fails', async () => {
+        const mockFailedUpdateStatus = jest
+            .fn()
+            .mockRejectedValue(new Error('Update failed'))
+
+        setup({
+            onUpdateStatus: mockFailedUpdateStatus,
+            contents: [{ ...mockContent[0], status: 'enabled' }],
+        })
+
+        const toggle = screen.getByRole('switch')
+        fireEvent.click(toggle)
+
+        await waitFor(() => {
+            expect(mockFailedUpdateStatus).toHaveBeenCalled()
+        })
+    })
+
+    it('renders product with is_used_by_ai_agent as true', () => {
+        const productContent = [
+            {
+                id: 1,
+                title: 'Sample Product',
+                image: { src: 'https://example.com/image.jpg' },
+                is_used_by_ai_agent: true,
+            },
+        ]
+
+        const { container } = setup({
+            pageType: CONTENT_TYPE.PRODUCT,
+            contents: productContent,
+        })
+
+        const checkIcon = container.querySelector('.checkIcon')
+        expect(checkIcon).toBeInTheDocument()
+    })
+
+    it('renders product with is_used_by_ai_agent as false', () => {
+        const productContent = [
+            {
+                id: 1,
+                title: 'Sample Product',
+                image: { src: 'https://example.com/image.jpg' },
+                is_used_by_ai_agent: false,
+            },
+        ]
+
+        const { container } = setup({
+            pageType: CONTENT_TYPE.PRODUCT,
+            contents: productContent,
+        })
+
+        const closeIcon = container.querySelector('.closeIcon')
+        expect(closeIcon).toBeInTheDocument()
+    })
+
+    it('highlights selected row correctly', () => {
+        const { container } = setup({
+            contents: mockContent,
+            selectedId: '101',
+            pageType: CONTENT_TYPE.QUESTION,
+        })
+
+        const selectedRow = container.querySelector('.selected')
+        expect(selectedRow).toBeInTheDocument()
+    })
+
+    it('handles image error correctly', async () => {
+        global.Image = jest.fn().mockImplementation(() => ({
+            onload: null,
+            onerror: null,
+            addEventListener: jest.fn(),
+            removeEventListener: jest.fn(),
+            set src(_value: string) {
+                setTimeout(() => {
+                    if (this.onerror) {
+                        this.onerror()
+                    }
+                }, 0)
+            },
+        })) as any
+
+        const mockContentWithImage = [
+            {
+                id: 1,
+                title: 'Sample Product',
+                image: { src: 'https://example.com/broken-image.jpg' },
+            },
+        ]
+
+        setup({
+            pageType: CONTENT_TYPE.PRODUCT,
+            contents: mockContentWithImage,
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Sample Product')).toBeInTheDocument()
+        })
+    })
+
+    it('calls onSelect with product id for PRODUCT pageType', () => {
+        const productContent = [
+            {
+                id: 123,
+                title: 'Sample Product',
+                image: { src: 'https://example.com/image.jpg' },
+            },
+        ]
+
+        setup({
+            pageType: CONTENT_TYPE.PRODUCT,
+            contents: productContent,
+        })
+
+        const row = screen.getByText('Sample Product')
+        fireEvent.click(row)
+
+        expect(mockOnSelect).toHaveBeenCalledWith(123)
+    })
+
+    it('stops propagation when clicking on toggle', () => {
+        setup({
+            pageType: CONTENT_TYPE.QUESTION,
+            contents: mockContent,
+        })
+
+        const toggle = screen.getByRole('switch')
+        const clickEvent = new MouseEvent('click', { bubbles: true })
+        const stopPropagationSpy = jest.spyOn(clickEvent, 'stopPropagation')
+
+        fireEvent(toggle.parentElement!, clickEvent)
+
+        expect(stopPropagationSpy).toHaveBeenCalled()
+    })
+
+    it('renders with shopName prop correctly', () => {
+        setup({
+            shopName: 'test-shop',
+            pageType: CONTENT_TYPE.QUESTION,
+        })
+
+        expect(
+            screen.getByText(/AI Agent automatically generates questions/i),
+        ).toBeInTheDocument()
+    })
+
+    it('renders IN USE BY AI AGENT header for PRODUCT pageType when not loading', () => {
+        setup({
+            pageType: CONTENT_TYPE.PRODUCT,
+            isLoading: false,
+            contents: mockContent,
+        })
+
+        expect(screen.getByText('IN USE BY AI AGENT')).toBeInTheDocument()
+    })
+
+    it('does not render IN USE BY AI AGENT header when loading', () => {
+        setup({
+            pageType: CONTENT_TYPE.PRODUCT,
+            isLoading: true,
+        })
+
+        expect(screen.queryByText('IN USE BY AI AGENT')).not.toBeInTheDocument()
+    })
 })

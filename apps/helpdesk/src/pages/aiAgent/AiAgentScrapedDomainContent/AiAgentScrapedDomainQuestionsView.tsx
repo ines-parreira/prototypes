@@ -127,12 +127,12 @@ const AiAgentScrapedDomainQuestionsView = ({
     })
 
     useEffect(() => {
-        if (articleId && selectedQuestion) {
+        if (articleId) {
             setIsOpened(true)
         } else {
             setIsOpened(false)
         }
-    }, [articleId, selectedQuestion])
+    }, [articleId])
 
     return (
         <AiAgentScrapedDomainContentLayout
@@ -157,6 +157,7 @@ const AiAgentScrapedDomainQuestionsView = ({
                 contents={paginatedQuestions}
                 onSelect={handleOnSelect}
                 pageType={CONTENT_TYPE.QUESTION}
+                selectedId={articleId ?? null}
                 hasNextItems={hasNextPage}
                 hasPrevItems={hasPrevPage}
                 fetchNextItems={fetchNext}

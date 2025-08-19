@@ -104,13 +104,14 @@ export const PendingTasksSection = ({
                             onStoreChange={onStoreChange}
                         />
                     )}
-                {!isActionDrivenAiAgentNavigationEnabled && (
-                    <PendingTasksCompletionBar
-                        isLoading={isLoadingState}
-                        totalTasks={pendingTasks.length + completedTasks.length}
-                        totalTasksCompleted={completedTasks?.length}
-                    />
-                )}
+                <PendingTasksCompletionBar
+                    isLoading={isLoadingState}
+                    totalTasks={pendingTasks.length + completedTasks.length}
+                    totalTasksCompleted={completedTasks?.length}
+                    isActionDrivenAiAgentNavigationEnabled={
+                        isActionDrivenAiAgentNavigationEnabled
+                    }
+                />
 
                 {!allTasksCompleted || isLoading ? (
                     <>

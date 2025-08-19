@@ -10,12 +10,14 @@ type Props = {
     totalTasksCompleted?: number
     totalTasks?: number
     isLoading?: boolean
+    isActionDrivenAiAgentNavigationEnabled?: boolean
 }
 
 export const PendingTasksCompletionBar = ({
     totalTasksCompleted = 0,
     totalTasks = 1,
     isLoading,
+    isActionDrivenAiAgentNavigationEnabled,
 }: Props) => {
     const remainingTasks = totalTasks - totalTasksCompleted
 
@@ -38,11 +40,13 @@ export const PendingTasksCompletionBar = ({
         <Skeleton height={34} />
     ) : (
         <div className={css.wrapper}>
-            <progress
-                className={css.progress}
-                value={progressValue}
-                max={progressMax}
-            />
+            {!isActionDrivenAiAgentNavigationEnabled && (
+                <progress
+                    className={css.progress}
+                    value={progressValue}
+                    max={progressMax}
+                />
+            )}
             <div className={css.description}>
                 {pluralize('task', remainingTasks, true)} remaining
             </div>

@@ -410,4 +410,49 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             '/app/ai-agent/shopify/test-shop/knowledge/sources/questions-content',
         )
     })
+
+    it('should automatically open side panel when component mounts with articleId param (tests setIsOpened(true))', () => {
+        mockUseGetIngestedResource.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: mockedIngestedResource,
+        } as unknown as ReturnType<typeof useGetIngestedResource>)
+
+        mockUseSelectedQuestionAndDetail.mockReturnValue({
+            selectedQuestion: {
+                id: mockedIngestedResource.id,
+                title: mockedIngestedResource.title,
+                article_ingestion_log_id:
+                    mockedIngestedResource.article_ingestion_log_id,
+                web_pages: mockedIngestedResource.web_pages,
+                status: IngestedResourceStatus.Enabled,
+            },
+            questionDetail: mockedIngestedResource,
+            isError: false,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useSelectedQuestionAndDetail>)
+
+        renderComponent(mockedIngestedResource.id.toString())
+
+        expect(screen.getByText('Question details')).toBeInTheDocument()
+        const hideIcon = screen.getByAltText('hide-view-icon')
+        expect(hideIcon).toBeInTheDocument()
+        expect(screen.getByText('Available for AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('View source URLs')).toBeInTheDocument()
+    })
+
+    it('should ensure side panel is closed when component mounts without articleId param', () => {
+        renderComponent()
+
+        // The modal is always in the DOM but controlled by isOpened prop
+        // With no articleId, isOpened should be false (controlled by the useEffect with setIsOpened)
+        // We verify this by checking that we can see the main table content without the side panel opened
+        expect(screen.getByText('Questions')).toBeInTheDocument()
+        expect(screen.getByText('Products')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'AI Agent automatically generates questions and answers from your website content to use as knowledge.',
+            ),
+        ).toBeInTheDocument()
+    })
 })

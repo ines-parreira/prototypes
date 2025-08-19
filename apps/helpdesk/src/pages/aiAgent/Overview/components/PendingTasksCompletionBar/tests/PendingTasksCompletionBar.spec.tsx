@@ -39,4 +39,30 @@ describe('PendingTasksCompletionBar', () => {
 
         expect(getSkeleton()).toBeInTheDocument()
     })
+
+    it('should hide progress bar when isActionDrivenAiAgentNavigationEnabled is true', () => {
+        render(
+            <PendingTasksCompletionBar
+                totalTasks={10}
+                totalTasksCompleted={5}
+                isActionDrivenAiAgentNavigationEnabled={true}
+            />,
+        )
+
+        expect(screen.getByText('5 tasks remaining')).toBeInTheDocument()
+        expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+    })
+
+    it('should show progress bar when isActionDrivenAiAgentNavigationEnabled is false', () => {
+        render(
+            <PendingTasksCompletionBar
+                totalTasks={10}
+                totalTasksCompleted={5}
+                isActionDrivenAiAgentNavigationEnabled={false}
+            />,
+        )
+
+        expect(screen.getByText('5 tasks remaining')).toBeInTheDocument()
+        expect(screen.getByRole('progressbar')).toBeInTheDocument()
+    })
 })

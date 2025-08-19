@@ -17,6 +17,7 @@ type Props = {
     transitionDurationMs?: number
     containerZIndices?: [number, number]
     isOpened: boolean
+    allowClickThrough?: boolean
 }
 
 export const ScrapedDomainSelectedModal = ({
@@ -27,6 +28,7 @@ export const ScrapedDomainSelectedModal = ({
     transitionDurationMs = 300,
     containerZIndices = [5, -1],
     isOpened,
+    allowClickThrough = false,
 }: Props): JSX.Element => {
     const ref = useRef<HTMLDivElement>(null)
     const [zIndexOpen, zIndexClosed] = containerZIndices
@@ -69,7 +71,9 @@ export const ScrapedDomainSelectedModal = ({
 
     const modal = (
         <div
-            className={css['modal-container']}
+            className={classnames(css['modal-container'], {
+                [css.allowClickThrough]: allowClickThrough && isOpened,
+            })}
             style={{
                 zIndex: containerZIndex,
                 transitionDelay: isOpened ? '0ms' : `${transitionDurationMs}ms`,
@@ -80,6 +84,7 @@ export const ScrapedDomainSelectedModal = ({
                     backdrop: true,
                     opened: isOpened,
                     [css.localBackdrop]: true,
+                    [css.clickThrough]: allowClickThrough && isOpened,
                 })}
                 style={{
                     transitionDelay: isOpened

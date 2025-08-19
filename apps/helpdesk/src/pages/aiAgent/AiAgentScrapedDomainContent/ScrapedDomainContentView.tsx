@@ -40,6 +40,7 @@ type Props<T> = {
     contents: T[]
     onSelect: (id: number) => void
     pageType: string
+    selectedId?: string | null
     hasNextItems?: boolean
     hasPrevItems?: boolean
     fetchNextItems?: () => void
@@ -170,6 +171,7 @@ function ScrapedDomainContentView<T extends ContentType>({
     contents,
     onSelect,
     pageType,
+    selectedId,
     hasNextItems,
     hasPrevItems,
     fetchNextItems,
@@ -324,7 +326,7 @@ function ScrapedDomainContentView<T extends ContentType>({
     }
 
     return (
-        <>
+        <div>
             <div>
                 <ScrapedDomainHeader
                     description={description}
@@ -377,94 +379,109 @@ function ScrapedDomainContentView<T extends ContentType>({
                                 ))}
                         {contents &&
                             contents.length > 0 &&
-                            contents.map((content: any, index: number) => (
-                                <TableBodyRow
-                                    key={content.id}
-                                    className={css.tableBodyRow}
-                                    onClick={() =>
-                                        onSelect(
-                                            pageType === CONTENT_TYPE.QUESTION
-                                                ? content.article_id
-                                                : content.id,
-                                        )
-                                    }
-                                >
-                                    <BodyCell
-                                        className={classnames({
-                                            [css.productCell]:
-                                                pageType ===
-                                                CONTENT_TYPE.PRODUCT,
-                                            [css.questionCell]:
-                                                pageType !==
-                                                CONTENT_TYPE.PRODUCT,
-                                            [css.masterToggleCell]:
-                                                hasMasterToogle,
-                                        })}
-                                    >
-                                        {pageType !== CONTENT_TYPE.PRODUCT ? (
-                                            <div
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                }}
-                                            >
-                                                <ToggleField
-                                                    value={
-                                                        questionStatusMap &&
-                                                        questionStatusMap[
-                                                            content.id
-                                                        ] ===
-                                                            IngestedResourceStatus.Enabled
-                                                    }
-                                                    onChange={() => {
-                                                        handleToggleChange(
-                                                            content,
-                                                        )
-                                                    }}
-                                                    className={css.toggleInput}
-                                                />
-                                            </div>
-                                        ) : (
-                                            <ProductImage
-                                                index={index}
-                                                imageSource={getContentImage(
-                                                    content,
-                                                )}
-                                                allImagesLoaded={imagesLoaded}
-                                                skeletonsize={32}
-                                                skeletonClassname={
-                                                    css.imagesSkeleton
-                                                }
-                                                productImageClassname={
-                                                    css.productImage
-                                                }
-                                            />
+                            contents.map((content: any, index: number) => {
+                                const contentId =
+                                    pageType === CONTENT_TYPE.QUESTION
+                                        ? content.article_id
+                                        : content.id
+                                const isSelected =
+                                    selectedId &&
+                                    String(contentId) === selectedId
+                                return (
+                                    <TableBodyRow
+                                        key={content.id}
+                                        className={classnames(
+                                            css.tableBodyRow,
+                                            {
+                                                [css.selected]: isSelected,
+                                            },
                                         )}
-
-                                        {content.title}
-                                    </BodyCell>
-
-                                    {pageType === CONTENT_TYPE.PRODUCT &&
-                                        (getContentIsUsedByAiAgent(content) ? (
-                                            <ColumnIsUsedByAiAgent
-                                                id={content.id}
-                                            />
-                                        ) : (
-                                            <ColumnIsNotUsedByAiAgent
-                                                id={content.id}
-                                            />
-                                        ))}
-                                    <BodyCell justifyContent="right">
-                                        <i
-                                            className={classnames(
-                                                'material-icons',
-                                                css.chevronRight,
-                                            )}
+                                        onClick={() => onSelect(contentId)}
+                                    >
+                                        <BodyCell
+                                            className={classnames({
+                                                [css.productCell]:
+                                                    pageType ===
+                                                    CONTENT_TYPE.PRODUCT,
+                                                [css.questionCell]:
+                                                    pageType !==
+                                                    CONTENT_TYPE.PRODUCT,
+                                                [css.masterToggleCell]:
+                                                    hasMasterToogle,
+                                            })}
                                         >
-                                            chevron_right
-                                        </i>
-                                    </BodyCell>
-                                </TableBodyRow>
-                            ))}
+                                            {pageType !==
+                                            CONTENT_TYPE.PRODUCT ? (
+                                                <div
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                    }}
+                                                >
+                                                    <ToggleField
+                                                        value={
+                                                            questionStatusMap &&
+                                                            questionStatusMap[
+                                                                content.id
+                                                            ] ===
+                                                                IngestedResourceStatus.Enabled
+                                                        }
+                                                        onChange={() => {
+                                                            handleToggleChange(
+                                                                content,
+                                                            )
+                                                        }}
+                                                        className={
+                                                            css.toggleInput
+                                                        }
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <ProductImage
+                                                    index={index}
+                                                    imageSource={getContentImage(
+                                                        content,
+                                                    )}
+                                                    allImagesLoaded={
+                                                        imagesLoaded
+                                                    }
+                                                    skeletonsize={32}
+                                                    skeletonClassname={
+                                                        css.imagesSkeleton
+                                                    }
+                                                    productImageClassname={
+                                                        css.productImage
+                                                    }
+                                                />
+                                            )}
+
+                                            {content.title}
+                                        </BodyCell>
+
+                                        {pageType === CONTENT_TYPE.PRODUCT &&
+                                            (getContentIsUsedByAiAgent(
+                                                content,
+                                            ) ? (
+                                                <ColumnIsUsedByAiAgent
+                                                    id={content.id}
+                                                />
+                                            ) : (
+                                                <ColumnIsNotUsedByAiAgent
+                                                    id={content.id}
+                                                />
+                                            ))}
+                                        <BodyCell justifyContent="right">
+                                            <i
+                                                className={classnames(
+                                                    'material-icons',
+                                                    css.chevronRight,
+                                                )}
+                                            >
+                                                chevron_right
+                                            </i>
+                                        </BodyCell>
+                                    </TableBodyRow>
+                                )
+                            })}
                     </TableBody>
                 </TableWrapper>
             </div>
@@ -481,7 +498,7 @@ function ScrapedDomainContentView<T extends ContentType>({
                         fetchPrevItems={fetchPrevItems}
                     />
                 )}
-        </>
+        </div>
     )
 }
 

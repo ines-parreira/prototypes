@@ -43,7 +43,10 @@ const defaultStore = {
     stats: initialStatsFiltersState,
 } as StoreState
 
-const renderComponent = (history: History = createMemoryHistory()) => {
+const renderComponent = (
+    history: History = createMemoryHistory(),
+    isActionDrivenAiAgentNavigationEnabled?: boolean,
+) => {
     return render(
         <Router history={history}>
             <Provider store={mockStore(defaultStore)}>
@@ -51,6 +54,9 @@ const renderComponent = (history: History = createMemoryHistory()) => {
                     isOnNewPlan
                     showEarlyAccessModal={() => {}}
                     showActivationModal={() => {}}
+                    isActionDrivenAiAgentNavigationEnabled={
+                        isActionDrivenAiAgentNavigationEnabled
+                    }
                 />
             </Provider>
         </Router>,
@@ -234,7 +240,7 @@ describe('KpiSection', () => {
                 aiAgentType: 'support' as const,
             })
 
-            const { getByRole } = renderComponent(history)
+            const { getByRole } = renderComponent(history, false)
             const reportButton = getByRole('button', {
                 name: 'View Full Report',
             })
@@ -247,6 +253,27 @@ describe('KpiSection', () => {
                     '/stats/ai-sales-agent/overview',
                 )
             }, 0)
+        })
+
+        it('should redirect to automate overview when action-driven navigation is enabled', () => {
+            const history = createMemoryHistory()
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            })
+
+            useAiAgentTypeMock.mockReturnValue({
+                isLoading: false,
+                aiAgentType: 'support',
+            })
+
+            const { getByRole } = renderComponent(history, true)
+            const reportButton = getByRole('button', {
+                name: 'View Full Report',
+            })
+
+            // Check that the link has the correct href
+            const link = reportButton.closest('a')
+            expect(link).toHaveAttribute('href', '/app/stats/automate-overview')
         })
     })
 })

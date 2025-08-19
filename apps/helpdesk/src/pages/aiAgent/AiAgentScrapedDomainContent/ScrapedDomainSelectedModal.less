@@ -10,23 +10,33 @@
         height: 100%;
         overflow: hidden;
 
+        &.allowClickThrough {
+            pointer-events: none;
+        }
+
         .localBackdrop {
             background-color: transparent;
+            pointer-events: auto;
+
+            &.clickThrough {
+                pointer-events: none;
+            }
         }
 
         .modal {
-            width: 70vw;
-            max-width: 612px;
+            width: 612px;
+            max-width: 70vw;
             background-color: var(--neutral-grey-0);
             position: absolute;
             top: 0;
             height: 100%;
-            transition-property: transform;
+            transition-property: right;
             transition-timing-function: ease-in-out;
             box-shadow: 0px 4px 16px fade(black, 24%);
             z-index: 5;
-            right: -70vw;
+            right: -612px;
             overflow-y: auto;
+            pointer-events: auto;
             /*
             Modal starts under the menu in responsive mode
             */
@@ -36,11 +46,16 @@
             }
 
             &.opened {
-                transform: translateX(-70vw);
+                right: 0;
             }
             &.fullscreen {
                 width: 100vw;
                 max-width: 100%;
+                right: -100vw;
+
+                &.opened {
+                    right: 0;
+                }
             }
 
             .loader {

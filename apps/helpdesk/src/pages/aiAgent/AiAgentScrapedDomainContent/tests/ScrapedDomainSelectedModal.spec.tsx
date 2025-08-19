@@ -53,4 +53,28 @@ describe('<ScrapedDomainSelectedModal/>', () => {
 
         expect(mockedOnBackdropClick).not.toHaveBeenCalled()
     })
+
+    it('should apply clickThrough class to backdrop when allowClickThrough is true', () => {
+        const { container } = render(
+            <ScrapedDomainSelectedModal {...props} allowClickThrough={true}>
+                Modal content
+            </ScrapedDomainSelectedModal>,
+        )
+
+        const backdrop = container.querySelector('.backdrop')
+
+        expect(backdrop?.classList.contains('clickThrough')).toBe(true)
+    })
+
+    it('should not apply clickThrough class to backdrop when allowClickThrough is false', () => {
+        const { container } = render(
+            <ScrapedDomainSelectedModal {...props} allowClickThrough={false}>
+                Modal content
+            </ScrapedDomainSelectedModal>,
+        )
+
+        const backdrop = container.querySelector('.backdrop')
+
+        expect(backdrop?.classList.contains('clickThrough')).toBe(false)
+    })
 })

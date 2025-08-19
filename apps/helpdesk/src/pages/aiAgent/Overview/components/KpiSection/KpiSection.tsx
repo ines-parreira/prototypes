@@ -157,12 +157,16 @@ export const KpiSection = ({
             return ''
         }
 
+        if (isActionDrivenAiAgentNavigationEnabled) {
+            return `/app/stats/${STATS_ROUTES.AUTOMATE_OVERVIEW}`
+        }
+
         if (aiAgentType === 'sales' || aiAgentType === 'mixed') {
             return `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
         }
 
         return `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
-    }, [isLoading, aiAgentType])
+    }, [isLoading, aiAgentType, isActionDrivenAiAgentNavigationEnabled])
 
     if (isLoading || !aiAgentUserId) {
         return (
@@ -197,7 +201,7 @@ export const KpiSection = ({
                 <div className={css.title}>
                     <CardTitle>AI Agent performance</CardTitle>
                     {hasAnalytics && (
-                        <NavLink to={analyticsLink} exact>
+                        <NavLink to={analyticsLink} exact target="_blank">
                             <Button
                                 intent="secondary"
                                 size="small"

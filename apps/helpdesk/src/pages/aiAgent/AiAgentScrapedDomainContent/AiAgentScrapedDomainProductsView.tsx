@@ -116,12 +116,12 @@ const AiAgentScrapedDomainProductsView = ({
     })
 
     useEffect(() => {
-        if (productId && selectedProduct) {
+        if (productId) {
             setIsOpened(true)
         } else {
             setIsOpened(false)
         }
-    }, [productId, selectedProduct])
+    }, [productId])
 
     const children = (
         <>
@@ -132,6 +132,7 @@ const AiAgentScrapedDomainProductsView = ({
                 isLoading={isDataLoading || isSyncPending}
                 contents={paginatedProducts}
                 pageType={CONTENT_TYPE.PRODUCT}
+                selectedId={productId ?? null}
                 onSelect={handleOnSelect}
                 hasNextItems={hasNextPage}
                 hasPrevItems={hasPrevPage}

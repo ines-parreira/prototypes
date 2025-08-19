@@ -297,6 +297,7 @@ const ScrapedDomainSelectedContent = ({
             onBackdropClick={onClose}
             transitionDurationMs={MODAL_TRANSITION_DURATION_MS}
             containerZIndices={[100, -1]}
+            allowClickThrough={true}
         >
             <div className={css.header}>
                 <div className={css.headerTitle}>{title}</div>
