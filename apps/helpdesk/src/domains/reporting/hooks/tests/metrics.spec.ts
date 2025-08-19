@@ -4,6 +4,7 @@ import moment from 'moment'
 import {
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
+    fetchHumanResponseTimeAfterAiHandoffMetric,
     fetchMedianFirstResponseTimeMetric,
     fetchMedianResolutionTimeMetric,
     fetchMedianResponseTimeMetric,
@@ -19,6 +20,7 @@ import {
     ignoreNotAssignedTicketsFilter,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
+    useHumanResponseTimeAfterAiHandoffMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
     useMedianResponseTimeMetric,
@@ -36,6 +38,7 @@ import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { medianFirstResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
@@ -91,6 +94,11 @@ describe('metrics', () => {
             'useMedianResponseTimeMetric',
             useMedianResponseTimeMetric,
             medianResponseTimeQueryFactory,
+        ],
+        [
+            'useHumanResponseTimeAfterAiHandoffMetric',
+            useHumanResponseTimeAfterAiHandoffMetric,
+            humanResponseTimeAfterAiHandoffQueryFactory,
         ],
         [
             'useMedianResolutionTimeMetric',
@@ -167,6 +175,11 @@ describe('metrics', () => {
             'fetchMedianFirstResponseTimeMetric',
             fetchMedianFirstResponseTimeMetric,
             medianFirstResponseTimeQueryFactory,
+        ],
+        [
+            'fetchHumanResponseTimeAfterAiHandoffMetric',
+            fetchHumanResponseTimeAfterAiHandoffMetric,
+            humanResponseTimeAfterAiHandoffQueryFactory,
         ],
         [
             'fetchMedianResponseTimeMetric',

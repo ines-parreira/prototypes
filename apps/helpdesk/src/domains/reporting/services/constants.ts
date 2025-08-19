@@ -2,6 +2,8 @@ import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACub
 
 export const CUSTOMER_SATISFACTION_LABEL = 'Average CSAT'
 export const MEDIAN_FIRST_RESPONSE_TIME_LABEL = 'First response time'
+export const HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_LABEL =
+    'Human response time after AI handoff'
 export const AVERAGE_RESPONSE_TIME_LABEL = 'Average response time'
 export const MEDIAN_RESOLUTION_TIME_LABEL = 'Resolution time'
 export const HRT_AI_TIME_LABEL = 'Human response time after AI handoff'

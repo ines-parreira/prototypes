@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
+    useHumanResponseTimeAfterAiHandoffPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
     useMedianResponseTimeMetricPerAgent,
@@ -45,6 +46,12 @@ export function useAgentsMetrics() {
         cleanStatsFilters,
         userTimezone,
     )
+    const humanResponseTimeAfterAiHandoffMetric =
+        useHumanResponseTimeAfterAiHandoffPerAgent(
+            cleanStatsFilters,
+            userTimezone,
+        )
+
     const messagesSentMetric = useMessagesSentMetricPerAgent(
         cleanStatsFilters,
         userTimezone,
@@ -93,6 +100,7 @@ export function useAgentsMetrics() {
     const loading = useMemo(() => {
         return Object.values({
             medianResponseTimeMetric,
+            humanResponseTimeAfterAiHandoffMetric,
             closedTicketsMetric,
             closedTicketsPerHourMetric,
             customerSatisfactionMetric,
@@ -111,6 +119,7 @@ export function useAgentsMetrics() {
         }).some((metric) => metric.isFetching)
     }, [
         medianResponseTimeMetric,
+        humanResponseTimeAfterAiHandoffMetric,
         closedTicketsMetric,
         closedTicketsPerHourMetric,
         customerSatisfactionMetric,
@@ -131,6 +140,7 @@ export function useAgentsMetrics() {
     return {
         reportData: {
             medianResponseTimeMetric,
+            humanResponseTimeAfterAiHandoffMetric,
             closedTicketsMetric,
             closedTicketsPerHourMetric,
             customerSatisfactionMetric,

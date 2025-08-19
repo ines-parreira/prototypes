@@ -3,6 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
+    useHumanResponseTimeAfterAiHandoffMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
     useMedianResponseTimeMetric,
@@ -30,6 +31,9 @@ const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 
 const useMedianFirstResponseTimeMetricMock = assumeMock(
     useMedianFirstResponseTimeMetric,
+)
+const useHumanResponseTimeAfterAiHandoffMetricMock = assumeMock(
+    useHumanResponseTimeAfterAiHandoffMetric,
 )
 const useMedianResponseTimeMetricMock = assumeMock(useMedianResponseTimeMetric)
 const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)
@@ -82,6 +86,7 @@ describe('useAgentsAverageMetrics', () => {
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,
+            humanResponseTimeAfterAiHandoffMetric: metricData,
             medianResponseTimeMetric: metricData,
             messagesSentMetric: metricData,
             messagesReceivedMetric: metricData,
@@ -109,6 +114,7 @@ describe('useAgentsAverageMetrics', () => {
     useClosedTicketsMetricMock.mockReturnValue(metricData)
     useClosedTicketsMetricMock.mockReturnValue(metricData)
     useMedianFirstResponseTimeMetricMock.mockReturnValue(metricData)
+    useHumanResponseTimeAfterAiHandoffMetricMock.mockReturnValue(metricData)
     useMedianResponseTimeMetricMock.mockReturnValue(metricData)
     useMessagesSentMetricMock.mockReturnValue(metricData)
     useMessagesReceivedMetricMock.mockReturnValue(metricData)

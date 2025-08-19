@@ -3,6 +3,7 @@ import {
     Metric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
+    useHumanResponseTimeAfterAiHandoffMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
     useMedianResponseTimeMetric,
@@ -15,6 +16,7 @@ import {
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
+    useHumanResponseTimeAfterAiHandoffPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
     useMedianResponseTimeMetricPerAgent,
@@ -53,6 +55,7 @@ import { TicketMessagesEnrichedResponseTimesDimension } from 'domains/reporting/
 import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
@@ -72,6 +75,7 @@ import {
     AVERAGE_RESPONSE_TIME_LABEL,
     CLOSED_TICKETS_PER_HOUR,
     CUSTOMER_SATISFACTION_LABEL,
+    HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MEDIAN_RESOLUTION_TIME_LABEL,
     MESSAGES_RECEIVED_LABEL,
@@ -101,6 +105,7 @@ import {
 
 export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.AgentName,
+    AgentsTableColumn.HumanResponseTimeAfterAiHandoff,
     AgentsTableColumn.ClosedTickets,
     AgentsTableColumn.PercentageOfClosedTickets,
     AgentsTableColumn.CustomerSatisfaction,
@@ -156,6 +161,8 @@ export const TableRowLabels: Record<AgentsTableRow, string> = {
 
 export const TableLabels: Record<AgentsTableColumn, string> = {
     [AgentsTableColumn.AgentName]: 'Agent',
+    [AgentsTableColumn.HumanResponseTimeAfterAiHandoff]:
+        HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_LABEL,
     [AgentsTableColumn.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
     [AgentsTableColumn.MedianFirstResponseTime]:
         MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -239,6 +246,18 @@ export const AgentsColumnConfig: Record<
         showMetric: true,
         domain: Domain.Ticket,
         drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+    },
+    [AgentsTableColumn.HumanResponseTimeAfterAiHandoff]: {
+        format: 'duration',
+        hint: {
+            // TODO: Update
+            title: 'Median time between 1st customer message and 1st agent response, for tickets where the response was sent within the selected timeframe',
+            link: 'https://link.gorgias.com/gs6',
+        },
+        perAgent: false,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: humanResponseTimeAfterAiHandoffDrillDownQueryFactory,
     },
     [AgentsTableColumn.MedianResponseTime]: {
         format: 'duration',
@@ -433,6 +452,8 @@ export const getQuery = (
             })
         case AgentsTableColumn.MedianFirstResponseTime:
             return useMedianFirstResponseTimeMetricPerAgent
+        case AgentsTableColumn.HumanResponseTimeAfterAiHandoff:
+            return useHumanResponseTimeAfterAiHandoffPerAgent
         case AgentsTableColumn.MedianResponseTime:
             return useMedianResponseTimeMetricPerAgent
         case AgentsTableColumn.RepliedTickets:
@@ -494,6 +515,8 @@ export const getAverageQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useMedianResolutionTimeMetric
         case AgentsTableColumn.MedianResponseTime:
             return useMedianResponseTimeMetric
+        case AgentsTableColumn.HumanResponseTimeAfterAiHandoff:
+            return useHumanResponseTimeAfterAiHandoffMetric
         case AgentsTableColumn.CustomerSatisfaction:
             return useCustomerSatisfactionMetric
         case AgentsTableColumn.OneTouchTickets:
@@ -531,6 +554,7 @@ export const getTotalsQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useMessagesSentPerHourPerAgentTotalCapacity
         case AgentsTableColumn.AgentName:
         case AgentsTableColumn.MedianFirstResponseTime:
+        case AgentsTableColumn.HumanResponseTimeAfterAiHandoff:
         case AgentsTableColumn.MedianResponseTime:
         case AgentsTableColumn.MedianResolutionTime:
         case AgentsTableColumn.CustomerSatisfaction:

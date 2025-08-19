@@ -9,6 +9,7 @@ import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import {
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
+    fetchHumanResponseTimeAfterAiHandoffMetric,
     fetchMedianFirstResponseTimeMetric,
     fetchMedianResolutionTimeMetric,
     fetchMedianResponseTimeMetric,
@@ -22,6 +23,7 @@ import {
 import {
     fetchClosedTicketsMetricPerAgent,
     fetchCustomerSatisfactionMetricPerAgent,
+    fetchHumanResponseTimeAfterAiHandoffPerAgent,
     fetchMedianFirstResponseTimeMetricPerAgent,
     fetchMedianResolutionTimeMetricPerAgent,
     fetchMedianResponseTimeMetricPerAgent,
@@ -72,6 +74,7 @@ export const AGENTS_REPORT_FILE_NAME = 'agents-metrics'
 
 export type AgentsReportMetricDataPoints =
     | 'customerSatisfactionMetric'
+    | 'humanResponseTimeAfterAiHandoffMetric'
     | 'medianFirstResponseTimeMetric'
     | 'medianResponseTimeMetric'
     | 'medianResolutionTimeMetric'
@@ -106,6 +109,10 @@ export const agentsMetricsDataSources: TableDataSources<AgentsReportData> = [
     {
         fetchData: fetchMedianResponseTimeMetricPerAgent,
         title: 'medianResponseTimeMetric',
+    },
+    {
+        fetchData: fetchHumanResponseTimeAfterAiHandoffPerAgent,
+        title: 'humanResponseTimeAfterAiHandoffMetric',
     },
     {
         fetchData: fetchTicketsRepliedMetricPerAgent,
@@ -169,6 +176,10 @@ export const agentsAverageDataSources: TableSummaryDataSources<AgentsReportData>
         {
             fetchData: fetchMedianFirstResponseTimeMetric,
             title: 'medianFirstResponseTimeMetric',
+        },
+        {
+            fetchData: fetchHumanResponseTimeAfterAiHandoffMetric,
+            title: 'humanResponseTimeAfterAiHandoffMetric',
         },
         {
             fetchData: fetchMedianResponseTimeMetric,

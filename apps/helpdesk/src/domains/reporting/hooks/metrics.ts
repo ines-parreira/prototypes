@@ -5,6 +5,7 @@ import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { medianFirstResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
@@ -138,6 +139,28 @@ export const fetchMedianResponseTimeMetric = async (
     fetchMetric(
         withFilter(
             medianResponseTimeQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter,
+        ),
+    )
+
+export const useHumanResponseTimeAfterAiHandoffMetric = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Metric =>
+    useMetric(
+        withFilter(
+            humanResponseTimeAfterAiHandoffQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter,
+        ),
+    )
+
+export const fetchHumanResponseTimeAfterAiHandoffMetric = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Promise<Metric> =>
+    fetchMetric(
+        withFilter(
+            humanResponseTimeAfterAiHandoffQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
     )

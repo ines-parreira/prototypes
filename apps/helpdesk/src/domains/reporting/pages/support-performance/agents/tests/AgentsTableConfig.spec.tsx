@@ -1,6 +1,7 @@
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
+    useHumanResponseTimeAfterAiHandoffMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
     useMedianResponseTimeMetric,
@@ -137,6 +138,10 @@ describe('getSummaryQuery', () => {
         [
             AgentsTableColumn.MedianFirstResponseTime,
             useMedianFirstResponseTimeMetric,
+        ],
+        [
+            AgentsTableColumn.HumanResponseTimeAfterAiHandoff,
+            useHumanResponseTimeAfterAiHandoffMetric,
         ],
         [AgentsTableColumn.MedianResolutionTime, useMedianResolutionTimeMetric],
         [AgentsTableColumn.CustomerSatisfaction, useCustomerSatisfactionMetric],

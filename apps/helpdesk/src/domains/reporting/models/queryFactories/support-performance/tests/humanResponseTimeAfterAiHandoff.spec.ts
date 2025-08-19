@@ -1,5 +1,6 @@
 import {
     humanResponseTimeAfterAiHandoffDrillDownQueryFactory,
+    humanResponseTimeAfterAiHandoffPerAgentQueryFactory,
     humanResponseTimeAfterAiHandoffPerChannelQueryFactory,
     humanResponseTimeAfterAiHandoffQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
@@ -55,6 +56,22 @@ describe('humanResponseTimeAfterAiHandoff', () => {
     describe('drill-down query factory', () => {
         it('TODO: implement', () => {
             const actual = humanResponseTimeAfterAiHandoffDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            )
+
+            expect(actual).toEqual({
+                measures: [],
+                dimensions: [],
+                filters: [],
+            })
+        })
+    })
+
+    describe('per agent query factory', () => {
+        it('TODO: implement', () => {
+            const actual = humanResponseTimeAfterAiHandoffPerAgentQueryFactory(
                 statsFilters,
                 timezone,
                 sorting,

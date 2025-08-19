@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
+    useHumanResponseTimeAfterAiHandoffPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
     useMedianResponseTimeMetricPerAgent,
@@ -49,6 +50,9 @@ const useClosedTicketsMetricPerAgentMock = assumeMock(
 )
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
     useMedianFirstResponseTimeMetricPerAgent,
+)
+const useHumanResponseTimeAfterAiHandoffPerAgentMock = assumeMock(
+    useHumanResponseTimeAfterAiHandoffPerAgent,
 )
 const useMedianResponseTimeMetricPerAgentMock = assumeMock(
     useMedianResponseTimeMetricPerAgent,
@@ -106,6 +110,7 @@ describe('useAgentsMetric', () => {
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,
+            humanResponseTimeAfterAiHandoffMetric: metricData,
             medianResponseTimeMetric: metricData,
             messagesSentMetric: metricData,
             messagesReceivedMetric: metricData,
@@ -141,6 +146,9 @@ describe('useAgentsMetric', () => {
     beforeEach(() => {
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(metricData)
         usePercentageOfClosedTicketsMetricPerAgentMock.mockReturnValue(
+            metricData,
+        )
+        useHumanResponseTimeAfterAiHandoffPerAgentMock.mockReturnValue(
             metricData,
         )
         useClosedTicketsMetricPerAgentMock.mockReturnValue(metricData)

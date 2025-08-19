@@ -82,6 +82,7 @@ type ReportDataMap = Record<
 
 export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     customerSatisfactionMetric: T
+    humanResponseTimeAfterAiHandoffMetric: T
     medianFirstResponseTimeMetric: T
     medianResponseTimeMetric: T
     medianResolutionTimeMetric: T
@@ -223,6 +224,16 @@ export const getData = (
             metricField: MedianFirstResponseTime,
             averageData: average.medianFirstResponseTimeMetric.data?.value,
             totalData: total.medianFirstResponseTimeMetric.data?.value,
+        },
+        [AgentsTableColumn.HumanResponseTimeAfterAiHandoff]: {
+            column: AgentsTableColumn.HumanResponseTimeAfterAiHandoff,
+            metricData: data.medianFirstResponseTimeMetric,
+            // TODO: Update: when BE is ready confirm values?
+            idField: FirstHelpdeskMessageUserId,
+            metricField: MedianFirstResponseTime,
+            averageData:
+                average.humanResponseTimeAfterAiHandoffMetric.data?.value,
+            totalData: total.humanResponseTimeAfterAiHandoffMetric.data?.value,
         },
         [AgentsTableColumn.MedianResponseTime]: {
             column: AgentsTableColumn.MedianResponseTime,

@@ -41,3 +41,16 @@ export function humanResponseTimeAfterAiHandoffDrillDownQueryFactory(
         filters: [],
     }
 }
+
+// TODO: Implement
+export function humanResponseTimeAfterAiHandoffPerAgentQueryFactory(
+    __statsFilters: StatsFilters,
+    __timezone: string,
+    __sorting?: OrderDirection,
+) {
+    return {
+        measures: [],
+        dimensions: [],
+        filters: [],
+    }
+}
