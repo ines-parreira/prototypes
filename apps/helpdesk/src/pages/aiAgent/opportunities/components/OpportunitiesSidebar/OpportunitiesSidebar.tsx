@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { Badge } from '@gorgias/axiom'
+
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunityCard } from '../OpportunityCard/OpportunityCard'
 import { OpportunityCardSkeleton } from '../OpportunityCardSkeleton/OpportunityCardSkeleton'
@@ -45,7 +47,9 @@ export const OpportunitiesSidebar = ({
     return (
         <div className={css.sidebar}>
             <div className={css.header}>
-                <h3 className={css.title}>Opportunities</h3>
+                <h3 className={css.title}>
+                    Opportunities <Badge type={'blue'}>NEW</Badge>
+                </h3>
             </div>
             <div className={css.containerContent}>
                 <div className={css.itemCount}>{itemCountText}</div>

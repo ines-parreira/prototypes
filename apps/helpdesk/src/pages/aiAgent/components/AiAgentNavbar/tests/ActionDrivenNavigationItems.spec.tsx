@@ -135,7 +135,11 @@ describe('ActionDrivenNavigationItems', () => {
         expect(analyzeButton).toBeInTheDocument()
 
         expect(screen.getByText('Analytics')).toBeInTheDocument()
-        expect(screen.getByText('Opportunities')).toBeInTheDocument()
+        // The Opportunities link text contains a badge; match with regex
+        const opportunitiesLink = screen.getByRole('link', {
+            name: /Opportunities/,
+        })
+        expect(opportunitiesLink).toBeInTheDocument()
     })
 
     it('renders status indicator for Chat channel when active', () => {
@@ -241,7 +245,7 @@ describe('ActionDrivenNavigationItems', () => {
         )
 
         const opportunitiesItem = screen.getByRole('link', {
-            name: 'Opportunities',
+            name: /Opportunities/,
         })
         expect(opportunitiesItem).toHaveAttribute(
             'href',

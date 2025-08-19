@@ -53,10 +53,11 @@ describe('OpportunitiesSidebar', () => {
         )
 
         const title = screen.getByRole('heading', {
-            name: 'Opportunities',
+            name: 'Opportunities NEW',
         })
         expect(title).toBeInTheDocument()
         expect(title).toHaveClass('title')
+        expect(title.textContent).toContain('Opportunities NEW')
     })
 
     it('should render opportunity cards with mock data', () => {

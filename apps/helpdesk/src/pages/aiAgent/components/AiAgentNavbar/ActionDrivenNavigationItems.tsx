@@ -2,9 +2,12 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
+import { Badge } from '@gorgias/axiom'
+
 import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import { Navigation } from 'components/Navigation/Navigation'
+import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { NavigationChannelType } from './utils'
@@ -89,6 +92,13 @@ export const ActionDrivenNavigationItems = ({
                                                         : false
                                                 }
                                             />
+                                        ) : subItem.title === OPPORTUNITIES ? (
+                                            <div
+                                                className={css.navItemWithBadge}
+                                            >
+                                                <span>{subItem.title}</span>
+                                                <Badge type={'blue'}>NEW</Badge>
+                                            </div>
                                         ) : (
                                             subItem.title
                                         )}
@@ -108,7 +118,14 @@ export const ActionDrivenNavigationItems = ({
                         exact={item.exact}
                         className={css.sectionItemHeading}
                     >
-                        {item.title}
+                        {item.title === OPPORTUNITIES ? (
+                            <div className={css.navItemWithBadge}>
+                                <span>{item.title}</span>
+                                <Badge type={'blue'}>NEW</Badge>
+                            </div>
+                        ) : (
+                            item.title
+                        )}
                     </Navigation.SectionItem>
                 )
             })}

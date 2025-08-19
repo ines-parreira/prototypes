@@ -2,9 +2,6 @@ import { useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Badge } from '@gorgias/axiom'
-
-import cssNavbar from 'assets/css/navbar.less'
 import { Navigation } from 'components/Navigation/Navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
@@ -188,9 +185,6 @@ export function StatsNavbarView() {
                             className={css.statsLink}
                         >
                             Satisfaction
-                            <Badge type={'blue'} className={cssNavbar.badge}>
-                                NEW
-                            </Badge>
                         </StatsNavSectionItem>
                     </Navigation.SectionContent>
                 </Navigation.Section>

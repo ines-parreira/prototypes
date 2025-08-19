@@ -9,7 +9,7 @@ import { Navigation } from 'components/Navigation/Navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopType } from 'models/selfServiceConfiguration/types'
-import { SALES, SETTINGS } from 'pages/aiAgent/constants'
+import { OPPORTUNITIES, SALES, SETTINGS } from 'pages/aiAgent/constants'
 import {
     NavigationItem,
     useAiAgentNavigation,
@@ -115,6 +115,13 @@ export const AiAgentNavbarSectionBlock = ({
                         {hasAiAgentEnabled && (
                             <Badge type={'light-success'}>LIVE</Badge>
                         )}
+                    </div>
+                )
+            case OPPORTUNITIES:
+                return (
+                    <div className={css.item}>
+                        <span>{item.title}</span>
+                        <Badge type={'blue'}>NEW</Badge>
                     </div>
                 )
             default:

@@ -214,10 +214,9 @@ describe('StatsNavbarViewV2', () => {
         const newSatisfactionReportLink = container.querySelector(
             'a[href="/app/stats/quality-management-satisfaction"]',
         )
-        const newBadgeText = newSatisfactionReportLink?.children?.[0]?.innerHTML
 
         expect(newSatisfactionReportLink).toBeInTheDocument()
-        expect(newBadgeText).toBe('NEW')
+        expect(screen.getByText('Satisfaction')).toBeInTheDocument()
     })
 
     it('should render only the New Satisfaction Report when new-satisfaction-report is enabled', () => {
