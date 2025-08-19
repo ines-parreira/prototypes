@@ -3,7 +3,10 @@ import { useMemo, useState } from 'react'
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { CustomFieldValue } from 'custom-fields/types'
 
-import { DROPDOWN_NESTING_FANCY_DELIMITER } from '../constants'
+import {
+    CHOICE_VALUES_SYMBOL,
+    DROPDOWN_NESTING_FANCY_DELIMITER,
+} from '../constants'
 import { getFullValueFromCurrentPath } from '../helpers/getFullValueFromCurrentPath'
 import { ChoicesTree, SearchResults } from '../types'
 
@@ -50,29 +53,26 @@ function searchChoices(
     searchResults: SearchResults,
     includeAllValues = false,
 ) {
-    if (currentChoices.size === 0) {
-        return
-    }
-
-    for (const [key, option] of currentChoices.entries()) {
+    // leaves of the current branch
+    for (const value of currentChoices[CHOICE_VALUES_SYMBOL]) {
         if (
-            typeof option.value === 'string' &&
-            option.children.size === 0 &&
+            typeof value === 'string' &&
             (includeAllValues ||
-                key.toLowerCase().includes(search.toLowerCase()))
+                value.toLowerCase().includes(search.toLowerCase()))
         ) {
             searchResults.push({
-                label: getValueLabel(option.value),
+                label: getValueLabel(value),
                 path: currentPath.join(DROPDOWN_NESTING_FANCY_DELIMITER),
-                value: getFullValueFromCurrentPath(currentPath, option.value),
+                value: getFullValueFromCurrentPath(currentPath, value),
             })
         }
     }
 
-    for (const [nextPath, nextChoices] of currentChoices.entries()) {
+    // all other values are branches and not leaves
+    for (const [nextPath, nextChoices] of Object.entries(currentChoices)) {
         searchChoices(
             search,
-            nextChoices.children,
+            nextChoices,
             [...currentPath, nextPath],
             searchResults,
             includeAllValues ||

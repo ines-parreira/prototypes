@@ -1,6 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
+import { CHOICE_VALUES_SYMBOL } from '../../constants'
 import { ChoicesTree } from '../../types'
 import { useSearch } from '../useSearch'
 
@@ -13,15 +14,12 @@ describe('useSearch', () => {
             setSearch: expect.any(Function),
             valueIsInSearchResults: false,
         }
-        const choices = new Map([
-            ['foo', { value: 'foo', children: new Map() }],
-            ['bar', { value: 'bar', children: new Map() }],
-            ['baz', { value: 'baz', children: new Map() }],
-        ])
 
         const { result } = renderHook(() =>
             useSearch({
-                choices,
+                choices: {
+                    [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
+                },
                 dropdownValue: undefined,
                 isDisabled: true,
             }),
@@ -36,15 +34,11 @@ describe('useSearch', () => {
 
     describe('search', () => {
         it('should correctly set isSearching to true when search is not empty', () => {
-            const choices = new Map([
-                ['foo', { value: 'foo', children: new Map() }],
-                ['bar', { value: 'bar', children: new Map() }],
-                ['baz', { value: 'baz', children: new Map() }],
-            ])
-
             const { result } = renderHook(() =>
                 useSearch({
-                    choices,
+                    choices: {
+                        [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
+                    },
                     dropdownValue: undefined,
                     isDisabled: false,
                 }),
@@ -57,17 +51,17 @@ describe('useSearch', () => {
         })
 
         it('should correctly search amongst flat choices of all types', () => {
-            let choices: ChoicesTree = new Map([
-                ['Foo', { value: 'Foo', children: new Map() }],
-                ['bar', { value: 'bar', children: new Map() }],
-                ['baz', { value: 'baz', children: new Map() }],
-            ])
-
             const { result, rerender } = renderHook(
                 (props) => useSearch(props),
                 {
                     initialProps: {
-                        choices,
+                        choices: {
+                            [CHOICE_VALUES_SYMBOL]: new Set([
+                                'Foo',
+                                'bar',
+                                'baz',
+                            ]),
+                        } as ChoicesTree,
                         dropdownValue: undefined,
                         isDisabled: false,
                     },
@@ -84,25 +78,13 @@ describe('useSearch', () => {
                 },
             ])
 
-            choices = new Map([
-                ['10', { value: 10, children: new Map() }],
-                ['100', { value: 100, children: new Map() }],
-                ['4', { value: 4, children: new Map() }],
-                [
-                    'bar',
-                    {
-                        value: 'bar',
-                        children: new Map([
-                            ['11', { value: 11, children: new Map() }],
-                            ['101', { value: 101, children: new Map() }],
-                            ['5', { value: 5, children: new Map() }],
-                        ]),
-                    },
-                ],
-            ])
-
             rerender({
-                choices,
+                choices: {
+                    [CHOICE_VALUES_SYMBOL]: new Set([10, 100, 4]),
+                    bar: {
+                        [CHOICE_VALUES_SYMBOL]: new Set([11, 101, 5]),
+                    },
+                },
                 dropdownValue: undefined,
                 isDisabled: false,
             })
@@ -111,22 +93,13 @@ describe('useSearch', () => {
             })
             expect(result.current.searchResults).toEqual([])
 
-            choices = new Map([
-                ['true', { value: true, children: new Map() }],
-                ['false', { value: false, children: new Map() }],
-                [
-                    'bar',
-                    {
-                        value: 'bar',
-                        children: new Map([
-                            ['true', { value: true, children: new Map() }],
-                            ['false', { value: false, children: new Map() }],
-                        ]),
-                    },
-                ],
-            ])
             rerender({
-                choices,
+                choices: {
+                    [CHOICE_VALUES_SYMBOL]: new Set([true, false]),
+                    bar: {
+                        [CHOICE_VALUES_SYMBOL]: new Set([true, false]),
+                    },
+                },
                 dropdownValue: undefined,
                 isDisabled: false,
             })
@@ -137,78 +110,33 @@ describe('useSearch', () => {
         })
 
         it('should correctly search amongst nested choices and categories of string types', () => {
-            const choices = new Map([
-                ['foo', { value: 'foo', children: new Map() }],
-                ['bar', { value: 'bar', children: new Map() }],
-                ['baz', { value: 'baz', children: new Map() }],
-                [
-                    'categoryBar',
-                    {
-                        value: 'categoryBar',
-                        children: new Map([
-                            ['foo1', { value: 'foo1', children: new Map() }],
-                            ['bar1', { value: 'bar1', children: new Map() }],
-                            ['baz1', { value: 'baz1', children: new Map() }],
-                        ]),
-                    },
-                ],
-                [
-                    'categoryFoo',
-                    {
-                        value: 'categoryFoo',
-                        children: new Map([
-                            [
-                                'barista',
-                                {
-                                    value: 'barista',
-                                    children: new Map([
-                                        [
-                                            'count me in',
-                                            {
-                                                value: 'count me in',
-                                                children: new Map(),
-                                            },
-                                        ],
-                                        [
-                                            'don’t count me off',
-                                            {
-                                                value: 'don’t count me off',
-                                                children: new Map(),
-                                            },
-                                        ],
-                                    ]),
-                                },
-                            ],
-                            [
-                                'fooista',
-                                {
-                                    value: 'fooista',
-                                    children: new Map([
-                                        [
-                                            'bar in',
-                                            {
-                                                value: 'bar in',
-                                                children: new Map(),
-                                            },
-                                        ],
-                                        [
-                                            'foo off',
-                                            {
-                                                value: 'foo off',
-                                                children: new Map(),
-                                            },
-                                        ],
-                                    ]),
-                                },
-                            ],
-                        ]),
-                    },
-                ],
-            ])
-
             const { result } = renderHook(() =>
                 useSearch({
-                    choices,
+                    choices: {
+                        [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
+                        categoryBar: {
+                            [CHOICE_VALUES_SYMBOL]: new Set([
+                                'foo1',
+                                'bar1',
+                                'baz1',
+                            ]),
+                        },
+                        categoryFoo: {
+                            [CHOICE_VALUES_SYMBOL]: new Set(),
+                            barista: {
+                                [CHOICE_VALUES_SYMBOL]: new Set([
+                                    'count me in',
+                                    'don’t count me off',
+                                ]),
+                            },
+                            fooista: {
+                                [CHOICE_VALUES_SYMBOL]: new Set([
+                                    'bar in',
+                                    'foo off',
+                                ]),
+                            },
+                        },
+                    },
                     dropdownValue: undefined,
                     isDisabled: false,
                 }),
@@ -256,15 +184,11 @@ describe('useSearch', () => {
         })
 
         it('should indicate that dropdownValue is in current search results', () => {
-            const choices = new Map([
-                ['foo', { value: 'foo', children: new Map() }],
-                ['bar', { value: 'bar', children: new Map() }],
-                ['baz', { value: 'baz', children: new Map() }],
-            ])
-
             const { result } = renderHook(() =>
                 useSearch({
-                    choices,
+                    choices: {
+                        [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
+                    } as ChoicesTree,
                     dropdownValue: 'bar',
                     isDisabled: false,
                 }),
