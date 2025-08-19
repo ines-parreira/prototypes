@@ -7,12 +7,15 @@ import { useNavigation } from './useNavigation'
 export function useTicketInfobarNavigation(): TicketInfobarNavigationContextValue {
     const [state, setState] = useNavigation()
 
-    const onChangeTab = useCallback((activeTab: TicketInfobarTab) => {
-        setState((s) => ({
-            ...s,
-            ticketInfobar: { ...s.ticketInfobar, activeTab },
-        }))
-    }, [])
+    const onChangeTab = useCallback(
+        (activeTab: TicketInfobarTab) => {
+            setState((s) => ({
+                ...s,
+                ticketInfobar: { ...s.ticketInfobar, activeTab },
+            }))
+        },
+        [setState],
+    )
 
     const onToggle = useCallback(() => {
         setState((s) => ({
@@ -22,7 +25,7 @@ export function useTicketInfobarNavigation(): TicketInfobarNavigationContextValu
                 isExpanded: !s.ticketInfobar.isExpanded,
             },
         }))
-    }, [])
+    }, [setState])
 
     return useMemo(
         () => ({ ...state.ticketInfobar, onChangeTab, onToggle }),

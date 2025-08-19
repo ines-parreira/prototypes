@@ -6,6 +6,7 @@
     "exports": {
         "./tsconfig.react.json": "./tsconfig.react.json",
         "./tsconfig.common.json": "./tsconfig.common.json",
+        "./oxlintrc.json": "./oxlintrc.json",
         "./jest": "./src/jest/config.ts",
         "./vitest": "./src/vitest/config.ts",
         "./vitest/setup.ts": "./src/vitest/setup.ts"

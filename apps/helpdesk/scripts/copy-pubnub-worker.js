@@ -40,6 +40,7 @@ const copy = () => {
         const pubnubWorkerFile = path.basename(srcFile)
 
         fs.copyFileSync(srcFile, path.join(DEST_DIR, 'pubnub.worker.js'))
+        // eslint-disable-next-line no-console
         console.log(`Copied ${srcFile} to ${DEST_DIR}`)
 
         // Update the manifest file
@@ -55,6 +56,7 @@ const copy = () => {
                     MANIFEST_FILE,
                     JSON.stringify(manifest, null, 2),
                 )
+                // eslint-disable-next-line no-console
                 console.log(
                     `Updated ${MANIFEST_FILE} with pubnubWorker: ${pubnubWorkerFile}`,
                 )

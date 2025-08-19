@@ -75,7 +75,7 @@ catalogs:
     'prettier': '3.6.2'
     '@trivago/prettier-plugin-sort-imports': '^5.2.2'
   oxlint:
-    'oxlint': '^0.16.3'
+    'oxlint': '^1'
   lodash:
     'lodash': '4.17.21'
     '@types/lodash': '4.14.158'

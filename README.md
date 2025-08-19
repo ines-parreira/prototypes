@@ -268,7 +268,7 @@ pnpm lint:code:all  # run lint everywhere
 
 ### Adding Linting rules
 
-New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint/oxlint.base.json) file. You need to run `pnpm oxlint:bridge` to apply the changes.
+New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint-base.json](https://github.com/gorgias/frontend/blob/main/packages/config/oxlint-base.json) file in the config package in `frontend` monorepo.
 
 ## Debugging tools
 

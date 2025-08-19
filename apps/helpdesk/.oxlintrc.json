@@ -1,7 +1,17 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
-    "env": { "browser": true, "es6": true, "jest": true, "node": true },
-    "globals": { "$": "off", "amplitude": "off", "FB": "off", "Stripe": "off" },
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true,
+        "node": true
+    },
+    "globals": {
+        "$": "off",
+        "amplitude": "off",
+        "FB": "off",
+        "Stripe": "off"
+    },
     "ignorePatterns": [
         "build/**",
         "scripts/copy-pubnub-worker.js",
@@ -18,7 +28,9 @@
     "overrides": [
         {
             "files": ["**/*.spec.ts", "**/*.spec.tsx"],
-            "rules": { "react/no-unescaped-entities": "off" }
+            "rules": {
+                "react/no-unescaped-entities": "off"
+            }
         },
         {
             "files": [
@@ -30,7 +42,9 @@
                 "src/utils/wrappers/Draggable.tsx",
                 "src/utils/wrappers/Slider.tsx"
             ],
-            "rules": { "no-restricted-imports": "off" }
+            "rules": {
+                "no-restricted-imports": "off"
+            }
         }
     ],
     "plugins": ["import", "jsx-a11y", "react", "react-hooks", "typescript"],
@@ -39,9 +53,18 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": [
             "error",
-            { "argsIgnorePattern": "^__", "varsIgnorePattern": "^__" }
+            {
+                "argsIgnorePattern": "^__",
+                "varsIgnorePattern": "^__"
+            }
         ],
-        "eqeqeq": ["error", "always", { "null": "ignore" }],
+        "eqeqeq": [
+            "error",
+            "always",
+            {
+                "null": "ignore"
+            }
+        ],
         "import/default": "off",
         "import/namespace": "off",
         "import/no-anonymous-default-export": "warn",
@@ -55,9 +78,19 @@
         "jsx-a11y/no-noninteractive-tabindex": "off",
         "jsx-a11y/tabindex-no-positive": "off",
         "no-async-promise-executor": "off",
-        "no-console": ["error", { "allow": ["error", "warn"] }],
+        "no-console": [
+            "error",
+            {
+                "allow": ["error", "warn"]
+            }
+        ],
         "no-else-return": ["error"],
-        "no-empty": ["error", { "allowEmptyCatch": true }],
+        "no-empty": [
+            "error",
+            {
+                "allowEmptyCatch": true
+            }
+        ],
         "no-extra-boolean-cast": ["off"],
         "no-param-reassign": ["error"],
         "no-prototype-builtins": "off",
@@ -117,9 +150,15 @@
         "no-useless-escape": "off",
         "react-hooks/exhaustive-deps": "error",
         "react-hooks/rules-of-hooks": "error",
-        "react/jsx-key": ["error", { "checkFragmentShorthand": true }],
+        "react/jsx-key": [
+            "error",
+            {
+                "checkFragmentShorthand": true
+            }
+        ],
         "react/no-find-dom-node": "off",
         "react/no-unescaped-entities": "error",
         "unicorn/*": "off"
-    }
+    },
+    "extends": ["../../node_modules/@gorgias/config/oxlint-react.json"]
 }
