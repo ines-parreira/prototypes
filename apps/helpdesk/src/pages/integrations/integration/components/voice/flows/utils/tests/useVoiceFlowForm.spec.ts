@@ -1,0 +1,133 @@
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockPhoneIntegration,
+    mockUpdateAllPhoneSettingsHandler,
+} from '@gorgias/helpdesk-mocks'
+import { CallRoutingFlow } from '@gorgias/helpdesk-types'
+
+import { useNotify } from 'hooks/useNotify'
+import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+
+import { VoiceFlowNodeType } from '../../constants'
+import { useVoiceFlowForm } from '../useVoiceFlowForm'
+
+jest.mock('hooks/useNotify', () => ({
+    useNotify: jest.fn(),
+}))
+const mockUseNotify = useNotify as jest.Mock
+
+const server = setupServer()
+beforeAll(() => {
+    server.listen()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const mockUseUpdateAllPhoneSettings = mockUpdateAllPhoneSettingsHandler()
+
+describe('useVoiceFlowForm', () => {
+    const mockIntegration = mockPhoneIntegration()
+    const mockNotifySuccess = jest.fn()
+    const mockNotifyError = jest.fn()
+
+    const expectedDefaultValues: CallRoutingFlow = {
+        first_step_id: 'start',
+        steps: {
+            'play-message': {
+                id: 'play-message',
+                step_type: VoiceFlowNodeType.PlayMessage,
+                name: 'Play Message',
+                message: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: 'Hello, this is a test message.',
+                },
+                next_step_id: null,
+            },
+        },
+    }
+
+    beforeEach(() => {
+        mockUseNotify.mockReturnValue({
+            success: mockNotifySuccess,
+            error: mockNotifyError,
+        })
+        server.use(mockUseUpdateAllPhoneSettings.handler)
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    it('getDefaultValues should return default CallRoutingFlow values', () => {
+        const { result } = renderHookWithQueryClientProvider(() =>
+            useVoiceFlowForm(mockIntegration),
+        )
+
+        const defaultValues = result.current.getDefaultValues()
+
+        expect(defaultValues).toEqual(expectedDefaultValues)
+    })
+
+    describe('onSubmit', () => {
+        const flowData: CallRoutingFlow = {
+            first_step_id: 'custom-start',
+            steps: {
+                'custom-step': {
+                    id: 'custom-step',
+                    step_type: VoiceFlowNodeType.PlayMessage,
+                    name: 'Custom Step',
+                    message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Custom message',
+                    },
+                    next_step_id: null,
+                },
+            },
+        }
+
+        it('should show success notification on successful save', async () => {
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useVoiceFlowForm(mockIntegration),
+            )
+
+            act(() => {
+                result.current.onSubmit(flowData)
+            })
+
+            await waitFor(() => {
+                expect(mockNotifySuccess).toHaveBeenCalledWith(
+                    'Changes to your Call Flow were successfully saved.',
+                )
+            })
+        })
+
+        it('should show error notification on save failure', async () => {
+            const mockUpdateWithErrorHandler =
+                mockUpdateAllPhoneSettingsHandler(async () =>
+                    HttpResponse.json(null, {
+                        status: 500,
+                    }),
+                )
+            server.use(mockUpdateWithErrorHandler.handler)
+
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useVoiceFlowForm(mockIntegration),
+            )
+
+            act(() => {
+                result.current.onSubmit(flowData)
+            })
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'Failed to save changes to your Call Flow.',
+                )
+            })
+        })
+    })
+})

@@ -1,11 +1,26 @@
 import { render, screen } from '@testing-library/react'
 import { Edge } from '@xyflow/react'
 
+import { THEME_NAME } from '@gorgias/design-tokens'
+
+import { useTheme } from 'core/theme'
+
 import { VoiceFlowNodeType } from '../constants'
 import { VoiceFlowNode } from '../types'
 import { VoiceFlow } from '../VoiceFlow'
 
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
+
+const useThemeMock = useTheme as jest.Mock
+
 describe('VoiceFlow', () => {
+    beforeEach(() => {
+        useThemeMock.mockReturnValue({ resolvedName: THEME_NAME.Light })
+    })
+
     const mockNodes: VoiceFlowNode[] = [
         {
             id: 'node-1',
@@ -52,5 +67,25 @@ describe('VoiceFlow', () => {
 
         expect(getByText('Incoming Call')).toBeInTheDocument()
         expect(getByText('End Call')).toBeInTheDocument()
+    })
+
+    it('should apply light color mode when using light theme', () => {
+        useThemeMock.mockReturnValue({ resolvedName: THEME_NAME.Light })
+
+        const { container } = render(<VoiceFlow />)
+
+        // Check that the Flow component receives light color mode
+        const flowElement = container.querySelector('.react-flow')
+        expect(flowElement).toHaveClass('light')
+    })
+
+    it('should apply dark color mode when using dark theme', () => {
+        useThemeMock.mockReturnValue({ resolvedName: THEME_NAME.Dark })
+
+        const { container } = render(<VoiceFlow />)
+
+        // Check that the Flow component receives dark color mode
+        const flowElement = container.querySelector('.react-flow')
+        expect(flowElement).toHaveClass('dark')
     })
 })

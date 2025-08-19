@@ -16,11 +16,13 @@ import {
 import classNames from 'classnames'
 
 import { LoadingSpinner } from '@gorgias/axiom'
+import { THEME_NAME } from '@gorgias/design-tokens'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import { useSearchParam } from 'hooks/useSearchParam'
 import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 
+import { useTheme } from '../../../../../core/theme'
 import { withVisualBuilderContext } from '../../hooks/useVisualBuilder'
 import { VisualBuilderGraphAction } from '../../hooks/useVisualBuilderGraphReducer'
 import { useWorkflowEditorContext } from '../../hooks/useWorkflowEditor'
@@ -86,6 +88,7 @@ export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
     } = useWorkflowEditorContext()
     const reactFlow = useReactFlow()
     const [searchParams] = useSearchParam('zoom')
+    const theme = useTheme()
 
     const visualBuilderNodeEditing = visualBuilderGraph.nodeEditingId
         ? visualBuilderGraph.nodes.find(
@@ -181,6 +184,11 @@ export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
                             zoomOnScroll={false}
                             panOnScroll={true}
                             onMove={onPanelMove}
+                            colorMode={
+                                theme.resolvedName === THEME_NAME.Dark
+                                    ? 'dark'
+                                    : 'light'
+                            }
                         >
                             {!isDegradedMode && (
                                 <MiniMap

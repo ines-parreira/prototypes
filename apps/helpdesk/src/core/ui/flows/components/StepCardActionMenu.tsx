@@ -15,7 +15,11 @@ export function StepCardActionMenu({ children }: StepCardActionMenuProps) {
 
     return (
         <>
-            <div ref={dropdownButtonRef} className={css.menuButton}>
+            <div
+                ref={dropdownButtonRef}
+                className={css.menuButton}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <IconButton
                     size="small"
                     fillStyle="ghost"
