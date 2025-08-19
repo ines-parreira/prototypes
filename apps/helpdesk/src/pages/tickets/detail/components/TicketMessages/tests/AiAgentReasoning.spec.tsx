@@ -1,3 +1,4 @@
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen } from '@testing-library/react'
@@ -18,10 +19,14 @@ import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/component
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
-import { UIActions } from 'state/ui/ticketAIAgentFeedback/types'
 
 import { AiAgentReasoning, parseReasoningResources } from '../AiAgentReasoning'
+
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useTicketInfobarNavigation: jest.fn(),
+}))
+const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
@@ -200,6 +205,8 @@ describe('AiAgentReasoning', () => {
 
     const createMockTicket = () => Map({ id: 123 })
 
+    let onChangeTab: jest.Mock
+
     beforeEach(() => {
         jest.useFakeTimers()
         jest.clearAllMocks()
@@ -213,12 +220,6 @@ describe('AiAgentReasoning', () => {
                 selector.toString().includes('getTicketState')
             ) {
                 return createMockTicket()
-            }
-            if (
-                selector.name === 'getActiveTab' ||
-                selector.toString().includes('getActiveTab')
-            ) {
-                return TicketAIAgentFeedbackTab.CustomerInformation
             }
             if (
                 selector.name === 'getCurrentAccountState' ||
@@ -367,6 +368,12 @@ describe('AiAgentReasoning', () => {
                 },
             ],
             isLoading: false,
+        })
+
+        onChangeTab = jest.fn()
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab,
         })
     })
 
@@ -603,17 +610,16 @@ describe('AiAgentReasoning', () => {
     })
 
     describe('Give Feedback functionality', () => {
-        it('should dispatch changeActiveTab when Give Feedback is clicked', () => {
+        it('should call `onChangeTab` when Give Feedback is clicked', () => {
             renderComponent()
             expandComponent()
 
             const feedbackButton = screen.getByText('Give Feedback')
             fireEvent.click(feedbackButton)
 
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: UIActions.ChangeActiveTab,
-                payload: { activeTab: TicketAIAgentFeedbackTab.AIAgent },
-            })
+            expect(onChangeTab).toHaveBeenCalledWith(
+                TicketInfobarTab.AIFeedback,
+            )
         })
     })
 
@@ -1063,7 +1069,7 @@ describe('AiAgentReasoning', () => {
                     selector.name === 'getActiveTab' ||
                     selector.toString().includes('getActiveTab')
                 ) {
-                    return TicketAIAgentFeedbackTab.AIAgent
+                    return TicketInfobarTab.AIFeedback
                 }
                 if (
                     selector.name === 'getCurrentAccountState' ||
@@ -1215,9 +1221,9 @@ describe('AiAgentReasoning', () => {
 
         it('should parse all resource types in a single string', () => {
             const content = `
-                Test <<<ARTICLE::16::13608>>> <<<GUIDANCE::26665::1045245>>> 
-                <<<action_execution::uuid>>> 
-                <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> 
+                Test <<<ARTICLE::16::13608>>> <<<GUIDANCE::26665::1045245>>>
+                <<<action_execution::uuid>>>
+                <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>>
                 <<<ORDER::98765>>>
             `
             const result = parseReasoningResources(content, mockResources)

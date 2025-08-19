@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { TicketInfobarTab } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
@@ -15,7 +16,6 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getTicketState } from 'state/ticket/selectors'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { getViewsState } from 'state/views/selectors'
 
 import useGoToNextTicket from '../../TicketNavigation/hooks/useGoToNextTicket'
@@ -195,7 +195,7 @@ describe('AIAgentSimplifiedFeedback', () => {
 
         expect(useGoToNextTicket).toHaveBeenCalledWith(
             '123',
-            TicketAIAgentFeedbackTab.AIAgent,
+            TicketInfobarTab.AIFeedback,
         )
     })
 

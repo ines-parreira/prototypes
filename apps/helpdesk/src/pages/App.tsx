@@ -1,5 +1,6 @@
-import React, { ComponentType, memo, ReactNode } from 'react'
+import { ComponentType, memo, ReactNode } from 'react'
 
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import cn from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import { Container } from 'reactstrap'
@@ -15,11 +16,7 @@ import FullPage from 'pages/common/components/FullPage'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { closePanels, openPanel } from 'state/layout/actions'
 import { getCurrentOpenedPanel } from 'state/layout/selectors'
-import {
-    changeActiveTab,
-    changeTicketMessage,
-} from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import css from './App.less'
 
@@ -50,6 +47,8 @@ const App = ({
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
 
+    const { onChangeTab } = useTicketInfobarNavigation()
+
     const Wrapper = containerPadding ? FullPage : Container
     const wrapperProps = containerPadding
         ? { noContainerWidthLimit }
@@ -60,11 +59,7 @@ const App = ({
 
     const handleClosePanels = () => {
         dispatch(closePanels())
-        dispatch(
-            changeActiveTab({
-                activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
-            }),
-        )
+        onChangeTab(TicketInfobarTab.Customer)
         dispatch(changeTicketMessage({ message: undefined }))
     }
 

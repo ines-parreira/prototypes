@@ -4,27 +4,20 @@ import knowledgeSourceArticleEditorReducer, {
     initialState as knowledgeSourceArticleEditorInitialState,
 } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
-import { changeActiveTab, changeTicketMessage } from './actions'
-import { TicketAIAgentFeedbackTab } from './constants'
+import { changeTicketMessage } from './actions'
 import {
     TicketAIAgentFeedbackState,
     TicketDetailAIAgentFeedbackState,
 } from './types'
 
-const feedbackInitialState: TicketDetailAIAgentFeedbackState = {
-    activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
-}
+const feedbackInitialState: TicketDetailAIAgentFeedbackState = {}
 
 const feedbackReducer = createReducer<TicketDetailAIAgentFeedbackState>(
     feedbackInitialState,
     (builder) =>
-        builder
-            .addCase(changeActiveTab, (state, { payload }) => {
-                state.activeTab = payload.activeTab
-            })
-            .addCase(changeTicketMessage, (state, { payload }) => {
-                state.message = payload.message
-            }),
+        builder.addCase(changeTicketMessage, (state, { payload }) => {
+            state.message = payload.message
+        }),
 )
 
 export const initialState: TicketAIAgentFeedbackState = {

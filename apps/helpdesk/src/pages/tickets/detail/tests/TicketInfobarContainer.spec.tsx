@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -18,12 +19,7 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 import { RootState, StoreState } from 'state/types'
-import {
-    changeActiveTab,
-    changeTicketMessage,
-    getActiveTab,
-} from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import { fetchWidgets, selectContext } from 'state/widgets/actions'
 import { renderWithRouter } from 'utils/testing'
 
@@ -35,6 +31,12 @@ import {
     CUSTOMER_DETAILS_TAB_OLD_LABEL,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
+
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useTicketInfobarNavigation: jest.fn(),
+}))
+const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
     __esModule: true,
@@ -96,9 +98,7 @@ jest.mock(
 const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)
 const mockedSelectContext = assumeMock(selectContext)
 const mockedFetchWidgets = assumeMock(fetchWidgets)
-const mockedChangeActiveTab = assumeMock(changeActiveTab)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
-const mockedGetActiveTab = assumeMock(getActiveTab)
 
 const ticketsStore: Partial<RootState> = {
     currentUser: fromJS(user),
@@ -106,14 +106,7 @@ const ticketsStore: Partial<RootState> = {
 }
 
 const mockStore = configureMockStore([thunk])
-const state: Partial<StoreState> = {
-    ...ticketsStore,
-    ui: {
-        ticketAIAgentFeedback: {
-            activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
-        },
-    } as any,
-}
+const state: Partial<StoreState> = ticketsStore
 
 jest.mock('state/ticket/actions', () => ({
     addTag: jest.fn(),
@@ -133,6 +126,8 @@ describe('<TicketInfobarContainer />', () => {
         }),
         widgets: fromJS({}),
     } as unknown as ComponentProps<typeof TicketInfobarContainer>
+
+    let onChangeTab: jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -156,6 +151,12 @@ describe('<TicketInfobarContainer />', () => {
                 created_datetime: dateAfterFeatureAvailable,
             } as any,
         ])
+
+        onChangeTab = jest.fn()
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab,
+        })
     })
 
     it('should render infobar for active customer', () => {
@@ -194,8 +195,8 @@ describe('<TicketInfobarContainer />', () => {
         expect(aiAgentTab).not.toBeInTheDocument()
     })
 
-    it('should call changeActive tab when AI Agent tab is clicked', () => {
-        renderWithRouter(
+    it('should call onChangeTab when AI Agent tab is clicked', () => {
+        const { rerenderComponent } = renderWithRouter(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
@@ -208,16 +209,21 @@ describe('<TicketInfobarContainer />', () => {
         const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
         userEvent.click(aiAgentTab)
 
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
-        })
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
 
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.AIFeedback,
+            onChangeTab,
+        })
+        rerenderComponent(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+        )
         const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB_OLD_LABEL)
         userEvent.click(customerTab)
 
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
-        })
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
     })
 
     it('should change selected message when AI agent tab is clicked and there is only 1 public AI message', () => {
@@ -242,9 +248,7 @@ describe('<TicketInfobarContainer />', () => {
         const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
         userEvent.click(aiAgentTab)
 
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
-        })
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
             message: {
                 id: '1',
@@ -281,9 +285,7 @@ describe('<TicketInfobarContainer />', () => {
         const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
         userEvent.click(aiAgentTab)
 
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
-        })
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
             message: undefined,
         })
@@ -301,9 +303,6 @@ describe('<TicketInfobarContainer />', () => {
                 role: { name: UserRole.Agent },
             }),
         )
-        mockedGetActiveTab.mockReturnValue(
-            TicketAIAgentFeedbackTab.CustomerInformation,
-        )
 
         renderWithRouter(
             <Provider store={customStore}>
@@ -311,7 +310,7 @@ describe('<TicketInfobarContainer />', () => {
             </Provider>,
             {
                 path: `/foo/:ticketId?`,
-                route: `/foo/123/?activeTab=${TicketAIAgentFeedbackTab.AIAgent}`,
+                route: `/foo/123/?activeTab=${TicketInfobarTab.AIFeedback}`,
             },
         )
 
@@ -319,16 +318,11 @@ describe('<TicketInfobarContainer />', () => {
             AI_FEEDBACK_TAB_OLD_LABEL,
         )
 
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
-        })
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
         expect(customerInformationTab).toBeInTheDocument()
     })
 
     it('should not call changeActive tab when AI Agent tab is clicked and is already active', () => {
-        mockedGetActiveTab.mockReturnValue(
-            TicketAIAgentFeedbackTab.CustomerInformation,
-        )
         renderWithRouter(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
@@ -345,7 +339,7 @@ describe('<TicketInfobarContainer />', () => {
 
         userEvent.click(customerInformationTab)
 
-        expect(mockedChangeActiveTab).not.toHaveBeenCalled()
+        expect(onChangeTab).not.toHaveBeenCalled()
     })
 
     it('should render AUTO_QA tab', () => {
@@ -383,14 +377,15 @@ describe('<TicketInfobarContainer />', () => {
 
         userEvent.click(autoQATab)
 
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.AutoQA,
-        })
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AutoQA)
         expect(mockedChangeTicketMessage).toHaveBeenCalled()
     })
 
     it('should render TicketFeedback when activeTab is AIAgent', () => {
-        mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AIAgent)
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.AIFeedback,
+            onChangeTab,
+        })
 
         renderWithRouter(
             <Provider store={store}>
@@ -407,7 +402,10 @@ describe('<TicketInfobarContainer />', () => {
 
     it('should render AUTO_QA content when activeTab is AutoQA and feature flag is enabled', () => {
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
-        mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AutoQA)
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.AutoQA,
+            onChangeTab,
+        })
 
         renderWithRouter(
             <Provider store={store}>
@@ -423,10 +421,6 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should render Infobar when activeTab is CustomerInformation', () => {
-        mockedGetActiveTab.mockReturnValue(
-            TicketAIAgentFeedbackTab.CustomerInformation,
-        )
-
         renderWithRouter(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />

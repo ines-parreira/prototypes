@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { TicketInfobarTab } from '@repo/navigation'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Button, Separator } from '@gorgias/axiom'
@@ -27,7 +28,6 @@ import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getTicketState } from 'state/ticket/selectors'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { getViewsState } from 'state/views/selectors'
 
 import { AIAgentTicketLevelFeedback } from './AIAgentTicketLevelFeedback/AIAgentTicketLevelFeedback'
@@ -53,7 +53,7 @@ const AIAgentSimplifiedFeedback = () => {
     const userId: number = currentUser.get('id')
 
     const { goToTicket: goToNextTicket, isEnabled: isNextEnabled } =
-        useGoToNextTicket(ticketId.toString(), TicketAIAgentFeedbackTab.AIAgent)
+        useGoToNextTicket(ticketId.toString(), TicketInfobarTab.AIFeedback)
 
     const { data: feedback, isLoading: isLoadingFeedback } = useGetFeedback({
         objectId: ticketId.toString(),

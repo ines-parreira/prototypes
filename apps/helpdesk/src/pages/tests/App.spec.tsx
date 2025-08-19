@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -8,6 +9,12 @@ import { store } from 'common/store'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 
 import App from '../App'
+
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useTicketInfobarNavigation: jest.fn(),
+}))
+const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('hooks/useIsMobileResolution/useIsMobileResolution')
 jest.mock('common/navigation', () => ({
@@ -28,6 +35,16 @@ describe('App Navbar rendering', () => {
             </Provider>,
         )
     }
+
+    let onChangeTab: jest.Mock
+
+    beforeEach(() => {
+        onChangeTab = jest.fn()
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab,
+        })
+    })
 
     it('display the navbar container when global nav is enabled and not mobile', () => {
         mockUseIsMobileResolution.mockReturnValue(false)

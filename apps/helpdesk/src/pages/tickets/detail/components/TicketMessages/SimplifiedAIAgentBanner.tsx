@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { TicketMessage } from 'models/ticket/types'
@@ -15,8 +15,6 @@ import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 import css from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.less'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { changeActiveTab, getActiveTab } from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 
@@ -32,6 +30,7 @@ const SimplifiedAIAgentBanner = ({
     const { data } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
     })
+    const { activeTab, onChangeTab } = useTicketInfobarNavigation()
 
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
@@ -46,8 +45,6 @@ const SimplifiedAIAgentBanner = ({
     })
 
     const ticketFeedback = data?.data
-    const dispatch = useAppDispatch()
-    const activeTab = useAppSelector(getActiveTab)
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
     const lastMessageWithFeedback = useMemo(() => {
         if (!ticketFeedback?.messages) return null
@@ -105,10 +102,7 @@ const SimplifiedAIAgentBanner = ({
 
     const handleClick = () => {
         onFeedbackTabOpened('give-feedback-button-from-banner')
-
-        dispatch(
-            changeActiveTab({ activeTab: TicketAIAgentFeedbackTab.AIAgent }),
-        )
+        onChangeTab(TicketInfobarTab.AIFeedback)
     }
 
     return (
@@ -152,11 +146,11 @@ const SimplifiedAIAgentBanner = ({
                     intent="secondary"
                     size="small"
                     fillStyle="fill"
-                    isDisabled={activeTab === TicketAIAgentFeedbackTab.AIAgent}
+                    isDisabled={activeTab === TicketInfobarTab.AIFeedback}
                     onClick={handleClick}
                     className={classNames({
                         [css.activeButton]:
-                            activeTab === TicketAIAgentFeedbackTab.AIAgent,
+                            activeTab === TicketInfobarTab.AIFeedback,
                     })}
                 >
                     Give Feedback

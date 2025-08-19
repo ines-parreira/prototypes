@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import {
@@ -14,8 +14,6 @@ import {
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
-import { changeActiveTab, getActiveTab } from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -116,8 +114,7 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
     const accountId: number = account.get('id')
     const userId: number = currentUser.get('id')
 
-    const activeTab = useAppSelector(getActiveTab)
-    const dispatch = useAppDispatch()
+    const { activeTab, onChangeTab } = useTicketInfobarNavigation()
 
     const { openPreview } = useKnowledgeSourceSideBar()
 
@@ -232,9 +229,7 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
 
     const handleGiveFeedback = () => {
         onFeedbackTabOpened('give-feedback-buton-from-reasoning')
-        dispatch(
-            changeActiveTab({ activeTab: TicketAIAgentFeedbackTab.AIAgent }),
-        )
+        onChangeTab(TicketInfobarTab.AIFeedback)
     }
 
     const isLoading = state === 'loading'
@@ -342,13 +337,11 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                         intent="secondary"
                         size="small"
                         fillStyle="fill"
-                        isDisabled={
-                            activeTab === TicketAIAgentFeedbackTab.AIAgent
-                        }
+                        isDisabled={activeTab === TicketInfobarTab.AIFeedback}
                         onClick={handleGiveFeedback}
                         className={classNames({
                             [css.activeButton]:
-                                activeTab === TicketAIAgentFeedbackTab.AIAgent,
+                                activeTab === TicketInfobarTab.AIFeedback,
                         })}
                     >
                         Give Feedback

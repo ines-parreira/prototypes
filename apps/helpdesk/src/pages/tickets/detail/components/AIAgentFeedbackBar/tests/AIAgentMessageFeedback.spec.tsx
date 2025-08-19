@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -17,7 +15,6 @@ import { SubmitMessageFeedback } from 'models/aiAgentFeedback/types'
 import { TicketMessage } from 'models/ticket/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
 
@@ -55,7 +52,6 @@ const store = mockStore({
     ui: {
         ticketAIAgentFeedback: {
             feedback: {
-                activeTab: TicketAIAgentFeedbackTab.AIAgent,
                 message: mockMessage,
             },
         },

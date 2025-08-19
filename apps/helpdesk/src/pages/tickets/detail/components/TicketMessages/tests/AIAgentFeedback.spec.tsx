@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -14,11 +13,9 @@ import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSen
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import {
-    changeActiveTab,
     changeTicketMessage,
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { BANNER_TYPE } from '../../AIAgentFeedbackBar/constants'
@@ -27,6 +24,12 @@ import AIAgentFeedback, {
     CORRECT_RESPONSE,
     REVIEW_RESPONSE,
 } from '../AIAgentFeedback'
+
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useTicketInfobarNavigation: jest.fn(),
+}))
+const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('common/segment/segment')
@@ -40,7 +43,6 @@ const mockMessage = {
     id: '1',
     public: true,
 } as unknown as TicketMessage
-const mockedChangeActiveTab = assumeMock(changeActiveTab)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 const mockedGetSelectedAIMessage = assumeMock(getSelectedAIMessage)
 const logEventMock = assumeMock(logEventWithSampling)
@@ -49,22 +51,22 @@ assumeMock(getCurrentAccountId).mockReturnValue(mockAccountId)
 const aiAgentSendFeedbackMock = jest.fn()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const store = mockStore({
-    ui: {
-        ticketAIAgentFeedback: {
-            feedback: {
-                activeTab: TicketAIAgentFeedbackTab.AIAgent,
-            },
-        },
-    },
-} as RootState)
+const store = mockStore({} as RootState)
 store.dispatch = jest.fn()
 
 describe('AIAgentFeedback', () => {
+    let onChangeTab: jest.Mock
+
     beforeEach(() => {
         useAIAgentSendFeedbackMock.mockReturnValue({
             aiAgentSendFeedback: aiAgentSendFeedbackMock,
             aiAgentDeleteFeedback: jest.fn(),
+        })
+
+        onChangeTab = jest.fn()
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.AIFeedback,
+            onChangeTab,
         })
     })
     it('renders the component with accurate response message', () => {
@@ -91,7 +93,7 @@ describe('AIAgentFeedback', () => {
         expect(screen.getByText(CORRECT_RESPONSE)).toBeInTheDocument()
     })
 
-    it('dispatches the changeActiveTab action when improve response button is clicked', () => {
+    it('should call `onChangeTab` when improve response button is clicked', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -101,9 +103,7 @@ describe('AIAgentFeedback', () => {
         )
         userEvent.click(screen.getByText(REVIEW_RESPONSE))
 
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
-        })
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
             message: mockMessage,
         })
@@ -367,7 +367,10 @@ describe('AIAgentFeedback', () => {
                                 knowledge: [{ feedback: 'thumbs_up' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [
-                                    { feedback: 'thumbs_up', type: 'binary' },
+                                    {
+                                        feedback: 'thumbs_up',
+                                        type: 'binary',
+                                    },
                                 ],
                                 feedbackOnResource: [],
                             } as unknown as MessageFeedback
@@ -442,7 +445,10 @@ describe('AIAgentFeedback', () => {
                                 knowledge: [{ feedback: 'thumbs_down' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [
-                                    { feedback: 'thumbs_down', type: 'binary' },
+                                    {
+                                        feedback: 'thumbs_down',
+                                        type: 'binary',
+                                    },
                                 ],
                                 feedbackOnResource: [],
                             } as unknown as MessageFeedback

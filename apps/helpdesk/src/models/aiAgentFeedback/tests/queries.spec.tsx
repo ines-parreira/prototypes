@@ -7,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { RootState, StoreDispatch } from 'state/types'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ReportIssueOption } from '../constants'
@@ -32,13 +31,6 @@ jest.mock('../resources', () => ({
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
-    ui: {
-        ticketAIAgentFeedback: {
-            feedback: {
-                activeTab: TicketAIAgentFeedbackTab.AIAgent,
-            },
-        },
-    },
     ticket: fromJS({
         messages: [
             {

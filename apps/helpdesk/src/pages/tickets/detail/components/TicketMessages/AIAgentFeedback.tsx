@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
@@ -20,11 +21,9 @@ import IconButton from 'pages/common/components/button/IconButton'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import {
-    changeActiveTab,
     changeTicketMessage,
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
 import { BANNER_TYPE } from '../AIAgentFeedbackBar/constants'
@@ -83,6 +82,7 @@ const AIAgentFeedback: React.FC<Props> = ({
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const accountId = useAppSelector(getCurrentAccountId)
+    const { onChangeTab } = useTicketInfobarNavigation()
 
     const { actions, guidance, knowledge } =
         useAIAgentResourcesWithFeedback(messageFeedback)
@@ -111,11 +111,7 @@ const AIAgentFeedback: React.FC<Props> = ({
     const hasNegativeFeedback = feedbackOnMessage?.feedback === 'thumbs_down'
 
     const handleImproveResponse = () => {
-        dispatch(
-            changeActiveTab({
-                activeTab: TicketAIAgentFeedbackTab.AIAgent,
-            }),
-        )
+        onChangeTab(TicketInfobarTab.AIFeedback)
         dispatch(
             changeTicketMessage({
                 message,

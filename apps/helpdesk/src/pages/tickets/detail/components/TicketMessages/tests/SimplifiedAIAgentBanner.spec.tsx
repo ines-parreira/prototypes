@@ -1,3 +1,4 @@
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -14,13 +15,18 @@ import {
 } from 'models/aiAgentFeedback/queries'
 import { TicketMessage } from 'models/ticket/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 import SimplifiedAIAgentBanner from '../SimplifiedAIAgentBanner'
 
 jest.mock('../AiAgentFailedWorkflowMessage', () => () => (
     <div data-testid="failed-workflow-message" />
 ))
+
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useTicketInfobarNavigation: jest.fn(),
+}))
+const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('hooks/useAppDispatch')
@@ -45,20 +51,13 @@ const defaultStore: Partial<RootState> = {
 }
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const store = mockStore({
-    ...defaultStore,
-    ui: {
-        ticketAIAgentFeedback: {
-            feedback: {
-                activeTab: TicketAIAgentFeedbackTab.AIAgent,
-            },
-        },
-    },
-} as RootState)
+const store = mockStore(defaultStore as RootState)
 store.dispatch = jest.fn()
 const submitAIAgentTicketMessagesFeedbackMock = jest.fn()
 
 describe('SimplifiedSimplifiedAIAgentBanner', () => {
+    let onChangeTab: jest.Mock
+
     beforeEach(() => {
         const dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
@@ -82,6 +81,12 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
             } as unknown as ReturnType<
                 typeof useSubmitAIAgentTicketMessagesFeedback
             >
+        })
+
+        onChangeTab = jest.fn()
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.AIFeedback,
+            onChangeTab,
         })
     })
 
@@ -324,7 +329,7 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         ).toBeInTheDocument()
     })
 
-    it('should dispatch changeActiveTab when click on "Give feedback"', () => {
+    it('should call onChangeTab when click on "Give feedback"', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {
@@ -341,6 +346,10 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
             isLoading: false,
             isError: false,
         } as any)
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab,
+        })
 
         render(
             <Provider store={store}>
@@ -355,7 +364,7 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
 
         fireEvent.click(feedbackButton)
 
-        expect(useAppDispatchMock).toHaveBeenCalled()
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
     })
 
     it('should have "activeButton" class name when selected tab is AI_AGENT', () => {

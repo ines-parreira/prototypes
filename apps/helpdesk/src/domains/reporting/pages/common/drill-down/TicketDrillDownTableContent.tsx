@@ -1,3 +1,4 @@
+import { TicketInfobarTab } from '@repo/navigation'
 import classNames from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -52,7 +53,6 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
@@ -109,7 +109,7 @@ const getOnClickHandler =
             isAutoQAAgentsTableColumn(metricName)
         ) {
             window.open(
-                `/app/ticket/${ticketId}?activeTab=${TicketAIAgentFeedbackTab.AIAgent}`,
+                `/app/ticket/${ticketId}?activeTab=${TicketInfobarTab.AIFeedback}`,
                 '_blank',
             )
         } else {

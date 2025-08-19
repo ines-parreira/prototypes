@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -11,7 +9,6 @@ import { TicketMessage } from 'models/ticket/types'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import AIAgentFeedbackBar, {
@@ -47,7 +44,6 @@ const store = mockStore({
     ui: {
         ticketAIAgentFeedback: {
             feedback: {
-                activeTab: TicketAIAgentFeedbackTab.AIAgent,
                 message: mockMessage,
             },
         },

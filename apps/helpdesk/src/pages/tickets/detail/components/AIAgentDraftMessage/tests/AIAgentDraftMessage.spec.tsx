@@ -1,4 +1,5 @@
 import { useMeasure } from '@repo/hooks'
+import { NavigationProvider } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -105,7 +106,9 @@ describe('AIAgentDraftMessage', () => {
     it('should get accountId from useAppSelector', () => {
         render(
             <Provider store={store}>
-                <AIAgentDraftMessage {...defaultProps} />
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
             </Provider>,
         )
 
@@ -115,7 +118,9 @@ describe('AIAgentDraftMessage', () => {
     it('should log event to ai-agent-copied-to-editor segment with qa_failed banner when isTrial is false', () => {
         render(
             <Provider store={store}>
-                <AIAgentDraftMessage {...defaultProps} />
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
             </Provider>,
         )
 
@@ -140,7 +145,9 @@ describe('AIAgentDraftMessage', () => {
 
         render(
             <Provider store={store}>
-                <AIAgentDraftMessage {...props} />
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...props} />
+                </NavigationProvider>
             </Provider>,
         )
 
@@ -172,7 +179,9 @@ describe('AIAgentDraftMessage', () => {
 
         render(
             <Provider store={store}>
-                <AIAgentDraftMessage {...defaultProps} />
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
             </Provider>,
         )
 
@@ -187,7 +196,9 @@ describe('AIAgentDraftMessage', () => {
 
         render(
             <Provider store={store}>
-                <AIAgentDraftMessage {...props} />
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...props} />
+                </NavigationProvider>
             </Provider>,
         )
 
@@ -204,7 +215,9 @@ describe('AIAgentDraftMessage', () => {
 
         render(
             <Provider store={store}>
-                <AIAgentDraftMessage {...props} />
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...props} />
+                </NavigationProvider>
             </Provider>,
         )
 

@@ -1,3 +1,4 @@
+import { TicketInfobarTab } from '@repo/navigation'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
@@ -5,7 +6,6 @@ import { useParams } from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 import useGoToNextTicket from '../useGoToNextTicket'
 import useIsTicketNavigationAvailable from '../useIsTicketNavigationAvailable'
@@ -109,7 +109,7 @@ describe('useGoToNextTicket', () => {
         useParamsMock.mockReturnValue({ viewId: '123' })
 
         const { result } = renderHook(() =>
-            useGoToNextTicket('123', TicketAIAgentFeedbackTab.AIAgent),
+            useGoToNextTicket('123', TicketInfobarTab.AIFeedback),
         )
         expect(result.current.goToTicket).toBeDefined()
         expect(result.current.isEnabled).toBe(true)
@@ -117,7 +117,7 @@ describe('useGoToNextTicket', () => {
         await result.current.goToTicket()
         expect(mockUsePrevNextTicketNavigationFn).not.toHaveBeenCalled()
         expect(history.push).toHaveBeenCalledWith(
-            '/app/views/123/456?activeTab=AI_AGENT',
+            `/app/views/123/456?activeTab=${TicketInfobarTab.AIFeedback}`,
         )
     })
 })

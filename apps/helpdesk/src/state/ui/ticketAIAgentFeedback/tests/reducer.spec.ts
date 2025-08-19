@@ -1,23 +1,13 @@
+import type { AnyAction } from '@reduxjs/toolkit'
+
 import { TicketMessage } from 'models/ticket/types'
 
-import { changeActiveTab, changeTicketMessage } from '../actions'
-import { TicketAIAgentFeedbackTab } from '../constants'
+import { changeTicketMessage } from '../actions'
 import reducer, { initialState } from '../reducer'
-import { ChangeActiveTabAction } from '../types'
 
 describe('ticketAIAgentFeedback reducer', () => {
     it('should return the initial state', () => {
-        expect(reducer(undefined, {} as ChangeActiveTabAction)).toEqual(
-            initialState,
-        )
-    })
-
-    it('should handle changeActiveTab', () => {
-        const newTab = TicketAIAgentFeedbackTab.AIAgent
-        const action = changeActiveTab({ activeTab: newTab })
-        const newState = reducer(initialState, action)
-
-        expect(newState.feedback.activeTab).toEqual(newTab)
+        expect(reducer(undefined, {} as AnyAction)).toEqual(initialState)
     })
 
     it('should handle changeTicketMessage with message', () => {

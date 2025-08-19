@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -25,12 +26,7 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
 import { getAIAgentMessages, getTicket } from 'state/ticket/selectors'
 import { RootState } from 'state/types'
-import {
-    changeActiveTab,
-    changeTicketMessage,
-    getActiveTab,
-} from 'state/ui/ticketAIAgentFeedback'
-import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import * as actions from 'state/widgets/actions'
 import {
     getSourcesWithCustomer,
@@ -75,10 +71,10 @@ export const TicketInfobarContainer = ({
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
     const ticket = useAppSelector(getTicket)
-    const activeTab = useAppSelector(getActiveTab)
     const hasAutomate = useAppSelector(getHasAutomate)
     const location = useLocation()
     const hasAIAgent = useHasAIAgent()
+    const { activeTab, onChangeTab } = useTicketInfobarNavigation()
     const isAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
 
@@ -101,12 +97,12 @@ export const TicketInfobarContainer = ({
             const nextTab =
                 isTeamLead(currentUser) &&
                 ticket.status === TicketStatus.Closed &&
-                preferredTab === TicketAIAgentFeedbackTab.AIAgent
-                    ? TicketAIAgentFeedbackTab.AIAgent
-                    : TicketAIAgentFeedbackTab.CustomerInformation
+                preferredTab === TicketInfobarTab.AIFeedback
+                    ? TicketInfobarTab.AIFeedback
+                    : TicketInfobarTab.Customer
             if (nextTab !== activeTab) {
                 setPreferredTab(null)
-                dispatch(changeActiveTab({ activeTab: nextTab }))
+                onChangeTab(nextTab)
             }
             dispatch(changeTicketMessage({ message: undefined }))
         }
@@ -118,6 +114,7 @@ export const TicketInfobarContainer = ({
         currentUser,
         dispatch,
         setPreferredTab,
+        onChangeTab,
     ])
 
     const customer = useMemo(
@@ -174,39 +171,39 @@ export const TicketInfobarContainer = ({
     }, [dispatch])
 
     const handleChangeTab = useCallback(
-        (tab: TicketAIAgentFeedbackTab) => {
+        (tab: TicketInfobarTab) => {
             if (activeTab === tab) {
                 return
             }
 
-            dispatch(changeActiveTab({ activeTab: tab }))
+            onChangeTab(tab)
 
-            if (tab === TicketAIAgentFeedbackTab.AIAgent) {
+            if (tab === TicketInfobarTab.AIFeedback) {
                 handleAIAgentTabClick()
                 handleTicketMessage()
             }
 
-            if (tab === TicketAIAgentFeedbackTab.AutoQA) {
+            if (tab === TicketInfobarTab.AutoQA) {
                 handleAutoQATabClick()
                 handleTicketMessage()
             }
 
-            if (tab === TicketAIAgentFeedbackTab.CustomerInformation) {
+            if (tab === TicketInfobarTab.Customer) {
                 resetTicketMessage()
             }
         },
         [
             activeTab,
-            dispatch,
             handleAIAgentTabClick,
             handleTicketMessage,
             resetTicketMessage,
             handleAutoQATabClick,
+            onChangeTab,
         ],
     )
 
     const isAIAgentTabSelected = useMemo(
-        () => activeTab === TicketAIAgentFeedbackTab.AIAgent,
+        () => activeTab === TicketInfobarTab.AIFeedback,
         [activeTab],
     )
     const showAIAgentContent = useMemo(
@@ -217,7 +214,7 @@ export const TicketInfobarContainer = ({
     )
 
     const isAutoQATabSelected = useMemo(
-        () => activeTab === TicketAIAgentFeedbackTab.AutoQA,
+        () => activeTab === TicketInfobarTab.AutoQA,
         [activeTab],
     )
     const showAutoQATabContent = useMemo(
@@ -226,7 +223,7 @@ export const TicketInfobarContainer = ({
     )
 
     const isCustomerInfoTabSelected = useMemo(
-        () => activeTab === TicketAIAgentFeedbackTab.CustomerInformation,
+        () => activeTab === TicketInfobarTab.Customer,
         [activeTab],
     )
     const showCustomerInfoTabContent = useMemo(
@@ -258,9 +255,7 @@ export const TicketInfobarContainer = ({
                                 isAfterFeedbackCollectionPeriod,
                         })}
                         onClick={() =>
-                            handleChangeTab(
-                                TicketAIAgentFeedbackTab.CustomerInformation,
-                            )
+                            handleChangeTab(TicketInfobarTab.Customer)
                         }
                     >
                         {isAfterFeedbackCollectionPeriod && (
@@ -283,9 +278,7 @@ export const TicketInfobarContainer = ({
                                         isAfterFeedbackCollectionPeriod,
                                 })}
                                 onClick={() =>
-                                    handleChangeTab(
-                                        TicketAIAgentFeedbackTab.AIAgent,
-                                    )
+                                    handleChangeTab(TicketInfobarTab.AIFeedback)
                                 }
                             >
                                 {isAfterFeedbackCollectionPeriod && (
@@ -306,7 +299,7 @@ export const TicketInfobarContainer = ({
                                     isAfterFeedbackCollectionPeriod,
                             })}
                             onClick={() =>
-                                handleChangeTab(TicketAIAgentFeedbackTab.AutoQA)
+                                handleChangeTab(TicketInfobarTab.AutoQA)
                             }
                         >
                             <i className="icon material-icons">
