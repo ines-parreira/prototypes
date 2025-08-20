@@ -3,6 +3,8 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Prompt } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import WorkflowVisualBuilder from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -11,7 +13,6 @@ import {
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'

@@ -3,9 +3,10 @@ import React, { useMemo, useState } from 'react'
 import _keyBy from 'lodash/keyBy'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useOrderBy from 'hooks/useOrderBy'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
-import Button from 'pages/common/components/button/Button'
 
 import ActionsPlatformTemplatesFilters from './components/ActionsPlatformTemplatesFilters'
 import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplatesTable'

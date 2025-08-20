@@ -2,9 +2,10 @@ import React, { useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { IntegrationType } from 'models/integration/constants'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
-import Button from 'pages/common/components/button/Button'
 import Search from 'pages/common/components/Search'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

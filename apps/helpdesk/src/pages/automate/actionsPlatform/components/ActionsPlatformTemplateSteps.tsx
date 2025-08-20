@@ -1,8 +1,7 @@
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Caption from 'pages/common/forms/Caption/Caption'
 
