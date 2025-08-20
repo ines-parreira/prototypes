@@ -84,7 +84,9 @@ export function VoiceStepNode({
                         </LearnMoreLink>
                     </Drawer.HeaderActions>
                 </Drawer.Header>
-                <Drawer.Content>{children}</Drawer.Content>
+                <Drawer.Content>
+                    <div className={css.drawerForm}>{children}</div>
+                </Drawer.Content>
             </Drawer>
         </>
     )

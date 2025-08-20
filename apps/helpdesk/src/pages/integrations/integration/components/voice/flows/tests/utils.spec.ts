@@ -1,5 +1,5 @@
 import { VoiceFlowNodeType } from '../constants'
-import { EndCallNode, IVRMenuNode } from '../types'
+import { EndCallNode, IVRMenuNode, SendToVoicemailNode } from '../types'
 import { canAddNewStepOnEdge } from '../utils'
 
 describe('utils', () => {
@@ -11,6 +11,16 @@ describe('utils', () => {
                 position: { x: 0, y: 0 },
                 data: { label: 'IVRMenu' },
             } as IVRMenuNode
+
+            expect(canAddNewStepOnEdge(edge)).toBe(false)
+        })
+
+        it('should return false if the edge is a voicemail', () => {
+            const edge = {
+                type: VoiceFlowNodeType.SendToVoicemail,
+                id: '1',
+                position: { x: 0, y: 0 },
+            } as SendToVoicemailNode
 
             expect(canAddNewStepOnEdge(edge)).toBe(false)
         })

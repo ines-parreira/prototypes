@@ -7,7 +7,12 @@ import { isPhoneIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import { VoiceFlowNodeType } from './flows/constants'
-import { EndCallNode, IncomingCallNode, PlayMessageNode } from './flows/types'
+import {
+    EndCallNode,
+    IncomingCallNode,
+    PlayMessageNode,
+    SendToVoicemailNode,
+} from './flows/types'
 import { VoiceFlow } from './flows/VoiceFlow'
 import VoiceFlowForm from './flows/VoiceFlowForm'
 
@@ -31,13 +36,29 @@ const mockFlow = {
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content: 'Hello, this is a test message.',
                 },
-                next_step_id: 'end',
+                next_step_id: 'send-to-voicemail',
             },
         } as PlayMessageNode,
         {
+            id: 'send-to-voicemail',
+            type: VoiceFlowNodeType.SendToVoicemail,
+            position: { x: 0, y: 250 },
+            data: {
+                id: 'send-to-voicemail',
+                step_type: VoiceFlowNodeType.SendToVoicemail,
+                name: 'Send to Voicemail',
+                voicemail: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content:
+                        'Please leave a message after the beep.',
+                },
+                allow_to_leave_voicemail: true,
+            },
+        } as SendToVoicemailNode,
+        {
             id: 'end',
             type: VoiceFlowNodeType.EndCall,
-            position: { x: 0, y: 250 },
+            position: { x: 0, y: 400 },
             data: {},
         } as EndCallNode,
     ],
@@ -48,8 +69,13 @@ const mockFlow = {
             target: 'play-message',
         },
         {
-            id: 'play-message->end',
+            id: 'play-message->send-to-voicemail',
             source: 'play-message',
+            target: 'send-to-voicemail',
+        },
+        {
+            id: 'send-to-voicemail->end',
+            source: 'send-to-voicemail',
             target: 'end',
         },
     ],

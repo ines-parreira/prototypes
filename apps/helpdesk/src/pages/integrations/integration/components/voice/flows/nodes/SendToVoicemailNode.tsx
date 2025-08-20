@@ -1,0 +1,74 @@
+import { useMemo } from 'react'
+
+import { useWatch } from 'react-hook-form'
+
+import { Banner, CheckBoxField } from '@gorgias/axiom'
+import { VoiceMessageType } from '@gorgias/helpdesk-queries'
+import {
+    CustomRecordingType,
+    SendToVoicemailStep,
+} from '@gorgias/helpdesk-types'
+import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
+
+import { FormField } from 'core/forms'
+import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
+
+import VoiceMessageField from '../../VoiceMessageField'
+import { VoiceStepNode } from './VoiceStepNode'
+
+export function SendToVoicemailNode({ data }: { data: SendToVoicemailStep }) {
+    const { id } = data
+    const step = useWatch({ name: `steps.${id}` })
+
+    const { voicemail } = step
+    const description =
+        voicemail.voice_message_type === 'text_to_speech'
+            ? voicemail.text_to_speech_content || 'Message'
+            : 'Custom recording'
+
+    // Custom validation of the step
+    const errors = useMemo(() => {
+        const validation = validateVoiceMessage(voicemail)
+        return !validation.isValid
+            ? voicemail.voice_message_type === VoiceMessageType.TextToSpeech
+                ? ['Text-to-speech message is required']
+                : ['Recording is required']
+            : []
+    }, [voicemail])
+
+    return (
+        <VoiceStepNode
+            title="Voicemail"
+            description={description}
+            icon={
+                <StepCardIcon backgroundColor="yellow" name="comm-voicemail" />
+            }
+            errors={errors}
+        >
+            <Banner type="info">
+                Voicemail is a final step, you cannot add any other steps after.
+                Once the caller leaves a voicemail, the call ends.
+            </Banner>
+            <div>
+                <FormField
+                    name={`steps.${id}.voicemail`}
+                    field={VoiceMessageField}
+                    horizontal={true}
+                    shouldUpload={true}
+                    customRecordingType={
+                        CustomRecordingType.VoicemailNotification
+                    }
+                    radioButtonId={id}
+                />
+            </div>
+            <FormField
+                name={`steps.${id}.allow_to_leave_voicemail`}
+                field={CheckBoxField}
+                label={'Allow caller to leave a voicemail'}
+                caption={
+                    'When selected, callers will hear the voicemail greeting and can leave a message.'
+                }
+            />
+        </VoiceStepNode>
+    )
+}

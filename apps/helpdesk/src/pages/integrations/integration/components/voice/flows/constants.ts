@@ -3,4 +3,5 @@ export enum VoiceFlowNodeType {
     EndCall = 'end_call',
     IVRMenu = 'ivr_menu',
     PlayMessage = 'play_message',
+    SendToVoicemail = 'send_to_voicemail',
 }

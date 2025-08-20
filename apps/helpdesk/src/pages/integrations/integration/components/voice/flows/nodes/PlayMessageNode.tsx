@@ -41,15 +41,17 @@ export function PlayMessageNode({ data }: { data: PlayMessageStep }) {
             }
             errors={errors}
         >
-            <FormField
-                name={`steps.${id}.message`}
-                field={VoiceMessageField}
-                allowNone={false}
-                horizontal={true}
-                shouldUpload={true}
-                customRecordingType={CustomRecordingType.GreetingMessage}
-                radioButtonId={id}
-            />
+            <div>
+                <FormField
+                    name={`steps.${id}.message`}
+                    field={VoiceMessageField}
+                    allowNone={false}
+                    horizontal={true}
+                    shouldUpload={true}
+                    customRecordingType={CustomRecordingType.GreetingMessage}
+                    radioButtonId={id}
+                />
+            </div>
         </VoiceStepNode>
     )
 }

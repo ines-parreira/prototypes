@@ -27,6 +27,17 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
                     },
                     next_step_id: null,
                 },
+                'send-to-voicemail': {
+                    id: 'send-to-voicemail',
+                    step_type: VoiceFlowNodeType.SendToVoicemail,
+                    name: 'Send to Voicemail',
+                    voicemail: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content:
+                            'Please leave a message after the beep.',
+                    },
+                    allow_to_leave_voicemail: true,
+                },
             },
         }
     }

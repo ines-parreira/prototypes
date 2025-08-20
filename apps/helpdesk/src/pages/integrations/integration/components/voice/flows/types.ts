@@ -1,6 +1,6 @@
 import { Node } from '@xyflow/react'
 
-import { PlayMessageStep } from '@gorgias/helpdesk-types'
+import { PlayMessageStep, SendToVoicemailStep } from '@gorgias/helpdesk-types'
 
 import { VoiceFlowNodeType } from './constants'
 
@@ -11,9 +11,14 @@ export type PlayMessageNode = Node<
     PlayMessageStep,
     VoiceFlowNodeType.PlayMessage
 >
+export type SendToVoicemailNode = Node<
+    SendToVoicemailStep,
+    VoiceFlowNodeType.SendToVoicemail
+>
 
 export type VoiceFlowNode =
     | IncomingCallNode
     | EndCallNode
     | IVRMenuNode
     | PlayMessageNode
+    | SendToVoicemailNode
