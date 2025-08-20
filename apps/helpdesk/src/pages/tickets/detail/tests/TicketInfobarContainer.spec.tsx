@@ -25,10 +25,8 @@ import { renderWithRouter } from 'utils/testing'
 
 import {
     AI_FEEDBACK_TAB,
-    AI_FEEDBACK_TAB_OLD_LABEL,
     AUTO_QA_TAB,
     CUSTOMER_DETAILS_TAB,
-    CUSTOMER_DETAILS_TAB_OLD_LABEL,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
 
@@ -206,7 +204,7 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
         userEvent.click(aiAgentTab)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
@@ -220,7 +218,7 @@ describe('<TicketInfobarContainer />', () => {
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
         )
-        const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB_OLD_LABEL)
+        const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB.LABEL)
         userEvent.click(customerTab)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
@@ -245,7 +243,7 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
         userEvent.click(aiAgentTab)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
@@ -282,7 +280,7 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
         userEvent.click(aiAgentTab)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
@@ -314,9 +312,7 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const customerInformationTab = screen.getByText(
-            AI_FEEDBACK_TAB_OLD_LABEL,
-        )
+        const customerInformationTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
         expect(customerInformationTab).toBeInTheDocument()
@@ -334,7 +330,7 @@ describe('<TicketInfobarContainer />', () => {
         )
 
         const customerInformationTab = screen.getByText(
-            CUSTOMER_DETAILS_TAB_OLD_LABEL,
+            CUSTOMER_DETAILS_TAB.LABEL,
         )
 
         userEvent.click(customerInformationTab)

@@ -51,23 +51,10 @@ describe('TicketFeedback', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render AutoQA if it is active', () => {
-        useHasAgentPrivilegesMock.mockReturnValue(true)
-        const { getByText } = render(<TicketFeedback />)
-        expect(getByText('AutoQA')).toBeInTheDocument()
-    })
-
     it('should render AI Agent if it is active', () => {
         useHasAIAgentMock.mockReturnValue(true)
         const { getByText } = render(<TicketFeedback />)
         expect(getByText('AIAgentFeedbackBar')).toBeInTheDocument()
-    })
-
-    it('should render a separator if both AutoQA and AI Agent are active', () => {
-        useHasAgentPrivilegesMock.mockReturnValue(true)
-        useHasAIAgentMock.mockReturnValue(true)
-        const { container } = render(<TicketFeedback />)
-        expect(container.children[0].children.length).toBe(3)
     })
 
     it('should render a back button when a message is selected', () => {

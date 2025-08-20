@@ -2,7 +2,6 @@ import { useCallback } from 'react'
 
 import { Button } from '@gorgias/axiom'
 
-import { AutoQA } from 'auto_qa'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -50,28 +49,22 @@ export default function TicketFeedback() {
 
     return (
         <div className={css.container}>
-            {hasAgentPrivileges &&
-                (messageFeedback ? (
-                    <div className={css.back}>
-                        <Button
-                            className={css.backButton}
-                            fillStyle="ghost"
-                            intent="secondary"
-                            onClick={handleClickBack}
+            {hasAgentPrivileges && !!messageFeedback && (
+                <div className={css.back}>
+                    <Button
+                        className={css.backButton}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        onClick={handleClickBack}
+                    >
+                        <ButtonIconLabel
+                            iconClassName="material-icons-round"
+                            icon="arrow_back"
                         >
-                            <ButtonIconLabel
-                                iconClassName="material-icons-round"
-                                icon="arrow_back"
-                            >
-                                Back
-                            </ButtonIconLabel>
-                        </Button>
-                    </div>
-                ) : (
-                    <AutoQA />
-                ))}
-            {hasAgentPrivileges && hasAIAgent && !messageFeedback && (
-                <div className={css.lineSeparator} />
+                            Back
+                        </ButtonIconLabel>
+                    </Button>
+                </div>
             )}
             {hasAIAgent && <AIAgentFeedbackBar />}
         </div>
