@@ -6,7 +6,11 @@ type CardHeaderIconProps = {
 }
 
 function CardHeaderIcon({ src, alt }: CardHeaderIconProps) {
-    return <img src={src} alt={alt} className={css.cardIconContainer} />
+    return (
+        <div className={css.cardIconContainer}>
+            <img src={src} alt={alt} className={css.cardIcon} />
+        </div>
+    )
 }
 
 export default CardHeaderIcon
