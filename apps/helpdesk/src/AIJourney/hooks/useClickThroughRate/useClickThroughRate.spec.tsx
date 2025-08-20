@@ -6,7 +6,6 @@ import {
     useTimeSeries,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import { ConvertTrackingEventsMeasure } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
@@ -32,62 +31,32 @@ describe('useClickThroughRate', () => {
     }
 
     it('should return correct data when values are available', () => {
-        ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
-            const measures = args.measures[0]
-            if (measures === ConvertTrackingEventsMeasure.UniqClicks) {
-                return {
-                    data: { value: 1, prevValue: 0 },
-                    isFetching: false,
-                }
-            }
-
-            if (measures === AiSalesAgentConversationsMeasure.Count) {
-                return {
-                    data: { value: 100, prevValue: 10 },
-                    isFetching: false,
-                }
-            }
+        // Mock useMetricTrend - returns the same data for both queries
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: { value: 100, prevValue: 100 },
+            isFetching: false,
         })
-        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
-            const measures = args.measures[0]
-            if (measures === ConvertTrackingEventsMeasure.UniqClicks) {
-                return {
-                    data: [
-                        [
-                            {
-                                dateTime: '2025-07-03',
-                                value: 1,
-                                label: ConvertTrackingEventsMeasure.UniqClicks,
-                            },
-                            {
-                                dateTime: '2025-07-10',
-                                value: 0,
-                                label: ConvertTrackingEventsMeasure.UniqClicks,
-                            },
-                        ],
-                    ] satisfies TimeSeriesDataItem[][],
-                    isFetching: false,
-                }
-            }
 
-            if (measures === AiSalesAgentConversationsMeasure.Count) {
-                return {
-                    data: [
-                        [
-                            {
-                                dateTime: '2025-07-03',
-                                value: 100,
-                                label: AiSalesAgentConversationsMeasure.Count,
-                            },
-                            {
-                                dateTime: '2025-07-10',
-                                value: 100,
-                                label: AiSalesAgentConversationsMeasure.Count,
-                            },
-                        ],
-                    ] satisfies TimeSeriesDataItem[][],
-                    isFetching: false,
-                }
+        let timeSeriesCallCount = 0
+        ;(useTimeSeries as jest.Mock).mockImplementation(() => {
+            timeSeriesCallCount++
+            // First call is for clicks, second is for conversations
+            return {
+                data: [
+                    [
+                        {
+                            dateTime: '2025-07-03',
+                            value: timeSeriesCallCount,
+                            label: AiSalesAgentConversationsMeasure.Count,
+                        },
+                        {
+                            dateTime: '2025-07-10',
+                            value: timeSeriesCallCount * 2,
+                            label: AiSalesAgentConversationsMeasure.Count,
+                        },
+                    ],
+                ] satisfies TimeSeriesDataItem[][],
+                isFetching: false,
             }
         })
 
@@ -99,26 +68,25 @@ describe('useClickThroughRate', () => {
                 userTimezone,
                 mockFilters,
                 ReportingGranularity.Week,
-                'shopName',
             ),
         )
 
         expect(result.current).toEqual({
             label: 'Click Through Rate',
-            value: 1,
+            value: 100,
             currency: 'USD',
             isLoading: false,
             interpretAs: 'more-is-better',
             metricFormat: 'percent',
-            prevValue: 0,
+            prevValue: 100,
             series: [
                 {
                     dateTime: '2025-07-03',
-                    value: 1,
+                    value: 50,
                 },
                 {
                     dateTime: '2025-07-10',
-                    value: 0,
+                    value: 50,
                 },
             ],
         })
@@ -140,7 +108,6 @@ describe('useClickThroughRate', () => {
                 'UTC',
                 mockFilters,
                 ReportingGranularity.Week,
-                'shopName',
             ),
         )
 
@@ -175,7 +142,6 @@ describe('useClickThroughRate', () => {
                 'UTC',
                 mockFilters,
                 ReportingGranularity.Week,
-                'shopName',
             ),
         )
 

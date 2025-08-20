@@ -10,7 +10,6 @@ import {
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import { ConvertTrackingEventsMeasure } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -23,7 +22,6 @@ export const useClickThroughRate = (
     userTimezone: string,
     filters: filterType,
     granularity: ReportingGranularity,
-    shopName: string,
     journeyId?: string,
 ): MetricProps => {
     const { currency } = useCurrency()
@@ -33,7 +31,7 @@ export const useClickThroughRate = (
             aiJourneyUniqClicksQueryFactory(
                 filters,
                 userTimezone,
-                shopName,
+                integrationId,
                 journeyId,
             ),
             aiJourneyUniqClicksQueryFactory(
@@ -42,14 +40,14 @@ export const useClickThroughRate = (
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
-                shopName,
+                integrationId,
                 journeyId,
             ),
         )
 
     const {
         data: totalContactsEnrolled,
-        isFetching: isFetchingtotalContactsEnrolled,
+        isFetching: isFetchingTotalContactsEnrolled,
     } = useMetricTrend(
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
             integrationId,
@@ -88,7 +86,7 @@ export const useClickThroughRate = (
                 filters,
                 userTimezone,
                 granularity,
-                shopName,
+                integrationId,
                 journeyId,
             ),
         )
@@ -109,7 +107,7 @@ export const useClickThroughRate = (
     const clicksTimeSeriesData = useMemo(
         () =>
             getStatsByMeasure(
-                ConvertTrackingEventsMeasure.UniqClicks,
+                AiSalesAgentConversationsMeasure.Count,
                 clicksTimeSeries,
             ),
         [clicksTimeSeries],
@@ -151,7 +149,7 @@ export const useClickThroughRate = (
         currency,
         isLoading:
             isFetchingTotalUniqClicks ||
-            isFetchingtotalContactsEnrolled ||
+            isFetchingTotalContactsEnrolled ||
             isFetchingClicksSeries ||
             isFetchingConversationsSeries,
     }

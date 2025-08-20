@@ -34,7 +34,6 @@ export type MetricProps = {
 
 export const useAIJourneyKpis = (
     integrationId: string,
-    shopName: string,
     customStartDate?: string,
     customEndDate?: string,
 ) => {
@@ -77,7 +76,6 @@ export const useAIJourneyKpis = (
         userTimezone,
         filters,
         granularity,
-        shopName,
     )
 
     const responseRate = useAIJourneyResponseRate(

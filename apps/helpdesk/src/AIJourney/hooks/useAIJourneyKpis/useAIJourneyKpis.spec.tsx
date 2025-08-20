@@ -90,7 +90,7 @@ describe('useAIJourneyKpis', () => {
             },
         }
 
-        renderHook(() => useAIJourneyKpis('123', 'shopName'))
+        renderHook(() => useAIJourneyKpis('123'))
 
         expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
             '123',
@@ -115,7 +115,6 @@ describe('useAIJourneyKpis', () => {
             'America/New_York',
             expectedFilters,
             ReportingGranularity.Week,
-            'shopName',
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
@@ -130,7 +129,7 @@ describe('useAIJourneyKpis', () => {
             userTimezone: 'Europe/London',
         })
 
-        renderHook(() => useAIJourneyKpis('123', 'shopName'))
+        renderHook(() => useAIJourneyKpis('123'))
 
         expect(mockUseAppSelector).toHaveBeenCalledWith(
             getCleanStatsFiltersWithTimezone,
@@ -158,7 +157,6 @@ describe('useAIJourneyKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
-            'shopName',
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',

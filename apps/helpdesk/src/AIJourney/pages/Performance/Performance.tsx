@@ -17,7 +17,6 @@ import {
     formatMetricTrend,
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
-import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 
 import css from './Performance.less'
 
@@ -79,9 +78,6 @@ export const Performance = () => {
     const [filter, setFilter] = useState('All')
 
     const { currentIntegration } = useIntegrations(shopName)
-    const namespacedShopName = useGetNamespacedShopNameForStore(
-        currentIntegration?.id ? [currentIntegration.id] : [],
-    )
 
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
@@ -137,10 +133,7 @@ export const Performance = () => {
             filteredUpcomingJourneys = []
     }
 
-    const { metrics } = useAIJourneyKpis(
-        integrationId?.toString(),
-        namespacedShopName,
-    )
+    const { metrics } = useAIJourneyKpis(integrationId?.toString())
 
     const { metrics: journeyMetrics, period } = useAbandonedCartKpis(
         integrationId?.toString(),

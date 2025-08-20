@@ -9,14 +9,8 @@ import {
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
-    ConvertTrackingEventsCube,
-    ConvertTrackingEventsDimension,
-    ConvertTrackingEventsMeasure,
-} from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
-import {
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrdersDefaultFiltersMembers,
-    clicksDefaultFilters,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -306,13 +300,13 @@ export const aiJourneyRepliedMessagesTimeSeriesQuery = (
 export const aiJourneyUniqClicksQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    shopName: string,
+    integrationId: string,
     journeyId?: string,
-): ReportingQuery<ConvertTrackingEventsCube> => {
-    const journeyIdFilter = journeyId
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter = journeyId
         ? [
               {
-                  member: ConvertTrackingEventsDimension.JourneyId,
+                  member: AiSalesAgentConversationsDimension.JourneyId,
                   operator: ReportingFilterOperator.Equals,
                   values: [journeyId],
               },
@@ -320,26 +314,29 @@ export const aiJourneyUniqClicksQueryFactory = (
         : []
 
     return {
-        measures: [ConvertTrackingEventsMeasure.UniqClicks],
+        measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
         filters: [
             {
-                member: ConvertTrackingEventsDimension.Source,
+                member: AiSalesAgentConversationsDimension.Source,
                 operator: ReportingFilterOperator.Equals,
-                values: ['ai-agent'],
+                values: ['ai-journey'],
             },
             {
-                member: ConvertTrackingEventsDimension.JourneyId,
-                operator: ReportingFilterOperator.Set,
-                values: [],
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
             },
             {
-                member: ConvertTrackingEventsDimension.ShopName,
+                member: AiSalesAgentConversationsDimension.Clicked,
                 operator: ReportingFilterOperator.Equals,
-                values: [shopName],
+                values: ['1'],
             },
-            ...clicksDefaultFilters(filters),
-            ...journeyIdFilter,
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
         ],
         timezone,
     }
@@ -349,19 +346,19 @@ export const aiJourneyUniqClicksTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    shopName: string,
+    integrationId: string,
     journeyId?: string,
-): TimeSeriesQuery<ConvertTrackingEventsCube> => {
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyUniqClicksQueryFactory(
             filters,
             timezone,
-            shopName,
+            integrationId,
             journeyId,
         ),
         timeDimensions: [
             {
-                dimension: ConvertTrackingEventsDimension.CreatedDatetime,
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
                 granularity,
                 dateRange: getFilterDateRange(filters.period),
             },
