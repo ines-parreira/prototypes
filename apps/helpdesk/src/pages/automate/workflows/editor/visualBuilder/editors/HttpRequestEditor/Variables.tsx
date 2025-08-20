@@ -2,9 +2,10 @@ import React, { useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import TextInput from 'pages/common/forms/input/TextInput'

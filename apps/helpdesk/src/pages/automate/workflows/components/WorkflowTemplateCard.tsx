@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import {
     WorkflowTemplate,

@@ -1,8 +1,9 @@
 import { Container } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import templatesImage from 'assets/img/workflows/templates.png'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
-import Button from 'pages/common/components/button/Button'
 
 import {
     WORKFLOWS_DESCRIPTION,

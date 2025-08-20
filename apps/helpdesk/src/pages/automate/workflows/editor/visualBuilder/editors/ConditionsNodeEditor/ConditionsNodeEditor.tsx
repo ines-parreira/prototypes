@@ -3,6 +3,8 @@ import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 import { ulid } from 'ulidx'
 
+import { Button } from '@gorgias/axiom'
+
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
@@ -13,7 +15,6 @@ import {
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
-import Button from 'pages/common/components/button/Button'
 import { Drawer } from 'pages/common/components/Drawer'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'

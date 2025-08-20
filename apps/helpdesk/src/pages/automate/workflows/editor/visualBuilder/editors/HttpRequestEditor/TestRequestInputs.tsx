@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
-import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'

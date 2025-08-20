@@ -1,6 +1,7 @@
+import { Button } from '@gorgias/axiom'
+
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import TextInput from 'pages/common/forms/input/TextInput'
 

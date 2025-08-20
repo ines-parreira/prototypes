@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
-import Button from 'pages/common/components/button/Button'
 
 import ReplyButtonItem from './ReplyButtonItem'
 

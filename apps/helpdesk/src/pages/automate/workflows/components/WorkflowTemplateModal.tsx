@@ -1,7 +1,8 @@
+import { Button } from '@gorgias/axiom'
+
 import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { WorkflowTemplate } from 'pages/automate/workflows/models/workflowConfiguration.types'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

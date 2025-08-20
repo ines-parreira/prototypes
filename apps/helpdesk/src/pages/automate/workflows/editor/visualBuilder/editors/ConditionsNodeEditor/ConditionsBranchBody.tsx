@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     BooleanSchema,
     ConditionKey,
@@ -16,7 +18,6 @@ import {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { Condition } from 'pages/common/components/Condition/Condition'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

@@ -4,7 +4,7 @@ import { useId } from '@repo/hooks'
 import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
 
-import { Label, ToggleField, Tooltip } from '@gorgias/axiom'
+import { Button, Label, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'
@@ -20,7 +20,6 @@ import {
     getHTTPRequestNodeTouched,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Button from 'pages/common/components/button/Button'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'

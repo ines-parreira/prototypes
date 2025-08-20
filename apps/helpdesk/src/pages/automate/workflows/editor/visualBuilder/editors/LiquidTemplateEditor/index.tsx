@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 
 import _uniq from 'lodash/uniq'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
@@ -11,7 +11,6 @@ import {
 } from 'pages/automate/workflows/models/variables.model'
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Button from 'pages/common/components/button/Button'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'

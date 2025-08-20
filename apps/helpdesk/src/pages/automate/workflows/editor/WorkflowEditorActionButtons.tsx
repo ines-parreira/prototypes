@@ -1,6 +1,5 @@
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import { ConfirmationButton } from './ConfirmationButton'

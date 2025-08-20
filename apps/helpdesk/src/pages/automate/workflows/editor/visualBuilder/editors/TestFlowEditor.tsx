@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import _throttle from 'lodash/throttle'
 import { useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
@@ -19,7 +19,6 @@ import useSelfServiceChatChannels, {
 import LanguageSelector from 'pages/automate/workflows/components/LanguageSelector'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Button from 'pages/common/components/button/Button'
 import { Drawer } from 'pages/common/components/Drawer'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
