@@ -21,6 +21,32 @@ jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
 }))
 
+const params = {
+    integrationId: 1,
+    currentIntegration: {
+        id: 1,
+        name: 'Test Integration',
+        type: 'email',
+    } as Integration,
+    abandonedCartJourney: { id: 'journey-id' },
+    followUpValue: 3,
+    isDiscountEnabled: true,
+    discountValue: '10',
+    journeyMessageInstructions: 'Test instructions',
+    phoneNumberValue: {
+        phone_number: '+1234567890',
+        integrations: [{ type: 'sms', id: 'sms-id' }],
+        id: 'mock-id',
+        name: 'Mock Phone',
+        phone_number_friendly: '+1 (234) 567-890',
+        connections: [],
+        created_datetime: new Date().toISOString(),
+        updated_datetime: new Date().toISOString(),
+        provider: 'mock',
+        status: 'active',
+    } as unknown as NewPhoneNumber,
+}
+
 describe('useJourneyUpdateHandler', () => {
     const mockDispatch = jest.fn()
     const mockMutateAsync = jest.fn()
@@ -52,32 +78,6 @@ describe('useJourneyUpdateHandler', () => {
     })
 
     it('should call updateJourney with the correct parameters', async () => {
-        const params = {
-            integrationId: 1,
-            currentIntegration: {
-                id: 1,
-                name: 'Test Integration',
-                type: 'email',
-            } as Integration,
-            abandonedCartJourney: { id: 'journey-id' },
-            followUpValue: 3,
-            isDiscountEnabled: true,
-            discountValue: '10',
-            journeyMessageInstructions: 'Test instructions',
-            phoneNumberValue: {
-                phone_number: '+1234567890',
-                integrations: [{ type: 'sms', id: 'sms-id' }],
-                id: 'mock-id',
-                name: 'Mock Phone',
-                phone_number_friendly: '+1 (234) 567-890',
-                connections: [],
-                created_datetime: new Date().toISOString(),
-                updated_datetime: new Date().toISOString(),
-                provider: 'mock',
-                status: 'active',
-            } as unknown as NewPhoneNumber,
-        }
-
         const { result } = renderHook(() => useJourneyUpdateHandler(params), {
             wrapper: createWrapper(),
         })
@@ -104,31 +104,6 @@ describe('useJourneyUpdateHandler', () => {
 
     it('should dispatch a notification on error', async () => {
         mockMutateAsync.mockRejectedValueOnce(new Error('Test error'))
-
-        const params = {
-            integrationId: 1,
-            currentIntegration: {
-                id: 1,
-                name: 'Test Integration',
-                type: 'email',
-            } as Integration,
-            abandonedCartJourney: { id: 'journey-id' },
-            followUpValue: 3,
-            isDiscountEnabled: true,
-            discountValue: '10',
-            phoneNumberValue: {
-                phone_number: '+1234567890',
-                integrations: [{ type: 'sms', id: 'sms-id' }],
-                id: 'mock-id',
-                name: 'Mock Phone',
-                phone_number_friendly: '+1 (234) 567-890',
-                connections: [],
-                created_datetime: new Date().toISOString(),
-                updated_datetime: new Date().toISOString(),
-                provider: 'mock',
-                status: 'active',
-            } as unknown as NewPhoneNumber,
-        }
 
         const { result } = renderHook(() => useJourneyUpdateHandler(params), {
             wrapper: createWrapper(),
@@ -166,5 +141,38 @@ describe('useJourneyUpdateHandler', () => {
         })
 
         expect(mockMutateAsync).not.toHaveBeenCalled()
+    })
+
+    it('should send journeyMessageInstructions as empty string when input value is null', async () => {
+        const paramsWithEmptyMessageInstructions = {
+            ...params,
+            journeyMessageInstructions: null as unknown as string,
+        }
+
+        const { result } = renderHook(
+            () => useJourneyUpdateHandler(paramsWithEmptyMessageInstructions),
+            {
+                wrapper: createWrapper(),
+            },
+        )
+
+        await act(async () => {
+            await result.current.handleUpdate()
+        })
+
+        expect(mockMutateAsync).toHaveBeenCalledWith({
+            journeyId: 'journey-id',
+            params: {
+                state: 'active',
+                message_instructions: '',
+            },
+            journeyConfigs: {
+                max_follow_up_messages: 3,
+                offer_discount: true,
+                max_discount_percent: 10,
+                sms_sender_integration_id: 'sms-id',
+                sms_sender_number: '+1234567890',
+            },
+        })
     })
 })

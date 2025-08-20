@@ -80,8 +80,7 @@ export const useJourneyUpdateHandler = ({
                     journeyId: abandonedCartJourney.id,
                     params: {
                         state: journeyState ?? JourneyStatusEnum.Active,
-                        message_instructions:
-                            journeyMessageInstructions || null,
+                        message_instructions: journeyMessageInstructions || '',
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),
                 }
