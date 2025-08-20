@@ -101,12 +101,12 @@ src/pages/common/components/VoiceCallStatusLabel @gorgias/support-phone
 src/pages/common/components/VoiceCallCustomerLabel @gorgias/support-phone
 src/pages/tickets/detail/components/TicketVoiceCall @gorgias/support-phone
 
-# Support: Actions & Flows
+# Actions & Flows
 
-src/models/workflows @gorgias/support-actions-flows
-src/pages/aiAgent/actions @gorgias/support-actions-flows
-src/pages/automate/actionsPlatform @gorgias/support-actions-flows
-src/pages/automate/workflows @gorgias/support-actions-flows
+src/models/workflows @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
+src/pages/aiAgent/actions @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
+src/pages/automate/actionsPlatform @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
+src/pages/automate/workflows @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
 
 # Ecommerce & DevRel @gorgias/crm-devrel
 
