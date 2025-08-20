@@ -41,14 +41,12 @@ export const SORTABLE_KEYS = [
     'last_message_datetime',
     'last_received_message_datetime',
     'created_datetime',
-    'updated_datetime',
 ] as const
 
 export const SORTABLE_KEY_TO_LABEL = {
-    last_message_datetime: 'Last message' as const,
+    last_message_datetime: 'Last updated' as const,
     last_received_message_datetime: 'Last received message' as const,
     created_datetime: 'Created' as const,
-    updated_datetime: 'Last updated' as const,
 } satisfies Record<SortableKey, unknown>
 
 export const DEFAULT_SORT_OPTION: SortOption = {
@@ -115,7 +113,6 @@ export const SORTABLE_KEY_TO_ORDER_KEY: Record<SortableKey, keyof Order> = {
     created_datetime: 'created_at',
     last_message_datetime: 'updated_at',
     last_received_message_datetime: 'updated_at',
-    updated_datetime: 'updated_at',
 }
 
 export const ALL_FILTERS = ['All']

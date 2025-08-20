@@ -82,7 +82,7 @@ describe('<Timeline />', () => {
             sortOption: {
                 order: 'desc' as const,
                 key: 'last_message_datetime' as const,
-                label: 'Last message' as const,
+                label: 'Last updated' as const,
             },
         },
         selectedTypeKeys: ['ticket' as const, 'order' as const],
@@ -102,7 +102,7 @@ describe('<Timeline />', () => {
             {
                 order: 'desc' as const,
                 key: 'last_message_datetime' as const,
-                label: 'Last message' as const,
+                label: 'Last updated' as const,
             },
             {
                 order: 'asc' as const,
@@ -113,7 +113,7 @@ describe('<Timeline />', () => {
         sortOption: {
             order: 'desc' as const,
             key: 'last_message_datetime' as const,
-            label: 'Last message' as const,
+            label: 'Last updated' as const,
         },
     }
 

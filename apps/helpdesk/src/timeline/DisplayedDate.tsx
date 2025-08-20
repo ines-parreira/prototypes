@@ -10,8 +10,6 @@ export default function DisplayedDate(
 ) {
     const getTicketDateValue = (key: SortOption['key']): string | null => {
         switch (key) {
-            case 'updated_datetime':
-                return timelineItem.getDateTimeField(item, 'updated_datetime')
             case 'last_message_datetime':
                 return timelineItem.getDateTimeField(
                     item,

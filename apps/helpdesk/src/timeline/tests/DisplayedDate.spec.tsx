@@ -65,7 +65,7 @@ describe('DisplayedDate', () => {
             const sortOption: SortOption = {
                 key: 'last_message_datetime',
                 order: 'asc',
-                label: 'Last message',
+                label: 'Last updated',
             }
             const { queryByText } = render(DisplayedDate(sortOption, mockItem))
 
@@ -92,24 +92,6 @@ describe('DisplayedDate', () => {
             expect(DatetimeLabelMock).toHaveBeenCalledWith(
                 {
                     dateTime: mockTicket.last_received_message_datetime,
-                },
-                {},
-            )
-        })
-
-        it('should handle updated_datetime key correctly', () => {
-            const sortOption: SortOption = {
-                key: 'updated_datetime',
-                order: 'desc',
-                label: 'Last updated',
-            }
-            const { queryByText } = render(DisplayedDate(sortOption, mockItem))
-
-            expect(queryByText(/Created/)).not.toBeInTheDocument()
-
-            expect(DatetimeLabelMock).toHaveBeenCalledWith(
-                {
-                    dateTime: mockTicket.updated_datetime,
                 },
                 {},
             )
@@ -178,7 +160,7 @@ describe('DisplayedDate', () => {
             const sortOption: SortOption = {
                 key: 'last_message_datetime',
                 order: 'desc',
-                label: 'Last message',
+                label: 'Last updated',
             }
             render(
                 DisplayedDate(
@@ -202,17 +184,15 @@ describe('DisplayedDate', () => {
                 'last_message_datetime',
                 'last_received_message_datetime',
                 'created_datetime',
-                'updated_datetime',
             ] as const
 
             sortableKeys.forEach((key) => {
                 jest.clearAllMocks()
 
                 const labelMap = {
-                    last_message_datetime: 'Last message',
+                    last_message_datetime: 'Last updated',
                     last_received_message_datetime: 'Last received message',
                     created_datetime: 'Created',
-                    updated_datetime: 'Last updated',
                 } as const
 
                 const sortOption: SortOption = {
@@ -226,23 +206,6 @@ describe('DisplayedDate', () => {
                 // Verify DatetimeLabel was called
                 expect(DatetimeLabelMock).toHaveBeenCalled()
             })
-        })
-
-        it('should properly map last_updated to updated_datetime property', () => {
-            const sortOption: SortOption = {
-                key: 'updated_datetime',
-                order: 'asc',
-                label: 'Last updated',
-            }
-
-            render(DisplayedDate(sortOption, mockItem))
-
-            expect(DatetimeLabelMock).toHaveBeenCalledWith(
-                {
-                    dateTime: mockTicket.updated_datetime,
-                },
-                {},
-            )
         })
     })
 })

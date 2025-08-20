@@ -43,7 +43,7 @@ describe('sortTickets', () => {
         const sortOption: SortOption = {
             key: 'last_message_datetime',
             order: 'asc',
-            label: 'Last message',
+            label: 'Last updated',
         }
         const sortedTickets = sortTickets(tickets, sortOption)
         expect(
@@ -57,7 +57,7 @@ describe('sortTickets', () => {
         const sortOption: SortOption = {
             key: 'last_message_datetime',
             order: 'desc',
-            label: 'Last message',
+            label: 'Last updated',
         }
         const sortedTickets = sortTickets(tickets, sortOption)
         expect(
@@ -71,7 +71,7 @@ describe('sortTickets', () => {
         const sortOption: SortOption = {
             key: 'last_received_message_datetime',
             order: 'asc',
-            label: 'Last message',
+            label: 'Last updated',
         }
         const sortedTickets = sortTickets(tickets, sortOption)
         expect(

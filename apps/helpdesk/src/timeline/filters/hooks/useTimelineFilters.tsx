@@ -43,7 +43,7 @@ export const useTimelineFilters = ({ items }: UseTimelineFilters) => {
         sortOption: {
             order: 'desc',
             key: 'last_message_datetime',
-            label: 'Last message',
+            label: 'Last updated',
         },
     })
 

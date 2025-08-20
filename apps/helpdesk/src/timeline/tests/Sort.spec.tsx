@@ -64,12 +64,12 @@ describe('Sort', () => {
         {
             key: 'last_message_datetime',
             order: 'asc',
-            label: 'Last message',
+            label: 'Last updated',
         } as const,
         {
             key: 'last_message_datetime',
             order: 'desc',
-            label: 'Last message',
+            label: 'Last updated',
         } as const,
         {
             key: 'created_datetime',
@@ -86,7 +86,7 @@ describe('Sort', () => {
     const mockValue: SortOption = {
         key: 'last_message_datetime',
         order: 'desc',
-        label: 'Last message',
+        label: 'Last updated',
     } as const
 
     const mockOnChange = jest.fn()
@@ -130,7 +130,7 @@ describe('Sort', () => {
             const content = selectField.textContent || ''
             expect(content).toContain('end') // dropdownAlignment
             expect(content).toContain('400') // dropdownMaxWidth
-            expect(content).toContain('Last message') // selectedOption.label
+            expect(content).toContain('Last updated') // selectedOption.label
         })
     })
 
@@ -336,12 +336,12 @@ describe('Sort', () => {
         it('should handle option with different key and order combinations', () => {
             const customOptions: SortOption[] = [
                 {
-                    key: 'updated_datetime',
+                    key: 'last_message_datetime',
                     order: 'asc',
                     label: 'Last updated',
                 } as const,
                 {
-                    key: 'updated_datetime',
+                    key: 'last_message_datetime',
                     order: 'desc',
                     label: 'Last updated',
                 } as const,
