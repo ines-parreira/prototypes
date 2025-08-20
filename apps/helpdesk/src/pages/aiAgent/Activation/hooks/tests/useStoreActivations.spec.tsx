@@ -11,6 +11,7 @@ import { Route, Router } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
@@ -208,14 +209,7 @@ describe('useStoreConfigurations', () => {
 
 describe('useStoreActivations', () => {
     const defaultState = {
-        billing: fromJS({
-            products: [
-                {
-                    type: 'helpdesk',
-                    prices: [{ amount: 100, cadence: 'month' }],
-                },
-            ],
-        }),
+        billing: fromJS(billingState),
         currentAccount: fromJS(account),
         currentUser: fromJS({
             role: {
