@@ -26,7 +26,9 @@ describe('VoiceFlow', () => {
             id: 'node-1',
             type: VoiceFlowNodeType.IncomingCall,
             position: { x: 100, y: 100 },
-            data: {},
+            data: {
+                next_step_id: 'node-2',
+            },
         },
         {
             id: 'node-2',

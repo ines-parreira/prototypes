@@ -39,7 +39,7 @@ describe('VoiceFlowEdge', () => {
 
     it('should not render with menu options when canAddNewStepOnEdge is false', () => {
         mockGetNode.mockReturnValue({
-            type: VoiceFlowNodeType.IVRMenu,
+            type: VoiceFlowNodeType.IvrMenu,
         })
 
         render(<VoiceFlowEdge {...defaultProps} />)
