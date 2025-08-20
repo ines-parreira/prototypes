@@ -202,6 +202,25 @@ describe('ShoppingAssistantPromoCard', () => {
 
             expect(container.firstChild).toBeNull()
         })
+
+        it('should return null when isShoppingAssitantDeactivationEnforced is true', () => {
+            mockUseFlag.mockImplementation((flagKey: string) => {
+                if (flagKey === 'ai-shopping-assistant-enforce-deactivation') {
+                    return true
+                }
+                return false
+            })
+
+            mockUseShoppingAssistantPromoCard.mockReturnValue({
+                promoCardContent: basePromoContent,
+                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+                isLoading: false,
+            })
+
+            const { container } = renderComponent()
+
+            expect(container.firstChild).toBeNull()
+        })
     })
 
     describe('Loading state', () => {

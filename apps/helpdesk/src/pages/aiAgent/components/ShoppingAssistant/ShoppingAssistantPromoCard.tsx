@@ -45,6 +45,11 @@ export const ShoppingAssistantPromoCard: React.FC<
         false,
     )
 
+    const isShoppingAssitantDeactivationEnforced = useFlag(
+        FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
+        false,
+    )
+
     const trialModalProps = useTrialModalProps({
         storeName: shopName,
     })
@@ -59,7 +64,7 @@ export const ShoppingAssistantPromoCard: React.FC<
         routeShopName,
     )
 
-    if (isLoading || !promoContent) {
+    if (isShoppingAssitantDeactivationEnforced || isLoading || !promoContent) {
         return null
     }
 
