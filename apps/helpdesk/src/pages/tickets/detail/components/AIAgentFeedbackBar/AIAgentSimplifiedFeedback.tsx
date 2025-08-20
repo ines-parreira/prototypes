@@ -214,6 +214,47 @@ const AIAgentSimplifiedFeedback = () => {
     })
 
     const knowledgeResources = useMemo(() => {
+        // Always prefer enriched data when available
+        if (enrichedData && enrichedData.knowledgeResources.length > 0) {
+            // Find all product knowledge IDs
+            const productKnowledgeIds = new Set(
+                enrichedData.knowledgeResources
+                    .filter(
+                        (r) =>
+                            r.resource.resourceType ===
+                            AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+                    )
+                    .map((r) => r.resource.resourceId),
+            )
+
+            // Filter out PRODUCT_RECOMMENDATION if there's a matching PRODUCT_KNOWLEDGE
+            const filteredResources = enrichedData.knowledgeResources.filter(
+                (resource) => {
+                    if (
+                        resource.resource.resourceType ===
+                        AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION
+                    ) {
+                        return !productKnowledgeIds.has(
+                            resource.resource.resourceId,
+                        )
+                    }
+                    return true
+                },
+            )
+
+            return filteredResources.map((resource) => (
+                <KnowledgeSourceFeedback
+                    key={resource.resource.id}
+                    onIconClick={handleIconClick}
+                    resource={resource}
+                    shopName={shopName}
+                    shopType={shopType}
+                    isMetadataLoading={resource.metadata.isLoading}
+                />
+            ))
+        }
+
+        // Fallback to raw resources only if no enriched data
         const resources = feedback?.executions.flatMap((execution) =>
             execution.resources.map((resource) => ({
                 executionId: execution.executionId,
@@ -221,55 +262,67 @@ const AIAgentSimplifiedFeedback = () => {
             })),
         )
 
-        if (
-            (resources?.length ?? 0) !==
-            (enrichedData?.knowledgeResources?.length ?? 0)
-        ) {
-            resources?.sort((a, b) => {
-                const aIndex = knowledgeResourceOrder.indexOf(
-                    a.resourceType as AiAgentKnowledgeResourceTypeEnum,
-                )
-                const bIndex = knowledgeResourceOrder.indexOf(
-                    b.resourceType as AiAgentKnowledgeResourceTypeEnum,
-                )
-
-                return aIndex - bIndex
-            })
-            return resources?.map((resource) => (
-                <KnowledgeSourceFeedback
-                    key={resource.id}
-                    onIconClick={handleIconClick}
-                    resource={{
-                        executionId: resource.executionId,
-                        resource: {
-                            id: resource.id,
-                            resourceId: resource.resourceId,
-                            resourceType: resource.resourceType,
-                            resourceSetId: resource.resourceSetId,
-                            resourceLocale: resource.resourceLocale,
-                            resourceTitle: resource.resourceTitle,
-                            feedback: resource.feedback,
-                        },
-                        metadata: {
-                            title: resource.resourceTitle,
-                            content: 'Content is loading...',
-                        },
-                        feedback: resource.feedback,
-                    }}
-                    shopName={shopName}
-                    shopType={shopType}
-                    isMetadataLoading
-                />
-            ))
+        if (!resources || resources.length === 0) {
+            return []
         }
-        return enrichedData?.knowledgeResources.map((resource) => (
+
+        // Find all product knowledge IDs
+        const productKnowledgeIds = new Set(
+            resources
+                .filter(
+                    (r) =>
+                        r.resourceType ===
+                        AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+                )
+                .map((r) => r.resourceId),
+        )
+
+        // Filter out PRODUCT_RECOMMENDATION if there's a matching PRODUCT_KNOWLEDGE
+        const filteredResources = resources.filter((resource) => {
+            if (
+                resource.resourceType ===
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION
+            ) {
+                return !productKnowledgeIds.has(resource.resourceId)
+            }
+            return true
+        })
+
+        filteredResources.sort((a, b) => {
+            const aIndex = knowledgeResourceOrder.indexOf(
+                a.resourceType as AiAgentKnowledgeResourceTypeEnum,
+            )
+            const bIndex = knowledgeResourceOrder.indexOf(
+                b.resourceType as AiAgentKnowledgeResourceTypeEnum,
+            )
+
+            return aIndex - bIndex
+        })
+
+        return filteredResources.map((resource) => (
             <KnowledgeSourceFeedback
-                key={resource.resource.id}
+                key={resource.id}
                 onIconClick={handleIconClick}
-                resource={resource}
+                resource={{
+                    executionId: resource.executionId,
+                    resource: {
+                        id: resource.id,
+                        resourceId: resource.resourceId,
+                        resourceType: resource.resourceType,
+                        resourceSetId: resource.resourceSetId,
+                        resourceLocale: resource.resourceLocale,
+                        resourceTitle: resource.resourceTitle,
+                        feedback: resource.feedback,
+                    },
+                    metadata: {
+                        title: resource.resourceTitle,
+                        content: 'Content is loading...',
+                    },
+                    feedback: resource.feedback,
+                }}
                 shopName={shopName}
                 shopType={shopType}
-                isMetadataLoading={resource.metadata.isLoading}
+                isMetadataLoading
             />
         ))
     }, [feedback, enrichedData, shopName, shopType, handleIconClick])

@@ -2510,5 +2510,115 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             expect(screen.getByText('Review sources used')).toBeInTheDocument()
         })
+
+        it('should filter out PRODUCT_RECOMMENDATION when PRODUCT_KNOWLEDGE exists with same resourceId', () => {
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-1',
+                            resources: [
+                                {
+                                    id: '1',
+                                    resourceId: '12345',
+                                    resourceTitle: 'Product 1',
+                                    resourceType: 'PRODUCT_RECOMMENDATION',
+                                },
+                            ],
+                            feedback: [],
+                            storeConfiguration: {
+                                shopName: 'test-shop',
+                                shopType: 'shopify',
+                            },
+                        },
+                        {
+                            executionId: 'exec-2',
+                            resources: [
+                                {
+                                    id: '2',
+                                    resourceId: '12345',
+                                    resourceTitle: 'Product 1',
+                                    resourceType: 'PRODUCT_KNOWLEDGE',
+                                },
+                                {
+                                    id: '3',
+                                    resourceId: '45678',
+                                    resourceTitle: 'Product 2',
+                                    resourceType: 'PRODUCT_RECOMMENDATION',
+                                },
+                            ],
+                            feedback: [],
+                            storeConfiguration: {
+                                shopName: 'test-shop',
+                                shopType: 'shopify',
+                            },
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                enrichedData: {
+                    knowledgeResources: [
+                        {
+                            resource: {
+                                id: '1',
+                                resourceId: '12345',
+                                resourceTitle: 'Product 1',
+                                resourceType: 'PRODUCT_RECOMMENDATION',
+                            },
+                            metadata: {
+                                title: 'Product 1',
+                                content: 'Product content',
+                                url: 'https://example.com/products/12345',
+                            },
+                        },
+                        {
+                            resource: {
+                                id: '2',
+                                resourceId: '12345',
+                                resourceTitle: 'Product 1',
+                                resourceType: 'PRODUCT_KNOWLEDGE',
+                            },
+                            metadata: {
+                                title: 'Product 1',
+                                content: 'Product content',
+                                url: 'https://example.com/products/12345',
+                            },
+                        },
+                        {
+                            resource: {
+                                id: '3',
+                                resourceId: '45678',
+                                resourceTitle: 'Product 2',
+                                resourceType: 'PRODUCT_RECOMMENDATION',
+                            },
+                            metadata: {
+                                title: 'Product 2',
+                                content: 'Product content',
+                                url: 'https://example.com/products/45678',
+                            },
+                        },
+                    ],
+                    freeForm: null,
+                    suggestedResources: [],
+                },
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            // Should show only one instance of Product 1 (PRODUCT_KNOWLEDGE)
+            const product1Elements = screen.getAllByText('Product 1')
+            expect(product1Elements).toHaveLength(1)
+
+            // Should show Product 2
+            expect(screen.getByText('Product 2')).toBeInTheDocument()
+
+            // Should have 2 Shopify logos
+            const shopifyLogos = screen.getAllByAltText('shopify logo')
+            expect(shopifyLogos).toHaveLength(2)
+        })
     })
 })
