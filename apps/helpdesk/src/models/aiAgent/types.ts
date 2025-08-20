@@ -47,6 +47,18 @@ export type StoreConfigurationsResponse = {
     storeConfigurations: StoreConfiguration[]
 }
 
+export type TrialConfiguration = {
+    startDatetime: string | null
+    endDatetime: string | null
+    account: {
+        optInDatetime: string | null
+        optOutDatetime: string | null
+        plannedUpgradeDatetime: string | null
+        actualUpgradeDatetime: string | null
+        actualTerminationDatetime: string | null
+    }
+}
+
 export type StoreConfiguration = {
     trialModeActivatedDatetime: string | null
     previewModeActivatedDatetime: string | null
@@ -102,19 +114,9 @@ export type StoreConfiguration = {
     customFieldIds: number[]
 
     sales?: {
-        trial: {
-            startDatetime: string | null
-            endDatetime: string | null
-
-            account: {
-                plannedUpgradeDatetime: string | null
-                optInDatetime: string | null
-                optOutDatetime: string | null
-                actualUpgradeDatetime: string | null
-                actualTerminationDatetime: string | null
-            }
-        }
+        trial: TrialConfiguration
     }
+    trial?: TrialConfiguration
 
     handoverMethod: string | null
     handoverEmail: string | null

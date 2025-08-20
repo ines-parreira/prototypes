@@ -1,7 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useUpgradeSalesSubscriptionMutation } from 'models/aiAgent/queries'
+import {
+    useUpgradeSalesSubscriptionMutation,
+    useUpgradeSubscriptionMutation,
+} from 'models/aiAgent/queries'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { notify } from 'state/notifications/actions'
@@ -13,12 +18,20 @@ export const useUpgradePlan = () => {
     const dispatch = useAppDispatch()
 
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
+    const isExpandingTrialExperienceEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
 
     const upgradeSalesSubscriptionMutation =
         useUpgradeSalesSubscriptionMutation()
 
+    const upgradeSubscriptionMutation = useUpgradeSubscriptionMutation()
+
     const upgradePlanMutation = useMutation({
         mutationFn: () => {
+            if (isExpandingTrialExperienceEnabled) {
+                return upgradeSubscriptionMutation.mutateAsync([])
+            }
             if (isRevampTrialMilestone1Enabled) {
                 return upgradeSalesSubscriptionMutation.mutateAsync([])
             }

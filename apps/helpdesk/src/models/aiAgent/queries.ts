@@ -21,9 +21,12 @@ import {
     getStoreConfiguration,
     getStoresConfigurations,
     getWelcomePageAcknowledged,
+    optOutAiAgentTrialUpgrade,
     optOutSalesTrialUpgrade,
+    startAiAgentTrial,
     startSalesTrial,
     upgradeSalesSubscription,
+    upgradeSubscription,
     upsertAccountConfiguration,
     upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
@@ -513,6 +516,102 @@ export const useUpsertStoreHandoverConfiguration = (
         mutationFn: (params) =>
             upsertAiAgentStoreHandoverConfiguration(...params),
         ...overrides,
+    })
+}
+
+/**
+ * AI Agent Trial endpoints
+ */
+export const useStartAiAgentTrialMutation = (
+    overrides?: Omit<
+        MutationOverrides<
+            (
+                ...params: [
+                    shopType: string,
+                    storeName: string,
+                    optedInForUpgrade?: boolean,
+                ]
+            ) => ReturnType<typeof startAiAgentTrial>
+        >,
+        'mutationFn'
+    >,
+) => {
+    const queryClient = useQueryClient()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    return useMutation({
+        mutationFn: ([shopType, storeName, optedInForUpgrade]) =>
+            startAiAgentTrial(
+                accountDomain,
+                shopType,
+                storeName,
+                optedInForUpgrade,
+            ),
+        onSuccess: (...args) => {
+            // Invalidate store configurations to refresh trial state
+            queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.all(),
+            })
+            overrides?.onSuccess?.(...args)
+        },
+        onError: (...args) => {
+            overrides?.onError?.(...args)
+        },
+        ...overrides,
+    })
+}
+
+export const useOptOutAiAgentTrialUpgradeMutation = (
+    overrides?: MutationOverrides<() => unknown>,
+) => {
+    const queryClient = useQueryClient()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    return useMutation({
+        mutationFn: () => optOutAiAgentTrialUpgrade(accountDomain),
+        ...overrides,
+        onSuccess: (...args) => {
+            // Invalidate store configurations to refresh trial state
+            queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.all(),
+            })
+            overrides?.onSuccess?.(...args)
+        },
+        onError: (...args) => {
+            overrides?.onError?.(...args)
+        },
+    })
+}
+
+// works for both sales and ai agent
+export const useUpgradeSubscriptionMutation = (
+    overrides?: MutationOverrides<() => unknown>,
+) => {
+    const queryClient = useQueryClient()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    return useMutation({
+        mutationFn: () => upgradeSubscription(accountDomain),
+        ...overrides,
+        onSuccess: (...args) => {
+            // Invalidate store configurations to refresh subscription state
+            queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.all(),
+            })
+            queryClient.invalidateQueries({
+                queryKey: billingKeys.all,
+            })
+            overrides?.onSuccess?.(...args)
+        },
+        onError: (...args) => {
+            overrides?.onError?.(...args)
+        },
     })
 }
 

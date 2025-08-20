@@ -1,8 +1,12 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { useMutation } from '@tanstack/react-query'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useUpgradeSalesSubscriptionMutation } from 'models/aiAgent/queries'
+import {
+    useUpgradeSalesSubscriptionMutation,
+    useUpgradeSubscriptionMutation,
+} from 'models/aiAgent/queries'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { notify } from 'state/notifications/actions'
@@ -19,6 +23,7 @@ jest.mock('hooks/useAppDispatch', () => jest.fn())
 
 jest.mock('models/aiAgent/queries', () => ({
     useUpgradeSalesSubscriptionMutation: jest.fn(),
+    useUpgradeSubscriptionMutation: jest.fn(),
 }))
 
 jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
@@ -33,16 +38,24 @@ jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
 }))
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
 const useMutationMock = assumeMock(useMutation)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useActivationMock = assumeMock(useActivation)
 const useUpgradeSalesSubscriptionMutationMock = assumeMock(
     useUpgradeSalesSubscriptionMutation,
 )
+const useUpgradeSubscriptionMutationMock = assumeMock(
+    useUpgradeSubscriptionMutation,
+)
 const useSalesTrialRevampMilestoneMock = assumeMock(
     useSalesTrialRevampMilestone,
 )
 const notifyMock = assumeMock(notify)
+const useFlagMock = assumeMock(useFlag)
 
 describe('useUpgradePlan', () => {
     const mockDispatch = jest.fn()
@@ -50,6 +63,7 @@ describe('useUpgradePlan', () => {
     const mockMutate = jest.fn()
     const mockMutateAsync = jest.fn()
     const mockUpgradeSalesSubscriptionMutateAsync = jest.fn()
+    const mockUpgradeSubscriptionMutateAsync = jest.fn()
     const mockReload = jest.fn()
 
     const mockMutationResult = {
@@ -63,6 +77,15 @@ describe('useUpgradePlan', () => {
 
     const mockUpgradeSalesSubscriptionResult = {
         mutateAsync: mockUpgradeSalesSubscriptionMutateAsync,
+        mutate: jest.fn(),
+        isLoading: false,
+        error: null,
+        isSuccess: false,
+        isError: false,
+    }
+
+    const mockUpgradeSubscriptionResult = {
+        mutateAsync: mockUpgradeSubscriptionMutateAsync,
         mutate: jest.fn(),
         isLoading: false,
         error: null,
@@ -95,6 +118,10 @@ describe('useUpgradePlan', () => {
         useUpgradeSalesSubscriptionMutationMock.mockReturnValue(
             mockUpgradeSalesSubscriptionResult as any,
         )
+        useUpgradeSubscriptionMutationMock.mockReturnValue(
+            mockUpgradeSubscriptionResult as any,
+        )
+        useFlagMock.mockReturnValue(false)
         useMutationMock.mockReturnValue({
             ...mockMutationResult,
             data: undefined,
@@ -107,6 +134,7 @@ describe('useUpgradePlan', () => {
 
         mockOnUpgradePlanClick.mockResolvedValue(undefined)
         mockUpgradeSalesSubscriptionMutateAsync.mockResolvedValue(undefined)
+        mockUpgradeSubscriptionMutateAsync.mockResolvedValue(undefined)
     })
 
     afterEach(() => {
@@ -214,8 +242,7 @@ describe('useUpgradePlan', () => {
 
             expect(mockDispatch).toHaveBeenCalledWith(
                 notifyMock({
-                    message:
-                        'Plan upgraded! Watch Shopping Assistant turn visitors into buyers.',
+                    message: 'Your plan has been upgraded!',
                     status: NotificationStatus.Success,
                 }),
             )
@@ -242,7 +269,7 @@ describe('useUpgradePlan', () => {
 
             expect(mockDispatch).toHaveBeenCalledWith(
                 notifyMock({
-                    message: 'Failed to upgrade plan. Please try again.',
+                    message: 'Failed to upgrade plan. Please try again later.',
                     status: NotificationStatus.Error,
                 }),
             )
@@ -328,6 +355,105 @@ describe('useUpgradePlan', () => {
             const { result } = renderHook(() => useUpgradePlan())
 
             expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    describe('when isExpandingTrialExperienceEnabled is true', () => {
+        beforeEach(() => {
+            useFlagMock.mockReturnValue(true)
+        })
+
+        it('should call upgradeSubscriptionMutation instead of onUpgradePlanClick', async () => {
+            useSalesTrialRevampMilestoneMock.mockReturnValue('off')
+
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const mutationFn = mutationOptions.mutationFn
+            await mutationFn()
+
+            expect(mockUpgradeSubscriptionMutateAsync).toHaveBeenCalledWith([])
+            expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
+            expect(
+                mockUpgradeSalesSubscriptionMutateAsync,
+            ).not.toHaveBeenCalled()
+        })
+
+        it('should call upgradeSubscriptionMutation even when milestone is milestone-0', async () => {
+            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
+
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const mutationFn = mutationOptions.mutationFn
+            await mutationFn()
+
+            expect(mockUpgradeSubscriptionMutateAsync).toHaveBeenCalledWith([])
+            expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
+            expect(
+                mockUpgradeSalesSubscriptionMutateAsync,
+            ).not.toHaveBeenCalled()
+        })
+
+        it('should prioritize upgradeSubscriptionMutation over upgradeSalesSubscription when milestone is milestone-1', async () => {
+            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
+
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const mutationFn = mutationOptions.mutationFn
+            await mutationFn()
+
+            expect(mockUpgradeSubscriptionMutateAsync).toHaveBeenCalledWith([])
+            expect(
+                mockUpgradeSalesSubscriptionMutateAsync,
+            ).not.toHaveBeenCalled()
+            expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
+        })
+
+        it('should handle upgradeSubscriptionMutation errors', async () => {
+            const error = new Error('Subscription upgrade failed')
+            mockUpgradeSubscriptionMutateAsync.mockRejectedValue(error)
+
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const mutationFn = mutationOptions.mutationFn
+
+            await expect(mutationFn()).rejects.toThrow(
+                'Subscription upgrade failed',
+            )
+        })
+
+        it('should handle success callback correctly', () => {
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const onSuccess = mutationOptions.onSuccess
+            onSuccess()
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notifyMock({
+                    message: 'Your plan has been upgraded!',
+                    status: NotificationStatus.Success,
+                }),
+            )
+            expect(mockReload).toHaveBeenCalledTimes(1)
+        })
+
+        it('should handle error callback correctly', () => {
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const onError = mutationOptions.onError
+            onError()
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notifyMock({
+                    message: 'Failed to upgrade plan. Please try again later.',
+                    status: NotificationStatus.Error,
+                }),
+            )
         })
     })
 })

@@ -283,6 +283,38 @@ export const updateOnboardingData = async (
 }
 
 /**
+ * AI Agent Trial endpoints
+ */
+export const startAiAgentTrial = async (
+    gorgiasDomain: string,
+    storeType: string,
+    storeName: string,
+    optedInForUpgrade: boolean = false,
+) => {
+    const response = await apiClient.post(
+        `/config/accounts/${gorgiasDomain}/stores/${storeType}/${storeName}/start-trial`,
+        {
+            optedInForUpgrade,
+        },
+    )
+    return response.data
+}
+
+export const optOutAiAgentTrialUpgrade = async (gorgiasDomain: string) => {
+    const response = await apiClient.post(
+        `/config/accounts/${gorgiasDomain}/opt-out-trial-upgrade`,
+    )
+    return response.data
+}
+
+export const upgradeSubscription = async (gorgiasDomain: string) => {
+    const response = await apiClient.post(
+        `/config/accounts/${gorgiasDomain}/upgrade-subscription`,
+    )
+    return response.data
+}
+
+/**
  * Endpoints "/accounts/<gorgiasDomain>/stores/<storeName>/handover-configurations"
  */
 

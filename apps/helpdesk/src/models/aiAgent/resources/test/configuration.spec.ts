@@ -28,9 +28,12 @@ import {
     getStoreConfiguration,
     getStoresConfigurations,
     getWelcomePageAcknowledged,
+    optOutAiAgentTrialUpgrade,
     optOutSalesTrialUpgrade,
+    startAiAgentTrial,
     startSalesTrial,
     updateOnboardingData,
+    upgradeSubscription,
     upsertAccountConfiguration,
     upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
@@ -870,6 +873,177 @@ describe('Configuration', () => {
             await expect(
                 optOutSalesTrialUpgrade(gorgiasDomain),
             ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('startAiAgentTrial', () => {
+        const gorgiasDomain = 'test-domain'
+        const storeType = 'shopify'
+        const storeName = 'test-store'
+
+        beforeEach(() => {
+            apiServer.restore()
+            apiServer = new MockAdapter(apiClient)
+        })
+
+        it('should resolve with the correct data on success', async () => {
+            const mockResponse = {
+                success: true,
+                message: 'AI Agent trial started',
+            }
+
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/stores/${storeType}/${storeName}/start-trial`,
+                )
+                .reply(200, mockResponse)
+
+            const result = await startAiAgentTrial(
+                gorgiasDomain,
+                storeType,
+                storeName,
+            )
+
+            expect(result).toEqual(mockResponse)
+        })
+
+        it('should resolve with the correct data when optedInForUpgrade is true', async () => {
+            const mockResponse = {
+                success: true,
+                message: 'AI Agent trial started with upgrade opt-in',
+            }
+
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/stores/${storeType}/${storeName}/start-trial`,
+                )
+                .reply((config) => {
+                    const requestData = JSON.parse(config.data)
+                    expect(requestData.optedInForUpgrade).toBe(true)
+                    return [200, mockResponse]
+                })
+
+            const result = await startAiAgentTrial(
+                gorgiasDomain,
+                storeType,
+                storeName,
+                true,
+            )
+
+            expect(result).toEqual(mockResponse)
+        })
+
+        it('should send optedInForUpgrade as false by default', async () => {
+            const mockResponse = {
+                success: true,
+                message: 'AI Agent trial started',
+            }
+
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/stores/${storeType}/${storeName}/start-trial`,
+                )
+                .reply((config) => {
+                    const requestData = JSON.parse(config.data)
+                    expect(requestData.optedInForUpgrade).toBe(false)
+                    return [200, mockResponse]
+                })
+
+            const result = await startAiAgentTrial(
+                gorgiasDomain,
+                storeType,
+                storeName,
+            )
+
+            expect(result).toEqual(mockResponse)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/stores/${storeType}/${storeName}/start-trial`,
+                )
+                .reply(400)
+
+            await expect(
+                startAiAgentTrial(gorgiasDomain, storeType, storeName),
+            ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('optOutAiAgentTrialUpgrade', () => {
+        const gorgiasDomain = 'test-domain'
+
+        beforeEach(() => {
+            apiServer.restore()
+            apiServer = new MockAdapter(apiClient)
+        })
+
+        it('should resolve with the correct data on success', async () => {
+            const mockResponse = {
+                success: true,
+                message: 'Opted out of AI Agent trial upgrade successfully',
+            }
+
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/opt-out-trial-upgrade`,
+                )
+                .reply(200, mockResponse)
+
+            const result = await optOutAiAgentTrialUpgrade(gorgiasDomain)
+
+            expect(result).toEqual(mockResponse)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/opt-out-trial-upgrade`,
+                )
+                .reply(400)
+
+            await expect(
+                optOutAiAgentTrialUpgrade(gorgiasDomain),
+            ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('upgradeSubscription', () => {
+        const gorgiasDomain = 'test-domain'
+
+        beforeEach(() => {
+            apiServer.restore()
+            apiServer = new MockAdapter(apiClient)
+        })
+
+        it('should resolve with the correct data on success', async () => {
+            const mockResponse = {
+                success: true,
+                message: 'Subscription upgraded successfully',
+            }
+
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/upgrade-subscription`,
+                )
+                .reply(200, mockResponse)
+
+            const result = await upgradeSubscription(gorgiasDomain)
+
+            expect(result).toEqual(mockResponse)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPost(
+                    `/config/accounts/${gorgiasDomain}/upgrade-subscription`,
+                )
+                .reply(400)
+
+            await expect(upgradeSubscription(gorgiasDomain)).rejects.toThrow(
+                'Request failed with status code 400',
+            )
         })
     })
 })
