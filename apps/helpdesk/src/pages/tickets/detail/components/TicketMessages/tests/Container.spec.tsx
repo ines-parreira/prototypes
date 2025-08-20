@@ -349,5 +349,107 @@ describe('Container', () => {
 
             expect(getByText('AiAgentReasoning')).toBeInTheDocument()
         })
+
+        describe('message.id conditional logic', () => {
+            it('should show SimplifiedAIAgentBanner when showAiReasoning is true but message.id is falsy', () => {
+                const messageWithoutId = { ...props.message, id: undefined }
+
+                const { queryByText } = render(
+                    <Container
+                        {...baseAiAgentProps}
+                        message={messageWithoutId}
+                        flags={{
+                            [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        }}
+                        isImpersonated={false}
+                    />,
+                )
+
+                expect(queryByText('AiAgentReasoning')).not.toBeInTheDocument()
+                expect(
+                    queryByText('SimplifiedAIAgentBanner'),
+                ).toBeInTheDocument()
+            })
+
+            it('should show SimplifiedAIAgentBanner when showAiReasoning is true but message.id is null', () => {
+                const messageWithNullId = { ...props.message, id: null as any }
+
+                const { queryByText } = render(
+                    <Container
+                        {...baseAiAgentProps}
+                        message={messageWithNullId}
+                        flags={{
+                            [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        }}
+                        isImpersonated={false}
+                    />,
+                )
+
+                expect(queryByText('AiAgentReasoning')).not.toBeInTheDocument()
+                expect(
+                    queryByText('SimplifiedAIAgentBanner'),
+                ).toBeInTheDocument()
+            })
+
+            it('should show SimplifiedAIAgentBanner when showAiReasoning is true but message.id is 0', () => {
+                const messageWithZeroId = { ...props.message, id: 0 }
+
+                const { queryByText } = render(
+                    <Container
+                        {...baseAiAgentProps}
+                        message={messageWithZeroId}
+                        flags={{
+                            [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        }}
+                        isImpersonated={false}
+                    />,
+                )
+
+                expect(queryByText('AiAgentReasoning')).not.toBeInTheDocument()
+                expect(
+                    queryByText('SimplifiedAIAgentBanner'),
+                ).toBeInTheDocument()
+            })
+
+            it('should show AiAgentReasoning when both showAiReasoning and message.id are truthy', () => {
+                const messageWithValidId = { ...props.message, id: 123 }
+
+                const { queryByText } = render(
+                    <Container
+                        {...baseAiAgentProps}
+                        message={messageWithValidId}
+                        flags={{
+                            [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        }}
+                        isImpersonated={false}
+                    />,
+                )
+
+                expect(queryByText('AiAgentReasoning')).toBeInTheDocument()
+                expect(
+                    queryByText('SimplifiedAIAgentBanner'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should show SimplifiedAIAgentBanner when showAiReasoning is false regardless of message.id', () => {
+                const messageWithValidId = { ...props.message, id: 123 }
+
+                const { queryByText } = render(
+                    <Container
+                        {...baseAiAgentProps}
+                        message={messageWithValidId}
+                        flags={{
+                            [FeatureFlagKey.ShowAiReasoningInTicket]: false,
+                        }}
+                        isImpersonated={false}
+                    />,
+                )
+
+                expect(queryByText('AiAgentReasoning')).not.toBeInTheDocument()
+                expect(
+                    queryByText('SimplifiedAIAgentBanner'),
+                ).toBeInTheDocument()
+            })
+        })
     })
 })

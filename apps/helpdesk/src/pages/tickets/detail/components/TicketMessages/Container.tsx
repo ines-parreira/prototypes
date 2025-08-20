@@ -20,7 +20,6 @@ import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants
 import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
 import { withMessageTranslations } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/withMessageTranslations'
 
-import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
 import { AiAgentReasoning } from './AiAgentReasoning'
 import { Avatar } from './Avatar'
@@ -262,28 +261,16 @@ export class Container extends Component<Props> {
                             />
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
-                                (isTicketAfterFeedbackCollectionPeriod ? (
-                                    showAiReasoning &&
-                                    message.id &&
-                                    (isImpersonated ||
-                                        !onlyShowReasoningWhileImpersonating) ? (
-                                        <AiAgentReasoning
-                                            messageId={message.id}
-                                        />
-                                    ) : (
-                                        <SimplifiedAIAgentBanner
-                                            message={message}
-                                            messages={messages}
-                                        />
-                                    )
+                                isTicketAfterFeedbackCollectionPeriod &&
+                                (showAiReasoning &&
+                                message.id &&
+                                (isImpersonated ||
+                                    !onlyShowReasoningWhileImpersonating) ? (
+                                    <AiAgentReasoning messageId={message.id} />
                                 ) : (
-                                    <AIAgentBanner
+                                    <SimplifiedAIAgentBanner
                                         message={message}
                                         messages={messages}
-                                        className={classNames({
-                                            [css.withVerticalSpacing]:
-                                                !isAIAgentInternalNote,
-                                        })}
                                     />
                                 ))}
 

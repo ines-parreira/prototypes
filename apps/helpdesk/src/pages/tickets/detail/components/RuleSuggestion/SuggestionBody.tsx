@@ -9,7 +9,6 @@ import { TicketMessage } from 'models/ticket/types'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
 import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
 
-import AIAgentBanner from '../TicketMessages/AIAgentBanner'
 import { SuggestionStates } from './InTicketSuggestion'
 
 import css from './SuggestionBody.less'
@@ -22,7 +21,6 @@ type Props = {
     setSuggestionState: (state: SuggestionStates) => void
     isAIAgentDraftMessage?: boolean
     message?: TicketMessage
-    messages?: TicketMessage[]
     isTrialMessage?: boolean
 }
 
@@ -36,7 +34,6 @@ export default function SuggestionBody({
     setSuggestionState,
     isAIAgentDraftMessage = false,
     message,
-    messages,
     isTrialMessage,
 }: Props) {
     const [innerRef, { height }] = useMeasure<HTMLDivElement>()
@@ -107,13 +104,6 @@ export default function SuggestionBody({
                     })}
                 </div>
             </div>
-            {isTrialMessage && message && messages?.length && (
-                <AIAgentBanner
-                    message={message}
-                    messages={messages}
-                    className={css.banner}
-                />
-            )}
         </Collapse>
     )
 }

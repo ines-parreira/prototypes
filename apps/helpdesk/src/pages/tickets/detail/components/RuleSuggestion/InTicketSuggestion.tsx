@@ -26,7 +26,6 @@ type Props = {
     infoContent: React.ReactNode
     isAIAgentDraftMessage?: boolean
     message?: TicketMessage
-    messages?: TicketMessage[]
     hideExpandButton?: boolean
     isTrialMessage?: boolean
 }
@@ -42,7 +41,6 @@ export default function InTicketSuggestion({
     infoContent,
     isAIAgentDraftMessage = false,
     message,
-    messages,
     hideExpandButton = false,
     isTrialMessage,
 }: Props) {
@@ -97,7 +95,6 @@ export default function InTicketSuggestion({
                 setSuggestionState={setSuggestionState}
                 isAIAgentDraftMessage={isAIAgentDraftMessage}
                 message={message}
-                messages={messages}
                 isTrialMessage={isTrialMessage}
             />
             {suggestionState === 'preview' ? (

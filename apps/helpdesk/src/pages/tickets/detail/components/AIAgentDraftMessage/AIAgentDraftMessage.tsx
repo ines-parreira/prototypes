@@ -24,16 +24,10 @@ import css from './AIAgentDraftMessage.less'
 export type Props = {
     ticketId: number
     message: TicketMessage
-    messages?: TicketMessage[]
     isTrial?: boolean
 }
 
-const AIAgentDraftMessage = ({
-    ticketId,
-    message,
-    messages,
-    isTrial,
-}: Props) => {
+const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
     const accountId = useAppSelector(getCurrentAccountId)
     const { data, isLoading } = useGetAiAgentFeedback()
     const dispatch = useAppDispatch()
@@ -94,7 +88,6 @@ const AIAgentDraftMessage = ({
                 isAIAgentDraftMessage
                 ticketId={ticketId}
                 message={message}
-                messages={messages}
                 actionsContent={<></>}
                 infoContent={
                     <div className={css.skeletonWrapper}>
@@ -123,7 +116,6 @@ const AIAgentDraftMessage = ({
             isAIAgentDraftMessage
             ticketId={ticketId}
             message={message}
-            messages={messages}
             actionsContent={
                 <Button
                     intent="primary"

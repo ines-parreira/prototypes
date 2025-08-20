@@ -204,7 +204,6 @@ describe('AIAgentDraftMessage', () => {
 
         expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
         expect(screen.getByText('Expand')).toBeInTheDocument()
-        expect(screen.queryByText('Review Response')).not.toBeInTheDocument()
     })
 
     it('should display gorgias tips on expand state when isTrial is true', () => {
@@ -223,6 +222,5 @@ describe('AIAgentDraftMessage', () => {
 
         expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
         expect(screen.queryByText('Expand')).not.toBeInTheDocument()
-        expect(screen.getByText('Review Response')).toBeInTheDocument()
     })
 })

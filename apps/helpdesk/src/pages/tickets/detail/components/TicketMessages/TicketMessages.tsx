@@ -159,13 +159,7 @@ export default function TicketMessages({
     )
 
     if (isAIAgentDraftMessage) {
-        return (
-            <AIAgentDraftMessage
-                ticketId={ticketId}
-                message={message}
-                messages={messages}
-            />
-        )
+        return <AIAgentDraftMessage ticketId={ticketId} message={message} />
     }
 
     if (isAIAgentTrialMessage) {
@@ -173,7 +167,6 @@ export default function TicketMessages({
             <AIAgentDraftMessage
                 ticketId={ticketId}
                 message={message}
-                messages={messages}
                 isTrial
             />
         )

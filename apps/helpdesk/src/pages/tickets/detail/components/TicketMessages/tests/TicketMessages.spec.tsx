@@ -79,11 +79,6 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Body', () =>
 )
 
 jest.mock(
-    'pages/tickets/detail/components/TicketMessages/AIAgentBanner',
-    () => () => <p>AIAgentBanner</p>,
-)
-
-jest.mock(
     'pages/tickets/detail/components/AIAgentDraftMessage/AIAgentDraftMessage',
     () => jest.fn(() => <p>AIAgentDraftMessage</p>),
 )
