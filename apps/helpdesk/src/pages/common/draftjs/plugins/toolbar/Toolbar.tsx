@@ -102,7 +102,7 @@ const Toolbar = ({
     const [isHovered, setIsHovered] = useState(false)
 
     const areActionsInGuidanceEnabled: boolean = useFlag(
-        FeatureFlagKey.AiAgentVariablesAndActionsInGuidance,
+        FeatureFlagKey.AiAgentSupportActionInGuidance,
         false,
     )
 

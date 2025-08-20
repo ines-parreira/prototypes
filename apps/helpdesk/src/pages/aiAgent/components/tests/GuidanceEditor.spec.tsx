@@ -31,7 +31,7 @@ describe('GuidanceEditor', () => {
 
     beforeEach(() => {
         mockUseFlag.mockImplementation((flag) =>
-            flag === FeatureFlagKey.AiAgentVariablesAndActionsInGuidance
+            flag === FeatureFlagKey.AiAgentSupportActionInGuidance
                 ? false
                 : true,
         )

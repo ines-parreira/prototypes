@@ -30,7 +30,7 @@ export enum FeatureFlagKey {
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
-    AiAgentVariablesAndActionsInGuidance = 'ai-agent-variables-and-actions-in-guidance',
+    AiAgentSupportActionInGuidance = 'ai-agent-support-action-in-guidance',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AiJourneyCustomInstructions = 'ai-journey-custom-instructions',
     AiJourneyEnabled = 'ai-journey-ui-enabled',

@@ -73,7 +73,7 @@ export const GuidanceForm = ({
     onValuesChange,
 }: Props) => {
     const areActionsInGuidanceEnabled = useFlag<boolean>(
-        FeatureFlagKey.AiAgentVariablesAndActionsInGuidance,
+        FeatureFlagKey.AiAgentSupportActionInGuidance,
         false,
     )
     const dispatch = useAppDispatch()

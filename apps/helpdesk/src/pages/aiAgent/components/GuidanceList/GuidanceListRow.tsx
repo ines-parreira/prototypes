@@ -48,7 +48,7 @@ export const GuidanceListRow = ({
     )
 
     const areActionsInGuidancesEnabled: boolean = useFlag<boolean>(
-        FeatureFlagKey.AiAgentVariablesAndActionsInGuidance,
+        FeatureFlagKey.AiAgentSupportActionInGuidance,
         false,
     )
 
