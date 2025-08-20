@@ -284,7 +284,7 @@ export const Setup = () => {
                 <JourneyMessageInstructionsField
                     value={journeyMessageInstructions}
                     onChange={setJourneyMessageInstructions}
-                    maxLength={2000}
+                    maxLength={4000}
                 />
             )}
 
