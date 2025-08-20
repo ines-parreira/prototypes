@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
-import { ProductType } from 'models/billing/types'
+import { billingState } from 'fixtures/billing'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -51,30 +51,7 @@ describe('<HelpCenterPublishAndTrackView />', () => {
                 { id: 1, type: IntegrationType.Shopify, name: 'My Shop' },
             ],
         }),
-        billing: fromJS({
-            products: [
-                {
-                    type: ProductType.Helpdesk,
-                    id: 1,
-                    name: 'Helpdesk',
-                    features: [],
-                    prices: [
-                        {
-                            id: 1,
-                            amount: 100,
-                            currency: 'USD',
-                            interval: 'month',
-                        },
-                        {
-                            id: 2,
-                            amount: 1000,
-                            currency: 'USD',
-                            interval: 'year',
-                        },
-                    ],
-                },
-            ],
-        }),
+        billing: fromJS(billingState),
     }
 
     const store = mockStore(defaultState)
