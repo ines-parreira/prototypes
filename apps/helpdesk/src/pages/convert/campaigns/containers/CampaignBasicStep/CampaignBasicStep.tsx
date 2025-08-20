@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Label } from '@gorgias/axiom'
 
@@ -11,6 +10,7 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
 import { Language as LanguageEnum } from 'constants/languages'
+import { useFlag } from 'core/flags'
 import { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -52,8 +52,7 @@ export const CampaignBasicStep = ({
     const handleUpdateLanguage = (value: any) =>
         updateCampaign('language', value)
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
 
     const languageOptions = useMemo<Language[]>(() => {
         const mappedLanguages = mapIntegrationLanguagesToLanguagePicker(

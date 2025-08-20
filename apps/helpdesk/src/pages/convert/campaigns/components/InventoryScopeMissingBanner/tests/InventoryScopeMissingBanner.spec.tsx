@@ -1,18 +1,15 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import { InventoryScopeMissingBanner } from '../InventoryScopeMissingBanner'
 
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
 
-const mockUseFlags = useFlags as jest.Mock
+const mockUseFlag = useFlag as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 
 describe('InventoryScopeMissingBanner', () => {
@@ -50,9 +47,7 @@ describe('InventoryScopeMissingBanner', () => {
     }
 
     beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ShopifyInventoryItemScopeBanner]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
     })
 
     const mockStoreData = (storeData: any) => {
@@ -79,9 +74,7 @@ describe('InventoryScopeMissingBanner', () => {
 
     it('does not render when feature flag is disabled', () => {
         mockStoreData(storeIntegrationNeedsScopeUpdate)
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ShopifyInventoryItemScopeBanner]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         const { container } = render(
             <InventoryScopeMissingBanner shopIntegrationId={1} />,

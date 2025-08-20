@@ -1,8 +1,6 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 export function useIsHeadlessShopifyStore(): boolean {
-    const flags = useFlags()
-    return Boolean(flags[FeatureFlagKey.RevenueBetaShopifyHeadless])
+    return Boolean(useFlag(FeatureFlagKey.RevenueBetaShopifyHeadless))
 }

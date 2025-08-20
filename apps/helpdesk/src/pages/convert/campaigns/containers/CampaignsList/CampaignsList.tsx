@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useMemo } from 'react'
+import { MouseEvent, useEffect, useMemo } from 'react'
 
 import Fuse from 'fuse.js'
 import { Map } from 'immutable'

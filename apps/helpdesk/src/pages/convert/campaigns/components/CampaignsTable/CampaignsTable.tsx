@@ -10,7 +10,6 @@ import React, {
 import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import { Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Badge, ToggleField, Tooltip } from '@gorgias/axiom'
@@ -22,6 +21,7 @@ import {
     LanguageUI,
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
+import { useFlag } from 'core/flags'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -148,8 +148,7 @@ export const CampaignsTable = ({
         [isOverCampaignsLimit, lightModalDismissed, onToggleCampaign],
     )
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(

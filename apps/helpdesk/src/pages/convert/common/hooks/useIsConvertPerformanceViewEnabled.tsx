@@ -1,9 +1,6 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 export const useIsConvertPerformanceViewEnabled = (): boolean => {
-    const flags = useFlags()
-
-    return !!flags[FeatureFlagKey.ConvertPerformanceView]
+    return !!useFlag(FeatureFlagKey.ConvertPerformanceView)
 }

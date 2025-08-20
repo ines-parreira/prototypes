@@ -4,7 +4,6 @@ import cn from 'classnames'
 import { EditorState } from 'draft-js'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 import _trim from 'lodash/trim'
 
@@ -20,6 +19,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import { User } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -221,8 +221,7 @@ export const CampaignDetailsForm = ({
     const { triggers, addTrigger, updateTrigger, deleteTrigger } =
         useManageTriggers(campaign.triggers)
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
 
     useEffect(() => {
         if (actionInProgress !== '') {
