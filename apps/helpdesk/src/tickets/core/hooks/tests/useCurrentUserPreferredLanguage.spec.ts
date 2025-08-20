@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react'
 import { useGetCurrentUser, UserSettingType } from '@gorgias/helpdesk-queries'
 import { Language } from '@gorgias/helpdesk-types'
 
-import { useCurrentUserPreferredLanguage } from '../useCurrentUserPreferredLanguage'
+import { useCurrentUserPreferredLanguage } from '../translations/useCurrentUserPreferredLanguage'
 
 jest.mock('@gorgias/helpdesk-queries')
 

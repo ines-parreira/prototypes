@@ -29,7 +29,7 @@ const customer = fromJS({
 
 // Mock the withMessageTranslations HOC
 jest.mock(
-    '../TicketMessagesTranslationDisplay/withMessageTranslations',
+    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/withMessageTranslations',
     () => ({
         withMessageTranslations: (Component: React.ComponentType<any>) =>
             Component,

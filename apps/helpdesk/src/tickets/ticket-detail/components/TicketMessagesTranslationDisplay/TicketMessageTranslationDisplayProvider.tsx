@@ -2,7 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 
 import {
     DisplayedContent,
-    DisplayedContentType,
+    DisplayType,
+    FetchingState,
     TicketMessagesTranslationDisplay,
     TicketMessagesTranslationDisplayContext,
     TicketMessagesTranslationDisplayMap,
@@ -22,17 +23,26 @@ export function TicketMessageTranslationDisplayProvider({
 
     const getTicketMessageTranslationDisplay = useCallback(
         (messageId: number) =>
-            ticketMessagesTranslationDisplayMap[messageId] ??
-            DisplayedContent.Translated,
+            ticketMessagesTranslationDisplayMap[messageId] ?? {
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Idle,
+            },
         [ticketMessagesTranslationDisplayMap],
     )
 
     const setTicketMessageTranslationDisplay = useCallback(
-        (messageId: number, displayedContent: DisplayedContentType) => {
-            setTicketMessagesTranslationDisplayMap((prev) => ({
-                ...prev,
-                [messageId]: displayedContent,
-            }))
+        (
+            messagesToUpdate: (DisplayType & {
+                messageId: number
+            })[],
+        ) => {
+            setTicketMessagesTranslationDisplayMap((prev) => {
+                const newMap = { ...prev }
+                for (const message of messagesToUpdate) {
+                    newMap[message.messageId] = message
+                }
+                return newMap
+            })
         },
         [setTicketMessagesTranslationDisplayMap],
     )

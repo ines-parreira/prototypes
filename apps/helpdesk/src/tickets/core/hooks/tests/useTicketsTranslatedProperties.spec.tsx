@@ -13,8 +13,8 @@ import { UserSettingType } from '@gorgias/helpdesk-types'
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
 
-import { CurrentUser } from '../useCurrentUserPreferredLanguage'
-import { useTicketsTranslatedProperties } from '../useTicketsTranslatedProperties'
+import { CurrentUser } from '../translations/useCurrentUserPreferredLanguage'
+import { useTicketsTranslatedProperties } from '../translations/useTicketsTranslatedProperties'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
@@ -245,8 +245,9 @@ describe('useTicketsTranslatedProperties', () => {
             })
         })
 
-        describe('removeTicketTranslatedSubject', () => {
-            it('should provide removeTicketTranslatedSubject function', async () => {
+        describe('updateTicketTranslatedSubject', () => {
+            const subject = 'New subject'
+            it('should provide updateTicketTranslatedSubject function', async () => {
                 const { result } = renderHook(
                     () => useTicketsTranslatedProperties({ ticket_ids: [123] }),
                     {
@@ -256,7 +257,7 @@ describe('useTicketsTranslatedProperties', () => {
 
                 await waitFor(() => {
                     expect(
-                        typeof result.current.removeTicketTranslatedSubject,
+                        typeof result.current.updateTicketTranslatedSubject,
                     ).toBe('function')
                 })
             })
@@ -297,14 +298,14 @@ describe('useTicketsTranslatedProperties', () => {
                 })
 
                 await act(async () => {
-                    result.current.removeTicketTranslatedSubject(123)
+                    result.current.updateTicketTranslatedSubject(123, subject)
                 })
 
                 await waitFor(() => {
                     expect(result.current.translationMap).toEqual({
                         123: {
                             ...mockTranslation1,
-                            subject: null,
+                            subject,
                         },
                         456: mockTranslation2,
                     })
@@ -325,7 +326,7 @@ describe('useTicketsTranslatedProperties', () => {
 
                 await act(async () => {
                     expect(() => {
-                        result.current.removeTicketTranslatedSubject(123)
+                        result.current.updateTicketTranslatedSubject(123, '')
                     }).not.toThrow()
                 })
 
@@ -362,7 +363,7 @@ describe('useTicketsTranslatedProperties', () => {
                 })
 
                 await act(async () => {
-                    result.current.removeTicketTranslatedSubject(999)
+                    result.current.updateTicketTranslatedSubject(999, '')
                 })
 
                 await waitFor(() => {
@@ -417,23 +418,23 @@ describe('useTicketsTranslatedProperties', () => {
                 })
 
                 await act(async () => {
-                    result.current.removeTicketTranslatedSubject(123)
+                    result.current.updateTicketTranslatedSubject(123, subject)
                 })
 
                 await act(async () => {
-                    result.current.removeTicketTranslatedSubject(789)
+                    result.current.updateTicketTranslatedSubject(789, subject)
                 })
 
                 await waitFor(() => {
                     expect(result.current.translationMap).toEqual({
                         123: {
                             ...mockTranslation1,
-                            subject: null,
+                            subject,
                         },
                         456: mockTranslation2,
                         789: {
                             ...mockTranslation3,
-                            subject: null,
+                            subject,
                         },
                     })
                 })

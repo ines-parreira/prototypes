@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 import {
     DisplayedContent,
+    FetchingState,
     TicketMessagesTranslationDisplayContext,
 } from '../context/ticketMessageTranslationDisplayContext'
 import { TicketMessageTranslationDisplayProvider } from '../TicketMessageTranslationDisplayProvider'
@@ -17,10 +18,13 @@ function TestConsumer() {
         <div>
             <button
                 onClick={() =>
-                    context.setTicketMessageTranslationDisplay(
-                        1,
-                        DisplayedContent.Original,
-                    )
+                    context.setTicketMessageTranslationDisplay([
+                        {
+                            messageId: 1,
+                            display: DisplayedContent.Original,
+                            fetchingState: FetchingState.Idle,
+                        },
+                    ])
                 }
                 aria-label="Set message 1 to original"
             >
@@ -28,10 +32,13 @@ function TestConsumer() {
             </button>
             <button
                 onClick={() =>
-                    context.setTicketMessageTranslationDisplay(
-                        2,
-                        DisplayedContent.Translated,
-                    )
+                    context.setTicketMessageTranslationDisplay([
+                        {
+                            messageId: 2,
+                            display: DisplayedContent.Translated,
+                            fetchingState: FetchingState.Completed,
+                        },
+                    ])
                 }
                 aria-label="Set message 2 to translated"
             >
@@ -39,26 +46,50 @@ function TestConsumer() {
             </button>
             <button
                 onClick={() =>
-                    context.setTicketMessageTranslationDisplay(
-                        3,
-                        DisplayedContent.Original,
-                    )
+                    context.setTicketMessageTranslationDisplay([
+                        {
+                            messageId: 3,
+                            display: DisplayedContent.Original,
+                            fetchingState: FetchingState.Idle,
+                        },
+                    ])
                 }
                 aria-label="Set message 3 to original"
             >
                 Set Original 3
             </button>
+            <button
+                onClick={() =>
+                    context.setTicketMessageTranslationDisplay([
+                        {
+                            messageId: 1,
+                            display: DisplayedContent.Original,
+                            fetchingState: FetchingState.Idle,
+                        },
+                        {
+                            messageId: 2,
+                            display: DisplayedContent.Translated,
+                            fetchingState: FetchingState.Completed,
+                        },
+                    ])
+                }
+                aria-label="Set multiple messages"
+            >
+                Set Multiple
+            </button>
             <div data-testid="message-1-display">
-                {context.getTicketMessageTranslationDisplay(1)}
+                {JSON.stringify(context.getTicketMessageTranslationDisplay(1))}
             </div>
             <div data-testid="message-2-display">
-                {context.getTicketMessageTranslationDisplay(2)}
+                {JSON.stringify(context.getTicketMessageTranslationDisplay(2))}
             </div>
             <div data-testid="message-3-display">
-                {context.getTicketMessageTranslationDisplay(3)}
+                {JSON.stringify(context.getTicketMessageTranslationDisplay(3))}
             </div>
             <div data-testid="message-999-display">
-                {context.getTicketMessageTranslationDisplay(999)}
+                {JSON.stringify(
+                    context.getTicketMessageTranslationDisplay(999),
+                )}
             </div>
         </div>
     )
@@ -82,10 +113,12 @@ describe('TicketMessageTranslationProvider', () => {
             </TicketMessageTranslationDisplayProvider>,
         )
 
-        // Default value for non-existent message should be Translated (from implementation)
-        expect(screen.getByTestId('message-999-display')).toHaveTextContent(
-            DisplayedContent.Translated,
+        // Default value for non-existent message should be Original with Idle state
+        const defaultDisplay = JSON.parse(
+            screen.getByTestId('message-999-display').textContent || '{}',
         )
+        expect(defaultDisplay.display).toBe(DisplayedContent.Original)
+        expect(defaultDisplay.fetchingState).toBe(FetchingState.Idle)
     })
 
     it('should allow setting and getting translation display for specific message IDs', async () => {
@@ -98,17 +131,21 @@ describe('TicketMessageTranslationProvider', () => {
         )
 
         // Initially, message 1 should have default value
-        expect(screen.getByTestId('message-1-display')).toHaveTextContent(
-            DisplayedContent.Translated,
+        let display1 = JSON.parse(
+            screen.getByTestId('message-1-display').textContent || '{}',
         )
+        expect(display1.display).toBe(DisplayedContent.Original)
+        expect(display1.fetchingState).toBe(FetchingState.Idle)
 
         // Set message 1 to Original
         await act(async () => {
             await user.click(screen.getByLabelText('Set message 1 to original'))
         })
-        expect(screen.getByTestId('message-1-display')).toHaveTextContent(
-            DisplayedContent.Original,
+        display1 = JSON.parse(
+            screen.getByTestId('message-1-display').textContent || '{}',
         )
+        expect(display1.display).toBe(DisplayedContent.Original)
+        expect(display1.fetchingState).toBe(FetchingState.Idle)
 
         // Set message 2 to Translated
         await act(async () => {
@@ -116,17 +153,21 @@ describe('TicketMessageTranslationProvider', () => {
                 screen.getByLabelText('Set message 2 to translated'),
             )
         })
-        expect(screen.getByTestId('message-2-display')).toHaveTextContent(
-            DisplayedContent.Translated,
+        const display2 = JSON.parse(
+            screen.getByTestId('message-2-display').textContent || '{}',
         )
+        expect(display2.display).toBe(DisplayedContent.Translated)
+        expect(display2.fetchingState).toBe(FetchingState.Completed)
 
         // Set message 3 to Original
         await act(async () => {
             await user.click(screen.getByLabelText('Set message 3 to original'))
         })
-        expect(screen.getByTestId('message-3-display')).toHaveTextContent(
-            DisplayedContent.Original,
+        const display3 = JSON.parse(
+            screen.getByTestId('message-3-display').textContent || '{}',
         )
+        expect(display3.display).toBe(DisplayedContent.Original)
+        expect(display3.fetchingState).toBe(FetchingState.Idle)
     })
 
     it('should maintain separate state for different message IDs', async () => {
@@ -152,15 +193,23 @@ describe('TicketMessageTranslationProvider', () => {
         })
 
         // Verify each message maintains its own state
-        expect(screen.getByTestId('message-1-display')).toHaveTextContent(
-            DisplayedContent.Original,
+        const display1 = JSON.parse(
+            screen.getByTestId('message-1-display').textContent || '{}',
         )
-        expect(screen.getByTestId('message-2-display')).toHaveTextContent(
-            DisplayedContent.Translated,
+        expect(display1.display).toBe(DisplayedContent.Original)
+        expect(display1.fetchingState).toBe(FetchingState.Idle)
+
+        const display2 = JSON.parse(
+            screen.getByTestId('message-2-display').textContent || '{}',
         )
-        expect(screen.getByTestId('message-3-display')).toHaveTextContent(
-            DisplayedContent.Original,
+        expect(display2.display).toBe(DisplayedContent.Translated)
+        expect(display2.fetchingState).toBe(FetchingState.Completed)
+
+        const display3 = JSON.parse(
+            screen.getByTestId('message-3-display').textContent || '{}',
         )
+        expect(display3.display).toBe(DisplayedContent.Original)
+        expect(display3.fetchingState).toBe(FetchingState.Idle)
     })
 
     it('should update state when setTicketMessageTranslationDisplay is called multiple times', async () => {
@@ -176,20 +225,23 @@ describe('TicketMessageTranslationProvider', () => {
         await act(async () => {
             await user.click(screen.getByLabelText('Set message 1 to original'))
         })
-        expect(screen.getByTestId('message-1-display')).toHaveTextContent(
-            DisplayedContent.Original,
+        let display1 = JSON.parse(
+            screen.getByTestId('message-1-display').textContent || '{}',
         )
+        expect(display1.display).toBe(DisplayedContent.Original)
+        expect(display1.fetchingState).toBe(FetchingState.Idle)
 
-        // Change message 1 to Translated
+        // Set message 2 to Translated
         await act(async () => {
             await user.click(
                 screen.getByLabelText('Set message 2 to translated'),
             )
         })
-        // Verify the state change worked for message 2
-        expect(screen.getByTestId('message-2-display')).toHaveTextContent(
-            DisplayedContent.Translated,
+        const display2 = JSON.parse(
+            screen.getByTestId('message-2-display').textContent || '{}',
         )
+        expect(display2.display).toBe(DisplayedContent.Translated)
+        expect(display2.fetchingState).toBe(FetchingState.Completed)
     })
 
     it('should provide stable callback references', () => {
@@ -242,22 +294,60 @@ describe('TicketMessageTranslationProvider', () => {
         await act(async () => {
             await user.click(screen.getByLabelText('Set message 1 to original'))
         })
-        expect(screen.getByTestId('message-1-display')).toHaveTextContent(
-            DisplayedContent.Original,
+        let display1 = JSON.parse(
+            screen.getByTestId('message-1-display').textContent || '{}',
         )
+        expect(display1.display).toBe(DisplayedContent.Original)
+        expect(display1.fetchingState).toBe(FetchingState.Idle)
 
-        // Override message 1 to Translated
+        // Set message 2 to Translated
         await act(async () => {
             await user.click(
                 screen.getByLabelText('Set message 2 to translated'),
             )
         })
-        // Now set message 1 to Translated as well
+        const display2 = JSON.parse(
+            screen.getByTestId('message-2-display').textContent || '{}',
+        )
+        expect(display2.display).toBe(DisplayedContent.Translated)
+        expect(display2.fetchingState).toBe(FetchingState.Completed)
+
+        // Override message 1 again
         await act(async () => {
             await user.click(screen.getByLabelText('Set message 1 to original'))
         })
-        expect(screen.getByTestId('message-1-display')).toHaveTextContent(
-            DisplayedContent.Original,
+        display1 = JSON.parse(
+            screen.getByTestId('message-1-display').textContent || '{}',
         )
+        expect(display1.display).toBe(DisplayedContent.Original)
+        expect(display1.fetchingState).toBe(FetchingState.Idle)
+    })
+
+    it('should handle batch updates for multiple messages', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <TicketMessageTranslationDisplayProvider>
+                <TestConsumer />
+            </TicketMessageTranslationDisplayProvider>,
+        )
+
+        // Set multiple messages at once
+        await act(async () => {
+            await user.click(screen.getByLabelText('Set multiple messages'))
+        })
+
+        // Verify both messages were updated
+        const display1 = JSON.parse(
+            screen.getByTestId('message-1-display').textContent || '{}',
+        )
+        expect(display1.display).toBe(DisplayedContent.Original)
+        expect(display1.fetchingState).toBe(FetchingState.Idle)
+
+        const display2 = JSON.parse(
+            screen.getByTestId('message-2-display').textContent || '{}',
+        )
+        expect(display2.display).toBe(DisplayedContent.Translated)
+        expect(display2.fetchingState).toBe(FetchingState.Completed)
     })
 })

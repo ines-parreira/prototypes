@@ -13,6 +13,8 @@ import {
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
+import { KeyPrefixes } from './constants'
+import type { TicketTranslationsQueryKeyParams } from './types'
 import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLanguage'
 
 type TicketPropertiesTranslationsParams = {
@@ -20,13 +22,6 @@ type TicketPropertiesTranslationsParams = {
 }
 
 type TranslationMap = Record<number, TicketTranslationCompact>
-
-type QueryKeyParams = {
-    queryParams: {
-        language: string
-        ticket_ids: number[]
-    }
-}
 
 export function useTicketsTranslatedProperties({
     ticket_ids,
@@ -54,6 +49,9 @@ export function useTicketsTranslatedProperties({
         },
         {
             query: {
+                // We set the stale time to 5 minutes to avoid the case where the user updates the subject in the application
+                // and the translated subject is not updated in the cache because the ticket translations are not refetched
+                // staleTime: 60000 * 5,
                 enabled:
                     hasMessagesTranslations &&
                     Boolean(primary) &&
@@ -66,23 +64,17 @@ export function useTicketsTranslatedProperties({
      * The Backend invalidate the translated subject when the user updates the subject in the application
      * This function is used to optimistically remove the translated subject from the cache
      */
-    const removeTicketTranslatedSubject = useCallback(
-        (ticketId: number) => {
+    const updateTicketTranslatedSubject = useCallback(
+        (ticketId: number, subject: string) => {
             const queryCache = queryClient.getQueryCache()
 
-            // tickets translations keys have the following shape:
-            // ["tickets", "listTicketTranslations", { "queryParams": { "language": "en", "ticket_ids": [1, 2, 3] } }]
-            const ticketTranslationsKeyPrefix = [
-                'tickets',
-                'listTicketTranslations',
-            ]
-
             const ticketTranslationsKeys = queryCache.findAll({
-                queryKey: ticketTranslationsKeyPrefix,
+                queryKey: KeyPrefixes.ticketTranslations,
             })
-            const ticketTranslationsKeysToInvalidate =
+            const ticketTranslationsKeysToUpdate =
                 ticketTranslationsKeys.filter((query) => {
-                    const queryParams = query.queryKey[2] as QueryKeyParams
+                    const queryParams = query
+                        .queryKey[2] as TicketTranslationsQueryKeyParams
 
                     if (!Array.isArray(queryParams.queryParams.ticket_ids)) {
                         return false
@@ -93,7 +85,7 @@ export function useTicketsTranslatedProperties({
                     )
                 })
 
-            ticketTranslationsKeysToInvalidate.forEach((query) => {
+            for (const query of ticketTranslationsKeysToUpdate) {
                 queryClient.setQueryData(
                     query.queryKey,
                     (
@@ -101,7 +93,7 @@ export function useTicketsTranslatedProperties({
                             | HttpResponse<ListTicketTranslations200>
                             | undefined,
                     ) => {
-                        if (!oldData) return oldData
+                        if (!oldData) return
 
                         const ticketTranslation = oldData.data.data.find(
                             (ticket) => ticket.ticket_id === ticketId,
@@ -116,7 +108,7 @@ export function useTicketsTranslatedProperties({
 
                         const newTicketTranslation = {
                             ...ticketTranslation,
-                            subject: null,
+                            subject,
                         }
 
                         return {
@@ -131,7 +123,7 @@ export function useTicketsTranslatedProperties({
                         }
                     },
                 )
-            })
+            }
         },
         [queryClient],
     )
@@ -153,12 +145,12 @@ export function useTicketsTranslatedProperties({
     if (!hasMessagesTranslations) {
         return {
             translationMap: {},
-            removeTicketTranslatedSubject,
+            updateTicketTranslatedSubject,
         }
     }
 
     return {
         translationMap,
-        removeTicketTranslatedSubject,
+        updateTicketTranslatedSubject,
     }
 }

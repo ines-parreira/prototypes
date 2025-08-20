@@ -1,8 +1,9 @@
 import { type ComponentType, useMemo } from 'react'
 
 import { TicketMessage } from 'models/ticket/types'
-import { useTicketMessageTranslations } from 'tickets/core/hooks/useTicketMessageTranslations'
+import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 
+import { DisplayedContent } from './context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from './context/useTicketMessageTranslationDisplay'
 
 export type WithMessageTranslationsProps = {
@@ -16,20 +17,18 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
     return (props: T) => {
         const { getTicketMessageTranslationDisplay } =
             useTicketMessageTranslationDisplay()
-        const { ticketMessagesTranslationMap } = useTicketMessageTranslations({
+        const { getMessageTranslation } = useTicketMessageTranslations({
             ticket_id: props.ticketId,
         })
 
-        const messageTranslations = useMemo(() => {
-            if (!props.message?.id) return
-            return ticketMessagesTranslationMap[props.message.id]
-        }, [props.message.id, ticketMessagesTranslationMap])
-
         const displayedMessage = useMemo(() => {
             if (!props.message?.id) return props.message
+            const messageTranslations = getMessageTranslation(props.message.id)
+            const displayType = getTicketMessageTranslationDisplay(
+                props.message.id,
+            )
             if (
-                getTicketMessageTranslationDisplay(props.message.id) ===
-                    'translated' &&
+                displayType.display === DisplayedContent.Translated &&
                 messageTranslations
             ) {
                 return {
@@ -41,8 +40,8 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
             return props.message
         }, [
             getTicketMessageTranslationDisplay,
+            getMessageTranslation,
             props.message,
-            messageTranslations,
         ])
 
         return <Component {...props} message={displayedMessage} />

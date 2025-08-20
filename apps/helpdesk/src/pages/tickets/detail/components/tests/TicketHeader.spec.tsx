@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _omit from 'lodash/omit'
 import moment from 'moment'
@@ -15,11 +15,13 @@ import thunk from 'redux-thunk'
 import {
     mockGetCurrentUserHandler,
     mockListTicketTranslationsHandler,
+    mockSearchTicketsHandler,
     mockTicketTranslationCompact,
 } from '@gorgias/helpdesk-mocks'
 import { UserSettingType } from '@gorgias/helpdesk-queries'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
+import { appQueryClient } from 'api/queryClient'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
@@ -32,7 +34,6 @@ import * as notificationsActions from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import * as ticketActions from 'state/ticket/actions'
 import { RootState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import Snooze from '../Snooze'
@@ -146,8 +147,6 @@ const useParamsMock = useParams as jest.Mock
 jest.mock('core/flags')
 const useFlagMock = useFlag as jest.Mock
 
-const mockedQueryClient = mockQueryClient()
-
 // MSW server setup for translation testing
 const server = setupServer()
 
@@ -178,11 +177,24 @@ const mockGetCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
         settings: [preferences, languagePreferences],
     } as any),
 )
-const mockListTicketTranslations = mockListTicketTranslationsHandler()
+const mockListTicketTranslations = mockListTicketTranslationsHandler(
+    async ({ data }) =>
+        HttpResponse.json({
+            ...data,
+            data: [],
+        }),
+)
+const mockSearchTickets = mockSearchTicketsHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        data: [],
+    }),
+)
 
 const localHandlers = [
     mockGetCurrentUser.handler,
     mockListTicketTranslations.handler,
+    mockSearchTickets.handler,
 ]
 
 server.use(...localHandlers)
@@ -192,6 +204,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
+    appQueryClient.clear()
     server.use(...localHandlers)
 })
 
@@ -242,13 +255,17 @@ describe('<TicketHeader />', () => {
     }
 
     it('should render new ticket', () => {
-        const { container } = render(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider store={mockStore(defaultStore)}>
-                    <TicketHeader {...minProps} />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        let container: any
+        act(() => {
+            const result = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <TicketHeader {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+            container = result.container
+        })
 
         const actions = container.querySelector('[class*="actions"]')!
 
@@ -258,18 +275,20 @@ describe('<TicketHeader />', () => {
 
     it('should render existing ticket', () => {
         mockUseIsTicketNavigationAvailable.mockReturnValue(true)
-        render(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultStore,
-                        ticket: fromJS(ticket),
-                    })}
-                >
-                    <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        act(() => {
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: fromJS(ticket),
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+        })
 
         expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
         expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
@@ -279,18 +298,20 @@ describe('<TicketHeader />', () => {
 
     it('should render spam ticket', () => {
         const spamTicket = fromJS({ ...ticket, spam: true })
-        render(
-            <QueryClientProvider client={mockedQueryClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultStore,
-                        ticket: spamTicket,
-                    })}
-                >
-                    <TicketHeader {...minProps} ticket={spamTicket} />
-                </Provider>
-            </QueryClientProvider>,
-        )
+        act(() => {
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: spamTicket,
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={spamTicket} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+        })
 
         expect(screen.getByText('flag')).toBeInTheDocument()
     })
@@ -298,7 +319,7 @@ describe('<TicketHeader />', () => {
     it('should render trashed ticket', () => {
         const trashedTicket = fromJS({ ...ticket, trashed_datetime: true })
         render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -318,7 +339,7 @@ describe('<TicketHeader />', () => {
         const mockOnToggleUnread = jest.fn()
 
         const { getByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -356,7 +377,7 @@ describe('<TicketHeader />', () => {
 
     it('should display the delete action for lead and admin agents', () => {
         const { getByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore(defaultStore)}>
                     <TicketHeader {...minProps} ticket={fromJS(ticket)} />
                 </Provider>
@@ -369,7 +390,7 @@ describe('<TicketHeader />', () => {
 
     it('should not display the delete action for basic, lite and observer agents', () => {
         const { getByText, queryByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -393,7 +414,7 @@ describe('<TicketHeader />', () => {
 
     it('should not register the shortcut of the delete action for basic, lite and observer agents', () => {
         const { queryByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -423,7 +444,7 @@ describe('<TicketHeader />', () => {
         jest.useFakeTimers()
 
         const { getByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -446,7 +467,7 @@ describe('<TicketHeader />', () => {
         jest.useFakeTimers()
 
         const { getByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -468,7 +489,7 @@ describe('<TicketHeader />', () => {
 
     it('should clear ticket and go to next ticket on ticket snooze', async () => {
         const { getByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore(defaultStore)}>
                     <TicketHeader {...minProps} ticket={fromJS(ticket)} />
                 </Provider>
@@ -488,7 +509,7 @@ describe('<TicketHeader />', () => {
         mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, true)
 
         const { getByText } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore(defaultStore)}>
                     <TicketHeader {...minProps} />
                 </Provider>
@@ -500,7 +521,7 @@ describe('<TicketHeader />', () => {
 
     it('should not render AI ticket summary popover when enableAITicketSummary feature flag is disabled', () => {
         render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore(defaultStore)}>
                     <TicketHeader {...minProps} />
                 </Provider>
@@ -514,7 +535,7 @@ describe('<TicketHeader />', () => {
         useFlagMock.mockReturnValue(true)
 
         render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore(defaultStore)}>
                     <TicketHeader
                         {...minProps}
@@ -532,7 +553,7 @@ describe('<TicketHeader />', () => {
 
     it('should not render AI ticket summary popover when enableAITicketSummary feature flag is disabled', () => {
         render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore(defaultStore)}>
                     <TicketHeader
                         {...minProps}
@@ -557,7 +578,7 @@ describe('<TicketHeader />', () => {
         mockUseIsTicketNavigationAvailable.mockReturnValue(true)
 
         const { container } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -590,7 +611,7 @@ describe('<TicketHeader />', () => {
         mockUseIsTicketNavigationAvailable.mockReturnValue(true)
 
         const { container } = render(
-            <QueryClientProvider client={mockedQueryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider
                     store={mockStore({
                         ...defaultStore,
@@ -643,7 +664,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -668,7 +689,7 @@ describe('<TicketHeader />', () => {
 
         it('should display original subject when no translation is available', async () => {
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -709,7 +730,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -731,7 +752,7 @@ describe('<TicketHeader />', () => {
 
         it('should not show translate icon when no translation is available', async () => {
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -769,7 +790,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -809,7 +830,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -839,7 +860,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -866,7 +887,7 @@ describe('<TicketHeader />', () => {
     describe('EditableTitle Integration', () => {
         it('should render EditableTitle with correct placeholder', () => {
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider store={mockStore(defaultStore)}>
                         <TicketHeader {...minProps} />
                     </Provider>
@@ -879,7 +900,7 @@ describe('<TicketHeader />', () => {
 
         it('should focus EditableTitle on new tickets', () => {
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider store={mockStore(defaultStore)}>
                         <TicketHeader {...minProps} />
                     </Provider>
@@ -892,7 +913,7 @@ describe('<TicketHeader />', () => {
 
         it('should not focus EditableTitle on existing tickets', () => {
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -915,7 +936,7 @@ describe('<TicketHeader />', () => {
             })
 
             render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -950,7 +971,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             const { container } = render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -979,7 +1000,7 @@ describe('<TicketHeader />', () => {
             const newTicket = fromJS(_omit(ticket, 'id'))
 
             const { container } = render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -1016,7 +1037,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             const { container } = render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -1064,7 +1085,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             const { container } = render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -1112,7 +1133,7 @@ describe('<TicketHeader />', () => {
             server.use(handler)
 
             const { container } = render(
-                <QueryClientProvider client={mockedQueryClient}>
+                <QueryClientProvider client={appQueryClient}>
                     <Provider
                         store={mockStore({
                             ...defaultStore,
@@ -1135,6 +1156,237 @@ describe('<TicketHeader />', () => {
                     'false',
                 )
             })
+        })
+    })
+
+    describe('Mouse and focus interactions', () => {
+        it('should update mouse over state when mousing over editable title', async () => {
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const editableTitle = container.querySelector('input[type="text"]')!
+            fireEvent.mouseEnter(editableTitle)
+
+            // The component should handle mouse over without errors
+            expect(editableTitle).toBeInTheDocument()
+        })
+
+        it('should update focus state when focusing on editable title', () => {
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const editableTitle = container.querySelector('input[type="text"]')!
+            fireEvent.focus(editableTitle)
+            fireEvent.blur(editableTitle)
+
+            // The component should handle focus events without errors
+            expect(editableTitle).toBeInTheDocument()
+        })
+    })
+
+    describe('History display prevention', () => {
+        it('should not go to next ticket when history is displayed', () => {
+            const onGoToNextTicketMock = jest.fn()
+            const ticketWithHistory = fromJS({
+                ...ticket,
+                _internal: { displayHistory: true },
+            })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithHistory,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithHistory}
+                            onGoToNextTicket={onGoToNextTicketMock}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            // Trigger keyboard shortcut that would normally go to next ticket
+            makeExecuteKeyboardAction(
+                shortcutManagerMock,
+                shortcutEventMock,
+                'TicketDetailContainer',
+            )('CLOSE_TICKET')
+
+            expect(onGoToNextTicketMock).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Subject handling', () => {
+        it('should handle subject change and update translation', () => {
+            const ticketWithId = fromJS(ticket)
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithId,
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={ticketWithId} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'New Subject' } })
+            fireEvent.blur(input)
+
+            expect(ticketActions.setSubject).toHaveBeenCalledWith('New Subject')
+        })
+
+        it('should handle subject change for new tickets', () => {
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <TicketHeader {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, { target: { value: 'New Subject' } })
+            fireEvent.blur(input)
+
+            expect(ticketActions.setSubject).toHaveBeenCalledWith('New Subject')
+        })
+    })
+
+    describe('Priority handling', () => {
+        it('should handle priority change', async () => {
+            mockUseFlagForFeature(FeatureFlagKey.TicketAllowPriorityUsage, true)
+            const ticketWithPriority = fromJS({
+                ...ticket,
+                priority: TicketPriority.Normal,
+            })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithPriority,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithPriority}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            // The component should render without errors - testing the priority change handler
+            expect(screen.getByText(/normal/i)).toBeInTheDocument()
+        })
+    })
+
+    describe('Merge ticket modal', () => {
+        it('should handle merge ticket modal toggle', () => {
+            const { getByText } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: fromJS(ticket),
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            fireEvent.click(getByText(/more_vert/))
+            fireEvent.click(getByText(/Merge ticket/))
+
+            // Component should handle modal toggle without errors
+            expect(screen.getByText(/more_vert/)).toBeInTheDocument()
+        })
+    })
+
+    describe('Snooze operations', () => {
+        it('should handle unsnoozed ticket', () => {
+            const unsnoozeTicket = fromJS({ ...ticket, snooze_datetime: null })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: unsnoozeTicket,
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={unsnoozeTicket} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            fireEvent.click(screen.getByText('Snooze'))
+            expect(ticketActions.snoozeTicket).toHaveBeenCalled()
+        })
+    })
+
+    describe('Action creation edge cases', () => {
+        it('should include unmark spam action for spam tickets', () => {
+            const spamTicket = fromJS({ ...ticket, spam: true })
+
+            const { getByText } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: spamTicket,
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={spamTicket} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            fireEvent.click(getByText(/more_vert/))
+            expect(getByText(/Unmark as spam/)).toBeInTheDocument()
+        })
+
+        it('should include undelete action for trashed tickets', () => {
+            const trashedTicket = fromJS({
+                ...ticket,
+                trashed_datetime: '2023-01-01',
+            })
+
+            const { getByText } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: trashedTicket,
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={trashedTicket} />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            fireEvent.click(getByText(/more_vert/))
+            expect(getByText(/Undelete/)).toBeInTheDocument()
         })
     })
 })

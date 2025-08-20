@@ -15,7 +15,11 @@ export type CurrentUser = GetCurrentUserResult & {
 }
 
 export function useCurrentUserPreferredLanguage() {
-    const { data: currentUser } = useGetCurrentUser<CurrentUser>()
+    const { data: currentUser } = useGetCurrentUser<CurrentUser>({
+        query: {
+            staleTime: 60000 * 5,
+        },
+    })
 
     const languagePreferences = useMemo(() => {
         const preferences = currentUser?.data?.settings?.find(

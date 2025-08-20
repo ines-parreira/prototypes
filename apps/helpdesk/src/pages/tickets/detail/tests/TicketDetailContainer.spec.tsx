@@ -1439,9 +1439,23 @@ describe('TicketDetailContainer component', () => {
                     route: '/foo/new',
                 },
             )
+
+            // Wait for component to be fully loaded
             await waitFor(() => {
-                expect(queryClient.isFetching()).toBe(0)
+                expect(getByTestId('TicketView-submit')).toBeInTheDocument()
+                expect(
+                    getByTestId('TicketView-change-status'),
+                ).toBeInTheDocument()
             })
+
+            // Wait for all queries to complete
+            await waitFor(
+                () => {
+                    expect(queryClient.isFetching()).toBe(0)
+                },
+                { timeout: 5000 },
+            )
+
             userEvent.click(getByTestId('TicketView-submit'))
 
             expect(

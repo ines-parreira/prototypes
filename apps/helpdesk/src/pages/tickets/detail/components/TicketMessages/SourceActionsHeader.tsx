@@ -13,7 +13,7 @@ import type { TicketMessage } from 'models/ticket/types'
 import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
 import { getIsCurrentHelpdeskLegacy } from 'state/billing/selectors'
 import * as infobarActions from 'state/infobar/actions'
-import { useTicketMessageTranslation } from 'tickets/core/hooks/useTicketMessageTranslation'
+import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
 
 import CollapsedSourceActions from './CollapsedSourceActions/CollapsedSourceActions'
 import IntentsFeedback from './IntentsFeedback/IntentsFeedback'

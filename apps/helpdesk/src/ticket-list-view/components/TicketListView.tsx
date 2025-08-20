@@ -28,7 +28,7 @@ import {
 } from 'split-ticket-view-toggle'
 import { setViewActive, setViewEditMode } from 'state/views/actions'
 import { getViewCount, getViewPlainJS } from 'state/views/selectors'
-import { useTicketsTranslatedProperties } from 'tickets/core/hooks/useTicketsTranslatedProperties'
+import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'

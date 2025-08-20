@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
@@ -32,7 +32,13 @@ export function useTicketMessageTranslations({
         )
     }, [ticketMessageTranslations])
 
+    const getMessageTranslation = useCallback(
+        (messageId: number) => ticketMessagesTranslationMap[messageId],
+        [ticketMessagesTranslationMap],
+    )
+
     return {
         ticketMessagesTranslationMap,
+        getMessageTranslation,
     }
 }

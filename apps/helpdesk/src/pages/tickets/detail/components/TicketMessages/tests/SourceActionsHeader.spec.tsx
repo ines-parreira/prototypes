@@ -19,7 +19,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
 import { Source, TicketMessage } from 'models/ticket/types'
 import * as infobarActions from 'state/infobar/actions'
-import { useTicketMessageTranslation } from 'tickets/core/hooks/useTicketMessageTranslation'
+import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
 
 import SourceActionsHeader from '../SourceActionsHeader'
 
@@ -36,9 +36,12 @@ jest.mock('models/ticket/predicates', () => ({
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(),
 }))
-jest.mock('tickets/core/hooks/useTicketMessageTranslation', () => ({
-    useTicketMessageTranslation: jest.fn(),
-}))
+jest.mock(
+    'tickets/core/hooks/translations/useTicketMessageTranslation',
+    () => ({
+        useTicketMessageTranslation: jest.fn(),
+    }),
+)
 jest.mock(
     '../CollapsedSourceActions/CollapsedSourceActions',
     () =>

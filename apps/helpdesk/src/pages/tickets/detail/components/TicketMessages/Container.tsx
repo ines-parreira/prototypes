@@ -18,13 +18,13 @@ import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
+import { withMessageTranslations } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/withMessageTranslations'
 
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
 import { AiAgentReasoning } from './AiAgentReasoning'
 import { Avatar } from './Avatar'
 import Footer from './Footer'
-import { withMessageTranslations } from './TicketMessagesTranslationDisplay/withMessageTranslations'
 
 import css from './Container.less'
 

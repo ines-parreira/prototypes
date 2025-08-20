@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
 import classNamesBind from 'classnames/bind'
@@ -17,9 +17,17 @@ import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
 import Source from 'pages/tickets/detail/components/TicketMessages/Source'
 import SourceActionsHeader from 'pages/tickets/detail/components/TicketMessages/SourceActionsHeader'
+import { TranslationLoader } from 'pages/tickets/detail/components/TicketMessages/TranslationLoader'
 import { isForwardedMessage } from 'tickets/common/utils'
+import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
 import { MessageMetadata } from 'tickets/ticket-detail/components/MessageMetadata'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
+
+import {
+    DisplayedContent,
+    FetchingState,
+} from './TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
+import { useTicketMessageTranslationDisplay } from './TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import css from './MessageHeader.less'
 
@@ -43,10 +51,27 @@ export function MessageHeader({
     readonly = false,
 }: Props) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
+    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
+    const { getTicketMessageTranslationDisplay } =
+        useTicketMessageTranslationDisplay()
     const { containerRef } = useTicketModalContext()
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
     const actionsContainerRef = useRef<HTMLDivElement>(null)
+
+    const messageTranslation = useTicketMessageTranslation({
+        ticketId: message.ticket_id,
+        messageId: message.id,
+    })
+    const displayType = useMemo(() => {
+        if (!message?.id)
+            return {
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Idle,
+            }
+        return getTicketMessageTranslationDisplay(message.id)
+    }, [message?.id, getTicketMessageTranslationDisplay])
+
     let metaContent = (
         <Meta
             messageId={message.message_id ?? undefined}
@@ -108,6 +133,16 @@ export function MessageHeader({
                         <CustomerLabel customer={sender} />
                     )}
                 </div>
+                {!!messageTranslation && (
+                    <i
+                        className={classnames(
+                            'material-icons md-2',
+                            css.translateIcon,
+                        )}
+                    >
+                        translate
+                    </i>
+                )}
 
                 {message.source && (
                     <Source
@@ -120,7 +155,7 @@ export function MessageHeader({
                     />
                 )}
                 {metaContent}
-                {hasTicketThreadRevamp && (
+                {hasTicketThreadRevamp && !hasMessagesTranslation && (
                     <MessageMetadata message={message as TicketMessage} />
                 )}
             </div>
@@ -131,7 +166,14 @@ export function MessageHeader({
                         containerRef={actionsContainerRef}
                     />
                 )}
-                {!hasTicketThreadRevamp && (
+                {hasMessagesTranslation && (
+                    <div className={css.translationDetails}>
+                        {displayType.fetchingState ===
+                            FetchingState.Loading && <TranslationLoader />}
+                        <MessageMetadata message={message as TicketMessage} />
+                    </div>
+                )}
+                {!hasTicketThreadRevamp && !hasMessagesTranslation && (
                     <MessageMetadata message={message as TicketMessage} />
                 )}
             </div>

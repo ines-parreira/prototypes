@@ -5,7 +5,11 @@ import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import { Tooltip } from '@gorgias/axiom'
 
-import { useTicketMessageTranslationDisplay } from '../TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
+import {
+    DisplayedContent,
+    FetchingState,
+} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
+import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import css from './TranslationsDropdown.less'
 
@@ -18,7 +22,7 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
         getTicketMessageTranslationDisplay,
         setTicketMessageTranslationDisplay,
     } = useTicketMessageTranslationDisplay()
-    const displayedContent = getTicketMessageTranslationDisplay(messageId)
+    const displayType = getTicketMessageTranslationDisplay(messageId)
 
     const [isTranslationsDropdownOpen, setTranslationsDropdownOpen] =
         useState(false)
@@ -52,13 +56,17 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
 
                 <DropdownMenu right className={css.menuWrapper}>
                     <ul className={css.translationsList}>
-                        {displayedContent === 'original' && (
+                        {displayType.display === DisplayedContent.Original && (
                             <TranslationsItem
                                 onClick={() =>
-                                    setTicketMessageTranslationDisplay(
-                                        messageId,
-                                        'translated',
-                                    )
+                                    setTicketMessageTranslationDisplay([
+                                        {
+                                            messageId,
+                                            ...displayType,
+                                            display:
+                                                DisplayedContent.Translated,
+                                        },
+                                    ])
                                 }
                             >
                                 <span className={css.icon}>
@@ -69,13 +77,17 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
                                 </span>
                             </TranslationsItem>
                         )}
-                        {displayedContent === 'translated' && (
+                        {displayType.display ===
+                            DisplayedContent.Translated && (
                             <TranslationsItem
                                 onClick={() =>
-                                    setTicketMessageTranslationDisplay(
-                                        messageId,
-                                        'original',
-                                    )
+                                    setTicketMessageTranslationDisplay([
+                                        {
+                                            messageId,
+                                            ...displayType,
+                                            display: DisplayedContent.Original,
+                                        },
+                                    ])
                                 }
                             >
                                 <span className={css.icon}>
@@ -84,14 +96,16 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
                                 <span className={css.label}>See original</span>
                             </TranslationsItem>
                         )}
-                        <TranslationsItem onClick={() => {}}>
-                            <span className={css.icon}>
-                                <i className="material-icons">loop</i>
-                            </span>
-                            <span className={css.label}>
-                                Re-generate translation
-                            </span>
-                        </TranslationsItem>
+                        {displayType.fetchingState === FetchingState.Failed && (
+                            <TranslationsItem onClick={() => {}}>
+                                <span className={css.icon}>
+                                    <i className="material-icons">loop</i>
+                                </span>
+                                <span className={css.label}>
+                                    Re-generate translation
+                                </span>
+                            </TranslationsItem>
+                        )}
                     </ul>
                 </DropdownMenu>
             </Dropdown>
@@ -106,7 +120,7 @@ type TranslationsItemProps = {
 
 function TranslationsItem({ children, onClick }: TranslationsItemProps) {
     return (
-        <li key="translation-item" className={css.translationsListItem}>
+        <li className={css.translationsListItem}>
             <button className={css.translationsItem} onClick={onClick}>
                 <div className={css.translationsItemContent}>{children}</div>
             </button>

@@ -257,8 +257,8 @@ describe('useLiveVoiceUpdates', () => {
                 call_sid: 'abc',
                 phone_number_source: '123456789',
                 phone_number_destination: '987654321',
-                started_datetime: new Date(),
-                created_datetime: new Date(),
+                started_datetime: new Date().toISOString(),
+                created_datetime: new Date().toISOString(),
                 provider: 'provider',
                 customer_id: 123456,
             },
@@ -1234,8 +1234,8 @@ describe('useLiveVoiceUpdates', () => {
                 call_sid: 'abc',
                 phone_number_source: '123456789',
                 phone_number_destination: '987654321',
-                started_datetime: new Date(),
-                created_datetime: new Date(),
+                started_datetime: new Date().toISOString(),
+                created_datetime: new Date().toISOString(),
                 provider: 'provider',
                 customer_id: 123456,
                 user_id: 1,
@@ -1467,7 +1467,7 @@ describe('useLiveVoiceUpdates', () => {
                 account_id: 1,
                 user_id: 1,
                 call_sid: 'abc',
-                expiration_datetime: mockedDate,
+                expiration_datetime: mockedDate.toISOString(),
             },
         } as DomainEvent
         const mockWrapUpEndedEvent = {
@@ -1582,7 +1582,7 @@ describe('useLiveVoiceUpdates', () => {
                     voice_call_id: 123,
                     account_id: 1,
                     user_id: 1,
-                    expiration_datetime: mockedDate,
+                    expiration_datetime: mockedDate.toISOString(),
                 },
             } as DomainEvent
 

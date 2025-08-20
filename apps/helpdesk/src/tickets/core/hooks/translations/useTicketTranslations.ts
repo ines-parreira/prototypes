@@ -20,6 +20,7 @@ export function useTicketTranslations({ ticket_id }: TicketTranslationsParams) {
         },
         {
             query: {
+                staleTime: 60000 * 5,
                 enabled:
                     Boolean(primary) &&
                     Boolean(ticket_id) &&

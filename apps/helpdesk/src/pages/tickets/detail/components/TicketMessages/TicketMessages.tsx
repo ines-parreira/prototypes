@@ -32,7 +32,6 @@ import {
 import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
 import Container from './Container'
 import Message from './Message'
-import { TicketMessageTranslationDisplayProvider } from './TicketMessagesTranslationDisplay/TicketMessageTranslationDisplayProvider'
 
 type Props = {
     messages: TicketMessage_DEPRECATED[]
@@ -181,52 +180,50 @@ export default function TicketMessages({
     }
 
     return (
-        <TicketMessageTranslationDisplayProvider>
-            <Container
-                ticketId={ticketId}
-                message={message}
-                messages={messages}
-                hasCursor={hasCursor}
-                lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
-                timezone={timezone}
-                containsLastCustomerMessage={containsLastCustomerMessage}
-                isMessageHidden={isTicketMessageHidden(message)}
-                isMessageDeleted={isTicketMessageDeleted(message)}
-                isBodyHighlighted={containerContainsHighlightedMessages}
-                isAIAgentInternalNote={isAIAgentInternalNote}
-                isAIAgentMessage={isAIAgentMessage}
-                isAIAgentMessageSelected={
-                    !!message.id && selectedAIMessage?.id === message.id
-                }
-                isTicketAfterFeedbackCollectionPeriod={
-                    isTicketAfterFeedbackCollectionPeriod
-                }
-                shouldDisplayAuditLogEvents={shouldDisplayAuditLogEvents}
-                customer={customer}
-                lastCustomerMessageDateTime={lastCustomerMessage.get(
-                    'sent_datetime',
-                )}
-                isImpersonated={isImpersonated}
-            >
-                {messages?.map(
-                    (message: TicketMessage_DEPRECATED, index: number) => {
-                        return (
-                            <Message
-                                key={
-                                    message.id ||
-                                    `message-${messagePosition}-${index}`
-                                }
-                                message={message}
-                                ticketId={ticketId}
-                                setStatus={setStatus}
-                                showSourceDetails={!!index}
-                                isAIAgentMessage={isAIAgentMessage}
-                                messagePosition={messagePosition}
-                            />
-                        )
-                    },
-                )}
-            </Container>
-        </TicketMessageTranslationDisplayProvider>
+        <Container
+            ticketId={ticketId}
+            message={message}
+            messages={messages}
+            hasCursor={hasCursor}
+            lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
+            timezone={timezone}
+            containsLastCustomerMessage={containsLastCustomerMessage}
+            isMessageHidden={isTicketMessageHidden(message)}
+            isMessageDeleted={isTicketMessageDeleted(message)}
+            isBodyHighlighted={containerContainsHighlightedMessages}
+            isAIAgentInternalNote={isAIAgentInternalNote}
+            isAIAgentMessage={isAIAgentMessage}
+            isAIAgentMessageSelected={
+                !!message.id && selectedAIMessage?.id === message.id
+            }
+            isTicketAfterFeedbackCollectionPeriod={
+                isTicketAfterFeedbackCollectionPeriod
+            }
+            shouldDisplayAuditLogEvents={shouldDisplayAuditLogEvents}
+            customer={customer}
+            lastCustomerMessageDateTime={lastCustomerMessage.get(
+                'sent_datetime',
+            )}
+            isImpersonated={isImpersonated}
+        >
+            {messages?.map(
+                (message: TicketMessage_DEPRECATED, index: number) => {
+                    return (
+                        <Message
+                            key={
+                                message.id ||
+                                `message-${messagePosition}-${index}`
+                            }
+                            message={message}
+                            ticketId={ticketId}
+                            setStatus={setStatus}
+                            showSourceDetails={!!index}
+                            isAIAgentMessage={isAIAgentMessage}
+                            messagePosition={messagePosition}
+                        />
+                    )
+                },
+            )}
+        </Container>
     )
 }

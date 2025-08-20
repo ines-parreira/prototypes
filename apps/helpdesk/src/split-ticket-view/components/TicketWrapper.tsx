@@ -6,6 +6,7 @@ import history from 'pages/history'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
+import { TicketMessageTranslationDisplayProvider } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/TicketMessageTranslationDisplayProvider'
 
 type Props = {
     isOnSplitTicketView?: boolean
@@ -32,11 +33,13 @@ export default function TicketWrapper({
     }, [nextUrl])
 
     return (
-        <TicketDetailContainer
-            onGoToNextTicket={
-                isOnSplitTicketView ? handleGoToNextTicket : undefined
-            }
-            onToggleUnread={onToggleUnread}
-        />
+        <TicketMessageTranslationDisplayProvider>
+            <TicketDetailContainer
+                onGoToNextTicket={
+                    isOnSplitTicketView ? handleGoToNextTicket : undefined
+                }
+                onToggleUnread={onToggleUnread}
+            />
+        </TicketMessageTranslationDisplayProvider>
     )
 }

@@ -30,7 +30,7 @@ import TicketMessages from '../TicketMessages'
 
 // Mock the TicketMessageTranslationProvider to avoid QueryClient issues
 jest.mock(
-    '../TicketMessagesTranslationDisplay/TicketMessageTranslationDisplayProvider',
+    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/TicketMessageTranslationDisplayProvider',
     () => ({
         TicketMessageTranslationDisplayProvider: ({
             children,
@@ -46,7 +46,7 @@ jest.mock(
 
 // Mock the withMessageTranslations HOC to avoid QueryClient issues
 jest.mock(
-    '../TicketMessagesTranslationDisplay/withMessageTranslations',
+    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/withMessageTranslations',
     () => ({
         withMessageTranslations: (Component: React.ComponentType<any>) =>
             Component,
@@ -364,5 +364,373 @@ describe('TicketMessages', () => {
         )
 
         expect(container).toBeEmptyDOMElement()
+    })
+
+    it('should render Container with correct props for regular messages', () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should handle feature flag disabled state', () => {
+        mockFlags({
+            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: false,
+        })
+
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: 'message',
+                    sender: {
+                        id: 1,
+                        name: 'AI Agent',
+                        firstname: 'AI',
+                        lastname: 'Agent',
+                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+        expect(logEventMock).not.toHaveBeenCalled()
+    })
+
+    it('should handle messages with highlighted elements', () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: 100,
+                    from_agent: true,
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+            highlightedElements: { first: 99, last: 101 },
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should handle messages outside highlighted range', () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: 50,
+                    from_agent: true,
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+            highlightedElements: { first: 99, last: 101 },
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should handle lastCustomerMessage matching a message', () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: 123,
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+            lastCustomerMessage: fromJS({ id: 123 }),
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should handle lastCustomerMessage not matching any message', () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: 123,
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+            lastCustomerMessage: fromJS({ id: 456 }),
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should handle messages without IDs in key generation', () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: undefined,
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+            messagePosition: 5,
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should handle multiple messages', () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: 1,
+                    body_html: 'first message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+                {
+                    ...defaultProps.messages[0],
+                    id: 2,
+                    body_html: 'second message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getAllByText('Message')).toHaveLength(2)
+    })
+
+    it('should handle AI agent message selection state', () => {
+        getSelectedAIMessageMock.mockReturnValue({
+            ticket_id: 1,
+            id: 1,
+        } as unknown as ReturnType<typeof getSelectedAIMessage>)
+
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: 1,
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should handle ticket after feedback collection period', () => {
+        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(true)
+
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
+    })
+
+    it('should not log events when banner type is empty', () => {
+        mockFlags({
+            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
+        })
+
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Regular User',
+                        firstname: 'Regular',
+                        lastname: 'User',
+                        email: 'regular@test.com',
+                    }, // Not AI agent
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(logEventMock).not.toHaveBeenCalled()
+    })
+
+    it('should handle audit log events display setting', () => {
+        getShouldDisplayAuditLogEventsMock.mockReturnValue(false)
+
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: 'regular message',
+                    sender: {
+                        id: 1,
+                        name: 'Test User',
+                        firstname: 'Test',
+                        lastname: 'User',
+                        email: 'user@test.com',
+                    },
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
     })
 })

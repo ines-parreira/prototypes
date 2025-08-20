@@ -60,7 +60,7 @@ import { getSourceTypeOfResponse } from 'state/ticket/utils'
 import { updateCursor } from 'state/tickets/actions'
 import { RootState } from 'state/types'
 import { getActiveView } from 'state/views/selectors'
-import { useGenerateTicketTranslations } from 'tickets/core/hooks/useGenerateTicketTranslations'
+import { useLiveTicketTranslationsUpdates } from 'tickets/core/hooks/translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { isMacOs } from 'utils/platform'
 
@@ -138,18 +138,12 @@ export const TicketDetailContainer = ({
 
     useDraftTicketActivityTracking(temporaryId)
 
-    const { generateTicketTranslations, shouldGenerateTicketTranslations } =
-        useGenerateTicketTranslations({
+    const { handleTicketMessageTranslationEvents } =
+        useLiveTicketTranslationsUpdates({
             ticketId: ticket.get('id'),
             ticketLanguage: ticket.get('language'),
             ticketMessages: ticket.get('messages')?.toJS() ?? [],
         })
-
-    useEffect(() => {
-        if (shouldGenerateTicketTranslations) {
-            generateTicketTranslations()
-        }
-    }, [ticket, shouldGenerateTicketTranslations, generateTicketTranslations])
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -640,12 +634,19 @@ export const TicketDetailContainer = ({
     const { joinTicket, leaveTicket } = useAgentActivity()
 
     useEffect(() => {
-        joinTicket(Number(ticketIdParam))
+        joinTicket(Number(ticketIdParam), {
+            onEvent: handleTicketMessageTranslationEvents,
+        })
 
         return () => {
             leaveTicket()
         }
-    }, [ticketIdParam, joinTicket, leaveTicket])
+    }, [
+        ticketIdParam,
+        joinTicket,
+        leaveTicket,
+        handleTicketMessageTranslationEvents,
+    ])
 
     if (isLoading || isLoadingPhoneTicketData) {
         return <Loader className={css.loader} message="Loading ticket..." />

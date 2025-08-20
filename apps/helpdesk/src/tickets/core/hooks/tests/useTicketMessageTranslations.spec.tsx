@@ -4,28 +4,30 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
+    mockGetCurrentUserHandler,
     mockListTicketMessageTranslationsHandler,
     mockTicketMessageTranslation,
+    mockUser,
 } from '@gorgias/helpdesk-mocks'
 import {
     Language,
     type TicketMessageTranslation,
+    UserSettingType,
 } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
+import { FeatureFlagKey } from 'config/featureFlags'
 
-import { useTicketMessageTranslations } from '../useTicketMessageTranslations'
+import { useTicketMessageTranslations } from '../translations/useTicketMessageTranslations'
 
-// Mock the useCurrentUserPreferredLanguage hook
-jest.mock('../useCurrentUserPreferredLanguage', () => ({
-    useCurrentUserPreferredLanguage: jest.fn(),
+// Mock the feature flag hook
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
 }))
 
-const mockUseCurrentUserPreferredLanguage =
-    require('../useCurrentUserPreferredLanguage')
-        .useCurrentUserPreferredLanguage as jest.MockedFunction<
-        typeof import('../useCurrentUserPreferredLanguage').useCurrentUserPreferredLanguage
-    >
+const mockUseFlag = require('core/flags').useFlag as jest.MockedFunction<
+    typeof import('core/flags').useFlag
+>
 
 // Mock data
 const mockTicketMessageTranslations: TicketMessageTranslation[] = [
@@ -43,24 +45,73 @@ const mockTicketMessageTranslations: TicketMessageTranslation[] = [
     },
 ]
 
+// Create mock user with language preferences
+const mockCurrentUser = {
+    ...mockUser(),
+    settings: [
+        {
+            type: UserSettingType.LanguagePreferences,
+            data: {
+                primary: Language.En,
+                proficient: [],
+            },
+        },
+    ],
+}
+
+const mockCurrentUserWithFrench = {
+    ...mockUser(),
+    settings: [
+        {
+            type: UserSettingType.LanguagePreferences,
+            data: {
+                primary: Language.Fr,
+                proficient: [],
+            },
+        },
+    ],
+}
+
+const mockCurrentUserWithoutLanguagePrefs = {
+    ...mockUser(),
+    settings: [],
+}
+
 // Server setup
 const server = setupServer()
 
+// Create mock handlers
+const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
+    HttpResponse.json(mockCurrentUser),
+)
+
+const mockGetCurrentUserFrench = mockGetCurrentUserHandler(async () =>
+    HttpResponse.json(mockCurrentUserWithFrench),
+)
+
+const mockGetCurrentUserNoLang = mockGetCurrentUserHandler(async () =>
+    HttpResponse.json(mockCurrentUserWithoutLanguagePrefs),
+)
+
 // Create a mock handler that returns our test data
 const mockListTicketMessageTranslations =
-    mockListTicketMessageTranslationsHandler(async ({ data }) =>
+    mockListTicketMessageTranslationsHandler(async () =>
         HttpResponse.json({
-            ...data,
             data: mockTicketMessageTranslations,
             meta: {
                 next_cursor: null,
                 prev_cursor: null,
                 total_resources: 2,
             },
+            object: 'list',
+            uri: '/api/v1/tickets/123/messages/translations',
         }),
     )
 
-const localHandlers = [mockListTicketMessageTranslations.handler]
+const localHandlers = [
+    mockGetCurrentUser.handler,
+    mockListTicketMessageTranslations.handler,
+]
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -68,11 +119,10 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    mockUseCurrentUserPreferredLanguage.mockReturnValue({
-        primary: Language.En,
-        proficient: [],
-        languagesNotToTranslateFor: [],
-    })
+    appQueryClient.clear()
+    mockUseFlag.mockImplementation(
+        (flag) => flag === FeatureFlagKey.MessagesTranslations,
+    )
 })
 
 afterEach(() => {
@@ -132,29 +182,70 @@ describe('useTicketMessageTranslations', () => {
                 ).toEqual(mockTicketMessageTranslations[1])
             })
         })
+
+        it('should provide getMessageTranslation function', async () => {
+            const { result } = renderHook(
+                () => useTicketMessageTranslations({ ticket_id: ticketId }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                const translation = result.current.getMessageTranslation(101)
+                expect(translation).toEqual(mockTicketMessageTranslations[0])
+            })
+        })
+
+        it('should return undefined for non-existent message id', async () => {
+            const { result } = renderHook(
+                () => useTicketMessageTranslations({ ticket_id: ticketId }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                const translation = result.current.getMessageTranslation(999)
+                expect(translation).toBeUndefined()
+            })
+        })
     })
 
     describe('when no translations are available', () => {
-        it('should return empty translations map', async () => {
+        it('should return empty translations map when data is empty', async () => {
             const { handler } = mockListTicketMessageTranslationsHandler(
-                async ({ data }) =>
+                async () =>
                     HttpResponse.json({
-                        ...data,
                         data: [],
                         meta: {
                             next_cursor: null,
                             prev_cursor: null,
                             total_resources: 0,
                         },
+                        object: 'list',
+                        uri: '/api/v1/tickets/123/messages/translations',
                     }),
             )
-            server.use(handler)
+            server.use(mockGetCurrentUser.handler, handler)
 
             const { result } = renderHook(
                 () => useTicketMessageTranslations({ ticket_id: ticketId }),
                 { wrapper },
             )
 
+            await waitFor(() => {
+                expect(result.current.ticketMessagesTranslationMap).toEqual({})
+            })
+        })
+    })
+
+    describe('when feature flag is disabled', () => {
+        it('should not make API call when MessagesTranslations flag is disabled', async () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { result } = renderHook(
+                () => useTicketMessageTranslations({ ticket_id: ticketId }),
+                { wrapper },
+            )
+
+            // The query should be disabled, so no API call should be made
             await waitFor(() => {
                 expect(result.current.ticketMessagesTranslationMap).toEqual({})
             })
@@ -162,37 +253,18 @@ describe('useTicketMessageTranslations', () => {
     })
 
     describe('when preferred language is not set', () => {
-        it('should not make API call when preferred language is undefined', async () => {
-            mockUseCurrentUserPreferredLanguage.mockReturnValue({
-                primary: undefined,
-                proficient: [],
-                languagesNotToTranslateFor: [],
-            })
+        it('should not make API call when user has no language preferences', async () => {
+            server.use(
+                mockGetCurrentUserNoLang.handler,
+                mockListTicketMessageTranslations.handler,
+            )
 
             const { result } = renderHook(
                 () => useTicketMessageTranslations({ ticket_id: ticketId }),
                 { wrapper },
             )
 
-            // The query should be disabled, so no API call should be made
-            await waitFor(() => {
-                expect(result.current.ticketMessagesTranslationMap).toEqual({})
-            })
-        })
-
-        it('should not make API call when preferred language is null', async () => {
-            mockUseCurrentUserPreferredLanguage.mockReturnValue({
-                primary: undefined,
-                proficient: [],
-                languagesNotToTranslateFor: [],
-            })
-
-            const { result } = renderHook(
-                () => useTicketMessageTranslations({ ticket_id: ticketId }),
-                { wrapper },
-            )
-
-            // The query should be disabled, so no API call should be made
+            // The query should be disabled when there's no language preference
             await waitFor(() => {
                 expect(result.current.ticketMessagesTranslationMap).toEqual({})
             })
@@ -244,12 +316,12 @@ describe('useTicketMessageTranslations', () => {
             })
         })
 
-        it('should use preferred language from hook', async () => {
-            mockUseCurrentUserPreferredLanguage.mockReturnValue({
-                primary: Language.Fr,
-                proficient: [],
-                languagesNotToTranslateFor: [],
-            })
+        it('should use preferred language from user settings', async () => {
+            server.use(
+                mockGetCurrentUserFrench.handler,
+                mockListTicketMessageTranslations.handler,
+            )
+
             const waitForRequest =
                 mockListTicketMessageTranslations.waitForRequest(server)
 
@@ -263,26 +335,27 @@ describe('useTicketMessageTranslations', () => {
                 expect(url.searchParams.get('language')).toBe('fr')
             })
         })
+
+        it('should fetch current user data', async () => {
+            const waitForUserRequest = mockGetCurrentUser.waitForRequest(server)
+
+            renderHook(
+                () => useTicketMessageTranslations({ ticket_id: ticketId }),
+                { wrapper },
+            )
+
+            await waitForUserRequest(async (request) => {
+                expect(request.url).toContain('/api/users/')
+            })
+        })
     })
 
     describe('error handling', () => {
         it('should handle API errors gracefully', async () => {
             const { handler } = mockListTicketMessageTranslationsHandler(
-                async ({ data }) =>
-                    HttpResponse.json(
-                        {
-                            ...data,
-                            data: [],
-                            meta: {
-                                next_cursor: null,
-                                prev_cursor: null,
-                                total_resources: 0,
-                            },
-                        },
-                        { status: 500 },
-                    ),
+                async () => HttpResponse.json(null, { status: 500 }),
             )
-            server.use(handler)
+            server.use(mockGetCurrentUser.handler, handler)
 
             const { result } = renderHook(
                 () => useTicketMessageTranslations({ ticket_id: ticketId }),
@@ -291,6 +364,106 @@ describe('useTicketMessageTranslations', () => {
 
             await waitFor(() => {
                 expect(result.current.ticketMessagesTranslationMap).toEqual({})
+            })
+        })
+
+        it('should handle current user API error', async () => {
+            const { handler } = mockGetCurrentUserHandler(async () =>
+                HttpResponse.json(null, { status: 500 }),
+            )
+            server.use(handler, mockListTicketMessageTranslations.handler)
+
+            const { result } = renderHook(
+                () => useTicketMessageTranslations({ ticket_id: ticketId }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(result.current.ticketMessagesTranslationMap).toEqual({})
+            })
+        })
+    })
+
+    describe('memoization', () => {
+        it('should memoize the translation map', async () => {
+            const { result, rerender } = renderHook(
+                () => useTicketMessageTranslations({ ticket_id: ticketId }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(
+                    Object.keys(result.current.ticketMessagesTranslationMap),
+                ).toHaveLength(2)
+            })
+
+            const firstMap = result.current.ticketMessagesTranslationMap
+            const firstGetFn = result.current.getMessageTranslation
+
+            // Rerender with same data
+            rerender()
+
+            const secondMap = result.current.ticketMessagesTranslationMap
+            const secondGetFn = result.current.getMessageTranslation
+
+            // Map should be the same reference if data hasn't changed
+            expect(firstMap).toBe(secondMap)
+            // Function should be memoized based on the map
+            expect(firstGetFn).toBe(secondGetFn)
+        })
+
+        it('should update when translations data changes', async () => {
+            // Start with initial data
+            const { result, rerender } = renderHook(
+                () => useTicketMessageTranslations({ ticket_id: ticketId }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(
+                    Object.keys(result.current.ticketMessagesTranslationMap),
+                ).toHaveLength(2)
+            })
+
+            const firstMap = result.current.ticketMessagesTranslationMap
+
+            // Update the server response for next fetch
+            const updatedTranslations = [
+                ...mockTicketMessageTranslations,
+                {
+                    ...mockTicketMessageTranslation(),
+                    id: '3',
+                    ticket_message_id: 103,
+                    ticket_id: 123,
+                },
+            ]
+
+            const { handler } = mockListTicketMessageTranslationsHandler(
+                async () =>
+                    HttpResponse.json({
+                        data: updatedTranslations,
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                            total_resources: 3,
+                        },
+                        object: 'list',
+                        uri: '/api/v1/tickets/123/messages/translations',
+                    }),
+            )
+            server.use(mockGetCurrentUser.handler, handler)
+
+            // Invalidate and refetch the query
+            await appQueryClient.invalidateQueries()
+            await appQueryClient.refetchQueries()
+
+            // Force a rerender to get updated data
+            rerender()
+
+            await waitFor(() => {
+                const currentMap = result.current.ticketMessagesTranslationMap
+                expect(Object.keys(currentMap)).toHaveLength(3)
+                expect(currentMap).not.toBe(firstMap)
             })
         })
     })

@@ -39,7 +39,7 @@ import {
     ticketPartialUpdate,
 } from 'state/ticket/actions'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
-import { useTicketsTranslatedProperties } from 'tickets/core/hooks/useTicketsTranslatedProperties'
+import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { hasRole } from 'utils'
 
@@ -91,7 +91,7 @@ const TicketHeader = ({
     const setPriorityFlagEnabled = useFlag(
         FeatureFlagKey.TicketAllowPriorityUsage,
     )
-    const { translationMap, removeTicketTranslatedSubject } =
+    const { translationMap, updateTicketTranslatedSubject } =
         useTicketsTranslatedProperties({
             ticket_ids: [ticket.get('id')],
         })
@@ -296,7 +296,7 @@ const TicketHeader = ({
 
     const handleSubjectChange = (subject: string) => {
         dispatch(setSubject(subject))
-        removeTicketTranslatedSubject(ticket.get('id'))
+        updateTicketTranslatedSubject(ticket.get('id'), subject)
     }
 
     const hasTranslation = !!translationMap[ticket.get('id')]?.subject

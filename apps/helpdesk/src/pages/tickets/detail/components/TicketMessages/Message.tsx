@@ -6,16 +6,17 @@ import { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
 
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import { TicketMessage } from 'models/ticket/types'
-import { useTicketMessageTranslations } from 'tickets/core/hooks/useTicketMessageTranslations'
+import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
 import { MessageMetadata } from 'tickets/ticket-detail/components/MessageMetadata'
+import { DisplayedContent } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
+import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import Body from './Body'
 import Errors from './Errors'
 import ReplyDetailsCard from './ReplyDetailsCard'
 import SourceActionsHeader from './SourceActionsHeader'
-import { useTicketMessageTranslationDisplay } from './TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import css from './Message.less'
 
@@ -39,21 +40,23 @@ export default function Message({
     const hasError = isFailed(message)
     const [isOver, setIsOver] = useState(false)
 
-    const { ticketMessagesTranslationMap } = useTicketMessageTranslations({
+    const { getMessageTranslation } = useTicketMessageTranslations({
         ticket_id: ticketId,
     })
+
     const { getTicketMessageTranslationDisplay } =
         useTicketMessageTranslationDisplay()
 
-    const messageTranslations = useMemo(() => {
-        if (!message?.id) return
-        return ticketMessagesTranslationMap[message.id]
-    }, [message.id, ticketMessagesTranslationMap])
+    const messageTranslations = useMemo(
+        () => (message?.id ? getMessageTranslation(message.id) : null),
+        [message?.id, getMessageTranslation],
+    )
 
     const displayedMessage = useMemo(() => {
         if (!message?.id) return message
+        const displayType = getTicketMessageTranslationDisplay(message.id)
         if (
-            getTicketMessageTranslationDisplay(message.id) === 'translated' &&
+            displayType.display === DisplayedContent.Translated &&
             messageTranslations
         ) {
             return {
@@ -63,7 +66,7 @@ export default function Message({
             }
         }
         return message
-    }, [getTicketMessageTranslationDisplay, message, messageTranslations])
+    }, [message, messageTranslations, getTicketMessageTranslationDisplay])
 
     return (
         <div
