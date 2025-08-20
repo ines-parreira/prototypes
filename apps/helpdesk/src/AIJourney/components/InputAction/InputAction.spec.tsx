@@ -31,6 +31,15 @@ describe('<InputAction />', () => {
         expect(onChange).toHaveBeenCalledWith('(123) ___-____')
     })
 
+    it('handles US phone number with country code and leading zeros on blur', () => {
+        const onChange = jest.fn()
+        render(<InputAction value="10551234567" onChange={onChange} />)
+        const input = screen.getByRole('textbox')
+        fireEvent.blur(input)
+        // Should call onChange because leading zero needs to be removed after stripping country code
+        expect(onChange).toHaveBeenCalledWith('(551) 234-567_')
+    })
+
     it('disables button when input is empty', () => {
         render(<InputAction value="" />)
         expect(screen.getByRole('button')).toBeDisabled()
@@ -97,5 +106,86 @@ describe('<InputAction />', () => {
 
         await userEvent.type(input, '12345')
         expect(input).toHaveValue('(123) 45_-____')
+    })
+
+    describe('US phone number handling', () => {
+        it('handles US number with +1 prefix when pasted', async () => {
+            function Wrapper() {
+                const [value, setValue] = useState('')
+                return <InputAction value={value} onChange={setValue} />
+            }
+            render(<Wrapper />)
+            const input = screen.getByRole('textbox')
+
+            await userEvent.clear(input)
+            await userEvent.paste('+15551234567')
+            expect(input).toHaveValue('(555) 123-4567')
+        })
+
+        it('handles US number with 1 prefix when pasted', async () => {
+            function Wrapper() {
+                const [value, setValue] = useState('')
+                return <InputAction value={value} onChange={setValue} />
+            }
+            render(<Wrapper />)
+            const input = screen.getByRole('textbox')
+
+            await userEvent.clear(input)
+            await userEvent.paste('15551234567')
+            expect(input).toHaveValue('(555) 123-4567')
+        })
+
+        it('handles formatted US number with parentheses and dashes when pasted', async () => {
+            function Wrapper() {
+                const [value, setValue] = useState('')
+                return <InputAction value={value} onChange={setValue} />
+            }
+            render(<Wrapper />)
+            const input = screen.getByRole('textbox')
+
+            await userEvent.clear(input)
+            await userEvent.paste('+1 (555) 123-4567')
+            expect(input).toHaveValue('(555) 123-4567')
+        })
+
+        it('handles US number with spaces and dashes when pasted', async () => {
+            function Wrapper() {
+                const [value, setValue] = useState('')
+                return <InputAction value={value} onChange={setValue} />
+            }
+            render(<Wrapper />)
+            const input = screen.getByRole('textbox')
+
+            await userEvent.clear(input)
+            await userEvent.paste('1-555-123-4567')
+            expect(input).toHaveValue('(555) 123-4567')
+        })
+
+        it('ignores more than 10 digits when no US prefix', async () => {
+            function Wrapper() {
+                const [value, setValue] = useState('')
+                return <InputAction value={value} onChange={setValue} />
+            }
+            render(<Wrapper />)
+            const input = screen.getByRole('textbox')
+
+            await userEvent.clear(input)
+            await userEvent.paste('55512345678')
+            // Should not update since it has more than 10 digits without US prefix
+            expect(input).toHaveValue('')
+        })
+
+        it('handles 10-digit number without prefix', async () => {
+            function Wrapper() {
+                const [value, setValue] = useState('')
+                return <InputAction value={value} onChange={setValue} />
+            }
+            render(<Wrapper />)
+            const input = screen.getByRole('textbox')
+
+            await userEvent.clear(input)
+            await userEvent.paste('5551234567')
+            expect(input).toHaveValue('(555) 123-4567')
+        })
     })
 })

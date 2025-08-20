@@ -51,9 +51,21 @@ export const InputAction = ({
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const input = e.target
-        const digits = input.value.replace(/\D/g, '')
+        const inputValue = input.value
 
-        if (digits.length > 10) return
+        // Extract digits from the input
+        let digits = inputValue.replace(/\D/g, '')
+
+        // Handle US phone numbers with country code prefix
+        // Remove leading 1 if we have exactly 11 digits (US/Canada format)
+        if (digits.length === 11 && digits.startsWith('1')) {
+            digits = digits.substring(1)
+        }
+
+        // Limit to 10 digits max
+        if (digits.length > 10) {
+            return
+        }
 
         const formattedValue = formatPhoneNumber(digits)
         onChange(formattedValue)
@@ -72,7 +84,13 @@ export const InputAction = ({
 
     const handleOnBlur = (e: ChangeEvent<HTMLInputElement>) => {
         const input = e.target
-        const digits = input.value.replace(/\D/g, '')
+        let digits = input.value.replace(/\D/g, '')
+
+        // Handle US phone numbers with country code prefix
+        // Remove leading 1 if we have exactly 11 digits (US/Canada format)
+        if (digits.length === 11 && digits.startsWith('1')) {
+            digits = digits.substring(1)
+        }
 
         // Remove leading zeros
         const cleanedDigits = digits.replace(/^0+(?=\d)/, '')
