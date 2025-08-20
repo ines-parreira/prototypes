@@ -211,6 +211,12 @@ export const computeChatIntegrationStatus = (
         return GorgiasChatStatusEnum.HIDDEN
     }
 
+    if (installationStatus.installed) {
+        return installationStatus.isDuringBusinessHours
+            ? GorgiasChatStatusEnum.ONLINE
+            : GorgiasChatStatusEnum.OFFLINE
+    }
+
     // For other availability settings, the chat is installed
     return GorgiasChatStatusEnum.INSTALLED
 }

@@ -61,6 +61,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3' as any,
+                    isDuringBusinessHours: false,
                 },
                 {
                     applicationId: 124,
@@ -68,6 +69,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3' as any,
+                    isDuringBusinessHours: false,
                 },
                 {
                     applicationId: 126,
@@ -75,6 +77,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3' as any,
+                    isDuringBusinessHours: false,
                 },
             ],
         })
@@ -107,6 +110,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3',
+                    isDuringBusinessHours: false,
                 },
                 {
                     applicationId: 124,
@@ -115,6 +119,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3',
+                    isDuringBusinessHours: false,
                 },
             ],
             isLoading: false,
@@ -146,6 +151,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3' as any,
+                    isDuringBusinessHours: false,
                 },
                 {
                     applicationId: 124,
@@ -153,6 +159,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3' as any,
+                    isDuringBusinessHours: false,
                 },
                 {
                     applicationId: 125,
@@ -160,6 +167,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3' as any,
+                    isDuringBusinessHours: false,
                 },
             ],
         })
@@ -192,6 +200,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3',
+                    isDuringBusinessHours: false,
                 },
                 {
                     applicationId: 123,
@@ -200,6 +209,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3',
+                    isDuringBusinessHours: false,
                 },
                 {
                     applicationId: 125,
@@ -208,6 +218,7 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     installed: true,
                     installedOnShopifyCheckout: false,
                     minimumSnippetVersion: 'v3',
+                    isDuringBusinessHours: false,
                 },
             ],
             isLoading: false,

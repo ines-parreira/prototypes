@@ -42,6 +42,7 @@ const neutralInstallationStatus: InstallationStatus = {
     installed: true,
     installedOnShopifyCheckout: true,
     minimumSnippetVersion: null,
+    isDuringBusinessHours: false,
 }
 
 describe('integrations actions', () => {

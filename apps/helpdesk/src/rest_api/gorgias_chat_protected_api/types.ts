@@ -41,6 +41,7 @@ export type InstallationStatus = {
     installed: boolean
     installedOnShopifyCheckout: boolean
     minimumSnippetVersion: GorgiasChatMinimumSnippetVersion | null
+    isDuringBusinessHours: boolean
 }
 
 export type InstallationStatuses = {

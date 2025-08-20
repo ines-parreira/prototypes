@@ -24,6 +24,7 @@ const neutralInstallationStatus: InstallationStatus = {
     installed: true,
     installedOnShopifyCheckout: true,
     minimumSnippetVersion: null,
+    isDuringBusinessHours: false,
 }
 
 describe('integrations helpers', () => {
@@ -49,7 +50,7 @@ describe('integrations helpers', () => {
             ).toEqual(GorgiasChatStatusEnum.HIDDEN)
         })
 
-        it('should return `installed` when live chat is auto (regardless of hide_outside_business_hours setting)', () => {
+        it('should return `offline` when live chat is auto (regardless of hide_outside_business_hours setting)', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -66,10 +67,10 @@ describe('integrations helpers', () => {
                     integrationState,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
-        it('should return `installed` when live chat is auto', () => {
+        it('should return `offline` when live chat is auto', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -86,10 +87,10 @@ describe('integrations helpers', () => {
                     integrationState,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
-        it('should return `installed` status when live chat is offline', () => {
+        it('should return `offline` status when live chat is offline', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -105,10 +106,10 @@ describe('integrations helpers', () => {
                     integrationState,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
-        it('should return `installed` status when live chat is always online during business hours', () => {
+        it('should return `offline` status when live chat is always online during business hours', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -125,10 +126,10 @@ describe('integrations helpers', () => {
                     integrationState,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
-        it('should return `installed` when live chat is auto', () => {
+        it('should return `offline` when live chat is auto', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -145,7 +146,7 @@ describe('integrations helpers', () => {
                     integrationState,
                     neutralInstallationStatus,
                 ),
-            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
         it('should return `not-installed` status when installationStatus report uninstalled', () => {
@@ -189,7 +190,7 @@ describe('integrations helpers', () => {
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
 
-        it('should return `installed` status when chat was removed via 1 click long time ago, but it is somehow installed now', () => {
+        it('should return `offline` status when chat was removed via 1 click long time ago, but it is somehow installed now', () => {
             const integrationState = fromJS({
                 deactivated_datetime: null,
                 meta: {
@@ -212,7 +213,7 @@ describe('integrations helpers', () => {
                     ...neutralInstallationStatus,
                     installed: true,
                 }),
-            ).toEqual(GorgiasChatStatusEnum.INSTALLED)
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
         it('should return `installed` status (despite having "installed": false) if chat was installed recently using 1 click installation', () => {
@@ -257,6 +258,46 @@ describe('integrations helpers', () => {
                     installed: true,
                 }),
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
+        })
+
+        it('should return `offline` when chat has been installed correctly but is outside business hours', () => {
+            const integrationState = fromJS({
+                deactivated_datetime: null,
+                meta: {
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, {
+                    ...neutralInstallationStatus,
+                    isDuringBusinessHours: false,
+                }),
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
+        })
+
+        it('should return `online` when chat has been installed correctly but is during business hours', () => {
+            const integrationState = fromJS({
+                deactivated_datetime: null,
+                meta: {
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, {
+                    ...neutralInstallationStatus,
+                    isDuringBusinessHours: true,
+                }),
+            ).toEqual(GorgiasChatStatusEnum.ONLINE)
         })
     })
 

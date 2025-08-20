@@ -234,6 +234,7 @@ describe('gorgias-chat.actions', () => {
                 installed: false,
                 installedOnShopifyCheckout: false,
                 minimumSnippetVersion: null,
+                isDuringBusinessHours: false,
             }
             const applicationId = '1'
             let mockServer: MockAdapter
@@ -290,6 +291,7 @@ describe('gorgias-chat.actions', () => {
                         installed: false,
                         installedOnShopifyCheckout: false,
                         minimumSnippetVersion: null,
+                        isDuringBusinessHours: false,
                     },
                 ],
             }
