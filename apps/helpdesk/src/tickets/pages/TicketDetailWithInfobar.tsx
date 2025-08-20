@@ -1,3 +1,4 @@
+import { useTicketInfobarNavigation } from '@repo/navigation'
 import { TicketHeader } from '@repo/tickets'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -27,6 +28,7 @@ export function TicketDetailWithInfobar({ onToggleUnread }: Props) {
 
 function TicketDetailContent({ onToggleUnread }: Props) {
     const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const { isExpanded } = useTicketInfobarNavigation()
     const { mode } = useKnowledgeSourceSideBar()
 
     return (
@@ -37,8 +39,12 @@ function TicketDetailContent({ onToggleUnread }: Props) {
                     key="ticket-detail-panel"
                     onToggleUnread={onToggleUnread}
                 />
-                <Handle />
-                <TicketInfobarPanel key="infobar-panel" />
+                {(!hasUIVisionMS1 || isExpanded) && (
+                    <>
+                        <Handle />
+                        <TicketInfobarPanel key="infobar-panel" />
+                    </>
+                )}
                 {hasUIVisionMS1 && (
                     <InfobarNavigationPanel key="infobar-navigation" />
                 )}

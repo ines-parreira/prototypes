@@ -1,5 +1,7 @@
+import { useTicketInfobarNavigation } from '@repo/navigation'
 import { render, screen } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import { Handle } from 'core/layout/panels'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -11,6 +13,16 @@ import { TicketInfobarPanel } from 'tickets/ticket-infobar'
 import { TicketDetailWithInfobar } from './TicketDetailWithInfobar'
 
 const mockOnToggleUnread = jest.fn()
+
+jest.mock('@repo/navigation', () => ({ useTicketInfobarNavigation: jest.fn() }))
+const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
+
+jest.mock('@repo/tickets', () => ({
+    TicketHeader: () => <div>TicketHeader</div>,
+}))
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = jest.mocked(useFlag)
 
 jest.mock('core/layout/panels', () => ({
     Handle: jest.fn(() => <div role="separator">Panel Handle</div>),
@@ -46,6 +58,10 @@ jest.mock(
     }),
 )
 
+jest.mock('tickets/navigation', () => ({
+    InfobarNavigationPanel: () => <div>InfobarNavigationPanel</div>,
+}))
+
 jest.mock('tickets/ticket-detail', () => ({
     TicketDetailPanel: jest.fn(() => (
         <main role="main" aria-label="Ticket Detail">
@@ -76,6 +92,8 @@ const mockedTicketInfobarPanel = jest.mocked(TicketInfobarPanel)
 describe('TicketDetailWithInfobar', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useFlagMock.mockReturnValue(false)
+        useTicketInfobarNavigationMock.mockReturnValue({ isExpanded: true })
     })
 
     describe('when component renders', () => {
@@ -152,6 +170,39 @@ describe('TicketDetailWithInfobar', () => {
                     name: 'Ticket Information',
                 }),
             ).toBeInTheDocument()
+        })
+
+        it('should render the ticket header and the infobar navigation when the flag is enabled', () => {
+            useFlagMock.mockReturnValue(true)
+            render(<TicketDetailWithInfobar />)
+
+            expect(screen.getByText('TicketHeader')).toBeInTheDocument()
+            expect(
+                screen.getByText('InfobarNavigationPanel'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render the ticket infobar when the flag is disabled', () => {
+            render(<TicketDetailWithInfobar />)
+            expect(screen.getByText('Ticket Infobar Panel')).toBeInTheDocument()
+        })
+
+        it('should render the ticket infobar if the flag is enabled and it is expanded', () => {
+            useFlagMock.mockReturnValue(true)
+            render(<TicketDetailWithInfobar />)
+            expect(screen.getByText('Ticket Infobar Panel')).toBeInTheDocument()
+        })
+
+        it('should not render the ticket infobar if the flag is enabled but it is not expanded', () => {
+            useFlagMock.mockReturnValue(true)
+            useTicketInfobarNavigationMock.mockReturnValue({
+                isExpanded: false,
+            })
+
+            render(<TicketDetailWithInfobar />)
+            expect(
+                screen.queryByText('Ticket Infobar Panel'),
+            ).not.toBeInTheDocument()
         })
     })
 

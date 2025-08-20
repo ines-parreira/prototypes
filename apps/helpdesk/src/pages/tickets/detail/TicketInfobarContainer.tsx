@@ -11,6 +11,8 @@ import { AutoQA } from 'auto_qa'
 import { TicketStatus } from 'business/types/ticket'
 import { SegmentEvent } from 'common/segment'
 import { logEvent, logEventWithSampling } from 'common/segment/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -62,6 +64,7 @@ export const TicketInfobarContainer = ({
     sources,
     widgets,
 }: Props) => {
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
     const params = useParams<{ ticketId: string }>()
     const [preferredTab, setPreferredTab] = useSearchParam('activeTab')
     const dispatch = useAppDispatch()
@@ -232,7 +235,7 @@ export const TicketInfobarContainer = ({
                 'hidden-panel': !isOpenedPanel,
             })}
         >
-            {hasAutomate && (
+            {hasAutomate && !hasUIVisionMS1 && (
                 <Navbar className={css.navbar}>
                     {tabs.map((tab) => (
                         <div

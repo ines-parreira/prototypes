@@ -1,3 +1,4 @@
+import { NavigationProvider } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -53,13 +54,15 @@ describe('TicketsPage', () => {
     const renderComponent = (location: string) => {
         return render(
             <Provider store={store}>
-                <StaticRouter location={location}>
-                    <Route path="/app/tickets">
-                        <Panels size={1000}>
-                            <TicketsPage />
-                        </Panels>
-                    </Route>
-                </StaticRouter>
+                <NavigationProvider>
+                    <StaticRouter location={location}>
+                        <Route path="/app/tickets">
+                            <Panels size={1000}>
+                                <TicketsPage />
+                            </Panels>
+                        </Route>
+                    </StaticRouter>
+                </NavigationProvider>
             </Provider>,
         )
     }

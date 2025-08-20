@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
@@ -35,6 +36,9 @@ jest.mock('@repo/navigation', () => ({
     useTicketInfobarNavigation: jest.fn(),
 }))
 const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = jest.mocked(useFlag)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
     __esModule: true,
@@ -132,6 +136,8 @@ describe('<TicketInfobarContainer />', () => {
         store = mockStore(state)
         store.dispatch = jest.fn()
 
+        useFlagMock.mockReturnValue(false)
+
         useHasAIAgentMock.mockReturnValue(true)
         getCurrentUserMock.mockReturnValue(
             fromJS({
@@ -173,6 +179,23 @@ describe('<TicketInfobarContainer />', () => {
         expect(container.firstChild).toHaveTextContent(
             CUSTOMER_DETAILS_TAB.LABEL,
         )
+    })
+
+    it('should not render the navbar if the UI Vision MS1 flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        const customerTab = screen.queryByText(CUSTOMER_DETAILS_TAB.LABEL)
+        expect(customerTab).not.toBeInTheDocument()
     })
 
     it('should not show the AI Feedback tab when AI Agent feature not enabled', () => {

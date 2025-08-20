@@ -1,5 +1,6 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
+import { NavigationProvider } from '@repo/navigation'
 import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
@@ -30,11 +31,13 @@ export const renderWithStoreAndQueryClientAndRouter = (
         ...render(element, {
             wrapper: ({ children }: any) => (
                 <Provider store={store}>
-                    <MockQueryClientProvider>
-                        <Router history={history}>
-                            <Route path={routing.path}>{children}</Route>
-                        </Router>
-                    </MockQueryClientProvider>
+                    <NavigationProvider>
+                        <MockQueryClientProvider>
+                            <Router history={history}>
+                                <Route path={routing.path}>{children}</Route>
+                            </Router>
+                        </MockQueryClientProvider>
+                    </NavigationProvider>
                 </Provider>
             ),
             ...routing.options,

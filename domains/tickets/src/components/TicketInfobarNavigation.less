@@ -1,7 +1,16 @@
 :local {
     .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--layout-spacing-s);
         width: 100%;
         height: 100%;
+        padding: var(--layout-spacing-xs);
         border-left: 1px solid var(--border-neutral-default);
+    }
+
+    .isActive.isActive {
+        background: var(--surface-neutral-secondary);
     }
 }
