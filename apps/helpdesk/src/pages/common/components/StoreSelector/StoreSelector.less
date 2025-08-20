@@ -62,8 +62,13 @@
         flex-shrink: 0;
     }
 
-    .integrationIcon {
+    .integrationIconContainer {
         flex-shrink: 0;
+    }
+
+    .integrationIcon {
+        width: 20px;
+        height: 20px;
     }
 
     .inlineStoreContainer {
@@ -89,7 +94,7 @@
 
     .inlineStoreName {
         font-size: var(--font-size-md);
-        color: var(--text-color-primary);
+        color: var(--neutral-grey-6);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -108,5 +113,9 @@
         white-space: nowrap;
         flex: 1;
         min-width: 0;
+    }
+
+    .dropdownBody {
+        padding: var(--layout-spacing-xs);
     }
 }

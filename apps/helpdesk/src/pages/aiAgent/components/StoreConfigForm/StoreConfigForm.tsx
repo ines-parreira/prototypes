@@ -883,7 +883,7 @@ export const StoreConfigForm = ({
                                     </SettingsCardContent>
                                 </SettingsCard>
                             </section>
-                            <section className={css.section}>
+                            <section>
                                 <SettingsCard>
                                     <SettingsCardHeader>
                                         <SettingsCardTitle>

@@ -135,8 +135,11 @@ export default function StoreSelector({
                 )}
             >
                 <div className={css.inlineStoreContent}>
-                    <div className={css.integrationIcon}>
-                        <IntegrationIcon kind={selected.type} />
+                    <div className={css.integrationIconContainer}>
+                        <IntegrationIcon
+                            kind={selected.type}
+                            className={css.integrationIcon}
+                        />
                     </div>
                     <span
                         ref={inlineNameRef}
@@ -183,8 +186,11 @@ export default function StoreSelector({
                     )}
                 >
                     {selected && (
-                        <div className={css.integrationIcon}>
-                            <IntegrationIcon kind={selected.type} />
+                        <div className={css.integrationIconContainer}>
+                            <IntegrationIcon
+                                kind={selected.type}
+                                className={css.integrationIcon}
+                            />
                         </div>
                     )}
                     <span
@@ -223,6 +229,7 @@ export default function StoreSelector({
                 </span>
             </Button>
             <Dropdown
+                shouldFlip={false}
                 isOpen={isOpen}
                 placement="bottom-start"
                 target={targetRef}
@@ -231,7 +238,7 @@ export default function StoreSelector({
                 matchTriggerWidth
             >
                 {withSearch && <DropdownSearch autoFocus />}
-                <DropdownBody>
+                <DropdownBody className={css.dropdownBody}>
                     {withAllOption && (
                         <>
                             <DropdownItem
