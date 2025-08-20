@@ -93,6 +93,7 @@ export const TagRecommendationRuleCard = ({
                     onUpsert(tags.filter((tag) => tag !== deletedTag))
                 }
                 onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
+                ruleType="tag"
             />
 
             <ItemSelectionDrawer

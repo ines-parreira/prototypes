@@ -87,6 +87,7 @@ export const VendorRecommendationRuleCard = ({
                 itemLabelSingular="vendor"
                 itemLabelPlural="vendors"
                 items={selectedVendors}
+                ruleType="vendor"
                 onDelete={(deletedVendor: string) =>
                     onUpsert(
                         vendors.filter((vendor) => vendor !== deletedVendor),

@@ -1,10 +1,34 @@
-import { fireEvent, render } from '@testing-library/react'
+import { configureStore } from '@reduxjs/toolkit'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
+import * as productRecommendationErrors from '../../types/productRecommendationErrors'
+import * as formatConflictMessageModule from '../../utils/formatConflictMessage'
 import { RecommendationRuleCard } from '../RecommendationRuleCard'
 
 const mockOnAddButtonClick = jest.fn()
 const mockOnDelete = jest.fn()
 const mockOnSeeAllClick = jest.fn()
+const mockDispatch: jest.Mock = jest.fn((action: any) => {
+    if (typeof action === 'function') {
+        const mockGetState = () => ({ notifications: [] })
+        return action(mockDispatch, mockGetState)
+    }
+    return action
+})
+
+jest.mock('hooks/useAppDispatch', () => ({
+    __esModule: true,
+    default: () => mockDispatch,
+}))
+
+const createMockStore = () => {
+    return configureStore({
+        reducer: {
+            notifications: (state = {}) => state,
+        },
+    })
+}
 
 const renderComponent = (
     options: {
@@ -43,28 +67,41 @@ const renderComponent = (
         ],
     } = options
 
+    const store = createMockStore()
+
     return render(
-        <RecommendationRuleCard
-            title={title}
-            description={description}
-            isLoading={isLoading}
-            disableActions={disableActions}
-            hasImages={hasImages}
-            badge={{ label: 'Excluded', type: 'light-error' }}
-            type="exclude"
-            addButton={{ label: 'Add Products', onClick: mockOnAddButtonClick }}
-            itemLabelSingular={itemLabelSingular}
-            itemLabelPlural={itemLabelPlural}
-            items={items}
-            onDelete={mockOnDelete}
-            onSeeAllClick={mockOnSeeAllClick}
-        />,
+        <Provider store={store}>
+            <RecommendationRuleCard
+                title={title}
+                description={description}
+                isLoading={isLoading}
+                disableActions={disableActions}
+                hasImages={hasImages}
+                badge={{ label: 'Excluded', type: 'light-error' }}
+                type="exclude"
+                addButton={{
+                    label: 'Add Products',
+                    onClick: mockOnAddButtonClick,
+                }}
+                itemLabelSingular={itemLabelSingular}
+                itemLabelPlural={itemLabelPlural}
+                items={items}
+                onDelete={mockOnDelete}
+                onSeeAllClick={mockOnSeeAllClick}
+                ruleType="product"
+            />
+        </Provider>,
     )
 }
 
 describe('RecommendationRuleCard', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockOnDelete.mockResolvedValue(undefined)
+        jest.spyOn(
+            productRecommendationErrors,
+            'isProductRecommendationConflictError',
+        ).mockReturnValue(false)
     })
 
     it('should render the component correctly', () => {
@@ -276,5 +313,146 @@ describe('RecommendationRuleCard', () => {
         expect(screen.getByText('Active product')).toBeInTheDocument()
         expect(screen.getByText('Draft product 2')).toBeInTheDocument()
         expect(screen.getByText('No status product')).toBeInTheDocument()
+    })
+
+    it('should handle deletion errors with generic message', async () => {
+        const error = new Error('Network error')
+        mockOnDelete.mockRejectedValue(error)
+
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Product 1' },
+                { id: '2', title: 'Product 2' },
+            ],
+        })
+
+        const removeButton = screen.getAllByRole('button', {
+            name: 'Remove product',
+        })[0]
+
+        await act(async () => {
+            fireEvent.click(removeButton)
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        })
+
+        await waitFor(() => {
+            expect(mockOnDelete).toHaveBeenCalledWith('1')
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+
+        const thunkCalls = mockDispatch.mock.calls.filter(
+            (call: any[]) => typeof call[0] === 'function',
+        )
+        expect(thunkCalls.length).toBeGreaterThan(0)
+    })
+
+    it('should handle conflict errors with formatted message', async () => {
+        const conflictError = {
+            response: {
+                data: {
+                    error: {
+                        code: 'CONFLICT',
+                        details: { conflicts: ['Product A', 'Product B'] },
+                    },
+                },
+            },
+        }
+
+        jest.spyOn(
+            productRecommendationErrors,
+            'isProductRecommendationConflictError',
+        ).mockReturnValue(true)
+        jest.spyOn(
+            formatConflictMessageModule,
+            'formatConflictMessage',
+        ).mockReturnValue('Products A and B are already in another rule')
+
+        mockOnDelete.mockRejectedValue(conflictError)
+
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Product 1' },
+                { id: '2', title: 'Product 2' },
+            ],
+        })
+
+        const removeButton = screen.getAllByRole('button', {
+            name: 'Remove product',
+        })[0]
+
+        await act(async () => {
+            fireEvent.click(removeButton)
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        })
+
+        await waitFor(() => {
+            expect(mockOnDelete).toHaveBeenCalledWith('1')
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+
+        expect(
+            formatConflictMessageModule.formatConflictMessage,
+        ).toHaveBeenCalledWith(conflictError.response.data, 'product')
+
+        const thunkCalls = mockDispatch.mock.calls.filter(
+            (call: any[]) => typeof call[0] === 'function',
+        )
+        expect(thunkCalls.length).toBeGreaterThan(0)
+    })
+
+    it('should reset deletingItemId after successful deletion', async () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Product 1' },
+                { id: '2', title: 'Product 2' },
+            ],
+        })
+
+        const removeButtons = screen.getAllByRole('button', {
+            name: 'Remove product',
+        })
+
+        await act(async () => {
+            fireEvent.click(removeButtons[0])
+        })
+
+        await waitFor(() => {
+            expect(mockOnDelete).toHaveBeenCalledWith('1')
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByRole('button', { name: 'Remove product' }),
+            ).toHaveLength(2)
+        })
+    })
+
+    it('should reset deletingItemId after failed deletion', async () => {
+        mockOnDelete.mockRejectedValue(new Error('Delete failed'))
+
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Product 1' },
+                { id: '2', title: 'Product 2' },
+            ],
+        })
+
+        const removeButtons = screen.getAllByRole('button', {
+            name: 'Remove product',
+        })
+
+        await act(async () => {
+            fireEvent.click(removeButtons[0])
+        })
+
+        await waitFor(() => {
+            expect(mockOnDelete).toHaveBeenCalledWith('1')
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByRole('button', { name: 'Remove product' }),
+            ).toHaveLength(2)
+        })
     })
 })

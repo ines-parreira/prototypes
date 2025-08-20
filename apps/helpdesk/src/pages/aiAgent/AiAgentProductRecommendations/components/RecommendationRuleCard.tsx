@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import {
     Badge,
@@ -9,6 +9,13 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import { ProductRecommendationRuleType } from '../types'
+import { isProductRecommendationConflictError } from '../types/productRecommendationErrors'
+import { formatConflictMessage } from '../utils/formatConflictMessage'
 import { DraftBadge } from './DraftBadge'
 
 import css from './RecommendationRuleCard.less'
@@ -27,6 +34,7 @@ export const RecommendationRuleCard = ({
     items,
     onDelete,
     onSeeAllClick,
+    ruleType,
 }: {
     title: string
     description: string
@@ -50,9 +58,11 @@ export const RecommendationRuleCard = ({
         img?: string
         status?: string
     }>
+    ruleType: ProductRecommendationRuleType
     onDelete: (id: string) => Promise<void>
     onSeeAllClick: () => void
 }) => {
+    const dispatch = useAppDispatch()
     const [deletingItemId, setDeletingItemId] = useState<string | null>(null)
 
     useEffect(() => {
@@ -62,6 +72,37 @@ export const RecommendationRuleCard = ({
             setDeletingItemId(null)
         }
     }, [items, deletingItemId])
+
+    const onDeleteItem = useCallback(
+        (itemId: string) => async () => {
+            try {
+                setDeletingItemId(itemId)
+                await onDelete(itemId)
+            } catch (error) {
+                let errorMessage = 'Failed to save product recommendations.'
+
+                if (
+                    isProductRecommendationConflictError(error) &&
+                    error.response
+                ) {
+                    errorMessage = formatConflictMessage(
+                        error.response.data,
+                        ruleType,
+                    )
+                }
+
+                void dispatch(
+                    notify({
+                        message: errorMessage,
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            } finally {
+                setDeletingItemId(null)
+            }
+        },
+        [onDelete, ruleType, dispatch],
+    )
 
     return (
         <div className={css.card}>
@@ -138,10 +179,7 @@ export const RecommendationRuleCard = ({
                                     size="small"
                                     fillStyle="ghost"
                                     className={css.iconButton}
-                                    onClick={async () => {
-                                        setDeletingItemId(item.id)
-                                        await onDelete(item.id)
-                                    }}
+                                    onClick={onDeleteItem(item.id)}
                                     aria-label={`Remove ${itemLabelSingular}`}
                                     icon="close"
                                     isDisabled={disableActions}

@@ -114,6 +114,7 @@ export const ProductRecommendationRuleCard = ({
                     )
                 }
                 onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
+                ruleType="product"
             />
 
             <ItemSelectionDrawer
