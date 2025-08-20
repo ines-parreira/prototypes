@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
-import { ToggleField } from '@gorgias/axiom'
+import { Button, ToggleField } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
@@ -22,7 +22,6 @@ import {
     GorgiasChatAvatarNameType,
     GorgiasChatBackgroundColorStyle,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ListField from 'pages/common/forms/ListField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'

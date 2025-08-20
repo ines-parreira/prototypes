@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 export const CustomizeTranslationsButton = ({
     integrationId,

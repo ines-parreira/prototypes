@@ -924,22 +924,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               <div>
                 <button
                   aria-disabled="true"
-                  class="wrapper fill primary medium isDisabled"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Add new chat
                   </span>
                 </button>
                 <button
                   aria-disabled="false"
-                  class="wrapper cancelButton fill secondary medium"
+                  class="ui-button-wrapper-a432 cancelButton ui-button-fill-a432 ui-button-secondary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Cancel
                   </span>
@@ -2405,11 +2405,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               <div>
                 <button
                   aria-disabled="true"
-                  class="wrapper fill primary medium isDisabled"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                   type="button"
                 >
                   <svg
-                    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+                    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
                     height="22"
                     preserveAspectRatio="xMidYMid meet"
                     role="status"
@@ -2439,7 +2439,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </span>
                   </svg>
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>
@@ -3905,11 +3905,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>
@@ -5375,11 +5375,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>
@@ -6845,11 +6845,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>
@@ -8315,11 +8315,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>
@@ -9672,22 +9672,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Add new chat
                   </span>
                 </button>
                 <button
                   aria-disabled="false"
-                  class="wrapper cancelButton fill secondary medium"
+                  class="ui-button-wrapper-a432 cancelButton ui-button-fill-a432 ui-button-secondary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Cancel
                   </span>
@@ -11153,11 +11153,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>
@@ -12663,11 +12663,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>
@@ -14045,22 +14045,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               <div>
                 <button
                   aria-disabled="true"
-                  class="wrapper fill primary medium isDisabled"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Add new chat
                   </span>
                 </button>
                 <button
                   aria-disabled="false"
-                  class="wrapper cancelButton fill secondary medium"
+                  class="ui-button-wrapper-a432 cancelButton ui-button-fill-a432 ui-button-secondary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Cancel
                   </span>
@@ -15526,11 +15526,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               <div>
                 <button
                   aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
                   type="submit"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Save changes
                   </span>

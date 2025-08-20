@@ -5,8 +5,9 @@ import { List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { FeatureFlagKey } from 'config/featureFlags'
-import Button from 'pages/common/components/button/Button'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import { IntegrationType } from '../../../../../models/integration/types'

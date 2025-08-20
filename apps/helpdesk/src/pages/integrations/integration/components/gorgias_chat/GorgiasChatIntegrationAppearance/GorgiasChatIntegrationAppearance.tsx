@@ -17,7 +17,7 @@ import {
     Label as ReactStrapLabel,
 } from 'reactstrap'
 
-import { Label, ToggleField, Tooltip } from '@gorgias/axiom'
+import { Button, Label, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -58,7 +58,6 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import * as ToggleButton from 'pages/common/components/ToggleButton'

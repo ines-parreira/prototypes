@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 
+import { Button } from '@gorgias/axiom'
+
 import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,7 +14,6 @@ import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import {
     NavigatedSuccessModalLocationState,

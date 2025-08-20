@@ -2,13 +2,12 @@ import React, { useRef } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import {
     GorgiasChatInstallationVisibilityCondition,
     GorgiasChatInstallationVisibilityConditionOperator,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'

@@ -2,6 +2,8 @@ import React, { useMemo, useRef, useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
+import { Button } from '@gorgias/axiom'
+
 import { SegmentEvent } from 'common/segment'
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
@@ -15,7 +17,6 @@ import {
     GorgiasChatLauncherType,
     IntegrationType,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'

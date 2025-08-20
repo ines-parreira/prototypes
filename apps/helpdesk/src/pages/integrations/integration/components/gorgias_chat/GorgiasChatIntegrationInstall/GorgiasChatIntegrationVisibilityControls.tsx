@@ -10,6 +10,8 @@ import classNames from 'classnames'
 import { Map } from 'immutable'
 import { v4 as uuidv4 } from 'uuid'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     GorgiasChatInstallationVisibility,
     GorgiasChatInstallationVisibilityCondition,
@@ -19,7 +21,6 @@ import {
     GorgiasChatMetaInstallation,
 } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 

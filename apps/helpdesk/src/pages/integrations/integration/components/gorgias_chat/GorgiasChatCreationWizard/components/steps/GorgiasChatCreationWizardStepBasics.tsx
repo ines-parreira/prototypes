@@ -5,7 +5,7 @@ import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
-import { Label, Tooltip } from '@gorgias/axiom'
+import { Button, Label, Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -40,7 +40,6 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import Button from 'pages/common/components/button/Button'
 import {
     Language,
     LanguagePicker,

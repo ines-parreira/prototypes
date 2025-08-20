@@ -15,7 +15,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 
-import { ToggleField, Tooltip } from '@gorgias/axiom'
+import { Button, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -30,7 +30,6 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
-import Button from 'pages/common/components/button/Button'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'

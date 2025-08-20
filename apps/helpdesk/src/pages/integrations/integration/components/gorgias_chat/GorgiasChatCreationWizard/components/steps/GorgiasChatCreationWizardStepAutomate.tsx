@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
-import { Label, ToggleField } from '@gorgias/axiom'
+import { Button, Label, ToggleField } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -20,7 +20,6 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
