@@ -16,11 +16,17 @@ import { logEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { useStoresKnowledgeStatus } from 'pages/aiAgent/hooks/useStoresKnowledgeStatus'
+import {
+    payingWithCreditCard,
+    storeWithActiveSubscriptionWithAutomation,
+} from 'pages/settings/new_billing/fixtures'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { SalesEarlyAccessUtils } from '../../utils'
@@ -86,14 +92,7 @@ const storeConfigurations: Record<string, StoreConfiguration> = {
 }
 
 const defaultState = {
-    billing: fromJS({
-        products: [
-            {
-                type: 'helpdesk',
-                prices: [{ amount: 100, cadence: 'month' }],
-            },
-        ],
-    }),
+    billing: fromJS(billingState),
     currentAccount: fromJS(account),
     currentUser: fromJS({
         role: {
@@ -163,25 +162,9 @@ const mockSubscriptionUpdateApi = jest.fn(() =>
     Promise.resolve({
         data: {
             success: true,
-            subscription: {
-                id: 'sub_updated',
-                status: 'active',
-            },
-            current_plans: {
-                helpdesk: {
-                    id: 'plan_123',
-                    name: 'Pro',
-                    price: 100,
-                    interval: 'month',
-                },
-                automation: {
-                    id: 'plan_automation',
-                    price_id: 'price_automation',
-                    name: 'AI Agent',
-                    price: 50,
-                    interval: 'month',
-                },
-            },
+            products:
+                storeWithActiveSubscriptionWithAutomation.currentAccount
+                    .current_subscription.products,
         },
     }),
 )
@@ -207,33 +190,8 @@ jest.spyOn(axios, 'put').mockImplementation((url, data) => {
     }
 })
 
-const defaultBillingState = {
-    upcoming_invoice: null,
-    subscription: {
-        id: 'sub_123',
-        status: 'active',
-        current_period_end: '2024-12-31T23:59:59Z',
-    },
-    customer: {
-        id: 'cus_123',
-        email: 'test@example.com',
-    },
-    current_plans: {
-        helpdesk: {
-            id: 'plan_123',
-            name: 'Pro',
-            price: 100,
-            interval: 'month',
-        },
-        automation: {
-            price_id: 'price_123',
-        },
-        automate: { generation: 5 },
-        convert: null,
-    },
-}
 const mockBillingStateApi = jest.fn(() =>
-    Promise.resolve({ data: defaultBillingState }),
+    Promise.resolve({ data: payingWithCreditCard }),
 )
 jest.spyOn(axios, 'get').mockImplementation(async (url) => {
     if (url === '/billing/state') {
@@ -242,12 +200,7 @@ jest.spyOn(axios, 'get').mockImplementation(async (url) => {
     } else if (url === '/api/billing/early-access-automate-plan') {
         return Promise.resolve({
             data: {
-                plan: {
-                    id: 'early_access_plan',
-                    name: 'Early Access',
-                    price: 50,
-                    interval: 'month',
-                },
+                plan: earlyAccessMonthlyAutomationPlan,
             },
         })
     } else if (

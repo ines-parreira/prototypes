@@ -1,4 +1,5 @@
 import {
+    AutomateEarlyAccessPlan,
     AutomatePlan,
     AutomatePlanFeatures,
     Cadence,
@@ -321,6 +322,23 @@ export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
     price_id: 'price_1LJBjfI9qXomtXqSeKJ5lJjD',
     public: true,
     tier: HelpdeskPlanTier.ADVANCED,
+}
+
+export const earlyAccessMonthlyAutomationPlan: AutomateEarlyAccessPlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Month,
+    extra_ticket_cost: 0.2,
+    num_quota_tickets: 30,
+    currency: 'usd',
+    features: automatePlanFeatures,
+    plan_id: 'aut-free-monthly-usd-6',
+    name: 'Early Access',
+    product: ProductType.Automation,
+    price_id: 'price_1ReIi0I9qXomtXqSUuD5bDGN',
+    amount_after_discount: 3000,
+    discount: 100,
 }
 
 export const basicMonthlyAutomationPlan: AutomatePlan = {

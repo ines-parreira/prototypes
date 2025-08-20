@@ -4,6 +4,7 @@ import { account } from 'fixtures/account'
 import { shopifyIntegration } from 'fixtures/integrations'
 import {
     automate02MonthlyMeteredPlan,
+    AUTOMATION_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
     convertPlan1,
@@ -52,6 +53,20 @@ export const storeWithCanceledSubscription = {
         currentProductsUsage: {},
     }),
     integrations: fromJS({ integrations: [shopifyIntegration] }),
+}
+
+export const storeWithActiveSubscriptionWithAutomation = {
+    currentAccount: fromJS({
+        ...account,
+        current_subscription: {
+            ...account.current_subscription,
+            products: {
+                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
+                [AUTOMATION_PRODUCT_ID]: automate02MonthlyMeteredPlan.price_id,
+            },
+        },
+    }),
+    billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
 }
 
 export const storeWithActiveSubscriptionWithConvert = {
