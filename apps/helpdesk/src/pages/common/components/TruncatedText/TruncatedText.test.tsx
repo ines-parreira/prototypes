@@ -29,4 +29,15 @@ describe('TruncatedText', () => {
             expect(screen.getByText('Updated text')).toBeInTheDocument()
         })
     })
+    it.each([
+        ['Hello.world#123', 'truncated-text-hello-world-123'],
+        ['User[admin].profile', 'truncated-text-user-admin-profile'],
+        ['homegrowncannabisco.com', 'truncated-text-homegrowncannabisco-com'],
+    ])(
+        'should render text with correct id when the text contains special characters',
+        (text, id) => {
+            render(<TruncatedText text={text} />)
+            expect(screen.getByText(text)).toHaveAttribute('id', id)
+        },
+    )
 })
