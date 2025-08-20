@@ -266,7 +266,7 @@ describe('AiAgentReasoning', () => {
                     },
                     {
                         responseType: 'TASK',
-                        value: 'Sales <<<ARTICLE::16::13608>>> Support <<<GUIDANCE::26665::1045245>>> <<<ACTION::01J7KWHHMDY3H5S174D89VG7S3>>> <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>> <<<ORDER::98765>>>',
+                        value: 'Sales <<<article::16::13608>>> Support <<<guidance::26665::1045245>>> <<<action::01J7KWHHMDY3H5S174D89VG7S3>>> <<<file_external_snippet::78::12345>>> <<<external_snippet::89::54321>>> <<<order::98765>>> Product info <<<product::12345::knowledge>>> Recommended <<<product::67890::recommendation>>>',
                     },
                 ],
                 resources: [
@@ -317,6 +317,20 @@ describe('AiAgentReasoning', () => {
                         resourceLocale: 'en',
                         taskIds: [],
                     },
+                    {
+                        resourceType: 'PRODUCT_KNOWLEDGE',
+                        resourceId: '12345',
+                        resourceTitle: 'Product Knowledge',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
+                    {
+                        resourceType: 'PRODUCT_RECOMMENDATION',
+                        resourceId: '67890',
+                        resourceTitle: 'Product Recommendation',
+                        resourceLocale: 'en',
+                        taskIds: [],
+                    },
                 ],
                 storeConfiguration: {
                     shopName: 'Test Shop',
@@ -364,6 +378,18 @@ describe('AiAgentReasoning', () => {
                     title: 'Order #98765',
                     content: 'Order details',
                     url: '/app/orders/98765/details',
+                    isDeleted: false,
+                },
+                {
+                    title: 'Product Knowledge',
+                    content: 'Product knowledge content',
+                    url: 'https://example.com/product-knowledge',
+                    isDeleted: false,
+                },
+                {
+                    title: 'Product Recommendation',
+                    content: 'Product recommendation content',
+                    url: 'https://example.com/product-recommendation',
                     isDeleted: false,
                 },
             ],
@@ -479,7 +505,7 @@ describe('AiAgentReasoning', () => {
                         },
                         {
                             responseType: 'TASK',
-                            value: 'Sales <<<ARTICLE::16::13608>>> Support',
+                            value: 'Sales <<<article::16::13608>>> Support',
                             targetId: 'task1',
                         },
                     ],
@@ -582,10 +608,41 @@ describe('AiAgentReasoning', () => {
             ).toBeInTheDocument()
             expect(screen.getByText(/Sales/)).toBeInTheDocument()
             expect(screen.getByText(/Support/)).toBeInTheDocument()
+            expect(screen.getByText(/Product info/)).toBeInTheDocument()
+            expect(screen.getByText(/Recommended/)).toBeInTheDocument()
 
+            const icons = screen.getAllByTestId(/knowledge-source-icon-/)
+            expect(icons.length).toBeGreaterThan(0)
+
+            // Verify all resource types are present
             expect(
-                screen.getAllByTestId(/knowledge-source-icon-/).length,
-            ).toBeGreaterThan(0)
+                screen.getByTestId('knowledge-source-icon-ARTICLE'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('knowledge-source-icon-GUIDANCE'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('knowledge-source-icon-ACTION'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId(
+                    'knowledge-source-icon-FILE_EXTERNAL_SNIPPET',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('knowledge-source-icon-EXTERNAL_SNIPPET'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('knowledge-source-icon-ORDER'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('knowledge-source-icon-PRODUCT_KNOWLEDGE'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId(
+                    'knowledge-source-icon-PRODUCT_RECOMMENDATION',
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should show Give Feedback button when expanded', () => {
@@ -629,11 +686,12 @@ describe('AiAgentReasoning', () => {
             expandComponent()
 
             const popovers = screen.getAllByTestId(/knowledge-source-popover-/)
-            expect(popovers.length).toBeGreaterThan(0)
+            expect(popovers.length).toBe(8)
 
-            const firstPopover = popovers[0]
-            expect(firstPopover).toHaveAttribute('data-title')
-            expect(firstPopover).toHaveAttribute('data-url')
+            popovers.forEach((popover) => {
+                expect(popover).toHaveAttribute('data-title')
+                expect(popover).toHaveAttribute('data-url')
+            })
         })
 
         it('should render different knowledge source icon types correctly', () => {
@@ -641,10 +699,17 @@ describe('AiAgentReasoning', () => {
             expandComponent()
 
             const icons = screen.getAllByTestId(/knowledge-source-icon-/)
-            expect(icons.length).toBeGreaterThan(0)
+            expect(icons.length).toBe(8)
 
             const iconTypes = icons.map((icon) => icon.textContent)
-            expect(iconTypes.some((type) => type && type.length > 0)).toBe(true)
+            expect(iconTypes).toContain('ARTICLE')
+            expect(iconTypes).toContain('GUIDANCE')
+            expect(iconTypes).toContain('ACTION')
+            expect(iconTypes).toContain('FILE_EXTERNAL_SNIPPET')
+            expect(iconTypes).toContain('EXTERNAL_SNIPPET')
+            expect(iconTypes).toContain('ORDER')
+            expect(iconTypes).toContain('PRODUCT_KNOWLEDGE')
+            expect(iconTypes).toContain('PRODUCT_RECOMMENDATION')
         })
     })
 
@@ -1031,7 +1096,7 @@ describe('AiAgentReasoning', () => {
                         },
                         {
                             responseType: 'TASK',
-                            value: 'Test <<<ARTICLE::16::13608>>> content',
+                            value: 'Test <<<article::16::13608>>> content',
                         },
                     ],
                     resources: [
@@ -1141,6 +1206,22 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
             },
+            {
+                resourceType: 'PRODUCT_KNOWLEDGE' as const,
+                resourceId: '12345',
+                resourceSetId: '',
+                resourceTitle: 'Product Knowledge',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
+            {
+                resourceType: 'PRODUCT_RECOMMENDATION' as const,
+                resourceId: '67890',
+                resourceSetId: '',
+                resourceTitle: 'Product Recommendation',
+                resourceLocale: 'en',
+                taskIds: [],
+            },
         ]
 
         const expectedArticleResource = {
@@ -1183,15 +1264,27 @@ describe('AiAgentReasoning', () => {
             resourceTitle: '#98765',
         }
 
+        const expectedProductKnowledgeResource = {
+            resourceType: 'PRODUCT_KNOWLEDGE',
+            resourceId: '12345',
+            resourceTitle: 'Product Knowledge',
+        }
+
+        const expectedProductRecommendationResource = {
+            resourceType: 'PRODUCT_RECOMMENDATION',
+            resourceId: '67890',
+            resourceTitle: 'Product Recommendation',
+        }
+
         it.each([
             [
                 'ARTICLE',
-                'Some text <<<ARTICLE::16::13608>>> more text',
+                'Some text <<<article::16::13608>>> more text',
                 [expectedArticleResource],
             ],
             [
                 'GUIDANCE',
-                'Text with <<<GUIDANCE::26665::1045245>>> guidance',
+                'Text with <<<guidance::26665::1045245>>> guidance',
                 [expectedGuidanceResource],
             ],
             [
@@ -1202,15 +1295,25 @@ describe('AiAgentReasoning', () => {
 
             [
                 'FILE_EXTERNAL_SNIPPET',
-                'File <<<FILE_EXTERNAL_SNIPPET::78::12345>>> snippet',
+                'File <<<file_external_snippet::78::12345>>> snippet',
                 [expectedFileExternalSnippetResource],
             ],
             [
                 'EXTERNAL_SNIPPET',
-                'External <<<EXTERNAL_SNIPPET::89::54321>>> snippet',
+                'External <<<external_snippet::89::54321>>> snippet',
                 [expectedExternalSnippetResource],
             ],
-            ['ORDER', 'Order <<<ORDER::98765>>> data', [expectedOrderResource]],
+            ['ORDER', 'Order <<<order::98765>>> data', [expectedOrderResource]],
+            [
+                'PRODUCT_KNOWLEDGE',
+                'Product <<<product::12345::knowledge>>> info',
+                [expectedProductKnowledgeResource],
+            ],
+            [
+                'PRODUCT_RECOMMENDATION',
+                'Recommend <<<product::67890::recommendation>>> product',
+                [expectedProductRecommendationResource],
+            ],
         ])(
             'should parse %s resources correctly',
             (resourceType, content, expected) => {
@@ -1221,20 +1324,24 @@ describe('AiAgentReasoning', () => {
 
         it('should parse all resource types in a single string', () => {
             const content = `
-                Test <<<ARTICLE::16::13608>>> <<<GUIDANCE::26665::1045245>>>
+                Test <<<article::16::13608>>> <<<guidance::26665::1045245>>>
                 <<<action_execution::uuid>>>
-                <<<FILE_EXTERNAL_SNIPPET::78::12345>>> <<<EXTERNAL_SNIPPET::89::54321>>>
-                <<<ORDER::98765>>>
+                <<<file_external_snippet::78::12345>>> <<<external_snippet::89::54321>>>
+                <<<order::98765>>>
+                <<<product::12345::knowledge>>>
+                <<<product::67890::recommendation>>>
             `
             const result = parseReasoningResources(content, mockResources)
 
-            expect(result).toHaveLength(6)
+            expect(result).toHaveLength(8)
             expect(result[0]).toEqual(expectedArticleResource)
             expect(result[1]).toEqual(expectedGuidanceResource)
             expect(result[2]).toEqual(expectedActionResource)
             expect(result[3]).toEqual(expectedFileExternalSnippetResource)
             expect(result[4]).toEqual(expectedExternalSnippetResource)
             expect(result[5]).toEqual(expectedOrderResource)
+            expect(result[6]).toEqual(expectedProductKnowledgeResource)
+            expect(result[7]).toEqual(expectedProductRecommendationResource)
         })
 
         it('should return empty array when no resources found', () => {
@@ -1253,7 +1360,7 @@ describe('AiAgentReasoning', () => {
 
         it('should handle malformed resource patterns', () => {
             const content =
-                'Text <<<INVALID::FORMAT>>> and <<<UNKNOWN::TYPE::123>>> more text'
+                'Text <<<invalid::format>>> and <<<unknown::type::123>>> more text'
             const result = parseReasoningResources(content, mockResources)
 
             expect(result).toEqual([])
@@ -1261,7 +1368,7 @@ describe('AiAgentReasoning', () => {
 
         it('should handle duplicate resources', () => {
             const content =
-                'Text <<<ARTICLE::16::13608>>> and <<<ARTICLE::16::13608>>> again'
+                'Text <<<article::16::13608>>> and <<<article::16::13608>>> again'
             const result = parseReasoningResources(content, mockResources)
 
             expect(result).toEqual([

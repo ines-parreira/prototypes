@@ -27,10 +27,21 @@ type AiAgentReasoningProps = {
     messageId: number
 }
 
-export const coerceResourceType = (resourceType: string) => {
+export const coerceResourceType = (parts: string[]) => {
+    const [resourceType, ...additionalParts] = parts
+
     switch (resourceType) {
         case 'action_execution':
             return AiAgentKnowledgeResourceTypeEnum.ACTION
+        case 'product':
+            const subType = additionalParts[1]
+            if (subType === 'knowledge') {
+                return AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE
+            }
+            if (subType === 'recommendation') {
+                return AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION
+            }
+            return AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE
         default:
             return resourceType.toUpperCase() as AiAgentKnowledgeResourceTypeEnum
     }
@@ -50,7 +61,7 @@ export const parseReasoningResources = (
                 .split('::')
             let metadata
 
-            const resourceType = coerceResourceType(stringParts[0])
+            const resourceType = coerceResourceType(stringParts)
 
             switch (resourceType) {
                 case AiAgentKnowledgeResourceTypeEnum.ARTICLE:
@@ -82,6 +93,8 @@ export const parseReasoningResources = (
                         resourceTitle: metadata?.resourceTitle,
                     }
                 case AiAgentKnowledgeResourceTypeEnum.ORDER:
+                case AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE:
+                case AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION:
                     metadata = resources.find(
                         (resource) =>
                             resource.resourceId === stringParts[1] &&
