@@ -31,7 +31,7 @@ export const OpportunityDetailsCard = ({
     }, [type])
 
     return (
-        <div className={css.container}>
+        <div className={css.contentContainer}>
             <h3 className={css.title}>Opportunity</h3>
             <p className={css.description}>
                 {description || defaultDescription}

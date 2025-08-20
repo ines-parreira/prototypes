@@ -76,11 +76,7 @@ export const OpportunitiesLayout = () => {
     const isLoading = isStoreConfigLoading || isLoadingAiArticles
 
     return (
-        <div
-            className={css.wrapper}
-            data-overflow="visible"
-            data-ai-opportunities
-        >
+        <div className={css.wrapper} data-ai-opportunities>
             <div className={css.layout}>
                 <OpportunitiesSidebar
                     opportunities={opportunities}

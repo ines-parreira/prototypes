@@ -6,19 +6,13 @@
     .sidebar {
         display: flex;
         width: 300px;
-        height: 100%;
+        min-height: 0; // Critical for flexbox overflow
         flex-direction: column;
         align-items: center;
         flex-shrink: 0;
         border-radius: var(--sm-12, 12px);
         border: 1px solid var(--neutral-grey-2);
         background: var(--neutral-grey-0) !important;
-        box-shadow:
-            74px 82px 31px 0 rgba(0, 0, 0, 0),
-            48px 53px 28px 0 rgba(0, 0, 0, 0.01),
-            27px 30px 24px 0 rgba(0, 0, 0, 0.03),
-            12px 13px 18px 0 rgba(0, 0, 0, 0.04),
-            3px 3px 10px 0 rgba(0, 0, 0, 0.05);
         overflow: hidden;
     }
 
@@ -26,6 +20,7 @@
         width: 100%;
         padding: var(--layout-spacing-s);
         border-bottom: 1px solid var(--neutral-grey-2);
+        flex-shrink: 0; // Prevent header from shrinking
     }
 
     .title {
@@ -36,9 +31,11 @@
 
     .containerContent {
         flex: 1;
+        min-height: 0; // Critical for allowing scroll
         width: 100%;
         padding: var(--layout-spacing-xs);
         overflow-y: auto;
+        overflow-x: hidden;
         background: var(--neutral-grey-0) !important;
     }
 

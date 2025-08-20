@@ -61,13 +61,13 @@ export const OpportunityCard = ({
             onMouseLeave={() => setIsHovered(false)}
             onClick={onSelect}
         >
-            <div className={css.infoSection}>
+            <div className={css.iconSection}>
                 <i className={classNames('material-icons', css.infoIcon)}>
                     {infoContent.icon}
                 </i>
-                <span className={css.infoText}>{infoContent.text}</span>
             </div>
-            <div className={css.header}>
+            <div className={css.infoSection}>
+                <span className={css.infoText}>{infoContent.text}</span>
                 <span ref={titleCallbackRef} className={css.title}>
                     {title}
                 </span>

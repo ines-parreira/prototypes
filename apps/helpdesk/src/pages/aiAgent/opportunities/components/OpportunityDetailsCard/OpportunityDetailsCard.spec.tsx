@@ -70,7 +70,7 @@ describe('OpportunityDetailsCard', () => {
                 name: 'Opportunity',
             })
             expect(heading).toBeInTheDocument()
-            expect(heading).toHaveClass('title')
+            expect(heading.tagName).toBe('H3')
         })
 
         it('should handle long titles appropriately', () => {
@@ -121,7 +121,7 @@ describe('OpportunityDetailsCard', () => {
                 name: 'Opportunity',
             })
             expect(heading).toBeInTheDocument()
-            expect(heading).toHaveClass('title')
+            expect(heading.tagName).toBe('H3')
         })
     })
 
@@ -175,11 +175,11 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            const descriptionElement = document.querySelector('.description')
-            expect(descriptionElement).toBeInTheDocument()
-            expect(descriptionElement).toHaveTextContent(
-                /Review and approve this AI-generated Guidance/,
-            )
+            expect(
+                screen.getByText(
+                    /Review and approve this AI-generated Guidance/,
+                ),
+            ).toBeInTheDocument()
         })
     })
 
@@ -192,9 +192,13 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            const containerElement = container.querySelector('.container')
-            const titleElement = container.querySelector('.title')
-            const descriptionElement = container.querySelector('.description')
+            const containerElement = container.firstElementChild
+            const titleElement = screen.getByRole('heading', {
+                name: 'Opportunity',
+            })
+            const descriptionElement = screen.getByText(
+                /Review and approve this AI-generated Guidance/,
+            )
 
             expect(containerElement).toBeInTheDocument()
             expect(titleElement).toBeInTheDocument()
@@ -209,13 +213,16 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            const containerElement = container.querySelector('.container')
-            const titleElement = containerElement?.querySelector('.title')
-            const descriptionElement =
-                containerElement?.querySelector('.description')
+            const containerElement = container.firstElementChild
+            const titleElement = screen.getByRole('heading', {
+                name: 'Opportunity',
+            })
+            const descriptionElement = screen.getByText(
+                /Review and approve this AI-generated Guidance/,
+            )
 
-            expect(titleElement?.parentElement).toBe(containerElement)
-            expect(descriptionElement?.parentElement).toBe(containerElement)
+            expect(titleElement.parentElement).toBe(containerElement)
+            expect(descriptionElement.parentElement).toBe(containerElement)
         })
 
         it('should render in correct order', () => {
@@ -226,11 +233,15 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            const containerElement = container.querySelector('.container')
+            const containerElement = container.firstElementChild
             const children = containerElement?.children
 
-            expect(children?.[0]).toHaveClass('title')
-            expect(children?.[1]).toHaveClass('description')
+            expect(children?.[0].tagName).toBe('H3')
+            expect(children?.[0]).toHaveTextContent('Opportunity')
+            expect(children?.[1].tagName).toBe('P')
+            expect(children?.[1]).toHaveTextContent(
+                /Review and approve this AI-generated Guidance/,
+            )
         })
     })
 
@@ -256,7 +267,7 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            expect(container.querySelector('.container')).toBeInTheDocument()
+            expect(container.firstElementChild).toBeInTheDocument()
             expect(screen.getByText('Opportunity')).toBeInTheDocument()
         })
 
@@ -275,9 +286,15 @@ describe('OpportunityDetailsCard', () => {
                 />,
             )
 
-            expect(container.querySelector('.container')).toBeInTheDocument()
-            expect(container.querySelector('.title')).toBeInTheDocument()
-            expect(container.querySelector('.description')).toBeInTheDocument()
+            expect(container.firstElementChild).toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', { name: 'Opportunity' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /Review and approve this AI-generated Guidance/,
+                ),
+            ).toBeInTheDocument()
         })
     })
 })

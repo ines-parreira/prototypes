@@ -7,7 +7,7 @@
         display: flex;
         flex: 1;
         flex-shrink: 0;
-        height: 100%;
+        min-height: 0; // Critical for flexbox overflow
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
@@ -24,11 +24,12 @@
 
         .header {
             width: 100%;
-            padding: var(--layout-spacing-s);
+            padding: 12px var(--layout-spacing-s);
             border-bottom: 1px solid var(--neutral-grey-2);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0; // Prevent header from shrinking
         }
 
         .approveButton {
@@ -57,16 +58,18 @@
             padding: var(--layout-spacing-s);
             display: flex;
             flex: 1;
+            min-height: 0; // Critical for allowing scroll
             width: 100%;
             background: var(--neutral-grey-0) !important;
             overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .opportunityDetails {
             display: flex;
             flex-direction: column;
             width: 100%;
-            gap: var(--layout-spacing-m);
+            gap: var(--layout-spacing-s);
         }
 
         .guidanceFormWrapper {

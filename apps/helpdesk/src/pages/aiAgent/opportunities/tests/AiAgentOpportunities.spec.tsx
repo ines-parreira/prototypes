@@ -164,7 +164,6 @@ describe('AiAgentOpportunities', () => {
 
         const wrapper = container.querySelector('[data-ai-opportunities]')
         expect(wrapper).toBeInTheDocument()
-        expect(wrapper).toHaveAttribute('data-overflow', 'visible')
     })
 
     it('should render OpportunitiesSidebar and OpportunitiesContent', () => {
