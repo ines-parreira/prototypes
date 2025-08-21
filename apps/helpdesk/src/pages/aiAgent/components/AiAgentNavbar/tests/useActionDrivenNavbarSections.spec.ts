@@ -191,7 +191,7 @@ describe('useActionDrivenNavbarSections', () => {
             expect(result.current.selectedStore).toBe('teststore2')
         })
 
-        it('should redirect to first store overview when no store in params', () => {
+        it('should redirect to first store root when no store in params', () => {
             Object.defineProperty(window, 'location', {
                 value: {
                     pathname: '/app/ai-agent',
@@ -211,7 +211,7 @@ describe('useActionDrivenNavbarSections', () => {
             renderHook(() => useActionDrivenNavbarSections())
 
             expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-agent/shopify/teststore1/overview',
+                '/app/ai-agent/shopify/teststore1',
             )
         })
 
@@ -421,7 +421,7 @@ describe('useActionDrivenNavbarSections', () => {
             )
         })
 
-        it('should default to overview when no specific path', () => {
+        it('should default to root when no specific path', () => {
             mockUseParams.mockReturnValue({})
             Object.defineProperty(window, 'location', {
                 value: {
@@ -444,7 +444,7 @@ describe('useActionDrivenNavbarSections', () => {
             })
 
             expect(mockPush).toHaveBeenCalledWith(
-                '/app/ai-agent/shopify/teststore2/overview',
+                '/app/ai-agent/shopify/teststore2',
             )
         })
     })

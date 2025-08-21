@@ -109,7 +109,7 @@ const mockBigCommerceIntegration: StoreIntegration = {
 
 const mockNavigationItems = [
     {
-        route: '/app/ai-agent/shopify/test-store/overview',
+        route: '/app/ai-agent/shopify/test-store',
         title: 'Overview',
         exact: true,
     },

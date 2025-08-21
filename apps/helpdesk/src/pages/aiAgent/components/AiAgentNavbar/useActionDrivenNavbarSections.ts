@@ -51,7 +51,7 @@ export const useActionDrivenNavbarSections = () => {
             const firstShopName = getShopNameFromStoreIntegration(firstStore)
             if (firstShopName) {
                 history.replace(
-                    `/app/ai-agent/${currentIntegrationType}/${firstShopName}/overview`,
+                    `/app/ai-agent/${currentIntegrationType}/${firstShopName}`,
                 )
                 setSelectedStore(firstShopName)
             }
@@ -127,11 +127,11 @@ export const useActionDrivenNavbarSections = () => {
             const integrationType = pathMatch
                 ? pathMatch[1]
                 : currentIntegrationType
-            const restOfPath = pathMatch ? pathMatch[2] : 'overview'
+            const restOfPath = pathMatch ? pathMatch[2] : ''
 
             const isActivated = getStoreActivationStatus(shopName)
             const nextPath = isActivated
-                ? `/app/ai-agent/${integrationType}/${shopName}/${restOfPath}`
+                ? `/app/ai-agent/${integrationType}/${shopName}${restOfPath ? `/${restOfPath}` : ''}`
                 : `/app/ai-agent/${integrationType}/${shopName}`
 
             history.push(nextPath)

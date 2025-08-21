@@ -9,7 +9,7 @@ import { ActionDrivenNavigationItems } from '../ActionDrivenNavigationItems'
 
 const mockNavigationItems: NavigationItem[] = [
     {
-        route: '/app/ai-agent/shopify/test-store/overview',
+        route: '/app/ai-agent/shopify/test-store',
         title: 'Overview',
         exact: true,
         dataCanduId: 'overview',
@@ -124,7 +124,7 @@ describe('ActionDrivenNavigationItems', () => {
         const overviewLink = screen.getByRole('link', { name: 'Overview' })
         expect(overviewLink).toHaveAttribute(
             'href',
-            '/app/ai-agent/shopify/test-store/overview',
+            '/app/ai-agent/shopify/test-store',
         )
     })
 
@@ -231,7 +231,7 @@ describe('ActionDrivenNavigationItems', () => {
         expect(overviewItem).toHaveAttribute('data-candu-id', 'overview')
         expect(overviewItem).toHaveAttribute(
             'href',
-            '/app/ai-agent/shopify/test-store/overview',
+            '/app/ai-agent/shopify/test-store',
         )
     })
 
