@@ -1,14 +1,17 @@
+import { ComponentProps } from 'react'
+
 import { render } from '@testing-library/react'
-import { ReactFlowProvider } from '@xyflow/react'
+
+import { FlowProvider } from 'core/ui/flows'
 
 import { EndCallNode } from '../EndCallNode'
 
 describe('EndCallNode', () => {
     it('should render with correct label', () => {
         const { container, getByText } = render(
-            <ReactFlowProvider>
-                <EndCallNode />
-            </ReactFlowProvider>,
+            <FlowProvider>
+                <EndCallNode {...({} as ComponentProps<typeof EndCallNode>)} />
+            </FlowProvider>,
         )
 
         expect(getByText('End Call')).toBeInTheDocument()

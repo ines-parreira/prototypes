@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react'
+
 import { Meta, StoryObj } from '@storybook/react'
 import { Edge, Node } from '@xyflow/react'
 
@@ -111,6 +113,8 @@ const customEdges: Edge[] = [
     },
 ]
 
+const nodeWrapperProps = {} as ComponentProps<typeof NodeWrapper>
+
 export const WithCustomNodes: Story = {
     render: (args) => (
         <div style={{ height: '400px', width: '100%' }}>
@@ -142,7 +146,7 @@ export const WithCustomNodes: Story = {
                             alignItems: 'center',
                         }}
                     >
-                        <NodeWrapper>
+                        <NodeWrapper {...nodeWrapperProps}>
                             <div>{data.label}</div>
                         </NodeWrapper>
                     </div>
@@ -179,7 +183,7 @@ export const WithActionLabelAndStepCardNodes: Story = {
         nodeTypes: {
             inputNode: ({ data }: { data: { label: string } }) => {
                 return (
-                    <NodeWrapper>
+                    <NodeWrapper {...nodeWrapperProps}>
                         <ActionLabel
                             label={data.label}
                             icon={<i className={'material-icons'}>start</i>}
@@ -189,7 +193,7 @@ export const WithActionLabelAndStepCardNodes: Story = {
             },
             outputNode: ({ data }: { data: { label: string } }) => {
                 return (
-                    <NodeWrapper>
+                    <NodeWrapper {...nodeWrapperProps}>
                         <ActionLabel
                             label={data.label}
                             icon={<i className={'material-icons'}>stop</i>}
@@ -199,7 +203,7 @@ export const WithActionLabelAndStepCardNodes: Story = {
             },
             stepNode: ({ data }: { data: { label: string } }) => {
                 return (
-                    <NodeWrapper>
+                    <NodeWrapper {...nodeWrapperProps}>
                         <StepCard
                             title={data.label}
                             description={'This is a random description'}

@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react'
+
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -16,7 +18,7 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
-import { ReactFlowProvider } from 'core/ui/flows'
+import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowFormValues } from '../../types'
@@ -87,12 +89,16 @@ describe('TimeSplitConditionalNode', () => {
         mockStep: TimeSplitConditionalStep,
         mockFlowData: VoiceFlowFormValues,
     ) => {
+        const props = {
+            data: mockStep,
+        } as ComponentProps<typeof TimeSplitConditionalNode>
+
         return renderWithStoreAndQueryClientProvider(
-            <ReactFlowProvider>
+            <FlowProvider>
                 <Form defaultValues={mockFlowData} onValidSubmit={jest.fn()}>
-                    <TimeSplitConditionalNode data={mockStep} />
+                    <TimeSplitConditionalNode {...props} />
                 </Form>
-            </ReactFlowProvider>,
+            </FlowProvider>,
         )
     }
 

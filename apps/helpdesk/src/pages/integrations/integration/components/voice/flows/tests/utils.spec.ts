@@ -233,7 +233,7 @@ describe('utils', () => {
 
             const nodes = transformToReactFlowNodes(flow)
 
-            expect(nodes).toEqual([
+            const expectedNodes = [
                 {
                     ...INCOMING_CALL_NODE,
                     data: {
@@ -332,7 +332,14 @@ describe('utils', () => {
                 {
                     ...END_CALL_NODE,
                 },
-            ])
+            ]
+
+            expect(nodes).toEqual(
+                expectedNodes.map((node) => ({
+                    ...node,
+                    position: { x: 0, y: 0 },
+                })),
+            )
         })
     })
 })

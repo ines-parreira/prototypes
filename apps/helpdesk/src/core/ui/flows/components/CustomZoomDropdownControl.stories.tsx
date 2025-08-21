@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { ReactFlowProvider } from '../index'
+import { FlowProvider } from '../index'
 import { CustomZoomDropdownControl } from './CustomZoomDropdownControl'
 
 const meta: Meta = {
@@ -14,8 +14,8 @@ type Story = StoryObj<typeof CustomZoomDropdownControl>
 
 export const Default: Story = {
     render: () => (
-        <ReactFlowProvider>
+        <FlowProvider>
             <CustomZoomDropdownControl />
-        </ReactFlowProvider>
+        </FlowProvider>
     ),
 }

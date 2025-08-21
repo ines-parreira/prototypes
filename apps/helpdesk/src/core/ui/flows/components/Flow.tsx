@@ -1,11 +1,13 @@
-import { ComponentProps } from 'react'
+import { Edge, Node, ReactFlow, ReactFlowProps } from '@xyflow/react'
 
-import { Edge, Node, ReactFlow } from '@xyflow/react'
+import { THEME_NAME } from '@gorgias/design-tokens'
+
+import { useTheme } from 'core/theme'
 
 import '@xyflow/react/dist/style.css'
 
 export type FlowProps<TNode extends Node, TEdge extends Edge> = Omit<
-    ComponentProps<typeof ReactFlow>,
+    ReactFlowProps<TNode, TEdge>,
     'nodes' | 'edges'
 > & {
     nodes?: TNode[]
@@ -18,8 +20,13 @@ export function Flow<TNode extends Node, TEdge extends Edge>({
     children,
     ...props
 }: FlowProps<TNode, TEdge>): JSX.Element {
+    const theme = useTheme()
+
     return (
-        <ReactFlow
+        <ReactFlow<TNode, TEdge>
+            colorMode={
+                theme.resolvedName === THEME_NAME.Dark ? 'dark' : 'light'
+            }
             proOptions={{
                 hideAttribution: true,
             }}

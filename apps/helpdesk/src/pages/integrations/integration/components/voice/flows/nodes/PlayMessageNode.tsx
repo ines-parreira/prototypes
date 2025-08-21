@@ -3,17 +3,19 @@ import { useMemo } from 'react'
 import { useWatch } from 'react-hook-form'
 
 import { VoiceMessageType } from '@gorgias/helpdesk-queries'
-import { CustomRecordingType, PlayMessageStep } from '@gorgias/helpdesk-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms'
+import { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 
 import VoiceMessageField from '../../VoiceMessageField'
+import type { PlayMessageNode } from '../types'
 import { VoiceStepNode } from './VoiceStepNode'
 
-export function PlayMessageNode({ data }: { data: PlayMessageStep }) {
-    const { id } = data
+export function PlayMessageNode(props: NodeProps<PlayMessageNode>) {
+    const { id } = props.data
     const step = useWatch({ name: `steps.${id}` })
 
     const { message } = step
@@ -40,6 +42,7 @@ export function PlayMessageNode({ data }: { data: PlayMessageStep }) {
                 <StepCardIcon backgroundColor="blue" name="media-play-circle" />
             }
             errors={errors}
+            {...props}
         >
             <div>
                 <FormField

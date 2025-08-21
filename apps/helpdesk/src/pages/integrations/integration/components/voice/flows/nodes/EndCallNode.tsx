@@ -1,10 +1,12 @@
 import { Icon } from '@gorgias/axiom'
 
-import { ActionLabel, NodeWrapper } from 'core/ui/flows'
+import { ActionLabel, NodeProps, NodeWrapper } from 'core/ui/flows'
 
-export function EndCallNode() {
+import type { EndCallNode } from '../types'
+
+export function EndCallNode(props: NodeProps<EndCallNode>) {
     return (
-        <NodeWrapper>
+        <NodeWrapper {...props}>
             <ActionLabel
                 label="End Call"
                 icon={<Icon name="comm-phone-end" />}

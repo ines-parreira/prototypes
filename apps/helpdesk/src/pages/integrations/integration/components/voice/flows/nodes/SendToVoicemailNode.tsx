@@ -4,20 +4,19 @@ import { useWatch } from 'react-hook-form'
 
 import { Banner, CheckBoxField } from '@gorgias/axiom'
 import { VoiceMessageType } from '@gorgias/helpdesk-queries'
-import {
-    CustomRecordingType,
-    SendToVoicemailStep,
-} from '@gorgias/helpdesk-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms'
+import { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 
 import VoiceMessageField from '../../VoiceMessageField'
+import type { SendToVoicemailNode } from '../types'
 import { VoiceStepNode } from './VoiceStepNode'
 
-export function SendToVoicemailNode({ data }: { data: SendToVoicemailStep }) {
-    const { id } = data
+export function SendToVoicemailNode(props: NodeProps<SendToVoicemailNode>) {
+    const { id } = props.data
     const step = useWatch({ name: `steps.${id}` })
 
     const { voicemail } = step
@@ -44,6 +43,7 @@ export function SendToVoicemailNode({ data }: { data: SendToVoicemailStep }) {
                 <StepCardIcon backgroundColor="yellow" name="comm-voicemail" />
             }
             errors={errors}
+            {...props}
         >
             <Banner type="info">
                 Voicemail is a final step, you cannot add any other steps after.

@@ -6,8 +6,17 @@ import {
     useViewport,
 } from '@xyflow/react'
 
+import { THEME_NAME, useTheme } from 'core/theme'
+
 import { CustomControls } from '../CustomControls'
 import { Flow } from '../Flow'
+
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
+
+const useThemeMock = useTheme as jest.Mock
 
 jest.mock('@xyflow/react', () => ({
     ...jest.requireActual('@xyflow/react'),
@@ -41,6 +50,9 @@ const renderComponent = (props = {}) => {
 describe('Flow', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useThemeMock.mockReturnValue({
+            theme: THEME_NAME.Light,
+        })
         mockUseReactFlow.mockReturnValue({
             zoomIn: jest.fn(),
             zoomOut: jest.fn(),
@@ -88,6 +100,26 @@ describe('Flow', () => {
         const reactFlow = container.querySelector('.react-flow')
 
         expect(reactFlow).toBeInTheDocument()
+    })
+
+    it('should apply light color mode when using light theme', () => {
+        useThemeMock.mockReturnValue({ resolvedName: THEME_NAME.Light })
+
+        const { container } = renderComponent()
+
+        // Check that the Flow component receives light color mode
+        const flowElement = container.querySelector('.react-flow')
+        expect(flowElement).toHaveClass('light')
+    })
+
+    it('should apply dark color mode when using dark theme', () => {
+        useThemeMock.mockReturnValue({ resolvedName: THEME_NAME.Dark })
+
+        const { container } = renderComponent()
+
+        // Check that the Flow component receives dark color mode
+        const flowElement = container.querySelector('.react-flow')
+        expect(flowElement).toHaveClass('dark')
     })
 
     it('should pass through additional ReactFlow props', () => {

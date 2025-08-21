@@ -11,6 +11,9 @@ type Props = EdgeProps & {
     children?: React.ReactNode
 }
 
+const HANDLE_OFFSET = 3
+const CHILDREN_OFFSET = 15
+
 export function CustomEdge({
     id,
     sourceX,
@@ -25,10 +28,10 @@ export function CustomEdge({
 }: Props) {
     const [edgePath] = getSmoothStepPath({
         sourceX,
-        sourceY,
+        sourceY: sourceY - HANDLE_OFFSET,
         sourcePosition,
         targetX,
-        targetY,
+        targetY: targetY + HANDLE_OFFSET,
         targetPosition,
         centerY: targetY - 30,
     })
@@ -47,7 +50,7 @@ export function CustomEdge({
                         position: 'absolute',
                         pointerEvents: 'all',
                         transformOrigin: 'center',
-                        transform: `translate(-50%, -50%) translate(${sourceX}px,${sourceY + 30}px)`,
+                        transform: `translate(-50%, -50%) translate(${sourceX}px,${sourceY + CHILDREN_OFFSET}px)`,
                     }}
                 >
                     {children && <AddStepButton>{children}</AddStepButton>}

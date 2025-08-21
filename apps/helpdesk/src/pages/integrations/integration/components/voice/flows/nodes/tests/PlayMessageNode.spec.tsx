@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react'
+
 import { screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -7,7 +9,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { CallRoutingFlow, PlayMessageStep } from '@gorgias/helpdesk-types'
 
-import { ReactFlowProvider } from 'core/ui/flows'
+import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { PlayMessageNode } from '../PlayMessageNode'
@@ -24,9 +26,9 @@ const TestWrapper = ({
     })
 
     return (
-        <ReactFlowProvider>
+        <FlowProvider>
             <FormProvider {...methods}>{children}</FormProvider>
-        </ReactFlowProvider>
+        </FlowProvider>
     )
 }
 
@@ -35,9 +37,13 @@ describe('PlayMessageNode', () => {
         mockFlow: CallRoutingFlow,
         mockStep: PlayMessageStep,
     ) => {
+        const props = {
+            data: mockStep,
+        } as ComponentProps<typeof PlayMessageNode>
+
         return renderWithStoreAndQueryClientProvider(
             <TestWrapper defaultValues={mockFlow}>
-                <PlayMessageNode data={mockStep} />
+                <PlayMessageNode {...props} />
             </TestWrapper>,
         )
     }

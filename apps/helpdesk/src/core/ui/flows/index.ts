@@ -1,4 +1,10 @@
-export { Background, useReactFlow, ReactFlowProvider } from '@xyflow/react'
+export {
+    Background,
+    useReactFlow,
+    ReactFlowProvider as FlowProvider,
+    useNodesState,
+    useEdgesState,
+} from '@xyflow/react'
 
 export { Flow } from './components/Flow'
 export { CustomControls } from './components/CustomControls'
@@ -14,5 +20,7 @@ export { StepCardActionMenuItem } from './components/StepCardActionMenuItem'
 export { AddStepButton } from './components/AddStepButton'
 export { AddStepMenuItem } from './components/AddStepMenuItem'
 export { NodeWrapper } from './components/NodeWrapper'
+export { getLayoutedElements } from './layout.utils'
+export { useAutoLayout } from './hooks/useAutoLayout'
 
-export type { ReactFlowInstance, Edge } from '@xyflow/react'
+export type { ReactFlowInstance, Edge, Node, NodeProps } from '@xyflow/react'

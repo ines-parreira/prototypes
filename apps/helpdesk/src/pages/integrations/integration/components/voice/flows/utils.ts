@@ -10,9 +10,7 @@ import {
 } from './constants'
 import {
     IvrMenuNode,
-    IvrOptionNode,
     TimeSplitConditionalNode,
-    TimeSplitOptionNode,
     VoiceFlowNode,
     VoiceFlowNodeBase,
 } from './types'
@@ -61,6 +59,8 @@ export function getNextNodes(
                     n.data.parentId === node.id,
             )
             return nextNodes.map((nextNode) => nextNode.id)
+        case VoiceFlowNodeType.EndCall:
+            return []
         default:
             if ('next_step_id' in node.data) {
                 return [node.data.next_step_id || END_CALL_NODE.id]
@@ -73,7 +73,7 @@ export function createIvrOptionNode(
     node: IvrMenuNode,
     optionIndex: number,
     nextStepId: string,
-): VoiceFlowNodeBase<IvrOptionNode> {
+): VoiceFlowNodeBase {
     return {
         id: uuidv4(),
         type: VoiceFlowNodeType.IvrOption,
@@ -88,7 +88,7 @@ export function createIvrOptionNode(
 export function createTimeSplitOptionNode(
     node: TimeSplitConditionalNode,
     nextStepId: string,
-): VoiceFlowNodeBase<TimeSplitOptionNode> {
+): VoiceFlowNodeBase {
     return {
         id: uuidv4(),
         type: VoiceFlowNodeType.TimeSplitOption,
@@ -178,7 +178,7 @@ export function connectTerminalStepsToEndCallStep(
 
 export function transformToReactFlowNodes(
     flow: CallRoutingFlow,
-): VoiceFlowNodeBase[] {
+): VoiceFlowNode[] {
     const steps = connectTerminalStepsToEndCallStep(flow.steps)
     const nodes = Object.entries(steps).map(([id, step]) => {
         return isVoiceFlowStep(step.step_type)
@@ -206,5 +206,19 @@ export function transformToReactFlowNodes(
         data: { next_step_id: flow.first_step_id },
     }
 
-    return [incomingCallNode, ...withBranchNodes, END_CALL_NODE]
+    const allNodes: VoiceFlowNodeBase[] = [
+        incomingCallNode,
+        ...withBranchNodes,
+        END_CALL_NODE,
+    ] satisfies VoiceFlowNodeBase[]
+
+    const withPosition: VoiceFlowNode[] = allNodes.map(
+        (node) =>
+            ({
+                ...node,
+                position: { x: 0, y: 0 },
+            }) as VoiceFlowNode,
+    )
+
+    return withPosition
 }

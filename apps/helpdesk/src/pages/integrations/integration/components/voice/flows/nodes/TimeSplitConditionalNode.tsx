@@ -10,6 +10,7 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
+import { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useIntegrationBusinessHours } from 'hooks/businessHours/useIntegrationBusinessHours'
@@ -21,6 +22,7 @@ import {
     DAYS_OPTIONS,
 } from 'pages/settings/businessHours/constants'
 
+import type { TimeSplitConditionalNode } from '../types'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
@@ -31,11 +33,10 @@ const defaultBusinessHoursTimeframe: BusinessHoursTimeframe = {
     to_time: '17:00',
 }
 
-export function TimeSplitConditionalNode({
-    data,
-}: {
-    data: TimeSplitConditionalStep
-}) {
+type TimeSplitConditionalNodeProps = NodeProps<TimeSplitConditionalNode>
+
+export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
+    const { data } = props
     const ref = useRef<HTMLDivElement>(null)
     const { setValue } = useFormContext()
 
@@ -72,6 +73,7 @@ export function TimeSplitConditionalNode({
             icon={<StepCardIcon backgroundColor="purple" name="clock" />}
             errors={[]}
             drawerRef={ref}
+            {...props}
         >
             <div className={css.tightDrawerForm}>
                 <FormField

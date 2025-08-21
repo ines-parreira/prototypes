@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react'
+
 import { screen } from '@testing-library/react'
 
 import {
@@ -7,7 +9,7 @@ import {
 import { CallRoutingFlow, SendToVoicemailStep } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
-import { ReactFlowProvider } from 'core/ui/flows'
+import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { SendToVoicemailNode } from '../SendToVoicemailNode'
@@ -17,12 +19,16 @@ describe('SendToVoicemailNode', () => {
         mockFlow: CallRoutingFlow,
         mockStep: SendToVoicemailStep,
     ) => {
+        const props = {
+            data: mockStep,
+        } as ComponentProps<typeof SendToVoicemailNode>
+
         return renderWithStoreAndQueryClientProvider(
-            <ReactFlowProvider>
+            <FlowProvider>
                 <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
-                    <SendToVoicemailNode data={mockStep} />
+                    <SendToVoicemailNode {...props} />
                 </Form>
-            </ReactFlowProvider>,
+            </FlowProvider>,
         )
     }
 

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import classNames from 'classnames'
 
 import {
+    NodeProps,
     NodeWrapper,
     StepCard,
     StepCardActionMenu,
@@ -13,7 +14,7 @@ import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
 
 import css from './VoiceStepNode.less'
 
-type VoiceStepNodeProps = {
+type VoiceStepNodeProps = NodeProps & {
     title: string
     description: string
     icon: React.ReactNode
@@ -29,6 +30,7 @@ export function VoiceStepNode({
     errors = [],
     children,
     drawerRef,
+    ...rest
 }: VoiceStepNodeProps) {
     const [selected, setSelected] = useState(false)
     const handleDrawerClose = () => {
@@ -37,7 +39,7 @@ export function VoiceStepNode({
 
     return (
         <>
-            <NodeWrapper>
+            <NodeWrapper {...rest}>
                 <div onClick={() => setSelected(true)} aria-label={'Step node'}>
                     <StepCard
                         icon={icon}

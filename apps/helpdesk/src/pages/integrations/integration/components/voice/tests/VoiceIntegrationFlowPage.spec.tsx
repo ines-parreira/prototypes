@@ -3,6 +3,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
+    mockCallRoutingFlow,
     mockEmailIntegration,
     mockGetIntegrationHandler,
     mockPhoneIntegration,
@@ -59,7 +60,11 @@ describe('VoiceIntegrationFlowPage', () => {
     })
 
     it('should render flow content when integration is loaded', async () => {
-        const mockIntegration = mockPhoneIntegration()
+        const mockIntegration = mockPhoneIntegration({
+            meta: {
+                flow: mockCallRoutingFlow(),
+            },
+        })
         const mockHandler = mockGetIntegrationHandler(async () =>
             HttpResponse.json(mockIntegration),
         )
@@ -69,6 +74,24 @@ describe('VoiceIntegrationFlowPage', () => {
 
         await waitFor(() => {
             expect(screen.getByText('VoiceFlow')).toBeInTheDocument()
+        })
+    })
+
+    it('should not render anything when integration has no flow', async () => {
+        const mockIntegration = mockPhoneIntegration({
+            meta: {
+                flow: null as any,
+            },
+        })
+        const mockHandler = mockGetIntegrationHandler(async () =>
+            HttpResponse.json(mockIntegration),
+        )
+        server.use(mockHandler.handler)
+
+        const { container } = renderComponent()
+
+        await waitFor(() => {
+            expect(container).toBeEmptyDOMElement()
         })
     })
 

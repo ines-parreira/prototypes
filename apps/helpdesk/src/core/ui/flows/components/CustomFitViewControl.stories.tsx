@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { ReactFlowProvider } from '../index'
+import { FlowProvider } from '../index'
 import { CustomFitViewControl } from './CustomFitViewControl'
 
 const meta: Meta = {
@@ -14,8 +14,8 @@ type Story = StoryObj<typeof CustomFitViewControl>
 
 export const Default: Story = {
     render: () => (
-        <ReactFlowProvider>
+        <FlowProvider>
             <CustomFitViewControl />
-        </ReactFlowProvider>
+        </FlowProvider>
     ),
 }

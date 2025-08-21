@@ -1,9 +1,17 @@
-import { Background, Edge } from '@xyflow/react'
+import { useEffect } from 'react'
 
-import { THEME_NAME } from '@gorgias/design-tokens'
+import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
-import { useTheme } from 'core/theme'
-import { CustomControls, Flow } from 'core/ui/flows'
+import {
+    Background,
+    CustomControls,
+    Edge,
+    Flow,
+    useAutoLayout,
+    useEdgesState,
+    useNodesState,
+} from 'core/ui/flows'
+import { createFlowGraph } from 'core/ui/flows/utils'
 
 import { VoiceFlowNodeType } from './constants'
 import { EndCallNode } from './nodes/EndCallNode'
@@ -12,6 +20,7 @@ import { PlayMessageNode } from './nodes/PlayMessageNode'
 import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
 import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
 import { VoiceFlowNode } from './types'
+import { getNextNodes, transformToReactFlowNodes } from './utils'
 import { VoiceFlowEdge } from './VoiceFlowEdge'
 
 const nodeTypes = {
@@ -27,21 +36,34 @@ const edgeTypes = {
 }
 
 type VoiceFlowProps = {
-    nodes?: VoiceFlowNode[]
-    edges?: Edge[]
+    flow: CallRoutingFlow
 }
 
-export function VoiceFlow({ nodes, edges }: VoiceFlowProps) {
-    const theme = useTheme()
+export function VoiceFlow({ flow }: VoiceFlowProps) {
+    const [nodes, setNodes, onNodesChange] = useNodesState<VoiceFlowNode>(
+        transformToReactFlowNodes(flow),
+    )
+    const [edges, setEdges, onEdgesChange] = useEdgesState(
+        createFlowGraph(nodes, getNextNodes).edges,
+    )
+
+    useAutoLayout()
+
+    useEffect(() => {
+        const newNodes = transformToReactFlowNodes(flow)
+        const newEdges = createFlowGraph(newNodes, getNextNodes).edges
+        setNodes(newNodes)
+        setEdges(newEdges)
+    }, [flow, setNodes, setEdges])
+
     return (
         <Flow<VoiceFlowNode, Edge>
-            nodes={nodes ?? []}
-            edges={edges ?? []}
+            nodes={nodes}
+            edges={edges}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
-            colorMode={
-                theme.resolvedName === THEME_NAME.Dark ? 'dark' : 'light'
-            }
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
         >
             <Background />
             <CustomControls />

@@ -15,15 +15,20 @@ import css from './VoiceFlowForm.less'
 type VoiceFlowFormProps = {
     integration: PhoneIntegration
     children: React.ReactNode
+    defaultValues?: VoiceFlowFormValues
 }
 
-function VoiceFlowForm({ integration, children }: VoiceFlowFormProps) {
+function VoiceFlowForm({
+    integration,
+    children,
+    defaultValues,
+}: VoiceFlowFormProps) {
     const { getDefaultValues, onSubmit } = useVoiceFlowForm(integration)
 
     return (
         <Form
             onValidSubmit={onSubmit}
-            defaultValues={getDefaultValues()}
+            defaultValues={defaultValues ?? getDefaultValues()}
             mode="onChange"
             resetOptions={{
                 keepDirty: false,

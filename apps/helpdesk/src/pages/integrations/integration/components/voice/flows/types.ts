@@ -1,5 +1,3 @@
-import { Node } from '@xyflow/react'
-
 import {
     CallRoutingFlow,
     EnqueueStep,
@@ -8,6 +6,8 @@ import {
     SendToVoicemailStep,
     TimeSplitConditionalStep,
 } from '@gorgias/helpdesk-types'
+
+import { Node } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from './constants'
 
@@ -61,10 +61,7 @@ export type VoiceFlowNode =
     | TimeSplitConditionalNode
     | TimeSplitOptionNode
 
-export type VoiceFlowNodeBase<T extends VoiceFlowNode = VoiceFlowNode> = Pick<
-    T,
-    'id' | 'type' | 'data'
->
+export type VoiceFlowNodeBase = Pick<VoiceFlowNode, 'id' | 'type' | 'data'>
 
 export type VoiceFlowFormValues = CallRoutingFlow & {
     business_hours_id?: number | null

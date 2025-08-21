@@ -59,6 +59,7 @@
         "@algolia/client-search": "^5.23.0",
         "@casl/ability": "^6.7.1",
         "@casl/react": "3.0.1",
+        "@dagrejs/dagre": "^1.1.5",
         "@datadog/browser-logs": "^5.17.1",
         "@datadog/browser-rum": "^5.17.1",
         "@emotion/css": "^11.11.0",

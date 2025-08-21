@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
-import { ReactFlowProvider } from 'core/ui/flows'
+import { FlowProvider } from 'core/ui/flows'
 
 import { VoiceStepNode } from '../VoiceStepNode'
 
@@ -11,9 +11,9 @@ const mockChildren = <div>Test Content</div>
 
 const renderComponent = (props: any) => {
     return render(
-        <ReactFlowProvider>
+        <FlowProvider>
             <VoiceStepNode {...props} />
-        </ReactFlowProvider>,
+        </FlowProvider>,
     )
 }
 
