@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -85,7 +83,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Helpdesk',
                         label: 'Pro - ',
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'tickets',
                         amount: '$1,000',
@@ -94,7 +92,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'AI Agent',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'automated interactions',
                         amount: '$1,000',
@@ -103,7 +101,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'SMS',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'SMS tickets',
                         amount: '$1,000',
@@ -112,7 +110,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Voice',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'voice tickets',
                         amount: '$1,000',
@@ -121,14 +119,14 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Convert',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'clicks',
                         amount: '$1,000',
                         strickenOut: true,
                     },
                 ],
-                cadence: 'year',
+                cadence: Cadence.Year,
                 total: 0,
             },
             {},
@@ -161,7 +159,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Helpdesk',
                         label: 'Pro - ',
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'tickets',
                         amount: '$1,000',
@@ -170,7 +168,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'AI Agent',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'automated interactions',
                         amount: '$1,000',
@@ -179,7 +177,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'SMS',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'SMS tickets',
                         amount: '$1,000',
@@ -188,7 +186,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Convert',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'clicks',
                         amount: '$1,000',
@@ -197,14 +195,14 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Voice',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'voice tickets',
                         amount: '$1,000',
                         strickenOut: true,
                     },
                 ],
-                cadence: 'year',
+                cadence: Cadence.Year,
                 total: 4000,
             },
             {},
@@ -246,7 +244,7 @@ describe('CancellationSummary', () => {
                     {
                         title: 'Helpdesk',
                         label: 'Pro - ',
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'tickets',
                         amount: '$1,000',
@@ -255,14 +253,14 @@ describe('CancellationSummary', () => {
                     {
                         title: 'AI Agent',
                         label: null,
-                        cadence: 'year',
+                        cadence: Cadence.Year,
                         quotaAmount: 100,
                         counter: 'automated interactions',
                         amount: '$1,000',
                         strickenOut: true,
                     },
                 ],
-                cadence: 'year',
+                cadence: Cadence.Year,
                 total: 0,
             },
             {},
