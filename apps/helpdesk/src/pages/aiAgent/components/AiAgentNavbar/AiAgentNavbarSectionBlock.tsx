@@ -164,7 +164,7 @@ export const AiAgentNavbarSectionBlock = ({
                     <Navigation.SectionItem
                         displayType="indent"
                         as={NavLink}
-                        to={routes.main}
+                        to={routes.onboardingWizard}
                     >
                         Get Started
                     </Navigation.SectionItem>

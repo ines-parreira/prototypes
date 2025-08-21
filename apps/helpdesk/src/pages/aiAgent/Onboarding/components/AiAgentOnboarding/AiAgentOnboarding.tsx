@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Redirect,
     Route,
@@ -10,8 +9,6 @@ import {
 } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { ChannelsStep } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import { EngagementStep } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/EngagementStep'
 import { HandoverStep } from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
@@ -35,11 +32,7 @@ export const AiAgentOnboarding = () => {
         shopName,
         isStoreSelected,
     })
-    const { routes } = useAiAgentNavigation({ shopName })
     const history = useHistory()
-
-    const isConvAiOnboardingEnabled =
-        useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
 
     const currentIndex = validSteps.findIndex(
         (validStep) => validStep.step === step,
@@ -80,9 +73,7 @@ export const AiAgentOnboarding = () => {
         })
     }, [step, shopName])
 
-    if (isConvAiOnboardingEnabled === false) {
-        return <Redirect to={routes.main} />
-    }
+    // Always allow onboarding wizard to be accessible regardless of the flag
 
     const renderStep = () => {
         if (!isValidStep && validSteps.length > 0) {

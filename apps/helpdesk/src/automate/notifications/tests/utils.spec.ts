@@ -56,7 +56,7 @@ describe('getNotificationParams', () => {
             title: 'Finish AI Agent setup',
             subtitle:
                 'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
-            redirectTo: '/app/ai-agent/shopify/store_1/new',
+            redirectTo: '/app/ai-agent/shopify/store_1/onboarding',
         })
     })
 

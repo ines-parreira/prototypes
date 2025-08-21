@@ -69,8 +69,27 @@ jest.mock('components/Navigation/Navigation', () => ({
                 {children}
             </div>
         ),
+        SectionItem: ({ children, to, ...props }: any) => (
+            <a href={to} {...props}>
+                {children}
+            </a>
+        ),
     },
 }))
+
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
+    __esModule: true,
+    OnboardingState: {
+        Loading: 'loading',
+        OnboardingWizard: 'onboardingWizard',
+        Onboarded: 'onboarded',
+    },
+    useAiAgentOnboardingState: jest.fn(() => 'onboarded'),
+}))
+
+const mockedOnboardingHook = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentOnboardingState',
+).useAiAgentOnboardingState as jest.Mock
 
 const mockShopifyIntegration: StoreIntegration = {
     id: 1,
@@ -122,6 +141,7 @@ describe('ActionDrivenNavigation', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockedOnboardingHook.mockReturnValue('onboarded')
         mockUseActionDrivenNavbarSections.mockReturnValue({
             selectedStore: 'test-store-1',
             selectedStoreIntegration: mockShopifyIntegration,
@@ -161,6 +181,39 @@ describe('ActionDrivenNavigation', () => {
         expect(screen.getByText('Analyze')).toBeInTheDocument()
     })
 
+    it('renders Get Started and hides nav items when in onboarding', () => {
+        mockedOnboardingHook.mockReturnValue('onboardingWizard')
+        mockGetStoreActivationStatus.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(screen.getByText('Get Started')).toBeInTheDocument()
+        expect(screen.queryByText('Overview')).not.toBeInTheDocument()
+        expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
+    })
+
+    it('shows nav items when store is onboarded but not active', () => {
+        mockedOnboardingHook.mockReturnValue('onboarded')
+        mockGetStoreActivationStatus.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
+        expect(screen.getByText('Overview')).toBeInTheDocument()
+        expect(screen.getByText('Analyze')).toBeInTheDocument()
+    })
+
+    it('shows nav items when store is active (regardless of onboarding)', () => {
+        mockedOnboardingHook.mockReturnValue('onboardingWizard')
+        mockGetStoreActivationStatus.mockReturnValue(true)
+
+        renderComponent()
+
+        expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
+        expect(screen.getByText('Overview')).toBeInTheDocument()
+        expect(screen.getByText('Analyze')).toBeInTheDocument()
+    })
+
     it('calls handleStoreSelect when a store is selected', async () => {
         const user = userEvent.setup()
         renderComponent()
@@ -177,7 +230,8 @@ describe('ActionDrivenNavigation', () => {
         mockGetStoreActivationStatus.mockReturnValue(true)
         renderComponent()
 
-        expect(mockGetStoreActivationStatus).not.toHaveBeenCalled()
+        // It is called at least once during render to compute the active status dot
+        expect(mockGetStoreActivationStatus).toHaveBeenCalled()
     })
 
     it('passes fullWidth prop to StoreSelector', () => {

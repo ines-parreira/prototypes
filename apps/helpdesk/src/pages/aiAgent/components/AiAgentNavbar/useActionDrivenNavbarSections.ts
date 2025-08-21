@@ -129,13 +129,21 @@ export const useActionDrivenNavbarSections = () => {
                 : currentIntegrationType
             const restOfPath = pathMatch ? pathMatch[2] : 'overview'
 
-            history.push(
-                `/app/ai-agent/${integrationType}/${shopName}/${restOfPath}`,
-            )
+            const isActivated = getStoreActivationStatus(shopName)
+            const nextPath = isActivated
+                ? `/app/ai-agent/${integrationType}/${shopName}/${restOfPath}`
+                : `/app/ai-agent/${integrationType}/${shopName}`
+
+            history.push(nextPath)
 
             setExpandedSections([...NAVBAR_SECTIONS])
         },
-        [history, currentIntegrationType, setExpandedSections],
+        [
+            history,
+            currentIntegrationType,
+            setExpandedSections,
+            getStoreActivationStatus,
+        ],
     )
 
     const handleExpandedSectionsChange = useCallback(

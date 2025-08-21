@@ -233,7 +233,7 @@ describe('useAiAgentNavigation', () => {
                 )
 
                 expect(result.current.routes.onboardingWizardStep()).toEqual(
-                    '/app/ai-agent/shopify/my-shop/new',
+                    '/app/ai-agent/shopify/my-shop/onboarding',
                 )
             })
         })

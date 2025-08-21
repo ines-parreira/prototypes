@@ -45,8 +45,6 @@ export const getAiAgentNavigationRoutes = (
 ) => {
     const basePath = getAiAgentBasePath(shopName)
     const automationBasePath = '/app/automation'
-    const isStandaloneOnboardingEnabled =
-        flags[FeatureFlagKey.AiShoppingAssistantEnabled]
     const isActionDrivenAiAgentNavigationEnabled =
         flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
@@ -112,18 +110,9 @@ export const getAiAgentNavigationRoutes = (
         actionsTemplates: `${basePath}/actions/templates`,
         actionEvents: (configurationId: string) =>
             `${basePath}/actions/events/${configurationId}`,
-        onboardingWizard: isStandaloneOnboardingEnabled
-            ? `${basePath}/onboarding`
-            : `${basePath}/new`,
-        onboardingWizardStep: (step?: string) => {
-            if (isStandaloneOnboardingEnabled) {
-                return step
-                    ? `${basePath}/onboarding/${step}`
-                    : `${basePath}/onboarding`
-            }
-
-            return `${basePath}/new`
-        },
+        onboardingWizard: `${basePath}/onboarding`,
+        onboardingWizardStep: (step?: string) =>
+            step ? `${basePath}/onboarding/${step}` : `${basePath}/onboarding`,
         previewMode: `${basePath}/settings/preview`,
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>

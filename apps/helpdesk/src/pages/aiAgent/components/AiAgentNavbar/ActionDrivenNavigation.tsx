@@ -2,6 +2,10 @@ import React from 'react'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 
 import { ActionDrivenNavigationItems } from './ActionDrivenNavigationItems'
@@ -21,6 +25,13 @@ export const ActionDrivenNavigation = () => {
         expandedSections,
         handleExpandedSectionsChange,
     } = useActionDrivenNavbarSections()
+
+    const onboardingState = useAiAgentOnboardingState(selectedStore || '')
+    const isOnboarded = onboardingState === OnboardingState.Onboarded
+    const isActive =
+        !!selectedStore &&
+        !!getStoreActivationStatus &&
+        getStoreActivationStatus(selectedStore)
 
     return (
         <Navigation.Root
@@ -53,11 +64,21 @@ export const ActionDrivenNavigation = () => {
                 />
             </div>
 
-            <ActionDrivenNavigationItems
-                navigationItems={navigationItems}
-                selectedStore={selectedStore}
-                getChannelStatus={getChannelStatus}
-            />
+            {selectedStore &&
+                onboardingState === OnboardingState.OnboardingWizard &&
+                !isActive && (
+                    <Navigation.SectionItem isSelected displayType="indent">
+                        Get Started
+                    </Navigation.SectionItem>
+                )}
+
+            {selectedStore && (isActive || isOnboarded) && (
+                <ActionDrivenNavigationItems
+                    navigationItems={navigationItems}
+                    selectedStore={selectedStore}
+                    getChannelStatus={getChannelStatus}
+                />
+            )}
         </Navigation.Root>
     )
 }

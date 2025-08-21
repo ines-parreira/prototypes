@@ -148,7 +148,7 @@ describe('AiAgentOnboarding', () => {
         expect(screen.getByText(/Shopify account/i)).toBeInTheDocument()
     })
 
-    it('should redirect to the main page if feature flag is disabled', () => {
+    it('should keep user on onboarding even if feature flag is disabled', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         }))
@@ -157,9 +157,7 @@ describe('AiAgentOnboarding', () => {
 
         jest.runAllTimers()
 
-        expect(history.location.pathname).toEqual(
-            '/app/ai-agent/shopify/undefined',
-        )
+        expect(history.location.pathname).toContain('/app/ai-agent/onboarding')
     })
 
     it('should navigate to the next step when Next button is clicked', async () => {

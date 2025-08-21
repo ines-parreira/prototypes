@@ -47,6 +47,20 @@ jest.mock('../ActionDrivenNavigation', () => ({
     ActionDrivenNavigation: () => <div>ActionDrivenNavigation</div>,
 }))
 
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
+    __esModule: true,
+    OnboardingState: {
+        Loading: 'loading',
+        OnboardingWizard: 'onboardingWizard',
+        Onboarded: 'onboarded',
+    },
+    useAiAgentOnboardingState: jest.fn(() => 'onboarded'),
+}))
+
+const mockedOnboardingHook = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentOnboardingState',
+).useAiAgentOnboardingState as jest.Mock
+
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
         <NavBarProvider>{children}</NavBarProvider>
@@ -170,6 +184,7 @@ describe('<AiAgentNavbar />', () => {
         })
 
         it('should render ai agent Get Started option', () => {
+            mockedOnboardingHook.mockReturnValue('onboardingWizard')
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
