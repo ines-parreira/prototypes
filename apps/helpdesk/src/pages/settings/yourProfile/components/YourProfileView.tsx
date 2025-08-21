@@ -206,14 +206,6 @@ export function YourProfileView({
         [],
     )
 
-    const primarySelectedOption = useMemo(
-        () =>
-            translationLanguageOptions.find(
-                (option) => option.value === formValues.preferences?.primary,
-            ),
-        [translationLanguageOptions, formValues.preferences],
-    )
-
     const allProficientLanguagesOptions = useMemo(
         () =>
             Object.entries(ISO639English).map(([code, name]) => ({
@@ -221,16 +213,6 @@ export function YourProfileView({
                 label: name,
             })) as Option[],
         [],
-    )
-
-    const proficientSelectedOptions = useMemo(
-        () =>
-            (formValues.preferences?.proficient?.map((value) =>
-                allProficientLanguagesOptions.find(
-                    (option) => option.value === value,
-                ),
-            ) as Option[]) ?? ([] as Option[]),
-        [formValues.preferences, allProficientLanguagesOptions],
     )
 
     return (
@@ -475,9 +457,12 @@ export function YourProfileView({
                                                 options={
                                                     translationLanguageOptions
                                                 }
-                                                selectedOption={
-                                                    primarySelectedOption
-                                                }
+                                                selectedOption={translationLanguageOptions.find(
+                                                    (option) =>
+                                                        formValues.preferences
+                                                            .primary ===
+                                                        option.value,
+                                                )}
                                                 optionMapper={(option) => ({
                                                     value: option.name,
                                                 })}
@@ -510,7 +495,14 @@ export function YourProfileView({
                                                     proficientLanguagesOptions
                                                 }
                                                 selectedOptions={
-                                                    proficientSelectedOptions
+                                                    formValues.preferences.proficient.map(
+                                                        (value) =>
+                                                            allProficientLanguagesOptions.find(
+                                                                (option) =>
+                                                                    option.value ===
+                                                                    value,
+                                                            ),
+                                                    ) as Option[]
                                                 }
                                                 onChange={
                                                     handleProficientLanguagesChange
