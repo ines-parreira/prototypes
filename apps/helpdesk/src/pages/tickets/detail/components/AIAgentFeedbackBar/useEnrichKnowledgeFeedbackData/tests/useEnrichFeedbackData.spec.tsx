@@ -487,6 +487,7 @@ describe('useEnrichFeedbackData', () => {
         faqHelpCenterId: 100,
         guidanceHelpCenterId: 200,
         snippetHelpCenterId: 300,
+        executionId: 'exec-123',
     }
     const wrapper = ({ children }: any) => (
         <QueryClientProvider client={queryClient}>

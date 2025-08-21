@@ -7,11 +7,14 @@ import { Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
 import {
     ReasoningResponseType,
     useGetMessageAiReasoning,
 } from 'models/knowledgeService/queries'
+import { TicketMessage } from 'models/ticket/types'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 
@@ -24,7 +27,7 @@ import css from './AiAgentReasoning.less'
 
 type AiAgentReasoningState = 'loading' | 'collapsed' | 'expanded' | 'error'
 type AiAgentReasoningProps = {
-    messageId: number
+    message: TicketMessage
 }
 
 export const coerceResourceType = (parts: string[]) => {
@@ -115,7 +118,7 @@ export const parseReasoningResources = (
         )
 }
 
-export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
+export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const [state, setState] = useState<AiAgentReasoningState>('collapsed')
     const [isRetriable] = useState(true)
 
@@ -123,9 +126,15 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
 
+    const isImpersonated = useMemo(() => isSessionImpersonated(), [])
+
     const ticketId: number = ticket.get('id')
     const accountId: number = account.get('id')
     const userId: number = currentUser.get('id')
+    const messageId = message.id || 0
+    const isHandover =
+        (message.meta as Record<string, unknown>)?.ai_agent_message_type ===
+        AiAgentMessageType.HANDOVER_TO_AGENT
 
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
 
@@ -150,6 +159,13 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
         )
 
     const { reasoningContent, reasoningResources } = useMemo(() => {
+        if (isHandover) {
+            return {
+                reasoningContent:
+                    'AI Agent was not confident in its answer and handed the ticket over to your team.',
+                reasoningResources: [],
+            }
+        }
         if (messageAiReasoning?.reasoning) {
             const outcomeReasoning = messageAiReasoning.reasoning.find(
                 (reasoning) =>
@@ -205,7 +221,11 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
             reasoningContent: null,
             reasoningResources: [],
         }
-    }, [messageAiReasoning?.reasoning, messageAiReasoning?.resources])
+    }, [
+        messageAiReasoning?.reasoning,
+        messageAiReasoning?.resources,
+        isHandover,
+    ])
 
     const reasoningMetadata = useGetResourcesReasoningMetadata({
         queriesEnabled: state !== 'collapsed',
@@ -229,11 +249,15 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
 
     const handleToggleExpansion = useCallback(() => {
         if (state === 'collapsed') {
-            setState('loading')
+            if (isHandover) {
+                setState('expanded')
+            } else {
+                setState('loading')
+            }
         } else if (state === 'expanded') {
             setState('collapsed')
         }
-    }, [state])
+    }, [state, isHandover])
 
     const handleTryAgain = useCallback(() => {
         setState('loading')
@@ -329,12 +353,18 @@ export const AiAgentReasoning = ({ messageId }: AiAgentReasoningProps) => {
                     storeConfiguration={messageAiReasoning?.storeConfiguration}
                     openPreview={openPreview}
                 />
+                {isImpersonated &&
+                    messageAiReasoning?.storeConfiguration?.executionId && (
+                        <div className={css.executionId}>
+                            {`Execution ID: ${messageAiReasoning.storeConfiguration.executionId}`}
+                        </div>
+                    )}
             </div>
         )
     }
 
     const renderFooter = () => {
-        if (isError) {
+        if (isError || isHandover) {
             return null
         }
 

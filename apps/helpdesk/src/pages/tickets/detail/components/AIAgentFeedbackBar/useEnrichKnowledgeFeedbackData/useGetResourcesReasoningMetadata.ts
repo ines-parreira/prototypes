@@ -36,7 +36,12 @@ export const useGetResourcesReasoningMetadata = ({
 
     const relatedHelpCenterData = resources.reduce(
         (acc, resource) => {
-            if (!resource.resourceSetId) {
+            if (
+                !resource.resourceSetId ||
+                (Number.isNaN(Number(resource.resourceSetId)) &&
+                    resource.resourceType !==
+                        AiAgentKnowledgeResourceTypeEnum.ACTION)
+            ) {
                 return acc
             }
 

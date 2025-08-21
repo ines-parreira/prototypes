@@ -345,6 +345,7 @@ describe('useGetAllRelatedResourceData', () => {
                         shopName: 'test-store',
                         shopType: 'shopify',
                         snippetHelpCenterId: 300,
+                        executionId: 'exec-1',
                     },
                 },
             ],

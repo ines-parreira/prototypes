@@ -12,7 +12,9 @@ import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
 import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
+import { TicketMessage } from 'models/ticket/types'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
@@ -206,6 +208,47 @@ describe('AiAgentReasoning', () => {
     const createMockTicket = () => Map({ id: 123 })
 
     let onChangeTab: jest.Mock
+    const createMockMessage = (
+        overrides: Partial<TicketMessage> = {},
+    ): TicketMessage => ({
+        id: 1,
+        integration_id: null,
+        sender: {
+            id: 1,
+            email: 'sender@example.com',
+            name: 'Sender',
+            firstname: 'Send',
+            lastname: 'Er',
+        },
+        receiver: {
+            id: 2,
+            email: 'receiver@example.com',
+            name: 'Receiver',
+            firstname: 'Receive',
+            lastname: 'Er',
+        },
+        subject: 'Test Subject',
+        stripped_html: null,
+        stripped_text: null,
+        channel: 'email' as any,
+        via: 'email' as any,
+        uri: '',
+        public: true,
+        from_agent: false,
+        meta: null,
+        attachments: [],
+        created_datetime: '2024-01-01T00:00:00Z',
+        stripped_signature: null,
+        actions: null,
+        rule_id: null,
+        external_id: null,
+        failed_datetime: null,
+        opened_datetime: null,
+        is_retriable: false,
+        isMessage: true,
+        auth_customer_identity: null,
+        ...overrides,
+    })
 
     beforeEach(() => {
         jest.useFakeTimers()
@@ -403,7 +446,7 @@ describe('AiAgentReasoning', () => {
         })
     })
 
-    const renderComponent = (props: any = {}) => {
+    const renderComponent = (messageOverrides: Partial<TicketMessage> = {}) => {
         const store = mockStore({})
         const queryClient = new QueryClient({
             defaultOptions: {
@@ -416,7 +459,9 @@ describe('AiAgentReasoning', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <KnowledgeSourceSideBarProvider>
-                        <AiAgentReasoning messageId={1} {...props} />
+                        <AiAgentReasoning
+                            message={createMockMessage(messageOverrides)}
+                        />
                     </KnowledgeSourceSideBarProvider>
                 </Provider>
             </QueryClientProvider>,
@@ -550,7 +595,9 @@ describe('AiAgentReasoning', () => {
                     >
                         <Provider store={mockStore({})}>
                             <KnowledgeSourceSideBarProvider>
-                                <AiAgentReasoning messageId={1} />
+                                <AiAgentReasoning
+                                    message={createMockMessage()}
+                                />
                             </KnowledgeSourceSideBarProvider>
                         </Provider>
                     </QueryClientProvider>,
@@ -850,7 +897,7 @@ describe('AiAgentReasoning', () => {
 
     describe('Props handling', () => {
         it('should handle messageId of 0', () => {
-            renderComponent({ messageId: 0 })
+            renderComponent({ id: 0 })
 
             expect(screen.getByText('Show reasoning')).toBeInTheDocument()
         })
@@ -1152,6 +1199,54 @@ describe('AiAgentReasoning', () => {
 
             const feedbackButton = screen.getByText('Give Feedback')
             expect(feedbackButton).toBeInTheDocument()
+        })
+    })
+
+    describe('Handover scenario', () => {
+        it('should show handover message when message is handover type', () => {
+            renderComponent({
+                meta: {
+                    ai_agent_message_type: AiAgentMessageType.HANDOVER_TO_AGENT,
+                } as any,
+            })
+
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            expect(
+                screen.getByText(
+                    /AI Agent was not confident in its answer and handed the ticket over to your team/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show Give Feedback button for handover messages', () => {
+            renderComponent({
+                meta: {
+                    ai_agent_message_type: AiAgentMessageType.HANDOVER_TO_AGENT,
+                } as any,
+            })
+
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument()
+        })
+
+        it('should expand immediately for handover messages without loading', () => {
+            renderComponent({
+                meta: {
+                    ai_agent_message_type: AiAgentMessageType.HANDOVER_TO_AGENT,
+                } as any,
+            })
+
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            expect(
+                screen.queryByText('Loading reasoning...'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('Hide reasoning')).toBeInTheDocument()
         })
     })
 

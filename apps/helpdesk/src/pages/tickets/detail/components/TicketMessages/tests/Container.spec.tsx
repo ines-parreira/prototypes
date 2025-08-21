@@ -236,6 +236,7 @@ describe('Container', () => {
                 flags={aiAgentFlags}
                 isAIAgentMessage={true}
                 isTicketAfterFeedbackCollectionPeriod={true}
+                shouldTicketHaveReasoning={true}
             />,
         )
 
@@ -286,6 +287,7 @@ describe('Container', () => {
                         [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: true,
                     }}
                     isImpersonated={true}
+                    shouldTicketHaveReasoning={true}
                 />,
             )
 
@@ -317,6 +319,7 @@ describe('Container', () => {
                         [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: false,
                     }}
                     isImpersonated={false}
+                    shouldTicketHaveReasoning={true}
                 />,
             )
 
@@ -330,6 +333,7 @@ describe('Container', () => {
                         [FeatureFlagKey.OnlyShowReasoningWhileImpersonating]: false,
                     }}
                     isImpersonated={true}
+                    shouldTicketHaveReasoning={true}
                 />,
             )
 
@@ -344,6 +348,7 @@ describe('Container', () => {
                         [FeatureFlagKey.ShowAiReasoningInTicket]: true,
                     }}
                     isImpersonated={false}
+                    shouldTicketHaveReasoning={true}
                 />,
             )
 
@@ -422,6 +427,7 @@ describe('Container', () => {
                             [FeatureFlagKey.ShowAiReasoningInTicket]: true,
                         }}
                         isImpersonated={false}
+                        shouldTicketHaveReasoning={true}
                     />,
                 )
 

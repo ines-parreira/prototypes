@@ -1,6 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -28,7 +29,6 @@ import {
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import TicketMessages from '../TicketMessages'
 
-// Mock the TicketMessageTranslationProvider to avoid QueryClient issues
 jest.mock(
     'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/TicketMessageTranslationDisplayProvider',
     () => ({
@@ -44,7 +44,6 @@ jest.mock(
     }),
 )
 
-// Mock the withMessageTranslations HOC to avoid QueryClient issues
 jest.mock(
     'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/withMessageTranslations',
     () => ({
@@ -60,6 +59,51 @@ jest.mock('common/segment/segment', () => ({
     logEvent: jest.fn(),
 }))
 jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
+jest.mock('models/knowledgeService/queries', () => ({
+    useGetEarliestExecution: jest.fn(() => ({
+        data: {
+            reasoningTimestamp: '2021-01-01T00:00:00Z',
+        },
+        isLoading: false,
+        isError: false,
+    })),
+}))
+jest.mock('state/ticket/utils', () => ({
+    ...jest.requireActual('state/ticket/utils'),
+    buildFirstTicketMessage: jest.fn((message, ...args) => {
+        const actual = jest.requireActual('state/ticket/utils')
+        if (!message) {
+            return {
+                created_datetime: '2021-01-01T00:00:00Z',
+                sender: { email: 'dummy@test.com' },
+                body_html: '',
+                public: true,
+            }
+        }
+        return actual.buildFirstTicketMessage(message, ...args)
+    }),
+}))
+jest.mock('models/aiAgentFeedback/queries', () => ({
+    useGetAiAgentFeedback: jest.fn(() => ({
+        data: {
+            data: {
+                messages: [],
+            },
+        },
+        isLoading: false,
+        isError: false,
+    })),
+}))
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useTicketInfobarNavigation: jest.fn(() => ({
+        activeTab: null,
+        onChangeTab: jest.fn(),
+    })),
+    TicketInfobarTab: {
+        Feedback: 'feedback',
+    },
+}))
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getShouldDisplayAuditLogEventsMock = assumeMock(
@@ -90,6 +134,11 @@ jest.mock('tickets/ticket-detail/components/MessageHeader', () => ({
 const defaultStore: Partial<RootState> = {
     currentAccount: fromJS(account),
     currentUser: fromJS(user),
+    ticket: fromJS({
+        current: {
+            messages: [],
+        },
+    }),
 }
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -98,9 +147,40 @@ const defaultState: Partial<RootState> = {
     views: fromJS({
         active: view,
     }),
+    ticket: fromJS({
+        current: {
+            messages: [],
+        },
+    }),
 }
 
+const createQueryClient = () =>
+    new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,
+            },
+        },
+        logger: {
+            // eslint-disable-next-line no-console
+            log: console.log,
+            warn: console.warn,
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            error: () => {},
+        },
+    })
+
 describe('TicketMessages', () => {
+    let queryClient: QueryClient
+
+    beforeEach(() => {
+        queryClient = createQueryClient()
+    })
+
+    afterEach(() => {
+        queryClient.clear()
+    })
+
     const defaultProps = {
         id: '1',
         messages: [
@@ -149,9 +229,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...draftMessageProps} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...draftMessageProps} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('AIAgentDraftMessage')).toBeInTheDocument()
@@ -176,9 +258,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...trialMessageProps} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...trialMessageProps} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('AIAgentDraftMessage')).toBeInTheDocument()
@@ -212,9 +296,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -250,9 +336,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -289,9 +377,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -327,9 +417,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -353,9 +445,11 @@ describe('TicketMessages', () => {
         }
 
         const { container } = render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -380,9 +474,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -411,9 +507,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -442,9 +540,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -472,9 +572,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -501,9 +603,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -530,9 +634,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -559,9 +665,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -599,9 +707,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getAllByText('Message')).toHaveLength(2)
@@ -632,9 +742,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -661,9 +773,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
@@ -692,9 +806,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(logEventMock).not.toHaveBeenCalled()
@@ -721,9 +837,11 @@ describe('TicketMessages', () => {
         }
 
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketMessages {...props} />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()

@@ -7,7 +7,7 @@ import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _memoize from 'lodash/memoize'
 import moment, { Moment } from 'moment'
 
-import { TicketVia } from 'business/types/ticket'
+import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import { isFailed, isPending } from 'models/ticket/predicates'
@@ -48,6 +48,7 @@ type Props = {
     isAIAgentMessage?: boolean
     isAIAgentMessageSelected?: boolean
     isTicketAfterFeedbackCollectionPeriod?: boolean
+    shouldTicketHaveReasoning?: boolean
     allowsAIFeedback?: boolean
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
@@ -83,9 +84,13 @@ export class Container extends Component<Props> {
             containsLastCustomerMessage,
             shouldDisplayAuditLogEvents = false,
             isTicketAfterFeedbackCollectionPeriod = false,
+            shouldTicketHaveReasoning = false,
             flags,
             isImpersonated,
         } = this.props
+
+        const isInternalNote =
+            message.source?.type === TicketMessageSourceType.InternalNote
 
         const hasTicketThreadRevamp =
             !!flags?.[FeatureFlagKey.TicketThreadRevamp]
@@ -261,12 +266,20 @@ export class Container extends Component<Props> {
                             />
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
-                                isTicketAfterFeedbackCollectionPeriod &&
-                                (showAiReasoning &&
-                                message.id &&
-                                (isImpersonated ||
-                                    !onlyShowReasoningWhileImpersonating) ? (
-                                    <AiAgentReasoning messageId={message.id} />
+                                (isTicketAfterFeedbackCollectionPeriod ? (
+                                    showAiReasoning &&
+                                    message.id &&
+                                    !isInternalNote &&
+                                    shouldTicketHaveReasoning &&
+                                    (isImpersonated ||
+                                        !onlyShowReasoningWhileImpersonating) ? (
+                                        <AiAgentReasoning message={message} />
+                                    ) : (
+                                        <SimplifiedAIAgentBanner
+                                            message={message}
+                                            messages={messages}
+                                        />
+                                    )
                                 ) : (
                                     <SimplifiedAIAgentBanner
                                         message={message}
