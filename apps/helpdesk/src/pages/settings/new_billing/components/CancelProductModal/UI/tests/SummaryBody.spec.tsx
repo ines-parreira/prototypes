@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -66,7 +64,7 @@ describe('SummaryBody', () => {
         expect(SummaryTotalMock).toHaveBeenCalledWith(
             {
                 total: 1000,
-                cadence: 'month',
+                cadence: Cadence.Month,
             },
             {},
         )
