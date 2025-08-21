@@ -261,7 +261,9 @@ describe('CallTransferDropdown', () => {
             status: 400,
             errorMessage: { error: { msg: 'Transfer failed' } } as any,
             notifiedMessage: 'Transfer failed',
-            notificationStatus: NotificationStatus.Info,
+            notificationStatus: NotificationStatus.Warning,
+            bannerMessage: 'Transfer unsuccessful. Please try again.',
+            bannerType: 'warning',
         },
         {
             status: 404,
@@ -269,14 +271,17 @@ describe('CallTransferDropdown', () => {
             notifiedMessage:
                 'Call transfer failed because an error occurred. Please try again.',
             notificationStatus: NotificationStatus.Error,
+            bannerMessage: 'Transfer failed. Please try again.',
+            bannerType: 'error',
         },
     ])(
-        'handles transfer failure',
+        'handles transfer failure and shows alert banner',
         async ({
             status,
             errorMessage,
             notificationStatus,
             notifiedMessage,
+            bannerMessage,
         }) => {
             const user = userEvent.setup()
             const failedTransferHandler = mockTransferCallHandler(async () =>
@@ -306,9 +311,48 @@ describe('CallTransferDropdown', () => {
                     status: notificationStatus,
                     message: notifiedMessage,
                 })
+                expect(screen.getByText(bannerMessage)).toBeInTheDocument()
             })
         },
     )
+
+    it('clears alert banner when clicking in dropdown body', async () => {
+        const user = userEvent.setup()
+        const failedTransferHandler = mockTransferCallHandler(async () =>
+            HttpResponse.json({ error: { msg: 'Transfer failed' } } as any, {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+            }),
+        )
+        server.use(failedTransferHandler.handler)
+
+        renderComponent()
+
+        // Select an agent and trigger transfer failure
+        await waitFor(() => {
+            const agent1 = screen.getByRole('option', { name: /agent 1/i })
+            return act(() => user.click(agent1))
+        })
+
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+        await act(() => user.click(transferButton))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Transfer unsuccessful. Please try again.'),
+            ).toBeInTheDocument()
+        })
+
+        // Click on another agent (which is inside dropdown body) to clear the banner
+        const agent3 = screen.getByRole('option', { name: /agent 3/i })
+        await act(() => user.click(agent3))
+
+        expect(
+            screen.queryByText('Transfer unsuccessful. Please try again.'),
+        ).not.toBeInTheDocument()
+    })
 
     it('allows transferring to selected agent', async () => {
         const user = userEvent.setup()
@@ -420,6 +464,43 @@ describe('CallTransferDropdown', () => {
                 const url = new URL(request.url)
                 expect(url.searchParams.has('available_first')).toBe(false)
             })
+        })
+
+        it('when FF off, does not show alert banner when transfer fails', async () => {
+            const user = userEvent.setup()
+            const failedTransferHandler = mockTransferCallHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Transfer failed' } } as any,
+                    {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json' },
+                    },
+                ),
+            )
+            server.use(failedTransferHandler.handler)
+
+            renderComponent()
+
+            await waitFor(() => {
+                const agent1 = screen.getByRole('option', { name: /agent 1/i })
+                return act(() => user.click(agent1))
+            })
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            await act(() => user.click(transferButton))
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Warning,
+                    message: 'Transfer failed',
+                })
+            })
+
+            expect(
+                screen.queryByText('Transfer unsuccessful. Please try again.'),
+            ).not.toBeInTheDocument()
         })
     })
 })

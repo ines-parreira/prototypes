@@ -19,6 +19,9 @@ import { getCallSid } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownAlertBanner, {
+    AlertBannerData,
+} from 'pages/common/components/dropdown/DropdownAlertBanner'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
@@ -69,6 +72,9 @@ export default function CallTransferDropdown({
     const [selectedTransferType, setSelectedTransferType] =
         useState<TransferType>(TransferType.Agents)
     const dispatch = useAppDispatch()
+    const [alertBannerData, setAlertBannerData] =
+        useState<AlertBannerData | null>(null)
+    const clearAlertBannerData = () => setAlertBannerData(null)
 
     const { data: agentsDataWithStatus } = useListUsers(
         {
@@ -101,16 +107,22 @@ export default function CallTransferDropdown({
                     const message =
                         get(error, 'response.data.error.msg') ??
                         'Call transfer failed because an error occurred. Please try again.'
+                    const isWarning = error.response?.status === 400
 
                     void dispatch(
                         notify({
-                            status:
-                                error.response?.status === 400
-                                    ? NotificationStatus.Info
-                                    : NotificationStatus.Error,
+                            status: isWarning
+                                ? NotificationStatus.Warning
+                                : NotificationStatus.Error,
                             message,
                         }),
                     )
+                    setAlertBannerData({
+                        message: isWarning
+                            ? 'Transfer unsuccessful. Please try again.'
+                            : 'Transfer failed. Please try again.',
+                        type: isWarning ? 'warning' : 'error',
+                    })
                 },
             },
         })
@@ -168,7 +180,10 @@ export default function CallTransferDropdown({
                 </div>
             )}
             <DropdownSearch />
-            <DropdownBody className={css.dropdownBody}>
+            <DropdownBody
+                className={css.dropdownBody}
+                onClick={clearAlertBannerData}
+            >
                 {isTransferToExternalNumberEnabled ? (
                     <>
                         <DropdownSection
@@ -210,6 +225,13 @@ export default function CallTransferDropdown({
                 )}
             </DropdownBody>
             <div className={css.dropdownFooter}>
+                {isTransferToExternalNumberEnabled && (
+                    <DropdownAlertBanner
+                        data={alertBannerData}
+                        onClear={clearAlertBannerData}
+                        autoDismiss
+                    />
+                )}
                 <Button
                     className={css.cta}
                     isDisabled={!selectedAgent}
