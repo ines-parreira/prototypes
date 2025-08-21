@@ -39,6 +39,11 @@ describe('totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory', ()
                     operator: ReportingFilterOperator.Equals,
                     values: ['1'],
                 },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
                     {
@@ -78,6 +83,11 @@ describe('totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory', ()
                     member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
                     operator: ReportingFilterOperator.Equals,
                     values: ['1'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
                 },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
@@ -127,6 +137,11 @@ describe('totalNumberOfAutomatedSalesDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.NotEquals,
                     values: ['handover'],
                 },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
                     {
@@ -168,6 +183,11 @@ describe('totalNumberOfAutomatedSalesDrillDownQueryFactory', () => {
                     member: AiSalesAgentConversationsDimension.Outcome,
                     operator: ReportingFilterOperator.NotEquals,
                     values: ['handover'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
                 },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
@@ -217,6 +237,11 @@ describe('discountCodesOfferedDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Set,
                     values: [],
                 },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
                     {
@@ -258,6 +283,11 @@ describe('discountCodesOfferedDrillDownQueryFactory', () => {
                     member: AiSalesAgentConversationsDimension.DiscountCode,
                     operator: ReportingFilterOperator.Set,
                     values: [],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
                 },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
@@ -303,6 +333,11 @@ describe('totalNumberOfOrderDrillDownQueryFactory', () => {
             ],
             filters: [
                 {
+                    member: AiSalesAgentOrdersDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
+                {
                     member: AiSalesAgentOrdersDimension.IsInfluenced,
                     operator: ReportingFilterOperator.Equals,
                     values: ['1'],
@@ -345,6 +380,11 @@ describe('totalNumberOfOrderDrillDownQueryFactory', () => {
                 AiSalesAgentOrdersDimension.CustomerId,
             ],
             filters: [
+                {
+                    member: AiSalesAgentOrdersDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
                 {
                     member: AiSalesAgentOrdersDimension.IsInfluenced,
                     operator: ReportingFilterOperator.Equals,
@@ -401,6 +441,11 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Set,
                     values: [],
                 },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
                     {
@@ -447,6 +492,11 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                     member: AiSalesAgentConversationsDimension.ProductIds,
                     operator: ReportingFilterOperator.Set,
                     values: [],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
                 },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,
@@ -505,6 +555,11 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                     member: AiSalesAgentConversationsDimension.ProductIds,
                     operator: ReportingFilterOperator.Contains,
                     values: ['123'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
                 },
                 ...statsFiltersToReportingFilters(
                     aiSalesAgentConversationsDefaultFiltersMembers,

@@ -19,6 +19,7 @@ import {
     ConvertTrackingEventsDimension,
     ConvertTrackingEventsMeasure,
 } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
+import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import {
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrderCustomersDefaultFiltersMembers,
@@ -36,6 +37,22 @@ import {
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
+const baseAISalesAgentOrdersFilters = [
+    {
+        member: AiSalesAgentOrdersDimension.Source,
+        operator: ReportingFilterOperator.Equals,
+        values: [SourceFilter.ShoppingAssistant],
+    },
+]
+
+const baseAISalesAgentConversationsFilters = [
+    {
+        member: AiSalesAgentConversationsDimension.Source,
+        operator: ReportingFilterOperator.Equals,
+        values: [SourceFilter.ShoppingAssistant],
+    },
+]
+
 export const averageOrderValueQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -47,11 +64,7 @@ export const averageOrderValueQueryFactory = (
         ],
         dimensions: [],
         filters: [
-            {
-                member: AiSalesAgentOrdersDimension.IsInfluenced,
-                operator: ReportingFilterOperator.Equals,
-                values: ['1'],
-            },
+            ...baseAISalesAgentOrdersFilters,
             ...statsFiltersToReportingFilters(
                 aiSalesAgentOrdersDefaultFiltersMembers,
                 filters,
@@ -72,6 +85,7 @@ export const averageOrderValuePreviewQueryFactory = (
         ],
         dimensions: [],
         filters: [
+            ...baseAISalesAgentOrdersFilters,
             ...statsFiltersToReportingFilters(
                 aiSalesAgentOrdersDefaultFiltersMembers,
                 filters,
@@ -108,6 +122,7 @@ export const gmvUSDInfluencedQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
+        ...baseAISalesAgentOrdersFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
             filters,
@@ -129,6 +144,7 @@ export const gmvInfluencedQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
+        ...baseAISalesAgentOrdersFilters,
         ...(integrationIds && integrationIds.length > 0
             ? [
                   {
@@ -184,7 +200,11 @@ export const totalNumberOfOrderQueryFactory = (
     return {
         measures: [AiSalesAgentOrdersMeasure.Count],
         dimensions: [],
-        filters: [...influencedFilter, ...baseFilters],
+        filters: [
+            ...baseAISalesAgentOrdersFilters,
+            ...influencedFilter,
+            ...baseFilters,
+        ],
         timezone,
     }
 }
@@ -248,6 +268,7 @@ export const totalNumberOfSalesConversationsQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
+        ...baseAISalesAgentConversationsFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentConversationsDefaultFiltersMembers,
             filters,
@@ -273,6 +294,7 @@ export const totalNumberOfAutomatedSalesQueryFactory = (
             operator: ReportingFilterOperator.NotEquals,
             values: ['handover'],
         },
+        ...baseAISalesAgentConversationsFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentConversationsDefaultFiltersMembers,
             filters,
@@ -326,6 +348,7 @@ export const totalNumberProductRecommendationsQueryFactory = (
                   },
               ]
             : []),
+        ...baseAISalesAgentConversationsFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentConversationsDefaultFiltersMembers,
             filters,
@@ -458,6 +481,7 @@ export const productRecommendationsQueryFactory = (
             operator: ReportingFilterOperator.Set,
             values: [],
         },
+        ...baseAISalesAgentConversationsFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentConversationsDefaultFiltersMembers,
             filters,
@@ -475,6 +499,7 @@ export const topProductRecommendationsQueryFactory = (
     measures: [AiSalesAgentOrdersMeasure.Count],
     dimensions: [AiSalesAgentOrdersDimension.ProductId],
     filters: [
+        ...baseAISalesAgentOrdersFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
             filters,
@@ -492,6 +517,7 @@ export const topLocationsRecommendationsQueryFactory = (
         measures: [AiSalesAgentOrdersMeasure.Count],
         dimensions: [AiSalesAgentOrdersDimension.ShippingCity],
         filters: [
+            ...baseAISalesAgentOrdersFilters,
             ...statsFiltersToReportingFilters(
                 aiSalesAgentOrdersDefaultFiltersMembers,
                 filters,
@@ -519,6 +545,7 @@ export const discountCodesOfferedQueryFactory = (
             operator: ReportingFilterOperator.Set,
             values: [],
         },
+        ...baseAISalesAgentConversationsFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentConversationsDefaultFiltersMembers,
             filters,
@@ -561,6 +588,7 @@ export const discountCodesAppliedQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['discount-code'],
         },
+        ...baseAISalesAgentOrdersFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
             filters,
@@ -586,6 +614,7 @@ export const discountCodesAverageQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['discount-code'],
         },
+        ...baseAISalesAgentOrdersFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
             filters,
@@ -605,6 +634,7 @@ export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
+        ...baseAISalesAgentOrdersFilters,
     ],
     timezone,
 })
@@ -619,6 +649,7 @@ export const repeatRateQueryFactory = (
     ],
     dimensions: [],
     filters: [
+        ...baseAISalesAgentOrdersFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrderCustomersDefaultFiltersMembers,
             filters,
@@ -639,6 +670,7 @@ export const averageDiscountPercentageQueryFactory = (
             operator: ReportingFilterOperator.Gt,
             values: ['0'],
         },
+        ...baseAISalesAgentOrdersFilters,
         ...statsFiltersToReportingFilters(
             aiSalesAgentOrdersDefaultFiltersMembers,
             filters,
