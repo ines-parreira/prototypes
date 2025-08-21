@@ -6,6 +6,7 @@ import type { SelectFieldOption } from '@gorgias/axiom'
 import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_PREFERENCES } from 'config'
+import { ISO639English } from 'constants/languages'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 import { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
@@ -48,6 +49,7 @@ export function useYourProfileForm({
     settingsPreferences,
     languagePreferences,
 }: UseYourProfileFormProps) {
+    const [proficientLanguagesInput, setProficientLanguagesInput] = useState('')
     const [isFormDirty, setIsFormDirty] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -108,9 +110,36 @@ export function useYourProfileForm({
                 'proficient',
                 options.map((option) => option.value as string),
             )
+            setProficientLanguagesInput('')
         },
         [handlePreferenceChange],
     )
+
+    const handleProficientLanguagesInputChange = useCallback(
+        (value: string) => {
+            setProficientLanguagesInput(value)
+        },
+        [],
+    )
+
+    const proficientLanguagesOptions = useMemo(() => {
+        const allOptions = Object.entries(ISO639English).map(
+            ([code, name]) => ({
+                label: name,
+                value: code,
+            }),
+        )
+
+        if (proficientLanguagesInput.length === 0) {
+            return allOptions
+        }
+
+        return allOptions.filter(({ label }) =>
+            label
+                .toLowerCase()
+                .includes(proficientLanguagesInput.toLowerCase()),
+        )
+    }, [proficientLanguagesInput])
 
     return {
         isFormDirty,
@@ -124,5 +153,7 @@ export function useYourProfileForm({
         handlePreferenceChange,
         handlePrimaryLanguageChange,
         handleProficientLanguagesChange,
+        handleProficientLanguagesInputChange,
+        proficientLanguagesOptions,
     }
 }

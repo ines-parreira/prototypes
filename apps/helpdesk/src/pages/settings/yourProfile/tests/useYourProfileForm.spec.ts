@@ -373,6 +373,157 @@ describe('useYourProfileForm', () => {
             ])
             expect(result.current.isFormDirty).toBe(true)
         })
+
+        it('should clear proficient languages input after selection', () => {
+            const { result } = renderHookWithProps({
+                currentUser: mockCurrentUser,
+                languagePreferences: mockLanguagePreferences,
+            })
+
+            act(() => {
+                result.current.handleProficientLanguagesInputChange('spa')
+            })
+
+            expect(result.current.proficientLanguagesOptions).toContainEqual({
+                label: 'Spanish',
+                value: 'es',
+            })
+
+            const newOptions = [{ value: 'es', label: 'Spanish' }]
+
+            act(() => {
+                result.current.handleProficientLanguagesChange(newOptions)
+            })
+
+            expect(result.current.proficientLanguagesOptions.length).toBe(57)
+        })
+    })
+
+    describe('handleProficientLanguagesInputChange', () => {
+        it('should update proficient languages search input', () => {
+            const { result } = renderHookWithProps({
+                currentUser: mockCurrentUser,
+                languagePreferences: mockLanguagePreferences,
+            })
+
+            act(() => {
+                result.current.handleProficientLanguagesInputChange('fre')
+            })
+
+            expect(result.current.proficientLanguagesOptions).toContainEqual({
+                label: 'French',
+                value: 'fr',
+            })
+
+            expect(
+                result.current.proficientLanguagesOptions,
+            ).not.toContainEqual({
+                label: 'Spanish',
+                value: 'es',
+            })
+        })
+
+        it('should perform case-insensitive filtering', () => {
+            const { result } = renderHookWithProps({
+                currentUser: mockCurrentUser,
+                languagePreferences: mockLanguagePreferences,
+            })
+
+            act(() => {
+                result.current.handleProficientLanguagesInputChange('FRENCH')
+            })
+
+            expect(result.current.proficientLanguagesOptions).toContainEqual({
+                label: 'French',
+                value: 'fr',
+            })
+        })
+
+        it('should return all options when search input is empty', () => {
+            const { result } = renderHookWithProps({
+                currentUser: mockCurrentUser,
+                languagePreferences: mockLanguagePreferences,
+            })
+
+            const initialOptionsCount =
+                result.current.proficientLanguagesOptions.length
+
+            act(() => {
+                result.current.handleProficientLanguagesInputChange('test')
+            })
+
+            const filteredOptionsCount =
+                result.current.proficientLanguagesOptions.length
+            expect(filteredOptionsCount).toBeLessThan(initialOptionsCount)
+
+            act(() => {
+                result.current.handleProficientLanguagesInputChange('')
+            })
+
+            expect(result.current.proficientLanguagesOptions.length).toBe(
+                initialOptionsCount,
+            )
+        })
+    })
+
+    describe('proficientLanguagesOptions', () => {
+        it('should provide all language options when no search input is provided', () => {
+            const { result } = renderHookWithProps({
+                currentUser: mockCurrentUser,
+                languagePreferences: mockLanguagePreferences,
+            })
+
+            expect(result.current.proficientLanguagesOptions.length).toBe(57)
+
+            expect(result.current.proficientLanguagesOptions).toContainEqual({
+                label: 'English',
+                value: 'en',
+            })
+            expect(result.current.proficientLanguagesOptions).toContainEqual({
+                label: 'French',
+                value: 'fr',
+            })
+            expect(result.current.proficientLanguagesOptions).toContainEqual({
+                label: 'Spanish',
+                value: 'es',
+            })
+        })
+
+        it('should filter options based on search input', () => {
+            const { result } = renderHookWithProps({
+                currentUser: mockCurrentUser,
+                languagePreferences: mockLanguagePreferences,
+            })
+
+            act(() => {
+                result.current.handleProficientLanguagesInputChange('ger')
+            })
+
+            expect(result.current.proficientLanguagesOptions).toContainEqual({
+                label: 'German',
+                value: 'de',
+            })
+
+            expect(
+                result.current.proficientLanguagesOptions,
+            ).not.toContainEqual({
+                label: 'French',
+                value: 'fr',
+            })
+        })
+
+        it('should return empty array when no languages match the search', () => {
+            const { result } = renderHookWithProps({
+                currentUser: mockCurrentUser,
+                languagePreferences: mockLanguagePreferences,
+            })
+
+            act(() => {
+                result.current.handleProficientLanguagesInputChange('xyzabc123')
+            })
+
+            expect(result.current.proficientLanguagesOptions).toEqual([])
+        })
     })
 
     describe('setIsFormDirty', () => {

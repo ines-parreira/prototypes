@@ -641,7 +641,6 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            // Click on the primary language dropdown using the test id container
             const primaryLanguageContainer = getByTestId(
                 'default-translation-language',
             )
@@ -653,7 +652,6 @@ describe('Your profile page', () => {
                 await user.click(dropdownTrigger!)
             })
 
-            // Select French as the new primary language
             const options = getAllByRole('option')
             const frenchOption = options.find((option) =>
                 option.textContent?.includes('French'),
@@ -703,18 +701,115 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            // Open the proficient languages multi-select
             await act(async () => {
                 await user.click(getByLabelText(/Languages you know/i))
             })
 
-            // Add Spanish to proficient languages
             await act(async () => {
                 await user.click(getAllByText(/Spanish/i)[0])
             })
 
             await act(async () => {
                 await user.click(getByText('Save Changes'))
+            })
+        })
+
+        it('should filter proficient languages options based on search input', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockImplementation(() => true)
+            const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    settings: [
+                        settingsPreferences,
+                        {
+                            ...languagePreferences,
+                            data: {
+                                primary: 'en',
+                                proficient: [],
+                            },
+                        },
+                    ],
+                } as unknown as CurrentUser['data']),
+            )
+            server.use(handler)
+
+            const { getByText, getByLabelText, getByPlaceholderText } =
+                renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await user.click(getByLabelText(/Languages you know/i))
+            })
+
+            const searchInput = getByPlaceholderText(/Add Languages/i)
+
+            await act(async () => {
+                await user.type(searchInput, 'span')
+            })
+
+            expect(searchInput).toHaveValue('span')
+
+            await act(async () => {
+                await user.clear(searchInput)
+                await user.type(searchInput, 'fren')
+            })
+
+            expect(searchInput).toHaveValue('fren')
+        })
+
+        it('should clear search input after selecting a proficient language', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockImplementation(() => true)
+            const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    settings: [
+                        settingsPreferences,
+                        {
+                            ...languagePreferences,
+                            data: {
+                                primary: 'en',
+                                proficient: [],
+                            },
+                        },
+                    ],
+                } as unknown as CurrentUser['data']),
+            )
+            server.use(handler)
+
+            const { getByText, getByLabelText, getByPlaceholderText } =
+                renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await user.click(getByLabelText(/Languages you know/i))
+            })
+
+            const searchInput = getByPlaceholderText(/Add Languages/i)
+            await act(async () => {
+                await user.type(searchInput, 'span')
+            })
+
+            await act(async () => {
+                await user.click(getByText('Spanish'))
+            })
+
+            expect(searchInput).toHaveValue('')
+
+            await act(async () => {
+                await user.click(getByLabelText(/Languages you know/i))
+            })
+
+            await waitFor(() => {
+                expect(getByText('French')).toBeInTheDocument()
+                expect(getByText('Spanish')).toBeInTheDocument()
             })
         })
     })
@@ -728,19 +823,16 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            // Initially no password field
             expect(
                 queryByLabelText(/Password confirmation/i),
             ).not.toBeInTheDocument()
 
-            // Change email
             const emailField = getByRole('textbox', { name: /Your email/ })
             await act(async () => {
                 await user.clear(emailField)
                 await user.type(emailField, 'newemail@example.com')
             })
 
-            // Password confirmation field should appear
             await waitFor(() => {
                 expect(
                     queryByLabelText(/Password confirmation/i),
@@ -759,7 +851,6 @@ describe('Your profile page', () => {
             const originalEmail = mockGetCurrentUser.data.email
             const emailField = getByRole('textbox', { name: /Your email/ })
 
-            // Change email
             await act(async () => {
                 await user.clear(emailField)
                 await user.type(emailField, 'newemail@example.com')
@@ -771,13 +862,11 @@ describe('Your profile page', () => {
                 ).toBeInTheDocument()
             })
 
-            // Revert to original email
             await act(async () => {
                 await user.clear(emailField)
                 await user.type(emailField, originalEmail!)
             })
 
-            // Password field should disappear
             await waitFor(() => {
                 expect(
                     queryByLabelText(/Password confirmation/i),
@@ -834,7 +923,6 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            // Theme section should be visible under conversation settings
             const themeSections = queryAllByText('Theme')
             expect(themeSections).toHaveLength(1)
         })
@@ -848,7 +936,6 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            // Theme section should be visible under account preferences
             const themeSections = queryAllByText('Theme')
             expect(themeSections).toHaveLength(1)
         })

@@ -88,6 +88,8 @@ export function YourProfileView({
         handlePreferenceChange,
         handlePrimaryLanguageChange,
         handleProficientLanguagesChange,
+        handleProficientLanguagesInputChange,
+        proficientLanguagesOptions,
     } = useYourProfileForm({
         currentUser,
         settingsPreferences,
@@ -212,7 +214,7 @@ export function YourProfileView({
         [translationLanguageOptions, formValues.preferences],
     )
 
-    const proficientLanguagesOptions = useMemo(
+    const allProficientLanguagesOptions = useMemo(
         () =>
             Object.entries(ISO639English).map(([code, name]) => ({
                 value: code,
@@ -224,11 +226,11 @@ export function YourProfileView({
     const proficientSelectedOptions = useMemo(
         () =>
             (formValues.preferences?.proficient?.map((value) =>
-                proficientLanguagesOptions.find(
+                allProficientLanguagesOptions.find(
                     (option) => option.value === value,
                 ),
             ) as Option[]) ?? ([] as Option[]),
-        [formValues.preferences, proficientLanguagesOptions],
+        [formValues.preferences, allProficientLanguagesOptions],
     )
 
     return (
@@ -501,6 +503,9 @@ export function YourProfileView({
                                                 id="proficient-languages"
                                                 plural="Languages"
                                                 showAllOptions
+                                                onInputChange={
+                                                    handleProficientLanguagesInputChange
+                                                }
                                                 options={
                                                     proficientLanguagesOptions
                                                 }
