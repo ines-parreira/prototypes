@@ -897,7 +897,7 @@ describe('useTrialModalProps', () => {
             result.current.trialAlertBanner.primaryAction?.onClick()
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
-                'https://www.gorgias.com/demo/customers/automate',
+                'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
                 '_blank',
             )
         })

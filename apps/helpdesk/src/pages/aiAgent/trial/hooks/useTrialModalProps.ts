@@ -34,7 +34,8 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 import { useNotifyAdmins } from './useNotifyAdmins'
 
 export const EXTERNAL_URLS = {
-    BOOK_DEMO: 'https://www.gorgias.com/demo/customers/automate',
+    BOOK_DEMO:
+        'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
     SHOPPING_ASSISTANT_INFO:
         'https://www.gorgias.com/ai-agent/shopping-assistant',
     // Shopping Assistant trial specific URLs with sidebar UTM parameters
