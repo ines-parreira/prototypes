@@ -1,3 +1,4 @@
+import { branchKey } from '../buildTreeOfChoices'
 import { getCurrentPathFromFullValue } from '../getCurrentPathFromFullValue'
 
 describe('getCurrentPathFromFullValue', () => {
@@ -9,8 +10,8 @@ describe('getCurrentPathFromFullValue', () => {
         [false, []],
         ['', []],
         ['hello', []],
-        ['hello::world', ['hello']],
-        ['hello::world::foo', ['hello', 'world']],
+        ['hello::world', ['hello'].map(branchKey)],
+        ['hello::world::foo', ['hello', 'world'].map(branchKey)],
     ])(
         'should the correct path',
         (

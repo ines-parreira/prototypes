@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import _xor from 'lodash/xor'
 import { Link } from 'react-router-dom'
 
-import { CheckBoxField, Skeleton, Tooltip } from '@gorgias/axiom'
+import { Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import StealthInput from 'custom-fields/components/StealthInput'
@@ -31,29 +31,24 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
-import CheckIcon from './CheckIcon'
-import { CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID } from './constants'
-import { buildTreeOfChoices } from './helpers/buildTreeOfChoices'
+import { PREVIOUS_BUTTON_ID } from './constants'
+import { buildTreeOfChoices, fromTreeKey } from './helpers/buildTreeOfChoices'
 import { getCurrentPathFromFullValue } from './helpers/getCurrentPathFromFullValue'
 import { getFullValueFromCurrentPath } from './helpers/getFullValueFromCurrentPath'
+import { isMultiValueAllowed } from './helpers/isMultiValue'
 import isMultiValueEmpty from './helpers/isMultiValueEmpty'
 import { isOutdatedValue } from './helpers/isOutdatedValue'
 import { useA11yDropdown } from './hooks/useA11yDropdown'
 import { useActiveState } from './hooks/useActiveState'
 import { usePredictionIconPositionAdjuster } from './hooks/usePredictionIconPositionAdjuster'
 import { useSearch } from './hooks/useSearch'
+import { LeafLevelOption } from './LeafLevelOption'
+import { LevelOption } from './LevelOption'
 import { SearchInput } from './search/SearchInput'
 import { SearchResult } from './search/SearchResult'
 import { CustomInputProps } from './types'
 
 import css from './MultiLevelSelect.less'
-
-function isMultiValueAllowed<T extends boolean | undefined>(
-    allowMultiValues: T,
-    __value: CustomFieldValue | CustomFieldValue[] | undefined,
-): __value is CustomFieldValue[] {
-    return allowMultiValues === true
-}
 
 type InferCustomFieldValueType<AllowMultiValues extends boolean | undefined> =
     AllowMultiValues extends true ? CustomFieldValue[] : CustomFieldValue
@@ -149,7 +144,8 @@ export default function MultiLevelSelect<
     let currentBranch = choicesTree
     currentPath.forEach(
         (nextBranchPath) =>
-            (currentBranch = currentBranch[nextBranchPath] || currentBranch),
+            (currentBranch =
+                currentBranch.get(nextBranchPath)?.children || currentBranch),
     )
 
     const isSearchDisabled =
@@ -326,7 +322,9 @@ export default function MultiLevelSelect<
                                 >
                                     arrow_back
                                 </span>
-                                {currentPath[currentPath.length - 1]}
+                                {fromTreeKey(
+                                    currentPath[currentPath.length - 1],
+                                )}
                             </span>
                         </Button>
                     </DropdownHeader>
@@ -385,94 +383,50 @@ export default function MultiLevelSelect<
                         </>
                     ) : (
                         <>
-                            {Object.keys(currentBranch).map((choice) => {
-                                const label = getValueLabel(choice)
-                                return (
-                                    <DropdownItem
-                                        className={itemClassName}
-                                        key={choice}
-                                        tag="button"
-                                        onClick={() => goNext(choice)}
-                                        option={{ label, value: choice }}
-                                    >
-                                        <span className={css.choiceButton}>
-                                            <span className={css.ellipsis}>
-                                                {label}
-                                            </span>
-                                            <span
-                                                className={`material-icons ${css.nextIcon}`}
-                                            >
-                                                navigate_next
-                                            </span>
-                                        </span>
-                                    </DropdownItem>
-                                )
-                            })}
-                            {Array.from(
-                                currentBranch[CHOICE_VALUES_SYMBOL],
-                            ).map((choice) => {
-                                const label = getValueLabel(choice)
-                                const fullValue = getFullValueFromCurrentPath(
-                                    currentPath,
-                                    choice,
-                                )
-                                return (
-                                    <DropdownItem
-                                        className={itemClassName}
-                                        key={choice.toString()}
-                                        tag="button"
-                                        onClick={() => {
-                                            handleChange(fullValue)
-                                        }}
-                                        option={{
-                                            label,
-                                            value: choice,
-                                        }}
-                                    >
-                                        {fullValue === prediction?.predicted &&
-                                            isPredictionCorrect && (
-                                                <i
-                                                    className={`material-icons mr-2 ${css.predictionIcon}`}
-                                                >
-                                                    auto_awesome
-                                                </i>
+                            {Array.from(currentBranch.entries()).map(
+                                ([key, v]) => {
+                                    if (
+                                        v.children.size === 0 &&
+                                        v.value !== null
+                                    ) {
+                                        const fullValue =
+                                            getFullValueFromCurrentPath(
+                                                currentPath,
+                                                v.value,
+                                            )
+                                        return (
+                                            <LeafLevelOption
+                                                className={itemClassName}
+                                                key={key}
+                                                choice={v.value}
+                                                value={value}
+                                                fullValue={fullValue}
+                                                onClick={() =>
+                                                    handleChange(fullValue)
+                                                }
+                                                prediction={prediction}
+                                                isPredictionCorrect={
+                                                    isPredictionCorrect
+                                                }
+                                                allowMultiValues={
+                                                    allowMultiValues
+                                                }
+                                                showCheckboxes={showCheckboxes}
+                                            />
+                                        )
+                                    }
+                                    return (
+                                        <LevelOption
+                                            className={itemClassName}
+                                            key={key}
+                                            label={getValueLabel(
+                                                fromTreeKey(key),
                                             )}
-                                        <span className={css.choiceButton}>
-                                            <span className={css.ellipsis}>
-                                                {label}
-                                            </span>
-                                        </span>
-                                        {showCheckboxes ? (
-                                            <span className={css.checkbox}>
-                                                <CheckBoxField
-                                                    value={
-                                                        isMultiValueAllowed(
-                                                            allowMultiValues,
-                                                            value,
-                                                        )
-                                                            ? value.includes(
-                                                                  fullValue,
-                                                              )
-                                                            : fullValue ===
-                                                              value
-                                                    }
-                                                    onChange={() => {}}
-                                                    onClick={() => {}}
-                                                />
-                                            </span>
-                                        ) : (
-                                            (isMultiValueAllowed(
-                                                allowMultiValues,
-                                                value,
-                                            )
-                                                ? value?.includes(fullValue)
-                                                : fullValue === value) && (
-                                                <CheckIcon />
-                                            )
-                                        )}
-                                    </DropdownItem>
-                                )
-                            })}
+                                            onClick={() => goNext(key)}
+                                        />
+                                    )
+                                },
+                            )}
                         </>
                     )}
                 </DropdownBody>

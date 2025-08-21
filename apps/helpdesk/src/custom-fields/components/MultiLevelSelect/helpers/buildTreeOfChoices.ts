@@ -1,43 +1,46 @@
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import { CustomFieldValue } from 'custom-fields/types'
 
-import { CHOICE_VALUES_SYMBOL } from '../constants'
 import { ChoicesTree } from '../types'
 
+const leafKey = (key: string) => {
+    return `${key}${DROPDOWN_NESTING_DELIMITER}leaf`
+}
+
+export const branchKey = (key: string) => {
+    return `${key}${DROPDOWN_NESTING_DELIMITER}branch`
+}
+
+export const fromTreeKey = (key: string) => {
+    return key.split('::').shift() ?? ''
+}
+
 export function buildTreeOfChoices(choices: CustomFieldValue[]) {
-    const tree: ChoicesTree = { [CHOICE_VALUES_SYMBOL]: new Set() }
+    const tree: ChoicesTree = new Map()
     choices.forEach((choice) => {
         if (['boolean', 'number'].includes(typeof choice)) {
-            tree[CHOICE_VALUES_SYMBOL].add(choice)
+            tree.set(leafKey(choice.toString()), {
+                value: choice,
+                children: new Map(),
+            })
         }
 
         if (typeof choice === 'string') {
-            recursivelyBuildTreeOfChoices(
-                tree,
-                choice.split(DROPDOWN_NESTING_DELIMITER),
-            )
+            addToTree(tree, choice.split(DROPDOWN_NESTING_DELIMITER))
         }
     })
     return tree
 }
 
-function recursivelyBuildTreeOfChoices(
-    currentBranch: ChoicesTree,
-    values: string[],
-) {
-    const currentValue = values.shift()
-
-    if (!currentValue) return
-
-    if (values.length === 0) {
-        currentBranch[CHOICE_VALUES_SYMBOL].add(currentValue)
-        return
-    }
-
-    if (!currentBranch[currentValue]) {
-        currentBranch[currentValue] = {
-            [CHOICE_VALUES_SYMBOL]: new Set(),
+function addToTree(tree: ChoicesTree, path: string[]) {
+    let pointer = tree
+    for (let i = 0; i < path.length - 1; i++) {
+        const key = branchKey(path[i])
+        if (!pointer.get(key)) {
+            pointer.set(key, { value: null, children: new Map() })
         }
+        pointer = pointer.get(key)!.children
     }
-    recursivelyBuildTreeOfChoices(currentBranch[currentValue], values)
+    const value = path[path.length - 1]
+    pointer.set(leafKey(value), { value, children: new Map() })
 }

@@ -1,4 +1,6 @@
-import { CHOICE_VALUES_SYMBOL } from '../../constants'
+import { CustomFieldValue } from 'custom-fields/types'
+
+import { ChoicesTree } from '../../types'
 import { buildTreeOfChoices } from '../buildTreeOfChoices'
 
 describe('buildTreeOfChoices', () => {
@@ -9,56 +11,54 @@ describe('buildTreeOfChoices', () => {
                 'Fulfilment::Wrong item',
                 'hello',
                 'Shipping::WISMO',
-                'Warranty & Damage::Broken::In Window::left',
-                'Warranty & Damage::Broken::Outside Window',
-                'Warranty & Damage::Question',
             ]),
-        ).toMatchInlineSnapshot(`
-            {
-              "Fulfilment": {
-                Symbol(value): Set {
-                  "Missing item",
-                  "Wrong item",
-                },
-              },
-              "Shipping": {
-                Symbol(value): Set {
-                  "WISMO",
-                },
-              },
-              "Warranty & Damage": {
-                "Broken": {
-                  "In Window": {
-                    Symbol(value): Set {
-                      "left",
+        ).toEqual(
+            new Map([
+                [
+                    'Fulfilment::branch',
+                    {
+                        value: null,
+                        children: new Map([
+                            [
+                                'Missing item::leaf',
+                                { value: 'Missing item', children: new Map() },
+                            ],
+                            [
+                                'Wrong item::leaf',
+                                { value: 'Wrong item', children: new Map() },
+                            ],
+                        ]),
                     },
-                  },
-                  Symbol(value): Set {
-                    "Outside Window",
-                  },
-                },
-                Symbol(value): Set {
-                  "Question",
-                },
-              },
-              Symbol(value): Set {
-                "hello",
-              },
-            }
-        `)
+                ],
+                ['hello::leaf', { value: 'hello', children: new Map() }],
+                [
+                    'Shipping::branch',
+                    {
+                        value: null,
+                        children: new Map([
+                            [
+                                'WISMO::leaf',
+                                { value: 'WISMO', children: new Map() },
+                            ],
+                        ]),
+                    },
+                ],
+            ]),
+        )
     })
 
     it.each([
         [
-            [101, 420, 1337],
-            { [CHOICE_VALUES_SYMBOL]: new Set([101, 420, 1337]) },
+            [101, 420, 1337] as CustomFieldValue[],
+            new Map([
+                ['101::leaf', { value: 101, children: new Map() }],
+                ['420::leaf', { value: 420, children: new Map() }],
+                ['1337::leaf', { value: 1337, children: new Map() }],
+            ]),
         ],
     ])(
         'should return a flat structure for numbers and booleans',
-        (
-            input: Parameters<typeof buildTreeOfChoices>[0],
-            output: ReturnType<typeof buildTreeOfChoices>,
-        ) => {
+        (input: CustomFieldValue[], output: ChoicesTree) => {
             expect(buildTreeOfChoices(input)).toEqual(output)
         },
     )
