@@ -10,6 +10,7 @@ import { EndCallNode } from './nodes/EndCallNode'
 import { IncomingCallNode } from './nodes/IncomingCallNode'
 import { PlayMessageNode } from './nodes/PlayMessageNode'
 import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
+import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
 import { VoiceFlowNode } from './types'
 import { VoiceFlowEdge } from './VoiceFlowEdge'
 
@@ -18,6 +19,7 @@ const nodeTypes = {
     [VoiceFlowNodeType.EndCall]: EndCallNode,
     [VoiceFlowNodeType.PlayMessage]: PlayMessageNode,
     [VoiceFlowNodeType.SendToVoicemail]: SendToVoicemailNode,
+    [VoiceFlowNodeType.TimeSplitConditional]: TimeSplitConditionalNode,
 }
 
 const edgeTypes = {

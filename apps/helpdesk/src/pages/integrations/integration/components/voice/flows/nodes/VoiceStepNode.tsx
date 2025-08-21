@@ -19,6 +19,7 @@ type VoiceStepNodeProps = {
     icon: React.ReactNode
     errors: string[]
     children: React.ReactNode
+    drawerRef?: React.RefObject<HTMLDivElement>
 }
 
 export function VoiceStepNode({
@@ -27,6 +28,7 @@ export function VoiceStepNode({
     icon,
     errors = [],
     children,
+    drawerRef,
 }: VoiceStepNodeProps) {
     const [selected, setSelected] = useState(false)
     const handleDrawerClose = () => {
@@ -85,7 +87,9 @@ export function VoiceStepNode({
                     </Drawer.HeaderActions>
                 </Drawer.Header>
                 <Drawer.Content>
-                    <div className={css.drawerForm}>{children}</div>
+                    <div className={css.drawerForm} ref={drawerRef}>
+                        {children}
+                    </div>
                 </Drawer.Content>
             </Drawer>
         </>

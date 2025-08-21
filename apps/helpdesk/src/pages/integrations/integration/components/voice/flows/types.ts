@@ -1,6 +1,7 @@
 import { Node } from '@xyflow/react'
 
 import {
+    CallRoutingFlow,
     EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
@@ -64,3 +65,7 @@ export type VoiceFlowNodeBase<T extends VoiceFlowNode = VoiceFlowNode> = Pick<
     T,
     'id' | 'type' | 'data'
 >
+
+export type VoiceFlowFormValues = CallRoutingFlow & {
+    business_hours_id?: number | null
+}

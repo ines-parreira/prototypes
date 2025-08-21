@@ -21,6 +21,7 @@ export function canAddNewStepOnEdge(source: VoiceFlowNode): boolean {
     switch (source.type) {
         case VoiceFlowNodeType.IvrMenu:
         case VoiceFlowNodeType.SendToVoicemail:
+        case VoiceFlowNodeType.TimeSplitConditional:
             return false
         default:
             return true

@@ -1,10 +1,13 @@
-import { CallRoutingFlow, PhoneIntegration } from '@gorgias/helpdesk-types'
+import omit from 'lodash/omit'
+
+import { PhoneIntegration } from '@gorgias/helpdesk-types'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import GenericVoiceFormSubmitButton from '../VoiceFormSubmitButton'
+import { VoiceFlowFormValues } from './types'
 import { useVoiceFlowForm } from './utils/useVoiceFlowForm'
 
 import css from './VoiceFlowForm.less'
@@ -27,8 +30,12 @@ function VoiceFlowForm({ integration, children }: VoiceFlowFormProps) {
                 keepDefaultValues: false,
                 keepDirtyValues: false,
             }}
-            validator={(values: CallRoutingFlow) => {
-                return toFormErrors(validateCallRoutingFlow(values))
+            validator={(values: VoiceFlowFormValues) => {
+                return toFormErrors(
+                    validateCallRoutingFlow(
+                        omit(values, ['business_hours_id']),
+                    ),
+                )
             }}
         >
             <div className={css.buttonsBanner}>

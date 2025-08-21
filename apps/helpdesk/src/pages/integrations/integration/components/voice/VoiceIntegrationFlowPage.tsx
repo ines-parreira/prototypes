@@ -12,6 +12,7 @@ import {
     IncomingCallNode,
     PlayMessageNode,
     SendToVoicemailNode,
+    TimeSplitConditionalNode,
 } from './flows/types'
 import { VoiceFlow } from './flows/VoiceFlow'
 import VoiceFlowForm from './flows/VoiceFlowForm'
@@ -25,9 +26,22 @@ const mockFlow = {
             data: {},
         } as IncomingCallNode,
         {
+            id: 'time-rule',
+            type: VoiceFlowNodeType.TimeSplitConditional,
+            position: { x: 0, y: 100 },
+            data: {
+                id: 'time-rule',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time Rule',
+                rule_type: 'business_hours', // or 'custom_hours'
+                on_true_step_id: 'play-message',
+                on_false_step_id: 'send-to-voicemail', // Assuming you want to end the call if outside business hours
+            },
+        } as TimeSplitConditionalNode,
+        {
             id: 'play-message',
             type: VoiceFlowNodeType.PlayMessage,
-            position: { x: 0, y: 100 },
+            position: { x: -150, y: 200 },
             data: {
                 id: 'play-message',
                 step_type: VoiceFlowNodeType.PlayMessage,
@@ -36,13 +50,13 @@ const mockFlow = {
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content: 'Hello, this is a test message.',
                 },
-                next_step_id: 'send-to-voicemail',
+                next_step_id: 'time-rule',
             },
         } as PlayMessageNode,
         {
             id: 'send-to-voicemail',
             type: VoiceFlowNodeType.SendToVoicemail,
-            position: { x: 0, y: 250 },
+            position: { x: 150, y: 200 },
             data: {
                 id: 'send-to-voicemail',
                 step_type: VoiceFlowNodeType.SendToVoicemail,
@@ -64,13 +78,23 @@ const mockFlow = {
     ],
     edges: [
         {
-            id: 'start->play-message',
+            id: 'start->time-rule',
             source: 'start',
+            target: 'time-rule',
+        },
+        {
+            id: 'time-rule->play-message',
+            source: 'time-rule',
             target: 'play-message',
         },
         {
-            id: 'play-message->send-to-voicemail',
+            id: 'play-message->end',
             source: 'play-message',
+            target: 'end',
+        },
+        {
+            id: 'time-rule->send-to-voicemail',
+            source: 'time-rule',
             target: 'send-to-voicemail',
         },
         {

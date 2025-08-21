@@ -36,7 +36,7 @@ describe('useVoiceFlowForm', () => {
     const mockNotifyError = jest.fn()
 
     const expectedDefaultValues: CallRoutingFlow = {
-        first_step_id: 'start',
+        first_step_id: 'time-rule',
         steps: {
             'play-message': {
                 id: 'play-message',
@@ -47,6 +47,14 @@ describe('useVoiceFlowForm', () => {
                     text_to_speech_content: 'Hello, this is a test message.',
                 },
                 next_step_id: null,
+            },
+            'time-rule': {
+                id: 'time-rule',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time Rule',
+                rule_type: 'business_hours',
+                on_true_step_id: 'play-message',
+                on_false_step_id: 'send-to-voicemail',
             },
             'send-to-voicemail': {
                 id: 'send-to-voicemail',
@@ -81,7 +89,9 @@ describe('useVoiceFlowForm', () => {
 
         const defaultValues = result.current.getDefaultValues()
 
-        expect(defaultValues).toEqual(expectedDefaultValues)
+        expect(defaultValues).toEqual(
+            expect.objectContaining(expectedDefaultValues),
+        )
     })
 
     describe('onSubmit', () => {

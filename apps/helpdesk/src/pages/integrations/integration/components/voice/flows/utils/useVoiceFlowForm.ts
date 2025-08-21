@@ -1,20 +1,23 @@
+import omit from 'lodash/omit'
+
 import {
     PhoneIntegration,
     useUpdateAllPhoneSettings,
 } from '@gorgias/helpdesk-queries'
-import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
 
 import { VoiceFlowNodeType } from '../constants'
+import { VoiceFlowFormValues } from '../types'
 
 export function useVoiceFlowForm(integration: PhoneIntegration) {
     const notify = useNotify()
 
-    const getDefaultValues = (): CallRoutingFlow => {
+    const getDefaultValues = (): VoiceFlowFormValues => {
         // todo get actual formData
         return {
-            first_step_id: 'start',
+            business_hours_id: integration.business_hours_id ?? null,
+            first_step_id: 'time-rule',
             steps: {
                 'play-message': {
                     id: 'play-message',
@@ -26,6 +29,14 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
                             'Hello, this is a test message.',
                     },
                     next_step_id: null,
+                },
+                'time-rule': {
+                    id: 'time-rule',
+                    step_type: VoiceFlowNodeType.TimeSplitConditional,
+                    name: 'Time Rule',
+                    rule_type: 'business_hours',
+                    on_true_step_id: 'play-message',
+                    on_false_step_id: 'send-to-voicemail',
                 },
                 'send-to-voicemail': {
                     id: 'send-to-voicemail',
@@ -55,10 +66,10 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
         },
     })
 
-    const onSubmit = (data: CallRoutingFlow) => {
+    const onSubmit = (data: VoiceFlowFormValues) => {
         updateAllPhoneSettings({
             integrationId: integration.id,
-            data: { meta: { flow: data } },
+            data: { meta: { flow: omit(data, ['business_hours_id']) } },
         })
     }
 
