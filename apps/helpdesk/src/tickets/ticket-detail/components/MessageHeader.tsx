@@ -17,6 +17,7 @@ import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
 import Source from 'pages/tickets/detail/components/TicketMessages/Source'
 import SourceActionsHeader from 'pages/tickets/detail/components/TicketMessages/SourceActionsHeader'
+import { TranslationLimit } from 'pages/tickets/detail/components/TicketMessages/TranslationLimit'
 import { TranslationLoader } from 'pages/tickets/detail/components/TicketMessages/TranslationLoader'
 import { isForwardedMessage } from 'tickets/common/utils'
 import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
@@ -63,11 +64,12 @@ export function MessageHeader({
         ticketId: message.ticket_id,
         messageId: message.id,
     })
-    const displayType = useMemo(() => {
+    const { fetchingState, hasRegeneratedOnce } = useMemo(() => {
         if (!message?.id)
             return {
                 display: DisplayedContent.Original,
                 fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
             }
         return getTicketMessageTranslationDisplay(message.id)
     }, [message?.id, getTicketMessageTranslationDisplay])
@@ -168,8 +170,12 @@ export function MessageHeader({
                 )}
                 {hasMessagesTranslation && (
                     <div className={css.translationDetails}>
-                        {displayType.fetchingState ===
-                            FetchingState.Loading && <TranslationLoader />}
+                        {fetchingState === FetchingState.Loading && (
+                            <TranslationLoader />
+                        )}
+                        {fetchingState === FetchingState.Failed &&
+                            hasRegeneratedOnce && <TranslationLimit />}
+
                         <MessageMetadata message={message as TicketMessage} />
                     </div>
                 )}

@@ -9,21 +9,42 @@ import {
 
 import { TranslationsDropdown } from '../TranslationsDropdown/TranslationsDropdown'
 
+// Mock the useRegenerateTicketMessageTranslations hook
+const mockRegenerateTicketMessageTranslations = jest.fn()
+jest.mock(
+    'tickets/core/hooks/translations/useRegenerateTicketMessageTranslations',
+    () => ({
+        useRegenerateTicketMessageTranslations: () => ({
+            regenerateTicketMessageTranslations:
+                mockRegenerateTicketMessageTranslations,
+        }),
+    }),
+)
+
 const mockMessageId = 123
 
 const mockDisplayTypeOriginal = {
     display: DisplayedContent.Original,
     fetchingState: FetchingState.Idle,
+    hasRegeneratedOnce: false,
 }
 
 const mockDisplayTypeTranslated = {
     display: DisplayedContent.Translated,
     fetchingState: FetchingState.Completed,
+    hasRegeneratedOnce: false,
 }
 
 const mockDisplayTypeFailed = {
     display: DisplayedContent.Original,
     fetchingState: FetchingState.Failed,
+    hasRegeneratedOnce: false,
+}
+
+const mockDisplayTypeFailedRegeneratedOnce = {
+    display: DisplayedContent.Original,
+    fetchingState: FetchingState.Failed,
+    hasRegeneratedOnce: true,
 }
 
 const mockTranslationContext = {
@@ -44,6 +65,7 @@ const renderWithContext = (messageId: number = mockMessageId) => {
 describe('TranslationsDropdown', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockRegenerateTicketMessageTranslations.mockClear()
         mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
             mockDisplayTypeOriginal,
         )
@@ -125,6 +147,7 @@ describe('TranslationsDropdown', () => {
                     messageId: mockMessageId,
                     display: DisplayedContent.Translated,
                     fetchingState: FetchingState.Idle,
+                    hasRegeneratedOnce: false,
                 },
             ])
         })
@@ -197,6 +220,7 @@ describe('TranslationsDropdown', () => {
                     messageId: mockMessageId,
                     display: DisplayedContent.Original,
                     fetchingState: FetchingState.Completed,
+                    hasRegeneratedOnce: false,
                 },
             ])
         })
@@ -284,6 +308,7 @@ describe('TranslationsDropdown', () => {
                 {
                     display: DisplayedContent.Original,
                     fetchingState: FetchingState.Loading,
+                    hasRegeneratedOnce: false,
                 },
             )
         })
@@ -398,6 +423,7 @@ describe('TranslationsDropdown', () => {
                 {
                     display: DisplayedContent.Original,
                     fetchingState: undefined,
+                    hasRegeneratedOnce: false,
                 },
             )
             renderWithContext()
@@ -415,8 +441,306 @@ describe('TranslationsDropdown', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should handle clicking on re-generate translation button', async () => {
+        it('should close dropdown after clicking re-generate translation button', async () => {
             const user = userEvent.setup()
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                mockDisplayTypeFailed,
+            )
+            const { container } = renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+
+            await act(async () => {
+                await user.click(regenerateButton)
+            })
+
+            // Check that dropdown is closed after regenerate
+            const dropdownMenu = container.querySelector('.menuWrapper')
+            expect(dropdownMenu).not.toHaveClass('show')
+        })
+    })
+
+    describe('when translation has failed and not yet regenerated', () => {
+        beforeEach(() => {
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                mockDisplayTypeFailed,
+            )
+        })
+
+        it('should call regenerateTicketMessageTranslations when re-generate button is clicked', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            await act(async () => {
+                await user.click(regenerateButton)
+            })
+
+            expect(
+                mockRegenerateTicketMessageTranslations,
+            ).toHaveBeenCalledWith(mockMessageId)
+        })
+
+        it('should show re-generate translation option with loop icon', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(
+                screen.getByRole('button', {
+                    name: /re-generate translation/i,
+                }),
+            ).toBeInTheDocument()
+            expect(screen.getByText('loop')).toBeInTheDocument()
+        })
+
+        it('should show both see translation and re-generate options when failed', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(screen.getByText('See translation')).toBeInTheDocument()
+            expect(
+                screen.getByText('Re-generate translation'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('when translation has failed and max regeneration attempts reached', () => {
+        beforeEach(() => {
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                mockDisplayTypeFailedRegeneratedOnce,
+            )
+        })
+
+        it('should show disabled re-generate button', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).toBeInTheDocument()
+            expect(regenerateButton).toBeDisabled()
+        })
+
+        it('should display loop icon for disabled re-generate button', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            const loopIcon = screen.getByText('loop')
+            expect(loopIcon).toBeInTheDocument()
+        })
+
+        it('should show see translation option alongside disabled re-generate button', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(screen.getByText('See translation')).toBeInTheDocument()
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).toBeInTheDocument()
+            expect(regenerateButton).toBeDisabled()
+        })
+
+        it('should not call regenerateTicketMessageTranslations when clicking disabled button', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).toBeDisabled()
+
+            await act(async () => {
+                await user.click(regenerateButton)
+            })
+
+            // Verify the function was not called since button is disabled
+            expect(
+                mockRegenerateTicketMessageTranslations,
+            ).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('when translated content has failed and regeneration available', () => {
+        beforeEach(() => {
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Translated,
+                    fetchingState: FetchingState.Failed,
+                    hasRegeneratedOnce: false,
+                },
+            )
+        })
+
+        it('should show both see original and re-generate translation options', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(screen.getByText('See original')).toBeInTheDocument()
+            expect(
+                screen.getByText('Re-generate translation'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('See translation'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call regenerateTicketMessageTranslations when re-generate clicked from translated view', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            await act(async () => {
+                await user.click(regenerateButton)
+            })
+
+            expect(
+                mockRegenerateTicketMessageTranslations,
+            ).toHaveBeenCalledWith(mockMessageId)
+        })
+    })
+
+    describe('when translated content has failed and max attempts reached', () => {
+        beforeEach(() => {
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Translated,
+                    fetchingState: FetchingState.Failed,
+                    hasRegeneratedOnce: true,
+                },
+            )
+        })
+
+        it('should show see original option and disabled re-generate button', async () => {
+            const user = userEvent.setup()
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(screen.getByText('See original')).toBeInTheDocument()
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).toBeInTheDocument()
+            expect(regenerateButton).toBeDisabled()
+        })
+    })
+
+    describe('regeneration integration', () => {
+        it('should call regenerateTicketMessageTranslations with correct messageId', async () => {
+            const customMessageId = 456
+            const user = userEvent.setup()
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                mockDisplayTypeFailed,
+            )
+            renderWithContext(customMessageId)
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            await act(async () => {
+                await user.click(regenerateButton)
+            })
+
+            expect(
+                mockRegenerateTicketMessageTranslations,
+            ).toHaveBeenCalledWith(customMessageId)
+        })
+
+        it('should handle async regeneration calls without errors', async () => {
+            const user = userEvent.setup()
+            mockRegenerateTicketMessageTranslations.mockImplementation(
+                () => new Promise((resolve) => setTimeout(resolve, 10)),
+            )
             mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
                 mockDisplayTypeFailed,
             )
@@ -437,7 +761,7 @@ describe('TranslationsDropdown', () => {
                 await user.click(regenerateButton)
             })
 
-            expect(regenerateButton).toBeInTheDocument()
+            expect(mockRegenerateTicketMessageTranslations).toHaveBeenCalled()
         })
     })
 })

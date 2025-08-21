@@ -23,6 +23,7 @@ function TestConsumer() {
                             messageId: 1,
                             display: DisplayedContent.Original,
                             fetchingState: FetchingState.Idle,
+                            hasRegeneratedOnce: false,
                         },
                     ])
                 }
@@ -37,6 +38,7 @@ function TestConsumer() {
                             messageId: 2,
                             display: DisplayedContent.Translated,
                             fetchingState: FetchingState.Completed,
+                            hasRegeneratedOnce: false,
                         },
                     ])
                 }
@@ -51,6 +53,7 @@ function TestConsumer() {
                             messageId: 3,
                             display: DisplayedContent.Original,
                             fetchingState: FetchingState.Idle,
+                            hasRegeneratedOnce: false,
                         },
                     ])
                 }
@@ -65,17 +68,34 @@ function TestConsumer() {
                             messageId: 1,
                             display: DisplayedContent.Original,
                             fetchingState: FetchingState.Idle,
+                            hasRegeneratedOnce: false,
                         },
                         {
                             messageId: 2,
                             display: DisplayedContent.Translated,
                             fetchingState: FetchingState.Completed,
+                            hasRegeneratedOnce: false,
                         },
                     ])
                 }
                 aria-label="Set multiple messages"
             >
                 Set Multiple
+            </button>
+            <button
+                onClick={() =>
+                    context.setTicketMessageTranslationDisplay([
+                        {
+                            messageId: 4,
+                            display: DisplayedContent.Translated,
+                            fetchingState: FetchingState.Completed,
+                            hasRegeneratedOnce: true,
+                        },
+                    ])
+                }
+                aria-label="Set message 4 with regenerated"
+            >
+                Set Regenerated
             </button>
             <div data-testid="message-1-display">
                 {JSON.stringify(context.getTicketMessageTranslationDisplay(1))}
@@ -85,6 +105,9 @@ function TestConsumer() {
             </div>
             <div data-testid="message-3-display">
                 {JSON.stringify(context.getTicketMessageTranslationDisplay(3))}
+            </div>
+            <div data-testid="message-4-display">
+                {JSON.stringify(context.getTicketMessageTranslationDisplay(4))}
             </div>
             <div data-testid="message-999-display">
                 {JSON.stringify(
@@ -119,6 +142,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(defaultDisplay.display).toBe(DisplayedContent.Original)
         expect(defaultDisplay.fetchingState).toBe(FetchingState.Idle)
+        expect(defaultDisplay.hasRegeneratedOnce).toBe(false)
     })
 
     it('should allow setting and getting translation display for specific message IDs', async () => {
@@ -136,6 +160,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display1.display).toBe(DisplayedContent.Original)
         expect(display1.fetchingState).toBe(FetchingState.Idle)
+        expect(display1.hasRegeneratedOnce).toBe(false)
 
         // Set message 1 to Original
         await act(async () => {
@@ -146,6 +171,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display1.display).toBe(DisplayedContent.Original)
         expect(display1.fetchingState).toBe(FetchingState.Idle)
+        expect(display1.hasRegeneratedOnce).toBe(false)
 
         // Set message 2 to Translated
         await act(async () => {
@@ -158,6 +184,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display2.display).toBe(DisplayedContent.Translated)
         expect(display2.fetchingState).toBe(FetchingState.Completed)
+        expect(display2.hasRegeneratedOnce).toBe(false)
 
         // Set message 3 to Original
         await act(async () => {
@@ -168,6 +195,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display3.display).toBe(DisplayedContent.Original)
         expect(display3.fetchingState).toBe(FetchingState.Idle)
+        expect(display3.hasRegeneratedOnce).toBe(false)
     })
 
     it('should maintain separate state for different message IDs', async () => {
@@ -198,18 +226,21 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display1.display).toBe(DisplayedContent.Original)
         expect(display1.fetchingState).toBe(FetchingState.Idle)
+        expect(display1.hasRegeneratedOnce).toBe(false)
 
         const display2 = JSON.parse(
             screen.getByTestId('message-2-display').textContent || '{}',
         )
         expect(display2.display).toBe(DisplayedContent.Translated)
         expect(display2.fetchingState).toBe(FetchingState.Completed)
+        expect(display2.hasRegeneratedOnce).toBe(false)
 
         const display3 = JSON.parse(
             screen.getByTestId('message-3-display').textContent || '{}',
         )
         expect(display3.display).toBe(DisplayedContent.Original)
         expect(display3.fetchingState).toBe(FetchingState.Idle)
+        expect(display3.hasRegeneratedOnce).toBe(false)
     })
 
     it('should update state when setTicketMessageTranslationDisplay is called multiple times', async () => {
@@ -230,6 +261,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display1.display).toBe(DisplayedContent.Original)
         expect(display1.fetchingState).toBe(FetchingState.Idle)
+        expect(display1.hasRegeneratedOnce).toBe(false)
 
         // Set message 2 to Translated
         await act(async () => {
@@ -242,6 +274,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display2.display).toBe(DisplayedContent.Translated)
         expect(display2.fetchingState).toBe(FetchingState.Completed)
+        expect(display2.hasRegeneratedOnce).toBe(false)
     })
 
     it('should provide stable callback references', () => {
@@ -299,6 +332,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display1.display).toBe(DisplayedContent.Original)
         expect(display1.fetchingState).toBe(FetchingState.Idle)
+        expect(display1.hasRegeneratedOnce).toBe(false)
 
         // Set message 2 to Translated
         await act(async () => {
@@ -311,6 +345,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display2.display).toBe(DisplayedContent.Translated)
         expect(display2.fetchingState).toBe(FetchingState.Completed)
+        expect(display2.hasRegeneratedOnce).toBe(false)
 
         // Override message 1 again
         await act(async () => {
@@ -321,6 +356,7 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display1.display).toBe(DisplayedContent.Original)
         expect(display1.fetchingState).toBe(FetchingState.Idle)
+        expect(display1.hasRegeneratedOnce).toBe(false)
     })
 
     it('should handle batch updates for multiple messages', async () => {
@@ -343,11 +379,63 @@ describe('TicketMessageTranslationProvider', () => {
         )
         expect(display1.display).toBe(DisplayedContent.Original)
         expect(display1.fetchingState).toBe(FetchingState.Idle)
+        expect(display1.hasRegeneratedOnce).toBe(false)
 
         const display2 = JSON.parse(
             screen.getByTestId('message-2-display').textContent || '{}',
         )
         expect(display2.display).toBe(DisplayedContent.Translated)
         expect(display2.fetchingState).toBe(FetchingState.Completed)
+        expect(display2.hasRegeneratedOnce).toBe(false)
+    })
+
+    it('should correctly handle hasRegeneratedOnce flag', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <TicketMessageTranslationDisplayProvider>
+                <TestConsumer />
+            </TicketMessageTranslationDisplayProvider>,
+        )
+
+        // Initially, message 4 should have default value with hasRegeneratedOnce as false
+        let display4 = JSON.parse(
+            screen.getByTestId('message-4-display').textContent || '{}',
+        )
+        expect(display4.display).toBe(DisplayedContent.Original)
+        expect(display4.fetchingState).toBe(FetchingState.Idle)
+        expect(display4.hasRegeneratedOnce).toBe(false)
+
+        // Set message 4 with hasRegeneratedOnce as true
+        await act(async () => {
+            await user.click(
+                screen.getByLabelText('Set message 4 with regenerated'),
+            )
+        })
+
+        display4 = JSON.parse(
+            screen.getByTestId('message-4-display').textContent || '{}',
+        )
+        expect(display4.display).toBe(DisplayedContent.Translated)
+        expect(display4.fetchingState).toBe(FetchingState.Completed)
+        expect(display4.hasRegeneratedOnce).toBe(true)
+
+        // Update message 4 again with hasRegeneratedOnce as false
+        await act(async () => {
+            await user.click(
+                screen.getByLabelText('Set message 2 to translated'),
+            )
+        })
+        await act(async () => {
+            await user.click(
+                screen.getByLabelText('Set message 4 with regenerated'),
+            )
+        })
+
+        // Verify hasRegeneratedOnce is still true
+        display4 = JSON.parse(
+            screen.getByTestId('message-4-display').textContent || '{}',
+        )
+        expect(display4.hasRegeneratedOnce).toBe(true)
     })
 })

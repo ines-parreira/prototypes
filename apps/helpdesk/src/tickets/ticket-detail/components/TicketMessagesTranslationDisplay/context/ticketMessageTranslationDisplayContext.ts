@@ -15,6 +15,7 @@ export const FetchingState = {
 export type DisplayType = {
     display: ValueOf<typeof DisplayedContent>
     fetchingState: ValueOf<typeof FetchingState>
+    hasRegeneratedOnce: boolean
 }
 
 export type TicketMessagesTranslationDisplay = Record<number, DisplayType>
@@ -36,6 +37,7 @@ export const TicketMessagesTranslationDisplayContext =
         getTicketMessageTranslationDisplay: () => ({
             display: DisplayedContent.Original,
             fetchingState: FetchingState.Idle,
+            hasRegeneratedOnce: false,
         }),
         setTicketMessageTranslationDisplay: () => {},
     })

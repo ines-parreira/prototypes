@@ -21,8 +21,10 @@ type CachedData = HttpResponse<ListTicketMessageTranslations200> | undefined
 
 export function useTicketMessageTranslationCompleteEventHandler() {
     const queryClient = useQueryClient()
-    const { setTicketMessageTranslationDisplay } =
-        useTicketMessageTranslationDisplay()
+    const {
+        setTicketMessageTranslationDisplay,
+        getTicketMessageTranslationDisplay,
+    } = useTicketMessageTranslationDisplay()
 
     const handleTicketMessageTranslationCompleted = useCallback(
         (
@@ -36,7 +38,7 @@ export function useTicketMessageTranslationCompleteEventHandler() {
             })
 
             queryClient.setQueryData(queryKey, (oldData: CachedData) => {
-                if (!oldData)
+                if (!oldData) {
                     return {
                         status: 200,
                         statusText: 'OK',
@@ -53,6 +55,7 @@ export function useTicketMessageTranslationCompleteEventHandler() {
                             },
                         },
                     } as unknown as HttpResponse<ListTicketMessageTranslations200>
+                }
 
                 const ticketMessageTranslation = oldData.data.data.find(
                     (ticketMessage) =>
@@ -79,15 +82,23 @@ export function useTicketMessageTranslationCompleteEventHandler() {
                 }
             })
 
+            const displayType =
+                getTicketMessageTranslationDisplay(ticket_message_id)
+
             setTicketMessageTranslationDisplay([
                 {
                     messageId: ticket_message_id,
+                    ...displayType,
                     display: DisplayedContent.Translated,
                     fetchingState: FetchingState.Completed,
                 },
             ])
         },
-        [queryClient, setTicketMessageTranslationDisplay],
+        [
+            queryClient,
+            setTicketMessageTranslationDisplay,
+            getTicketMessageTranslationDisplay,
+        ],
     )
     return {
         handleTicketMessageTranslationCompleted,

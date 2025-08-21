@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { ComponentProps, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import { Tooltip } from '@gorgias/axiom'
 
+import { useRegenerateTicketMessageTranslations } from 'tickets/core/hooks/translations/useRegenerateTicketMessageTranslations'
 import {
     DisplayedContent,
     FetchingState,
@@ -18,16 +19,24 @@ type TranslationsDropdownProps = {
 }
 
 export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
+    const [isTranslationsDropdownOpen, setTranslationsDropdownOpen] =
+        useState(false)
+    const { regenerateTicketMessageTranslations } =
+        useRegenerateTicketMessageTranslations()
     const {
         getTicketMessageTranslationDisplay,
         setTicketMessageTranslationDisplay,
     } = useTicketMessageTranslationDisplay()
-    const displayType = getTicketMessageTranslationDisplay(messageId)
+    const { display, fetchingState, hasRegeneratedOnce } =
+        getTicketMessageTranslationDisplay(messageId)
 
-    const [isTranslationsDropdownOpen, setTranslationsDropdownOpen] =
-        useState(false)
     const id = useId()
     const scopedId = `translations-dropdown-${id}`
+
+    async function handleRegenerateTranslation() {
+        await regenerateTicketMessageTranslations(messageId)
+        setTranslationsDropdownOpen(false)
+    }
 
     return (
         <>
@@ -56,13 +65,14 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
 
                 <DropdownMenu right className={css.menuWrapper}>
                     <ul className={css.translationsList}>
-                        {displayType.display === DisplayedContent.Original && (
+                        {display === DisplayedContent.Original && (
                             <TranslationsItem
                                 onClick={() =>
                                     setTicketMessageTranslationDisplay([
                                         {
                                             messageId,
-                                            ...displayType,
+                                            fetchingState,
+                                            hasRegeneratedOnce,
                                             display:
                                                 DisplayedContent.Translated,
                                         },
@@ -77,14 +87,14 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
                                 </span>
                             </TranslationsItem>
                         )}
-                        {displayType.display ===
-                            DisplayedContent.Translated && (
+                        {display === DisplayedContent.Translated && (
                             <TranslationsItem
                                 onClick={() =>
                                     setTicketMessageTranslationDisplay([
                                         {
                                             messageId,
-                                            ...displayType,
+                                            fetchingState,
+                                            hasRegeneratedOnce,
                                             display: DisplayedContent.Original,
                                         },
                                     ])
@@ -96,8 +106,11 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
                                 <span className={css.label}>See original</span>
                             </TranslationsItem>
                         )}
-                        {displayType.fetchingState === FetchingState.Failed && (
-                            <TranslationsItem onClick={() => {}}>
+                        {fetchingState === FetchingState.Failed && (
+                            <TranslationsItem
+                                disabled={hasRegeneratedOnce}
+                                onClick={handleRegenerateTranslation}
+                            >
                                 <span className={css.icon}>
                                     <i className="material-icons">loop</i>
                                 </span>
@@ -113,15 +126,10 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
     )
 }
 
-type TranslationsItemProps = {
-    onClick: () => void
-    children: React.ReactNode
-}
-
-function TranslationsItem({ children, onClick }: TranslationsItemProps) {
+function TranslationsItem({ children, ...props }: ComponentProps<'button'>) {
     return (
         <li className={css.translationsListItem}>
-            <button className={css.translationsItem} onClick={onClick}>
+            <button {...props} className={css.translationsItem}>
                 <div className={css.translationsItemContent}>{children}</div>
             </button>
         </li>

@@ -123,7 +123,7 @@ export const useLiveTicketTranslationsUpdates = ({
                     (translation) =>
                         translation.ticket_message_id === message.id,
                 )
-                return !Boolean(messageTranslation)
+                return !messageTranslation
             }),
         [ticketMessages, ticketTranslations],
     )
@@ -187,6 +187,7 @@ export const useLiveTicketTranslationsUpdates = ({
                 messageId: message.id!,
                 display: DisplayedContent.Original,
                 fetchingState: FetchingState.Loading,
+                hasRegeneratedOnce: false,
             }),
         )
 
@@ -210,6 +211,7 @@ export const useLiveTicketTranslationsUpdates = ({
                     messageId: message.id!,
                     display: DisplayedContent.Translated,
                     fetchingState: FetchingState.Completed,
+                    hasRegeneratedOnce: false,
                 }),
             )
 

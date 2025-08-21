@@ -26,6 +26,7 @@ export function TicketMessageTranslationDisplayProvider({
             ticketMessagesTranslationDisplayMap[messageId] ?? {
                 display: DisplayedContent.Original,
                 fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
             },
         [ticketMessagesTranslationDisplayMap],
     )

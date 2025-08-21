@@ -101,6 +101,7 @@ const mockTranslationDisplayContext = {
     getTicketMessageTranslationDisplay: jest.fn(() => ({
         display: DisplayedContent.Original,
         fetchingState: FetchingState.Idle,
+        hasRegeneratedOnce: false,
     })),
     setTicketMessageTranslationDisplay: jest.fn(),
 }
@@ -157,6 +158,7 @@ describe('Message', () => {
             {
                 display: DisplayedContent.Original,
                 fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
             },
         )
     })
@@ -373,6 +375,7 @@ describe('Message', () => {
             {
                 display: DisplayedContent.Original,
                 fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
             },
         )
 

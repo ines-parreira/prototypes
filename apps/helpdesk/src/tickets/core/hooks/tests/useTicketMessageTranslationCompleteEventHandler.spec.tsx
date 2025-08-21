@@ -33,6 +33,7 @@ const mockSetTicketMessageTranslationDisplay = jest.fn()
 const mockGetTicketMessageTranslationDisplay = jest.fn(() => ({
     display: DisplayedContent.Original,
     fetchingState: FetchingState.Idle,
+    hasRegeneratedOnce: false,
 }))
 
 const mockContextValue = {
@@ -161,6 +162,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                         messageId: 456,
                         display: DisplayedContent.Translated,
                         fetchingState: FetchingState.Completed,
+                        hasRegeneratedOnce: false,
                     },
                 ],
             )
@@ -292,6 +294,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                         messageId: 456,
                         display: DisplayedContent.Translated,
                         fetchingState: FetchingState.Completed,
+                        hasRegeneratedOnce: false,
                     },
                 ],
             )
@@ -364,6 +367,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                         messageId: 456,
                         display: DisplayedContent.Translated,
                         fetchingState: FetchingState.Completed,
+                        hasRegeneratedOnce: false,
                     },
                 ],
             )
@@ -465,6 +469,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                         messageId: 777,
                         display: DisplayedContent.Translated,
                         fetchingState: FetchingState.Completed,
+                        hasRegeneratedOnce: false,
                     },
                 ],
             )

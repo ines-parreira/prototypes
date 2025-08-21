@@ -63,6 +63,7 @@ jest.mock(
             getTicketMessageTranslationDisplay: jest.fn(() => ({
                 display: DisplayedContent.Original,
                 fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
             })),
             setTicketMessageTranslationDisplay: jest.fn(),
         })),
@@ -73,6 +74,13 @@ jest.mock(
     'pages/tickets/detail/components/TicketMessages/TranslationLoader',
     () => ({
         TranslationLoader: jest.fn(() => <span>Translation Loading...</span>),
+    }),
+)
+
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/TranslationLimit',
+    () => ({
+        TranslationLimit: jest.fn(() => <span>Unable to regenerate</span>),
     }),
 )
 
@@ -125,6 +133,7 @@ beforeEach(() => {
         getTicketMessageTranslationDisplay: jest.fn(() => ({
             display: DisplayedContent.Original,
             fetchingState: FetchingState.Idle,
+            hasRegeneratedOnce: false,
         })),
         setTicketMessageTranslationDisplay: jest.fn(),
     })
@@ -496,6 +505,7 @@ describe('MessageHeader', () => {
                 getTicketMessageTranslationDisplay: jest.fn(() => ({
                     display: DisplayedContent.Original,
                     fetchingState: FetchingState.Loading,
+                    hasRegeneratedOnce: false,
                 })),
                 setTicketMessageTranslationDisplay: jest.fn(),
             })
@@ -523,6 +533,7 @@ describe('MessageHeader', () => {
                 getTicketMessageTranslationDisplay: jest.fn(() => ({
                     display: DisplayedContent.Original,
                     fetchingState: FetchingState.Idle,
+                    hasRegeneratedOnce: false,
                 })),
                 setTicketMessageTranslationDisplay: jest.fn(),
             })
@@ -561,6 +572,90 @@ describe('MessageHeader', () => {
                     screen.queryByText('Translation Loading...'),
                 ).not.toBeInTheDocument()
                 expect(screen.getByText('Message Metadata')).toBeInTheDocument()
+            })
+        })
+
+        it('shows TranslationLimit when translation fails and has been regenerated once', async () => {
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                getTicketMessageTranslationDisplay: jest.fn(() => ({
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Failed,
+                    hasRegeneratedOnce: true,
+                })),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
+            const message = {
+                id: 'msg-139',
+                ticket_id: 123,
+                from_agent: false,
+                sender: { name: 'Customer' },
+                source: { type: 'email' },
+                created_datetime: '2023-01-01T10:00:00Z',
+            } as unknown as TicketMessage
+
+            renderComponent(<MessageHeader message={message} />)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Unable to regenerate'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('does not show TranslationLimit when translation fails but has not been regenerated', async () => {
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                getTicketMessageTranslationDisplay: jest.fn(() => ({
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Failed,
+                    hasRegeneratedOnce: false,
+                })),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
+            const message = {
+                id: 'msg-141',
+                ticket_id: 123,
+                from_agent: false,
+                sender: { name: 'Customer' },
+                source: { type: 'email' },
+                created_datetime: '2023-01-01T10:00:00Z',
+            } as unknown as TicketMessage
+
+            renderComponent(<MessageHeader message={message} />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Unable to regenerate'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('does not show TranslationLimit when translation is successful', async () => {
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                getTicketMessageTranslationDisplay: jest.fn(() => ({
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Completed,
+                    hasRegeneratedOnce: true,
+                })),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
+            const message = {
+                id: 'msg-142',
+                ticket_id: 123,
+                from_agent: false,
+                sender: { name: 'Customer' },
+                source: { type: 'email' },
+                created_datetime: '2023-01-01T10:00:00Z',
+            } as unknown as TicketMessage
+
+            renderComponent(<MessageHeader message={message} />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Unable to regenerate'),
+                ).not.toBeInTheDocument()
             })
         })
     })

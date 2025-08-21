@@ -1,0 +1,16 @@
+@import '~css/typography';
+
+:local {
+    .translationLimit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--layout-spacing-xxs);
+        padding: 0px var(--layout-spacing-xs);
+        color: var(--feedback-error);
+
+        .translationLimitText {
+            .component-button-small();
+        }
+    }
+}

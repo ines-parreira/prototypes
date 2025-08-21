@@ -18,6 +18,14 @@
             }
         }
 
+        .dropdownTooltip {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: var(--layout-spacing-xxs);
+        }
+
         .menuWrapper {
             padding: var(--layout-spacing-xs);
             min-width: 240px;
@@ -60,6 +68,12 @@
             border-radius: 8px;
             cursor: pointer;
             overflow: hidden;
+
+            &:disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+
             &:hover {
                 background-color: var(--neutral-grey-2);
             }
