@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     useMetricPerDimension,
@@ -95,6 +96,11 @@ export const extraEnrichmentFieldsPerMetric: Record<
         ...defaultEnrichmentFields,
         EnrichmentFields.ProductsTitles,
         EnrichmentFields.ProductsVariants,
+    ],
+    [AIJourneyMetric.TotalOrders]: [
+        ...defaultEnrichmentFields,
+        EnrichmentFields.CustomerName,
+        EnrichmentFields.CustomerIntegrationDataByExternalId,
     ],
 }
 

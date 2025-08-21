@@ -1,11 +1,14 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import moment from 'moment'
 
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
+import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
@@ -14,7 +17,7 @@ import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourn
 import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourneyTotalOrders'
 import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
 
-export type filterType = {
+export type FilterType = {
     period: {
         start_datetime: string
         end_datetime: string
@@ -30,16 +33,20 @@ export type MetricProps = {
     metricFormat: MetricTrendFormat
     currency?: string
     isLoading: boolean
+    drilldown?: DrillDownMetric
 }
 
 export const useAIJourneyKpis = (
     integrationId: string,
+    shopName: string,
     customStartDate?: string,
     customEndDate?: string,
 ) => {
+    const dispatch = useAppDispatch()
+
     const granularity = ReportingGranularity.Week
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
-    const filters: filterType = useMemo(() => {
+    const filters: FilterType = useMemo(() => {
         const start_datetime =
             customStartDate ??
             moment().subtract(28, 'days').startOf('day').format()
@@ -53,6 +60,17 @@ export const useAIJourneyKpis = (
         }
     }, [customStartDate, customEndDate])
 
+    useEffect(() => {
+        dispatch(
+            mergeStatsFilters({
+                period: {
+                    start_datetime: filters.period.start_datetime,
+                    end_datetime: filters.period.end_datetime,
+                },
+            }),
+        )
+    }, [filters.period, dispatch])
+
     const gmvInfluenced = useAIJourneyGmvInfluenced(
         integrationId,
         userTimezone,
@@ -64,6 +82,7 @@ export const useAIJourneyKpis = (
         userTimezone,
         filters,
         granularity,
+        shopName,
     )
     const conversionRate = useAIJourneyConversionRate(
         integrationId,

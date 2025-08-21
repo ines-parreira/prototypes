@@ -66,6 +66,7 @@ describe('useAIJourneyTotalOrders', () => {
                 userTimezone,
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 
@@ -88,6 +89,12 @@ describe('useAIJourneyTotalOrders', () => {
                     value: 0,
                 },
             ],
+            drilldown: {
+                integrationId: '123',
+                metricName: 'aiJourneyTotalOrders',
+                shopName: 'shopName',
+                title: 'Total Orders',
+            },
         })
     })
 
@@ -112,6 +119,7 @@ describe('useAIJourneyTotalOrders', () => {
                 'UTC',
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 
@@ -123,6 +131,12 @@ describe('useAIJourneyTotalOrders', () => {
             prevValue: 0,
             value: 0,
             series: [],
+            drilldown: {
+                integrationId: '123',
+                metricName: 'aiJourneyTotalOrders',
+                shopName: 'shopName',
+                title: 'Total Orders',
+            },
         })
     })
 })

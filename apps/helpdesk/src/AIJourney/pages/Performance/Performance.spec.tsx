@@ -37,7 +37,12 @@ jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
     useJourneys: jest.fn(),
 }))
-
+jest.mock(
+    'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
+    () => ({
+        DrillDownModal: () => null,
+    }),
+)
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 
 describe('<Performance />', () => {

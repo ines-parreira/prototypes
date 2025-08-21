@@ -1,6 +1,7 @@
 import { TicketInfobarTab } from '@repo/navigation'
 import classNames from 'classnames'
 
+import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     defaultEnrichmentFields,
@@ -153,7 +154,8 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName === AiSalesAgentChart.AiSalesAgentSuccessRate
     const isAiSalesAgentTotalNumberOfOrdersMetric =
         metricData.metricName ===
-        AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
+            AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders ||
+        metricData.metricName === AIJourneyMetric.TotalOrders
 
     const isAiSalesAgentDiscountOfferedMetric =
         metricData.metricName === AiSalesAgentChart.AiSalesDiscountOffered

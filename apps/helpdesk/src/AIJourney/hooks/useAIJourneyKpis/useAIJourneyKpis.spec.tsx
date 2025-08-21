@@ -17,6 +17,7 @@ jest.mock('../useAIJourneyConversionRate/useAIJourneyConversionRate')
 jest.mock('../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced')
 jest.mock('../useAIJourneyTotalOrders/useAIJourneyTotalOrders')
 jest.mock('../useClickThroughRate/useClickThroughRate')
+jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../useAIJourneyResponseRate/useAIJourneyResponseRate')
 
 describe('useAIJourneyKpis', () => {
@@ -90,7 +91,7 @@ describe('useAIJourneyKpis', () => {
             },
         }
 
-        renderHook(() => useAIJourneyKpis('123'))
+        renderHook(() => useAIJourneyKpis('123', 'shopName'))
 
         expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
             '123',
@@ -103,6 +104,7 @@ describe('useAIJourneyKpis', () => {
             'America/New_York',
             expectedFilters,
             ReportingGranularity.Week,
+            'shopName',
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
@@ -129,7 +131,7 @@ describe('useAIJourneyKpis', () => {
             userTimezone: 'Europe/London',
         })
 
-        renderHook(() => useAIJourneyKpis('123'))
+        renderHook(() => useAIJourneyKpis('123', 'shopName'))
 
         expect(mockUseAppSelector).toHaveBeenCalledWith(
             getCleanStatsFiltersWithTimezone,
@@ -145,6 +147,7 @@ describe('useAIJourneyKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            'shopName',
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',

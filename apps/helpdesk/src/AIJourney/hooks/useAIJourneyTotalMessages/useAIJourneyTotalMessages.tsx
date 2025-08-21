@@ -8,13 +8,13 @@ import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/sta
 import useAppSelector from 'hooks/useAppSelector'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
-import { filterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
+import { FilterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyTotalMessages = (journeyId?: string): MetricProps => {
     const { currency } = useCurrency()
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
-    const filters: filterType = useMemo(() => {
+    const filters: FilterType = useMemo(() => {
         const start_datetime = moment()
             .subtract(30, 'days')
             .startOf('day')

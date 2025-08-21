@@ -9,6 +9,7 @@ export enum Domain {
     Convert = 'convert',
     Ticket = 'ticket',
     AiSalesAgent = 'aiSalesAgent',
+    AIJourney = 'aiJourney',
 }
 
 export type DrillDownQueryFactory = (

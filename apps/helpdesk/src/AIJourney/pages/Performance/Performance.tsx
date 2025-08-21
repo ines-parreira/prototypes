@@ -13,10 +13,12 @@ import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyK
 import { useAIJourneyTotalMessages } from 'AIJourney/hooks/useAIJourneyTotalMessages/useAIJourneyTotalMessages'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneyConfiguration, useJourneys } from 'AIJourney/queries'
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import {
     formatMetricTrend,
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
+import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 
 import css from './Performance.less'
 
@@ -43,16 +45,16 @@ const digestContent = (
     </>
 )
 
-type userJourney = {
+type UserJourney = {
     name: string
     status: string
 }
 
-type upcomingJourney = {
+type UpcomingJourney = {
     name: string
 }
 
-const upcomingJourneys: upcomingJourney[] = [
+const upcomingJourneys: UpcomingJourney[] = [
     {
         name: 'Welcome New Subscribers',
     },
@@ -64,7 +66,7 @@ const upcomingJourneys: upcomingJourney[] = [
     },
 ]
 
-const userJourneys: userJourney[] = [
+const userJourneys: UserJourney[] = [
     {
         name: 'Abandoned Cart',
         status: 'Active',
@@ -78,7 +80,9 @@ export const Performance = () => {
     const [filter, setFilter] = useState('All')
 
     const { currentIntegration } = useIntegrations(shopName)
-
+    const namespacedShopName = useGetNamespacedShopNameForStore(
+        currentIntegration?.id ? [currentIntegration.id] : [],
+    )
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
     }, [currentIntegration])
@@ -109,7 +113,7 @@ export const Performance = () => {
         max_follow_up_messages: maxFollowUpMessages,
     } = journeyParams || {}
 
-    let filteredUserJourneys: userJourney[] = []
+    let filteredUserJourneys: UserJourney[]
     switch (filter) {
         case 'All':
             filteredUserJourneys = userJourneys
@@ -123,7 +127,7 @@ export const Performance = () => {
             filteredUserJourneys = []
     }
 
-    let filteredUpcomingJourneys: upcomingJourney[] = []
+    let filteredUpcomingJourneys: UpcomingJourney[]
     switch (filter) {
         case 'All':
         case 'Coming soon':
@@ -133,7 +137,10 @@ export const Performance = () => {
             filteredUpcomingJourneys = []
     }
 
-    const { metrics } = useAIJourneyKpis(integrationId?.toString())
+    const { metrics } = useAIJourneyKpis(
+        integrationId?.toString(),
+        namespacedShopName,
+    )
 
     const { metrics: journeyMetrics, period } = useAbandonedCartKpis(
         integrationId?.toString(),
@@ -239,6 +246,7 @@ export const Performance = () => {
                     <JourneyPlaceholder name={journey.name} key={index} />
                 ))}
             </div>
+            <DrillDownModal />
         </div>
     )
 }

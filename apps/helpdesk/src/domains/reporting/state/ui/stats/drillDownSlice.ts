@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
+import { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
 import { appQueryClient } from 'api/queryClient'
 import {
     Sentiment,
@@ -279,6 +280,7 @@ export type DrillDownMetric =
     | AiSalesAgentMetrics
     | ProductMetrics
     | VoiceOfCustomerMetrics
+    | AIJourneyMetrics
 
 export type DrillDownState = {
     isOpen: boolean

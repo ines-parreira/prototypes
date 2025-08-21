@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react'
 
+import { AIJourneyDrillDownConfig } from 'AIJourney/configs/AIJourneyDrillDownConfig'
 import {
     defaultEnrichmentFields,
     DrillDownDataHook,
@@ -141,6 +142,7 @@ export const DomainsConfig = {
     [Domain.Ticket]: TicketDrillDownConfig,
     [Domain.Voice]: VoiceDrillDownConfig,
     [Domain.AiSalesAgent]: AiSalesAgentDrillDownConfig,
+    [Domain.AIJourney]: AIJourneyDrillDownConfig,
 }
 
 export const MetricsConfig: Record<
@@ -151,4 +153,5 @@ export const MetricsConfig: Record<
     ...ConvertDrillDownConfig.metricsConfig,
     ...VoiceDrillDownConfig.metricsConfig,
     ...AiSalesAgentDrillDownConfig.metricsConfig,
+    ...AIJourneyDrillDownConfig.metricsConfig,
 }

@@ -154,6 +154,13 @@ jest.mock('pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware', () => ({
         (ChildComponent: React.ComponentType<any>) => () => <ChildComponent />,
 }))
 
+jest.mock(
+    'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
+    () => ({
+        DrillDownModal: () => null,
+    }),
+)
+
 jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
     default: jest.fn(),

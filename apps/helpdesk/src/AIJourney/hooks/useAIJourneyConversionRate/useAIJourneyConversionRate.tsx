@@ -15,12 +15,12 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-import { filterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
+import { FilterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyConversionRate = (
     integrationId: string,
     userTimezone: string,
-    filters: filterType,
+    filters: FilterType,
     granularity: ReportingGranularity,
     journeyId?: string,
 ): MetricProps => {

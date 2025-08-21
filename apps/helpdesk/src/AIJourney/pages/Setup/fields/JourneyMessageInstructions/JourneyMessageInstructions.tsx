@@ -40,7 +40,7 @@ export const JourneyMessageInstructionsField = ({
                     maxLength={maxLength}
                     value={value}
                     onChange={handleChange}
-                    style={{ minHeight: '80px' }}
+                    style={{ minHeight: '150px' }}
                 />
                 <div
                     className={classNames(css.characterCount, {

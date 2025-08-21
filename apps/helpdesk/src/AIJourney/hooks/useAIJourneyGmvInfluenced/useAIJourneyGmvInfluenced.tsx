@@ -12,12 +12,12 @@ import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
-import { filterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
+import { FilterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyGmvInfluenced = (
     integrationId: string,
     userTimezone: string,
-    filters: filterType,
+    filters: FilterType,
     granularity: ReportingGranularity,
     journeyId?: string,
 ): MetricProps => {

@@ -1,3 +1,9 @@
+import { aiJourneyOrdersDrillDownQueryFactory } from 'AIJourney/queries/aiJourneyDrillDownQueries'
+import {
+    AIJourneyMetric,
+    AIJourneyMetrics,
+    AIJourneyMetricsConfig,
+} from 'AIJourney/types/AIJourneyTypes'
 import { totalNumberProductRecommendationsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
@@ -428,6 +434,20 @@ export const getDrillDownQuery = (
                     metricData.intentCustomFieldValueString,
                 )
         }
+        case AIJourneyMetric.TotalOrders: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyOrdersDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyId,
+                )
+        }
     }
 }
 const queryBuilderWithAgentFilter =
@@ -477,6 +497,14 @@ const isAiSalesAgentMetric = (
 ): metricData is AiSalesAgentMetrics => {
     return Object.values(AiSalesAgentChart).includes(
         metricData.metricName as AiSalesAgentChart,
+    )
+}
+
+const isAIJourneyMetric = (
+    metricData: DrillDownMetric,
+): metricData is AIJourneyMetrics => {
+    return Object.values(AIJourneyMetric).includes(
+        metricData.metricName as AIJourneyMetric,
     )
 }
 
@@ -636,6 +664,10 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             AiSalesAgentMetricsWithDrillDownConfig[metricData.metricName]
                 .metricFormat
+    } else if (isAIJourneyMetric(metricData)) {
+        metricTitle = AIJourneyMetricsConfig[metricData.metricName].title
+        metricValueFormat =
+            AIJourneyMetricsConfig[metricData.metricName].metricFormat
     } else if (
         metricData.metricName ===
         VoiceOfCustomerMetricWithDrillDown.IntentPerProduct

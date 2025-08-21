@@ -1,3 +1,4 @@
+import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { MetricsConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
@@ -79,6 +80,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     VoiceOfCustomerMetricWithDrillDown.IntentPerProduct,
     VoiceOfCustomerMetricWithDrillDown.IntentPerProducts,
     ProductsPerTicketColumn.TicketVolume,
+    AIJourneyMetric.TotalOrders,
 ]
 
 describe('MetricsConfig', () => {
