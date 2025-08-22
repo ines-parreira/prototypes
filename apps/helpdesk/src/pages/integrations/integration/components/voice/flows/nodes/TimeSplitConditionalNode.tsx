@@ -23,6 +23,7 @@ import {
 } from 'pages/settings/businessHours/constants'
 
 import type { TimeSplitConditionalNode } from '../types'
+import { useVoiceFlow } from '../useVoiceFlow'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
@@ -39,6 +40,7 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
     const { data } = props
     const ref = useRef<HTMLDivElement>(null)
     const { setValue } = useFormContext()
+    const { updateNodeData } = useVoiceFlow()
 
     const businessHoursId: number = useWatch({ name: `business_hours_id` })
     const { businessHours, name: businessHoursName } =
@@ -66,6 +68,11 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
         }
     }, [setValue, isCustomHours, businessHours?.timezone, id])
 
+    useEffect(() => {
+        // Update the node data when the rule type changes to reflect in the children nodes
+        updateNodeData(id, { rule_type })
+    }, [rule_type, id, updateNodeData])
+
     return (
         <VoiceStepNode
             title="Time rule"
@@ -79,6 +86,12 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
                 <FormField
                     name={`steps.${id}.rule_type`}
                     field={RadioButtonField}
+                    inputTransform={(value) => {
+                        if (!value) {
+                            return TimeSplitConditionalRuleType.BusinessHours
+                        }
+                        return value
+                    }}
                     options={[
                         {
                             value: TimeSplitConditionalRuleType.BusinessHours,

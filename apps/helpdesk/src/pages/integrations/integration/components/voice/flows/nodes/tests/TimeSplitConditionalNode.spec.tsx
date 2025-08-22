@@ -123,6 +123,35 @@ describe('TimeSplitConditionalNode', () => {
                 expect(screen.getByLabelText('Business hours')).toBeChecked()
             })
         })
+
+        it('should default to business hours for no rule type', async () => {
+            const step = {
+                ...mockDefaultStep,
+                rule_type: undefined,
+            }
+            const mockFlow = {
+                ...mockDefaultFlowData,
+                steps: { [step.id]: step },
+            }
+            renderComponent(step, mockFlow)
+
+            expect(screen.getAllByText('Time rule')).toHaveLength(2)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        /Business hours: Monday, 10:00 AM-7:00 PM, America\/New_York/,
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        /Test Business Hours: Monday, 10:00 AM-7:00 PM, America\/New_York/,
+                    ),
+                ).toBeInTheDocument()
+
+                expect(screen.getByLabelText('Business hours')).toBeChecked()
+            })
+        })
     })
 
     describe('Custom Hours', () => {

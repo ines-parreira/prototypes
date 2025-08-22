@@ -19,6 +19,7 @@ import { IncomingCallNode } from './nodes/IncomingCallNode'
 import { PlayMessageNode } from './nodes/PlayMessageNode'
 import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
 import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
+import { TimeSplitOptionNode } from './nodes/TimeSplitOptionNode'
 import { VoiceFlowNode } from './types'
 import { getNextNodes, transformToReactFlowNodes } from './utils'
 import { VoiceFlowEdge } from './VoiceFlowEdge'
@@ -29,6 +30,7 @@ const nodeTypes = {
     [VoiceFlowNodeType.PlayMessage]: PlayMessageNode,
     [VoiceFlowNodeType.SendToVoicemail]: SendToVoicemailNode,
     [VoiceFlowNodeType.TimeSplitConditional]: TimeSplitConditionalNode,
+    [VoiceFlowNodeType.TimeSplitOption]: TimeSplitOptionNode,
 }
 
 const edgeTypes = {
@@ -40,12 +42,8 @@ type VoiceFlowProps = {
 }
 
 export function VoiceFlow({ flow }: VoiceFlowProps) {
-    const [nodes, setNodes, onNodesChange] = useNodesState<VoiceFlowNode>(
-        transformToReactFlowNodes(flow),
-    )
-    const [edges, setEdges, onEdgesChange] = useEdgesState(
-        createFlowGraph(nodes, getNextNodes).edges,
-    )
+    const [nodes, setNodes, onNodesChange] = useNodesState<VoiceFlowNode>([])
+    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
 
     useAutoLayout()
 

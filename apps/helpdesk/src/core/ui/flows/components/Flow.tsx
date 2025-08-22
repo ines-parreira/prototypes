@@ -6,20 +6,12 @@ import { useTheme } from 'core/theme'
 
 import '@xyflow/react/dist/style.css'
 
-export type FlowProps<TNode extends Node, TEdge extends Edge> = Omit<
-    ReactFlowProps<TNode, TEdge>,
-    'nodes' | 'edges'
-> & {
-    nodes?: TNode[]
-    edges?: TEdge[]
-}
-
 export function Flow<TNode extends Node, TEdge extends Edge>({
     nodes = [],
     edges = [],
     children,
     ...props
-}: FlowProps<TNode, TEdge>): JSX.Element {
+}: ReactFlowProps<TNode, TEdge>): JSX.Element {
     const theme = useTheme()
 
     return (

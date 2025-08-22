@@ -34,7 +34,10 @@ function VoiceIntegrationFlowPage() {
     return (
         <VoiceFlowForm
             integration={data.data}
-            defaultValues={integration.meta.flow}
+            defaultValues={{
+                business_hours_id: integration.business_hours_id,
+                ...integration.meta.flow,
+            }}
         >
             <FlowProvider>
                 <Box width="100%" height="calc(100vh - 100px)">
