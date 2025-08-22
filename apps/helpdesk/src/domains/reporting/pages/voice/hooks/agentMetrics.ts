@@ -9,7 +9,10 @@ import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { declinedVoiceCallsCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsCountQueryFactory,
+    transferredInboundVoiceCallsCountQueryFactory,
+} from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilter,
@@ -193,5 +196,33 @@ export const fetchAverageTalkTimeMetric = (
         withFilter(
             voiceCallAverageTalkTimeQueryFactory(statsFilters, timezone),
             ignoreCallsWithNoAssignedAgentFilter,
+        ),
+    )
+
+export const useTransferredInboundCallsMetric = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Metric =>
+    useMetric(
+        withFilter(
+            transferredInboundVoiceCallsCountQueryFactory(
+                statsFilters,
+                timezone,
+            ),
+            ignoreDeclinedWithNoAgentsFilter,
+        ),
+    )
+
+export const fetchTransferredInboundCallsMetric = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Promise<Metric> =>
+    fetchMetric(
+        withFilter(
+            transferredInboundVoiceCallsCountQueryFactory(
+                statsFilters,
+                timezone,
+            ),
+            ignoreDeclinedWithNoAgentsFilter,
         ),
     )

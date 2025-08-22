@@ -11,6 +11,8 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import {
     declinedVoiceCallsCountPerAgentQueryFactory,
     declinedVoiceCallsCountQueryFactory,
+    transferredInboundVoiceCallsCountPerAgentQueryFactory,
+    transferredInboundVoiceCallsCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import {
     StatsFilters,
@@ -121,9 +123,105 @@ describe('voice events by agent factories', () => {
         })
     })
 
+    it('transferredInboundVoiceCallsCountPerAgentQueryFactory should create a query', () => {
+        const query = transferredInboundVoiceCallsCountPerAgentQueryFactory(
+            statsFilters,
+            'UTC',
+        )
+
+        expect(query).toEqual({
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [VoiceEventsByAgentDimension.AgentId],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [
+                VoiceEventsByAgentSegment.transferredInboundCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
+        })
+    })
+
+    it('transferredInboundVoiceCallsCountPerAgentQueryFactory should create a query with sorting', () => {
+        const query = transferredInboundVoiceCallsCountPerAgentQueryFactory(
+            statsFilters,
+            'UTC',
+            OrderDirection.Asc,
+        )
+
+        expect(query).toEqual({
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [VoiceEventsByAgentDimension.AgentId],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [
+                VoiceEventsByAgentSegment.transferredInboundCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
+            order: [
+                [
+                    VoiceEventsByAgentMeasure.VoiceEventsCount,
+                    OrderDirection.Asc,
+                ],
+            ],
+        })
+    })
+
+    it('transferredInboundVoiceCallsCountQueryFactory should create a query', () => {
+        const query = transferredInboundVoiceCallsCountQueryFactory(
+            statsFilters,
+            'UTC',
+        )
+
+        expect(query).toEqual({
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [
+                VoiceEventsByAgentSegment.transferredInboundCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
+        })
+    })
+
     it.each([
         declinedVoiceCallsCountPerAgentQueryFactory,
         declinedVoiceCallsCountQueryFactory,
+        transferredInboundVoiceCallsCountPerAgentQueryFactory,
+        transferredInboundVoiceCallsCountQueryFactory,
     ])(
         'should append ticket period filters when requesting tags',
         (factory) => {

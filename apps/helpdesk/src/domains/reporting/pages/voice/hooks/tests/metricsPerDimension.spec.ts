@@ -10,7 +10,10 @@ import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { declinedVoiceCallsCountPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsCountPerAgentQueryFactory,
+    transferredInboundVoiceCallsCountPerAgentQueryFactory,
+} from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAnsweredCallsMetricPerAgent,
@@ -19,12 +22,14 @@ import {
     fetchMissedCallsMetricPerAgent,
     fetchOutboundCallsMetricPerAgent,
     fetchTotalCallsMetricPerAgent,
+    fetchTransferredInboundCallsMetricPerAgent,
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
     useDeclinedCallsMetricPerAgent,
     useMissedCallsMetricPerAgent,
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
+    useTransferredInboundCallsMetricPerAgent,
 } from 'domains/reporting/pages/voice/hooks/metricsPerDimension'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
@@ -169,6 +174,26 @@ describe('metricsPerDimension', () => {
                 agentId,
             ])
         })
+
+        it('useTransferredInboundCallsMetricPerAgent', () => {
+            renderHook(() =>
+                useTransferredInboundCallsMetricPerAgent(
+                    statsFilters,
+                    userTimezone,
+                    sorting,
+                    agentId,
+                ),
+            )
+
+            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+                transferredInboundVoiceCallsCountPerAgentQueryFactory(
+                    statsFilters,
+                    userTimezone,
+                    sorting,
+                ),
+                agentId,
+            ])
+        })
     })
 
     describe('fetch', () => {
@@ -211,6 +236,10 @@ describe('metricsPerDimension', () => {
             {
                 fetch: fetchDeclinedCallsMetricPerAgent,
                 query: declinedVoiceCallsCountPerAgentQueryFactory,
+            },
+            {
+                fetch: fetchTransferredInboundCallsMetricPerAgent,
+                query: transferredInboundVoiceCallsCountPerAgentQueryFactory,
             },
         ])('should use query', async ({ fetch, query }) => {
             await fetch(statsFilters, userTimezone, agentId)

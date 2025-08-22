@@ -14,6 +14,7 @@ import {
     useMissedCallsMetricPerAgent,
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
+    useTransferredInboundCallsMetricPerAgent,
 } from 'domains/reporting/pages/voice/hooks/metricsPerDimension'
 import {
     VoiceAgentsMetric,
@@ -48,6 +49,8 @@ export const getQuery = (
             return useTotalCallsMetricPerAgent
         case VoiceAgentsTableColumn.InboundAnsweredCalls:
             return useAnsweredCallsMetricPerAgent
+        case VoiceAgentsTableColumn.InboundTransferredCalls:
+            return useTransferredInboundCallsMetricPerAgent
         case VoiceAgentsTableColumn.InboundMissedCalls:
             return useMissedCallsMetricPerAgent
         case VoiceAgentsTableColumn.InboundDeclinedCalls:
@@ -68,6 +71,47 @@ export type VoiceAgentsTableColumnConfig = {
     justifyContent?: 'left' | 'right' | 'center'
 }
 
+export const oldColumns: VoiceAgentsTableColumnConfig[] = [
+    {
+        title: 'Agent',
+        justifyContent: 'left',
+        id: VoiceAgentsTableColumn.AgentName,
+    },
+    {
+        title: 'Total calls',
+        tooltip:
+            'Total number of calls that rung an agent, including calls that the agent missed or declined.',
+        id: VoiceAgentsTableColumn.TotalCalls,
+        metricName: VoiceAgentsMetric.AgentTotalCalls,
+    },
+    {
+        title: 'Inbound Answered',
+        id: VoiceAgentsTableColumn.InboundAnsweredCalls,
+        metricName: VoiceAgentsMetric.AgentInboundAnsweredCalls,
+    },
+    {
+        title: 'Inbound Missed',
+        id: VoiceAgentsTableColumn.InboundMissedCalls,
+        metricName: VoiceAgentsMetric.AgentInboundMissedCalls,
+    },
+    {
+        title: 'Inbound Declined',
+        id: VoiceAgentsTableColumn.InboundDeclinedCalls,
+    },
+    {
+        title: 'Outbound',
+        id: VoiceAgentsTableColumn.OutboundCalls,
+        metricName: VoiceAgentsMetric.AgentOutboundCalls,
+    },
+    {
+        title: 'Avg. Talk Time',
+        tooltip: 'Average time agent spent talking to customers',
+        id: VoiceAgentsTableColumn.AverageTalkTime,
+        metricName: VoiceAgentsMetric.AgentAverageTalkTime,
+        metricFormat: 'duration',
+    },
+]
+
 export const columns: VoiceAgentsTableColumnConfig[] = [
     {
         title: 'Agent',
@@ -85,6 +129,12 @@ export const columns: VoiceAgentsTableColumnConfig[] = [
         title: 'Inbound Answered',
         id: VoiceAgentsTableColumn.InboundAnsweredCalls,
         metricName: VoiceAgentsMetric.AgentInboundAnsweredCalls,
+    },
+    {
+        title: 'Inbound Transferred',
+        tooltip:
+            'Total number of transferred calls to an agent, queue or external number.',
+        id: VoiceAgentsTableColumn.InboundTransferredCalls,
     },
     {
         title: 'Inbound Missed',

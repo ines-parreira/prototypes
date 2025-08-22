@@ -3,6 +3,8 @@ import React, { UIEventHandler, useState } from 'react'
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -13,8 +15,9 @@ import TeamAverageCallsCountCell from 'domains/reporting/pages/voice/components/
 import TeamAverageTalkTimeCell from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell'
 import css from 'domains/reporting/pages/voice/components/VoiceAgentsTable/VoiceAgentsTable.less'
 import {
-    columns,
     getQuery,
+    columns as newColumns,
+    oldColumns,
 } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/VoiceAgentsTableConfig'
 import {
     useAnsweredCallsMetric,
@@ -22,6 +25,7 @@ import {
     useMissedCallsMetric,
     useOutboundCallsMetric,
     useTotalCallsMetric,
+    useTransferredInboundCallsMetric,
 } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import { VoiceAgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import {
@@ -59,6 +63,10 @@ const getSortingQuery = (
 }
 
 export const VoiceAgentsTable = () => {
+    const isTransferToExternalNumberEnabled = useFlag(
+        FeatureFlagKey.TransferCallToExternalNumber,
+    )
+
     const {
         currentPage,
         perPage,
@@ -88,6 +96,8 @@ export const VoiceAgentsTable = () => {
     if (currentPage > totalPages) {
         handlePageChange(totalPages)
     }
+
+    const columns = isTransferToExternalNumberEnabled ? newColumns : oldColumns
 
     return (
         <>
@@ -139,6 +149,12 @@ export const VoiceAgentsTable = () => {
                                 agentsCount={agents.length}
                                 useMetric={useAnsweredCallsMetric}
                             />
+                            {isTransferToExternalNumberEnabled && (
+                                <TeamAverageCallsCountCell
+                                    agentsCount={agents.length}
+                                    useMetric={useTransferredInboundCallsMetric}
+                                />
+                            )}
                             <TeamAverageCallsCountCell
                                 agentsCount={agents.length}
                                 useMetric={useMissedCallsMetric}

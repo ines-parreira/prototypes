@@ -120,6 +120,7 @@ export enum VoiceAgentsTableColumn {
     AgentName = 'agent_name',
     TotalCalls = 'total_calls',
     InboundMissedCalls = 'inbound_missed_calls',
+    InboundTransferredCalls = 'inbound_transferred_calls',
     InboundAnsweredCalls = 'inbound_answered_calls',
     InboundDeclinedCalls = 'inbound_declined_calls',
     OutboundCalls = 'agent_outbound_calls',

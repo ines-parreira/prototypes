@@ -8,7 +8,10 @@ import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { declinedVoiceCallsCountPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsCountPerAgentQueryFactory,
+    transferredInboundVoiceCallsCountPerAgentQueryFactory,
+} from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingQuery } from 'domains/reporting/models/types'
 import { OrderDirection } from 'models/api/types'
@@ -159,3 +162,23 @@ export const useDeclinedCallsMetricPerAgent = (
 export const fetchDeclinedCallsMetricPerAgent = createFetchMetricPerDimension(
     declinedVoiceCallsCountPerAgentQueryFactory,
 )
+
+export const useTransferredInboundCallsMetricPerAgent = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    agentAssigneeId?: string,
+) =>
+    useMetricPerDimension(
+        transferredInboundVoiceCallsCountPerAgentQueryFactory(
+            statsFilters,
+            timezone,
+            sorting,
+        ),
+        agentAssigneeId,
+    )
+
+export const fetchTransferredInboundCallsMetricPerAgent =
+    createFetchMetricPerDimension(
+        transferredInboundVoiceCallsCountPerAgentQueryFactory,
+    )

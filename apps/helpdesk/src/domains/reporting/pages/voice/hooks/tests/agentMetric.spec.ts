@@ -16,7 +16,10 @@ import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { declinedVoiceCallsCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsCountQueryFactory,
+    transferredInboundVoiceCallsCountQueryFactory,
+} from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAnsweredCallsMetric,
@@ -25,6 +28,7 @@ import {
     fetchMissedCallsMetric,
     fetchOutboundCallsMetric,
     fetchTotalCallsMetric,
+    fetchTransferredInboundCallsMetric,
     ignoreCallsWithNoAgentsFilter,
     ignoreCallsWithNoAssignedAgentFilter,
     ignoreDeclinedWithNoAgentsFilter,
@@ -34,6 +38,7 @@ import {
     useMissedCallsMetric,
     useOutboundCallsMetric,
     useTotalCallsMetric,
+    useTransferredInboundCallsMetric,
 } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import {
     formatReportingQueryDate,
@@ -216,6 +221,41 @@ describe('metricsPerDimension', () => {
             ])
         })
 
+        it('useTransferredInboundCallsMetric', () => {
+            renderHook(() =>
+                useTransferredInboundCallsMetric(statsFilters, userTimezone),
+            )
+
+            expect(useMetricMock.mock.calls[0]).toEqual([
+                {
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: VoiceEventsByAgentMember.PeriodStart,
+                            operator: 'afterDate',
+                            values: [statsFilters.period.start_datetime],
+                        },
+                        {
+                            member: VoiceEventsByAgentMember.PeriodEnd,
+                            operator: 'beforeDate',
+                            values: [statsFilters.period.end_datetime],
+                        },
+                        {
+                            member: VoiceEventsByAgentMember.AgentId,
+                            operator: 'set',
+                            values: [],
+                        },
+                    ],
+                    measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+                    segments: [
+                        VoiceEventsByAgentSegment.transferredInboundCalls,
+                        VoiceEventsByAgentSegment.callsInFinalStatus,
+                    ],
+                    timezone: userTimezone,
+                },
+            ])
+        })
+
         it.each([
             {
                 includeLiveData: false,
@@ -291,6 +331,12 @@ describe('metricsPerDimension', () => {
             {
                 fetch: fetchDeclinedCallsMetric,
                 queryFactory: declinedVoiceCallsCountQueryFactory,
+                segment: undefined,
+                filter: ignoreDeclinedWithNoAgentsFilter,
+            },
+            {
+                fetch: fetchTransferredInboundCallsMetric,
+                queryFactory: transferredInboundVoiceCallsCountQueryFactory,
                 segment: undefined,
                 filter: ignoreDeclinedWithNoAgentsFilter,
             },

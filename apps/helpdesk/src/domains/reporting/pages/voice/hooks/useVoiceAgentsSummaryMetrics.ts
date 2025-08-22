@@ -8,6 +8,7 @@ import {
     useMissedCallsMetric,
     useOutboundCallsMetric,
     useTotalCallsMetric,
+    useTransferredInboundCallsMetric,
 } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 
 export function useVoiceAgentsSummaryMetrics(
@@ -18,7 +19,13 @@ export function useVoiceAgentsSummaryMetrics(
         cleanStatsFilters,
         userTimezone,
     )
+
     const answeredCallsMetric = useAnsweredCallsMetric(
+        cleanStatsFilters,
+        userTimezone,
+    )
+
+    const transferredInboundCallsMetric = useTransferredInboundCallsMetric(
         cleanStatsFilters,
         userTimezone,
     )
@@ -47,6 +54,7 @@ export function useVoiceAgentsSummaryMetrics(
         return Object.values({
             totalCallsMetric,
             answeredCallsMetric,
+            transferredInboundCallsMetric,
             missedCallsMetric,
             declinedCallsMetric,
             outboundCallsMetric,
@@ -55,6 +63,7 @@ export function useVoiceAgentsSummaryMetrics(
     }, [
         totalCallsMetric,
         answeredCallsMetric,
+        transferredInboundCallsMetric,
         missedCallsMetric,
         declinedCallsMetric,
         outboundCallsMetric,
@@ -65,6 +74,7 @@ export function useVoiceAgentsSummaryMetrics(
         summaryData: {
             totalCallsMetric,
             answeredCallsMetric,
+            transferredInboundCallsMetric,
             missedCallsMetric,
             declinedCallsMetric,
             outboundCallsMetric,

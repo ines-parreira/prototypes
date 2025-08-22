@@ -9,6 +9,7 @@ import {
     useMissedCallsMetric,
     useOutboundCallsMetric,
     useTotalCallsMetric,
+    useTransferredInboundCallsMetric,
 } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import { useVoiceAgentsSummaryMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsSummaryMetrics'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
@@ -23,6 +24,9 @@ const useMissedCallsMetricMock = assumeMock(useMissedCallsMetric)
 const useDeclinedCallsMetricMock = assumeMock(useDeclinedCallsMetric)
 const useOutboundCallsMetricMock = assumeMock(useOutboundCallsMetric)
 const useAverageTalkTimeMetricMock = assumeMock(useAverageTalkTimeMetric)
+const useTransferredInboundCallsMetricMock = assumeMock(
+    useTransferredInboundCallsMetric,
+)
 
 const metricData = {
     isFetching: false,
@@ -49,6 +53,7 @@ describe('useVoiceAgentsSummaryMetrics', () => {
         })
         useTotalCallsMetricMock.mockReturnValue(metricData)
         useAnsweredCallsMetricMock.mockReturnValue(metricData)
+        useTransferredInboundCallsMetricMock.mockReturnValue(metricData)
         useMissedCallsMetricMock.mockReturnValue(metricData)
         useDeclinedCallsMetricMock.mockReturnValue(metricData)
         useOutboundCallsMetricMock.mockReturnValue(metricData)
@@ -62,6 +67,7 @@ describe('useVoiceAgentsSummaryMetrics', () => {
             summaryData: {
                 totalCallsMetric: metricData,
                 answeredCallsMetric: metricData,
+                transferredInboundCallsMetric: metricData,
                 missedCallsMetric: metricData,
                 declinedCallsMetric: metricData,
                 outboundCallsMetric: metricData,
@@ -79,6 +85,10 @@ describe('useVoiceAgentsSummaryMetrics', () => {
             userTimezone,
         )
         expect(useAnsweredCallsMetricMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+        )
+        expect(useTransferredInboundCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
             userTimezone,
         )

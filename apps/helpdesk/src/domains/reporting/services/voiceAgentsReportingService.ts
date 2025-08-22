@@ -32,6 +32,7 @@ import {
     fetchMissedCallsMetric,
     fetchOutboundCallsMetric,
     fetchTotalCallsMetric,
+    fetchTransferredInboundCallsMetric,
 } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import {
     fetchAnsweredCallsMetricPerAgent,
@@ -40,6 +41,7 @@ import {
     fetchMissedCallsMetricPerAgent,
     fetchOutboundCallsMetricPerAgent,
     fetchTotalCallsMetricPerAgent,
+    fetchTransferredInboundCallsMetricPerAgent,
 } from 'domains/reporting/pages/voice/hooks/metricsPerDimension'
 import { useVoiceAgentsMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsMetrics'
 import { useVoiceAgentsSummaryMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsSummaryMetrics'
@@ -50,6 +52,7 @@ import { createCsv } from 'utils/file'
 export interface VoiceAgentsPerformanceReportData<T = MetricWithDecile> {
     totalCallsMetric: T
     answeredCallsMetric: T
+    transferredInboundCallsMetric: T
     missedCallsMetric: T
     declinedCallsMetric: T
     outboundCallsMetric: T
@@ -156,6 +159,19 @@ const getAverageTalkTimeMetric = (
         ),
     )
 
+const getTransferredInboundCallsMetric = (
+    agentId: number,
+    transferredInboundCallsMetric: MetricWithDecile,
+) =>
+    formatMetric.decimal(
+        getAgentMetric(
+            agentId,
+            transferredInboundCallsMetric,
+            VoiceEventsByAgentDimension.AgentId,
+            VoiceEventsByAgentMeasure.VoiceEventsCount,
+        ),
+    )
+
 const getMetricAverage = (metric: Metric, length: number) =>
     metric.data?.value ? metric.data?.value / length : metric.data?.value
 
@@ -164,66 +180,146 @@ export const createReport = (
     data: VoiceAgentsPerformanceReportData,
     summaryData: VoiceAgentsPerformanceReportData<Metric>,
     fileName: string,
+    isTransferToExternalNumberEnabled: boolean = false,
 ) => {
     const {
         totalCallsMetric,
         answeredCallsMetric,
+        transferredInboundCallsMetric,
         missedCallsMetric,
         declinedCallsMetric,
         outboundCallsMetric,
         averageTalkTimeMetric,
     } = data
 
-    const voiceAgentsMetricData = [
-        [
-            'Agent',
-            'Total calls',
-            'Inbound answered',
-            'Inbound missed',
-            'Inbound declined',
-            'Outbound',
-            'Average talk time',
-        ],
-        [
-            'Team average',
-            formatMetric.decimal(
-                getMetricAverage(summaryData.totalCallsMetric, agents.length),
-            ),
-            formatMetric.decimal(
-                getMetricAverage(
-                    summaryData.answeredCallsMetric,
-                    agents.length,
-                ),
-            ),
-            formatMetric.decimal(
-                getMetricAverage(summaryData.missedCallsMetric, agents.length),
-            ),
-            formatMetric.decimal(
-                getMetricAverage(
-                    summaryData.declinedCallsMetric,
-                    agents.length,
-                ),
-            ),
-            formatMetric.decimal(
-                getMetricAverage(
-                    summaryData.outboundCallsMetric,
-                    agents.length,
-                ),
-            ),
-            formatMetric.decimal(summaryData.averageTalkTimeMetric.data?.value),
-        ],
-        ...agents.map((agent) => {
-            return [
-                agent.name,
-                getTotalCallsMetric(agent.id, totalCallsMetric),
-                getAnsweredCallsMetric(agent.id, answeredCallsMetric),
-                getMissedCallsMetric(agent.id, missedCallsMetric),
-                getDeclinedCallsMetric(agent.id, declinedCallsMetric),
-                getOutboundCallsMetric(agent.id, outboundCallsMetric),
-                getAverageTalkTimeMetric(agent.id, averageTalkTimeMetric),
-            ]
-        }),
-    ]
+    const voiceAgentsMetricData = isTransferToExternalNumberEnabled
+        ? [
+              [
+                  'Agent',
+                  'Total calls',
+                  'Inbound answered',
+                  'Inbound transferred',
+                  'Inbound missed',
+                  'Inbound declined',
+                  'Outbound',
+                  'Average talk time',
+              ],
+              [
+                  'Team average',
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.totalCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.answeredCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.transferredInboundCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.missedCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.declinedCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.outboundCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      summaryData.averageTalkTimeMetric.data?.value,
+                  ),
+              ],
+              ...agents.map((agent) => {
+                  return [
+                      agent.name,
+                      getTotalCallsMetric(agent.id, totalCallsMetric),
+                      getAnsweredCallsMetric(agent.id, answeredCallsMetric),
+                      getTransferredInboundCallsMetric(
+                          agent.id,
+                          transferredInboundCallsMetric,
+                      ),
+                      getMissedCallsMetric(agent.id, missedCallsMetric),
+                      getDeclinedCallsMetric(agent.id, declinedCallsMetric),
+                      getOutboundCallsMetric(agent.id, outboundCallsMetric),
+                      getAverageTalkTimeMetric(agent.id, averageTalkTimeMetric),
+                  ]
+              }),
+          ]
+        : [
+              [
+                  'Agent',
+                  'Total calls',
+                  'Inbound answered',
+                  'Inbound missed',
+                  'Inbound declined',
+                  'Outbound',
+                  'Average talk time',
+              ],
+              [
+                  'Team average',
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.totalCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.answeredCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.missedCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.declinedCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      getMetricAverage(
+                          summaryData.outboundCallsMetric,
+                          agents.length,
+                      ),
+                  ),
+                  formatMetric.decimal(
+                      summaryData.averageTalkTimeMetric.data?.value,
+                  ),
+              ],
+              ...agents.map((agent) => {
+                  return [
+                      agent.name,
+                      getTotalCallsMetric(agent.id, totalCallsMetric),
+                      getAnsweredCallsMetric(agent.id, answeredCallsMetric),
+                      getMissedCallsMetric(agent.id, missedCallsMetric),
+                      getDeclinedCallsMetric(agent.id, declinedCallsMetric),
+                      getOutboundCallsMetric(agent.id, outboundCallsMetric),
+                      getAverageTalkTimeMetric(agent.id, averageTalkTimeMetric),
+                  ]
+              }),
+          ]
 
     return {
         files: {
@@ -233,7 +329,9 @@ export const createReport = (
     }
 }
 
-export const useVoiceAgentsReportData = () => {
+export const useVoiceAgentsReportData = (
+    isTransferToExternalNumberEnabled: boolean,
+) => {
     const agents = useAppSelector<User[]>(getSortedAgents)
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const { reportData, isLoading, period } = useVoiceAgentsMetrics(
@@ -248,7 +346,13 @@ export const useVoiceAgentsReportData = () => {
         VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
     )
     return {
-        ...createReport(agents, reportData, summaryData, fileName),
+        ...createReport(
+            agents,
+            reportData,
+            summaryData,
+            fileName,
+            isTransferToExternalNumberEnabled,
+        ),
         isLoading: isLoading || summaryIsLoading,
     }
 }
@@ -259,6 +363,10 @@ const agentsMetricsDataSources: TableDataSources<VoiceAgentsPerformanceReportDat
         {
             fetchData: fetchAnsweredCallsMetricPerAgent,
             title: 'answeredCallsMetric',
+        },
+        {
+            fetchData: fetchTransferredInboundCallsMetricPerAgent,
+            title: 'transferredInboundCallsMetric',
         },
         {
             fetchData: fetchMissedCallsMetricPerAgent,
@@ -282,6 +390,10 @@ const agentsSummaryDataSources: TableSummaryDataSources<VoiceAgentsPerformanceRe
     [
         { fetchData: fetchTotalCallsMetric, title: 'totalCallsMetric' },
         { fetchData: fetchAnsweredCallsMetric, title: 'answeredCallsMetric' },
+        {
+            fetchData: fetchTransferredInboundCallsMetric,
+            title: 'transferredInboundCallsMetric',
+        },
         { fetchData: fetchMissedCallsMetric, title: 'missedCallsMetric' },
         { fetchData: fetchDeclinedCallsMetric, title: 'declinedCallsMetric' },
         { fetchData: fetchOutboundCallsMetric, title: 'outboundCallsMetric' },

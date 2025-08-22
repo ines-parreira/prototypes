@@ -11,6 +11,7 @@ import {
     useMissedCallsMetricPerAgent,
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
+    useTransferredInboundCallsMetricPerAgent,
 } from 'domains/reporting/pages/voice/hooks/metricsPerDimension'
 import { useVoiceAgentsMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsMetrics'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
@@ -34,6 +35,9 @@ const useOutboundCallsMetricPerAgentMock = assumeMock(
 )
 const useAverageTalkTimeMetricPerAgentMock = assumeMock(
     useAverageTalkTimeMetricPerAgent,
+)
+const useTransferredInboundCallsMetricPerAgentMock = assumeMock(
+    useTransferredInboundCallsMetricPerAgent,
 )
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
@@ -69,6 +73,7 @@ describe('useVoiceAgentsMetric', () => {
         useAppSelectorMock.mockReturnValue(agents)
         useTotalCallsMetricPerAgentMock.mockReturnValue(metricData)
         useAnsweredCallsMetricPerAgentMock.mockReturnValue(metricData)
+        useTransferredInboundCallsMetricPerAgentMock.mockReturnValue(metricData)
         useMissedCallsMetricPerAgentMock.mockReturnValue(metricData)
         useDeclinedCallsMetricPerAgentMock.mockReturnValue(metricData)
         useOutboundCallsMetricPerAgentMock.mockReturnValue(metricData)
@@ -82,6 +87,7 @@ describe('useVoiceAgentsMetric', () => {
             reportData: {
                 totalCallsMetric: metricData,
                 answeredCallsMetric: metricData,
+                transferredInboundCallsMetric: metricData,
                 missedCallsMetric: metricData,
                 declinedCallsMetric: metricData,
                 outboundCallsMetric: metricData,
@@ -102,6 +108,9 @@ describe('useVoiceAgentsMetric', () => {
             statsFilters,
             userTimezone,
         )
+        expect(
+            useTransferredInboundCallsMetricPerAgentMock,
+        ).toHaveBeenCalledWith(statsFilters, userTimezone)
         expect(useMissedCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
             userTimezone,

@@ -61,3 +61,35 @@ export const declinedVoiceCallsCountQueryFactory = (
     ),
     filters: voiceEventsByAgentDefaultFilters(filters),
 })
+
+export const transferredInboundVoiceCallsCountPerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<VoiceEventsByAgentCube> => ({
+    measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+    dimensions: [VoiceEventsByAgentDimension.AgentId],
+    timezone,
+    segments: withVoiceEventsByAgentDefaultSegment(
+        VoiceEventsByAgentSegment.transferredInboundCalls,
+    ),
+    filters: voiceEventsByAgentDefaultFilters(filters),
+    ...(sorting
+        ? {
+              order: [[VoiceEventsByAgentMeasure.VoiceEventsCount, sorting]],
+          }
+        : {}),
+})
+
+export const transferredInboundVoiceCallsCountQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+) => ({
+    measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+    dimensions: [],
+    timezone,
+    segments: withVoiceEventsByAgentDefaultSegment(
+        VoiceEventsByAgentSegment.transferredInboundCalls,
+    ),
+    filters: voiceEventsByAgentDefaultFilters(filters),
+})
