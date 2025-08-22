@@ -9,7 +9,8 @@ import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
@@ -29,14 +30,12 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
-jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 
 const mockUseLocation = assumeMock(useLocation)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseStoreActivations = assumeMock(useStoreActivations)
-const mockUseShoppingAssistantTrialAccess = assumeMock(
-    useShoppingAssistantTrialAccess,
-)
+const mockUseTrialAccess = assumeMock(useTrialAccess)
 
 const mockedAddBanner = jest.fn<unknown, [ContextBanner]>()
 const mockedRemoveBanner = jest.fn()
@@ -55,23 +54,6 @@ jest.mock(
             }),
         }) as Record<string, unknown>,
 )
-
-const createMockTrialAccess = (overrides = {}) => ({
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasAnyTrialOptedOut: false,
-    hasAnyTrialExpired: false,
-    hasCurrentStoreTrialStarted: false,
-    hasCurrentStoreTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasAnyTrialActive: false,
-    isAdminUser: false,
-    ...overrides,
-})
 
 const mockShopName = 'test-store'
 
@@ -139,9 +121,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             isFetchLoading: false,
         } as any)
 
-        mockUseShoppingAssistantTrialAccess.mockReturnValue(
-            createMockTrialAccess(),
-        )
+        mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
     })
 
     describe('when banner should not be shown', () => {
@@ -154,7 +134,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             })
 
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
                 }),
@@ -178,7 +158,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             })
 
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
                 }),
@@ -226,7 +206,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             })
 
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
                 }),
@@ -292,7 +272,7 @@ describe('useShoppingAssistantTrialBanner', () => {
 
             // Make eligible
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
                 }),
@@ -307,7 +287,7 @@ describe('useShoppingAssistantTrialBanner', () => {
         it('should re-evaluate when isOnEligiblePlan changes from true to false', () => {
             // Initially eligible
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
                 }),
@@ -325,9 +305,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             mockedRemoveBanner.mockClear()
 
             // // Make not eligible
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
-                createMockTrialAccess(),
-            )
+            mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
             rerender()
 
@@ -342,7 +320,7 @@ describe('useShoppingAssistantTrialBanner', () => {
     describe('location-based behavior', () => {
         beforeEach(() => {
             mockUseFlag.mockReturnValue(true)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
                 }),

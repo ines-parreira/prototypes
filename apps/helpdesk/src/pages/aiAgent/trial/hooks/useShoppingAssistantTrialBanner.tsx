@@ -7,7 +7,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
@@ -27,7 +27,7 @@ export const useShoppingAssistantTrialBanner = () => {
         pathname.includes('tickets') || pathname.includes('views')
 
     // Check if the banner should be hidden
-    const { canSeeSystemBanner } = useShoppingAssistantTrialAccess()
+    const { canSeeSystemBanner } = useTrialAccess()
 
     const displayBanner = useMemo(
         () => !isTicketsPage && canSeeSystemBanner,

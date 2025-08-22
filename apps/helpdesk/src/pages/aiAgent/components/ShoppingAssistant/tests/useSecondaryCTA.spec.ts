@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 import { useSecondaryCTA } from '../hooks/useSecondaryCTA'
@@ -28,24 +29,6 @@ beforeEach(() => {
 
 const createMockTrialFlow = (overrides = {}) =>
     getUseShoppingAssistantTrialFlowFixture(overrides)
-
-const createMockTrialAccess = (overrides = {}) => ({
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasCurrentStoreTrialStarted: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasAnyTrialOptedOut: false,
-    hasCurrentStoreTrialExpired: false,
-    hasAnyTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasAnyTrialActive: false,
-    isAdminUser: false,
-    isLoading: false,
-    ...overrides,
-})
 
 describe('useSecondaryCTA', () => {
     it('returns "Manage Trial" button for AdminTrialProgress variant when not opted out', () => {

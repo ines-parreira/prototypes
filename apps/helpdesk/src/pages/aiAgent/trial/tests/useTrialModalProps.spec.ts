@@ -16,12 +16,13 @@ import {
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import {
     useShoppingAssistantTrialFlow,
     UseShoppingAssistantTrialFlowReturn,
 } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -33,7 +34,7 @@ jest.mock('models/billing/utils', () => ({
 }))
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
-jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
@@ -46,9 +47,7 @@ const mockUseEarlyAccessAutomatePlan = assumeMock(useEarlyAccessAutomatePlan)
 const mockUseTrialMetrics = assumeMock(useTrialMetrics)
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseAppDispatch = assumeMock(useAppDispatch)
-const mockUseShoppingAssistantTrialAccess = assumeMock(
-    useShoppingAssistantTrialAccess,
-)
+const mockUseTrialAccess = assumeMock(useTrialAccess)
 const mockGetAutomateEarlyAccessPricesFormatted = jest.requireMock(
     'models/billing/utils',
 ).getAutomateEarlyAccessPricesFormatted
@@ -61,23 +60,6 @@ const mockUseShoppingAssistantTrialFlow = assumeMock(
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseUpgradePlan = assumeMock(useUpgradePlan)
-
-const createMockTrialAccess = (overrides = {}) => ({
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasCurrentStoreTrialStarted: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasAnyTrialOptedOut: false,
-    hasCurrentStoreTrialExpired: false,
-    hasAnyTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasAnyTrialActive: false,
-    isAdminUser: false,
-    ...overrides,
-})
 
 // Helper function to generate trial end time based on remaining days
 const getTrialEndTime = (remainingDays: number): string => {
@@ -148,9 +130,7 @@ describe('useTrialModalProps', () => {
             optedOutDatetime: undefined,
         })
 
-        mockUseShoppingAssistantTrialAccess.mockReturnValue(
-            createMockTrialAccess(),
-        )
+        mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
 
@@ -802,7 +782,7 @@ describe('useTrialModalProps', () => {
                 mockUseEarlyAccessAutomatePlan.mockReturnValue({
                     data: null,
                 } as any)
-                mockUseShoppingAssistantTrialAccess.mockReturnValue(
+                mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({ canBookDemo: true }),
                 )
 
@@ -836,7 +816,7 @@ describe('useTrialModalProps', () => {
         })
 
         it('should return correct alert banner when user can book demo', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({ canBookDemo: true }),
             )
 
@@ -886,7 +866,7 @@ describe('useTrialModalProps', () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({ canBookDemo: true }),
             )
 
@@ -953,7 +933,7 @@ describe('useTrialModalProps', () => {
                 openUpgradePlanModal: mockOpenUpgradePlanModal,
             })
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     hasCurrentStoreTrialOptedOut: true,
                     hasAnyTrialOptedOut: true,
@@ -1004,7 +984,7 @@ describe('useTrialModalProps', () => {
                 defaultMockUseShoppingAssistantTrialFlow,
             )
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     hasAnyTrialStarted: true,
                     hasAnyTrialOptedIn: true,
@@ -1193,7 +1173,7 @@ describe('useTrialModalProps', () => {
         })
 
         it('should handle when user has opted out of trial', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeTrialCTA: true,
                     hasCurrentStoreTrialOptedOut: true,
@@ -1212,7 +1192,7 @@ describe('useTrialModalProps', () => {
         })
 
         it('should maintain consistent modal props when hasOptedOut changes', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({ canSeeTrialCTA: true }),
             )
 
@@ -1222,7 +1202,7 @@ describe('useTrialModalProps', () => {
 
             const initialResult = result.current
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeTrialCTA: true,
                     hasCurrentStoreTrialOptedOut: true,
@@ -1485,7 +1465,7 @@ describe('useTrialModalProps', () => {
         })
 
         it('should return correct modal props', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({ canSeeTrialCTA: true }),
             )
 
@@ -1540,7 +1520,7 @@ describe('useTrialModalProps', () => {
         })
 
         it('should return correct modal props', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeTrialCTA: true,
                     isAdminUser: true,

@@ -7,8 +7,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -41,7 +41,7 @@ export const useShoppingAssistantPromoCard = (
         false,
     )
 
-    const trialAccess = useShoppingAssistantTrialAccess(shopName)
+    const trialAccess = useTrialAccess(shopName)
     const { isDisabled } = useNotifyAdmins(shopName)
     const trialMetrics = useTrialMetrics()
     const trialEnding = useTrialEnding(shopName)

@@ -14,8 +14,9 @@ import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActi
 import { useEarlyAccessModalState } from 'pages/aiAgent/Activation/hooks/useEarlyAccessModalState'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -32,7 +33,7 @@ jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
-jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
 jest.mock('pages/aiAgent/Activation/hooks/useEarlyAccessModalState')
@@ -45,9 +46,7 @@ const mockUseEarlyAccessModalState = assumeMock(useEarlyAccessModalState)
 const mockUseShoppingAssistantTrialFlow = assumeMock(
     useShoppingAssistantTrialFlow,
 )
-const mockUseShoppingAssistantTrialAccess = assumeMock(
-    useShoppingAssistantTrialAccess,
-)
+const mockUseTrialAccess = assumeMock(useTrialAccess)
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseTrialMetrics = assumeMock(useTrialMetrics)
 
@@ -110,22 +109,7 @@ describe('useShoppingAssistantPromoCard', () => {
         },
     ]
     const mockTrialFlow = getUseShoppingAssistantTrialFlowFixture()
-    const baseTrialAccess = {
-        canSeeTrialCTA: false,
-        canBookDemo: false,
-        canNotifyAdmin: false,
-        canSeeSystemBanner: false,
-        hasAnyTrialActive: false,
-        hasAnyTrialExpired: false,
-        hasAnyTrialOptedIn: false,
-        hasAnyTrialOptedOut: false,
-        hasAnyTrialStarted: false,
-        hasCurrentStoreTrialExpired: false,
-        hasCurrentStoreTrialOptedOut: false,
-        hasCurrentStoreTrialStarted: false,
-        isAdminUser: false,
-        isLoading: false,
-    }
+    const baseTrialAccess = createMockTrialAccess()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -175,7 +159,7 @@ describe('useShoppingAssistantPromoCard', () => {
             isSubscriptionUpdating: false,
         } as any)
         mockUseShoppingAssistantTrialFlow.mockReturnValue(mockTrialFlow)
-        mockUseShoppingAssistantTrialAccess.mockReturnValue(baseTrialAccess)
+        mockUseTrialAccess.mockReturnValue(baseTrialAccess)
         mockUseTrialEnding.mockReturnValue({
             remainingDays: 7,
             remainingDaysFloat: 7.0,
@@ -211,7 +195,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('No access permissions', () => {
         it('should return null when user has no access permissions', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
                 canBookDemo: false,
@@ -237,7 +221,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('User Story: Admin with Starter/Basic Plan - Trial Access', () => {
         beforeEach(() => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
                 canBookDemo: false,
@@ -385,7 +369,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('User Story: Admin with Pro+ Plan - Demo Access', () => {
         beforeEach(() => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
                 canBookDemo: true,
@@ -456,7 +440,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('User Story: Team Lead with Starter/Basic Plan - Notify Admin', () => {
         beforeEach(() => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
                 canBookDemo: false,
@@ -525,7 +509,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('User Story: Team Lead with Pro+ Plan - Notify admin / book a demo', () => {
         beforeEach(() => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
                 canBookDemo: true,
@@ -614,7 +598,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('During trial - Trial Priority Logic', () => {
         it('should prioritize trial progress over pre-trial access for admin', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 isAdminUser: true,
                 canBookDemo: true,
@@ -641,7 +625,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should prioritize trial progress over pre-trial access for lead', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canNotifyAdmin: true,
                 hasCurrentStoreTrialStarted: true,
@@ -667,7 +651,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should show card when only hasAnyTrialStarted is true', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
                 canBookDemo: false,
@@ -693,7 +677,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should show card when only hasCurrentStoreTrialStarted is true', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
                 canBookDemo: false,
@@ -721,7 +705,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('Event tracking on component mount', () => {
         it('should log Trial view event when user can see trial CTA', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
             })
@@ -744,7 +728,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should log Demo view event when user can book demo', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canBookDemo: true,
             })
@@ -767,7 +751,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should log Notify view event when user can notify admin', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canNotifyAdmin: true,
             })
@@ -790,7 +774,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should not log view event when no content is returned', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 // All false - no access
             })
@@ -815,7 +799,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('Notification icon logic', () => {
         it('should show notification icon when primary button contains "Notify"', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canNotifyAdmin: true,
             })
@@ -840,7 +824,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should not show notification icon when primary button does not contain "Notify"', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
             })
@@ -867,7 +851,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('Hook dependencies and account domain', () => {
         it('should pass account domain to trial flow hook', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
             })
@@ -892,7 +876,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('Shop name fallback logic', () => {
         it('should use first shop from integrations list when shopName is undefined', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
             })
@@ -944,7 +928,7 @@ describe('useShoppingAssistantPromoCard', () => {
                 }
                 return undefined
             })
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
             })
@@ -990,7 +974,7 @@ describe('useShoppingAssistantPromoCard', () => {
                 }
                 return undefined
             })
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
             })
@@ -1014,7 +998,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('Trial Metrics Integration', () => {
         beforeEach(() => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 isAdminUser: true,
                 hasCurrentStoreTrialStarted: true,
@@ -1148,7 +1132,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should show GMV description when user has opted out', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 isAdminUser: true,
                 hasCurrentStoreTrialStarted: true,
@@ -1183,7 +1167,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should handle lead users with GMV above threshold by disabling/hiding buttons', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
                 hasCurrentStoreTrialStarted: true,
@@ -1222,7 +1206,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('Progress Bar Logic and Display', () => {
         beforeEach(() => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
                 hasCurrentStoreTrialStarted: true,
@@ -1348,7 +1332,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
         describe('Progress bar visibility', () => {
             it('should show progress bar during admin trial', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     isAdminUser: true,
                     hasCurrentStoreTrialStarted: true,
@@ -1374,7 +1358,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should show progress bar during lead trial', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: false,
                     hasCurrentStoreTrialStarted: true,
@@ -1400,7 +1384,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should not show progress bar in pre-trial states', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: true,
                     hasCurrentStoreTrialStarted: false,
@@ -1464,7 +1448,7 @@ describe('useShoppingAssistantPromoCard', () => {
     describe('Admin/Lead Trial Progress Button States', () => {
         describe('Admin trial progress scenarios', () => {
             beforeEach(() => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     isAdminUser: true,
                     hasCurrentStoreTrialStarted: true,
@@ -1508,7 +1492,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should show "Upgrade now" button when admin has opted out', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     isAdminUser: true,
                     hasCurrentStoreTrialStarted: true,
@@ -1618,7 +1602,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should hide secondary button when admin has opted out', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: true,
                     hasCurrentStoreTrialStarted: true,
@@ -1644,7 +1628,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
         describe('Lead trial progress scenarios', () => {
             beforeEach(() => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: false,
                     hasAnyTrialStarted: true,
@@ -1659,7 +1643,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should show "Set Up Sales Strategy" button when GMV is below threshold', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     hasCurrentStoreTrialStarted: true,
                 })
@@ -1693,7 +1677,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should disable primary button when GMV is above threshold', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     hasCurrentStoreTrialStarted: true,
                 })
@@ -1723,7 +1707,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should disable primary button when lead has opted out', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: false,
                     hasCurrentStoreTrialStarted: true,
@@ -1755,7 +1739,7 @@ describe('useShoppingAssistantPromoCard', () => {
             })
 
             it('should never show secondary button for lead trial progress', () => {
-                mockUseShoppingAssistantTrialAccess.mockReturnValue({
+                mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     hasCurrentStoreTrialStarted: true,
                 })
@@ -1785,7 +1769,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('Expired trial state', () => {
         it('should return null when trial has started and expired', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 hasCurrentStoreTrialStarted: true,
                 hasCurrentStoreTrialExpired: true,
@@ -1808,7 +1792,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
     describe('isLoading property', () => {
         it('should return false when both trialMetrics and trialAccess are not loading', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
                 isLoading: false,
@@ -1834,7 +1818,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should return true when trialMetrics is loading', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
                 isLoading: false,
@@ -1860,7 +1844,7 @@ describe('useShoppingAssistantPromoCard', () => {
         })
 
         it('should return true when trialAccess is loading', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
                 isLoading: true,

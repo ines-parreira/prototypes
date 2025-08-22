@@ -21,12 +21,12 @@ import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOver
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
+import { useTrialAccess } from '../trial/hooks/useTrialAccess'
 import { PendingTasksSectionConnected } from './components/PendingTasksSection/PendingTasksSectionConnected'
 
 export const AiAgentOverview = () => {
@@ -72,7 +72,7 @@ export const AiAgentOverview = () => {
         useThankYouModal()
 
     const { canSeeTrialCTA, canBookDemo, hasAnyTrialStarted } =
-        useShoppingAssistantTrialAccess(shopName)
+        useTrialAccess(shopName)
 
     const { storeActivations } = useStoreActivations()
 

@@ -21,8 +21,8 @@ import {
 } from 'pages/aiAgent/hooks/useTrialEligibility'
 // Import mocks
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -67,7 +67,7 @@ const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
 )
 
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
-jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('core/flags')
@@ -147,8 +147,7 @@ const useAppSelectorMock = useAppSelector as jest.MockedFunction<
 
 const mockUseSalesTrialRevampMilestone =
     useSalesTrialRevampMilestone as jest.Mock
-const mockUseShoppingAssistantTrialAccess =
-    useShoppingAssistantTrialAccess as jest.Mock
+const mockUseTrialAccess = useTrialAccess as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
 const mockUseFlags = useFlags as jest.Mock
 const mockAtLeastOneStoreHasActiveTrialOnSpecificStores =
@@ -213,7 +212,7 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
             },
         )
-        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+        mockUseTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
             canStartTrial: false,
             hasTrialExpired: false,
@@ -443,7 +442,7 @@ describe('SalesPaywallMiddleware', () => {
         // Mock the milestone to 'off' to use original logic
         mockUseSalesTrialRevampMilestone.mockReturnValue('off')
         // Mock trial access to return false for canSeeTrialCTA (revamp disabled)
-        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+        mockUseTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
             canStartTrial: false,
             hasTrialExpired: false,
@@ -509,7 +508,7 @@ describe('SalesPaywallMiddleware', () => {
         // Mock the milestone to 'off' to use original logic
         mockUseSalesTrialRevampMilestone.mockReturnValue('off')
         // Mock trial access to return false for canSeeTrialCTA (revamp disabled)
-        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+        mockUseTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
             canStartTrial: false,
             hasTrialExpired: false,
@@ -569,7 +568,7 @@ describe('SalesPaywallMiddleware', () => {
             isLoading: false,
         })
         mockUseSalesTrialRevampMilestone.mockReturnValue('off')
-        mockUseShoppingAssistantTrialAccess.mockReturnValue({
+        mockUseTrialAccess.mockReturnValue({
             canSeeTrialCTA: false,
             canStartTrial: false,
             hasTrialExpired: false,
@@ -671,7 +670,7 @@ describe('SalesPaywallMiddleware', () => {
             // Mock the milestone to 'milestone-0' (equivalent to true)
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             // canSeeTrialCTA controls the button
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -703,7 +702,7 @@ describe('SalesPaywallMiddleware', () => {
         it('does not show trial button when revamp flag is enabled and canSeeTrialCTA is false', () => {
             // Mock the milestone to 'milestone-0' (equivalent to true)
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -731,7 +730,7 @@ describe('SalesPaywallMiddleware', () => {
         it('opens the revamp modal when trial button is clicked and revamp is enabled', () => {
             // Mock the milestone to 'milestone-0' (equivalent to true)
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -781,7 +780,7 @@ describe('SalesPaywallMiddleware', () => {
 
         it('calls startTrialOriginal when revamp is disabled and trial button is clicked', () => {
             mockUseFlag.mockImplementation(() => false) // revamp disabled
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: true,
             })
@@ -1061,7 +1060,7 @@ describe('SalesPaywallMiddleware', () => {
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 [FeatureFlagKey.AiSalesAgentBypassPlanCheck]: false,
             })
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1114,7 +1113,7 @@ describe('SalesPaywallMiddleware', () => {
         it('calls openTrialUpgradeModal when trial button is clicked with hasOptedOut and no active trial', () => {
             const mockOpenTrialUpgradeModal = jest.fn()
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasOptedOut: true,
@@ -1150,7 +1149,7 @@ describe('SalesPaywallMiddleware', () => {
         it('calls openUpgradePlanModal when upgrade button is clicked with hasOptedOut and no active trial', () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasOptedOut: true,
@@ -1197,7 +1196,7 @@ describe('SalesPaywallMiddleware', () => {
         it('calls onUpgradeClick when upgrade button is clicked with active trial', async () => {
             const mockUpgradePlan = jest.fn().mockResolvedValue({})
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasOptedOut: false,
@@ -1254,7 +1253,7 @@ describe('SalesPaywallMiddleware', () => {
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('off')
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
                 hasOptedOut: false,
@@ -1277,7 +1276,7 @@ describe('SalesPaywallMiddleware', () => {
         })
 
         it('does not log events when trial button is not displayed', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1295,7 +1294,7 @@ describe('SalesPaywallMiddleware', () => {
         })
 
         it('should handle hasTrialExpired property correctly', () => {
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
                 hasTrialExpired: true,
@@ -1314,7 +1313,7 @@ describe('SalesPaywallMiddleware', () => {
 
         it('should show "Book a demo" button when canBookDemo is true', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1349,7 +1348,7 @@ describe('SalesPaywallMiddleware', () => {
             global.window.open = mockWindowOpen
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1382,7 +1381,7 @@ describe('SalesPaywallMiddleware', () => {
 
         it('should show "How shopping Assistants boosts sales" button when hasCurrentStoreTrialOptedOut is true', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1420,7 +1419,7 @@ describe('SalesPaywallMiddleware', () => {
             global.window.open = mockWindowOpen
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1456,7 +1455,7 @@ describe('SalesPaywallMiddleware', () => {
 
         it('should not render any secondary button when displayTrialButton is false and canBookDemo is false', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1499,7 +1498,7 @@ describe('SalesPaywallMiddleware', () => {
 
         it('should prioritize Book a demo button over other secondary buttons', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1648,7 +1647,7 @@ describe('SalesPaywallMiddleware', () => {
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
 
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1707,7 +1706,7 @@ describe('SalesPaywallMiddleware', () => {
             const mockStartRevampTrial = jest.fn()
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1751,7 +1750,7 @@ describe('SalesPaywallMiddleware', () => {
 
         it('should handle milestone-1 trial logic with active trial', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1779,7 +1778,7 @@ describe('SalesPaywallMiddleware', () => {
 
         it('should handle milestone-1 trial logic with expired trial', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1809,7 +1808,7 @@ describe('SalesPaywallMiddleware', () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,
@@ -1895,7 +1894,7 @@ describe('SalesPaywallMiddleware', () => {
             const mockCloseUpgradePlanModal = jest.fn()
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
-            mockUseShoppingAssistantTrialAccess.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
                 hasTrialExpired: false,

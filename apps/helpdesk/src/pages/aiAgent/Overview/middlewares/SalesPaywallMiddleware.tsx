@@ -26,8 +26,8 @@ import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import {
     EXTERNAL_URLS,
     useTrialModalProps,
@@ -79,7 +79,7 @@ export const SalesPaywallMiddleware =
             hasCurrentStoreTrialOptedOut,
             canNotifyAdmin,
             isLoading: isTrialAccessLoading,
-        } = useShoppingAssistantTrialAccess(currentStore?.name)
+        } = useTrialAccess(currentStore?.name)
 
         const currentStoreHasActiveTrial =
             trialMilestone === 'milestone-1'

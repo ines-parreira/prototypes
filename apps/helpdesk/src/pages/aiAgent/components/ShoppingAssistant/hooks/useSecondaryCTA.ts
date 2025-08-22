@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 import {
@@ -16,7 +16,7 @@ import {
 
 export const useSecondaryCTA = (
     variant: PromoCardVariant,
-    trialAccess: ReturnType<typeof useShoppingAssistantTrialAccess>,
+    trialAccess: ReturnType<typeof useTrialAccess>,
     trialFlow: UseShoppingAssistantTrialFlowReturn,
 ): ButtonConfig | undefined => {
     return useMemo(() => {

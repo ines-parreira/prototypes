@@ -15,8 +15,8 @@ import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModa
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
@@ -31,7 +31,7 @@ jest.mock('pages/aiAgent/trial/components/TrialManageModal/TrialManageModal')
 jest.mock('pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal')
 jest.mock('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
 jest.mock('models/aiAgent/queries')
-jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
@@ -91,7 +91,7 @@ describe('TrialManageWorkflow', () => {
         ;(useStoreActivations as jest.Mock).mockReturnValue({
             storeActivations: ['store1', 'store2'],
         })
-        ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+        ;(useTrialAccess as jest.Mock).mockReturnValue({
             hasCurrentStoreTrialStarted: false,
             hasAnyTrialStarted: false,
             hasCurrentStoreTrialOptedOut: false,
@@ -123,9 +123,8 @@ describe('TrialManageWorkflow', () => {
             }),
         )
         ;(useTrialModalProps as jest.Mock).mockImplementation(() => {
-            const { canBookDemo } = (
-                useShoppingAssistantTrialAccess as jest.Mock
-            ).mock.results[0]?.value || { canBookDemo: false }
+            const { canBookDemo } = (useTrialAccess as jest.Mock).mock
+                .results[0]?.value || { canBookDemo: false }
             return {
                 trialStartedBanner: {
                     title: 'Your Shopping Assistant trial ends in 5 days.',
@@ -225,7 +224,7 @@ describe('TrialManageWorkflow', () => {
 
     describe('when user can see trial banner', () => {
         beforeEach(() => {
-            ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+            ;(useTrialAccess as jest.Mock).mockReturnValue({
                 hasCurrentStoreTrialStarted: true,
                 hasAnyTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: false,
@@ -253,7 +252,7 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('shows "Book a demo" as primary action when user can book demo', () => {
-            ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+            ;(useTrialAccess as jest.Mock).mockReturnValue({
                 hasCurrentStoreTrialStarted: true,
                 hasAnyTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: false,
@@ -327,7 +326,7 @@ describe('TrialManageWorkflow', () => {
                 },
                 upgradePlanModal: {},
             })
-            ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+            ;(useTrialAccess as jest.Mock).mockReturnValue({
                 hasCurrentStoreTrialStarted: true,
                 hasAnyTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: false,
@@ -525,7 +524,7 @@ describe('TrialManageWorkflow', () => {
     })
 
     it('passes correct props to TrialAlertBanner', () => {
-        ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+        ;(useTrialAccess as jest.Mock).mockReturnValue({
             hasCurrentStoreTrialStarted: true,
             hasAnyTrialStarted: true,
             hasCurrentStoreTrialOptedOut: false,
@@ -649,7 +648,7 @@ describe('TrialManageWorkflow', () => {
 
     describe('useEffect logging', () => {
         it('logs TrialBannerSettingsViewed event when hasActiveTrial is true', () => {
-            ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+            ;(useTrialAccess as jest.Mock).mockReturnValue({
                 hasCurrentStoreTrialStarted: true,
                 hasAnyTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: false,
@@ -680,7 +679,7 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('logs TrialBannerSettingsViewed event with correct pageName for Engagement', () => {
-            ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+            ;(useTrialAccess as jest.Mock).mockReturnValue({
                 hasCurrentStoreTrialStarted: true,
                 hasAnyTrialStarted: true,
                 hasCurrentStoreTrialOptedOut: false,
@@ -711,7 +710,7 @@ describe('TrialManageWorkflow', () => {
         })
 
         it('does not log event when hasActiveTrial is false', () => {
-            ;(useShoppingAssistantTrialAccess as jest.Mock).mockReturnValue({
+            ;(useTrialAccess as jest.Mock).mockReturnValue({
                 hasCurrentStoreTrialStarted: false,
                 hasAnyTrialStarted: false,
                 hasCurrentStoreTrialOptedOut: false,

@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { usePrimaryCTA } from '../hooks/usePrimaryCTA'
@@ -30,24 +31,6 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const mockLogShoppingAssistantEvent = logShoppingAssistantEvent as jest.Mock
-
-const createMockTrialAccess = (overrides = {}) => ({
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasCurrentStoreTrialStarted: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasAnyTrialOptedOut: false,
-    hasCurrentStoreTrialExpired: false,
-    hasAnyTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasAnyTrialActive: false,
-    isAdminUser: false,
-    isLoading: false,
-    ...overrides,
-})
 
 // Helper function to create complete UseShoppingAssistantTrialFlowReturn mock objects
 const createMockTrialFlow = (overrides = {}) =>

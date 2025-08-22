@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router-dom'
 
 import { ShopifyIntegration } from 'models/integration/types'
-import { ShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
@@ -29,7 +29,7 @@ export const usePrimaryCTA = ({
     routeShopName,
     firstShopifyIntegration,
 }: {
-    trialAccess: ShoppingAssistantTrialAccess
+    trialAccess: TrialAccess
     trialFlow: UseShoppingAssistantTrialFlowReturn
     isDisabled: boolean
     trialMetrics: TrialMetrics

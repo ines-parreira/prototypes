@@ -40,3 +40,8 @@ export interface PromoCardContent {
     progressPercentage?: number
     progressText?: string
 }
+
+export enum TrialType {
+    ShoppingAssistant = 'shoppingAssistant',
+    AiAgent = 'aiAgent',
+}

@@ -16,8 +16,8 @@ import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlert
 import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import {
     TrialMetrics,
@@ -342,7 +342,7 @@ const useTrialStartedBanner = (
 
     const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
     const { canBookDemo, hasCurrentStoreTrialOptedOut, hasAnyTrialOptedIn } =
-        useShoppingAssistantTrialAccess(storeName)
+        useTrialAccess(storeName)
     const accountDomain = currentAccount.get('domain')
 
     const { openManageTrialModal, openUpgradePlanModal } =
@@ -433,7 +433,7 @@ const useTrialAlertBanner = ({
 }: {
     onConfirmTrial?: () => void
 }): TrialModalProps['trialAlertBanner'] => {
-    const { canBookDemo } = useShoppingAssistantTrialAccess()
+    const { canBookDemo } = useTrialAccess()
 
     const secondaryAction = useMemo(() => {
         return {

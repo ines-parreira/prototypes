@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -7,6 +9,7 @@ import {
     useStoreActivations,
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import {
     hasTrialActive,
     hasTrialExpired,
@@ -14,6 +17,7 @@ import {
     hasTrialOptedOut,
     hasTrialStarted,
 } from 'pages/aiAgent/trial/utils/utils'
+import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -22,9 +26,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin, isTeamLead } from 'utils'
 
-import { useSalesTrialRevampMilestone } from './useSalesTrialRevampMilestone'
-
-export type ShoppingAssistantTrialAccess = {
+export type TrialAccess = {
     /** Whether the user can notify the admin about the trial (only for Leads) */
     canNotifyAdmin: boolean
     /** Whether the user can book a demo (Pro+ Admins without feature flag) */
@@ -44,26 +46,31 @@ export type ShoppingAssistantTrialAccess = {
     hasAnyTrialOptedIn: boolean
     hasAnyTrialActive: boolean
 
+    /** Whether AI Agent is currently active on the current store (chat or email channels) */
+    hasAiAgentEnabledInCurrentStore: boolean | undefined
+
     isAdminUser: boolean
     isLoading?: boolean
+    trialType: TrialType
 }
 
 /**
- * This hook centralizes all business rules for Shopping Assistant Trial access and display conditions.
+ * This hook centralizes all business rules for Shopping Assistant Trial access and display conditions,
+ * as well as AI Agent activation status across stores.
+ *
  * It determines what trial-related UI components the user can see and interact with based on:
  * - User role (Admin, Team Lead)
  * - Plan eligibility (USD5 Automate, Starter/Basic Helpdesk, or Pro+ with feature flag)
  * - Store requirements (Shopify stores only)
  * - Trial history (no previous trials)
  * - AI Agent usage (for system banner specifically)
+ * - AI Agent activation status (chat/email channels active/inactive)
  *
  * The hook handles both global AI Agent pages (Overview) and store-specific contexts.
  *
- * @returns {ShoppingAssistantTrialAccess} Object containing boolean flags for each trial access permission
+ * @returns {TrialAccess} Object containing boolean flags for trial access permissions and AI Agent status
  */
-export const useShoppingAssistantTrialAccess = (
-    currentStoreName?: string,
-): ShoppingAssistantTrialAccess => {
+export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
@@ -81,23 +88,63 @@ export const useShoppingAssistantTrialAccess = (
         ? storeActivations[currentStoreName]
         : undefined
 
-    const trialMilestone = useSalesTrialRevampMilestone()
-
     const flags = useFlags()
 
-    const isRevampTrialEnabled = trialMilestone === 'milestone-1'
+    // Feature flag that controls the list of merchants that can start a trial
+    const isAiShoppingAssistantTrialMerchantsEnabled =
+        flags[FeatureFlagKey.AiShoppingAssistantTrialMerchants]
 
-    // Automate plan generation 5
-    const isOnUsd5Plan =
-        currentAutomatePlan?.generation && currentAutomatePlan?.generation < 6
+    // Feature flag that controls new trial experience for shopping assistant
+    const isShoppingAssistantTrialImprovement =
+        flags[FeatureFlagKey.ShoppingAssistantTrialImprovement]
 
-    if (!isRevampTrialEnabled || !isOnUsd5Plan) {
+    // Feature flag that controls new trial experience for AI Agent
+    const isAiAgentExpandingTrialExperienceForAllEnabled =
+        flags[FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]
+
+    // Check if AI Agent is being used on chat (any store with monitored chat integrations)
+    const isUsingAiAgentOnChat = storeConfigurations.some(
+        (config) => config.monitoredChatIntegrations.length > 0,
+    )
+    const isOnStarterOrBasicPlan =
+        currentHelpdeskPlan?.tier === HelpdeskPlanTier.STARTER ||
+        currentHelpdeskPlan?.tier === HelpdeskPlanTier.BASIC
+
+    // Pro+ Helpdesk plan (tiers above Starter & Basic)
+    const isOnProPlusPlan = !isOnStarterOrBasicPlan
+
+    // Check if AI Agent is onboarded  in current store
+    const hasAiAgentEnabledInCurrentStore = useMemo(() => {
+        if (!currentStore) {
+            return undefined
+        }
+        return isAiAgentEnabledForStore(currentStore.configuration)
+    }, [currentStore])
+
+    const trialType = useMemo((): TrialType => {
+        // Case 1: Feature flag disabled - return shopping assistant
+        if (!isAiAgentExpandingTrialExperienceForAllEnabled) {
+            return TrialType.ShoppingAssistant
+        }
+
+        // Case 2: USD-4 (no automate plan) - return ai agent
+        if (!currentAutomatePlan) {
+            return TrialType.AiAgent
+        }
+
+        // Case 3: All other cases - return shopping assistant
+        return TrialType.ShoppingAssistant
+    }, [currentAutomatePlan, isAiAgentExpandingTrialExperienceForAllEnabled])
+
+    // Early return for USD6+ plan users
+    const isOnUsd6PlusPlan =
+        currentAutomatePlan?.generation && currentAutomatePlan.generation >= 6
+    if (isOnUsd6PlusPlan) {
         return {
             canNotifyAdmin: false,
             canBookDemo: false,
             canSeeSystemBanner: false,
             canSeeTrialCTA: false,
-
             hasCurrentStoreTrialStarted: false,
             hasAnyTrialStarted: false,
             hasCurrentStoreTrialExpired: false,
@@ -106,51 +153,42 @@ export const useShoppingAssistantTrialAccess = (
             hasAnyTrialOptedOut: false,
             hasAnyTrialOptedIn: false,
             hasAnyTrialActive: false,
-
-            isAdminUser: false,
+            hasAiAgentEnabledInCurrentStore: false,
+            isAdminUser: isAdmin(currentUser),
             isLoading: false,
+            trialType: TrialType.ShoppingAssistant,
         }
     }
-
     const isAdminUser = isAdmin(currentUser)
     const isTeamLeadUser = isTeamLead(currentUser)
 
     const hasCurrentStoreTrialStarted = currentStore
-        ? hasTrialStarted(currentStore.configuration)
+        ? hasTrialStarted(trialType, currentStore.configuration)
         : false
-    const hasAnyTrialStarted = storeConfigurations.some(hasTrialStarted)
+    const hasAnyTrialStarted = storeConfigurations.some((config) =>
+        hasTrialStarted(trialType, config),
+    )
 
     const hasCurrentStoreTrialOptedOut = currentStore
-        ? hasTrialOptedOut(currentStore.configuration)
+        ? hasTrialOptedOut(trialType, currentStore.configuration)
         : false
-    const hasAnyTrialOptedOut = storeConfigurations.some(hasTrialOptedOut)
+    const hasAnyTrialOptedOut = storeConfigurations.some((config) =>
+        hasTrialOptedOut(trialType, config),
+    )
 
     const hasCurrentStoreTrialExpired = currentStore
-        ? hasTrialExpired(currentStore.configuration)
+        ? hasTrialExpired(trialType, currentStore.configuration)
         : false
-    const hasAnyTrialExpired = storeConfigurations.some(hasTrialExpired)
+    const hasAnyTrialExpired = storeConfigurations.some((config) =>
+        hasTrialExpired(trialType, config),
+    )
 
-    const hasAnyTrialOptedIn = storeConfigurations.some(hasTrialOptedIn)
+    const hasAnyTrialOptedIn = storeConfigurations.some((config) =>
+        hasTrialOptedIn(trialType, config),
+    )
 
-    const hasAnyTrialActive = storeConfigurations.some(hasTrialActive)
-
-    const isOnStarterOrBasicPlan =
-        currentHelpdeskPlan?.tier === HelpdeskPlanTier.STARTER ||
-        currentHelpdeskPlan?.tier === HelpdeskPlanTier.BASIC
-
-    // Pro+ Helpdesk plan (tiers above Starter & Basic)
-    const isOnProPlusPlan = !isOnStarterOrBasicPlan
-
-    // Feature flag to force the display for Pro+ accounts
-    const isAiShoppingAssistantTrialMerchantsEnabled =
-        flags[FeatureFlagKey.AiShoppingAssistantTrialMerchants]
-
-    const isShoppingAssistantTrialImprovement =
-        flags[FeatureFlagKey.ShoppingAssistantTrialImprovement]
-
-    // Check if AI Agent is being used on chat (any store with monitored chat integrations)
-    const isUsingAiAgentOnChat = storeConfigurations.some(
-        (config) => config.monitoredChatIntegrations.length > 0,
+    const hasAnyTrialActive = storeConfigurations.some((config) =>
+        hasTrialActive(trialType, config),
     )
 
     // System Banner: Global application banner (requires AI Agent on chat)
@@ -178,7 +216,13 @@ export const useShoppingAssistantTrialAccess = (
                 isAiShoppingAssistantTrialMerchantsEnabled),
     )
 
-    // Pro+ Admins and Lead Agents without feature flag can book a demo
+    /*
+     * Pro+ Admins and Lead Agents without feature flag[isAiShoppingAssistantTrialMerchantsEnabled] can book a demo
+     * Flow:
+     *   1. Pro+ users that are not on the SLG (Sales Lead Growth) list can see book a demo button
+     *   2. After the demo they are added into SLG list
+     *   3. They can see CTAs / start trial
+     */
     const canBookDemo = Boolean(
         (isAdminUser || isTeamLeadUser) &&
             isOnProPlusPlan &&
@@ -200,8 +244,10 @@ export const useShoppingAssistantTrialAccess = (
         hasAnyTrialOptedOut,
         hasAnyTrialOptedIn,
         hasAnyTrialActive,
+        hasAiAgentEnabledInCurrentStore,
 
         isAdminUser,
         isLoading: isFetchLoading,
+        trialType,
     }
 }

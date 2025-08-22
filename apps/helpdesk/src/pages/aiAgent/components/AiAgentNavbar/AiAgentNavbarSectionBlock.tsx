@@ -19,7 +19,7 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 
@@ -86,7 +86,7 @@ export const AiAgentNavbarSectionBlock = ({
     }, [onboardingState])
 
     const { hasCurrentStoreTrialStarted, hasCurrentStoreTrialExpired } =
-        useShoppingAssistantTrialAccess(storeConfiguration?.storeName)
+        useTrialAccess(storeConfiguration?.storeName)
 
     const itemName = (item: NavigationItem) => {
         switch (item.title) {

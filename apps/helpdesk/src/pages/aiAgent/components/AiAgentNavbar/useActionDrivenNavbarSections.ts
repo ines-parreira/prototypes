@@ -9,6 +9,7 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { isAiAgentEnabled } from 'pages/aiAgent/util'
+import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { NavigationChannelType } from './utils'
@@ -78,17 +79,11 @@ export const useActionDrivenNavbarSections = () => {
     const getStoreActivationStatus = useCallback(
         (storeName: string) => {
             const activation = storeActivations[storeName]
-            if (!activation) return false
+            if (!activation) {
+                return false
+            }
 
-            const { configuration } = activation
-            const hasActiveChat = isAiAgentEnabled(
-                configuration.chatChannelDeactivatedDatetime,
-            )
-            const hasActiveEmail = isAiAgentEnabled(
-                configuration.emailChannelDeactivatedDatetime,
-            )
-
-            return hasActiveChat || hasActiveEmail
+            return isAiAgentEnabledForStore(activation.configuration)
         },
         [storeActivations],
     )

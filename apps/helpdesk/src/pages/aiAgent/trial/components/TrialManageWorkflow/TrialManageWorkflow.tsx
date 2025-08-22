@@ -25,12 +25,12 @@ import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModa
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useSalesTrialRevampMilestone } from '../../hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from '../../hooks/useShoppingAssistantTrialAccess'
 
 import css from './TrialManageWorkflow.less'
 
@@ -59,7 +59,7 @@ export const TrialManageWorkflow = ({
     )
 
     const { hasCurrentStoreTrialStarted, hasCurrentStoreTrialExpired } =
-        useShoppingAssistantTrialAccess(storeConfiguration.storeName)
+        useTrialAccess(storeConfiguration.storeName)
 
     const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
         useUpgradePlan()

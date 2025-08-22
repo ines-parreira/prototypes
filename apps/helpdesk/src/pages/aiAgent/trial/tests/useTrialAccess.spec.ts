@@ -11,6 +11,7 @@ import {
     useStoreActivations,
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {
     getCurrentAutomatePlan,
@@ -19,8 +20,8 @@ import {
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from '../hooks/useShoppingAssistantTrialAccess'
+import { createMockTrialAccess } from '../hooks/fixtures'
+import { useTrialAccess } from '../hooks/useTrialAccess'
 
 // Mock dependencies
 jest.mock('launchdarkly-react-client-sdk', () => ({
@@ -47,30 +48,13 @@ const mockUseAtLeastOneStoreHasActiveTrial = assumeMock(
 )
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseStoreConfigurations = assumeMock(useStoreConfigurations)
-const mockUseSalesTrialRevampMilestone = assumeMock(
-    useSalesTrialRevampMilestone,
-)
+
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
 
-const defaultExpectedValues = {
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasAnyTrialActive: false,
-    hasAnyTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasAnyTrialOptedOut: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialExpired: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasCurrentStoreTrialStarted: false,
-    isAdminUser: false,
-    isLoading: false,
-} as const
+const defaultExpectedValues = createMockTrialAccess()
 
-describe('useShoppingAssistantTrialAccess', () => {
+describe('useTrialAccess', () => {
     const mockUser = fromJS({
         id: 1,
         email: 'test@example.com',
@@ -82,30 +66,98 @@ describe('useShoppingAssistantTrialAccess', () => {
         domain: 'test-account',
     })
 
+    // Base store configuration without any special settings
+    const mockBaseStoreConfiguration = getStoreConfigurationFixture({
+        storeName: 'Test Store',
+        shopType: 'shopify',
+        trialModeActivatedDatetime: null,
+        monitoredChatIntegrations: [1, 2],
+        sales: undefined, // No sales trial data
+    })
+
+    // Store configuration with active AI agent channels
+    const mockStoreWithActiveChannels = getStoreConfigurationFixture({
+        ...mockBaseStoreConfiguration,
+        chatChannelDeactivatedDatetime: null, // Active chat channel
+        emailChannelDeactivatedDatetime: null, // Active email channel
+    })
+
+    // Store configuration with opt-out trial data
+    const mockStoreWithOptOut = getStoreConfigurationFixture({
+        ...mockBaseStoreConfiguration,
+        sales: {
+            trial: {
+                startDatetime: null,
+                endDatetime: null,
+                account: {
+                    plannedUpgradeDatetime: null,
+                    optInDatetime: null,
+                    optOutDatetime: '2023-11-01T00:00:00.000Z',
+                    actualUpgradeDatetime: null,
+                    actualTerminationDatetime: null,
+                },
+            },
+        },
+    })
+
+    // Store configuration with opt-in trial data
+    const mockStoreWithOptIn = getStoreConfigurationFixture({
+        ...mockBaseStoreConfiguration,
+        sales: {
+            trial: {
+                startDatetime: null,
+                endDatetime: null,
+                account: {
+                    plannedUpgradeDatetime: null,
+                    optInDatetime: '2023-11-01T00:00:00.000Z',
+                    optOutDatetime: null,
+                    actualUpgradeDatetime: null,
+                    actualTerminationDatetime: null,
+                },
+            },
+        },
+    })
+
+    // Base store activations - AI Agent active (both channels enabled by default)
     const mockStoreActivations = {
-        store1: storeActivationFixture({ storeName: 'Test Store' }),
+        'Test Store': storeActivationFixture({
+            storeName: 'Test Store',
+            configuration: {
+                ...mockBaseStoreConfiguration,
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: null,
+            },
+        }),
     }
 
-    const mockStoreConfigurations = [
-        getStoreConfigurationFixture({
-            storeName: 'Test Store',
-            shopType: 'shopify',
-            trialModeActivatedDatetime: null,
-            monitoredChatIntegrations: [1, 2],
-            sales: undefined, // No sales trial data
-        }),
-    ]
+    // Store activations with opt-out
+    const mockStoreActivationsWithOptOut = {
+        'Test Store': {
+            ...storeActivationFixture({ storeName: 'Test Store' }),
+            configuration: mockStoreWithOptOut,
+        },
+    }
+
+    // Store activations with mixed statuses
+    const mockStoreActivationsWithMixedStatuses = {
+        'Store with OptIn': {
+            ...storeActivationFixture({ storeName: 'Store with OptIn' }),
+            configuration: mockStoreWithOptIn,
+        },
+        'Store with OptOut': {
+            ...storeActivationFixture({ storeName: 'Store with OptOut' }),
+            configuration: mockStoreWithOptOut,
+        },
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
 
-        // Default mock implementations
+        // Default mock implementations - AiAgentExpandingTrialExperienceForAll disabled by default
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
+            [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
         })
-
-        // Mock the new milestone hook to return 'milestone-1' (equivalent to true)
-        mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
 
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getCurrentUser) {
@@ -139,7 +191,7 @@ describe('useShoppingAssistantTrialAccess', () => {
             activation: jest.fn(),
         })
         mockUseStoreConfigurations.mockReturnValue({
-            storeConfigurations: mockStoreConfigurations,
+            storeConfigurations: [mockStoreWithActiveChannels],
             storeNames: ['Test Store'],
             isLoading: false,
         })
@@ -147,33 +199,15 @@ describe('useShoppingAssistantTrialAccess', () => {
         mockIsTeamLead.mockReturnValue(false)
     })
 
-    describe('when revamp trial is disabled', () => {
-        it('should return all false when feature flag is disabled', () => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-            })
-
-            // Mock the milestone hook to return 'off' (equivalent to false)
-            mockUseSalesTrialRevampMilestone.mockReturnValue('off')
-
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
-
-            expect(result.current).toEqual(defaultExpectedValues)
-        })
-    })
-
     describe('when all conditions are met for trial access', () => {
         it('should return correct access values for admin user on starter plan', () => {
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true, // Has AI Agent on chat + all other conditions
                 canSeeTrialCTA: true,
+                hasAiAgentEnabledInCurrentStore: undefined, // No store name provided
                 isAdminUser: true,
             })
         })
@@ -195,14 +229,13 @@ describe('useShoppingAssistantTrialAccess', () => {
                 return undefined
             })
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
+                hasAiAgentEnabledInCurrentStore: undefined, // No store name provided
                 isAdminUser: true,
             })
         })
@@ -211,9 +244,7 @@ describe('useShoppingAssistantTrialAccess', () => {
             mockIsAdmin.mockReturnValue(false)
             mockIsTeamLead.mockReturnValue(true)
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
@@ -244,9 +275,7 @@ describe('useShoppingAssistantTrialAccess', () => {
         })
 
         it('should allow Pro+ admin to see trial CTA when feature flag is enabled', () => {
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
@@ -259,11 +288,10 @@ describe('useShoppingAssistantTrialAccess', () => {
         it('should allow Pro+ admin to book demo when feature flag is disabled', () => {
             mockUseFlags.mockReturnValue({
                 [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: false,
+                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
             })
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
@@ -276,9 +304,7 @@ describe('useShoppingAssistantTrialAccess', () => {
             mockIsAdmin.mockReturnValue(false)
             mockIsTeamLead.mockReturnValue(true)
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
@@ -287,57 +313,139 @@ describe('useShoppingAssistantTrialAccess', () => {
         })
     })
 
-    describe('when user is not on USD5 plan', () => {
-        it('should return false for all trial access when generation >= 6', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return { generation: 6 }
-                }
-                if (selector === getCurrentHelpdeskPlan) {
-                    return { tier: HelpdeskPlanTier.STARTER }
-                }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                return undefined
+    describe('AI Agent activation status', () => {
+        it('should return true when both chat and email channels are active', () => {
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {
+                    'Test Store': storeActivationFixture({
+                        storeName: 'Test Store',
+                        configuration: {
+                            ...mockBaseStoreConfiguration,
+                            chatChannelDeactivatedDatetime: null, // Active
+                            emailChannelDeactivatedDatetime: null, // Active
+                        },
+                    }),
+                },
+                progressPercentage: 50,
+                isFetchLoading: false,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeSupportChat: jest.fn(),
+                changeSupportEmail: jest.fn(),
+                saveStoreConfigurations: jest.fn(),
+                migrateToNewPricing: jest.fn(),
+                endTrial: jest.fn(),
+                activation: jest.fn(),
             })
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess('Test Store'))
 
-            expect(result.current).toEqual(defaultExpectedValues)
+            expect(result.current.hasAiAgentEnabledInCurrentStore).toBe(true)
         })
 
-        it('should return false for all trial access when no automate plan', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return null
-                }
-                if (selector === getCurrentHelpdeskPlan) {
-                    return { tier: HelpdeskPlanTier.STARTER }
-                }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                return undefined
+        it('should return true when only chat channel is active', () => {
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {
+                    'Test Store': storeActivationFixture({
+                        storeName: 'Test Store',
+                        configuration: {
+                            ...mockBaseStoreConfiguration,
+                            chatChannelDeactivatedDatetime: null, // Active
+                            emailChannelDeactivatedDatetime:
+                                '2024-01-01T00:00:00Z', // Inactive
+                        },
+                    }),
+                },
+                progressPercentage: 50,
+                isFetchLoading: false,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeSupportChat: jest.fn(),
+                changeSupportEmail: jest.fn(),
+                saveStoreConfigurations: jest.fn(),
+                migrateToNewPricing: jest.fn(),
+                endTrial: jest.fn(),
+                activation: jest.fn(),
             })
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess('Test Store'))
 
-            expect(result.current).toEqual(defaultExpectedValues)
+            expect(result.current.hasAiAgentEnabledInCurrentStore).toBe(true)
         })
-    })
 
-    describe('AI Agent on chat requirements', () => {
+        it('should return true when only email channel is active', () => {
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {
+                    'Test Store': storeActivationFixture({
+                        storeName: 'Test Store',
+                        configuration: {
+                            ...mockBaseStoreConfiguration,
+                            chatChannelDeactivatedDatetime:
+                                '2024-01-01T00:00:00Z', // Inactive
+                            emailChannelDeactivatedDatetime: null, // Active
+                        },
+                    }),
+                },
+                progressPercentage: 50,
+                isFetchLoading: false,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeSupportChat: jest.fn(),
+                changeSupportEmail: jest.fn(),
+                saveStoreConfigurations: jest.fn(),
+                migrateToNewPricing: jest.fn(),
+                endTrial: jest.fn(),
+                activation: jest.fn(),
+            })
+
+            const { result } = renderHook(() => useTrialAccess('Test Store'))
+
+            expect(result.current.hasAiAgentEnabledInCurrentStore).toBe(true)
+        })
+
+        it('should return false when both channels are inactive', () => {
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {
+                    'Test Store': storeActivationFixture({
+                        storeName: 'Test Store',
+                        configuration: {
+                            ...mockBaseStoreConfiguration,
+                            chatChannelDeactivatedDatetime:
+                                '2024-01-01T00:00:00Z', // Inactive
+                            emailChannelDeactivatedDatetime:
+                                '2024-01-01T00:00:00Z', // Inactive
+                        },
+                    }),
+                },
+                progressPercentage: 50,
+                isFetchLoading: false,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeSupportChat: jest.fn(),
+                changeSupportEmail: jest.fn(),
+                saveStoreConfigurations: jest.fn(),
+                migrateToNewPricing: jest.fn(),
+                endTrial: jest.fn(),
+                activation: jest.fn(),
+            })
+
+            const { result } = renderHook(() => useTrialAccess('Test Store'))
+
+            expect(result.current.hasAiAgentEnabledInCurrentStore).toBe(false)
+        })
+
+        it('should return undefined when no current store is provided', () => {
+            const { result } = renderHook(() => useTrialAccess())
+
+            expect(
+                result.current.hasAiAgentEnabledInCurrentStore,
+            ).toBeUndefined()
+        })
+
         it('should return false for system banner when no AI Agent on chat', () => {
             mockUseStoreConfigurations.mockReturnValue({
                 storeConfigurations: [
@@ -352,14 +460,13 @@ describe('useShoppingAssistantTrialAccess', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
                 canSeeSystemBanner: false, // No AI Agent on chat
                 canSeeTrialCTA: true, // Trial CTA doesn't require AI Agent on chat
+                hasAiAgentEnabledInCurrentStore: undefined, // No store name provided
                 isAdminUser: true,
             })
         })
@@ -370,15 +477,14 @@ describe('useShoppingAssistantTrialAccess', () => {
             // NOTE: This test documents current behavior with placeholder trial history
             // Once proper trial history API is implemented, this test should be updated
             // to expect false values when hasAlreadyCompletedTrial is true
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             // With placeholder (hasAlreadyCompletedTrial = false), all conditions pass
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
+                hasAiAgentEnabledInCurrentStore: undefined, // No store name provided
                 isAdminUser: true,
             })
         })
@@ -389,9 +495,7 @@ describe('useShoppingAssistantTrialAccess', () => {
             mockIsAdmin.mockReturnValue(false)
             mockIsTeamLead.mockReturnValue(false)
 
-            const { result } = renderHook(() =>
-                useShoppingAssistantTrialAccess(),
-            )
+            const { result } = renderHook(() => useTrialAccess())
 
             expect(result.current).toEqual(defaultExpectedValues)
         })
@@ -402,8 +506,7 @@ describe('useShoppingAssistantTrialAccess', () => {
             // Reset to default admin user on starter plan for these tests
             mockIsAdmin.mockReturnValue(true)
             mockIsTeamLead.mockReturnValue(false)
-            // Set milestone to milestone-1 so the utility functions check for optOut
-            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+
             mockUseAppSelector.mockImplementation((selector) => {
                 if (selector === getCurrentUser) {
                     return mockUser
@@ -423,33 +526,6 @@ describe('useShoppingAssistantTrialAccess', () => {
 
         describe('when user has opted out of trial', () => {
             it('should return hasOptedOut: true when store configurations have optOutDatetime', () => {
-                const storeConfigurationWithOptOut =
-                    getStoreConfigurationFixture({
-                        storeName: 'Test Store',
-                        shopType: 'shopify',
-                        monitoredChatIntegrations: [1, 2],
-                        sales: {
-                            trial: {
-                                startDatetime: null,
-                                endDatetime: null,
-                                account: {
-                                    plannedUpgradeDatetime: null,
-                                    optInDatetime: null,
-                                    optOutDatetime: '2023-11-01T00:00:00.000Z',
-                                    actualUpgradeDatetime: null,
-                                    actualTerminationDatetime: null,
-                                },
-                            },
-                        },
-                    })
-
-                const mockStoreActivationsWithOptOut = {
-                    store1: {
-                        ...storeActivationFixture({ storeName: 'Test Store' }),
-                        configuration: storeConfigurationWithOptOut,
-                    },
-                }
-
                 mockUseStoreActivations.mockReturnValue({
                     storeActivations: mockStoreActivationsWithOptOut,
                     progressPercentage: 50,
@@ -466,14 +542,12 @@ describe('useShoppingAssistantTrialAccess', () => {
                 })
 
                 mockUseStoreConfigurations.mockReturnValue({
-                    storeConfigurations: [storeConfigurationWithOptOut],
+                    storeConfigurations: [mockStoreWithOptOut],
                     storeNames: ['Test Store'],
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantTrialAccess(),
-                )
+                const { result } = renderHook(() => useTrialAccess())
 
                 expect(result.current).toEqual({
                     ...defaultExpectedValues,
@@ -485,45 +559,8 @@ describe('useShoppingAssistantTrialAccess', () => {
             })
 
             it('should return hasOptedOut: true when at least one store has opted out', () => {
-                const storeConfig1 = getStoreConfigurationFixture({
-                    storeName: 'Store 1',
-                    shopType: 'shopify',
-                    monitoredChatIntegrations: [1, 2],
-                    sales: undefined, // No trial data
-                })
-
-                const storeConfig2 = getStoreConfigurationFixture({
-                    storeName: 'Store 2',
-                    shopType: 'shopify',
-                    monitoredChatIntegrations: [1, 2],
-                    sales: {
-                        trial: {
-                            startDatetime: null,
-                            endDatetime: null,
-                            account: {
-                                plannedUpgradeDatetime: null,
-                                optInDatetime: null,
-                                optOutDatetime: '2023-11-01T00:00:00.000Z',
-                                actualUpgradeDatetime: null,
-                                actualTerminationDatetime: null,
-                            },
-                        },
-                    },
-                })
-
-                const mockStoreActivationsWithMixed = {
-                    store1: {
-                        ...storeActivationFixture({ storeName: 'Store 1' }),
-                        configuration: storeConfig1,
-                    },
-                    store2: {
-                        ...storeActivationFixture({ storeName: 'Store 2' }),
-                        configuration: storeConfig2,
-                    },
-                }
-
                 mockUseStoreActivations.mockReturnValue({
-                    storeActivations: mockStoreActivationsWithMixed,
+                    storeActivations: mockStoreActivationsWithMixedStatuses,
                     progressPercentage: 50,
                     isFetchLoading: false,
                     isSaveLoading: false,
@@ -538,14 +575,15 @@ describe('useShoppingAssistantTrialAccess', () => {
                 })
 
                 mockUseStoreConfigurations.mockReturnValue({
-                    storeConfigurations: [storeConfig1, storeConfig2],
-                    storeNames: ['Store 1', 'Store 2'],
+                    storeConfigurations: [
+                        mockStoreWithOptIn,
+                        mockStoreWithOptOut,
+                    ],
+                    storeNames: ['Store with OptIn', 'Store with OptOut'],
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantTrialAccess(),
-                )
+                const { result } = renderHook(() => useTrialAccess())
 
                 expect(result.current.hasAnyTrialOptedOut).toBe(true)
             })
@@ -630,50 +668,9 @@ describe('useShoppingAssistantTrialAccess', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantTrialAccess(),
-                )
+                const { result } = renderHook(() => useTrialAccess())
 
                 expect(result.current.hasAnyTrialOptedOut).toBe(true)
-            })
-        })
-
-        describe('when revamp trial is disabled', () => {
-            it('should always return hasOptedOut: false regardless of store configurations', () => {
-                mockUseSalesTrialRevampMilestone.mockReturnValue('off')
-
-                const storeConfigurationsWithOptIn = [
-                    getStoreConfigurationFixture({
-                        storeName: 'Test Store',
-                        shopType: 'shopify',
-                        monitoredChatIntegrations: [1, 2],
-                        sales: {
-                            trial: {
-                                account: {
-                                    plannedUpgradeDatetime: null,
-                                    optInDatetime: '2023-11-01T00:00:00.000Z',
-                                    optOutDatetime: '2023-11-02T00:00:00.000Z',
-                                    actualUpgradeDatetime: null,
-                                    actualTerminationDatetime: null,
-                                },
-                                startDatetime: null,
-                                endDatetime: null,
-                            },
-                        },
-                    }),
-                ]
-
-                mockUseStoreConfigurations.mockReturnValue({
-                    storeConfigurations: storeConfigurationsWithOptIn,
-                    storeNames: ['Test Store'],
-                    isLoading: false,
-                })
-
-                const { result } = renderHook(() =>
-                    useShoppingAssistantTrialAccess(),
-                )
-
-                expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
         })
 
@@ -685,9 +682,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantTrialAccess(),
-                )
+                const { result } = renderHook(() => useTrialAccess())
 
                 expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
@@ -708,9 +703,7 @@ describe('useShoppingAssistantTrialAccess', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantTrialAccess(),
-                )
+                const { result } = renderHook(() => useTrialAccess())
 
                 expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
@@ -743,12 +736,95 @@ describe('useShoppingAssistantTrialAccess', () => {
                     isLoading: false,
                 })
 
-                const { result } = renderHook(() =>
-                    useShoppingAssistantTrialAccess(),
-                )
+                const { result } = renderHook(() => useTrialAccess())
 
                 expect(result.current.hasAnyTrialOptedOut).toBe(false)
             })
+        })
+    })
+
+    describe('trialType determination', () => {
+        beforeEach(() => {
+            // Reset to default admin user on starter plan
+            mockIsAdmin.mockReturnValue(true)
+            mockIsTeamLead.mockReturnValue(false)
+
+            // Default store configurations
+            mockUseStoreConfigurations.mockReturnValue({
+                storeConfigurations: [
+                    getStoreConfigurationFixture({
+                        storeName: 'Test Store',
+                        shopType: 'shopify',
+                    }),
+                ],
+                storeNames: ['Test Store'],
+                isLoading: false,
+            })
+        })
+
+        it('should return ShoppingAssistant when AiAgentExpandingTrialExperienceForAll flag is disabled', () => {
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
+                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
+            })
+
+            const { result } = renderHook(() => useTrialAccess())
+
+            expect(result.current.trialType).toBe(TrialType.ShoppingAssistant)
+        })
+
+        it('should return AiAgent when no automate plan exists (USD-4)', () => {
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
+                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: true,
+            })
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === getCurrentUser) {
+                    return mockUser
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return undefined // No automate plan (USD-4)
+                }
+                if (selector === getCurrentHelpdeskPlan) {
+                    return { tier: HelpdeskPlanTier.STARTER }
+                }
+                if (selector === getCurrentAccountState) {
+                    return mockAccount
+                }
+                return undefined
+            })
+
+            const { result } = renderHook(() => useTrialAccess())
+
+            expect(result.current.trialType).toBe(TrialType.AiAgent)
+        })
+
+        it('should return ShoppingAssistant for all other cases', () => {
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
+                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: true,
+            })
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === getCurrentUser) {
+                    return mockUser
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return { generation: 5 } // USD-5 plan
+                }
+                if (selector === getCurrentHelpdeskPlan) {
+                    return { tier: HelpdeskPlanTier.STARTER }
+                }
+                if (selector === getCurrentAccountState) {
+                    return mockAccount
+                }
+                return undefined
+            })
+
+            const { result } = renderHook(() => useTrialAccess())
+
+            expect(result.current.trialType).toBe(TrialType.ShoppingAssistant)
         })
     })
 })

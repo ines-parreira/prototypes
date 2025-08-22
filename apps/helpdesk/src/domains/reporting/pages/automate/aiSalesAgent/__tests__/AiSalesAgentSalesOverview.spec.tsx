@@ -22,8 +22,9 @@ import { ProductType } from 'models/billing/types'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -52,10 +53,8 @@ jest.mock('pages/aiAgent/AiAgentPaywallView', () => ({
 jest.mock('pages/aiAgent/Activation/hooks/useActivateAiAgentTrial')
 const mockUseActivateAiAgentTrial = jest.mocked(useActivateAiAgentTrial)
 
-jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess')
-const mockUseShoppingAssistantTrialAccess = jest.mocked(
-    useShoppingAssistantTrialAccess,
-)
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+const mockUseTrialAccess = jest.mocked(useTrialAccess)
 
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
 const mockUseSalesTrialRevampMilestone = jest.mocked(
@@ -198,23 +197,6 @@ const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
 
 const mockUseFlags = useFlags as jest.Mock
 
-const createMockTrialAccess = (overrides = {}) => ({
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasCurrentStoreTrialStarted: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasAnyTrialOptedOut: false,
-    hasCurrentStoreTrialExpired: false,
-    hasAnyTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasAnyTrialActive: false,
-    isAdminUser: false,
-    ...overrides,
-})
-
 describe('AiSalesAgentSalesOverview', () => {
     const baseState = {
         stats: {
@@ -287,10 +269,8 @@ describe('AiSalesAgentSalesOverview', () => {
             isLoading: false,
         } as any)
 
-        // Mock useShoppingAssistantTrialAccess
-        mockUseShoppingAssistantTrialAccess.mockReturnValue(
-            createMockTrialAccess(),
-        )
+        // Mock mockUseTrialAccess
+        mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
         // Mock useFlag
         mockUseFlag.mockReturnValue(false)
@@ -551,7 +531,7 @@ describe('AiSalesAgentSalesOverview', () => {
         it('should not show paywall when user has active trial regardless of automate plan', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-            mockUseShoppingAssistantTrialAccess.mockReturnValue(
+            mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     hasCurrentStoreTrialStarted: true,
                     hasAnyTrialStarted: true,

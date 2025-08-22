@@ -26,7 +26,7 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialAccess } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialAccess'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
@@ -36,7 +36,7 @@ const AiSalesAgentSalesOverview = () => {
     useCleanStatsFilters()
     const history = useHistory()
     const milestone = useSalesTrialRevampMilestone()
-    const { hasAnyTrialActive } = useShoppingAssistantTrialAccess()
+    const { hasAnyTrialActive } = useTrialAccess()
     const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
     const legacyShouldDisplayPaywall =
         !useCanUseAiSalesAgent() && !atLeastOneStoreHasActiveTrial
@@ -81,7 +81,7 @@ const AiSalesAgentSalesOverview = () => {
     const trialMilestone = useSalesTrialRevampMilestone()
     const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
-    const { canSeeTrialCTA } = useShoppingAssistantTrialAccess()
+    const { canSeeTrialCTA } = useTrialAccess()
 
     const canStartTrial = isShoppingAssistantTrialRevampEnabled
         ? canSeeTrialCTA
