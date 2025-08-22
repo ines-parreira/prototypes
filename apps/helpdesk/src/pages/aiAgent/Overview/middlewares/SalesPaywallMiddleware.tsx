@@ -22,7 +22,6 @@ import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLay
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { SALES } from 'pages/aiAgent/constants'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
-import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
@@ -100,8 +99,7 @@ export const SalesPaywallMiddleware =
             trialModal.openModal(AI_TRIAL_MODAL_NAME, false)
         }
 
-        const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
-            useUpgradePlan()
+        const { upgradePlanAsync } = useUpgradePlan()
 
         const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
@@ -134,9 +132,7 @@ export const SalesPaywallMiddleware =
             openUpgradePlanModal,
             closeUpgradePlanModal,
             closeManageTrialModal,
-            isUpgradePlanModalOpen,
             onDismissTrialUpgradeModal,
-            onDismissUpgradePlanModal,
             isTrialFinishSetupModalOpen,
             closeTrialFinishSetupModal,
             openTrialRequestModal,
@@ -188,9 +184,6 @@ export const SalesPaywallMiddleware =
 
         const ishoppingAssistantTrialImprovement =
             !!flags[FeatureFlagKey.ShoppingAssistantTrialImprovement]
-
-        const isShoppingAssistantDuringTrialEnabled =
-            !!flags[FeatureFlagKey.ShoppingAssistantDuringTrial]
 
         const showUpgradePaywall =
             !hasNewAutomatePlan &&
@@ -266,20 +259,17 @@ export const SalesPaywallMiddleware =
                     isNotifyAdminDisabled={isNotifyAdminDisabled}
                     onNotifyAdminClick={openTrialRequestModal}
                 />
-
                 {/* TODO: [AIFLY-547] remove previous upgrade plan modal */}
-                {!isShoppingAssistantDuringTrialEnabled &&
-                    !ishoppingAssistantTrialImprovement &&
-                    isTrialModalOpen && (
-                        <UpgradePlanModal
-                            {...trialModalProps.trialUpgradePlanModal}
-                            onClose={closeTrialUpgradeModal}
-                            onConfirm={startRevampTrial}
-                            onDismiss={onDismissTrialUpgradeModal}
-                            isLoading={isTrialRevampLoading}
-                            isTrial
-                        />
-                    )}
+                {!ishoppingAssistantTrialImprovement && isTrialModalOpen && (
+                    <UpgradePlanModal
+                        {...trialModalProps.trialUpgradePlanModal}
+                        onClose={closeTrialUpgradeModal}
+                        onConfirm={startRevampTrial}
+                        onDismiss={onDismissTrialUpgradeModal}
+                        isLoading={isTrialRevampLoading}
+                        isTrial
+                    />
+                )}
 
                 {ishoppingAssistantTrialImprovement && (
                     <>
@@ -302,25 +292,6 @@ export const SalesPaywallMiddleware =
                         onConfirm={closeSuccessModal}
                     />
                 )}
-
-                {!isShoppingAssistantDuringTrialEnabled &&
-                    isUpgradePlanModalOpen && (
-                        <UpgradePlanModal
-                            {...trialModalProps.upgradePlanModal}
-                            onClose={closeUpgradePlanModal}
-                            onConfirm={onUpgradeClick}
-                            onDismiss={onDismissUpgradePlanModal}
-                            isLoading={isUpgradePlanLoading}
-                        />
-                    )}
-
-                {!isShoppingAssistantDuringTrialEnabled &&
-                    currentStore &&
-                    currentStore.configuration.storeName && (
-                        <TrialEndedModal
-                            storeName={currentStore.configuration.storeName}
-                        />
-                    )}
 
                 <AIAgentTrialSuccessModal
                     isOpen={trialModal.isOpen(AI_TRIAL_MODAL_NAME)}

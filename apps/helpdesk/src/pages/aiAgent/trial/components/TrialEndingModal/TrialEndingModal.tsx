@@ -2,8 +2,6 @@ import { useCallback, useState } from 'react'
 
 import { Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
@@ -36,11 +34,6 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
             accountDomain,
             storeActivations,
         })
-
-    const isShoppingAssistantDuringTrialEnabled = useFlag(
-        FeatureFlagKey.ShoppingAssistantDuringTrial,
-        false,
-    )
 
     const canRequestExtension = canRequestTrialExtension()
     const secondaryButtonId =
@@ -76,26 +69,24 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
         })
     }, [onRequestTrialExtension, dismissModal])
 
-    const primaryAction =
-        isOptedOut && isShoppingAssistantDuringTrialEnabled
-            ? {
-                  label: 'Upgrade Now',
-                  onClick: onUpgradeClick,
-              }
-            : {
-                  label: 'Dismiss',
-                  onClick: dismissModal,
-              }
+    const primaryAction = isOptedOut
+        ? {
+              label: 'Upgrade Now',
+              onClick: onUpgradeClick,
+          }
+        : {
+              label: 'Dismiss',
+              onClick: dismissModal,
+          }
 
-    const secondaryAction =
-        isOptedOut && isShoppingAssistantDuringTrialEnabled
-            ? {
-                  label: 'Request Trial Extension',
-                  onClick: onRequestTrialExtensionClick,
-                  isDisabled: !canRequestExtension,
-                  id: secondaryButtonId,
-              }
-            : undefined
+    const secondaryAction = isOptedOut
+        ? {
+              label: 'Request Trial Extension',
+              onClick: onRequestTrialExtensionClick,
+              isDisabled: !canRequestExtension,
+              id: secondaryButtonId,
+          }
+        : undefined
 
     const oneDayRemaining = remainingDaysFloat > 0 && remainingDaysFloat <= 1
     const isModalOpen =

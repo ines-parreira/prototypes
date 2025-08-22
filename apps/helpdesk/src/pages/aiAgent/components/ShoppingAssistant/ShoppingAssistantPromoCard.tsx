@@ -40,11 +40,6 @@ export const ShoppingAssistantPromoCard: React.FC<
     const routeShopName = extractShopNameFromUrl(window.location.href)
     const shopName = routeShopName || allShopifyIntegrations[0]?.meta?.shop_name
 
-    const isShoppingAssistantDuringTrialEnabled = useFlag(
-        FeatureFlagKey.ShoppingAssistantDuringTrial,
-        false,
-    )
-
     const isShoppingAssitantDeactivationEnforced = useFlag(
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
         false,
@@ -68,22 +63,23 @@ export const ShoppingAssistantPromoCard: React.FC<
         return null
     }
 
-    const sharedContent = isShoppingAssistantDuringTrialEnabled ? (
+    const sharedContent = (
         <>
             <TrialEndedModal storeName={shopName} />
             <TrialProgressModals storeName={shopName} />
+            <TrialFinishSetupModal
+                {...trialModalProps.trialFinishSetupModal}
+                isOpen={trialFlow.isTrialFinishSetupModalOpen}
+                onClose={trialFlow.closeTrialFinishSetupModal}
+            />
         </>
-    ) : null
+    )
     const { variant } = promoContent
 
     let variantComponent: React.ReactNode = null
 
     switch (variant) {
         case PromoCardVariant.AdminTrialProgress:
-            if (!isShoppingAssistantDuringTrialEnabled) {
-                break
-            }
-
             variantComponent = (
                 <>
                     <AdminTrialProgress
@@ -95,10 +91,6 @@ export const ShoppingAssistantPromoCard: React.FC<
             break
 
         case PromoCardVariant.LeadTrialProgress:
-            if (!isShoppingAssistantDuringTrialEnabled) {
-                break
-            }
-
             variantComponent = (
                 <>
                     <LeadTrialProgress
@@ -154,11 +146,6 @@ export const ShoppingAssistantPromoCard: React.FC<
     return (
         <>
             {variantComponent}
-            <TrialFinishSetupModal
-                {...trialModalProps.trialFinishSetupModal}
-                isOpen={trialFlow.isTrialFinishSetupModalOpen}
-                onClose={trialFlow.closeTrialFinishSetupModal}
-            />
             {sharedContent}
         </>
     )

@@ -94,16 +94,6 @@ describe('ShoppingAssistantPromoCard', () => {
         jest.resetAllMocks()
         localStorage.clear()
 
-        mockUseFlag.mockImplementation((flagKey: string) => {
-            if (
-                flagKey ===
-                'linear.project_post-ga-shopping-assistant-trial-improvement.during_trial'
-            ) {
-                return true
-            }
-            return false
-        })
-
         mockUseAppSelector.mockReturnValue([
             {
                 meta: {
@@ -330,19 +320,6 @@ describe('ShoppingAssistantPromoCard', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should return null when feature flag is disabled', () => {
-            mockUseFlag.mockImplementation(() => false)
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
-                promoCardContent: adminTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
-            })
-
-            const { container } = renderComponent()
-
-            expect(container.firstChild).toBeNull()
-        })
-
         it('should render AdminTrialProgress component with correct structure', () => {
             mockUseShoppingAssistantPromoCard.mockReturnValue({
                 promoCardContent: adminTrialProgressContent,
@@ -438,19 +415,6 @@ describe('ShoppingAssistantPromoCard', () => {
             expect(
                 screen.queryByAltText('Shopping Assistant Demo'),
             ).not.toBeInTheDocument()
-        })
-
-        it('should return null when feature flag is disabled', () => {
-            mockUseFlag.mockImplementation(() => false)
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
-                promoCardContent: leadTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
-            })
-
-            const { container } = renderComponent()
-
-            expect(container.firstChild).toBeNull()
         })
 
         it('should render LeadTrialProgress component with correct structure', () => {
