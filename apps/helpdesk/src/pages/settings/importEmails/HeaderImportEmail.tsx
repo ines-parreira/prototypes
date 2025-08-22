@@ -30,8 +30,8 @@ const HeaderImportEmail = ({
 
                         <IconLink
                             icon="menu_book"
-                            href="https://link.gorgias.com/m8v"
-                            content="Email integrations FAQs"
+                            href="https://link.gorgias.com/vkf"
+                            content="Email Import Guide"
                         />
                     </div>
                 </div>

@@ -18,7 +18,9 @@ describe('HeaderImportEmail', () => {
                     showCta={false}
                 />,
             )
-            expect(screen.getByText(/email import/i)).toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', { name: /email import/i }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -83,9 +85,9 @@ describe('HeaderImportEmail', () => {
                     showCta={false}
                 />,
             )
-            const link = screen.getByText(/email integrations faqs/i)
+            const link = screen.getByText(/email import guide/i)
             expect(link).toBeInTheDocument()
-            expect(link).toHaveAttribute('href', 'https://link.gorgias.com/m8v')
+            expect(link).toHaveAttribute('href', 'https://link.gorgias.com/vkf')
         })
     })
 })
