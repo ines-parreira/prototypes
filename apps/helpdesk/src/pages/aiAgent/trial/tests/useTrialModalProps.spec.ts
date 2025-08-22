@@ -29,9 +29,6 @@ import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
 jest.mock('models/billing/queries')
-jest.mock('models/billing/utils', () => ({
-    getAutomateEarlyAccessPricesFormatted: jest.fn(),
-}))
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
@@ -48,9 +45,6 @@ const mockUseTrialMetrics = assumeMock(useTrialMetrics)
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockUseTrialAccess = assumeMock(useTrialAccess)
-const mockGetAutomateEarlyAccessPricesFormatted = jest.requireMock(
-    'models/billing/utils',
-).getAutomateEarlyAccessPricesFormatted
 const mockUseSalesTrialRevampMilestone = assumeMock(
     useSalesTrialRevampMilestone,
 )
@@ -111,11 +105,6 @@ describe('useTrialModalProps', () => {
         })
 
         // Default mock implementations
-        mockGetAutomateEarlyAccessPricesFormatted.mockReturnValue({
-            amount: '$99',
-            cadence: 'month',
-        })
-
         mockUseTrialMetrics.mockReturnValue({
             gmvInfluenced: '$25',
             gmvInfluencedRate: 0.05, // Greater than 0.01 to show personalized content
@@ -1433,9 +1422,6 @@ describe('useTrialModalProps', () => {
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
                 data: undefined,
             } as any)
-            mockGetAutomateEarlyAccessPricesFormatted.mockReturnValue({
-                amount: '$0',
-            })
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),

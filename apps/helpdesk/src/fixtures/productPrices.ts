@@ -327,7 +327,7 @@ export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
 export const earlyAccessMonthlyAutomationPlan: AutomateEarlyAccessPlan = {
     custom: false,
     public: true,
-    amount: 0,
+    amount: 3000,
     cadence: Cadence.Month,
     extra_ticket_cost: 0.2,
     num_quota_tickets: 30,
@@ -337,8 +337,8 @@ export const earlyAccessMonthlyAutomationPlan: AutomateEarlyAccessPlan = {
     name: 'Early Access',
     product: ProductType.Automation,
     price_id: 'price_1ReIi0I9qXomtXqSUuD5bDGN',
-    amount_after_discount: 3000,
-    discount: 100,
+    amount_after_discount: 2000,
+    discount: 1000,
 }
 
 export const basicMonthlyAutomationPlan: AutomatePlan = {
