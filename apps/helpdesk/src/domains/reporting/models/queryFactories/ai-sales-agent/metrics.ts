@@ -634,7 +634,7 @@ export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
-        ...baseAISalesAgentOrdersFilters,
+        ...baseAISalesAgentConversationsFilters,
     ],
     timezone,
 })
