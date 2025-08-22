@@ -136,9 +136,11 @@ export const getRoleName = createSelector(
 
 const createUserSettingSelector = (type: UserSettingType) =>
     createSelector(getCurrentUserState, (state) =>
-        ((state.get('settings') as List<any>).toJS() as UserSetting[]).find(
-            (item) => item.type === type,
-        ),
+        (
+            (
+                (state.get('settings') as List<any>) ?? fromJS([])
+            ).toJS() as UserSetting[]
+        )?.find((item) => item.type === type),
     )
 
 export const getViewsOrderingUserSetting = createUserSettingSelector(
