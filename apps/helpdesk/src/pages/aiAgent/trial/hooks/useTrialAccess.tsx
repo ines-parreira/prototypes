@@ -78,12 +78,16 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const accountDomain = currentAccount.get('domain')
 
     // Get all store configurations to check trial history
-    const { storeConfigurations } = useStoreConfigurations(accountDomain)
+    const { storeConfigurations, isLoading: isStoreConfigsLoading } =
+        useStoreConfigurations(accountDomain)
 
     const { storeActivations, isFetchLoading } = useStoreActivations({
         storeName: currentStoreName,
         withChatIntegrationsStatus: true,
     })
+
+    const isLoading = isStoreConfigsLoading || isFetchLoading
+
     const currentStore = currentStoreName
         ? storeActivations[currentStoreName]
         : undefined
@@ -201,8 +205,10 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
 
     // Trial Banner/CTA: For overview pages and sales paywall
     const canSeeTrialCTA = Boolean(
-        isAdminUser &&
+        !isLoading &&
+            isAdminUser &&
             !hasCurrentStoreTrialStarted &&
+            !hasAnyTrialExpired &&
             (isOnStarterOrBasicPlan ||
                 isAiShoppingAssistantTrialMerchantsEnabled),
     )

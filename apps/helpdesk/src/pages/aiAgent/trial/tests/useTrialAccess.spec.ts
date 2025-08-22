@@ -239,7 +239,68 @@ describe('useTrialAccess', () => {
                 isAdminUser: true,
             })
         })
+        it('should not show trial CTA while data is loading', () => {
+            // Set up admin user on starter plan
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === getCurrentUser) {
+                    return mockUser
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return { generation: 5 }
+                }
+                if (selector === getCurrentHelpdeskPlan) {
+                    return { tier: HelpdeskPlanTier.STARTER }
+                }
+                if (selector === getCurrentAccountState) {
+                    return mockAccount
+                }
+                return undefined
+            })
 
+            // Enable feature flags
+            mockUseFlags.mockReturnValue({
+                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
+                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
+            })
+
+            // Set loading state for store configurations
+            mockUseStoreConfigurations.mockReturnValue({
+                storeConfigurations: [], // Empty while loading
+                storeNames: [],
+                isLoading: true,
+            })
+
+            // Set loading state for store activations
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {}, // Empty while loading
+                progressPercentage: 0,
+                isFetchLoading: true,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeSupportChat: jest.fn(),
+                changeSupportEmail: jest.fn(),
+                saveStoreConfigurations: jest.fn(),
+                migrateToNewPricing: jest.fn(),
+                endTrial: jest.fn(),
+                activation: jest.fn(),
+            })
+
+            // Set admin role
+            mockIsAdmin.mockReturnValue(true)
+            mockIsTeamLead.mockReturnValue(false)
+
+            const { result } = renderHook(() => useTrialAccess())
+
+            expect(result.current).toEqual({
+                ...defaultExpectedValues,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasAiAgentEnabledInCurrentStore: undefined,
+                isAdminUser: true,
+                isLoading: true,
+            })
+        })
         it('should return correct access values for team lead user', () => {
             mockIsAdmin.mockReturnValue(false)
             mockIsTeamLead.mockReturnValue(true)
@@ -473,6 +534,67 @@ describe('useTrialAccess', () => {
     })
 
     describe('when trial history exists', () => {
+        it('should not show trial CTA when trial has expired', () => {
+            // Set up store configuration with expired trial
+            const storeConfigWithExpiredTrial = getStoreConfigurationFixture({
+                storeName: 'Test Store',
+                shopType: 'shopify',
+                monitoredChatIntegrations: [1, 2],
+                sales: {
+                    trial: {
+                        startDatetime: '2023-11-01T00:00:00.000Z',
+                        endDatetime: '2023-12-01T00:00:00.000Z', // Trial ended
+                        account: {
+                            plannedUpgradeDatetime: null,
+                            optInDatetime: '2023-11-01T00:00:00.000Z',
+                            optOutDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime:
+                                '2023-12-01T00:00:00.000Z',
+                        },
+                    },
+                },
+            })
+
+            mockUseStoreConfigurations.mockReturnValue({
+                storeConfigurations: [storeConfigWithExpiredTrial],
+                storeNames: ['Test Store'],
+                isLoading: false,
+            })
+
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {
+                    'Test Store': {
+                        ...storeActivationFixture({ storeName: 'Test Store' }),
+                        configuration: storeConfigWithExpiredTrial,
+                    },
+                },
+                progressPercentage: 50,
+                isFetchLoading: false,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeSupportChat: jest.fn(),
+                changeSupportEmail: jest.fn(),
+                saveStoreConfigurations: jest.fn(),
+                migrateToNewPricing: jest.fn(),
+                endTrial: jest.fn(),
+                activation: jest.fn(),
+            })
+
+            const { result } = renderHook(() => useTrialAccess())
+
+            expect(result.current).toEqual({
+                ...defaultExpectedValues,
+                canSeeTrialCTA: false, // Trial CTA should not be shown
+                hasAiAgentEnabledInCurrentStore: undefined,
+                hasAnyTrialExpired: true, // Trial has expired
+                hasAnyTrialStarted: true,
+                hasAnyTrialOptedIn: true,
+                isAdminUser: true,
+            })
+        })
+
         it('should currently allow access since trial history check is placeholder', () => {
             // NOTE: This test documents current behavior with placeholder trial history
             // Once proper trial history API is implemented, this test should be updated
