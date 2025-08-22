@@ -5,6 +5,8 @@ import classNames from 'classnames'
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -12,7 +14,6 @@ import {
     UpdateContactFormDto,
 } from 'models/contactForm/types'
 import { LocaleCode } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'

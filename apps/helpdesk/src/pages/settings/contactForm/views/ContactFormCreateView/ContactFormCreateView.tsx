@@ -6,9 +6,10 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { CreateContactFormDto } from 'models/contactForm/types'
 import { LocaleCode } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'

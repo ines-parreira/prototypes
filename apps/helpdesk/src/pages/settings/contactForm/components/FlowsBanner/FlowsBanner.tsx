@@ -1,7 +1,8 @@
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import { assetsUrl } from 'utils'
 
 import { getBannerDetails } from './utils'

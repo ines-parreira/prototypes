@@ -2,13 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ContactForm,
     UpdateContactFormDto,
     UpdateSubjectLinesProps,
 } from 'models/contactForm/types'
-import Button from 'pages/common/components/button/Button'
 import {
     ContactFormExtraHTML,
     ExtraHtmlSection,

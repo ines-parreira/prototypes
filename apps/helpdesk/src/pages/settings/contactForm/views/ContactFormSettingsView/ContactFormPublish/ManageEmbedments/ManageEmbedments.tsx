@@ -5,11 +5,12 @@ import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import { Link, useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ContactFormPageEmbedment } from 'models/contactForm/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
 import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
