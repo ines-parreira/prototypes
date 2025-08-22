@@ -60,8 +60,9 @@
         }
 
         .openInNewTabIcon {
-            padding: var(--layout-spacing-xxs);
             opacity: 0;
+            width: 0px;
+            padding-inline: 0px;
             transition: opacity 0.2s ease-in-out;
         }
 
@@ -76,6 +77,8 @@
 
                     .openInNewTabIcon {
                         opacity: 1;
+                        width: 16px;
+                        padding-inline: 2px;
                         color: var(--main-primary);
                     }
                 }
@@ -131,7 +134,6 @@
     .sourceLink {
         display: flex;
         align-items: center;
-        gap: var(--layout-spacing-xxs);
         width: 100%;
         color: var(--neutral-grey-6);
         text-decoration: none;

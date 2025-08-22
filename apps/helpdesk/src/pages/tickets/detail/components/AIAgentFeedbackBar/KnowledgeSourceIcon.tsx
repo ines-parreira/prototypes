@@ -27,14 +27,14 @@ const KnowledgeSourceIcon = ({
 
     if (KNOWLEDGE_SOURCE_TYPE[type].icon === KnowledgeSourceTypeIcon.shopify) {
         return (
-            <>
+            <Badge className={cs(css.badge, badgeIconClassname)}>
                 <img
                     className={css.imageLogo}
                     alt="shopify logo"
                     src={shopifyLogo}
                 />
                 {withLabel && <span>{KNOWLEDGE_SOURCE_TYPE[type].label}</span>}
-            </>
+            </Badge>
         )
     }
 

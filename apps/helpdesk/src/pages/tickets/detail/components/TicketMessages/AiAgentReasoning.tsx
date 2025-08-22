@@ -25,7 +25,12 @@ import { AiAgentReasoningContent } from './AiReasoningContent'
 
 import css from './AiAgentReasoning.less'
 
-type AiAgentReasoningState = 'loading' | 'collapsed' | 'expanded' | 'error'
+type AiAgentReasoningState =
+    | 'loading'
+    | 'collapsed'
+    | 'expanded'
+    | 'error'
+    | 'static'
 type AiAgentReasoningProps = {
     message: TicketMessage
 }
@@ -158,74 +163,97 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
             },
         )
 
-    const { reasoningContent, reasoningResources } = useMemo(() => {
-        if (isHandover) {
-            return {
-                reasoningContent:
-                    'AI Agent was not confident in its answer and handed the ticket over to your team.',
-                reasoningResources: [],
-            }
-        }
-        if (messageAiReasoning?.reasoning) {
-            const outcomeReasoning = messageAiReasoning.reasoning.find(
-                (reasoning) =>
-                    reasoning.responseType === ReasoningResponseType.OUTCOME,
-            )
-            const responseReasoning = messageAiReasoning.reasoning.find(
-                (reasoning) =>
-                    reasoning.responseType === ReasoningResponseType.RESPONSE,
-            )
-            const fullDetailsReasoning = messageAiReasoning.reasoning.filter(
-                (reasoning) =>
-                    reasoning.responseType === ReasoningResponseType.TASK,
-            )
+    const { reasoningContent, reasoningResources, staticMessage } =
+        useMemo(() => {
+            if (messageAiReasoning?.reasoning) {
+                const outcomeReasoning = messageAiReasoning.reasoning.find(
+                    (reasoning) =>
+                        reasoning.responseType ===
+                        ReasoningResponseType.OUTCOME,
+                )
+                const responseReasoning = messageAiReasoning.reasoning.find(
+                    (reasoning) =>
+                        reasoning.responseType ===
+                        ReasoningResponseType.RESPONSE,
+                )
+                const fullDetailsReasoning =
+                    messageAiReasoning.reasoning.filter(
+                        (reasoning) =>
+                            reasoning.responseType ===
+                            ReasoningResponseType.TASK,
+                    )
 
-            if (
-                !outcomeReasoning ||
-                !responseReasoning ||
-                !fullDetailsReasoning.length
-            ) {
-                return {
-                    reasoningContent: '',
-                    reasoningResources: [],
+                const responseReasoningContent = outcomeReasoning?.value
+                    ? `${responseReasoning?.value}\n\n&nbsp;\n\n`
+                    : ''
+                const fullDetailsReasoningContent = fullDetailsReasoning.length
+                    ? `Full details:\n\n${fullDetailsReasoning?.map((resource) => resource.value.replace(/\\n/g, '\n\n')).join('\n\n')}\n\n&nbsp;\n\n`
+                    : ''
+                const outcomeReasoningContent = outcomeReasoning?.value
+                    ? `**Outcome:**\n\n ${outcomeReasoning?.value}`
+                    : ''
+
+                if (
+                    !responseReasoningContent &&
+                    !outcomeReasoningContent &&
+                    !fullDetailsReasoningContent
+                ) {
+                    if (isHandover) {
+                        return {
+                            reasoningContent: '',
+                            staticMessage:
+                                'AI Agent was not confident in its answer and handed the ticket over to your team.',
+                            reasoningResources: [],
+                        }
+                    }
+                    if (messageAiReasoning.execution?.endDatetime) {
+                        return {
+                            reasoningContent: '',
+                            staticMessage:
+                                'Reasoning unavailable for this message.',
+                            reasoningResources: [],
+                        }
+                    }
                 }
-            }
 
-            const content = `**Reasoning:**\n\n${responseReasoning?.value}\n\n&nbsp;\n\n**Full details:**\n\n${fullDetailsReasoning?.map((resource) => resource.value.replace(/\\n/g, '\n\n')).join('\n\n')}\n\n&nbsp;\n\n**Outcome:**\n\n ${outcomeReasoning?.value}`
+                const content = `${responseReasoningContent}${fullDetailsReasoningContent}${outcomeReasoningContent}`
 
-            return {
-                reasoningContent: content,
-                reasoningResources: [
-                    ...parseReasoningResources(
-                        responseReasoning.value,
-                        messageAiReasoning.resources,
-                    ),
-                    ...fullDetailsReasoning.flatMap((taskReasoning) =>
-                        parseReasoningResources(
-                            taskReasoning.value,
-                            messageAiReasoning.resources.filter((resource) =>
-                                resource.taskIds.includes(
-                                    taskReasoning.targetId,
+                return {
+                    reasoningContent: content,
+                    reasoningResources: [
+                        ...parseReasoningResources(
+                            responseReasoningContent,
+                            messageAiReasoning.resources,
+                        ),
+                        ...fullDetailsReasoning.flatMap((taskReasoning) =>
+                            parseReasoningResources(
+                                taskReasoning.value,
+                                messageAiReasoning.resources.filter(
+                                    (resource) =>
+                                        resource.taskIds.includes(
+                                            taskReasoning.targetId,
+                                        ),
                                 ),
                             ),
                         ),
-                    ),
-                    ...parseReasoningResources(
-                        outcomeReasoning.value,
-                        messageAiReasoning.resources,
-                    ),
-                ],
+                        ...parseReasoningResources(
+                            outcomeReasoningContent,
+                            messageAiReasoning.resources,
+                        ),
+                    ],
+                }
             }
-        }
-        return {
-            reasoningContent: null,
-            reasoningResources: [],
-        }
-    }, [
-        messageAiReasoning?.reasoning,
-        messageAiReasoning?.resources,
-        isHandover,
-    ])
+            return {
+                reasoningContent: null,
+                staticMessage: "Couldn't load reasoning. Please try again.",
+                reasoningResources: [],
+            }
+        }, [
+            messageAiReasoning?.reasoning,
+            messageAiReasoning?.resources,
+            messageAiReasoning?.execution?.endDatetime,
+            isHandover,
+        ])
 
     const reasoningMetadata = useGetResourcesReasoningMetadata({
         queriesEnabled: state !== 'collapsed',
@@ -238,26 +266,24 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
 
     useEffect(() => {
         if (reasoningContent === null) return
-        if (state === 'loading' && !reasoningMetadata?.isLoading) {
+        if (staticMessage) {
+            setState('static')
+        } else if (state === 'loading' && !reasoningMetadata?.isLoading) {
             if (reasoningContent) {
                 setState('expanded')
             } else {
                 setState('error')
             }
         }
-    }, [reasoningContent, state, reasoningMetadata?.isLoading])
+    }, [reasoningContent, staticMessage, state, reasoningMetadata?.isLoading])
 
     const handleToggleExpansion = useCallback(() => {
         if (state === 'collapsed') {
-            if (isHandover) {
-                setState('expanded')
-            } else {
-                setState('loading')
-            }
+            setState('loading')
         } else if (state === 'expanded') {
             setState('collapsed')
         }
-    }, [state, isHandover])
+    }, [state])
 
     const handleTryAgain = useCallback(() => {
         setState('loading')
@@ -272,6 +298,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const isLoading = state === 'loading'
     const isError = state === 'error'
     const isExpanded = state === 'expanded'
+    const isStatic = state === 'static'
     const isLoaded = state === 'collapsed' || state === 'expanded'
 
     const renderTitle = () => {
@@ -342,40 +369,51 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         return (
             <div
                 className={classNames(css.body, {
-                    [css.expanded]: isExpanded,
+                    [css.expanded]: isExpanded || isStatic,
                     [css.loading]: isLoading,
                 })}
             >
-                <AiAgentReasoningContent
-                    reasoningContent={reasoningContent}
-                    reasoningResources={reasoningResources}
-                    data={reasoningMetadata?.data}
-                    storeConfiguration={messageAiReasoning?.storeConfiguration}
-                    openPreview={openPreview}
-                />
-                {isImpersonated &&
-                    messageAiReasoning?.storeConfiguration?.executionId && (
-                        <div className={css.executionId}>
-                            {`Execution ID: ${messageAiReasoning.storeConfiguration.executionId}`}
-                        </div>
-                    )}
+                {isStatic ? (
+                    <span>{staticMessage}</span>
+                ) : (
+                    <AiAgentReasoningContent
+                        reasoningContent={reasoningContent}
+                        reasoningResources={reasoningResources}
+                        data={reasoningMetadata?.data}
+                        storeConfiguration={
+                            messageAiReasoning?.storeConfiguration
+                        }
+                        openPreview={openPreview}
+                    />
+                )}
             </div>
         )
     }
 
     const renderFooter = () => {
-        if (isError || isHandover) {
-            return null
-        }
+        const executionComponent = isImpersonated ? (
+            messageAiReasoning?.storeConfiguration?.executionId && (
+                <div className={css.executionId}>
+                    {`Execution ID: ${messageAiReasoning.storeConfiguration.executionId}`}
+                </div>
+            )
+        ) : (
+            <></>
+        )
 
+        if (isError) {
+            return executionComponent
+        }
         return (
             <div
                 className={classNames(css.footer, {
                     [css.expanded]: isExpanded,
                     [css.loading]: isLoading,
+                    [css.static]: isStatic,
                 })}
             >
-                {isExpanded && (
+                {executionComponent}
+                {(isExpanded || isStatic) && (
                     <Button
                         intent="secondary"
                         size="small"
@@ -400,14 +438,19 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                 [css.loading]: isLoading,
                 [css.error]: isError,
                 [css.expanded]: isExpanded,
+                [css.static]: isStatic,
             })}
         >
-            <div
-                className={classNames(css.title, { [css.clickable]: isLoaded })}
-                onClick={isLoaded ? handleToggleExpansion : undefined}
-            >
-                {renderTitle()}
-            </div>
+            {!isStatic && (
+                <div
+                    className={classNames(css.title, {
+                        [css.clickable]: isLoaded,
+                    })}
+                    onClick={isLoaded ? handleToggleExpansion : undefined}
+                >
+                    {renderTitle()}
+                </div>
+            )}
             {renderBody()}
             {renderFooter()}
         </div>

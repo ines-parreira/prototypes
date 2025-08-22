@@ -48,7 +48,7 @@ type Props = {
     isAIAgentMessage?: boolean
     isAIAgentMessageSelected?: boolean
     isTicketAfterFeedbackCollectionPeriod?: boolean
-    shouldTicketHaveReasoning?: boolean
+    shouldTicketHaveReasoning?: boolean | null
     allowsAIFeedback?: boolean
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
@@ -266,6 +266,7 @@ export class Container extends Component<Props> {
                             />
                             {!isAIAgentInternalNote && children}
                             {isAIAgentMessage &&
+                                shouldTicketHaveReasoning !== null &&
                                 (isTicketAfterFeedbackCollectionPeriod ? (
                                     showAiReasoning &&
                                     message.id &&

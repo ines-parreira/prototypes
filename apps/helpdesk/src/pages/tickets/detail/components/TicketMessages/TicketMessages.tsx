@@ -92,8 +92,8 @@ export default function TicketMessages({
     )
 
     const shouldTicketHaveReasoning = useMemo(() => {
-        if (!earliestExecution || !earliestExecution.reasoningTimestamp)
-            return false
+        if (!earliestExecution) return null
+        if (!earliestExecution.reasoningTimestamp) return false
         const messageDate = new Date(message.created_datetime)
         return (
             messageDate.getTime() >

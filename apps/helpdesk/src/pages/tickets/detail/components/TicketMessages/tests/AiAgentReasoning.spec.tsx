@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -17,12 +19,18 @@ import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
 import { TicketMessage } from 'models/ticket/types'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
+import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 
-import { AiAgentReasoning, parseReasoningResources } from '../AiAgentReasoning'
+import {
+    AiAgentReasoning,
+    coerceResourceType,
+    parseReasoningResources,
+} from '../AiAgentReasoning'
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
@@ -125,7 +133,6 @@ jest.mock('utils/html', () => ({
     sanitizeHtmlDefault: jest.fn((content: string) => content),
 }))
 
-// Mock ReactMarkdown to properly handle custom components
 jest.mock('react-markdown', () => {
     return function MockReactMarkdown({
         children,
@@ -135,10 +142,7 @@ jest.mock('react-markdown', () => {
         components?: any
         [key: string]: any
     }) {
-        // Simulate the processing that would happen in real ReactMarkdown
         let processedContent = children
-
-        // Find all <<<...>>> patterns and replace with <kbd> elements
         const resourceMatches = processedContent.match(/<<<(.*?)>>>/g) || []
         resourceMatches.forEach((match, index) => {
             processedContent = processedContent.replace(
@@ -147,7 +151,6 @@ jest.mock('react-markdown', () => {
             )
         })
 
-        // Parse the processed content and render custom components
         if (components?.kbd && processedContent.includes('<kbd')) {
             const parts = processedContent.split(/<kbd id="(\d+)"><\/kbd>/)
             const elements = []
@@ -155,12 +158,10 @@ jest.mock('react-markdown', () => {
             for (let i = 0; i < parts.length; i++) {
                 const part = parts[i]
 
-                // Check if this part is a kbd id (numeric string from regex capture group)
                 if (i % 2 === 1 && part.match(/^\d+$/)) {
                     const id = part
                     elements.push(components.kbd({ id, key: `kbd-${id}` }))
                 } else if (part) {
-                    // Only add non-empty text parts
                     elements.push(<span key={`text-${i}`}>{part}</span>)
                 }
             }
@@ -186,6 +187,10 @@ jest.mock('models/knowledgeService/queries', () => ({
     },
 }))
 
+jest.mock('services/activityTracker/utils', () => ({
+    isSessionImpersonated: jest.fn(() => false),
+}))
+
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useNavBarMock = assumeMock(useNavBar)
@@ -201,6 +206,48 @@ const mockKnowledgeResourceShouldBeLink = jest.mocked(
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
+const setupMocks = ({
+    messageAiReasoningData = undefined,
+    isLoading = false,
+    resourcesData = [],
+    resourcesLoading = false,
+}: {
+    messageAiReasoningData?: any
+    isLoading?: boolean
+    resourcesData?: any[]
+    resourcesLoading?: boolean
+} = {}) => {
+    const mockRefetch = jest.fn()
+    mockUseGetMessageAiReasoning.mockReturnValue({
+        data: messageAiReasoningData,
+        isLoading,
+        refetch: mockRefetch,
+    } as any)
+
+    mockUseGetResourcesReasoningMetadata.mockReturnValue({
+        data: resourcesData,
+        isLoading: resourcesLoading,
+    })
+
+    return mockRefetch
+}
+
+const createComponentWrapper = (children: React.ReactElement) => (
+    <QueryClientProvider
+        client={
+            new QueryClient({
+                defaultOptions: { queries: { retry: false } },
+            })
+        }
+    >
+        <Provider store={mockStore({})}>
+            <KnowledgeSourceSideBarProvider>
+                {children}
+            </KnowledgeSourceSideBarProvider>
+        </Provider>
+    </QueryClientProvider>
+)
 
 describe('AiAgentReasoning', () => {
     const mockDispatch = jest.fn()
@@ -661,7 +708,6 @@ describe('AiAgentReasoning', () => {
             const icons = screen.getAllByTestId(/knowledge-source-icon-/)
             expect(icons.length).toBeGreaterThan(0)
 
-            // Verify all resource types are present
             expect(
                 screen.getByTestId('knowledge-source-icon-ARTICLE'),
             ).toBeInTheDocument()
@@ -762,7 +808,6 @@ describe('AiAgentReasoning', () => {
 
     describe('Knowledge source click handling', () => {
         beforeEach(() => {
-            // Mock window.open
             Object.defineProperty(window, 'open', {
                 value: jest.fn(),
                 writable: true,
@@ -782,7 +827,6 @@ describe('AiAgentReasoning', () => {
             renderComponent()
             expandComponent()
 
-            // Find and click a knowledge source
             const knowledgeSourcePopovers = screen.getAllByTestId(
                 /knowledge-source-popover-/,
             )
@@ -799,7 +843,6 @@ describe('AiAgentReasoning', () => {
         it('should call openPreview when enableKnowledgeManagementFromTicketView is true and isLink is false', () => {
             const mockOpenPreview = jest.fn()
 
-            // Mock the hook to return our mock function
             useKnowledgeSourceSideBarMock.mockReturnValue({
                 openPreview: mockOpenPreview,
                 isClosing: false,
@@ -815,7 +858,6 @@ describe('AiAgentReasoning', () => {
             renderComponent()
             expandComponent()
 
-            // Find and click a knowledge source
             const knowledgeSourcePopovers = screen.getAllByTestId(
                 /knowledge-source-popover-/,
             )
@@ -837,13 +879,12 @@ describe('AiAgentReasoning', () => {
             const mockWindowOpen = jest.fn()
             window.open = mockWindowOpen
 
-            // Mock resource data with empty URL
             mockUseGetResourcesReasoningMetadata.mockReturnValue({
                 data: [
                     {
                         title: 'Sales Documentation',
                         content: 'This is sales documentation content.',
-                        url: '', // Empty URL
+                        url: '',
                         isDeleted: false,
                     },
                 ],
@@ -855,7 +896,6 @@ describe('AiAgentReasoning', () => {
             renderComponent()
             expandComponent()
 
-            // Find and click a knowledge source
             const knowledgeSourcePopovers = screen.getAllByTestId(
                 /knowledge-source-popover-/,
             )
@@ -869,14 +909,13 @@ describe('AiAgentReasoning', () => {
             const mockWindowOpen = jest.fn()
             window.open = mockWindowOpen
 
-            // Mock resource data with deleted resource
             mockUseGetResourcesReasoningMetadata.mockReturnValue({
                 data: [
                     {
                         title: 'Sales Documentation',
                         content: 'This is sales documentation content.',
                         url: 'https://example.com/article1',
-                        isDeleted: true, // Resource is deleted
+                        isDeleted: true,
                     },
                 ],
                 isLoading: false,
@@ -885,11 +924,9 @@ describe('AiAgentReasoning', () => {
             renderComponent()
             expandComponent()
 
-            // Find knowledge source - it should not be clickable
             const knowledgeSourcePopovers = screen.queryAllByTestId(
                 /knowledge-source-popover-/,
             )
-            // Deleted resources should not render any knowledge sources
             expect(knowledgeSourcePopovers.length).toBe(0)
             expect(mockWindowOpen).not.toHaveBeenCalled()
         })
@@ -904,6 +941,36 @@ describe('AiAgentReasoning', () => {
     })
 
     describe('Content rendering', () => {
+        it('should show static message when no reasoning but execution exists', () => {
+            setupMocks({ isLoading: true })
+            const { rerender } = renderComponent()
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            setupMocks({
+                messageAiReasoningData: {
+                    reasoning: [
+                        { responseType: 'RESPONSE', value: '' },
+                        { responseType: 'OUTCOME', value: '' },
+                    ],
+                    resources: [],
+                    execution: { endDatetime: '2024-01-01T00:00:00Z' },
+                },
+            })
+
+            act(() => {
+                rerender(
+                    createComponentWrapper(
+                        <AiAgentReasoning message={createMockMessage()} />,
+                    ),
+                )
+            })
+
+            expect(
+                screen.getByText('Reasoning unavailable for this message.'),
+            ).toBeInTheDocument()
+        })
+
         it('should render mock reasoning content correctly', () => {
             renderComponent()
             expandComponent()
@@ -919,6 +986,51 @@ describe('AiAgentReasoning', () => {
                     /AIAgentDecisionOutcome\.WAIT_FOR_CUSTOMER_RESPONSE/,
                 ),
             ).toBeInTheDocument()
+        })
+
+        it('should render reasoning with all content types', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'Response content',
+                        },
+                        {
+                            responseType: 'OUTCOME',
+                            value: 'Outcome content',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Task 1 content',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Task 2 content',
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            renderComponent()
+            expandComponent()
+
+            expect(screen.getByText(/Response content/)).toBeInTheDocument()
+            expect(screen.getByText(/Task 1 content/)).toBeInTheDocument()
+            expect(screen.getByText(/Task 2 content/)).toBeInTheDocument()
+            expect(screen.getByText(/Outcome content/)).toBeInTheDocument()
         })
 
         it('should render reasoning content without resource placeholders', () => {
@@ -964,91 +1076,101 @@ describe('AiAgentReasoning', () => {
     })
 
     describe('Error state', () => {
-        it('should show error state when reasoning data is incomplete', () => {
-            mockUseGetMessageAiReasoning.mockReturnValue({
-                data: {
-                    reasoning: [
-                        {
-                            responseType: 'OUTCOME',
-                            value: 'Some outcome',
-                        },
-                    ],
+        it('should transition to error state when no reasoning content after loading', () => {
+            setupMocks({
+                messageAiReasoningData: {
+                    reasoning: [],
                     resources: [],
-                    storeConfiguration: {
-                        shopName: 'Test Shop',
-                        shopType: 'shopify',
-                    },
                 },
-                isLoading: false,
-                refetch: jest.fn(),
-            } as any)
-
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
-                isLoading: false,
             })
 
-            renderComponent()
-
+            const { rerender } = renderComponent()
             const showReasoningButton = screen.getByText('Show reasoning')
             fireEvent.click(showReasoningButton)
 
-            expect(
-                screen.getByText("Couldn't load reasoning. Please try again."),
-            ).toBeInTheDocument()
-            expect(screen.getByText('Try again')).toBeInTheDocument()
-        })
-
-        it('should show error state when no reasoning data is available', () => {
-            mockUseGetMessageAiReasoning.mockReturnValue({
-                data: {
-                    reasoning: [
-                        {
-                            responseType: 'OUTCOME',
-                            value: 'Some outcome',
-                        },
-                    ],
-                    resources: [],
-                    storeConfiguration: {
-                        shopName: 'Test Shop',
-                        shopType: 'shopify',
-                    },
-                },
-                isLoading: false,
-                refetch: jest.fn(),
-            } as any)
-
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
-                isLoading: false,
+            act(() => {
+                rerender(
+                    createComponentWrapper(
+                        <AiAgentReasoning message={createMockMessage()} />,
+                    ),
+                )
             })
-
-            renderComponent()
-
-            const showReasoningButton = screen.getByText('Show reasoning')
-            fireEvent.click(showReasoningButton)
 
             expect(
                 screen.getByText("Couldn't load reasoning. Please try again."),
             ).toBeInTheDocument()
         })
 
-        it('should handle Try again button click in error state', () => {
+        it.each([
+            ['undefined data', undefined],
+            ['null data', null],
+        ])('should stay in loading state with %s', (_, data) => {
+            setupMocks({ isLoading: true })
+            const { rerender } = renderComponent()
+
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            setupMocks({ messageAiReasoningData: data })
+
+            act(() => {
+                rerender(
+                    createComponentWrapper(
+                        <AiAgentReasoning message={createMockMessage()} />,
+                    ),
+                )
+            })
+
+            expect(screen.getByText('Loading reasoning...')).toBeInTheDocument()
+        })
+
+        it('should handle try again click and refetch data', () => {
+            const mockRefetch = setupMocks({
+                messageAiReasoningData: {
+                    reasoning: [],
+                    resources: [],
+                },
+            })
+
+            const { rerender } = renderComponent()
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            act(() => {
+                rerender(
+                    createComponentWrapper(
+                        <AiAgentReasoning message={createMockMessage()} />,
+                    ),
+                )
+            })
+
+            const tryAgainButton = screen.getByText('Try again')
+            fireEvent.click(tryAgainButton)
+
+            expect(mockRefetch).toHaveBeenCalled()
+        })
+
+        it('should not show Give Feedback button in error state', () => {
             const mockRefetch = jest.fn()
+
             mockUseGetMessageAiReasoning.mockReturnValue({
-                data: {
-                    reasoning: [
-                        {
-                            responseType: 'OUTCOME',
-                            value: 'Some outcome',
-                        },
-                    ],
-                    resources: [],
-                    storeConfiguration: {
-                        shopName: 'Test Shop',
-                        shopType: 'shopify',
-                    },
-                },
+                data: undefined,
+                isLoading: true,
+                refetch: mockRefetch,
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: true,
+            })
+
+            const { rerender } = renderComponent()
+
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
                 isLoading: false,
                 refetch: mockRefetch,
             } as any)
@@ -1058,45 +1180,25 @@ describe('AiAgentReasoning', () => {
                 isLoading: false,
             })
 
-            renderComponent()
-
-            const showReasoningButton = screen.getByText('Show reasoning')
-            fireEvent.click(showReasoningButton)
-
-            const tryAgainButton = screen.getByText('Try again')
-            fireEvent.click(tryAgainButton)
-
-            expect(mockRefetch).toHaveBeenCalled()
-        })
-
-        it('should not render body and footer in error state', () => {
-            mockUseGetMessageAiReasoning.mockReturnValue({
-                data: {
-                    reasoning: [
-                        {
-                            responseType: 'OUTCOME',
-                            value: 'Some outcome',
-                        },
-                    ],
-                    resources: [],
-                    storeConfiguration: {
-                        shopName: 'Test Shop',
-                        shopType: 'shopify',
-                    },
-                },
-                isLoading: false,
-                refetch: jest.fn(),
-            } as any)
-
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
-                isLoading: false,
+            act(() => {
+                rerender(
+                    <QueryClientProvider
+                        client={
+                            new QueryClient({
+                                defaultOptions: { queries: { retry: false } },
+                            })
+                        }
+                    >
+                        <Provider store={mockStore({})}>
+                            <KnowledgeSourceSideBarProvider>
+                                <AiAgentReasoning
+                                    message={createMockMessage()}
+                                />
+                            </KnowledgeSourceSideBarProvider>
+                        </Provider>
+                    </QueryClientProvider>,
+                )
             })
-
-            renderComponent()
-
-            const showReasoningButton = screen.getByText('Show reasoning')
-            fireEvent.click(showReasoningButton)
 
             expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument()
         })
@@ -1125,6 +1227,120 @@ describe('AiAgentReasoning', () => {
             expandComponent()
 
             expect(screen.getByText(/Sales/)).toBeInTheDocument()
+        })
+    })
+
+    describe('Impersonation handling', () => {
+        it('should show execution ID when impersonated', () => {
+            const originalIsSessionImpersonated = isSessionImpersonated
+            jest.spyOn(
+                require('services/activityTracker/utils'),
+                'isSessionImpersonated',
+            ).mockReturnValue(true)
+
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'OUTCOME',
+                            value: 'Test reasoning',
+                        },
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'Test response',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Test task',
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                        executionId: 'exec-123',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            renderComponent()
+            expandComponent()
+
+            expect(
+                screen.getByText('Execution ID: exec-123'),
+            ).toBeInTheDocument()
+
+            jest.spyOn(
+                require('services/activityTracker/utils'),
+                'isSessionImpersonated',
+            ).mockReturnValue(originalIsSessionImpersonated)
+        })
+
+        it('should show execution ID in error state when impersonated', () => {
+            const originalIsSessionImpersonated = isSessionImpersonated
+            jest.spyOn(
+                require('services/activityTracker/utils'),
+                'isSessionImpersonated',
+            ).mockReturnValue(true)
+
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                        executionId: 'exec-456',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            const { rerender } = renderComponent()
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            act(() => {
+                rerender(
+                    <QueryClientProvider
+                        client={
+                            new QueryClient({
+                                defaultOptions: { queries: { retry: false } },
+                            })
+                        }
+                    >
+                        <Provider store={mockStore({})}>
+                            <KnowledgeSourceSideBarProvider>
+                                <AiAgentReasoning
+                                    message={createMockMessage()}
+                                />
+                            </KnowledgeSourceSideBarProvider>
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+            })
+
+            expect(
+                screen.getByText('Execution ID: exec-456'),
+            ).toBeInTheDocument()
+
+            jest.spyOn(
+                require('services/activityTracker/utils'),
+                'isSessionImpersonated',
+            ).mockReturnValue(originalIsSessionImpersonated)
         })
     })
 
@@ -1203,25 +1419,63 @@ describe('AiAgentReasoning', () => {
     })
 
     describe('Handover scenario', () => {
-        it('should show handover message when message is handover type', () => {
-            renderComponent({
-                meta: {
-                    ai_agent_message_type: AiAgentMessageType.HANDOVER_TO_AGENT,
-                } as any,
-            })
+        const handoverMeta = {
+            meta: {
+                ai_agent_message_type: AiAgentMessageType.HANDOVER_TO_AGENT,
+            } as any,
+        }
+
+        const testHandoverMessage = (reasoningData: any) => {
+            setupMocks({ isLoading: true })
+            const { rerender } = renderComponent(handoverMeta)
 
             const showReasoningButton = screen.getByText('Show reasoning')
             fireEvent.click(showReasoningButton)
+
+            setupMocks({ messageAiReasoningData: reasoningData })
+
+            act(() => {
+                rerender(
+                    createComponentWrapper(
+                        <AiAgentReasoning
+                            message={createMockMessage(handoverMeta)}
+                        />,
+                    ),
+                )
+            })
 
             expect(
                 screen.getByText(
                     /AI Agent was not confident in its answer and handed the ticket over to your team/,
                 ),
             ).toBeInTheDocument()
+        }
+
+        it('should handle handover with empty reasoning values', () => {
+            testHandoverMessage({
+                reasoning: [
+                    { responseType: 'RESPONSE', value: '' },
+                    { responseType: 'OUTCOME', value: '' },
+                ],
+                resources: [],
+            })
+        })
+
+        it('should show handover message when message is handover type', () => {
+            testHandoverMessage({
+                reasoning: [{ responseType: 'OUTCOME', value: '' }],
+                resources: [],
+            })
         })
 
         it('should not show Give Feedback button for handover messages', () => {
-            renderComponent({
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                refetch: jest.fn(),
+            } as any)
+
+            const { rerender } = renderComponent({
                 meta: {
                     ai_agent_message_type: AiAgentMessageType.HANDOVER_TO_AGENT,
                 } as any,
@@ -1230,11 +1484,61 @@ describe('AiAgentReasoning', () => {
             const showReasoningButton = screen.getByText('Show reasoning')
             fireEvent.click(showReasoningButton)
 
-            expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument()
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'OUTCOME',
+                            value: 'Handover',
+                        },
+                    ],
+                    resources: [],
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            act(() => {
+                rerender(
+                    <QueryClientProvider
+                        client={
+                            new QueryClient({
+                                defaultOptions: { queries: { retry: false } },
+                            })
+                        }
+                    >
+                        <Provider store={mockStore({})}>
+                            <KnowledgeSourceSideBarProvider>
+                                <AiAgentReasoning
+                                    message={createMockMessage({
+                                        meta: {
+                                            ai_agent_message_type:
+                                                AiAgentMessageType.HANDOVER_TO_AGENT,
+                                        } as any,
+                                    })}
+                                />
+                            </KnowledgeSourceSideBarProvider>
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+            })
+
+            expect(screen.getByText('Give Feedback')).toBeInTheDocument()
         })
 
-        it('should expand immediately for handover messages without loading', () => {
-            renderComponent({
+        it('should show static state for handover messages', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                refetch: jest.fn(),
+            } as any)
+
+            const { rerender } = renderComponent({
                 meta: {
                     ai_agent_message_type: AiAgentMessageType.HANDOVER_TO_AGENT,
                 } as any,
@@ -1243,10 +1547,73 @@ describe('AiAgentReasoning', () => {
             const showReasoningButton = screen.getByText('Show reasoning')
             fireEvent.click(showReasoningButton)
 
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'OUTCOME',
+                            value: '',
+                        },
+                    ],
+                    resources: [],
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            act(() => {
+                rerender(
+                    <QueryClientProvider
+                        client={
+                            new QueryClient({
+                                defaultOptions: { queries: { retry: false } },
+                            })
+                        }
+                    >
+                        <Provider store={mockStore({})}>
+                            <KnowledgeSourceSideBarProvider>
+                                <AiAgentReasoning
+                                    message={createMockMessage({
+                                        meta: {
+                                            ai_agent_message_type:
+                                                AiAgentMessageType.HANDOVER_TO_AGENT,
+                                        } as any,
+                                    })}
+                                />
+                            </KnowledgeSourceSideBarProvider>
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+            })
+
             expect(
-                screen.queryByText('Loading reasoning...'),
-            ).not.toBeInTheDocument()
-            expect(screen.getByText('Hide reasoning')).toBeInTheDocument()
+                screen.getByText(
+                    /AI Agent was not confident in its answer and handed the ticket over to your team/,
+                ),
+            ).toBeInTheDocument()
+            expect(screen.queryByText('Hide reasoning')).not.toBeInTheDocument()
+            expect(screen.queryByText('Show reasoning')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('coerceResourceType function', () => {
+        it('should return PRODUCT_KNOWLEDGE as fallback for unknown product subtype', () => {
+            const result = coerceResourceType(['product', '12345', 'unknown'])
+            expect(result).toBe(
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+            )
+        })
+
+        it('should handle product with no subtype', () => {
+            const result = coerceResourceType(['product', '12345'])
+            expect(result).toBe(
+                AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+            )
         })
     })
 
@@ -1411,7 +1778,7 @@ describe('AiAgentReasoning', () => {
             ],
         ])(
             'should parse %s resources correctly',
-            (resourceType, content, expected) => {
+            (_resourceType, content, expected) => {
                 const result = parseReasoningResources(content, mockResources)
                 expect(result).toEqual(expected)
             },
