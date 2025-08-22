@@ -87,7 +87,7 @@ describe('productRecommendations', () => {
         decile: null,
         allData: [
             {
-                [AiSalesAgentConversationsDimension.ProductIds]: "['1']",
+                [AiSalesAgentConversationsDimension.ProductId]: '1',
                 [AiSalesAgentConversationsMeasure.Count]: '100',
             },
         ],
@@ -257,8 +257,8 @@ describe('productRecommendations', () => {
                         decile: 0,
                         allData: [
                             {
-                                [AiSalesAgentConversationsDimension.ProductIds]:
-                                    "['1']",
+                                [AiSalesAgentConversationsDimension.ProductId]:
+                                    '1',
                                 [AiSalesAgentConversationsMeasure.Count]: '100',
                             },
                         ],

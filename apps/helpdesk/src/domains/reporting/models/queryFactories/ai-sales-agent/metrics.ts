@@ -469,7 +469,7 @@ export const productRecommendationsQueryFactory = (
     timezone: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     measures: [AiSalesAgentConversationsMeasure.Count],
-    dimensions: [AiSalesAgentConversationsDimension.ProductIds],
+    dimensions: [AiSalesAgentConversationsDimension.ProductId],
     filters: [
         {
             member: AiSalesAgentConversationsDimension.IsSalesOpportunity,

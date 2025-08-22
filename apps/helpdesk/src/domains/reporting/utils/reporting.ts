@@ -8,7 +8,6 @@ import {
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { Cubes } from 'domains/reporting/models/cubes'
 import { AgentTimeTrackingMember } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AutomationBillingEventMember } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import { AutomationDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
@@ -470,16 +469,7 @@ export const mapMetrics = <TCube extends Cubes = Cubes>(
 
     return metrics.data.allData.reduce<Record<number, number>>((a, record) => {
         const recordDimension = record[dimension]
-        if (
-            dimension === AiSalesAgentConversationsDimension.ProductIds &&
-            typeof recordDimension === 'string'
-        ) {
-            const productId = JSON.parse(recordDimension.replace(/'/g, '"'))[0]
-            return {
-                ...a,
-                [Number(productId)]: Number(record[measure]),
-            }
-        }
+
         return {
             ...a,
             [Number(recordDimension)]: Number(record[measure]),
