@@ -176,7 +176,7 @@ export const OverviewMetricConfig: Record<
         domain: Domain.Ticket,
         title: 'Human response time after AI handoff',
         hint: {
-            title: 'First Response Time without AI Agent metrics applied. Median time between last AI Agent message to first human Agent message',
+            title: 'Median time between 1st human agent response and last AI Agent response, for tickets where the response was sent within the selected timeframe',
             link: 'https://link.gorgias.com/svd',
         },
         interpretAs: 'less-is-better',
