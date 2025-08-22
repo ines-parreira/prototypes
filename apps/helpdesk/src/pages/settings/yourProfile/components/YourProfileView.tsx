@@ -145,7 +145,7 @@ export function YourProfileView({
             setIsFormDirty(false)
 
             await queryClient.invalidateQueries({
-                queryKey: [queryKeys.account.getCurrentUser()],
+                queryKey: queryKeys.account.getCurrentUser(),
             })
         },
         [

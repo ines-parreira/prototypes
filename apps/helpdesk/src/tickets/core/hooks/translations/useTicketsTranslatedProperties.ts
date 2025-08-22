@@ -49,9 +49,6 @@ export function useTicketsTranslatedProperties({
         },
         {
             query: {
-                // We set the stale time to 5 minutes to avoid the case where the user updates the subject in the application
-                // and the translated subject is not updated in the cache because the ticket translations are not refetched
-                // staleTime: 60000 * 5,
                 enabled:
                     hasMessagesTranslations &&
                     Boolean(primary) &&
