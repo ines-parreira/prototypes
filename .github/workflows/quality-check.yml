@@ -240,23 +240,23 @@ jobs:
     name: 'Unaffected packages status'
     runs-on: gh-actions-small-runner-set
     if: inputs.other-unaffected-packages != '[]'
-    strategy:
-      fail-fast: false
-      matrix:
-        include: ${{ fromJSON(inputs.other-unaffected-packages) }}
     steps:
       - name: Set tests status checks to success for unaffected packages
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: 'success',
-              context: 'Quality check / Packages tests (${{ matrix.project }})',
-              description: 'Package ${{ matrix.project }} unaffected, skipping tests'
-            })
+            const unaffectedPackages = ${{ inputs.other-unaffected-packages }};
+            
+            for (const packageInfo of unaffectedPackages) {
+              await github.rest.repos.createCommitStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: context.sha,
+                state: 'success',
+                context: `Quality check / Packages tests (${packageInfo.project})`,
+                description: `Package ${packageInfo.project} unaffected, skipping tests`
+              });
+            }
   no-application-code-changes:
     name: 'No application code changes'
     runs-on: gh-actions-small-runner-set
