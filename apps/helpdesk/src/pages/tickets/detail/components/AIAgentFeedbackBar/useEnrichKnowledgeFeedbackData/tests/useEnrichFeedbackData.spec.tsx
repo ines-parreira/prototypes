@@ -495,7 +495,6 @@ describe('useEnrichFeedbackData', () => {
         </QueryClientProvider>
     )
     const mockFlags = {
-        [FeatureFlagKey.FeedbackSurfaceProductsUsedByAiAgent]: false,
         [FeatureFlagKey.ActionDrivenAiAgentNavigation]: false,
     }
 
@@ -753,6 +752,24 @@ describe('useEnrichFeedbackData', () => {
                             resourceLocale: null,
                             feedback: null,
                         },
+                        {
+                            id: 'res-11',
+                            resourceId: '10',
+                            resourceType: 'PRODUCT_KNOWLEDGE',
+                            resourceSetId: '',
+                            resourceTitle: 'Product Knowledge',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-12',
+                            resourceId: '11',
+                            resourceType: 'PRODUCT_RECOMMENDATION',
+                            resourceSetId: '',
+                            resourceTitle: 'Product Recommendation',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
                     ],
                     storeConfiguration: mockStoreConfiguration,
                 },
@@ -798,6 +815,10 @@ describe('useEnrichFeedbackData', () => {
                     helpCenterId: 300,
                 },
             ]
+            const mockProducts = [
+                { id: 10, title: 'Product 1' },
+                { id: 11, title: 'Product 2' },
+            ]
 
             ;(
                 useGetMultipleHelpCenterArticleLists as jest.Mock
@@ -832,13 +853,13 @@ describe('useEnrichFeedbackData', () => {
                 isLoading: false,
             })
             ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
-                data: [],
+                data: mockProducts,
                 isLoading: false,
             })
         })
 
-        it('should return enriched data from feedback executions without products when feature flag disabled, with products when enabled', () => {
-            const { result: resultWithoutProducts } = renderHook(
+        it('should return enriched data from feedback executions', () => {
+            const { result: result } = renderHook(
                 () =>
                     useEnrichFeedbackData({
                         data: feedbackData,
@@ -847,19 +868,21 @@ describe('useEnrichFeedbackData', () => {
                 { wrapper },
             )
 
-            expect(resultWithoutProducts.current?.isLoading).toBe(false)
+            expect(result.current?.isLoading).toBe(false)
 
-            const knowledgeResourceTypesWithoutProducts =
-                resultWithoutProducts.current?.enrichedData.knowledgeResources.map(
+            const knowledgeResourceTypes =
+                result.current?.enrichedData.knowledgeResources.map(
                     (kr) => kr.resource.resourceType,
                 )
 
-            expect(knowledgeResourceTypesWithoutProducts).toEqual([
+            expect(knowledgeResourceTypes).toEqual([
                 'GUIDANCE',
                 'ACTION',
                 'ARTICLE',
                 'STORE_WEBSITE_QUESTION_SNIPPET',
                 'ORDER',
+                'PRODUCT_KNOWLEDGE',
+                'PRODUCT_RECOMMENDATION',
                 'EXTERNAL_SNIPPET',
                 'EXTERNAL_SNIPPET',
                 'EXTERNAL_SNIPPET',
@@ -867,7 +890,7 @@ describe('useEnrichFeedbackData', () => {
             ])
 
             const suggestedResourceTypes =
-                resultWithoutProducts.current?.enrichedData.suggestedResources.map(
+                result.current?.enrichedData.suggestedResources.map(
                     (sr) => sr.parsedResource.resourceType,
                 )
 
@@ -879,53 +902,10 @@ describe('useEnrichFeedbackData', () => {
                 'FILE_EXTERNAL_SNIPPET',
             ])
 
+            expect(result.current?.enrichedData.freeForm).not.toBeNull()
             expect(
-                resultWithoutProducts.current?.enrichedData.freeForm,
-            ).not.toBeNull()
-            expect(
-                resultWithoutProducts.current?.enrichedData.freeForm?.feedback
-                    .feedbackType,
+                result.current?.enrichedData.freeForm?.feedback.feedbackType,
             ).toBe('TICKET_FREEFORM')
-            ;(getLDClient as jest.Mock).mockReturnValue({
-                allFlags: jest.fn().mockReturnValue({
-                    ...mockFlags,
-                    [FeatureFlagKey.FeedbackSurfaceProductsUsedByAiAgent]: true,
-                }),
-            })
-
-            const mockProducts = [{ id: 10 }, { id: 11 }]
-            ;(useGetProductsByIdsFromIntegration as jest.Mock).mockReturnValue({
-                data: mockProducts,
-                isLoading: false,
-            })
-
-            const { result: resultWithProducts } = renderHook(
-                () =>
-                    useEnrichFeedbackData({
-                        data: feedbackData,
-                        storeConfiguration,
-                    }),
-                { wrapper },
-            )
-
-            expect(resultWithProducts.current?.isLoading).toBe(false)
-
-            const knowledgeResourceTypesWithProducts =
-                resultWithProducts.current?.enrichedData.knowledgeResources.map(
-                    (kr) => kr.resource.resourceType,
-                )
-
-            expect(knowledgeResourceTypesWithProducts).toEqual([
-                'GUIDANCE',
-                'ACTION',
-                'ARTICLE',
-                'STORE_WEBSITE_QUESTION_SNIPPET',
-                'ORDER',
-                'EXTERNAL_SNIPPET',
-                'EXTERNAL_SNIPPET',
-                'EXTERNAL_SNIPPET',
-                'FILE_EXTERNAL_SNIPPET',
-            ])
         })
     })
 

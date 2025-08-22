@@ -551,7 +551,6 @@ export const getResourceType = (
 export const useProcessResources = (
     executions: FeedbackExecutionsItem[] = [],
     shopName: string,
-    hasSurfacedProductsInFeedback: boolean,
     resourceData: {
         isLoading?: boolean
         articles: NonNullable<
@@ -620,14 +619,6 @@ export const useProcessResources = (
                         ingestedFiles: resourceData?.ingestedFiles ?? [],
                     },
                 )
-
-                if (
-                    !hasSurfacedProductsInFeedback &&
-                    (type === 'PRODUCT_KNOWLEDGE' ||
-                        type === 'PRODUCT_RECOMMENDATION')
-                ) {
-                    return
-                }
 
                 resource.resourceType = type as typeof resource.resourceType
                 let metadata = getResourceMetadata(
@@ -741,13 +732,7 @@ export const useProcessResources = (
             previousResourceDataRef.current = resourceData
         }
         return output
-    }, [
-        executions,
-        shopName,
-        resourceData,
-        hasSurfacedProductsInFeedback,
-        flags,
-    ])
+    }, [executions, shopName, resourceData, flags])
 }
 
 export const useExtractDistinctProductIdsFromResources = (

@@ -2,8 +2,6 @@ import { useMemo } from 'react'
 
 import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
     useGetMultipleFileIngestionSnippets,
@@ -206,10 +204,6 @@ export const useEnrichFeedbackData = ({
         true,
     )
 
-    const hasSurfacedProductsInFeedback = useFlag(
-        FeatureFlagKey.FeedbackSurfaceProductsUsedByAiAgent,
-    )
-
     const resourceData = useGetResourceData({
         queriesEnabled,
         shopName: shopName,
@@ -222,7 +216,6 @@ export const useEnrichFeedbackData = ({
     const enrichedData = useProcessResources(
         data?.executions,
         shopName,
-        hasSurfacedProductsInFeedback,
         resourceData,
     )
 

@@ -96,7 +96,6 @@ export enum FeatureFlagKey {
     EnableNonShopifyStoresInHelpCenter = 'enable-non-shopify-stores-in-help-center',
     ExtendedCallFlows = 'extended-call-flows',
     FakeActionPlaceholder = 'fake-action-placeholder',
-    FeedbackSurfaceProductsUsedByAiAgent = 'linear.project_surface-products-used-by-ai-agent-on-ai-feedback-tab',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',
     FeedbackToAIAgentInTicketViewsV4 = 'feedback-to-ai-agent-in-ticket-views-v-4',

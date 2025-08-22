@@ -1905,7 +1905,6 @@ describe('utils', () => {
                     useProcessResources(
                         mockExecutions,
                         'test-store',
-                        false,
                         mockResourceData,
                     ),
                 { wrapper },
@@ -1919,7 +1918,7 @@ describe('utils', () => {
             )
         })
 
-        it('should filter out product resources when hasSurfacedProductsInFeedback is false', () => {
+        it('should include product resources', () => {
             const executionsWithProducts: FeedbackExecutionsItem[] = [
                 {
                     executionId: 'exec-1',
@@ -1953,57 +1952,17 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithProducts,
                         'test-store',
-                        false,
                         mockResourceData,
                     ),
                 { wrapper },
             )
 
-            expect(result.current.knowledgeResources).toHaveLength(1)
+            expect(result.current.knowledgeResources).toHaveLength(2)
             expect(
                 result.current.knowledgeResources[0].resource.resourceType,
             ).toBe('GUIDANCE')
-        })
-
-        it('should include product resources when hasSurfacedProductsInFeedback is true', () => {
-            const executionsWithProducts: FeedbackExecutionsItem[] = [
-                {
-                    executionId: 'exec-1',
-                    feedback: [],
-                    resources: [
-                        {
-                            id: 'res-1',
-                            resourceId: '1',
-                            resourceType: 'PRODUCT_KNOWLEDGE',
-                            resourceSetId: '',
-                            resourceTitle: 'Product 1',
-                            resourceLocale: null,
-                            feedback: null,
-                        },
-                    ],
-                    storeConfiguration: {} as any,
-                },
-            ]
-
-            const resourceDataWithProducts = {
-                ...mockResourceData,
-                products: [{ id: 1, title: 'Product 1' }],
-            }
-
-            const { result } = renderHook(
-                () =>
-                    useProcessResources(
-                        executionsWithProducts,
-                        'test-store',
-                        true,
-                        resourceDataWithProducts,
-                    ),
-                { wrapper },
-            )
-
-            expect(result.current.knowledgeResources).toHaveLength(1)
             expect(
-                result.current.knowledgeResources[0].resource.resourceType,
+                result.current.knowledgeResources[1].resource.resourceType,
             ).toBe('PRODUCT_KNOWLEDGE')
         })
 
@@ -2039,7 +1998,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithInvalidJson,
                         'test-store',
-                        false,
                         mockResourceData,
                     ),
                 { wrapper },
@@ -2059,7 +2017,6 @@ describe('utils', () => {
                     useProcessResources(
                         mockExecutions,
                         'test-store',
-                        false,
                         resourceData,
                     ),
                 {
@@ -2081,7 +2038,6 @@ describe('utils', () => {
                     useProcessResources(
                         mockExecutions,
                         'test-store',
-                        false,
                         resourceData,
                     ),
                 {
@@ -2140,7 +2096,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithMixedTypes,
                         'test-store',
-                        false,
                         mockResourceData,
                     ),
                 { wrapper },
@@ -2184,7 +2139,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNonTicketFeedback,
                         'test-store',
-                        false,
                         mockResourceData as any,
                     ),
                 { wrapper },
@@ -2268,7 +2222,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNullMetadata,
                         'test-store',
-                        false,
                         mockResourceData as any,
                     ),
                 { wrapper },
@@ -2310,7 +2263,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNullMetadata,
                         'test-store',
-                        false,
                         null,
                     ),
                 { wrapper },
@@ -2352,7 +2304,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNullSuggestedMetadata,
                         'test-store',
-                        false,
                         null,
                     ),
                 { wrapper },
@@ -2407,7 +2358,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithResourcesForNullMetadata,
                         'test-store',
-                        false,
                         mockResourceData as any,
                     ),
                 { wrapper },
@@ -2448,7 +2398,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNullKnowledgeResourceMetadata,
                         'test-store',
-                        false,
                         null,
                     ),
                 { wrapper },
@@ -2490,7 +2439,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNullSuggestedResourceMetadata,
                         'test-store',
-                        false,
                         null,
                     ),
                 { wrapper },
@@ -2525,7 +2473,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNullKnowledgeResourceMetadata,
                         'test-store',
-                        false,
                         null,
                     ),
                 { wrapper },
@@ -2567,7 +2514,6 @@ describe('utils', () => {
                     useProcessResources(
                         executionsWithNullSuggestedResourceMetadata,
                         'test-store',
-                        false,
                         null,
                     ),
                 { wrapper },
