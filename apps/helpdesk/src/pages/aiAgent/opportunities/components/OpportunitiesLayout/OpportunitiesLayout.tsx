@@ -92,6 +92,7 @@ export const OpportunitiesLayout = () => {
                     onArchive={handleArchiveArticle}
                     onPublish={handlePublishArticle}
                     markArticleAsReviewed={markArticleAsReviewed}
+                    opportunities={opportunities}
                 />
             </div>
         </div>

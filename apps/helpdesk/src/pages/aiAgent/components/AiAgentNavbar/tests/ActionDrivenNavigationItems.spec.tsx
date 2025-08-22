@@ -1,11 +1,29 @@
 import { render, screen } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
+import configureStore from 'redux-mock-store'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { ActionDrivenNavigationItems } from '../ActionDrivenNavigationItems'
+
+const mockStore = configureStore([])
+
+jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
+    useAiAgentHelpCenter: jest.fn(() => ({
+        id: 1,
+        name: 'FAQ Help Center',
+    })),
+}))
+
+jest.mock('pages/aiAgent/hooks/useOpportunitiesCount', () => ({
+    useOpportunitiesCount: jest.fn(() => ({
+        count: 5,
+        isLoading: false,
+    })),
+}))
 
 const mockNavigationItems: NavigationItem[] = [
     {
@@ -56,6 +74,13 @@ const mockNavigationItems: NavigationItem[] = [
 
 describe('ActionDrivenNavigationItems', () => {
     const mockGetChannelStatus = jest.fn()
+    const store = mockStore({
+        ui: {
+            helpCenter: {
+                viewLanguage: 'en-US',
+            },
+        },
+    })
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -66,30 +91,34 @@ describe('ActionDrivenNavigationItems', () => {
         props: Partial<Parameters<typeof ActionDrivenNavigationItems>[0]> = {},
     ) => {
         return render(
-            <MemoryRouter>
-                <Navigation.Root value={['analyze', 'deploy']}>
-                    <ActionDrivenNavigationItems
-                        navigationItems={mockNavigationItems}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                        {...props}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root value={['analyze', 'deploy']}>
+                        <ActionDrivenNavigationItems
+                            navigationItems={mockNavigationItems}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                            {...props}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
     }
 
     it('renders null when selectedStore is not provided', () => {
         const { container } = render(
-            <MemoryRouter>
-                <Navigation.Root>
-                    <ActionDrivenNavigationItems
-                        navigationItems={mockNavigationItems}
-                        selectedStore={undefined}
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root>
+                        <ActionDrivenNavigationItems
+                            navigationItems={mockNavigationItems}
+                            selectedStore={undefined}
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         expect(
@@ -100,15 +129,17 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('renders null when navigationItems is not provided', () => {
         const { container } = render(
-            <MemoryRouter>
-                <Navigation.Root>
-                    <ActionDrivenNavigationItems
-                        navigationItems={undefined as any}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root>
+                        <ActionDrivenNavigationItems
+                            navigationItems={undefined as any}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         expect(
@@ -135,7 +166,6 @@ describe('ActionDrivenNavigationItems', () => {
         expect(analyzeButton).toBeInTheDocument()
 
         expect(screen.getByText('Analytics')).toBeInTheDocument()
-        // The Opportunities link text contains a badge; match with regex
         const opportunitiesLink = screen.getByRole('link', {
             name: /Opportunities/,
         })
@@ -204,15 +234,17 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('handles getChannelStatus not provided', () => {
         render(
-            <MemoryRouter>
-                <Navigation.Root value={['deploy']}>
-                    <ActionDrivenNavigationItems
-                        navigationItems={mockNavigationItems}
-                        selectedStore="test-store"
-                        getChannelStatus={undefined}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root value={['deploy']}>
+                        <ActionDrivenNavigationItems
+                            navigationItems={mockNavigationItems}
+                            selectedStore="test-store"
+                            getChannelStatus={undefined}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         const chatElements = screen.getAllByText('Chat')
@@ -256,15 +288,17 @@ describe('ActionDrivenNavigationItems', () => {
     it('allows expanding and collapsing sections', async () => {
         const user = userEventLib.setup()
         const { rerender } = render(
-            <MemoryRouter>
-                <Navigation.Root value={[]}>
-                    <ActionDrivenNavigationItems
-                        navigationItems={mockNavigationItems}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root value={[]}>
+                        <ActionDrivenNavigationItems
+                            navigationItems={mockNavigationItems}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         const analyzeButton = screen.getByRole('button', { name: /Analyze/ })
@@ -273,15 +307,17 @@ describe('ActionDrivenNavigationItems', () => {
         await user.click(analyzeButton)
 
         rerender(
-            <MemoryRouter>
-                <Navigation.Root value={['analyze']}>
-                    <ActionDrivenNavigationItems
-                        navigationItems={mockNavigationItems}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root value={['analyze']}>
+                        <ActionDrivenNavigationItems
+                            navigationItems={mockNavigationItems}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         expect(analyzeButton).toHaveAttribute('aria-expanded', 'true')
@@ -289,15 +325,17 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('handles empty navigation items array', () => {
         const { container } = render(
-            <MemoryRouter>
-                <Navigation.Root>
-                    <ActionDrivenNavigationItems
-                        navigationItems={[]}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root>
+                        <ActionDrivenNavigationItems
+                            navigationItems={[]}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         const links = screen.queryAllByRole('link')
@@ -327,15 +365,17 @@ describe('ActionDrivenNavigationItems', () => {
         ]
 
         render(
-            <MemoryRouter>
-                <Navigation.Root value={['section']}>
-                    <ActionDrivenNavigationItems
-                        navigationItems={nestedOnlyItems}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root value={['section']}>
+                        <ActionDrivenNavigationItems
+                            navigationItems={nestedOnlyItems}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         const sectionButton = screen.getByRole('button', { name: /Section/ })
@@ -357,15 +397,17 @@ describe('ActionDrivenNavigationItems', () => {
         ]
 
         render(
-            <MemoryRouter>
-                <Navigation.Root>
-                    <ActionDrivenNavigationItems
-                        navigationItems={flatItems}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root>
+                        <ActionDrivenNavigationItems
+                            navigationItems={flatItems}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         expect(screen.getByText('Item 1')).toBeInTheDocument()
@@ -379,15 +421,17 @@ describe('ActionDrivenNavigationItems', () => {
         mockGetChannelStatus.mockImplementation((channel) => channel === 'chat')
 
         render(
-            <MemoryRouter>
-                <Navigation.Root value={['deploy']}>
-                    <ActionDrivenNavigationItems
-                        navigationItems={mockNavigationItems}
-                        selectedStore="test-store"
-                        getChannelStatus={mockGetChannelStatus}
-                    />
-                </Navigation.Root>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <Navigation.Root value={['deploy']}>
+                        <ActionDrivenNavigationItems
+                            navigationItems={mockNavigationItems}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                        />
+                    </Navigation.Root>
+                </MemoryRouter>
+            </Provider>,
         )
 
         const statusIcons = screen.getAllByAltText('status icon')

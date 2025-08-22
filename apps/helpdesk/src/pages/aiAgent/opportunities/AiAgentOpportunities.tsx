@@ -1,5 +1,10 @@
+import { useParams } from 'react-router-dom'
+
 import { OpportunitiesLayout } from './components/OpportunitiesLayout/OpportunitiesLayout'
 
 export const AiAgentOpportunities = () => {
-    return <OpportunitiesLayout />
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+    return <OpportunitiesLayout key={shopName} />
 }

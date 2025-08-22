@@ -46,6 +46,7 @@ interface OpportunitiesContentProps {
         templateKey: string,
         reviewAction: ArticleTemplateReviewAction,
     ) => void
+    opportunities?: Opportunity[]
 }
 
 export const OpportunitiesContent = ({
@@ -56,6 +57,7 @@ export const OpportunitiesContent = ({
     onArchive,
     onPublish,
     markArticleAsReviewed,
+    opportunities,
 }: OpportunitiesContentProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -75,6 +77,8 @@ export const OpportunitiesContent = ({
 
     const { createGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({ guidanceHelpCenterId })
+
+    const showEmptyState = !opportunities || opportunities.length === 0
 
     const reviewArticle = useUpsertArticleTemplateReview({
         onSuccess: async (__data, [__client, __pathParameters, body]) => {
@@ -184,6 +188,10 @@ export const OpportunitiesContent = ({
         locale,
         dispatch,
     ])
+
+    if (showEmptyState) {
+        return <OpportunitiesEmptyState />
+    }
 
     return (
         <div className={css.containerContent}>

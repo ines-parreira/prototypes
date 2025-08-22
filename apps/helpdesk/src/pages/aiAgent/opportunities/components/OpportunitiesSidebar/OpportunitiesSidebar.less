@@ -16,11 +16,43 @@
         overflow: hidden;
     }
 
+    @media (max-width: 1024px) {
+        .sidebar {
+            display: none;
+        }
+    }
+
+    .badge {
+        margin-top: 2px;
+    }
+    .emptyState {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xs);
+        text-align: center;
+        h3 {
+            .body-semibold();
+            color: var(--neutral-grey-6);
+        }
+        p {
+            .body-regular();
+            color: var(--neutral-grey-5);
+        }
+    }
+
     .header {
         width: 100%;
         padding: var(--layout-spacing-s);
         border-bottom: 1px solid var(--neutral-grey-2);
         flex-shrink: 0; // Prevent header from shrinking
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 56px;
     }
 
     .title {

@@ -1,3 +1,7 @@
+@import '~css/typography';
+@import '~css/util';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+
 :local {
     .container {
         display: flex;
@@ -105,5 +109,16 @@
         justify-content: space-between;
         width: 100%;
         gap: var(--layout-spacing-xxs);
+
+        .navItemWithBadgeContent {
+            display: flex;
+            align-items: center;
+            gap: var(--layout-spacing-xxs);
+        }
+
+        .navItemCount {
+            .body-regular();
+            color: var(--neutral-grey-6);
+        }
     }
 }

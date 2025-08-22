@@ -175,7 +175,13 @@ describe('AiAgentOpportunities', () => {
 
         const opportunities = getAllByText('Opportunities')
         expect(opportunities).toHaveLength(1)
-        expect(getByText('0 items')).toBeInTheDocument()
+
+        expect(getByText('No opportunities yet')).toBeInTheDocument()
+        expect(
+            getByText(
+                'AI Agent will start finding opportunities to improve as it learns from conversations with your customers',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should handle loading state correctly', () => {

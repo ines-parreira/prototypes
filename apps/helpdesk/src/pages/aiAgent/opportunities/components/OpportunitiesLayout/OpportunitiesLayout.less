@@ -19,6 +19,12 @@
         min-height: 0; // Allows children to shrink and enables scrolling
         overflow: hidden; // Prevent page scroll
     }
+
+    @media (max-width: 1024px) {
+        .layout {
+            padding-left: 0;
+        }
+    }
 }
 
 // Alternative: Use @supports to ensure CSS is valid and increase specificity
@@ -47,6 +53,16 @@
             [class*='App--container'] {
                 padding: 0 !important;
                 background: var(--navigation-background) !important;
+            }
+
+            [class*='Toolbar--actions--'] {
+                overflow: hidden !important;
+                button {
+                    flex-shrink: 0 !important;
+                }
+            }
+            [class*='Toolbar--rightSection--'] {
+                padding-left: var(--layout-spacing-s) !important;
             }
         }
     }

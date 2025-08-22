@@ -21,6 +21,7 @@
             12px 13px 18px 0 rgba(0, 0, 0, 0.04),
             3px 3px 10px 0 rgba(0, 0, 0, 0.05);
         overflow: hidden;
+        padding-bottom: var(--layout-spacing-s);
 
         .header {
             width: 100%;
@@ -30,6 +31,7 @@
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0; // Prevent header from shrinking
+            height: 56px;
         }
 
         .approveButton {
@@ -52,6 +54,9 @@
             .heading-subsection-semibold();
             font-size: 16px;
             margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .contentBody {

@@ -7,8 +7,13 @@ import { Badge } from '@gorgias/axiom'
 import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import { Navigation } from 'components/Navigation/Navigation'
+import useAppSelector from 'hooks/useAppSelector'
 import { OPPORTUNITIES } from 'pages/aiAgent/constants'
+import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useOpportunitiesCount } from 'pages/aiAgent/hooks/useOpportunitiesCount'
+import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
+import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { NavigationChannelType } from './utils'
 
@@ -44,6 +49,15 @@ export const ActionDrivenNavigationItems = ({
     selectedStore,
     getChannelStatus,
 }: Props) => {
+    const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+
+    const faqHelpCenter = useAiAgentHelpCenter({
+        shopName: selectedStore ?? '',
+        helpCenterType: 'faq',
+    })
+    const { count: opportunitiesCount, isLoading: isLoadingOpportunities } =
+        useOpportunitiesCount(faqHelpCenter?.id ?? 0, locale, selectedStore)
+
     if (!selectedStore || !navigationItems) {
         return null
     }
@@ -96,8 +110,23 @@ export const ActionDrivenNavigationItems = ({
                                             <div
                                                 className={css.navItemWithBadge}
                                             >
-                                                <span>{subItem.title}</span>
-                                                <Badge type={'blue'}>NEW</Badge>
+                                                <div
+                                                    className={
+                                                        css.navItemWithBadgeContent
+                                                    }
+                                                >
+                                                    <span>{subItem.title}</span>
+                                                    <Badge type={'blue'}>
+                                                        NEW
+                                                    </Badge>
+                                                </div>
+                                                <div
+                                                    className={css.navItemCount}
+                                                >
+                                                    {isLoadingOpportunities
+                                                        ? 0
+                                                        : opportunitiesCount}
+                                                </div>
                                             </div>
                                         ) : (
                                             subItem.title
@@ -120,8 +149,15 @@ export const ActionDrivenNavigationItems = ({
                     >
                         {item.title === OPPORTUNITIES ? (
                             <div className={css.navItemWithBadge}>
-                                <span>{item.title}</span>
-                                <Badge type={'blue'}>NEW</Badge>
+                                <div className={css.navItemWithBadgeContent}>
+                                    <span>{item.title}</span>
+                                    <Badge type={'blue'}>NEW</Badge>
+                                </div>
+                                <div className={css.navItemCount}>
+                                    {isLoadingOpportunities
+                                        ? 0
+                                        : opportunitiesCount}
+                                </div>
                             </div>
                         ) : (
                             item.title

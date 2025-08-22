@@ -44,36 +44,53 @@ export const OpportunitiesSidebar = ({
     const itemCount = isLoading ? 0 : opportunities.length
     const itemCountText = itemCount === 1 ? '1 item' : `${itemCount} items`
 
+    const showEmptyState = !isLoading && opportunities.length === 0
+
     return (
         <div className={css.sidebar}>
             <div className={css.header}>
-                <h3 className={css.title}>
-                    Opportunities <Badge type={'blue'}>NEW</Badge>
-                </h3>
+                <h3 className={css.title}>Opportunities</h3>
+                <Badge className={css.badge} type={'blue'}>
+                    NEW
+                </Badge>
             </div>
             <div className={css.containerContent}>
-                <div className={css.itemCount}>{itemCountText}</div>
-                <div className={css.cardsContainer}>
-                    {isLoading ? (
-                        <>
-                            <OpportunityCardSkeleton />
-                            <OpportunityCardSkeleton />
-                            <OpportunityCardSkeleton />
-                        </>
-                    ) : (
-                        opportunities.map((opportunity) => (
-                            <OpportunityCard
-                                key={opportunity.id}
-                                title={opportunity.title}
-                                type={opportunity.type}
-                                selected={selectedCard === opportunity.id}
-                                onSelect={() =>
-                                    handleSelectCard(opportunity.id)
-                                }
-                            />
-                        ))
-                    )}
-                </div>
+                {showEmptyState ? (
+                    <div className={css.emptyState}>
+                        <h3 className={css.title}>No opportunities yet</h3>
+                        <p className={css.description}>
+                            AI Agent will start finding opportunities to improve
+                            as it learns from conversations with your customers
+                        </p>
+                    </div>
+                ) : (
+                    <>
+                        <div className={css.itemCount}>{itemCountText}</div>
+                        <div className={css.cardsContainer}>
+                            {isLoading ? (
+                                <>
+                                    <OpportunityCardSkeleton />
+                                    <OpportunityCardSkeleton />
+                                    <OpportunityCardSkeleton />
+                                </>
+                            ) : (
+                                opportunities.map((opportunity) => (
+                                    <OpportunityCard
+                                        key={opportunity.id}
+                                        title={opportunity.title}
+                                        type={opportunity.type}
+                                        selected={
+                                            selectedCard === opportunity.id
+                                        }
+                                        onSelect={() =>
+                                            handleSelectCard(opportunity.id)
+                                        }
+                                    />
+                                ))
+                            )}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     )

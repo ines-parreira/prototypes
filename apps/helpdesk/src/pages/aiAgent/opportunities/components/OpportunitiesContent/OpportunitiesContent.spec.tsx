@@ -153,22 +153,17 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should render content header with title', () => {
-        renderComponent()
+        const { container } = renderComponent()
 
-        const title = screen.getByRole('heading', {
-            name: 'No opportunities yet',
-        })
-        expect(title).toBeInTheDocument()
-        expect(title).toHaveClass('title')
+        const svg = container.querySelector('svg')
+        expect(svg).toBeInTheDocument()
     })
 
     it('should render empty state when no opportunity is selected', () => {
-        renderComponent()
+        const { container } = renderComponent()
 
-        expect(screen.getByText('No opportunities yet')).toBeInTheDocument()
-        expect(
-            screen.getByText(/AI Agent will start finding opportunities/),
-        ).toBeInTheDocument()
+        const svg = container.querySelector('svg')
+        expect(svg).toBeInTheDocument()
     })
 
     it('should render opportunity details and action buttons when selected', () => {
@@ -179,7 +174,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
         expect(
@@ -202,7 +200,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
 
@@ -228,7 +229,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
         act(() => {
@@ -267,7 +271,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
         act(() => {
@@ -300,7 +307,10 @@ describe('OpportunitiesContent', () => {
 
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
 
@@ -350,7 +360,10 @@ describe('OpportunitiesContent', () => {
 
         mockCreateGuidanceArticle.mockRejectedValueOnce(new Error('API Error'))
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
 
@@ -385,7 +398,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
         expect(approveButton).toBeInTheDocument()
@@ -404,7 +420,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
         expect(approveButton).toBeInTheDocument()
@@ -418,7 +437,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         expect(mockOnValuesChange).toHaveBeenCalledWith({
             name: 'Test opportunity',
@@ -521,7 +543,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.RESOLVE_CONFLICT,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         expect(screen.getByText('Resolve conflict')).toBeInTheDocument()
         expect(
@@ -539,6 +564,7 @@ describe('OpportunitiesContent', () => {
 
         renderComponent({
             selectedOpportunity,
+            opportunities: [selectedOpportunity],
             shopName: 'my-shop',
             helpCenterId: 123,
         })
@@ -570,7 +596,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
     })
@@ -588,7 +617,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
@@ -620,7 +652,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
@@ -639,7 +674,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
         expect(approveButton).not.toHaveAttribute('aria-disabled', 'true')
@@ -663,7 +701,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const formProps = mockGuidanceForm.mock.calls[0][0]
         const newFormData = {
@@ -711,6 +752,7 @@ describe('OpportunitiesContent', () => {
                     <OpportunitiesContent
                         {...defaultProps}
                         selectedOpportunity={selectedOpportunity}
+                        opportunities={[selectedOpportunity]}
                     />
                 </QueryClientProvider>
             </Provider>,
@@ -743,6 +785,7 @@ describe('OpportunitiesContent', () => {
 
         renderComponent({
             selectedOpportunity,
+            opportunities: [selectedOpportunity],
         })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
@@ -775,6 +818,7 @@ describe('OpportunitiesContent', () => {
 
         renderComponent({
             selectedOpportunity,
+            opportunities: [selectedOpportunity],
             onOpportunityDismissed: undefined,
         })
 
@@ -814,7 +858,10 @@ describe('OpportunitiesContent', () => {
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         }
 
-        renderComponent({ selectedOpportunity })
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+        })
 
         const approveButton = screen.getByRole('button', { name: /Approve/i })
 

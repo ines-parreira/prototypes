@@ -53,11 +53,14 @@ describe('OpportunitiesSidebar', () => {
         )
 
         const title = screen.getByRole('heading', {
-            name: 'Opportunities NEW',
+            name: 'Opportunities',
         })
         expect(title).toBeInTheDocument()
         expect(title).toHaveClass('title')
-        expect(title.textContent).toContain('Opportunities NEW')
+
+        const badge = screen.getByText('NEW')
+        expect(badge).toBeInTheDocument()
+        expect(badge).toHaveClass('ui-badge-badge-7025')
     })
 
     it('should render opportunity cards with mock data', () => {
@@ -68,10 +71,8 @@ describe('OpportunitiesSidebar', () => {
             />,
         )
 
-        // Should show item count
         expect(screen.getByText('4 items')).toBeInTheDocument()
 
-        // Should render the opportunity cards
         expect(
             screen.getByText("What's your return policy?"),
         ).toBeInTheDocument()
@@ -171,7 +172,15 @@ describe('OpportunitiesSidebar', () => {
             />,
         )
 
-        expect(screen.getByText('0 items')).toBeInTheDocument()
+        const emptyTitle = screen.getByRole('heading', {
+            name: 'No opportunities yet',
+        })
+        expect(emptyTitle).toBeInTheDocument()
+
+        const description = screen.getByText(
+            'AI Agent will start finding opportunities to improve as it learns from conversations with your customers',
+        )
+        expect(description).toBeInTheDocument()
     })
 
     it('should show loading state when isLoading is true', () => {
