@@ -1,12 +1,10 @@
 import { Badge, ColorType } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     FinancialStatus,
     FulfillmentStatus,
     ReturnStatus,
 } from 'constants/integrations/types/shopify'
-import { useFlag } from 'core/flags'
 import { humanizeString } from 'utils'
 
 type FulfillmentBadgeProps = {
@@ -58,19 +56,12 @@ export default function OrderStatus({
     isInfluencedByAI,
     returnsStatus,
 }: Props) {
-    const showReturnsStatusForOrders = useFlag(
-        FeatureFlagKey.ShowReturnsStatusForOrders,
-        false,
-    )
-
     return (
         <>
             {isCancelled && <CancelledBadge />}
             <FinancialBadge financialStatus={financialStatus} />
             <FulfillmentBadge fulfillmentStatus={fulfillmentStatus} />
-            {showReturnsStatusForOrders && returnsStatus && (
-                <ReturnsBadge returnsStatus={returnsStatus} />
-            )}
+            {returnsStatus && <ReturnsBadge returnsStatus={returnsStatus} />}
             {isInfluencedByAI && <InfluencedByAIBadge />}
         </>
     )

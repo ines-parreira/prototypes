@@ -9,10 +9,6 @@ import {
 
 import OrderStatus, { ReturnsBadge } from '../OrderStatus'
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-
 describe('ReturnsBadge:', () => {
     it('should return null when returnsStatus is null', () => {
         const result = render(<ReturnsBadge returnsStatus={null as any} />)
@@ -46,32 +42,7 @@ describe('ReturnsBadge:', () => {
 })
 
 describe('OrderStatus:', () => {
-    const mockUseFlag = jest.mocked(require('core/flags').useFlag)
-
-    beforeEach(() => {
-        mockUseFlag.mockClear()
-    })
-
-    it('should not display ReturnsBadge when showReturnsStatusForOrders flag is off', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        render(
-            <OrderStatus
-                fulfillmentStatus={FulfillmentStatus.Fulfilled}
-                financialStatus={FinancialStatus.Paid}
-                isInfluencedByAI={false}
-                isCancelled={false}
-                returnsStatus={'PartialReturn'}
-            />,
-        )
-
-        expect(screen.queryByText('Partially Returned')).not.toBeInTheDocument()
-        expect(screen.queryByText('Returned')).not.toBeInTheDocument()
-    })
-
-    it('should display ReturnsBadge when showReturnsStatusForOrders flag is on', () => {
-        mockUseFlag.mockReturnValue(true)
-
+    it('should display ReturnsBadge when returnsStatus is provided', () => {
         render(
             <OrderStatus
                 fulfillmentStatus={FulfillmentStatus.Fulfilled}
