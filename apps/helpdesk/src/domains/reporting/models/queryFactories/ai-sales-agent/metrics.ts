@@ -64,6 +64,11 @@ export const averageOrderValueQueryFactory = (
         ],
         dimensions: [],
         filters: [
+            {
+                member: AiSalesAgentOrdersDimension.IsInfluenced,
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
             ...baseAISalesAgentOrdersFilters,
             ...statsFiltersToReportingFilters(
                 aiSalesAgentOrdersDefaultFiltersMembers,
