@@ -3,9 +3,10 @@ import React, { FormEvent, useEffect, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { notify } from 'state/notifications/actions'

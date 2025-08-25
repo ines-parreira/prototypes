@@ -2,10 +2,11 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
 import Video from 'pages/common/components/Video/Video'
 import { isBaseEmailIntegration } from 'pages/integrations/integration/components/email/helpers'

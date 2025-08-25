@@ -22,6 +22,7 @@ jest.mock('search/useSearch')
 const mockUseSearch = useSearch as jest.Mock
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LoadingSpinner: () => 'SpinnerMock',
 }))
 jest.mock(

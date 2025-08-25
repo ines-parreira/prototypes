@@ -2,11 +2,15 @@ import React, { ComponentProps } from 'react'
 
 import classnames from 'classnames'
 
-import { SelectField, SelectFieldRawOption, Skeleton } from '@gorgias/axiom'
+import {
+    Button,
+    SelectField,
+    SelectFieldRawOption,
+    Skeleton,
+} from '@gorgias/axiom'
 import { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
 
 import { Form, FormField } from 'core/forms'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import { useGetPaymentTermsWithSideEffects } from 'pages/settings/new_billing/hooks/useGetPaymentTermsWithSideEffects'
 import { useUpdatePaymentTermsWithSideEffects } from 'pages/settings/new_billing/hooks/useUpdatePaymentTermsWithSideEffects'

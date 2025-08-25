@@ -1,4 +1,5 @@
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

@@ -1,6 +1,7 @@
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 import { setViewEditMode } from 'state/views/actions'
 import { getActiveView } from 'state/views/selectors'

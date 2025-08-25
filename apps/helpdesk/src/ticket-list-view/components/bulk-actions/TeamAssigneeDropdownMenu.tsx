@@ -2,11 +2,11 @@ import { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
+import { Button } from '@gorgias/axiom'
 import { ListTeamsOrderBy } from '@gorgias/helpdesk-queries'
 
 import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import { Team } from 'models/team/types'
-import Button from 'pages/common/components/button/Button'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'
 import { useListTeams } from 'teams/queries'
